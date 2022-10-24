@@ -9,10 +9,15 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
+        "editor.tabSize": 2
     },
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+    "[json]": {
+        "editor.tabSize": 2
     },
 }

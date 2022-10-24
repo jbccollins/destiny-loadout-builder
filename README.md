@@ -32,3 +32,26 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+---- CUSTOM ------
+
+# Setup:
+## Get Local SSL working
+
+The Bungie API requires that your app run using https due to some OAuth stuff. To make https work locally we hack up a local ssl certificate.
+
+The local dev server will run on https://localhost:4001
+
+Before doing anything else run these commands ([source](https://github.com/vercel/next.js/discussions/10935#discussioncomment-2855809)):
+     
+> brew install mkcert
+> mkcert -install
+> mkcert localhost
+> npm install -g local-ssl-proxy // This actually is done with npx in the script so it's not necessary atm
+TODO: Can local-ssl-proxy be installed as a dev dependency instead??
+
+    
+
+
+
+

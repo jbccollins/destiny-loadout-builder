@@ -1,9 +1,34 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import styles from '../styles/Home.module.css';
+import styles from '@dlb/styles/Home.module.css';
+import { useEffect } from 'react';
+import {
+	getCharacters,
+	getDestinyAccountsForBungieAccount,
+	getMembershipData
+} from '@dlb/dim/bungie-api/destiny2-api';
 
 const Home: NextPage = () => {
+	console.log('WELCOME,', process.env, process.env.NEXT_PUBLIC_BNET_API_KEY);
+	useEffect(() => {
+		(async () => {
+			const membershipData = await getMembershipData();
+			const platformData = await getDestinyAccountsForBungieAccount(
+				membershipData.membershipId
+			);
+			const mostRecentPlatform = platformData.find(
+				(platform) => platform.membershipId === membershipData.membershipId
+			);
+			const characters = await getCharacters(mostRecentPlatform);
+			console.log('>>>>>>>>>>>>>>.', characters);
+		})();
+
+		return () => {
+			// this now gets called when the component unmounts
+		};
+	}, []);
+
 	return (
 		<div className={styles.container}>
 			<Head>

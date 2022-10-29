@@ -1,5 +1,5 @@
-import { infoLog, warnLog } from '../utils/log';
-import { PlatformErrorCodes } from './bungie-api-ts-package-copy-paste';
+import { infoLog, warnLog } from '@dlb/utils/log';
+import { PlatformErrorCodes } from 'bungie-api-ts-no-const-enum/destiny2';
 import { getAccessTokenFromRefreshToken } from './oauth';
 import {
 	getToken,
@@ -123,7 +123,7 @@ export async function getActiveToken(): Promise<Tokens> {
 	try {
 		return await getAccessTokenFromRefreshToken(token.refreshToken!);
 	} catch (e) {
-		return await handleRefreshTokenError(e as Response | Error);
+		return await handleRefreshTokenError(e as Error | Response);
 	}
 }
 

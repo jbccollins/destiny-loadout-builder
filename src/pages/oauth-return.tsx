@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { getAccessTokenFromCode } from '../bungie-api/oauth';
+import { getAccessTokenFromCode } from '@dlb/dim/bungie-api/oauth';
 
 function OauthReturn() {
 	const router = useRouter();
@@ -9,7 +9,7 @@ function OauthReturn() {
 	useEffect(() => {
 		if (code) {
 			getAccessTokenFromCode(code as string);
-			router.push('/welcome');
+			router.push('/');
 		} else {
 			// TODO: Better error handling
 			console.warn('No code found in url params');

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { oauthClientId } from '../bungie-api/bungie-api-utils';
+import { oauthClientId } from '@dlb/dim/bungie-api/bungie-api-utils';
 
 function Login() {
 	const queryParams = new URLSearchParams({

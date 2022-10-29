@@ -1,4 +1,4 @@
-import { HttpClientConfig } from 'bungie-api-ts/http';
+import { HttpClientConfig } from 'bungie-api-ts-no-const-enum/http';
 
 // TODO: Put this behind a SECRET environment variable
 export const API_KEY = process.env.NEXT_PUBLIC_BNET_API_KEY;

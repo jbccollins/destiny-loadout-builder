@@ -50,6 +50,9 @@ Before doing anything else run these commands ([source](https://github.com/verce
 > npm install -g local-ssl-proxy // This actually is done with npx in the script so it's not necessary atm
 TODO: Can local-ssl-proxy be installed as a dev dependency instead??
 
+### TODOS
+- Turn strict mode back on in tsconfig.json
+
     
 
 

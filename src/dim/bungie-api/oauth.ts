@@ -1,4 +1,5 @@
-import { dedupePromise } from '../utils/utils';
+import { infoLog } from '@dlb/utils/log';
+import { dedupePromise } from '@dlb/utils/utils';
 import { oauthClientId, oauthClientSecret } from './bungie-api-utils';
 import { setToken, Token, Tokens } from './oauth-tokens';
 
@@ -30,7 +31,7 @@ export const getAccessTokenFromRefreshToken = dedupePromise(
 				.then(handleAccessToken)
 				.then((token) => {
 					setToken(token);
-					console.log(
+					infoLog(
 						'bungie auth',
 						'Successfully updated auth token from refresh token.'
 					);
@@ -59,11 +60,6 @@ export function getAccessTokenFromCode(code: string): Promise<Tokens> {
 				response.ok ? response.json() : Promise.reject(response)
 			)
 			.then(handleAccessToken)
-			.then((token) => {
-				setToken(token);
-				console.log('bungie auth', 'Successfully set auth token from code.');
-				return token;
-			})
 	);
 }
 
@@ -102,7 +98,6 @@ function handleAccessToken(
 			};
 		}
 
-		console.log('handleAccessToken', tokens);
 		return tokens;
 	} else {
 		throw new Error(

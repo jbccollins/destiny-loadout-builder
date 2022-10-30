@@ -1,5 +1,5 @@
 import type { D2BucketCategory } from '@dlb/dim/inventory/inventory-buckets';
-import { BucketHashes } from '@dlb/dim/data/generated-enums';
+import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 
 export const D2Categories: {
 	[key in D2BucketCategory]: BucketHashes[];

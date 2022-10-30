@@ -1,5 +1,5 @@
 // import { getCurrentHub } from '@sentry/browser';
-import { delay } from '@dlb/utils/utils';
+import { delay } from '@dlb/dim/utils/util';
 import {
 	PlatformErrorCodes,
 	ServerResponse

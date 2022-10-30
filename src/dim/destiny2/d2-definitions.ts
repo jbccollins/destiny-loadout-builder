@@ -1,7 +1,7 @@
 // import { d2ManifestSelector } from 'app/manifest/selectors';
 // import { ThunkResult } from 'app/store/types';
 // import { reportException } from 'app/utils/exceptions';
-import { warnLogCollapsedStack } from '@dlb/utils/log';
+import { warnLogCollapsedStack } from '@dlb/dim/utils/log';
 import {
 	AllDestinyManifestComponents,
 	DestinyActivityDefinition,
@@ -42,9 +42,9 @@ import {
 	DestinyVendorDefinition,
 	DestinyVendorGroupDefinition
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import { ItemCategoryHashes } from '@dlb/dim/data/generated-enums';
+import { ItemCategoryHashes } from '@dlb/dim/data/d2/generated-enums';
 // import { setD2Manifest } from '../manifest/actions';
-// import { getManifest } from '../manifest/manifest-service-json';
+import { getManifest } from '@dlb/dim/manifest/manifest-service-json';
 import { HashLookupFailure, ManifestDefinitions } from './definitions';
 
 const lazyTables = [
@@ -149,23 +149,11 @@ export const allTables = [...eagerTables, ...lazyTables];
  * object that has a property named after each of the tables listed
  * above (defs.TalentGrid, etc.).
  */
-// export function getDefinitions(): ThunkResult<D2ManifestDefinitions> {
-//   return async (dispatch, getState) => {
-//     let existingManifest = d2ManifestSelector(getState());
-//     if (existingManifest) {
-//       return existingManifest;
-//     }
-//     const db = await dispatch(getManifest(allTables));
-//     existingManifest = d2ManifestSelector(getState());
-//     if (existingManifest) {
-//       return existingManifest;
-//     }
-
-//     const defs = buildDefinitionsFromManifest(db);
-//     dispatch(setD2Manifest(defs));
-//     return defs;
-//   };
-// }
+export async function getDefinitions(): Promise<D2ManifestDefinitions> {
+	const manifest = await getManifest(allTables);
+	const defs = buildDefinitionsFromManifest(manifest);
+	return defs;
+}
 
 export function buildDefinitionsFromManifest(db: AllDestinyManifestComponents) {
 	enhanceDBWithFakeEntries(db);

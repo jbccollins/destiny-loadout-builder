@@ -1,4 +1,4 @@
-import { infoLog, warnLog } from '@dlb/utils/log';
+import { infoLog, warnLog } from '@dlb/dim/utils/log';
 import { PlatformErrorCodes } from 'bungie-api-ts-no-const-enum/destiny2';
 import { getAccessTokenFromRefreshToken } from './oauth';
 import {

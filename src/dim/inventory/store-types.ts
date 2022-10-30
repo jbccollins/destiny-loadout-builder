@@ -2,11 +2,10 @@ import { DestinyVersion } from '@destinyitemmanager/dim-api-types';
 import {
 	DestinyClass,
 	DestinyColor,
-	DestinyDisplayPropertiesDefinition,
-	DestinyProgression
+	DestinyDisplayPropertiesDefinition
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import React from 'react';
-import { D1Item, DimItem } from './item-types';
+import { DimItem } from './item-types';
 
 /**
  * A generic DIM character or vault - a "store" of items. This completely

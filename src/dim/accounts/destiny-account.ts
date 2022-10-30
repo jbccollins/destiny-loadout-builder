@@ -1,7 +1,7 @@
 import { DestinyVersion } from '@destinyitemmanager/dim-api-types';
 // import { ThunkResult } from 'app/store/types';
 // import { DimError } from 'app/utils/dim-error';
-import { errorLog } from '@dlb/utils/log';
+import { errorLog } from '@dlb/dim/utils/log';
 import {
 	BungieMembershipType,
 	DestinyGameVersions,
@@ -12,7 +12,7 @@ import { UserInfoCard } from 'bungie-api-ts-no-const-enum/user';
 import _ from 'lodash';
 import { getLinkedAccounts } from '@dlb/dim/bungie-api/destiny2-api';
 import { removeToken } from '@dlb/dim/bungie-api/oauth-tokens';
-//import { reportException } from '@dlb/utils/exceptions';
+//import { reportException } from '@dlb/dim/utils/exceptions';
 // import { loggedOut } from './actions';
 
 // See https://github.com/Bungie-net/api/wiki/FAQ:-Cross-Save-pre-launch-testing,-and-how-it-may-affect-you for more info

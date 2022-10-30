@@ -1,5 +1,5 @@
 //import { showNotification } from 'app/notifications/notifications';
-import { errorLog, infoLog } from '@dlb/utils/log';
+import { errorLog, infoLog } from '@dlb/dim/utils/log';
 import { PlatformErrorCodes } from 'bungie-api-ts-no-const-enum/destiny2';
 import { HttpClient, HttpClientConfig } from 'bungie-api-ts-no-const-enum/http';
 import _ from 'lodash';

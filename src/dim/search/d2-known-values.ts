@@ -8,7 +8,7 @@ import {
 	ItemCategoryHashes,
 	PlugCategoryHashes,
 	StatHashes
-} from '@dlb/dim/data/generated-enums';
+} from '@dlb/dim/data/d2/generated-enums';
 
 // ✨ magic values ✨
 // this file has non-programatically decided information

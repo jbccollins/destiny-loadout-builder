@@ -4,28 +4,27 @@ import { DimStore } from '@dlb/dim/inventory/store-types';
 import { Box, styled, Card } from '@mui/material';
 
 type BucketProps = Readonly<{
-	store: DimStore<DimItem>;
+	items: DimItem[];
 }>;
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	padding: theme.spacing(3)
 }));
 
-const Item = styled(Box)(({ theme }) => ({
-	color: theme.palette.secondary.main,
-	display: 'flex'
-}));
-
 function Bucket(props: BucketProps) {
-	console.log('bucket', props);
+	// props.store.items.forEach((item) => {
+	// 	if (item.id == '0') {
+	// 		console.log(item);
+	// 	}
+	// });
 	return (
 		<>
 			<Container>
-				{props.store.items.map((item) => {
-					return item.id == '0' ? (
+				{props.items.map((item) => {
+					return item.index == '0' ? (
 						false
 					) : (
-						<BungieImage key={item.id} src={item.icon} />
+						<BungieImage key={item.index} src={item.icon} />
 					);
 				})}
 			</Container>

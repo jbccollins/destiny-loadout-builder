@@ -199,7 +199,6 @@ async function loadManifestRemote(
 
 	// We intentionally don't wait on this promise
 	// saveManifestToIndexedDB(manifest, version, tableAllowList);
-	console.log('>>>>>>>> manifest', manifest);
 	return manifest;
 }
 

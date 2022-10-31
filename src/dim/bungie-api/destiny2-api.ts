@@ -132,16 +132,13 @@ export async function getDestinyAccountsForBungieAccount(
 }
 
 export async function getMembershipData() {
-	console.info('BungieApiService', 'getMembershipDataForCurrentUser');
 	const response = await getMembershipDataForCurrentUser(
 		authenticatedHttpClient
 	);
 	const res = response?.Response.destinyMemberships;
-	console.info('Memberships:', res);
 	const memberships = res.filter(
 		(m) => m.crossSaveOverride == 0 || m.crossSaveOverride == m.membershipType
 	);
-	console.info('Filtered Memberships:', memberships);
 
 	let result: UserInfoCard = null;
 	if (memberships?.length == 1) {
@@ -167,10 +164,6 @@ export async function getMembershipData() {
 				}
 			}
 		}
-		console.info(
-			'getMembershipDataForCurrentUser',
-			'Selected membership data for the last logged in membership.'
-		);
 		result = memberships?.[lastLoggedInProfileIndex];
 	}
 
@@ -184,7 +177,6 @@ export async function getMembershipData() {
 		);
 		return null; // automatically log out
 	}
-	console.log('>>>>>>>>>>>>>>>> RESULT', result.membershipId);
 	return result;
 }
 
@@ -222,27 +214,27 @@ export function getStores(
 		DestinyComponentType.ProfileCurrencies,
 		DestinyComponentType.Characters,
 		DestinyComponentType.CharacterInventories,
-		DestinyComponentType.CharacterProgressions,
-		DestinyComponentType.CharacterEquipment,
-		// TODO: consider loading less item data, and then loading item details on click? Makes searches hard though.
-		DestinyComponentType.ItemInstances,
-		DestinyComponentType.ItemObjectives,
-		DestinyComponentType.ItemSockets,
-		DestinyComponentType.ItemCommonData,
-		DestinyComponentType.Collectibles,
-		DestinyComponentType.ItemPlugStates,
-		DestinyComponentType.ItemReusablePlugs,
-		// TODO: We should try to defer this until the popup is open!
-		DestinyComponentType.ItemPlugObjectives,
-		// TODO: we should defer this unless you're on the collections screen
-		DestinyComponentType.Records,
-		DestinyComponentType.Metrics,
-		DestinyComponentType.StringVariables,
-		DestinyComponentType.ProfileProgression,
-		DestinyComponentType.Craftables,
-		DestinyComponentType.Transitory,
-		// TODO: This is only needed for event progress
-		DestinyComponentType.PresentationNodes
+		// DestinyComponentType.CharacterProgressions,
+		DestinyComponentType.CharacterEquipment
+		// // TODO: consider loading less item data, and then loading item details on click? Makes searches hard though.
+		// DestinyComponentType.ItemInstances,
+		// DestinyComponentType.ItemObjectives,
+		// DestinyComponentType.ItemSockets,
+		// DestinyComponentType.ItemCommonData,
+		// DestinyComponentType.Collectibles,
+		// DestinyComponentType.ItemPlugStates,
+		// DestinyComponentType.ItemReusablePlugs,
+		// // TODO: We should try to defer this until the popup is open!
+		// DestinyComponentType.ItemPlugObjectives,
+		// // TODO: we should defer this unless you're on the collections screen
+		// DestinyComponentType.Records,
+		// DestinyComponentType.Metrics,
+		// DestinyComponentType.StringVariables,
+		// DestinyComponentType.ProfileProgression,
+		// DestinyComponentType.Craftables,
+		// DestinyComponentType.Transitory,
+		// // TODO: This is only needed for event progress
+		// DestinyComponentType.PresentationNodes
 	);
 }
 

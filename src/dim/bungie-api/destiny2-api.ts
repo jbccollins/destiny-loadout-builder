@@ -215,7 +215,14 @@ export function getStores(
 		DestinyComponentType.Characters,
 		DestinyComponentType.CharacterInventories,
 		// DestinyComponentType.CharacterProgressions,
-		DestinyComponentType.CharacterEquipment
+		DestinyComponentType.CharacterEquipment,
+		// ------- FROM D2 ARMOR PICKER ------
+		// DestinyComponentType.ItemStats,
+		DestinyComponentType.ItemInstances,
+		DestinyComponentType.ItemPerks,
+		DestinyComponentType.ItemSockets,
+		DestinyComponentType.ItemPlugStates
+		// ------- END FROM D2 ARMOR PICKER ------
 		// // TODO: consider loading less item data, and then loading item details on click? Makes searches hard though.
 		// DestinyComponentType.ItemInstances,
 		// DestinyComponentType.ItemObjectives,

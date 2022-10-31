@@ -25,7 +25,7 @@ import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 import Bucket from '@dlb/components/Bucket';
-import { structureStoreData } from '@dlb/services/data';
+import { StructuredStoreData, structureStoreData } from '@dlb/services/data';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -40,7 +40,7 @@ const Home: NextPage = () => {
 		null
 	);
 	const [stores, setStores] = useState<null | DimStore<DimItem>[]>(null);
-	const [armor, setArmor] = useState<null | DimItem[]>(null);
+	const [armor, setArmor] = useState<null | StructuredStoreData>(null);
 	useEffect(() => {
 		(async () => {
 			const membershipData = await getMembershipData();

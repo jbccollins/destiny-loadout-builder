@@ -25,7 +25,8 @@ import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 import Bucket from '@dlb/components/Bucket';
-import { StructuredStoreData, structureStoreData } from '@dlb/services/data';
+import { AllArmor, extractArmor } from '@dlb/services/data';
+import StatSelection from '@dlb/components/StatSelection/StatSelection';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -40,7 +41,7 @@ const Home: NextPage = () => {
 		null
 	);
 	const [stores, setStores] = useState<null | DimStore<DimItem>[]>(null);
-	const [armor, setArmor] = useState<null | StructuredStoreData>(null);
+	const [armor, setArmor] = useState<null | AllArmor>(null);
 	useEffect(() => {
 		(async () => {
 			const membershipData = await getMembershipData();
@@ -62,9 +63,9 @@ const Home: NextPage = () => {
 			const stores = await loadStoresData(mostRecentPlatform);
 			console.log('>>>>>>>>>> stores <<<<<<<<<<<', stores);
 			setStores(stores);
-			const [armor, nonArmor] = structureStoreData(stores);
-			setArmor(armor);
-			console.log('>>>>>>>>>> armor <<<<<<<<<<<', armor);
+			const allArmor = extractArmor(stores);
+			setArmor(allArmor);
+			console.log('>>>>>>>>>> armor <<<<<<<<<<<', allArmor);
 		})();
 
 		return () => {
@@ -91,6 +92,7 @@ const Home: NextPage = () => {
 			</Head>
 			<Container>
 				<Loading items={items} />
+				<StatSelection locked />
 				{hasCharacterData && (
 					<CharacterSelector characters={characters.characters} />
 				)}

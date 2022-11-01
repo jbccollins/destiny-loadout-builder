@@ -1,111 +1,103 @@
-import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
+import { BucketHashes, StatHashes } from '@dlb/dim/data/d2/generated-enums';
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 import { DestinyClass } from 'bungie-api-ts-no-const-enum/destiny2';
 
-export type StructuredStoreDataClass = {
-	classType: DestinyClass;
-	helmet: DimItem[];
-	gauntlets: DimItem[];
-	chestArmor: DimItem[];
-	legArmor: DimItem[];
-	classArmor: DimItem[];
+export type ArmorGroup = {
+	[BucketHashes.Helmet]: DimItem[];
+	[BucketHashes.Gauntlets]: DimItem[];
+	[BucketHashes.ChestArmor]: DimItem[];
+	[BucketHashes.LegArmor]: DimItem[];
+	[BucketHashes.ClassArmor]: DimItem[];
 };
 
-export type StructuredStoreData = StructuredStoreDataClass[];
+export const ValidDestinyClassesTypes = [
+	DestinyClass.Titan,
+	DestinyClass.Hunter,
+	DestinyClass.Warlock
+];
 
-const generateStructuredStoreDataClass = (
-	classType: DestinyClass
-): StructuredStoreDataClass => {
+export type AllArmor = {
+	[DestinyClass.Titan]: ArmorGroup;
+	[DestinyClass.Hunter]: ArmorGroup;
+	[DestinyClass.Warlock]: ArmorGroup;
+};
+
+// Userful for just iterating over every armor stat type
+export const ArmorStatTypes = [
+	StatHashes.Mobility,
+	StatHashes.Resilience,
+	StatHashes.Recovery,
+	StatHashes.Discipline,
+	StatHashes.Intellect,
+	StatHashes.Strength
+];
+
+export enum EArmorStatName {
+	Mobility = 'mobility',
+	Resilience = 'resilience',
+	Recovery = 'recovery',
+	Discipline = 'discipline',
+	Intellect = 'intellect',
+	Strength = 'strength'
+}
+
+// An oredered list to make iterating over that enum
+// easier. Fuck typescript enums and how shit they are
+// to enumerate.
+export const ArmorStatNamesList = [
+	EArmorStatName.Mobility,
+	EArmorStatName.Resilience,
+	EArmorStatName.Recovery,
+	EArmorStatName.Discipline,
+	EArmorStatName.Intellect,
+	EArmorStatName.Strength
+];
+
+// Get the english name for an armor stat
+export const ArmorStatHashToName = {
+	[StatHashes.Mobility]: EArmorStatName.Mobility,
+	[StatHashes.Resilience]: EArmorStatName.Resilience,
+	[StatHashes.Recovery]: EArmorStatName.Recovery,
+	[StatHashes.Discipline]: EArmorStatName.Discipline,
+	[StatHashes.Intellect]: EArmorStatName.Intellect,
+	[StatHashes.Strength]: EArmorStatName.Strength
+};
+
+// Used to store the stats the the user has configured in various places
+export type DesiredArmorStats = {
+	[EArmorStatName.Mobility]: number;
+	[EArmorStatName.Resilience]: number;
+	[EArmorStatName.Recovery]: number;
+	[EArmorStatName.Discipline]: number;
+	[EArmorStatName.Intellect]: number;
+	[EArmorStatName.Strength]: number;
+};
+
+const generateArmorGroup = (): ArmorGroup => {
 	return {
-		classType,
-		helmet: [],
-		gauntlets: [],
-		chestArmor: [],
-		legArmor: [],
-		classArmor: []
+		[BucketHashes.Helmet]: [],
+		[BucketHashes.Gauntlets]: [],
+		[BucketHashes.ChestArmor]: [],
+		[BucketHashes.LegArmor]: [],
+		[BucketHashes.ClassArmor]: []
 	};
 };
 
-export const structureStoreData = (
-	stores: DimStore<DimItem>[]
-): StructuredStoreData[] => {
-	const titanArmor = generateStructuredStoreDataClass(DestinyClass.Titan);
-	const hunterArmor = generateStructuredStoreDataClass(DestinyClass.Hunter);
-	const warlockArmor = generateStructuredStoreDataClass(DestinyClass.Warlock);
+export const extractArmor = (stores: DimStore<DimItem>[]): AllArmor => {
+	const allArmor: AllArmor = {
+		[DestinyClass.Titan]: generateArmorGroup(),
+		[DestinyClass.Hunter]: generateArmorGroup(),
+		[DestinyClass.Warlock]: generateArmorGroup()
+	};
 
-	const armor: DimItem[] = [];
-	const nonArmor: DimItem[] = [];
 	stores.forEach(({ items }) => {
-		for (const item of items) {
+		items.forEach((item) => {
 			if (item.location.inArmor) {
-				let armorStore: StructuredStoreDataClass = null;
-				switch (item.classType) {
-					case DestinyClass.Titan: {
-						armorStore = titanArmor;
-						break;
-					}
-					case DestinyClass.Hunter: {
-						armorStore = hunterArmor;
-						break;
-					}
-					case DestinyClass.Warlock: {
-						armorStore = warlockArmor;
-						break;
-					}
-				}
-				if (armorStore === null) {
-					continue;
-				}
-				switch (item.bucket.hash) {
-					case BucketHashes.Helmet: {
-						armorStore.helmet.push(item);
-						break;
-					}
-					case BucketHashes.Gauntlets: {
-						armorStore.gauntlets.push(item);
-						break;
-					}
-					case BucketHashes.ChestArmor: {
-						armorStore.chestArmor.push(item);
-						break;
-					}
-					case BucketHashes.LegArmor: {
-						armorStore.legArmor.push(item);
-						break;
-					}
-					case BucketHashes.ClassArmor: {
-						armorStore.classArmor.push(item);
-						break;
-					}
-				}
-				armor.push(item);
-			} else {
-				nonArmor.push(item);
+				allArmor[item.classType][item.bucket.hash].push(item);
 			}
-		}
+		});
 	});
-	// [titanArmor, hunterArmor, warlockArmor].forEach((armorStore) => {
-	// 	armorStore.helmet = armorStore.helmet.sort((a, b) =>
-	// 		a.name > b.name ? 1 : 0
-	// 	);
-	// 	armorStore.gauntlets = armorStore.gauntlets.sort((a, b) =>
-	// 		a.name > b.name ? 1 : 0
-	// 	);
-	// 	armorStore.chestArmor = armorStore.chestArmor.sort((a, b) =>
-	// 		a.name > b.name ? 1 : 0
-	// 	);
-	// 	armorStore.legArmor = armorStore.legArmor.sort((a, b) =>
-	// 		a.name > b.name ? 1 : 0
-	// 	);
-	// 	armorStore.classArmor = armorStore.classArmor.sort((a, b) =>
-	// 		a.name > b.name ? 1 : 0
-	// 	);
-	// });
-	const structuredStoreData: StructuredStoreData = [
-		titanArmor,
-		hunterArmor,
-		warlockArmor
-	];
-	return [structuredStoreData];
+
+	return allArmor;
 };

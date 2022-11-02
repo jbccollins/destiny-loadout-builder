@@ -74,6 +74,15 @@ export type DesiredArmorStats = {
 	[EArmorStatName.Strength]: number;
 };
 
+export const ArmorStatOrder = [
+	EArmorStatName.Mobility,
+	EArmorStatName.Resilience,
+	EArmorStatName.Recovery,
+	EArmorStatName.Discipline,
+	EArmorStatName.Intellect,
+	EArmorStatName.Strength
+];
+
 const generateArmorGroup = (): ArmorGroup => {
 	return {
 		[BucketHashes.Helmet]: [],

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { getAccessTokenFromCode } from '@dlb/dim/bungie-api/oauth';
 import { Box, CircularProgress, styled } from '@mui/material';
+import axios from 'axios';
 
 const Container = styled(Box)(({ theme }) => ({
 	position: 'fixed',
@@ -23,17 +24,29 @@ function OauthReturn() {
 	const { code } = router.query;
 
 	useEffect(() => {
-		console.log('>>>>> OauthReturn code: ', code);
-		if (code) {
-			getAccessTokenFromCode(code as string);
-			router.push('/');
-		} else {
-			// TODO: Better error handling
-			// alert('No code found in url params');
-			console.warn('No code found in url params');
-		}
+		(async () => {
+			try {
+				if (code) {
+					await getAccessTokenFromCode(code as string);
+					router.push('/');
+				} else {
+					// TODO: Better error handling
+					// alert('No code found in url params');
+					console.warn('No code found in url params, retrying...');
+				}
+			} catch (e) {
+				// TODO redirect only on the right kind of error
+				// Test by deleting 'authorization' from localStorage
+				// router.push('/login');
+				// console.error(e);
+			}
+		})();
+
+		return () => {
+			// this now gets called when the component unmounts
+		};
 	}, [code, router, router.query]);
-	// TODO: Maybe add like a loading spinner here or something
+
 	return (
 		<Container>
 			<Text>Authenticating...</Text>

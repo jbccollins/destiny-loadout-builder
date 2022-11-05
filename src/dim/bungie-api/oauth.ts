@@ -1,5 +1,6 @@
 import { infoLog } from '@dlb/dim/utils/log';
 import { dedupePromise } from '@dlb/dim/utils/util';
+import axios from 'axios';
 import { oauthClientId, oauthClientSecret } from './bungie-api-utils';
 import { setToken, Token, Tokens } from './oauth-tokens';
 
@@ -7,8 +8,11 @@ import { setToken, Token, Tokens } from './oauth-tokens';
 
 const TOKEN_URL = 'https://www.bungie.net/platform/app/oauth/token/';
 
+// TODO: Migrate this to an api route just like we migrated getAccessTokenFromCode
 export const getAccessTokenFromRefreshToken = dedupePromise(
 	(refreshToken: Token): Promise<Tokens> => {
+		console.error('getAccessTokenFromRefreshToken()');
+		throw 'getAccessTokenFromRefreshToken() will never work since it relies on secret keys. Move it to an API route';
 		const body = new URLSearchParams({
 			grant_type: 'refresh_token',
 			refresh_token: refreshToken.value,
@@ -41,27 +45,41 @@ export const getAccessTokenFromRefreshToken = dedupePromise(
 	}
 );
 
-export function getAccessTokenFromCode(code: string): Promise<Tokens> {
-	const body = new URLSearchParams({
-		grant_type: 'authorization_code',
-		code,
-		client_id: oauthClientId(),
-		client_secret: oauthClientSecret()
-	});
-	return Promise.resolve(
-		fetch(TOKEN_URL, {
-			method: 'POST',
-			body,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			}
+// export function getAccessTokenFromCode(code: string): Promise<Tokens> {
+// 	const body = new URLSearchParams({
+// 		grant_type: 'authorization_code',
+// 		code,
+// 		client_id: oauthClientId(),
+// 		client_secret: oauthClientSecret()
+// 	});
+// 	return Promise.resolve(
+// 		fetch(TOKEN_URL, {
+// 			method: 'POST',
+// 			body,
+// 			headers: {
+// 				'Content-Type': 'application/x-www-form-urlencoded'
+// 			}
+// 		})
+// 			.then((response) =>
+// 				response.ok ? response.json() : Promise.reject(response)
+// 			)
+// 			.then(handleAccessToken)
+// 	);
+// }
+
+export const getAccessTokenFromCode = async (code: string): Promise<void> => {
+	await axios
+		.get(`/api/get-access-token-from-code?code=${code}`)
+		.then((response) => {
+			return handleAccessToken(response.data);
 		})
-			.then((response) =>
-				response.ok ? response.json() : Promise.reject(response)
-			)
-			.then(handleAccessToken)
-	);
-}
+		.catch(function (error) {
+			if (error.response) {
+				console.log('>>>>>>>>>>>>>>>>>>>>>> ERROR FETCHING OAUTH TOKEN');
+				console.error(error.response.data);
+			}
+		});
+};
 
 function handleAccessToken(
 	response:

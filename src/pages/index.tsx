@@ -29,6 +29,7 @@ import { AllArmor, extractArmor } from '@dlb/services/data';
 import StatSelection from '@dlb/components/StatSelection/StatSelection';
 import WebWorkerTest from '@dlb/components/WebWorkerTest/WebWorkerTest';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -51,6 +52,8 @@ const Home: NextPage = () => {
 		(async () => {
 			try {
 				const membershipData = await getMembershipData();
+				const hello = await axios.get('/api/hello2?code=haha');
+				console.log('>>>>>>>>>>>: ', hello);
 				setHasMembershipData(true);
 				const platformData = await getDestinyAccountsForBungieAccount(
 					membershipData.membershipId
@@ -74,8 +77,8 @@ const Home: NextPage = () => {
 				console.log('>>>>>>>>>> armor <<<<<<<<<<<', allArmor);
 			} catch (e) {
 				// TODO redirect only on the right kind of error
-				// Test by deleting 'authentication' from localStorage
-				router.push('/login');
+				// Test by deleting 'authorization' from localStorage
+				// router.push('/login');
 				// console.error(e);
 			}
 		})();

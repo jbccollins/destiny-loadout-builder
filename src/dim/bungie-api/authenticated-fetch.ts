@@ -32,6 +32,7 @@ export async function fetchWithBungieOAuth(
 	if (typeof request === 'string') {
 		request = new Request(request);
 	}
+	console.log('>>>>>>>>>>>>>>>>>>> fetchWithBungieOAuth');
 
 	try {
 		const token = await getActiveToken();

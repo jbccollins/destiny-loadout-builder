@@ -99,10 +99,20 @@ export function dimErrorHandledHttpClient(httpClient: HttpClient): HttpClient {
  * if HttpClient throws an error (js, Bungie, http) this enriches it with DIM concepts and then re-throws it
  */
 export function handleErrors(error: Error) {
-	if (error instanceof DOMException && error.name === 'AbortError') {
-		throw navigator.onLine
-			? new Error('BungieService.SlowResponse')
-			: new Error('BungieService.NotConnected');
+	if (typeof DOMException !== 'undefined') {
+		// Called from client
+		if (error instanceof DOMException && error.name === 'AbortError') {
+			throw navigator.onLine
+				? new Error('BungieService.SlowResponse')
+				: new Error('BungieService.NotConnected');
+		}
+	} else {
+		// Called from server
+		if (error.name === 'AbortError') {
+			throw navigator.onLine
+				? new Error('BungieService.SlowResponse')
+				: new Error('BungieService.NotConnected');
+		}
 	}
 
 	if (error instanceof SyntaxError) {

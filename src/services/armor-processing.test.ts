@@ -1,16 +1,17 @@
 import {
-	processArmor,
+	doProcessArmor,
 	ProcessArmorOutput,
-	ProcessArmorParams,
+	DoProcessArmorParams,
 	shouldShortCircuit,
 	ShouldShortCircuitParams
 } from './armor-processing';
 import { EArmorStatName } from './data';
 import { describe, expect, test } from '@jest/globals';
+import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 
 type ProcessArmorTestCase = {
 	name: string;
-	input: ProcessArmorParams;
+	input: DoProcessArmorParams;
 	output: ProcessArmorOutput;
 };
 
@@ -27,10 +28,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorItems: [
-				[{ id: 0, stats: [2, 16, 16, 16, 16, 2] }],
-				[{ id: 1, stats: [2, 16, 16, 16, 16, 2] }],
-				[{ id: 2, stats: [2, 16, 16, 16, 16, 2] }],
-				[{ id: 3, stats: [2, 16, 16, 16, 16, 2] }]
+				[{ id: 0, stats: es([2, 16, 16, 16, 16, 2]) }],
+				[{ id: 1, stats: es([2, 16, 16, 16, 16, 2]) }],
+				[{ id: 2, stats: es([2, 16, 16, 16, 16, 2]) }],
+				[{ id: 3, stats: es([2, 16, 16, 16, 16, 2]) }]
 			]
 		},
 		output: [[0, 1, 2, 3]]
@@ -146,31 +147,34 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 describe('processArmor', () => {
 	test(processArmorTestCases[0].name, () => {
 		const { input, output } = processArmorTestCases[0];
-		expect(processArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
 	});
 	test(processArmorTestCases[1].name, () => {
 		const { input, output } = processArmorTestCases[1];
-		expect(processArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
 	});
 	test(processArmorTestCases[2].name, () => {
 		const { input, output } = processArmorTestCases[2];
-		expect(processArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
 	});
 	test(processArmorTestCases[3].name, () => {
 		const { input, output } = processArmorTestCases[3];
-		expect(processArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
 	});
-
 	test(processArmorTestCases[4].name, () => {
 		const { input, output } = processArmorTestCases[4];
-		expect(processArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
 	});
 });
 
 type ShouldShortCircuitTestCase = {
 	name: string;
 	input: ShouldShortCircuitParams;
-	output: [boolean, EArmorStatName];
+	output: [
+		boolean,
+		EArmorStatName,
+		'helmet' | 'gauntlets' | 'chest armor' | ''
+	];
 };
 
 const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
@@ -187,9 +191,9 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorStats: [2, 16, 16, 16, 16, 2],
-			numRemaingArmorPieces: 2
+			numRemainingArmorPieces: 2
 		},
-		output: [true, EArmorStatName.Mobility]
+		output: [true, EArmorStatName.Mobility, 'gauntlets']
 	},
 	{
 		name: 'It returns true when helmet and gauntlets strength are both 2',
@@ -204,9 +208,9 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatName.Strength]: 100
 			},
 			armorStats: [2, 16, 16, 16, 16, 2],
-			numRemaingArmorPieces: 2
+			numRemainingArmorPieces: 2
 		},
-		output: [true, EArmorStatName.Strength]
+		output: [true, EArmorStatName.Strength, 'gauntlets']
 	},
 	{
 		name: 'It returns true when helmet and gauntlets discipline and strength are both 2',
@@ -221,9 +225,27 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatName.Strength]: 100
 			},
 			armorStats: [2, 16, 16, 16, 16, 2],
-			numRemaingArmorPieces: 2
+			numRemainingArmorPieces: 2
 		},
-		output: [true, EArmorStatName.Discipline]
+		output: [true, EArmorStatName.Discipline, 'gauntlets']
+	},
+
+	{
+		name: 'It returns true immediatley when the stat requirements are impossibly high',
+		input: {
+			sumOfSeenStats: [2, 16, 16, 2, 30, 2],
+			desiredArmorStats: {
+				[EArmorStatName.Mobility]: 0,
+				[EArmorStatName.Resilience]: 0,
+				[EArmorStatName.Recovery]: 0,
+				[EArmorStatName.Discipline]: 100,
+				[EArmorStatName.Intellect]: 0,
+				[EArmorStatName.Strength]: 400
+			},
+			armorStats: [2, 16, 16, 16, 16, 2],
+			numRemainingArmorPieces: 3
+		},
+		output: [true, EArmorStatName.Strength, 'helmet']
 	},
 
 	{
@@ -239,9 +261,9 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorStats: [30, 2, 2, 16, 16, 2],
-			numRemaingArmorPieces: 2
+			numRemainingArmorPieces: 2
 		},
-		output: [false, null]
+		output: [false, null, '']
 	},
 	{
 		name: 'It returns false when helmet mobility is 30',
@@ -256,9 +278,9 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorStats: [10, 2, 22, 16, 16, 2],
-			numRemaingArmorPieces: 2
+			numRemainingArmorPieces: 2
 		},
-		output: [false, null]
+		output: [false, null, '']
 	}
 ];
 
@@ -277,6 +299,10 @@ describe('shouldShortCircuit', () => {
 	});
 	test(shouldShortCircuitTestCases[3].name, () => {
 		const { input, output } = shouldShortCircuitTestCases[3];
+		expect(shouldShortCircuit(input)).toEqual(output);
+	});
+	test(shouldShortCircuitTestCases[4].name, () => {
+		const { input, output } = shouldShortCircuitTestCases[4];
 		expect(shouldShortCircuit(input)).toEqual(output);
 	});
 });

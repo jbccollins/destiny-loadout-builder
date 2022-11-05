@@ -90,11 +90,9 @@ function StatSelection(props: StatSelectionProps) {
 		dispatch(setDesiredArmorStats({ ...desiredArmorStats, [statName]: value }));
 	}
 
-	console.log(desiredArmorStats);
 	return (
 		<Container>
 			{ArmorStatNamesList.map((statName) => {
-				// console.log(armor);
 				return (
 					<SliderWrapper key={statName}>
 						<SliderTitle>{statName}</SliderTitle>

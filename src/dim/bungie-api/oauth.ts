@@ -74,6 +74,7 @@ function handleAccessToken(
 		  }
 		| undefined
 ): Tokens {
+	console.log('>>>>>>>> handleAccessToken: ', response?.access_token);
 	if (response?.access_token) {
 		const data = response;
 		const inception = Date.now();
@@ -98,6 +99,8 @@ function handleAccessToken(
 			};
 		}
 
+		// TODO: Figure out the right place to set tokens and how to redirect to login
+		setToken(tokens);
 		return tokens;
 	} else {
 		throw new Error(

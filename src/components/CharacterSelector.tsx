@@ -1,36 +1,72 @@
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { Characters, DestinyClassName } from '@dlb/services/data';
+import { Box, styled, Card, capitalize, Typography } from '@mui/material';
 import {
-	CheckCircleRounded,
-	ImportantDevices,
-	Scale
-} from '@mui/icons-material';
-import { Box, styled, Checkbox, Card, CircularProgress } from '@mui/material';
-import {
-	DestinyCharacterComponent,
-	DestinyProfileResponse,
-	DictionaryComponentResponse
-} from 'bungie-api-ts-no-const-enum/destiny2';
-
+	selectSelectedCharacterClass,
+	setSelectedCharacterClass
+} from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { useCallback, useEffect } from 'react';
 type CharacterSelectorProps = Readonly<{
-	characters: DictionaryComponentResponse<DestinyCharacterComponent>;
+	characters: Characters;
 }>;
 const Container = styled(Card)(({ theme }) => ({
-	color: theme.palette.secondary.main,
 	padding: theme.spacing(3)
 }));
 
 const Item = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
-	display: 'flex'
+	display: 'flex',
+	position: 'relative',
+	width: '474px',
+	height: '96px'
+}));
+
+const EmblemImage = styled(BungieImage)(({ theme }) => ({
+	position: 'absolute'
+}));
+
+const CharacterText = styled(Typography)(({ theme }) => ({
+	display: 'block',
+	zIndex: 1,
+	marginLeft: '20.25%' // 96 is 20.25% of 474 which is the size of the emblem icon
+	// marginTop: '50%'
 }));
 
 function CharacterSelector(props: CharacterSelectorProps) {
+	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const dispatch = useAppDispatch();
+
+	const handleCharacterClick = (characterClass: DestinyClassName) => {
+		dispatch(setSelectedCharacterClass(characterClass));
+	};
+
+	const setDefaultCharacterClass = useCallback(() => {
+		if (
+			props.characters &&
+			props.characters.length > 0 &&
+			selectedCharacterClass === null
+		) {
+			dispatch(setSelectedCharacterClass(props.characters[0].className));
+		}
+	}, [dispatch, props.characters, selectedCharacterClass]);
+
+	useEffect(() => {
+		setDefaultCharacterClass();
+	}, [setDefaultCharacterClass]);
+
 	return (
 		<>
 			<Container>
-				{Object.values(props.characters.data).map((character) => (
-					<Item key={character.characterId}>
-						<BungieImage src={character.emblemBackgroundPath} />
+				{props.characters.map((character) => (
+					<Item
+						key={character.id}
+						onClick={() => handleCharacterClick(character.className)}
+					>
+						<EmblemImage src={character.background} />
+						<CharacterText variant="h5">
+							{character.genderRace} {capitalize(character.className)}
+						</CharacterText>
 					</Item>
 				))}
 			</Container>

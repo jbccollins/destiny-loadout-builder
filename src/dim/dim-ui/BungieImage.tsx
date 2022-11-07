@@ -23,7 +23,7 @@ export default React.memo(function BungieImage(props: BungieImageProps) {
 		// eslint-disable-next-line @next/next/no-img-element
 		<img
 			alt="src"
-			src={bungieNetPath(src)}
+			src={src}
 			loading="lazy"
 			{...otherProps}
 			className={clsx(otherProps.className, 'no-pointer-events')}

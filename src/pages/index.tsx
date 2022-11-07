@@ -1,8 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
-import styles from '@dlb/styles/Home.module.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	getCharacters,
 	getDestinyAccountsForBungieAccount,
@@ -14,22 +12,30 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Loading from '@dlb/components/Loading';
 import { Box, styled } from '@mui/material';
-import {
-	DestinyProfileResponse,
-	getDestinyManifest
-} from 'bungie-api-ts-no-const-enum/destiny2';
-import { unauthenticatedHttpClient } from '@dlb/dim/bungie-api/bungie-service-helper';
+
 import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import CharacterSelector from '@dlb/components/CharacterSelector';
 import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
-import Bucket from '@dlb/components/Bucket';
-import { AllArmor, extractArmor } from '@dlb/services/data';
+import ExoticSelector from '@dlb/components/ExoticSelector';
+import { extractArmor, extractCharacters } from '@dlb/services/data';
 import StatSelection from '@dlb/components/StatSelection/StatSelection';
 import WebWorkerTest from '@dlb/components/WebWorkerTest/WebWorkerTest';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+
+import { selectArmor, setArmor } from '@dlb/redux/features/armor/armorSlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import {
+	selectCharacters,
+	setCharacters
+} from '@dlb/redux/features/characters/charactersSlice';
+import {
+	availableExoticArmorSlice,
+	selectAvailableExoticArmor,
+	setAvailableExoticArmor
+} from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
+import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -40,21 +46,21 @@ const Home: NextPage = () => {
 	const [hasMembershipData, setHasMembershipData] = useState(false);
 	const [hasPlatformData, setHasPlatformpData] = useState(false);
 	const [hasManifest, setHasManifest] = useState(false);
-	const [characters, setCharacters] = useState<null | DestinyProfileResponse>(
-		null
-	);
 	const [stores, setStores] = useState<null | DimStore<DimItem>[]>(null);
-	const [armor, setArmor] = useState<null | AllArmor>(null);
-
 	const router = useRouter();
+
+	const dispatch = useAppDispatch();
+	// const armor = useAppSelector(selectArmor);
+	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
+	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const characters = useAppSelector(selectCharacters);
 
 	useEffect(() => {
 		(async () => {
 			try {
 				const membershipData = await getMembershipData();
-				const hello = await axios.get('/api/hello2?code=haha');
-				console.log('>>>>>>>>>>>: ', hello);
 				setHasMembershipData(true);
+				console.log('>>>>>>>>>>> membership <<<<<<<<<<<', membershipData);
 				const platformData = await getDestinyAccountsForBungieAccount(
 					membershipData.membershipId
 				);
@@ -62,9 +68,9 @@ const Home: NextPage = () => {
 					(platform) => platform.membershipId === membershipData.membershipId
 				);
 				setHasPlatformpData(true);
-				const characters = await getCharacters(mostRecentPlatform);
-				console.log('>>>>>>>>>>> characters <<<<<<<<<<<', characters);
-				setCharacters(characters);
+				console.log('>>>>>>>>>>> platform <<<<<<<<<<<', membershipData);
+				const rawCharacters = await getCharacters(mostRecentPlatform);
+				console.log('>>>>>>>>>>> raw characters <<<<<<<<<<<', rawCharacters);
 				// const manifest = await getDestinyManifest(unauthenticatedHttpClient);
 				const manifest = await getDefinitions();
 				console.log('>>>>>>>>>>> manifest <<<<<<<<<<<', manifest);
@@ -72,13 +78,21 @@ const Home: NextPage = () => {
 				const stores = await loadStoresData(mostRecentPlatform);
 				console.log('>>>>>>>>>> stores <<<<<<<<<<<', stores);
 				setStores(stores);
-				const allArmor = extractArmor(stores);
-				setArmor(allArmor);
-				console.log('>>>>>>>>>> armor <<<<<<<<<<<', allArmor);
+				const [armor, availableExoticArmor] = extractArmor(stores);
+				dispatch(setArmor({ ...armor }));
+				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
+				console.log('>>>>>>>>>> armor <<<<<<<<<<<', armor);
+				console.log(
+					'>>>>>>>>>> availableExoticArmor <<<<<<<<<<<',
+					availableExoticArmor
+				);
+				const characters = extractCharacters(stores);
+				dispatch(setCharacters([...characters]));
+				console.log('>>>>>>>>>> characters <<<<<<<<<<<', characters);
 			} catch (e) {
 				// TODO redirect only on the right kind of error
 				// Test by deleting 'authorization' from localStorage
-				// router.push('/login');
+				router.push('/login');
 				// console.error(e);
 			}
 		})();
@@ -86,17 +100,17 @@ const Home: NextPage = () => {
 		return () => {
 			// this now gets called when the component unmounts
 		};
-	}, [router]);
+	}, [dispatch, router]);
 
-	const hasCharacterData = characters != null;
-	const hasStoresData = stores != null;
+	const hasCharacterData = characters.length > 0;
+	const hasStoresData = stores !== null;
 
 	const items: [string, boolean][] = [
 		['Bungie Membership Data', hasMembershipData],
 		['Platform Information', hasPlatformData],
-		['Characters', hasCharacterData],
 		['Manifest', hasManifest],
-		['Stores', hasStoresData]
+		['Stores', hasStoresData],
+		['Characters', hasCharacterData]
 	];
 
 	return (
@@ -108,11 +122,13 @@ const Home: NextPage = () => {
 			<WebWorkerTest derp={true} />
 			<Container>
 				<Loading items={items} />
-				<StatSelection locked />
-				{hasCharacterData && (
-					<CharacterSelector characters={characters.characters} />
+				{hasCharacterData && <CharacterSelector characters={characters} />}
+				{availableExoticArmor && selectedCharacterClass && (
+					<ExoticSelector
+						items={availableExoticArmor[selectedCharacterClass]}
+					/>
 				)}
-				{armor && <Bucket items={armor} />}
+				<StatSelection locked />
 			</Container>
 		</>
 	);

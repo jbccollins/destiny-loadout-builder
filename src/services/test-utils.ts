@@ -1,11 +1,12 @@
 import { StatList } from './armor-processing';
+// TODO: Pull this out into a function isValidLegendaryArmorBaseStats that returns a [boolean, errorString]
+// TODO: Add unit tests for this.
 /**
  *
  * @param stats
  * @description All legendary armor 2.0 items in Destiny 2 follow a set of rules.
  * When testing we want to make sure the armor that we are testing with follows those rules.
  */
-
 export const enforceValidLegendaryArmorBaseStats = (
 	stats: StatList
 ): StatList => {

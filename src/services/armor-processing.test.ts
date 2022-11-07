@@ -28,13 +28,41 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorItems: [
-				[{ id: 0, stats: es([2, 16, 16, 16, 16, 2]) }],
-				[{ id: 1, stats: es([2, 16, 16, 16, 16, 2]) }],
-				[{ id: 2, stats: es([2, 16, 16, 16, 16, 2]) }],
-				[{ id: 3, stats: es([2, 16, 16, 16, 16, 2]) }]
+				[
+					{
+						id: '0',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '1',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '2',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '3',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				]
 			]
 		},
-		output: [[0, 1, 2, 3]]
+		output: [['0', '1', '2', '3']]
 	},
 	{
 		name: 'It returns no results with one item in each slot',
@@ -48,10 +76,38 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorItems: [
-				[{ id: 0, stats: [2, 16, 16, 16, 16, 2] }],
-				[{ id: 1, stats: [2, 16, 16, 16, 16, 2] }],
-				[{ id: 2, stats: [2, 16, 16, 16, 16, 2] }],
-				[{ id: 3, stats: [2, 16, 16, 16, 16, 2] }]
+				[
+					{
+						id: '0',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '1',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '2',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '3',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				]
 			]
 		},
 		output: []
@@ -68,18 +124,49 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorItems: [
-				[{ id: 0, stats: [2, 16, 16, 16, 16, 2] }],
-				[{ id: 1, stats: [2, 16, 16, 16, 16, 2] }],
-				[{ id: 2, stats: [2, 16, 16, 16, 16, 2] }],
 				[
-					{ id: 3, stats: [2, 16, 16, 16, 16, 2] },
-					{ id: 4, stats: [2, 16, 16, 16, 16, 2] }
+					{
+						id: '0',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '1',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '2',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '3',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					},
+					{
+						id: '4',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
 				]
 			]
 		},
 		output: [
-			[0, 1, 2, 3],
-			[0, 1, 2, 4]
+			['0', '1', '2', '3'],
+			['0', '1', '2', '4']
 		]
 	},
 	{
@@ -94,27 +181,61 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorItems: [
-				[{ id: 0, stats: [2, 16, 16, 16, 16, 2] }],
 				[
-					{ id: 1, stats: [2, 16, 16, 16, 16, 2] },
-					{ id: 2, stats: [2, 16, 16, 16, 16, 2] }
+					{
+						id: '0',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
 				],
-				[{ id: 3, stats: [2, 16, 16, 16, 16, 2] }],
 				[
-					{ id: 4, stats: [2, 16, 16, 16, 16, 2] },
-					{ id: 5, stats: [2, 16, 16, 16, 16, 2] }
+					{
+						id: '1',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					},
+					{
+						id: '2',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '3',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '4',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					},
+					{
+						id: '5',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
 				]
 			]
 		},
 		output: [
-			[0, 1, 3, 4],
-			[0, 1, 3, 5],
-			[0, 2, 3, 4],
-			[0, 2, 3, 5]
+			['0', '1', '3', '4'],
+			['0', '1', '3', '5'],
+			['0', '2', '3', '4'],
+			['0', '2', '3', '5']
 		]
 	},
 	{
-		name: 'It returns one result with two gauntlet items and two leg armor items',
+		name: 'It returns no results with two gauntlet items and two leg armor items',
 		input: {
 			desiredArmorStats: {
 				[EArmorStatName.Mobility]: 100,
@@ -125,15 +246,49 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[EArmorStatName.Strength]: 0
 			},
 			armorItems: [
-				[{ id: 0, stats: [2, 16, 16, 16, 16, 2] }],
 				[
-					{ id: 1, stats: [2, 16, 16, 16, 16, 2] },
-					{ id: 2, stats: [2, 16, 16, 16, 16, 2] }
+					{
+						id: '0',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
 				],
-				[{ id: 3, stats: [30, 2, 2, 16, 16, 2] }],
 				[
-					{ id: 4, stats: [30, 2, 2, 16, 16, 2] },
-					{ id: 5, stats: [30, 2, 2, 16, 16, 2] }
+					{
+						id: '1',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					},
+					{
+						id: '2',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '3',
+						stats: es([30, 2, 2, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
+				],
+				[
+					{
+						id: '4',
+						stats: es([30, 2, 2, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					},
+					{
+						id: '5',
+						stats: es([30, 2, 2, 16, 16, 2]),
+						hash: '',
+						isExotic: false
+					}
 				]
 			]
 		},
@@ -144,26 +299,28 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 // TODO: It would be nice to just loop over all these without the verbose
 // test() function boilerplate but I can't figure out how to run an individual
 // test case that way :(
+
+// TODO: Figure out how to avoid casting as string[][]
 describe('processArmor', () => {
 	test(processArmorTestCases[0].name, () => {
 		const { input, output } = processArmorTestCases[0];
-		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
 	});
 	test(processArmorTestCases[1].name, () => {
 		const { input, output } = processArmorTestCases[1];
-		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
 	});
 	test(processArmorTestCases[2].name, () => {
 		const { input, output } = processArmorTestCases[2];
-		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
 	});
 	test(processArmorTestCases[3].name, () => {
 		const { input, output } = processArmorTestCases[3];
-		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
 	});
 	test(processArmorTestCases[4].name, () => {
 		const { input, output } = processArmorTestCases[4];
-		expect(doProcessArmor(input) as number[][]).toEqual(output as number[][]);
+		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
 	});
 });
 

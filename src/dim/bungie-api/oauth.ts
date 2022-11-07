@@ -6,66 +6,23 @@ import { setToken, Token, Tokens } from './oauth-tokens';
 
 // all these api url params don't match our variable naming conventions
 
-const TOKEN_URL = 'https://www.bungie.net/platform/app/oauth/token/';
-
-// TODO: Migrate this to an api route just like we migrated getAccessTokenFromCode
-export const getAccessTokenFromRefreshToken = dedupePromise(
-	(refreshToken: Token): Promise<Tokens> => {
-		console.error('getAccessTokenFromRefreshToken()');
-		throw 'getAccessTokenFromRefreshToken() will never work since it relies on secret keys. Move it to an API route';
-		const body = new URLSearchParams({
-			grant_type: 'refresh_token',
-			refresh_token: refreshToken.value,
-			client_id: oauthClientId(),
-			client_secret: oauthClientSecret()
+export const getAccessTokenFromRefreshToken = async (
+	refreshToken: Token
+): Promise<void> => {
+	await axios
+		.get(
+			`/api/get-access-token-from-refresh-token?refreshTokenValue=${refreshToken.value}`
+		)
+		.then((response) => {
+			return handleAccessToken(response.data);
+		})
+		.catch(function (error) {
+			if (error.response) {
+				console.log('>>>>>>>>>>>>>>>>>>>>>> ERROR REFRESHING OAUTH TOKEN');
+				console.error(error.response.data);
+			}
 		});
-		// https://github.com/zloirock/core-js/issues/178#issuecomment-192081350
-		// ↑ we return fetch wrapped in an extra Promise.resolve so it has proper followup methods
-		return Promise.resolve(
-			fetch(TOKEN_URL, {
-				method: 'POST',
-				body,
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				}
-			})
-				.then((response) =>
-					response.ok ? response.json() : Promise.reject(response)
-				)
-				.then(handleAccessToken)
-				.then((token) => {
-					setToken(token);
-					infoLog(
-						'bungie auth',
-						'Successfully updated auth token from refresh token.'
-					);
-					return token;
-				})
-		);
-	}
-);
-
-// export function getAccessTokenFromCode(code: string): Promise<Tokens> {
-// 	const body = new URLSearchParams({
-// 		grant_type: 'authorization_code',
-// 		code,
-// 		client_id: oauthClientId(),
-// 		client_secret: oauthClientSecret()
-// 	});
-// 	return Promise.resolve(
-// 		fetch(TOKEN_URL, {
-// 			method: 'POST',
-// 			body,
-// 			headers: {
-// 				'Content-Type': 'application/x-www-form-urlencoded'
-// 			}
-// 		})
-// 			.then((response) =>
-// 				response.ok ? response.json() : Promise.reject(response)
-// 			)
-// 			.then(handleAccessToken)
-// 	);
-// }
+};
 
 export const getAccessTokenFromCode = async (code: string): Promise<void> => {
 	await axios

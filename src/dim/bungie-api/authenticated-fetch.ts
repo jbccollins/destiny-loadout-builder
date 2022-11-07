@@ -32,7 +32,6 @@ export async function fetchWithBungieOAuth(
 	if (typeof request === 'string') {
 		request = new Request(request);
 	}
-	console.log('>>>>>>>>>>>>>>>>>>> fetchWithBungieOAuth');
 
 	try {
 		const token = await getActiveToken();
@@ -122,7 +121,8 @@ export async function getActiveToken(): Promise<Tokens> {
 	}
 
 	try {
-		return await getAccessTokenFromRefreshToken(token.refreshToken!);
+		await getAccessTokenFromRefreshToken(token.refreshToken!);
+		return getToken();
 	} catch (e) {
 		return await handleRefreshTokenError(e as Error | Response);
 	}

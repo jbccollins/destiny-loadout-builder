@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '@dlb/redux/store';
 import {
 	AvailableExoticArmor,
-	DestinyClassName,
+	EDestinyClass,
 	generateAvailableExoticArmorGroup
 } from '@dlb/services/data';
 
@@ -13,9 +13,9 @@ export interface AvailableExoticArmorState {
 
 const initialState: AvailableExoticArmorState = {
 	value: {
-		[DestinyClassName.Titan]: generateAvailableExoticArmorGroup(),
-		[DestinyClassName.Hunter]: generateAvailableExoticArmorGroup(),
-		[DestinyClassName.Warlock]: generateAvailableExoticArmorGroup()
+		[EDestinyClass.Titan]: generateAvailableExoticArmorGroup(),
+		[EDestinyClass.Hunter]: generateAvailableExoticArmorGroup(),
+		[EDestinyClass.Warlock]: generateAvailableExoticArmorGroup()
 	}
 };
 export const availableExoticArmorSlice = createSlice({

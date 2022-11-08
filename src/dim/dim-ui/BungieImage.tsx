@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import React from 'react';
-import Image from 'next/image';
 
 /**
  * A relative path to a Bungie.net image asset.
@@ -24,6 +23,7 @@ export default React.memo(function BungieImage(props: BungieImageProps) {
 		<img
 			alt="src"
 			src={src}
+			draggable={false}
 			loading="lazy"
 			{...otherProps}
 			className={clsx(otherProps.className, 'no-pointer-events')}

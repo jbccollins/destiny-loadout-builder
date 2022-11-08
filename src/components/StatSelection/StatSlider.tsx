@@ -64,12 +64,6 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
 }));
 
 function StatSlider(props: StatSliderProps) {
-	// ValidDestinyClassesTypes.forEach((classType) => {
-	// 	D2Categories.Armor.forEach((a) => {
-	// 		console.log(props.items[classType][a]);
-	// 	});
-	// });
-
 	const { locked, ...rest } = props;
 
 	return (

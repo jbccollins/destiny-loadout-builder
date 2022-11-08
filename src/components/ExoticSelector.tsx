@@ -1,17 +1,22 @@
-import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
-import { D2Categories } from '@dlb/dim/destiny2/d2-bucket-categories';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { DimItem } from '@dlb/dim/inventory/item-types';
-import { DimStore } from '@dlb/dim/inventory/store-types';
-import { SelectedExoticArmor } from '@dlb/services/armor-processing';
+
 import {
-	Armor,
 	ArmorSlots,
 	AvailableExoticArmorGroup,
 	AvailableExoticArmorItem,
-	DestinyClassNames
+	DestinyClasses,
+	EDestinyClass
 } from '@dlb/services/data';
 import { Box, styled, Card } from '@mui/material';
+
+import {
+	selectSelectedExoticArmor,
+	setSelectedExoticArmor
+} from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { useCallback, useEffect, useState } from 'react';
+import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 
 type ExoticSelectorProps = Readonly<{
 	items: AvailableExoticArmorGroup;
@@ -21,26 +26,143 @@ const Container = styled(Card)(({ theme }) => ({
 	padding: theme.spacing(3)
 }));
 
-function Bucket(props: ExoticSelectorProps) {
+const Count = styled(Box)(({ theme }) => ({
+	color: theme.palette.secondary.main,
+	background: `black`,
+	position: 'absolute',
+	bottom: '0px', // theme.spacing(1),
+	left: '0px',
+	borderTopRightRadius: '50%',
+	textAlign: 'left',
+	padding: theme.spacing(0.2),
+	paddingRight: theme.spacing(0.8),
+	minWidth: theme.spacing(2)
+}));
+
+interface ImageContainerProps {
+	selected: boolean;
+}
+
+const ImageContainer = styled(Box)<ImageContainerProps>(
+	({ theme, selected }) => ({
+		position: 'relative',
+		display: 'inline-block',
+		width: theme.spacing(10),
+		height: theme.spacing(10),
+		border: '4px solid',
+		margin: `4px`,
+		borderColor: selected ? 'red' : 'transparent'
+	})
+);
+
+const ExoticImage = styled(BungieImage)(({ theme }) => ({
+	position: 'relative',
+	width: '100%',
+	height: '100%'
+}));
+
+type Temp = {
+	[key in EDestinyClass]: boolean;
+};
+
+function ExoticSelector(props: ExoticSelectorProps) {
+	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
+	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
+	const dispatch = useAppDispatch();
+	const [hasSelectedDefaultExotics, setHasSelectedDefaultExotics] =
+		useState(false);
+
+	const handleClick = (
+		destinyClassName: EDestinyClass,
+		armor: AvailableExoticArmorItem
+	) => {
+		const newSelectedExoticArmor = { ...selectedExoticArmor };
+		newSelectedExoticArmor[destinyClassName] = armor;
+		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
+	};
+
+	const setDefaultCharacterClass = useCallback(() => {
+		if (
+			availableExoticArmor &&
+			selectedCharacterClass &&
+			!hasSelectedDefaultExotics
+		) {
+			const newSelectedExoticArmor: Record<
+				EDestinyClass,
+				AvailableExoticArmorItem
+			> = {
+				[EDestinyClass.Titan]: null,
+				[EDestinyClass.Hunter]: null,
+				[EDestinyClass.Warlock]: null
+			};
+			DestinyClasses.forEach((className) => {
+				if (availableExoticArmor[className]) {
+					for (const armorSlot of ArmorSlots) {
+						// TODO: this lookup of className in the availableExoticArmor const is not
+						// typesafe and is not picked up by intellisense. remove all such mapping consts
+						// from the data file. `availableExoticArmor['derp']` is not caught!!!!!
+						if (availableExoticArmor[className][armorSlot].length > 0) {
+							// Just pick the first exotic item we find
+							newSelectedExoticArmor[className] =
+								availableExoticArmor[className][armorSlot][0];
+							break;
+						}
+					}
+				}
+			});
+			setHasSelectedDefaultExotics(true);
+			dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
+		}
+	}, [
+		availableExoticArmor,
+		dispatch,
+		hasSelectedDefaultExotics,
+		selectedCharacterClass
+	]);
+
+	useEffect(() => {
+		setDefaultCharacterClass();
+	}, [setDefaultCharacterClass]);
+
 	return (
-		<>
-			<Container>
-				{ArmorSlots.map((armorSlot) => {
-					return (
-						<div key={armorSlot}>
-							<div>
-								{props.items[armorSlot].map(
-									(item: AvailableExoticArmorItem) => {
-										return <BungieImage key={item.hash} src={item.icon} />;
-									}
-								)}
+		availableExoticArmor &&
+		selectedCharacterClass &&
+		selectedExoticArmor && (
+			<>
+				<Container>
+					{ArmorSlots.map((armorSlot) => {
+						return (
+							<div key={armorSlot}>
+								<div>
+									{props.items[armorSlot].map(
+										(item: AvailableExoticArmorItem) => {
+											return (
+												<ImageContainer
+													selected={
+														selectedExoticArmor[selectedCharacterClass] &&
+														item.hash ===
+															selectedExoticArmor[selectedCharacterClass].hash
+													}
+													key={item.hash}
+													onClick={() => {
+														handleClick(item.destinyClassName, item);
+													}}
+												>
+													<ExoticImage src={item.icon} />
+													<Count>{item.count}</Count>
+												</ImageContainer>
+											);
+										}
+									)}
+								</div>
 							</div>
-						</div>
-					);
-				})}
-			</Container>
-		</>
+						);
+					})}
+				</Container>
+			</>
+		)
 	);
 }
 
-export default Bucket;
+export default ExoticSelector;

@@ -1,5 +1,5 @@
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { Characters, DestinyClassName } from '@dlb/services/data';
+import { Characters, EDestinyClass } from '@dlb/services/data';
 import { Box, styled, Card, capitalize, Typography } from '@mui/material';
 import {
 	selectSelectedCharacterClass,
@@ -33,11 +33,12 @@ const CharacterText = styled(Typography)(({ theme }) => ({
 	// marginTop: '50%'
 }));
 
+// TODO: Remove props and just read from redux?
 function CharacterSelector(props: CharacterSelectorProps) {
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
 	const dispatch = useAppDispatch();
 
-	const handleCharacterClick = (characterClass: DestinyClassName) => {
+	const handleCharacterClick = (characterClass: EDestinyClass) => {
 		dispatch(setSelectedCharacterClass(characterClass));
 	};
 

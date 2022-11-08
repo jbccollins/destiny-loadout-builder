@@ -6,23 +6,24 @@ import { DestinyClass } from 'bungie-api-ts-no-const-enum/destiny2';
 import { StatList } from './armor-processing';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 
-export const ValidDestinyClassesTypes = [
-	DestinyClass.Titan,
-	DestinyClass.Hunter,
-	DestinyClass.Warlock
-];
+// import { IArmorItem } from '@dlb/services/armor-processing';
 
-// Userful for just iterating over every armor stat type
-export const ArmorStatTypes = [
-	StatHashes.Mobility,
-	StatHashes.Resilience,
-	StatHashes.Recovery,
-	StatHashes.Discipline,
-	StatHashes.Intellect,
-	StatHashes.Strength
-];
+/******** Enums to standardize common usage of several terms ********/
+export enum EDestinyClass {
+	Titan = 'titan',
+	Warlock = 'warlock',
+	Hunter = 'hunter'
+}
 
-export enum EArmorStatName {
+export enum EArmorSlot {
+	Head = 'head',
+	Arm = 'arm',
+	Chest = 'chest',
+	Leg = 'leg',
+	ClassItem = 'classItem'
+}
+
+export enum EArmorStat {
 	Mobility = 'mobility',
 	Resilience = 'resilience',
 	Recovery = 'recovery',
@@ -31,118 +32,108 @@ export enum EArmorStatName {
 	Strength = 'strength'
 }
 
-// An oredered list to make iterating over that enum
-// easier. Fuck typescript enums and how shit they are
-// to enumerate. The order in this list matters.
-export const ArmorStatNamesList = [
-	EArmorStatName.Mobility,
-	EArmorStatName.Resilience,
-	EArmorStatName.Recovery,
-	EArmorStatName.Discipline,
-	EArmorStatName.Intellect,
-	EArmorStatName.Strength
+/******** Lists of the enums above to make iteration easier. Iteration
+ * over enums in typescript is awful. ORDER MATTERS FOR THESE DO NOT CHANGE. ********/
+export const DestinyClasses = [
+	EDestinyClass.Titan,
+	EDestinyClass.Warlock,
+	EDestinyClass.Hunter
 ];
+
+// Intentionally exclude classItem for now. Will need to rework
+export const ArmorSlots = [
+	EArmorSlot.Head,
+	EArmorSlot.Arm,
+	EArmorSlot.Chest,
+	EArmorSlot.Leg
+];
+
+export const ArmorStats = [
+	EArmorStat.Mobility,
+	EArmorStat.Resilience,
+	EArmorStat.Recovery,
+	EArmorStat.Discipline,
+	EArmorStat.Intellect,
+	EArmorStat.Strength
+];
+
+/********* Mapping manifest hashes to our own enums *********/
+// TODO these kinds of mappings don't seem to be type safe.
+// Convert these to getter functions
+const DestinyClassHashToDestinyClass = {
+	[DestinyClass.Titan]: EDestinyClass.Titan,
+	[DestinyClass.Hunter]: EDestinyClass.Hunter,
+	[DestinyClass.Warlock]: EDestinyClass.Warlock
+};
+
+const BucketHashToArmorSlot = {
+	[BucketHashes.Helmet]: EArmorSlot.Head,
+	[BucketHashes.Gauntlets]: EArmorSlot.Arm,
+	[BucketHashes.ChestArmor]: EArmorSlot.Chest,
+	[BucketHashes.LegArmor]: EArmorSlot.Leg,
+	[BucketHashes.ClassArmor]: EArmorSlot.ClassItem
+};
 
 // Get the english name for an armor stat
-export const ArmorStatHashToName = {
-	[StatHashes.Mobility]: EArmorStatName.Mobility,
-	[StatHashes.Resilience]: EArmorStatName.Resilience,
-	[StatHashes.Recovery]: EArmorStatName.Recovery,
-	[StatHashes.Discipline]: EArmorStatName.Discipline,
-	[StatHashes.Intellect]: EArmorStatName.Intellect,
-	[StatHashes.Strength]: EArmorStatName.Strength
+const StatHashToArmorStat = {
+	[StatHashes.Mobility]: EArmorStat.Mobility,
+	[StatHashes.Resilience]: EArmorStat.Resilience,
+	[StatHashes.Recovery]: EArmorStat.Recovery,
+	[StatHashes.Discipline]: EArmorStat.Discipline,
+	[StatHashes.Intellect]: EArmorStat.Intellect,
+	[StatHashes.Strength]: EArmorStat.Strength
 };
 
-// Used to store the stats the the user has configured in various places
+/******** Convert Bungie/DIM strings/ids/enums into our own enums *********/
+const DestinyArmorTypeToArmorSlot = {
+	Helmet: EArmorSlot.Head,
+	Gauntlets: EArmorSlot.Arm,
+	Chest: EArmorSlot.Chest,
+	Leg: EArmorSlot.Leg,
+	ClassItem: EArmorSlot.ClassItem
+};
+
+const DestinyClassStringToDestinyClass = {
+	Titan: EDestinyClass.Titan,
+	Warlock: EDestinyClass.Warlock,
+	Hunter: EDestinyClass.Hunter
+};
+
+// [STORED]: Used to store the stats the the user has configured with the stat picker
 export type DesiredArmorStats = {
-	[EArmorStatName.Mobility]: number;
-	[EArmorStatName.Resilience]: number;
-	[EArmorStatName.Recovery]: number;
-	[EArmorStatName.Discipline]: number;
-	[EArmorStatName.Intellect]: number;
-	[EArmorStatName.Strength]: number;
+	[EArmorStat.Mobility]: number;
+	[EArmorStat.Resilience]: number;
+	[EArmorStat.Recovery]: number;
+	[EArmorStat.Discipline]: number;
+	[EArmorStat.Intellect]: number;
+	[EArmorStat.Strength]: number;
 };
 
-export const ArmorStatOrder = [
-	EArmorStatName.Mobility,
-	EArmorStatName.Resilience,
-	EArmorStatName.Recovery,
-	EArmorStatName.Discipline,
-	EArmorStatName.Intellect,
-	EArmorStatName.Strength
-];
-
-export const generateArmorGroup = (): ArmorGroup => {
-	return {
-		[ArmorSlot.Head]: { exotic: [], nonExotic: [] },
-		[ArmorSlot.Arm]: { exotic: [], nonExotic: [] },
-		[ArmorSlot.Chest]: { exotic: [], nonExotic: [] },
-		[ArmorSlot.Leg]: { exotic: [], nonExotic: [] },
-		[ArmorSlot.ClassItem]: { exotic: [], nonExotic: [] }
-	};
-};
-
-export enum DestinyClassName {
-	Titan = 'titan',
-	Warlock = 'warlock',
-	Hunter = 'hunter'
-}
-
-export const DestinyClassNames = [
-	DestinyClassName.Titan,
-	DestinyClassName.Warlock,
-	DestinyClassName.Hunter
-];
-
-export enum ArmorSlot {
-	Head = 'head',
-	Arm = 'arm',
-	Chest = 'chest',
-	Leg = 'leg',
-	ClassItem = 'classItem'
-}
-
-// Intentionally exclude classItem. Will need to rework
-export const ArmorSlots = [
-	ArmorSlot.Head,
-	ArmorSlot.Arm,
-	ArmorSlot.Chest,
-	ArmorSlot.Leg
-];
-
-const DestinyClassHashToDestinyClassName = {
-	[DestinyClass.Titan]: DestinyClassName.Titan,
-	[DestinyClass.Hunter]: DestinyClassName.Hunter,
-	[DestinyClass.Warlock]: DestinyClassName.Warlock
-};
-
-const DestinyItemBucketToArmorSlot = {
-	[BucketHashes.Helmet]: ArmorSlot.Head,
-	[BucketHashes.Gauntlets]: ArmorSlot.Arm,
-	[BucketHashes.ChestArmor]: ArmorSlot.Chest,
-	[BucketHashes.LegArmor]: ArmorSlot.Leg,
-	[BucketHashes.ClassArmor]: ArmorSlot.ClassItem
-};
-
-export type ArmorExoticSplit = {
-	exotic: ArmorItem[];
-	nonExotic: ArmorItem[];
-};
-
-export type ArmorGroup = {
-	[ArmorSlot.Head]: ArmorExoticSplit;
-	[ArmorSlot.Arm]: ArmorExoticSplit;
-	[ArmorSlot.Chest]: ArmorExoticSplit;
-	[ArmorSlot.Leg]: ArmorExoticSplit;
-	[ArmorSlot.ClassItem]: ArmorExoticSplit;
-};
-
+/********** Armor is all the armor that the user has *********/
+// [STORED]: Used to store all the armor that the user has
 export type Armor = {
-	[DestinyClassName.Titan]: ArmorGroup;
-	[DestinyClassName.Hunter]: ArmorGroup;
-	[DestinyClassName.Warlock]: ArmorGroup;
+	[EDestinyClass.Titan]: ArmorGroup;
+	[EDestinyClass.Hunter]: ArmorGroup;
+	[EDestinyClass.Warlock]: ArmorGroup;
 };
 
+// Group armor by ArmorSlot
+export type ArmorGroup = {
+	[EArmorSlot.Head]: ArmorRaritySplit;
+	[EArmorSlot.Arm]: ArmorRaritySplit;
+	[EArmorSlot.Chest]: ArmorRaritySplit;
+	[EArmorSlot.Leg]: ArmorRaritySplit;
+	[EArmorSlot.ClassItem]: ArmorRaritySplit;
+};
+
+// In a lot of places it's convenient to have armor already split out by
+// exotic vs nonExotic so we shape our data that way form the start
+export type ArmorRaritySplit = {
+	exotic: Record<string, ArmorItem>;
+	nonExotic: Record<string, ArmorItem>;
+};
+
+// Data about each individual piece of armor
 export type ArmorItem = {
 	// Is this piece of armor exotic
 	isExotic: boolean;
@@ -159,92 +150,95 @@ export type ArmorItem = {
 	// List of stats [mobility, resilience, recovery, discipline, intellect, strength]
 	stats: StatList;
 	// One of [head, arm, chest, leg, classItem]
-	type: ArmorSlot;
+	armorSlot: EArmorSlot;
 	// Non-unique identifier. For example all 'Necrotic Grip' items will have the same hash
 	hash: number;
 	// The english display name of the class [titan, warlock, hunter]
-	characterClass: DestinyClassName;
+	destinyClassName: EDestinyClass;
 	// breakerType: ??? TODO: Do exotics have a breaker type set? I think some should
 	// exoticDescription: string TODO: Figure out how to add this
 };
 
-const DestinyArmorTypeToArmorSlot = {
-	Helmet: ArmorSlot.Head,
-	Gauntlets: ArmorSlot.Arm,
-	Chest: ArmorSlot.Chest,
-	Leg: ArmorSlot.Leg,
-	ClassItem: ArmorSlot.ClassItem
-};
-
-const DestinyClassToDestinyClassName = {
-	Titan: DestinyClassName.Titan,
-	Warlock: DestinyClassName.Warlock,
-	Hunter: DestinyClassName.Hunter
-};
-
+/********** AvailableExoticArmor is all the exotic armor that the user has ***********/
+// TODO: Could we do this more cleanly by pulling from the Armor directly? I think this is probably
+// fine though. It's a bit more explicit and easier to code with, even if it isn't very DRY.
+// [STORED] All available exotic armor
 export type AvailableExoticArmor = {
-	[DestinyClassName.Titan]: AvailableExoticArmorGroup;
-	[DestinyClassName.Hunter]: AvailableExoticArmorGroup;
-	[DestinyClassName.Warlock]: AvailableExoticArmorGroup;
+	[EDestinyClass.Titan]: AvailableExoticArmorGroup;
+	[EDestinyClass.Hunter]: AvailableExoticArmorGroup;
+	[EDestinyClass.Warlock]: AvailableExoticArmorGroup;
 };
 
+// Group available exotic armor by ArmorSlot
+export type AvailableExoticArmorGroup = {
+	[EArmorSlot.Head]: AvailableExoticArmorItem[];
+	[EArmorSlot.Arm]: AvailableExoticArmorItem[];
+	[EArmorSlot.Chest]: AvailableExoticArmorItem[];
+	[EArmorSlot.Leg]: AvailableExoticArmorItem[];
+};
+
+// TODO: I think we only really need the hash here.
+// It would be easy enough to look it up on click given that we know
+// the selected class and the slot
 export type AvailableExoticArmorItem = {
 	hash: number;
 	name: string;
 	count: number;
 	icon: string;
+	armorSlot: EArmorSlot;
+	destinyClassName: EDestinyClass;
 	// TODO: Maybe this would be an ez way to pre-filter out exotics when
 	// there is no masterworked instance of that exotic?
 	// hasMasterworkedVariant: boolean
 };
 
-// TODO: Clean up the naming conventions around armor and available exotic armor
-export type AvailableExoticArmorGroup = {
-	[ArmorSlot.Head]: AvailableExoticArmorItem[];
-	[ArmorSlot.Arm]: AvailableExoticArmorItem[];
-	[ArmorSlot.Chest]: AvailableExoticArmorItem[];
-	[ArmorSlot.Leg]: AvailableExoticArmorItem[];
-};
-
+/********* Utility functions for generating empty bases to work with **********/
 export const generateAvailableExoticArmorGroup =
 	(): AvailableExoticArmorGroup => {
 		return {
-			[ArmorSlot.Head]: [],
-			[ArmorSlot.Arm]: [],
-			[ArmorSlot.Chest]: [],
-			[ArmorSlot.Leg]: []
+			[EArmorSlot.Head]: [],
+			[EArmorSlot.Arm]: [],
+			[EArmorSlot.Chest]: [],
+			[EArmorSlot.Leg]: []
 		};
 	};
 
+// TODO: Maybe do this on a loop over EArmorSlot?
+export const generateArmorGroup = (): ArmorGroup => {
+	return {
+		[EArmorSlot.Head]: { exotic: {}, nonExotic: {} },
+		[EArmorSlot.Arm]: { exotic: {}, nonExotic: {} },
+		[EArmorSlot.Chest]: { exotic: {}, nonExotic: {} },
+		[EArmorSlot.Leg]: { exotic: {}, nonExotic: {} },
+		[EArmorSlot.ClassItem]: { exotic: {}, nonExotic: {} }
+	};
+};
+
+// Convert a DimStore into our own, smaller, types and transform the data into the desired shape.
 export const extractArmor = (
 	stores: DimStore<DimItem>[]
 ): [Armor, AvailableExoticArmor] => {
 	const armor: Armor = {
-		[DestinyClassName.Titan]: generateArmorGroup(),
-		[DestinyClassName.Hunter]: generateArmorGroup(),
-		[DestinyClassName.Warlock]: generateArmorGroup()
+		[EDestinyClass.Titan]: generateArmorGroup(),
+		[EDestinyClass.Hunter]: generateArmorGroup(),
+		[EDestinyClass.Warlock]: generateArmorGroup()
 	};
 
 	const availableExoticArmor: AvailableExoticArmor = {
-		[DestinyClassName.Titan]: generateAvailableExoticArmorGroup(),
-		[DestinyClassName.Hunter]: generateAvailableExoticArmorGroup(),
-		[DestinyClassName.Warlock]: generateAvailableExoticArmorGroup()
+		[EDestinyClass.Titan]: generateAvailableExoticArmorGroup(),
+		[EDestinyClass.Hunter]: generateAvailableExoticArmorGroup(),
+		[EDestinyClass.Warlock]: generateAvailableExoticArmorGroup()
 	};
 
-	const seenExotics: Record<
-		number,
-		AvailableExoticArmorItem & {
-			type: ArmorSlot;
-			characterClass: DestinyClassName;
-		}
-	> = {};
+	const seenExotics: Record<number, AvailableExoticArmorItem> = {};
 
 	stores.forEach(({ items }) => {
 		items.forEach((item) => {
 			if (item.location.inArmor) {
-				const destinyClassName =
-					DestinyClassHashToDestinyClassName[item.classType];
-				const armorSlot = DestinyItemBucketToArmorSlot[item.bucket.hash];
+				const destinyClassName = DestinyClassHashToDestinyClass[
+					item.classType
+				] as EDestinyClass;
+				const armorSlot = BucketHashToArmorSlot[item.bucket.hash] as EArmorSlot;
 
 				if (item.isExotic) {
 					if (seenExotics[item.hash]) {
@@ -253,10 +247,10 @@ export const extractArmor = (
 						seenExotics[item.hash] = {
 							hash: item.hash,
 							name: item.name,
-							icon: item.icon,
-							type: DestinyArmorTypeToArmorSlot[item.type],
-							characterClass:
-								DestinyClassToDestinyClassName[item.classTypeNameLocalized],
+							icon: bungieNetPath(item.icon),
+							armorSlot: DestinyArmorTypeToArmorSlot[item.type],
+							destinyClassName:
+								DestinyClassStringToDestinyClass[item.classTypeNameLocalized],
 							count: 1
 						};
 					}
@@ -275,43 +269,42 @@ export const extractArmor = (
 					stats: item.stats
 						.filter((x) => x.displayProperties.name !== 'Stats.Total')
 						.map((x) => x.base) as StatList,
-					type: DestinyArmorTypeToArmorSlot[item.type],
+					armorSlot: DestinyArmorTypeToArmorSlot[item.type],
 					hash: item.hash,
-					characterClass:
-						DestinyClassToDestinyClassName[item.classTypeNameLocalized]
+					destinyClassName:
+						DestinyClassStringToDestinyClass[item.classTypeNameLocalized]
 				};
 				if (item.isExotic) {
-					armor[destinyClassName][armorSlot].exotic.push(armorItem);
+					armor[destinyClassName][armorSlot].exotic[item.id] = armorItem;
 				} else {
-					armor[destinyClassName][armorSlot].nonExotic.push(armorItem);
+					armor[destinyClassName][armorSlot].nonExotic[item.id] = armorItem;
 				}
 			}
 		});
 	});
 
-	Object.values(seenExotics).forEach((exotic) => {
-		availableExoticArmor[exotic.characterClass][exotic.type].push({
-			name: exotic.name,
-			hash: exotic.hash,
-			count: exotic.count,
-			icon: bungieNetPath(exotic.icon)
+	Object.values(seenExotics)
+		// Alphabetical order
+		.sort((a, b) => (a.name > b.name ? 1 : -1))
+		.forEach((exotic) => {
+			availableExoticArmor[exotic.destinyClassName][exotic.armorSlot].push(
+				exotic
+			);
 		});
-	});
 
 	return [armor, availableExoticArmor];
 };
 
-// export const generateCharacter = (): Character => {
+/********* [STORED] Each character the user has. Up to three of these will exist. *********/
+export type Characters = Character[];
 
-// }
-
-type Character = {
+export type Character = {
 	// background image
 	background: string;
-	className: DestinyClassName;
+	className: EDestinyClass;
 	// e.g 'Exo Male'
 	genderRace: string;
-	// TODO: What's the difference between this and the background image
+	// I think this is a thumbnail for the emblem. May be useful for mobile views?
 	icon: string;
 	// Unique identifier
 	id: string;
@@ -319,8 +312,11 @@ type Character = {
 	// TODO: Add more sugar here... like gilded title stuff
 };
 
-export type Characters = Character[];
-
+// TODO: It may make more sense to just extract character classes. Like if you have
+// two warlocks who cares which warlock you select for a build?
+// In fact it may make sense to be able to make a build for a character that you don't have,
+// so long as you have enough armor to make such a build. Can DIM support a loadout without
+// specifying a character???
 export const extractCharacters = (stores: DimStore<DimItem>[]): Characters => {
 	const characters: Characters = [];
 	stores
@@ -328,7 +324,7 @@ export const extractCharacters = (stores: DimStore<DimItem>[]): Characters => {
 		.forEach((store) => {
 			const character: Character = {
 				background: store.background,
-				className: DestinyClassToDestinyClassName[store.className],
+				className: DestinyClassStringToDestinyClass[store.className],
 				genderRace: store.genderRace,
 				icon: store.icon,
 				id: store.id

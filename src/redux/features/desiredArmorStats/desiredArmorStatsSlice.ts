@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { DesiredArmorStats, EArmorStatName } from '@dlb/services/data';
+import { DesiredArmorStats, EArmorStat } from '@dlb/services/data';
 import { AppState } from '@dlb/redux/store';
 
 export interface DesiredArmorStatsState {
@@ -9,12 +9,12 @@ export interface DesiredArmorStatsState {
 
 const initialState: DesiredArmorStatsState = {
 	value: {
-		[EArmorStatName.Mobility]: 0,
-		[EArmorStatName.Resilience]: 0,
-		[EArmorStatName.Recovery]: 0,
-		[EArmorStatName.Discipline]: 0,
-		[EArmorStatName.Intellect]: 0,
-		[EArmorStatName.Strength]: 0
+		[EArmorStat.Mobility]: 0,
+		[EArmorStat.Resilience]: 0,
+		[EArmorStat.Recovery]: 0,
+		[EArmorStat.Discipline]: 0,
+		[EArmorStat.Intellect]: 0,
+		[EArmorStat.Strength]: 0
 	}
 };
 

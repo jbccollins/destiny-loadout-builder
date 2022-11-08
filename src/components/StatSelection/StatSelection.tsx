@@ -1,18 +1,10 @@
-import { D2Categories } from '@dlb/dim/destiny2/d2-bucket-categories';
-import { selectCount } from '@dlb/redux/features/counter/counterSlice';
 import {
 	selectDesiredArmorStats,
 	setDesiredArmorStats
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import {
-	ArmorStatHashToName,
-	ArmorStatNamesList,
-	ArmorStatTypes,
-	EArmorStatName
-} from '@dlb/services/data';
-import { styled, Card, Slider, Box } from '@mui/material';
-import { ComponentProps } from 'react';
+import { ArmorStats, EArmorStat } from '@dlb/services/data';
+import { styled, Card, Box } from '@mui/material';
 import StatSlider from './StatSlider';
 
 type StatSelectionProps = {
@@ -86,13 +78,13 @@ function StatSelection(props: StatSelectionProps) {
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
-	function handleSliderChange(statName: EArmorStatName, value: number) {
+	function handleSliderChange(statName: EArmorStat, value: number) {
 		dispatch(setDesiredArmorStats({ ...desiredArmorStats, [statName]: value }));
 	}
 
 	return (
 		<Container>
-			{ArmorStatNamesList.map((statName) => {
+			{ArmorStats.map((statName) => {
 				return (
 					<SliderWrapper key={statName}>
 						<SliderTitle>{statName}</SliderTitle>

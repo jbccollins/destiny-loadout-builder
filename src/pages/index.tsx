@@ -44,13 +44,13 @@ const Container = styled(Box)(({ theme }) => ({
 
 const Home: NextPage = () => {
 	const [hasMembershipData, setHasMembershipData] = useState(false);
-	const [hasPlatformData, setHasPlatformpData] = useState(false);
+	const [hasPlatformData, setHasPlatformData] = useState(false);
 	const [hasManifest, setHasManifest] = useState(false);
-	const [stores, setStores] = useState<null | DimStore<DimItem>[]>(null);
+	const [hasRawCharacters, setHasRawCharacters] = useState(false);
+	const [hasStores, setHasStores] = useState(false);
 	const router = useRouter();
 
 	const dispatch = useAppDispatch();
-	// const armor = useAppSelector(selectArmor);
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
 	const characters = useAppSelector(selectCharacters);
@@ -58,6 +58,7 @@ const Home: NextPage = () => {
 	useEffect(() => {
 		(async () => {
 			try {
+				// TODO can any of these requests be paralellized? Like a Promise.All or whatever?
 				const membershipData = await getMembershipData();
 				setHasMembershipData(true);
 				console.log('>>>>>>>>>>> membership <<<<<<<<<<<', membershipData);
@@ -67,17 +68,17 @@ const Home: NextPage = () => {
 				const mostRecentPlatform = platformData.find(
 					(platform) => platform.membershipId === membershipData.membershipId
 				);
-				setHasPlatformpData(true);
+				setHasPlatformData(true);
 				console.log('>>>>>>>>>>> platform <<<<<<<<<<<', membershipData);
 				const rawCharacters = await getCharacters(mostRecentPlatform);
 				console.log('>>>>>>>>>>> raw characters <<<<<<<<<<<', rawCharacters);
-				// const manifest = await getDestinyManifest(unauthenticatedHttpClient);
+				setHasRawCharacters(true);
 				const manifest = await getDefinitions();
 				console.log('>>>>>>>>>>> manifest <<<<<<<<<<<', manifest);
 				setHasManifest(true);
 				const stores = await loadStoresData(mostRecentPlatform);
 				console.log('>>>>>>>>>> stores <<<<<<<<<<<', stores);
-				setStores(stores);
+				setHasStores(true);
 				const [armor, availableExoticArmor] = extractArmor(stores);
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
@@ -92,25 +93,25 @@ const Home: NextPage = () => {
 			} catch (e) {
 				// TODO redirect only on the right kind of error
 				// Test by deleting 'authorization' from localStorage
+				console.error(e);
 				router.push('/login');
-				// console.error(e);
 			}
 		})();
 
 		return () => {
 			// this now gets called when the component unmounts
+			// TODO: Clean up
 		};
 	}, [dispatch, router]);
 
 	const hasCharacterData = characters.length > 0;
-	const hasStoresData = stores !== null;
 
 	const items: [string, boolean][] = [
 		['Bungie Membership Data', hasMembershipData],
 		['Platform Information', hasPlatformData],
+		['Characters', hasRawCharacters],
 		['Manifest', hasManifest],
-		['Stores', hasStoresData],
-		['Characters', hasCharacterData]
+		['Stores', hasStores]
 	];
 
 	return (

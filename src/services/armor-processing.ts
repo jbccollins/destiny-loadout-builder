@@ -1,63 +1,64 @@
 import { Description } from '@mui/icons-material';
-import { ArmorStatOrder, DesiredArmorStats, EArmorStatName } from './data';
+import {
+	ArmorGroup,
+	ArmorSlots,
+	ArmorStats,
+	AvailableExoticArmorItem,
+	DesiredArmorStats,
+	EArmorSlot,
+	EArmorStat
+} from './data';
 import type { ItemTierName } from '@dlb/dim/search/d2-known-values';
 import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 // No legendary piece of armor has a single stat above 30
 // TODO: Can we dynamically set this per slot? Like not every user
-// is going to have six helmets with 30 in each of the stats. So can we create a mapping
-// before processing. e.g.: {helmet: {mob: 28, res: 27, rec: 30, ...}, gauntlets: {mob: 29, ...}}.
+// is going to have six heads with 30 in each of the stats. So can we create a mapping
+// before processing. e.g.: {head: {mob: 28, res: 27, rec: 30, ...}, arm: {mob: 29, ...}}.
 // We can even "override" this with the max stats for a specific exotic when one is chosen.
 const MAX_BASE_STAT_VALUE = 30;
 
 export type StatList = [number, number, number, number, number, number];
 
-export type DestinyItem = {
+export interface IDestinyItem {
 	// Unique identifier for this specific piece of armor.
 	id: string;
 	// Non-unique identifier. All "Crest of Alpha Lupi" armor pieces will have the same hash.
-	hash: string;
-};
+	hash: number;
+}
 
 // "extend" the DestinyItem type
-export type ArmorItem = DestinyItem & {
+export interface IArmorItem extends IDestinyItem {
 	// Mobility, Resilience, Recovery, Discipline, Intellect, Strength
 	stats: StatList;
 	// Is this piece of armor an exotic
 	isExotic: boolean;
 	// // Is this piece of armor masterworked
 	// isMasterworked: boolean;
-};
+}
 
-// Strictly enforce the length of this array [Helmets, Gauntlets, Chest Armors, Leg Armors]
+// Strictly enforce the length of this array [Heads, Arms, Chests, Legs]
 export type StrictArmorItems = [
-	ArmorItem[],
-	ArmorItem[],
-	ArmorItem[],
-	ArmorItem[]
+	IArmorItem[],
+	IArmorItem[],
+	IArmorItem[],
+	IArmorItem[]
 ];
 
 // We don't export this type... only in this file should we be able to use non-strict armor items
-// Otherwise we MUST pass in an array of length 4 for each [Helmet, Gauntlet, Chest, Leg]
-type ArmorItems = ArmorItem[];
+// Otherwise we MUST pass in an array of length 4 for each [Heads, Arms, Chests, Legs]
+type ArmorItems = IArmorItem[];
 
-// Four armor ids [Helmet, Gauntlet, Chest, Leg]
+// Four armor ids [Heads, Arms, Chests, Legs]
 export type ArmorIdList = [string, string, string, string];
 
-export const ArmorSlotHashOrder = {
-	[BucketHashes.Helmet]: 0,
-	[BucketHashes.Gauntlets]: 1,
-	[BucketHashes.ChestArmor]: 2,
-	[BucketHashes.LegArmor]: 3
-};
-
-export type SelectedExoticArmor = {
-	hash: string;
-	slot:
-		| BucketHashes.Helmet
-		| BucketHashes.Gauntlets
-		| BucketHashes.ChestArmor
-		| BucketHashes.LegArmor;
-};
+export interface ISelectedExoticArmor {
+	hash: number;
+	armorSlot:
+		| EArmorSlot.Head
+		| EArmorSlot.Arm
+		| EArmorSlot.Chest
+		| EArmorSlot.Leg;
+}
 
 export type ProcessArmorOutput = ArmorIdList[];
 
@@ -86,18 +87,24 @@ const getArmorSlotFromNumRemainingArmorPieces = (num: number) => {
 	}
 	throw `num is not 3,2,1: ${num}`;
 };
+
+// We never need to check legs as written since we always process top down.
+// TODO: This will need to change if prioritization of shortcircuiting based
+// on slot length actually matters. Basically... should we process slots with more items
+// first since we have more chances to short circuit? Or does it not matter at all.
+// TOOD: Investigate this.
 const numRemainingArmorPiecesToArmorSlot = {
-	3: 'helmet',
-	2: 'gauntlets',
-	1: 'chest armor'
+	3: EArmorSlot.Head,
+	2: EArmorSlot.Arm,
+	1: EArmorSlot.Chest
 };
 
 export const shouldShortCircuit = (
 	params: ShouldShortCircuitParams
 ): [
 	boolean,
-	EArmorStatName | null,
-	'helmet' | 'gauntlets' | 'chest armor' | ''
+	EArmorStat | null,
+	EArmorSlot.Head | EArmorSlot.Arm | EArmorSlot.Chest | ''
 ] => {
 	const {
 		sumOfSeenStats,
@@ -111,27 +118,27 @@ export const shouldShortCircuit = (
 	for (const [i, stat] of armorStats.entries()) {
 		if (
 			stat + sumOfSeenStats[i] + maxRemaning <
-			desiredArmorStats[ArmorStatOrder[i]]
+			desiredArmorStats[ArmorStats[i]]
 		) {
 			const slot = getArmorSlotFromNumRemainingArmorPieces(
 				numRemainingArmorPieces
 			);
 			console.log(`
 				short-circuiting ${slot}:
-					stat: ${desiredArmorStats[ArmorStatOrder[i]]},
+					stat: ${desiredArmorStats[ArmorStats[i]]},
 					sum: ${sumOfSeenStats[i]},
 					value: ${stat}
 			`);
-			return [true, ArmorStatOrder[i], slot];
+			return [true, ArmorStats[i], slot];
 		}
 	}
 	return [false, null, ''];
 };
 
 /**
- * @param {ArmorItems2} armorItems - [helmets, gauntlets, chestArmors, legArmors]
+ * @param {ArmorItems2} armorItems - [heads, arms, chests, legs]
  * @returns {ProcessArmorOutput} All the combinations of armor ids that meet the required specs
- * @description This function expects that every combination of [helmets, gauntlets, chestArmors, legArmors]
+ * @description This function expects that every combination of [heads, arms, chests, legs]
  * is valid.
  */
 export const doProcessArmor = ({
@@ -148,7 +155,7 @@ export const doProcessArmor = ({
 
 const getNextSeenStats = (
 	sumOfSeenStats: StatList,
-	armorSlotItem: ArmorItem
+	armorSlotItem: IArmorItem
 ): StatList =>
 	sumOfSeenStats.map((x, i) => x + armorSlotItem.stats[i]) as StatList;
 
@@ -163,8 +170,8 @@ const _processArmorBaseCase = ({
 	armorSlotItems.forEach((armorSlotItem) => {
 		let isValid = true;
 		const finalSumOfSeenStats = getNextSeenStats(sumOfSeenStats, armorSlotItem);
-		for (let i = 0; i < ArmorStatOrder.length; i++) {
-			if (desiredArmorStats[ArmorStatOrder[i]] > finalSumOfSeenStats[i]) {
+		for (let i = 0; i < ArmorStats.length; i++) {
+			if (desiredArmorStats[ArmorStats[i]] > finalSumOfSeenStats[i]) {
 				// skip
 				isValid = false;
 				break;
@@ -231,4 +238,23 @@ export const processArmor = ({
 		sumOfSeenStats,
 		seenArmorIds
 	});
+};
+
+// Transform the shape of the application's armor to be processed.
+// Filter out any armor items that will definitely not be used.
+export const preprocessArmor = (
+	armorGroup: ArmorGroup,
+	selectedExoticArmor: ISelectedExoticArmor
+): StrictArmorItems => {
+	const strictArmorItems: StrictArmorItems = [[], [], [], []];
+	ArmorSlots.forEach((armorSlot, i) => {
+		if (armorSlot === selectedExoticArmor.armorSlot) {
+			strictArmorItems[i] = Object.values(armorGroup[armorSlot].exotic).filter(
+				(item) => (item.hash = selectedExoticArmor.hash)
+			);
+			return;
+		}
+		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic);
+	});
+	return strictArmorItems;
 };

@@ -6,6 +6,7 @@ import armorReducer from './features/armor/armorSlice';
 import charactersReducer from './features/characters/charactersSlice';
 import selectedCharacterClassReducer from './features/selectedCharacterClass/selectedCharacterClassSlice';
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
+import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedExoticArmorSlice';
 export function makeStore() {
 	return configureStore({
 		reducer: {
@@ -14,7 +15,8 @@ export function makeStore() {
 			armor: armorReducer,
 			characters: charactersReducer,
 			selectedCharacterClass: selectedCharacterClassReducer,
-			availableExoticArmor: availableExoticArmorReducer
+			availableExoticArmor: availableExoticArmorReducer,
+			selectedExoticArmor: selectedExoticArmorReducer
 		}
 	});
 }

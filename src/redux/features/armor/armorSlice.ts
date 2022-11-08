@@ -1,11 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import {
-	Armor,
-	DestinyClassName,
-	generateArmorGroup
-} from '@dlb/services/data';
+import { Armor, EDestinyClass, generateArmorGroup } from '@dlb/services/data';
 
 export interface ArmorState {
 	value: Armor;
@@ -13,9 +9,9 @@ export interface ArmorState {
 
 const initialState: ArmorState = {
 	value: {
-		[DestinyClassName.Titan]: generateArmorGroup(),
-		[DestinyClassName.Hunter]: generateArmorGroup(),
-		[DestinyClassName.Warlock]: generateArmorGroup()
+		[EDestinyClass.Titan]: generateArmorGroup(),
+		[EDestinyClass.Hunter]: generateArmorGroup(),
+		[EDestinyClass.Warlock]: generateArmorGroup()
 	}
 };
 

@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { DestinyClassName } from '@dlb/services/data';
+import { EDestinyClass } from '@dlb/services/data';
 
 export interface SelectedCharacterClassState {
-	value: DestinyClassName;
+	value: EDestinyClass;
 }
 
 const initialState: SelectedCharacterClassState = {
@@ -17,7 +17,7 @@ export const selectedCharacterClassSlice = createSlice({
 	reducers: {
 		setSelectedCharacterClass: (
 			state,
-			action: PayloadAction<DestinyClassName>
+			action: PayloadAction<EDestinyClass>
 		) => {
 			state.value = action.payload;
 		}

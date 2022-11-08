@@ -5,7 +5,7 @@ import {
 	shouldShortCircuit,
 	ShouldShortCircuitParams
 } from './armor-processing';
-import { EArmorStatName } from './data';
+import { EArmorSlot, EArmorStat } from './data';
 import { describe, expect, test } from '@jest/globals';
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 
@@ -20,19 +20,19 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 		name: 'It returns results with one item in each slot',
 		input: {
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 0,
-				[EArmorStatName.Resilience]: 60,
-				[EArmorStatName.Recovery]: 60,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 0
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 60,
+				[EArmorStat.Recovery]: 60,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
 			},
 			armorItems: [
 				[
 					{
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -40,7 +40,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -48,7 +48,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -56,7 +56,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '3',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				]
@@ -68,19 +68,19 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 		name: 'It returns no results with one item in each slot',
 		input: {
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 0,
-				[EArmorStatName.Resilience]: 100,
-				[EArmorStatName.Recovery]: 100,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 0
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 100,
+				[EArmorStat.Recovery]: 100,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
 			},
 			armorItems: [
 				[
 					{
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -88,7 +88,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -96,7 +96,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -104,7 +104,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '3',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				]
@@ -116,19 +116,19 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 		name: 'It returns two results with two leg armor items',
 		input: {
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 0,
-				[EArmorStatName.Resilience]: 60,
-				[EArmorStatName.Recovery]: 60,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 0
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 60,
+				[EArmorStat.Recovery]: 60,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
 			},
 			armorItems: [
 				[
 					{
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -136,7 +136,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -144,7 +144,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -152,13 +152,13 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '3',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					},
 					{
 						id: '4',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				]
@@ -173,19 +173,19 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 		name: 'It returns four results with two gauntlet items and two leg armor items',
 		input: {
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 0,
-				[EArmorStatName.Resilience]: 60,
-				[EArmorStatName.Recovery]: 60,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 0
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 60,
+				[EArmorStat.Recovery]: 60,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
 			},
 			armorItems: [
 				[
 					{
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -193,13 +193,13 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					},
 					{
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -207,7 +207,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '3',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -215,13 +215,13 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '4',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					},
 					{
 						id: '5',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				]
@@ -238,19 +238,19 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 		name: 'It returns no results with two gauntlet items and two leg armor items',
 		input: {
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 100,
-				[EArmorStatName.Resilience]: 0,
-				[EArmorStatName.Recovery]: 100,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 0
+				[EArmorStat.Mobility]: 100,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 100,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
 			},
 			armorItems: [
 				[
 					{
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -258,13 +258,13 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					},
 					{
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -272,7 +272,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '3',
 						stats: es([30, 2, 2, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				],
@@ -280,13 +280,13 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					{
 						id: '4',
 						stats: es([30, 2, 2, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					},
 					{
 						id: '5',
 						stats: es([30, 2, 2, 16, 16, 2]),
-						hash: '',
+						hash: -1,
 						isExotic: false
 					}
 				]
@@ -329,8 +329,8 @@ type ShouldShortCircuitTestCase = {
 	input: ShouldShortCircuitParams;
 	output: [
 		boolean,
-		EArmorStatName,
-		'helmet' | 'gauntlets' | 'chest armor' | ''
+		EArmorStat,
+		EArmorSlot.Head | EArmorSlot.Arm | EArmorSlot.Chest | ''
 	];
 };
 
@@ -340,51 +340,51 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		input: {
 			sumOfSeenStats: [2, 16, 16, 16, 16, 2],
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 100,
-				[EArmorStatName.Resilience]: 0,
-				[EArmorStatName.Recovery]: 0,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 0
+				[EArmorStat.Mobility]: 100,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
 			},
 			armorStats: [2, 16, 16, 16, 16, 2],
 			numRemainingArmorPieces: 2
 		},
-		output: [true, EArmorStatName.Mobility, 'gauntlets']
+		output: [true, EArmorStat.Mobility, EArmorSlot.Arm]
 	},
 	{
 		name: 'It returns true when helmet and gauntlets strength are both 2',
 		input: {
 			sumOfSeenStats: [2, 16, 16, 16, 16, 2],
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 0,
-				[EArmorStatName.Resilience]: 0,
-				[EArmorStatName.Recovery]: 0,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 100
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 100
 			},
 			armorStats: [2, 16, 16, 16, 16, 2],
 			numRemainingArmorPieces: 2
 		},
-		output: [true, EArmorStatName.Strength, 'gauntlets']
+		output: [true, EArmorStat.Strength, EArmorSlot.Arm]
 	},
 	{
 		name: 'It returns true when helmet and gauntlets discipline and strength are both 2',
 		input: {
 			sumOfSeenStats: [2, 16, 16, 2, 30, 2],
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 0,
-				[EArmorStatName.Resilience]: 0,
-				[EArmorStatName.Recovery]: 0,
-				[EArmorStatName.Discipline]: 100,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 100
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 100,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 100
 			},
 			armorStats: [2, 16, 16, 16, 16, 2],
 			numRemainingArmorPieces: 2
 		},
-		output: [true, EArmorStatName.Discipline, 'gauntlets']
+		output: [true, EArmorStat.Discipline, EArmorSlot.Arm]
 	},
 
 	{
@@ -392,17 +392,17 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		input: {
 			sumOfSeenStats: [2, 16, 16, 2, 30, 2],
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 0,
-				[EArmorStatName.Resilience]: 0,
-				[EArmorStatName.Recovery]: 0,
-				[EArmorStatName.Discipline]: 100,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 400
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 100,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 400
 			},
 			armorStats: [2, 16, 16, 16, 16, 2],
 			numRemainingArmorPieces: 3
 		},
-		output: [true, EArmorStatName.Strength, 'helmet']
+		output: [true, EArmorStat.Strength, EArmorSlot.Head]
 	},
 
 	{
@@ -410,12 +410,12 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		input: {
 			sumOfSeenStats: [16, 2, 16, 16, 16, 2],
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 100,
-				[EArmorStatName.Resilience]: 0,
-				[EArmorStatName.Recovery]: 0,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 0
+				[EArmorStat.Mobility]: 100,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
 			},
 			armorStats: [30, 2, 2, 16, 16, 2],
 			numRemainingArmorPieces: 2
@@ -427,12 +427,12 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		input: {
 			sumOfSeenStats: [30, 2, 2, 16, 16, 2],
 			desiredArmorStats: {
-				[EArmorStatName.Mobility]: 100,
-				[EArmorStatName.Resilience]: 0,
-				[EArmorStatName.Recovery]: 0,
-				[EArmorStatName.Discipline]: 0,
-				[EArmorStatName.Intellect]: 0,
-				[EArmorStatName.Strength]: 0
+				[EArmorStat.Mobility]: 100,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
 			},
 			armorStats: [10, 2, 22, 16, 16, 2],
 			numRemainingArmorPieces: 2

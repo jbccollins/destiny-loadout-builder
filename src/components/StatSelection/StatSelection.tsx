@@ -5,6 +5,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStats, EArmorStat } from '@dlb/services/data';
 import { styled, Card, Box } from '@mui/material';
+import { useEffect } from 'react';
 import StatSlider from './StatSlider';
 
 type StatSelectionProps = {
@@ -33,44 +34,44 @@ const marks = [
 		label: '0'
 	},
 	{
-		value: 1,
-		label: '1'
-	},
-	{
-		value: 2,
-		label: '2'
-	},
-	{
-		value: 3,
-		label: '3'
-	},
-	{
-		value: 4,
-		label: '4'
-	},
-	{
-		value: 5,
-		label: '5'
-	},
-	{
-		value: 6,
-		label: '6'
-	},
-	{
-		value: 7,
-		label: '7'
-	},
-	{
-		value: 8,
-		label: '8'
-	},
-	{
-		value: 9,
-		label: '9'
-	},
-	{
 		value: 10,
 		label: '10'
+	},
+	{
+		value: 20,
+		label: '20'
+	},
+	{
+		value: 30,
+		label: '30'
+	},
+	{
+		value: 40,
+		label: '40'
+	},
+	{
+		value: 50,
+		label: '50'
+	},
+	{
+		value: 60,
+		label: '60'
+	},
+	{
+		value: 70,
+		label: '70'
+	},
+	{
+		value: 80,
+		label: '80'
+	},
+	{
+		value: 90,
+		label: '90'
+	},
+	{
+		value: 100,
+		label: '100'
 	}
 ];
 
@@ -79,8 +80,17 @@ function StatSelection(props: StatSelectionProps) {
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
 	function handleSliderChange(statName: EArmorStat, value: number) {
+		if (desiredArmorStats && desiredArmorStats[statName] === value) {
+			// Don't trigger a redux dirty
+			return;
+		}
 		dispatch(setDesiredArmorStats({ ...desiredArmorStats, [statName]: value }));
 	}
+
+	// This is a bit hacky but it's just here to ensure that we dirty the uuid for desiredArmorStats
+	useEffect(() => {
+		dispatch(setDesiredArmorStats(desiredArmorStats));
+	}, []);
 
 	return (
 		<Container>
@@ -94,15 +104,14 @@ function StatSelection(props: StatSelectionProps) {
 							}
 							locked
 							aria-label="Tier"
-							defaultValue={2}
 							getAriaValueText={valuetext}
 							valueLabelDisplay="off"
 							value={desiredArmorStats[statName]}
-							step={1}
+							step={10}
 							size="medium"
 							marks={marks}
 							min={0}
-							max={10}
+							max={100}
 						/>
 					</SliderWrapper>
 				);

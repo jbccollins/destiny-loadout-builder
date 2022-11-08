@@ -2,9 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 import { AvailableExoticArmorItem, EDestinyClass } from '@dlb/services/data';
+import { v4 as uuid, NIL } from 'uuid';
 
 export interface SelectedExoticArmorState {
 	value: Record<EDestinyClass, AvailableExoticArmorItem>;
+	uuid: string;
 }
 
 const initialState: SelectedExoticArmorState = {
@@ -12,7 +14,8 @@ const initialState: SelectedExoticArmorState = {
 		[EDestinyClass.Titan]: null,
 		[EDestinyClass.Hunter]: null,
 		[EDestinyClass.Warlock]: null
-	}
+	},
+	uuid: NIL
 };
 
 export const selectedExoticArmorSlice = createSlice({
@@ -24,6 +27,7 @@ export const selectedExoticArmorSlice = createSlice({
 			action: PayloadAction<Record<EDestinyClass, AvailableExoticArmorItem>>
 		) => {
 			state.value = action.payload;
+			state.uuid = uuid();
 		}
 	}
 });

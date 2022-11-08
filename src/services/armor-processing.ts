@@ -53,11 +53,7 @@ export type ArmorIdList = [string, string, string, string];
 
 export interface ISelectedExoticArmor {
 	hash: number;
-	armorSlot:
-		| EArmorSlot.Head
-		| EArmorSlot.Arm
-		| EArmorSlot.Chest
-		| EArmorSlot.Leg;
+	armorSlot: EArmorSlot;
 }
 
 export type ProcessArmorOutput = ArmorIdList[];
@@ -217,7 +213,7 @@ const _processArmorRecursiveCase = ({
 	return output.flat(1);
 };
 
-export const processArmor = ({
+const processArmor = ({
 	desiredArmorStats,
 	armorItems,
 	sumOfSeenStats,
@@ -242,7 +238,7 @@ export const processArmor = ({
 
 // Transform the shape of the application's armor to be processed.
 // Filter out any armor items that will definitely not be used.
-export const preprocessArmor = (
+export const preProcessArmor = (
 	armorGroup: ArmorGroup,
 	selectedExoticArmor: ISelectedExoticArmor
 ): StrictArmorItems => {
@@ -250,7 +246,7 @@ export const preprocessArmor = (
 	ArmorSlots.forEach((armorSlot, i) => {
 		if (armorSlot === selectedExoticArmor.armorSlot) {
 			strictArmorItems[i] = Object.values(armorGroup[armorSlot].exotic).filter(
-				(item) => (item.hash = selectedExoticArmor.hash)
+				(item) => item.hash === selectedExoticArmor.hash
 			);
 			return;
 		}

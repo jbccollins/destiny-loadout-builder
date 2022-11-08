@@ -2,7 +2,6 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 
 import {
 	ArmorSlots,
-	AvailableExoticArmorGroup,
 	AvailableExoticArmorItem,
 	DestinyClasses,
 	EDestinyClass
@@ -16,11 +15,9 @@ import {
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { useCallback, useEffect, useState } from 'react';
+
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 
-type ExoticSelectorProps = Readonly<{
-	items: AvailableExoticArmorGroup;
-}>;
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	padding: theme.spacing(3)
@@ -65,7 +62,7 @@ type Temp = {
 	[key in EDestinyClass]: boolean;
 };
 
-function ExoticSelector(props: ExoticSelectorProps) {
+function ExoticSelector() {
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
@@ -77,6 +74,14 @@ function ExoticSelector(props: ExoticSelectorProps) {
 		destinyClassName: EDestinyClass,
 		armor: AvailableExoticArmorItem
 	) => {
+		if (
+			selectedExoticArmor &&
+			selectedCharacterClass &&
+			armor.hash === selectedExoticArmor[selectedCharacterClass].hash
+		) {
+			// Don't trigger a redux dirty
+			return;
+		}
 		const newSelectedExoticArmor = { ...selectedExoticArmor };
 		newSelectedExoticArmor[destinyClassName] = armor;
 		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
@@ -135,7 +140,7 @@ function ExoticSelector(props: ExoticSelectorProps) {
 						return (
 							<div key={armorSlot}>
 								<div>
-									{props.items[armorSlot].map(
+									{availableExoticArmor[selectedCharacterClass][armorSlot].map(
 										(item: AvailableExoticArmorItem) => {
 											return (
 												<ImageContainer

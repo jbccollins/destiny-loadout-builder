@@ -7,6 +7,13 @@ import charactersReducer from './features/characters/charactersSlice';
 import selectedCharacterClassReducer from './features/selectedCharacterClass/selectedCharacterClassSlice';
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
 import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedExoticArmorSlice';
+import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
+import { NIL } from 'uuid';
+import {
+	doProcessArmor,
+	preProcessArmor
+} from '@dlb/services/armor-processing';
+
 export function makeStore() {
 	return configureStore({
 		reducer: {
@@ -16,12 +23,66 @@ export function makeStore() {
 			characters: charactersReducer,
 			selectedCharacterClass: selectedCharacterClassReducer,
 			availableExoticArmor: availableExoticArmorReducer,
-			selectedExoticArmor: selectedExoticArmorReducer
+			selectedExoticArmor: selectedExoticArmorReducer,
+			allDataLoaded: allDataLoadedReducer
 		}
 	});
 }
 
 const store = makeStore();
+
+/**** This is a janky way to check when a change that would trigger a re-process of armor is needed *****/
+let desiredArmorStatsUuid = NIL;
+let selectedCharacterClassUuid = NIL;
+let selectedExoticArmorUuid = NIL;
+function handleChange() {
+	const {
+		allDataLoaded: { value: hasAllDataLoaded },
+		desiredArmorStats: { uuid: nextDesiredArmorStatsUuid },
+		selectedCharacterClass: { uuid: nextSelectedCharacterClassUuid },
+		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid }
+	} = store.getState();
+
+	const hasMismatchedUuids =
+		desiredArmorStatsUuid !== nextDesiredArmorStatsUuid ||
+		selectedCharacterClassUuid !== nextSelectedCharacterClassUuid ||
+		selectedExoticArmorUuid !== nextSelectedExoticArmorUuid;
+	const hasNonDefaultUuids =
+		nextDesiredArmorStatsUuid !== NIL &&
+		nextSelectedCharacterClassUuid !== NIL &&
+		nextSelectedExoticArmorUuid !== NIL;
+
+	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
+		console.log('>>>>>>>>>>>>>>> store is dirty');
+		desiredArmorStatsUuid = nextDesiredArmorStatsUuid;
+		selectedCharacterClassUuid = nextSelectedCharacterClassUuid;
+		selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
+
+		// TODO: Move this out of the store file
+		const {
+			armor: { value: armor },
+			selectedExoticArmor: { value: selectedExoticArmor },
+			selectedCharacterClass: { value: selectedCharacterClass },
+			desiredArmorStats: { value: desiredArmorStats }
+		} = store.getState();
+		const preProcessedArmor = preProcessArmor(
+			armor[selectedCharacterClass],
+			selectedExoticArmor[selectedCharacterClass]
+		);
+		console.log(
+			'>>>>>>>>>>>> preProcessedArmor <<<<<<<<<<<<<',
+			preProcessedArmor
+		);
+		const results = doProcessArmor({
+			desiredArmorStats,
+			armorItems: preProcessedArmor
+		});
+		console.log('>>>>>>>>>>>> results <<<<<<<<<<<<<', results);
+	}
+}
+
+const unsubscribe = store.subscribe(handleChange);
+// unsubscribe();
 
 export type AppState = ReturnType<typeof store.getState>;
 

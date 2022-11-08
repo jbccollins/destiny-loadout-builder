@@ -1,5 +1,5 @@
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { Characters, EDestinyClass } from '@dlb/services/data';
+import { EDestinyClass } from '@dlb/services/data';
 import { Box, styled, Card, capitalize, Typography } from '@mui/material';
 import {
 	selectSelectedCharacterClass,
@@ -7,9 +7,7 @@ import {
 } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { useCallback, useEffect } from 'react';
-type CharacterSelectorProps = Readonly<{
-	characters: Characters;
-}>;
+import { selectCharacters } from '@dlb/redux/features/characters/charactersSlice';
 const Container = styled(Card)(({ theme }) => ({
 	padding: theme.spacing(3)
 }));
@@ -34,23 +32,28 @@ const CharacterText = styled(Typography)(({ theme }) => ({
 }));
 
 // TODO: Remove props and just read from redux?
-function CharacterSelector(props: CharacterSelectorProps) {
+function CharacterSelector() {
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const characters = useAppSelector(selectCharacters);
 	const dispatch = useAppDispatch();
 
 	const handleCharacterClick = (characterClass: EDestinyClass) => {
+		if (selectedCharacterClass && selectedCharacterClass === characterClass) {
+			// Don't trigger a redux dirty
+			return;
+		}
 		dispatch(setSelectedCharacterClass(characterClass));
 	};
 
 	const setDefaultCharacterClass = useCallback(() => {
 		if (
-			props.characters &&
-			props.characters.length > 0 &&
+			characters &&
+			characters.length > 0 &&
 			selectedCharacterClass === null
 		) {
-			dispatch(setSelectedCharacterClass(props.characters[0].className));
+			dispatch(setSelectedCharacterClass(characters[0].className));
 		}
-	}, [dispatch, props.characters, selectedCharacterClass]);
+	}, [dispatch, characters, selectedCharacterClass]);
 
 	useEffect(() => {
 		setDefaultCharacterClass();
@@ -59,7 +62,7 @@ function CharacterSelector(props: CharacterSelectorProps) {
 	return (
 		<>
 			<Container>
-				{props.characters.map((character) => (
+				{characters.map((character) => (
 					<Item
 						key={character.id}
 						onClick={() => handleCharacterClick(character.className)}

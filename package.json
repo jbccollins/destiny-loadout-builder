@@ -34,7 +34,8 @@
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-redux": "^8.0.4"
+    "react-redux": "^8.0.4",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-typescript": "^7.19.3",
@@ -46,6 +47,7 @@
     "@types/node": "18.11.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
     "eslint": "^8.26.0",

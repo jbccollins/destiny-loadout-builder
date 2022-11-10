@@ -1,20 +1,19 @@
-import { Description } from '@mui/icons-material';
 import {
 	ArmorGroup,
 	ArmorSlots,
 	ArmorStats,
-	AvailableExoticArmorItem,
 	DesiredArmorStats,
 	EArmorSlot,
 	EArmorStat
 } from './data';
-import type { ItemTierName } from '@dlb/dim/search/d2-known-values';
-import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
+
 // No legendary piece of armor has a single stat above 30
 // TODO: Can we dynamically set this per slot? Like not every user
 // is going to have six heads with 30 in each of the stats. So can we create a mapping
 // before processing. e.g.: {head: {mob: 28, res: 27, rec: 30, ...}, arm: {mob: 29, ...}}.
 // We can even "override" this with the max stats for a specific exotic when one is chosen.
+// I *think* it's impossible to have a short circuit before chest if we keep this at 30.
+// But it *should* be possible once we make this dynamic.
 const MAX_BASE_STAT_VALUE = 30;
 
 export type StatList = [number, number, number, number, number, number];
@@ -119,12 +118,12 @@ export const shouldShortCircuit = (
 			const slot = getArmorSlotFromNumRemainingArmorPieces(
 				numRemainingArmorPieces
 			);
-			console.log(`
-				short-circuiting ${slot}:
-					stat: ${desiredArmorStats[ArmorStats[i]]},
-					sum: ${sumOfSeenStats[i]},
-					value: ${stat}
-			`);
+			// console.log(`
+			// 	short-circuiting ${slot}:
+			// 		stat: ${desiredArmorStats[ArmorStats[i]]},
+			// 		sum: ${sumOfSeenStats[i]},
+			// 		value: ${stat}
+			// `);
 			return [true, ArmorStats[i], slot];
 		}
 	}

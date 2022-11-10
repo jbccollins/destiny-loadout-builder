@@ -6,44 +6,64 @@ import {
 	setSelectedCharacterClass
 } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { selectCharacters } from '@dlb/redux/features/characters/charactersSlice';
-const Container = styled(Card)(({ theme }) => ({
-	padding: theme.spacing(3)
+import IconDropdown from './IconDropdown';
+const Container = styled('div')(({ theme }) => ({
+	// padding: theme.spacing(1),
+	// paddingRight: 0
 }));
 
-const Item = styled(Box)(({ theme }) => ({
-	color: theme.palette.secondary.main,
-	display: 'flex',
-	position: 'relative',
-	width: '474px',
-	height: '96px'
+const IconDropdownContainer = styled('div')(({ theme }) => ({
+	['.demo-simple-select']: {
+		['.character-class-name']: {
+			display: 'none'
+		}
+	}
 }));
 
-const EmblemImage = styled(BungieImage)(({ theme }) => ({
-	position: 'absolute'
-}));
+type Option = {
+	label: string;
+	id: string;
+	disabled: boolean;
+	icon: string;
+};
 
-const CharacterText = styled(Typography)(({ theme }) => ({
-	display: 'block',
-	zIndex: 1,
-	marginLeft: '20.25%' // 96 is 20.25% of 474 which is the size of the emblem icon
-	// marginTop: '50%'
-}));
-
-// TODO: Remove props and just read from redux?
 function CharacterSelector() {
+	const options: Option[] = useMemo(
+		() => [
+			{
+				label: EDestinyClass.Hunter,
+				id: EDestinyClass.Hunter,
+				disabled: true,
+				icon: 'https://www.bungie.net/common/destiny2_content/icons/57f35a636ef455069d04231d4a564013.jpg'
+			},
+			{
+				label: EDestinyClass.Warlock,
+				id: EDestinyClass.Warlock,
+				disabled: true,
+				icon: 'https://www.bungie.net/common/destiny2_content/icons/67f7bbf158f84c33802b178e463b7037.jpg'
+			},
+			{
+				label: EDestinyClass.Titan,
+				id: EDestinyClass.Titan,
+				disabled: true,
+				icon: 'https://www.bungie.net/common/destiny2_content/icons/84fcf9589ae5320f282abe89bd0c5fff.jpg'
+			}
+			// // Testing the 'disabled' option locally lol
+			// {
+			// 	label: 'moose',
+			// 	id: 'asdfsdfdsf',
+			// 	disabled: true,
+			// 	icon: 'https://bungie.net//common/destiny2_content/icons/dded5f2f4730ea8515e71dbb36111393.jpg'
+			// }
+		],
+		[]
+	);
+
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
 	const characters = useAppSelector(selectCharacters);
 	const dispatch = useAppDispatch();
-
-	const handleCharacterClick = (characterClass: EDestinyClass) => {
-		if (selectedCharacterClass && selectedCharacterClass === characterClass) {
-			// Don't trigger a redux dirty
-			return;
-		}
-		dispatch(setSelectedCharacterClass(characterClass));
-	};
 
 	const setDefaultCharacterClass = useCallback(() => {
 		if (
@@ -51,18 +71,47 @@ function CharacterSelector() {
 			characters.length > 0 &&
 			selectedCharacterClass === null
 		) {
-			dispatch(setSelectedCharacterClass(characters[0].className));
+			// TODO: A fringe case could be someone who has a bunch of armor for a class
+			// that they don't have. Probably not worth the effort right now to determine
+			// that but maybe a "nice to have" later on.
+			characters.forEach((character) => {
+				const optionIndex = options.findIndex(
+					(option) => option.id === character.destinyClass
+				);
+				if (optionIndex >= 0) {
+					options[optionIndex] = { ...options[optionIndex], disabled: false };
+				}
+			});
+			dispatch(setSelectedCharacterClass(characters[0].destinyClass));
 		}
-	}, [dispatch, characters, selectedCharacterClass]);
+	}, [characters, selectedCharacterClass, dispatch, options]);
 
 	useEffect(() => {
 		setDefaultCharacterClass();
 	}, [setDefaultCharacterClass]);
 
+	const getLabel = (option: Option) => option.label;
+
+	const handleChange = (characterClass: EDestinyClass) => {
+		if (selectedCharacterClass && selectedCharacterClass === characterClass) {
+			// Don't trigger a redux dirty
+			return;
+		}
+		dispatch(setSelectedCharacterClass(characterClass));
+	};
+
 	return (
 		<>
 			<Container>
-				{characters.map((character) => (
+				<IconDropdownContainer>
+					<IconDropdown
+						options={options}
+						getLabel={getLabel}
+						value={selectedCharacterClass || ''}
+						onChange={handleChange}
+					/>
+				</IconDropdownContainer>
+				{/* {characters.map((character) => (
 					<Item
 						key={character.id}
 						onClick={() => handleCharacterClick(character.className)}
@@ -72,7 +121,7 @@ function CharacterSelector() {
 							{character.genderRace} {capitalize(character.className)}
 						</CharacterText>
 					</Item>
-				))}
+				))} */}
 			</Container>
 		</>
 	);

@@ -8,6 +8,9 @@ import selectedCharacterClassReducer from './features/selectedCharacterClass/sel
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
 import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedExoticArmorSlice';
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
+import processedArmorReducer, {
+	setProcessedArmor
+} from './features/processedArmor/processedArmorSlice';
 import { NIL } from 'uuid';
 import {
 	doProcessArmor,
@@ -24,7 +27,8 @@ export function makeStore() {
 			selectedCharacterClass: selectedCharacterClassReducer,
 			availableExoticArmor: availableExoticArmorReducer,
 			selectedExoticArmor: selectedExoticArmorReducer,
-			allDataLoaded: allDataLoadedReducer
+			allDataLoaded: allDataLoadedReducer,
+			processedArmor: processedArmorReducer
 		}
 	});
 }
@@ -65,6 +69,10 @@ function handleChange() {
 			selectedCharacterClass: { value: selectedCharacterClass },
 			desiredArmorStats: { value: desiredArmorStats }
 		} = store.getState();
+
+		// TODO: no need to preProcessArmor when only the stat slider has changed.
+		// Maybe we don't need to trigger that fake initial dispatch in
+		// the slider component if we fix this?
 		const preProcessedArmor = preProcessArmor(
 			armor[selectedCharacterClass],
 			selectedExoticArmor[selectedCharacterClass]
@@ -78,6 +86,7 @@ function handleChange() {
 			armorItems: preProcessedArmor
 		});
 		console.log('>>>>>>>>>>>> results <<<<<<<<<<<<<', results);
+		store.dispatch(setProcessedArmor(results));
 	}
 }
 

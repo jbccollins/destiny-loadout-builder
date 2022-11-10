@@ -177,6 +177,26 @@ export type AvailableExoticArmorGroup = {
 	[EArmorSlot.Leg]: AvailableExoticArmorItem[];
 };
 
+export const getArmorSlotDisplayName = (armorSlot: EArmorSlot) => {
+	if (armorSlot == EArmorSlot.Head) {
+		return 'Helmets';
+	}
+	if (armorSlot == EArmorSlot.Arm) {
+		return 'Gauntlets';
+	}
+	if (armorSlot == EArmorSlot.Chest) {
+		return 'Chest Armor';
+	}
+	if (armorSlot == EArmorSlot.Leg) {
+		return 'Leg Armor';
+	}
+	if (armorSlot == EArmorSlot.ClassItem) {
+		return 'Leg Armor';
+	}
+	console.error('Invalid armorSlot:', armorSlot);
+	return '';
+};
+
 // TODO: I think we only really need the hash here.
 // It would be easy enough to look it up on click given that we know
 // the selected class and the slot
@@ -301,7 +321,9 @@ export type Characters = Character[];
 export type Character = {
 	// background image
 	background: string;
-	className: EDestinyClass;
+
+	// TODO: Change this to be something other than
+	destinyClass: EDestinyClass;
 	// e.g 'Exo Male'
 	genderRace: string;
 	// I think this is a thumbnail for the emblem. May be useful for mobile views?
@@ -324,7 +346,7 @@ export const extractCharacters = (stores: DimStore<DimItem>[]): Characters => {
 		.forEach((store) => {
 			const character: Character = {
 				background: store.background,
-				className: DestinyClassStringToDestinyClass[store.className],
+				destinyClass: DestinyClassStringToDestinyClass[store.className],
 				genderRace: store.genderRace,
 				icon: store.icon,
 				id: store.id

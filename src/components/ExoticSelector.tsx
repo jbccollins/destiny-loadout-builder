@@ -4,9 +4,17 @@ import {
 	ArmorSlots,
 	AvailableExoticArmorItem,
 	DestinyClasses,
-	EDestinyClass
+	EDestinyClass,
+	getArmorSlotDisplayName
 } from '@dlb/services/data';
-import { Box, styled, Card } from '@mui/material';
+import {
+	Box,
+	styled,
+	Card,
+	Autocomplete,
+	FormControl,
+	TextField
+} from '@mui/material';
 
 import {
 	selectSelectedExoticArmor,
@@ -14,54 +22,24 @@ import {
 } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
 
-const Container = styled(Card)(({ theme }) => ({
+const Container = styled('div')(({ theme }) => ({
 	color: theme.palette.secondary.main,
-	padding: theme.spacing(3)
+	['.exotic-selector-text-field fieldset']: {
+		borderTopLeftRadius: '0px',
+		borderBottomLeftRadius: '0px',
+		//borderLeftColor: 'transparent'
+		padding: theme.spacing(1),
+		paddingRight: 0
+	}
 }));
 
-const Count = styled(Box)(({ theme }) => ({
-	color: theme.palette.secondary.main,
-	background: `black`,
-	position: 'absolute',
-	bottom: '0px', // theme.spacing(1),
-	left: '0px',
-	borderTopRightRadius: '50%',
-	textAlign: 'left',
-	padding: theme.spacing(0.2),
-	paddingRight: theme.spacing(0.8),
-	minWidth: theme.spacing(2)
-}));
-
-interface ImageContainerProps {
-	selected: boolean;
-}
-
-const ImageContainer = styled(Box)<ImageContainerProps>(
-	({ theme, selected }) => ({
-		position: 'relative',
-		display: 'inline-block',
-		width: theme.spacing(10),
-		height: theme.spacing(10),
-		border: '4px solid',
-		margin: `4px`,
-		borderColor: selected ? 'red' : 'transparent'
-	})
-);
-
-const ExoticImage = styled(BungieImage)(({ theme }) => ({
-	position: 'relative',
-	width: '100%',
-	height: '100%'
-}));
-
-type Temp = {
-	[key in EDestinyClass]: boolean;
-};
-
+// TODO: Group by armor slot
 function ExoticSelector() {
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
@@ -70,24 +48,7 @@ function ExoticSelector() {
 	const [hasSelectedDefaultExotics, setHasSelectedDefaultExotics] =
 		useState(false);
 
-	const handleClick = (
-		destinyClassName: EDestinyClass,
-		armor: AvailableExoticArmorItem
-	) => {
-		if (
-			selectedExoticArmor &&
-			selectedCharacterClass &&
-			armor.hash === selectedExoticArmor[selectedCharacterClass].hash
-		) {
-			// Don't trigger a redux dirty
-			return;
-		}
-		const newSelectedExoticArmor = { ...selectedExoticArmor };
-		newSelectedExoticArmor[destinyClassName] = armor;
-		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
-	};
-
-	const setDefaultCharacterClass = useCallback(() => {
+	const setDefaultSelectedExoticArmor = useCallback(() => {
 		if (
 			availableExoticArmor &&
 			selectedCharacterClass &&
@@ -127,45 +88,117 @@ function ExoticSelector() {
 	]);
 
 	useEffect(() => {
-		setDefaultCharacterClass();
-	}, [setDefaultCharacterClass]);
+		setDefaultSelectedExoticArmor();
+	}, [setDefaultSelectedExoticArmor]);
 
+	let options: AvailableExoticArmorItem[] = [];
+	if (availableExoticArmor && selectedCharacterClass) {
+		ArmorSlots.forEach((armorSlot) => {
+			options = options.concat(
+				availableExoticArmor[selectedCharacterClass][armorSlot]
+			);
+		});
+		console.log('>>>>>>>>>>> options <<<<<<<<<<<<', options);
+	}
+
+	const handleChange = (armor: AvailableExoticArmorItem) => {
+		if (
+			selectedExoticArmor &&
+			selectedCharacterClass &&
+			armor.hash === selectedExoticArmor[selectedCharacterClass].hash
+		) {
+			// Don't trigger a redux dirty
+			return;
+		}
+		const newSelectedExoticArmor = { ...selectedExoticArmor };
+		newSelectedExoticArmor[selectedCharacterClass] = armor;
+		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
+	};
+
+	// TODO: fix all the copy/pasted "country" references
 	return (
 		availableExoticArmor &&
 		selectedCharacterClass &&
-		selectedExoticArmor && (
-			<>
-				<Container>
-					{ArmorSlots.map((armorSlot) => {
-						return (
-							<div key={armorSlot}>
-								<div>
-									{availableExoticArmor[selectedCharacterClass][armorSlot].map(
-										(item: AvailableExoticArmorItem) => {
-											return (
-												<ImageContainer
-													selected={
-														selectedExoticArmor[selectedCharacterClass] &&
-														item.hash ===
-															selectedExoticArmor[selectedCharacterClass].hash
-													}
-													key={item.hash}
-													onClick={() => {
-														handleClick(item.destinyClassName, item);
-													}}
-												>
-													<ExoticImage src={item.icon} />
-													<Count>{item.count}</Count>
-												</ImageContainer>
-											);
-										}
-									)}
-								</div>
-							</div>
-						);
-					})}
-				</Container>
-			</>
+		selectedExoticArmor &&
+		selectedExoticArmor[selectedCharacterClass] && (
+			<Container>
+				<FormControl fullWidth>
+					<Autocomplete
+						id="country-select-demo"
+						sx={{ width: 400 }}
+						options={options}
+						autoHighlight
+						value={selectedExoticArmor[selectedCharacterClass]}
+						disableClearable
+						groupBy={(option) => getArmorSlotDisplayName(option.armorSlot)}
+						onChange={(_, value) => {
+							handleChange(value as AvailableExoticArmorItem);
+						}}
+						isOptionEqualToValue={(option, value) => {
+							return option.name == value.name && option.icon == value.icon;
+						}}
+						getOptionLabel={(option) =>
+							(option as AvailableExoticArmorItem).name
+						}
+						renderOption={(props, option, { inputValue }) => {
+							const matches = match(option.name, inputValue, {
+								insideWords: true
+							});
+							const parts = parse(option.name, matches);
+							return (
+								<Box
+									component="li"
+									sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+									{...props}
+								>
+									<BungieImage width="20" src={option.icon} alt="asdf" />
+									<div>
+										{parts.map((part, index) => (
+											<span
+												key={index}
+												style={{
+													fontWeight: part.highlight ? 700 : 400
+												}}
+											>
+												{part.text}
+											</span>
+										))}
+									</div>
+								</Box>
+							);
+						}}
+						renderInput={(params) => {
+							return (
+								<TextField
+									className="exotic-selector-text-field"
+									label="Exotic"
+									//labelId="demo-simple-select-label-2"
+									{...params}
+									InputProps={{
+										...params.InputProps,
+										startAdornment: (
+											<Box
+												sx={{
+													marginTop: '7.5px',
+													marginBottom: '1.5px',
+													marginLeft: '5px'
+												}}
+											>
+												<BungieImage
+													width={40}
+													height={40}
+													src={selectedExoticArmor[selectedCharacterClass].icon}
+												/>
+											</Box>
+										),
+										autoComplete: 'new-password' // disable autocomplete and autofill
+									}}
+								/>
+							);
+						}}
+					/>
+				</FormControl>
+			</Container>
 		)
 	);
 }

@@ -12,7 +12,7 @@ type StatSelectionProps = {
 	locked: boolean;
 };
 
-const Container = styled(Card)(({ theme }) => ({
+const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	padding: theme.spacing(3)
 }));

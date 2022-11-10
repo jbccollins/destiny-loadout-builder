@@ -15,8 +15,8 @@ import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArm
 import ArmorResultsTable from './ArmorResultsTable';
 import { useMemo } from 'react';
 import { StatList } from '@dlb/services/armor-processing';
-const Container = styled(Card)(({ theme }) => ({
-	padding: theme.spacing(3)
+const Container = styled(Box)(({ theme }) => ({
+	padding: theme.spacing(1)
 }));
 
 export type ResultsTableArmorItem = {
@@ -26,10 +26,6 @@ export type ResultsTableArmorItem = {
 	totalStats: StatList;
 	armorItems: ArmorItem[];
 };
-
-const Items = styled(Box)(({ theme }) => ({
-	padding: theme.spacing(3)
-}));
 
 // TODO: Remove props and just read from redux?
 function ArmorResultsView() {

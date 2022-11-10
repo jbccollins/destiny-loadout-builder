@@ -13,8 +13,15 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import Shield from '@mui/icons-material/Shield';
-import { TablePagination } from '@mui/material';
+import { styled, TablePagination } from '@mui/material';
 import { ResultsTableArmorItem } from './ArmorResultsView';
+
+const CustomTableCell = styled(TableCell, {
+	shouldForwardProp: (prop) => prop !== 'open'
+})<{ open?: boolean }>(({ theme, color }) => ({
+	backgroundColor: open ? 'black' : '',
+	borderBottom: 0
+}));
 
 function Row(props: { row: ResultsTableArmorItem }) {
 	const { row } = props;
@@ -22,64 +29,69 @@ function Row(props: { row: ResultsTableArmorItem }) {
 
 	return (
 		<React.Fragment>
-			<TableRow
-				sx={{ '& > *': { borderBottom: 'unset' }, border: '1px solid red' }}
-			>
-				<TableCell sx={{ width: '100px', height: '60px' }}>
-					<IconButton
-						aria-label="expand row"
-						size="small"
-						onClick={() => setOpen(!open)}
-					>
-						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-					</IconButton>
-				</TableCell>
-				<TableCell>{row.totalStats[0]}</TableCell>
-				<TableCell>{row.totalStats[1]}</TableCell>
-				<TableCell>{row.totalStats[2]}</TableCell>
-				<TableCell>{row.totalStats[3]}</TableCell>
-				<TableCell>{row.totalStats[4]}</TableCell>
-				<TableCell>{row.totalStats[5]}</TableCell>
+			<TableRow>
+				<CustomTableCell
+					open={open}
+					sx={{
+						width: '100px',
+						height: '60px',
+						borderBottom: 0
+					}}
+				>
+					<>
+						<IconButton
+							aria-label="expand row"
+							size="small"
+							onClick={() => setOpen(!open)}
+						>
+							{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+						</IconButton>
+					</>
+				</CustomTableCell>
+				<CustomTableCell>{row.totalStats[0]}</CustomTableCell>
+				<CustomTableCell>{row.totalStats[1]}</CustomTableCell>
+				<CustomTableCell>{row.totalStats[2]}</CustomTableCell>
+				<CustomTableCell>{row.totalStats[3]}</CustomTableCell>
+				<CustomTableCell>{row.totalStats[4]}</CustomTableCell>
+				<CustomTableCell>{row.totalStats[5]}</CustomTableCell>
 			</TableRow>
 			<TableRow>
 				<TableCell
-					style={{
-						padding: 0
-					}}
+					sx={{ '& > *': { borderBottom: 'unset' }, padding: 0 }}
 					colSpan={7}
 				>
 					<Collapse in={open} timeout="auto" unmountOnExit>
-						<Box sx={{ padding: 2, border: '1px solid red', marginRight: 1 }}>
+						<Box sx={{ padding: 0, borderTop: '1px solid' }}>
 							<Table size="small" aria-label="purchases">
 								<TableHead>
 									<TableRow>
-										<TableCell sx={{ width: '100px', height: '60px' }}>
-											<Shield />
-										</TableCell>
-										<TableCell>Mob</TableCell>
-										<TableCell>Res</TableCell>
-										<TableCell>Rec</TableCell>
-										<TableCell>Dis</TableCell>
-										<TableCell>Int</TableCell>
-										<TableCell>Str</TableCell>
+										<CustomTableCell sx={{ width: '100px', height: '60px' }}>
+											<Shield sx={{ marginLeft: '5px', marginTop: '3px' }} />
+										</CustomTableCell>
+										<CustomTableCell>Mob</CustomTableCell>
+										<CustomTableCell>Res</CustomTableCell>
+										<CustomTableCell>Rec</CustomTableCell>
+										<CustomTableCell>Dis</CustomTableCell>
+										<CustomTableCell>Int</CustomTableCell>
+										<CustomTableCell>Str</CustomTableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
 									{row.armorItems.map((armorItem) => (
 										<TableRow key={armorItem.id}>
-											<TableCell sx={{ width: '100px', height: '60px' }}>
+											<CustomTableCell sx={{ width: '100px', height: '60px' }}>
 												<BungieImage
 													width={'40px'}
 													height={'40px'}
 													src={armorItem.icon}
 												/>
-											</TableCell>
-											<TableCell>{armorItem.stats[0]}</TableCell>
-											<TableCell>{armorItem.stats[1]}</TableCell>
-											<TableCell>{armorItem.stats[2]}</TableCell>
-											<TableCell>{armorItem.stats[3]}</TableCell>
-											<TableCell>{armorItem.stats[4]}</TableCell>
-											<TableCell>{armorItem.stats[5]}</TableCell>
+											</CustomTableCell>
+											<CustomTableCell>{armorItem.stats[0]}</CustomTableCell>
+											<CustomTableCell>{armorItem.stats[1]}</CustomTableCell>
+											<CustomTableCell>{armorItem.stats[2]}</CustomTableCell>
+											<CustomTableCell>{armorItem.stats[3]}</CustomTableCell>
+											<CustomTableCell>{armorItem.stats[4]}</CustomTableCell>
+											<CustomTableCell>{armorItem.stats[5]}</CustomTableCell>
 										</TableRow>
 									))}
 								</TableBody>
@@ -92,25 +104,6 @@ function Row(props: { row: ResultsTableArmorItem }) {
 	);
 }
 
-// const rows = [
-// 	createData('1'),
-// 	createData('3'),
-// 	createData('4'),
-// 	createData('5'),
-// 	createData('6'),
-// 	createData('7'),
-// 	createData('8'),
-// 	createData('9'),
-// 	createData('10'),
-// 	createData('11'),
-// 	createData('12'),
-// 	createData('13'),
-// 	createData('14'),
-// 	createData('15'),
-// 	createData('16'),
-// 	createData('17')
-// ];
-
 type ArmorResultsTableProps = {
 	items: ResultsTableArmorItem[];
 };
@@ -118,6 +111,17 @@ type ArmorResultsTableProps = {
 export default function CollapsibleTable(props: ArmorResultsTableProps) {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	// const [order, setOrder] = React.useState<Order>('asc');
+	// const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
+
+	// const handleRequestSort = (
+	//   event: React.MouseEvent<unknown>,
+	//   property: 'Mob' | 'Res'| 'Rec'| 'Dis'| 'Int'|  'Str',
+	// ) => {
+	//   const isAsc = orderBy === property && order === 'asc';
+	//   setOrder(isAsc ? 'desc' : 'asc');
+	//   setOrderBy(property);
+	// };
 
 	const handleChangePage = (event: unknown, newPage: number) => {
 		setPage(newPage);
@@ -136,10 +140,19 @@ export default function CollapsibleTable(props: ArmorResultsTableProps) {
 				component={Paper}
 				sx={{ width: '100%', height: 600, maxHeight: 600 }}
 			>
-				<Table aria-label="collapsible table" stickyHeader>
+				<Table
+					aria-label="collapsible table"
+					stickyHeader
+					sx={{ borderCollapse: 'collapse' }}
+				>
 					<TableHead>
 						<TableRow>
-							<TableCell sx={{ width: '100px', height: '60px' }}></TableCell>
+							<TableCell
+								sx={{
+									width: '100px',
+									height: '60px'
+								}}
+							></TableCell>
 							<TableCell align="left">Mob</TableCell>
 							<TableCell align="left">Res</TableCell>
 							<TableCell align="left">Rec</TableCell>

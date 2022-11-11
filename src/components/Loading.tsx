@@ -18,7 +18,11 @@ import { useState, useEffect } from 'react';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
-	padding: theme.spacing(3)
+	padding: theme.spacing(3),
+	position: 'fixed',
+	left: '50%',
+	top: '50%',
+	transform: 'translate(-50%, -50%)'
 }));
 
 const Item = styled(Box)(({ theme }) => ({
@@ -26,15 +30,12 @@ const Item = styled(Box)(({ theme }) => ({
 	display: 'flex'
 }));
 
-const ItemCheckbox = styled(Checkbox)(({ theme }) => ({
-	color: theme.palette.secondary.main
-}));
-
 const ItemName = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	display: 'flex',
 	flexDirection: 'column',
-	justifyContent: 'center'
+	justifyContent: 'center',
+	paddingLeft: theme.spacing(1)
 }));
 
 const LoadingSpinner = styled(CircularProgress)(({ theme }) => ({
@@ -75,12 +76,15 @@ function Loading() {
 				);
 				setHasPlatformData(true);
 				console.log('>>>>>>>>>>> platform <<<<<<<<<<<', membershipData);
-				const rawCharacters = await getCharacters(mostRecentPlatform);
-				console.log('>>>>>>>>>>> raw characters <<<<<<<<<<<', rawCharacters);
-				setHasRawCharacters(true);
+
 				const manifest = await getDefinitions();
 				console.log('>>>>>>>>>>> manifest <<<<<<<<<<<', manifest);
 				setHasManifest(true);
+
+				const rawCharacters = await getCharacters(mostRecentPlatform);
+				console.log('>>>>>>>>>>> raw characters <<<<<<<<<<<', rawCharacters);
+				setHasRawCharacters(true);
+
 				const stores = await loadStoresData(mostRecentPlatform);
 				console.log('>>>>>>>>>> stores <<<<<<<<<<<', stores);
 				setHasStores(true);
@@ -112,10 +116,10 @@ function Loading() {
 
 	const items: [string, boolean][] = [
 		['Bungie Membership Data', hasMembershipData],
-		['Platform Information', hasPlatformData],
-		['Characters', hasRawCharacters],
-		['Manifest', hasManifest],
-		['Stores', hasStores]
+		['Platform Data', hasPlatformData],
+		['Destiny Manifest', hasManifest],
+		['Your Characters', hasRawCharacters],
+		['Your Inventory', hasStores]
 	];
 
 	return (

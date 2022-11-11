@@ -13,7 +13,7 @@ import {
 } from '@dlb/services/data';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import ArmorResultsTable from './ArmorResultsTable';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { StatList } from '@dlb/services/armor-processing';
 const Container = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(1)
@@ -34,15 +34,18 @@ function ArmorResultsView() {
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 
-	const getArmorItem = (id: string, armorSlot: EArmorSlot) => {
-		const selectedExoticArmorSlot =
-			selectedExoticArmor[selectedCharacterClass].armorSlot;
-		// console.log('>>>>>>>>>>>> getArmorItem <<<<<<<<<<<<<<', { id, armorSlot });
-		if (selectedExoticArmorSlot === armorSlot) {
-			return armor[selectedCharacterClass][armorSlot].exotic[id];
-		}
-		return armor[selectedCharacterClass][armorSlot].nonExotic[id];
-	};
+	const getArmorItem = useCallback(
+		(id: string, armorSlot: EArmorSlot) => {
+			const selectedExoticArmorSlot =
+				selectedExoticArmor[selectedCharacterClass].armorSlot;
+			// console.log('>>>>>>>>>>>> getArmorItem <<<<<<<<<<<<<<', { id, armorSlot });
+			if (selectedExoticArmorSlot === armorSlot) {
+				return armor[selectedCharacterClass][armorSlot].exotic[id];
+			}
+			return armor[selectedCharacterClass][armorSlot].nonExotic[id];
+		},
+		[armor, selectedCharacterClass, selectedExoticArmor]
+	);
 
 	const resultsTableArmorItems: ResultsTableArmorItem[] = useMemo(() => {
 		const res: ResultsTableArmorItem[] = [];
@@ -67,7 +70,7 @@ function ArmorResultsView() {
 		return res;
 		// TODO: figure out a better pattern so that we can avoid this warning about getArmorItem
 		// not being in the dependency array
-	}, [processedArmor]);
+	}, [processedArmor, getArmorItem]);
 
 	return (
 		<>

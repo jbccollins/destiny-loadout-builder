@@ -5,10 +5,12 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
+	SelectProps,
 	styled
 } from '@mui/material';
 import { useState } from 'react';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { PropaneSharp } from '@mui/icons-material';
 
 // const CharacterClassAndExoticContainer = styled(Box)(({ theme }) => ({
 // 	color: theme.palette.primary.main,
@@ -50,32 +52,37 @@ type IconDropdownProps = {
 	getLabel: (option: IconDropdownOption) => string;
 	onChange: (value: string) => void;
 	value: string;
+	title?: string;
+	selectComponentProps: SelectProps;
 };
 
 const IconDropdown = ({
 	options,
 	getLabel,
 	onChange,
-	value
+	value,
+	title,
+	selectComponentProps
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
-		console.log('>>>>>>>>>>>> selected character class <<<<<<<<<<<<<<', value);
+		console.log('>>>>>>>>>>>> change <<<<<<<<<<<<<<', value);
 		onChange(value);
 	};
 	return (
 		<FormControl fullWidth>
-			<InputLabel id="demo-simple-select-label">Class</InputLabel>
+			<InputLabel id="demo-simple-select-label">{title || ''}</InputLabel>
 			<Select
-				sx={{
-					maxWidth: 100,
-					borderTopRightRadius: 0,
-					borderBottomRightRadius: 0
-				}}
+				// sx={{
+				// 	maxWidth: 100
+				// 	borderTopRightRadius: 0,
+				// 	borderBottomRightRadius: 0
+				// }}
+				{...selectComponentProps}
 				labelId="demo-simple-select-label"
 				id="demo-simple-select"
 				className="demo-simple-select"
 				value={value}
-				label="Class"
+				label={title || ''}
 				onChange={(e) => {
 					handleChange(e.target.value as string);
 				}}
@@ -83,7 +90,11 @@ const IconDropdown = ({
 				{options.map((option) => {
 					const label = getLabel(option);
 					return (
-						<MenuItem key={option.id} value={label} disabled={option.disabled}>
+						<MenuItem
+							key={option.id}
+							value={option.id}
+							disabled={option.disabled}
+						>
 							<MenuItemContent>
 								<BungieImage width={40} height={40} src={option.icon} />
 								<MenuItemText className="character-class-name">

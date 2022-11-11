@@ -105,23 +105,20 @@ function CharacterSelector() {
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						selectComponentProps={{
+							sx: {
+								maxWidth: 100,
+								borderTopRightRadius: 0,
+								borderBottomRightRadius: 0
+							}
+						}}
 						options={options}
 						getLabel={getLabel}
 						value={selectedCharacterClass || ''}
 						onChange={handleChange}
+						title="Class"
 					/>
 				</IconDropdownContainer>
-				{/* {characters.map((character) => (
-					<Item
-						key={character.id}
-						onClick={() => handleCharacterClick(character.className)}
-					>
-						<EmblemImage src={character.background} />
-						<CharacterText variant="h5">
-							{character.genderRace} {capitalize(character.className)}
-						</CharacterText>
-					</Item>
-				))} */}
 			</Container>
 		</>
 	);

@@ -91,6 +91,11 @@ function ExoticSelector() {
 		setDefaultSelectedExoticArmor();
 	}, [setDefaultSelectedExoticArmor]);
 
+	// let options: AvailableExoticArmorItem[] = useMemo(
+	// 	() => [],
+	// 	[availableExoticArmor, selectedCharacterClass]
+	// );
+	// TODO: Don't recalculate this every render
 	let options: AvailableExoticArmorItem[] = [];
 	if (availableExoticArmor && selectedCharacterClass) {
 		ArmorSlots.forEach((armorSlot) => {

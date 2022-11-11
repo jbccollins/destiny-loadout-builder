@@ -13,6 +13,7 @@ import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLo
 import { useAppSelector } from '@dlb/redux/hooks';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
+import ArmorSlotRestrictions from '@dlb/components/ArmorSlotRestrictions/ArmorSlotRestrictions';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -44,6 +45,7 @@ const Home: NextPage = () => {
 					<>
 						<Section>
 							<ExoticAndDestinyClassSelectorWrapper />
+							<ArmorSlotRestrictions />
 							<StatSelection locked />
 						</Section>
 						<RightSection>

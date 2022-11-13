@@ -158,7 +158,6 @@ export async function getDefinitions(): Promise<D2ManifestDefinitions> {
 export function buildDefinitionsFromManifest(db: AllDestinyManifestComponents) {
 	enhanceDBWithFakeEntries(db);
 	const defs = {
-		isDestiny1: () => false,
 		isDestiny2: () => true
 	};
 	lazyTables.forEach((tableShort) => {

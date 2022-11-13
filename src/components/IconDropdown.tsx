@@ -12,31 +12,12 @@ import { useState } from 'react';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { PropaneSharp } from '@mui/icons-material';
 
-// const CharacterClassAndExoticContainer = styled(Box)(({ theme }) => ({
-// 	color: theme.palette.primary.main,
-// 	padding: theme.spacing(4),
-// 	display: 'flex',
-// 	justifyContent: 'left',
-// 	['.demo-simple-select']: {
-// 		['.character-class-name']: {
-// 			display: 'none'
-// 		}
-// 	},
-// 	['.exotic-selector-text-field fieldset']: {
-// 		borderTopLeftRadius: '0px',
-// 		borderBottomLeftRadius: '0px',
-// 		borderLeftColor: 'transparent'
-// 	}
-// }));
-
 const MenuItemContent = styled('div')(({ theme }) => ({
 	display: 'flex',
-	// justifyContent: 'center',
 	alignItems: 'center'
 }));
 
 const MenuItemText = styled('div')(({ theme }) => ({
-	// position: 'absolute'
 	marginLeft: theme.spacing(1),
 	textTransform: 'capitalize'
 }));
@@ -44,7 +25,7 @@ const MenuItemText = styled('div')(({ theme }) => ({
 interface IconDropdownOption {
 	icon: string;
 	id: string | number;
-	disabled: boolean;
+	disabled?: boolean;
 }
 
 type IconDropdownProps = {
@@ -72,11 +53,6 @@ const IconDropdown = ({
 		<FormControl fullWidth>
 			<InputLabel id="demo-simple-select-label">{title || ''}</InputLabel>
 			<Select
-				// sx={{
-				// 	maxWidth: 100
-				// 	borderTopRightRadius: 0,
-				// 	borderBottomRightRadius: 0
-				// }}
 				{...selectComponentProps}
 				labelId="demo-simple-select-label"
 				id="demo-simple-select"

@@ -129,6 +129,76 @@ export const ArmorElementalAffinityIcons: EnumDictionary<
 	// [DestinyEnergyType.Subclass]: ""
 };
 
+export enum EStatModifier {
+	None = 'none',
+	MinorMobility = 'mob-minor',
+	MajorMobility = 'mob-major',
+	MinorResilience = 'res-minor',
+	MajorResilience = 'res-major',
+	MinorRecovery = 'rec-minor',
+	MajorRecovery = 'rec-major',
+	MinorDiscipline = 'dis-minor',
+	MajorDiscipline = 'dis-major',
+	MinorIntellect = 'int-minor',
+	MajorIntellect = 'int-major',
+	MinorStrength = 'str-minor',
+	MajorStrength = 'str-major'
+}
+
+// Stat Enum, bonus, cost, mod hash
+export const StatModValues: EnumDictionary<
+	EStatModifier,
+	[EArmorStat, number, number, number]
+> = {
+	[EStatModifier.None]: [EArmorStat.Strength, 0, 0, 0],
+	[EStatModifier.MinorMobility]: [EArmorStat.Mobility, 5, 1, 204137529],
+	[EStatModifier.MajorMobility]: [EArmorStat.Mobility, 10, 3, 3961599962],
+	[EStatModifier.MinorResilience]: [EArmorStat.Resilience, 5, 1, 3682186345],
+	[EStatModifier.MajorResilience]: [EArmorStat.Resilience, 10, 3, 2850583378],
+	[EStatModifier.MinorRecovery]: [EArmorStat.Recovery, 5, 2, 555005975],
+	[EStatModifier.MajorRecovery]: [EArmorStat.Recovery, 10, 4, 2645858828],
+	[EStatModifier.MinorDiscipline]: [EArmorStat.Discipline, 5, 1, 2623485440],
+	[EStatModifier.MajorDiscipline]: [EArmorStat.Discipline, 10, 3, 4048838440],
+	[EStatModifier.MinorIntellect]: [EArmorStat.Intellect, 5, 2, 1227870362],
+	[EStatModifier.MajorIntellect]: [EArmorStat.Intellect, 10, 5, 3355995799],
+	[EStatModifier.MinorStrength]: [EArmorStat.Strength, 5, 1, 3699676109],
+	[EStatModifier.MajorStrength]: [EArmorStat.Strength, 10, 3, 3253038666]
+};
+
+// Stat Enum, bonus, cost, mod hash
+export const ArmorStatModMapping: EnumDictionary<
+	EArmorStat,
+	{
+		major: EStatModifier;
+		minor: EStatModifier;
+	}
+> = {
+	[EArmorStat.Mobility]: {
+		minor: EStatModifier.MinorMobility,
+		major: EStatModifier.MajorMobility
+	},
+	[EArmorStat.Resilience]: {
+		minor: EStatModifier.MinorResilience,
+		major: EStatModifier.MajorResilience
+	},
+	[EArmorStat.Recovery]: {
+		minor: EStatModifier.MinorRecovery,
+		major: EStatModifier.MajorRecovery
+	},
+	[EArmorStat.Discipline]: {
+		minor: EStatModifier.MinorDiscipline,
+		major: EStatModifier.MajorDiscipline
+	},
+	[EArmorStat.Intellect]: {
+		minor: EStatModifier.MinorIntellect,
+		major: EStatModifier.MajorIntellect
+	},
+	[EArmorStat.Strength]: {
+		minor: EStatModifier.MinorStrength,
+		major: EStatModifier.MajorStrength
+	}
+};
+
 /******** Lists of the enums above to make iteration easier. Iteration
  * over enums in typescript is awful. ORDER MATTERS FOR THESE DO NOT CHANGE. ********/
 export const DestinyClasses = [

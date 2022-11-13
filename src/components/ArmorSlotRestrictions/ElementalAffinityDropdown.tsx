@@ -1,29 +1,9 @@
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import {
 	ArmorElementalAffinities,
-	ArmorElementalAffinityIcons,
-	EArmorElementalAffinity,
-	EDestinyClass
+	ArmorElementalAffinityIcons
 } from '@dlb/services/data';
-import {
-	Box,
-	styled,
-	Card,
-	capitalize,
-	Typography,
-	SelectProps,
-	Theme,
-	SxProps
-} from '@mui/material';
-import {
-	selectSelectedCharacterClass,
-	setSelectedCharacterClass
-} from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { useCallback, useEffect, useMemo } from 'react';
-import { selectCharacters } from '@dlb/redux/features/characters/charactersSlice';
+import { styled, Theme, SxProps } from '@mui/material';
 import IconDropdown from '../IconDropdown';
-import { selectSelectedArmorSlotRestrictions } from '@dlb/redux/features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
 	// paddingRight: 0

@@ -24,6 +24,7 @@ import {
 } from '@dlb/redux/features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
 import ElementalAffinityDropdown from './ElementalAffinityDropdown';
 import ExtraModSlotDropdown from './ExtraModSlotRestrictions';
+import StatModCostDropdown from './StatModCostDropdown';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1)
 	// paddingRight: 0
@@ -32,7 +33,7 @@ const Container = styled('div')(({ theme }) => ({
 const Row = styled('div')(({ theme }) => ({
 	display: 'flex'
 }));
-const ExtraModSlotDropdownWrapper = styled('div')(({ theme }) => ({
+const OffsetWrapper = styled('div')(({ theme }) => ({
 	marginLeft: '-1px'
 }));
 
@@ -44,7 +45,7 @@ function ArmorSlotRestrictions() {
 	const dispatch = useAppDispatch();
 
 	const handleChange = (
-		value: string,
+		value: string | number,
 		armorSlot: EArmorSlot,
 		restrictionType: keyof ArmorSlotRestrictionGroup
 	) => {
@@ -83,7 +84,7 @@ function ArmorSlotRestrictions() {
 								handleChange(value, armorSlot, 'elementalAffinity')
 							}
 						/>
-						<ExtraModSlotDropdownWrapper>
+						<OffsetWrapper>
 							<ExtraModSlotDropdown
 								title={armorSlot === EArmorSlot.Head ? 'Mod Slot' : ''}
 								value={selectedArmorSlotRestrictions[armorSlot].extraModSlot}
@@ -91,7 +92,20 @@ function ArmorSlotRestrictions() {
 									handleChange(value, armorSlot, 'extraModSlot')
 								}
 							/>
-						</ExtraModSlotDropdownWrapper>
+						</OffsetWrapper>
+						<OffsetWrapper>
+							<StatModCostDropdown
+								selectComponentStyle={{
+									borderTopRightRadius: armorSlot === EArmorSlot.Head ? '' : 0,
+									borderBottomRightRadius: armorSlot === EArmorSlot.Leg ? '' : 0
+								}}
+								title={armorSlot === EArmorSlot.Head ? 'Cost' : ''}
+								value={selectedArmorSlotRestrictions[armorSlot].maxStatModCost}
+								onChange={(value: number) =>
+									handleChange(value, armorSlot, 'maxStatModCost')
+								}
+							/>
+						</OffsetWrapper>
 					</Row>
 				);
 			})}

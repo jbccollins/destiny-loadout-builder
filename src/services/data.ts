@@ -282,6 +282,9 @@ export type ArmorItem = {
 	destinyClassName: EDestinyClass;
 	// breakerType: ??? TODO: Do exotics have a breaker type set? I think some should
 	// exoticDescription: string TODO: Figure out how to add this
+
+	// Is this armor masterworked
+	isMasterworked: boolean;
 };
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/
@@ -417,7 +420,8 @@ export const extractArmor = (
 					armorSlot: DestinyArmorTypeToArmorSlot[item.type],
 					hash: item.hash,
 					destinyClassName:
-						DestinyClassStringToDestinyClass[item.classTypeNameLocalized]
+						DestinyClassStringToDestinyClass[item.classTypeNameLocalized],
+					isMasterworked: item.masterwork
 				};
 				if (item.isExotic) {
 					armor[destinyClassName][armorSlot].exotic[item.id] = armorItem;

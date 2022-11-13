@@ -33,7 +33,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -41,7 +42,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -49,7 +51,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -57,7 +60,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '3',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				]
 			]
@@ -81,7 +85,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -89,7 +94,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -97,7 +103,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -105,7 +112,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '3',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				]
 			]
@@ -129,7 +137,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -137,7 +146,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -145,7 +155,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -153,13 +164,15 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '3',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					},
 					{
 						id: '4',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				]
 			]
@@ -186,7 +199,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -194,13 +208,15 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					},
 					{
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -208,7 +224,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '3',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -216,13 +233,15 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '4',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					},
 					{
 						id: '5',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				]
 			]
@@ -251,7 +270,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '0',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -259,13 +279,15 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '1',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					},
 					{
 						id: '2',
 						stats: es([2, 16, 16, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -273,7 +295,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '3',
 						stats: es([30, 2, 2, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				],
 				[
@@ -281,18 +304,72 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						id: '4',
 						stats: es([30, 2, 2, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					},
 					{
 						id: '5',
 						stats: es([30, 2, 2, 16, 16, 2]),
 						hash: -1,
-						isExotic: false
+						isExotic: false,
+						isMasterworked: false
 					}
 				]
 			]
 		},
 		output: []
+	},
+	{
+		name: 'It returns results with one item in each slot where each item is masterworked',
+		input: {
+			desiredArmorStats: {
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 70,
+				[EArmorStat.Recovery]: 70,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0
+			},
+			armorItems: [
+				[
+					{
+						id: '0',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: -1,
+						isExotic: false,
+						isMasterworked: true
+					}
+				],
+				[
+					{
+						id: '1',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: -1,
+						isExotic: false,
+						isMasterworked: true
+					}
+				],
+				[
+					{
+						id: '2',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: -1,
+						isExotic: false,
+						isMasterworked: true
+					}
+				],
+				[
+					{
+						id: '3',
+						stats: es([2, 16, 16, 16, 16, 2]),
+						hash: -1,
+						isExotic: false,
+						isMasterworked: true
+					}
+				]
+			]
+		},
+		output: [['0', '1', '2', '3']]
 	}
 ];
 
@@ -320,6 +397,10 @@ describe('processArmor', () => {
 	});
 	test(processArmorTestCases[4].name, () => {
 		const { input, output } = processArmorTestCases[4];
+		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
+	});
+	test(processArmorTestCases[5].name, () => {
+		const { input, output } = processArmorTestCases[5];
 		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
 	});
 });

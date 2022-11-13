@@ -7,14 +7,16 @@ import {
 	EArmorStat
 } from './data';
 
-// No legendary piece of armor has a single stat above 30
+// No masterworked legendary piece of armor has a single stat above 32
 // TODO: Can we dynamically set this per slot? Like not every user
 // is going to have six heads with 30 in each of the stats. So can we create a mapping
 // before processing. e.g.: {head: {mob: 28, res: 27, rec: 30, ...}, arm: {mob: 29, ...}}.
 // We can even "override" this with the max stats for a specific exotic when one is chosen.
 // I *think* it's impossible to have a short circuit before chest if we keep this at 30.
-// But it *should* be possible once we make this dynamic.
-const MAX_BASE_STAT_VALUE = 30;
+// But it *should* be possible once we make this dynamic. We *could* also check to see
+// if there even are any masterworked items in a slot (relevant mostly for the exotic chosen)
+// and if there aren't then this is just 30. Probably not needed once done dynamically anyway tho
+const MAX_SINGLE_STAT_VALUE = 32;
 
 export type StatList = [number, number, number, number, number, number];
 
@@ -31,8 +33,8 @@ export interface IArmorItem extends IDestinyItem {
 	stats: StatList;
 	// Is this piece of armor an exotic
 	isExotic: boolean;
-	// // Is this piece of armor masterworked
-	// isMasterworked: boolean;
+	// Is this piece of armor masterworked
+	isMasterworked: boolean;
 }
 
 // Strictly enforce the length of this array [Heads, Arms, Chests, Legs]
@@ -83,6 +85,10 @@ const getArmorSlotFromNumRemainingArmorPieces = (num: number) => {
 	throw `num is not 3,2,1: ${num}`;
 };
 
+// Masterworking adds +2 to each stat
+export const getExtraMasterworkedStats = ({ isMasterworked }: IArmorItem) =>
+	isMasterworked ? 2 : 0;
+
 // We never need to check legs as written since we always process top down.
 // TODO: This will need to change if prioritization of shortcircuiting based
 // on slot length actually matters. Basically... should we process slots with more items
@@ -107,7 +113,7 @@ export const shouldShortCircuit = (
 		desiredArmorStats,
 		numRemainingArmorPieces
 	} = params;
-	const maxRemaning = MAX_BASE_STAT_VALUE * numRemainingArmorPieces;
+	const maxRemaning = MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces;
 
 	// TODO: I hate this entries thing, can we just use a forEach() or a normal for loop?
 	for (const [i, stat] of armorStats.entries()) {
@@ -152,7 +158,10 @@ const getNextSeenStats = (
 	sumOfSeenStats: StatList,
 	armorSlotItem: IArmorItem
 ): StatList =>
-	sumOfSeenStats.map((x, i) => x + armorSlotItem.stats[i]) as StatList;
+	sumOfSeenStats.map(
+		(x, i) =>
+			x + armorSlotItem.stats[i] + getExtraMasterworkedStats(armorSlotItem)
+	) as StatList;
 
 const _processArmorBaseCase = ({
 	desiredArmorStats,
@@ -175,6 +184,34 @@ const _processArmorBaseCase = ({
 		if (isValid) {
 			output.push([...seenArmorIds, armorSlotItem.id] as ArmorIdList);
 		}
+		// const temp = [
+		// 	'6917529482245637017',
+		// 	'6917529401047462850',
+		// 	'6917529411924140321',
+		// 	'6917529469530823398'
+		// ];
+		// let isMatch0 = false;
+		// let isMatch1 = false;
+		// let isMatch2 = false;
+		// let isMatch3 = false;
+		// output[output.length - 1].forEach((id, i) => {
+		// 	if (output[output.length - 1][0] === '6917529482245637017') {
+		// 		isMatch0 = true;
+		// 	}
+		// 	if (output[output.length - 1][1] === '6917529401047462850') {
+		// 		isMatch1 = true;
+		// 	}
+		// 	if (output[output.length - 1][2] === '6917529411924140321') {
+		// 		isMatch2 = true;
+		// 	}
+		// 	if (output[output.length - 1][3] === '6917529469530823398') {
+		// 		isMatch3 = true;
+		// 	}
+		// });
+
+		// console.log(
+		// 	`>>>>>>>>>>>>>>>> match <<<<<<<<<<<<<<< ${isMatch0}, ${isMatch1}, ${isMatch2}, ${isMatch3},`
+		// );
 	});
 	return output;
 };

@@ -14,7 +14,10 @@ import {
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import ArmorResultsTable from './ArmorResultsTable';
 import { useCallback, useMemo } from 'react';
-import { StatList } from '@dlb/services/armor-processing';
+import {
+	getExtraMasterworkedStats,
+	StatList
+} from '@dlb/services/armor-processing';
 const Container = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(1)
 }));
@@ -23,7 +26,7 @@ export type ResultsTableArmorItem = {
 	id: string;
 	// TODO: We should probably rename the 'DesiredArmorStats' type since it's being used
 	// in a different way here
-	totalStats: StatList;
+	totalStats: StatList; // Includes Masterwork
 	armorItems: ArmorItem[];
 };
 
@@ -60,7 +63,8 @@ function ArmorResultsView() {
 				const armorItem = getArmorItem(armorIdsBySlot[i], armorSlot);
 				resultArmorItem.armorItems.push(armorItem);
 				armorItem.stats.forEach((value, j) => {
-					resultArmorItem.totalStats[j] += armorItem.stats[j];
+					resultArmorItem.totalStats[j] +=
+						armorItem.stats[j] + getExtraMasterworkedStats(armorItem);
 					resultArmorItem.id += `[${armorItem.id}]`;
 				});
 			});

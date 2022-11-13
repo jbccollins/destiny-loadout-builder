@@ -174,39 +174,40 @@ function processCharacter(
 		profileInfo.characterEquipment.data?.[characterId]?.items || [];
 	const profileRecords = profileInfo.profileRecords?.data;
 	const itemComponents = profileInfo.itemComponents;
+	// TODO: Do I need to add this back in? Maybe re-audit this whole copied file
 	// const uninstancedItemObjectives =
 	// 	getCharacterProgressions(profileInfo, characterId)
 	// 		?.uninstancedItemObjectives || [];
 
 	const store = makeCharacter(defs, character, lastPlayedDate, profileRecords);
 
-	// // We work around the weird account-wide buckets by assigning them to the current character
-	// const items = characterInventory.concat(characterEquipment.flat());
+	// We work around the weird account-wide buckets by assigning them to the current character
+	const items = characterInventory.concat(characterEquipment.flat());
 
-	// if (store.current) {
-	// 	for (const i of profileInventory) {
-	// 		const bucket = buckets.byHash[i.bucketHash];
-	// 		// items that can be stored in a vault
-	// 		if (
-	// 			bucket &&
-	// 			(bucket.vaultBucket || bucket.hash === BucketHashes.SpecialOrders)
-	// 		) {
-	// 			items.push(i);
-	// 		}
-	// 	}
-	// }
+	if (store.current) {
+		for (const i of profileInventory) {
+			const bucket = buckets.byHash[i.bucketHash];
+			// items that can be stored in a vault
+			if (
+				bucket &&
+				(bucket.vaultBucket || bucket.hash === BucketHashes.SpecialOrders)
+			) {
+				items.push(i);
+			}
+		}
+	}
 
-	// const processedItems = processItems(
-	// 	defs,
-	// 	buckets,
-	// 	store,
-	// 	items,
-	// 	itemComponents,
-	// 	mergedCollectibles,
-	// 	[], // uninstancedItemObjectives,
-	// 	profileRecords
-	// );
-	// store.items = processedItems;
+	const processedItems = processItems(
+		defs,
+		buckets,
+		store,
+		items,
+		itemComponents,
+		mergedCollectibles,
+		[], // uninstancedItemObjectives,
+		profileRecords
+	);
+	store.items = processedItems;
 	return store;
 }
 

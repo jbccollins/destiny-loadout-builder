@@ -1,7 +1,6 @@
 import { infoLog } from '@dlb/dim/utils/log';
 import { dedupePromise } from '@dlb/dim/utils/util';
 import axios from 'axios';
-import { oauthClientId, oauthClientSecret } from './bungie-api-utils';
 import { setToken, Token, Tokens } from './oauth-tokens';
 
 // all these api url params don't match our variable naming conventions

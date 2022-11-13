@@ -24,12 +24,12 @@ export function bungieApiQuery(
 		params
 	};
 }
-// TODO: Maybe move these to to the /api directory since they can only be called from there
 export function oauthClientId(): string {
-	return process.env.BNET_OAUTH_CLIENT_ID as string;
+	return process.env.NEXT_PUBLIC_BNET_OAUTH_CLIENT_ID as string;
 }
 
-// TODO: Put this behind a SECRET environment variable
+// TODO: move this to the api folder and ensure no client code can try to reference it.
+// It will always return undefined if client code calls it.
 export function oauthClientSecret(): string {
 	return process.env.BNET_OAUTH_CLIENT_SECRET as string;
 }

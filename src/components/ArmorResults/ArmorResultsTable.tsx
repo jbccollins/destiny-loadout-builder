@@ -17,7 +17,7 @@ import {
 	Checkbox,
 	styled,
 	TablePagination,
-	TableSortLabel
+	TableSortLabel,
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { ResultsTableArmorItem } from './ArmorResultsView';
@@ -30,7 +30,7 @@ const armorStatToOrder: ArmorStatMapping = {
 	[EArmorStat.Recovery]: 2,
 	[EArmorStat.Discipline]: 3,
 	[EArmorStat.Intellect]: 4,
-	[EArmorStat.Strength]: 5
+	[EArmorStat.Strength]: 5,
 };
 
 function descendingComparator(
@@ -65,10 +65,10 @@ function getComparator(
 }
 
 const CustomTableCell = styled(TableCell, {
-	shouldForwardProp: (prop) => prop !== 'open'
+	shouldForwardProp: (prop) => prop !== 'open',
 })<{ open?: boolean }>(({ theme, color }) => ({
 	backgroundColor: open ? 'black' : '',
-	borderBottom: 0
+	borderBottom: 0,
 }));
 
 function Row(props: { row: ResultsTableArmorItem }) {
@@ -83,7 +83,7 @@ function Row(props: { row: ResultsTableArmorItem }) {
 					sx={{
 						width: '100px',
 						height: '60px',
-						borderBottom: 0
+						borderBottom: 0,
 					}}
 				>
 					<>
@@ -164,7 +164,7 @@ const headCells: readonly HeadCell[] = ArmorStats.map((armorStat) => {
 		id: armorStat,
 		numeric: true,
 		disablePadding: false,
-		label: armorStat
+		label: armorStat,
 	};
 });
 
@@ -191,7 +191,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 				<TableCell
 					sx={{
 						width: '100px',
-						height: '60px'
+						height: '60px',
 					}}
 				></TableCell>
 				{headCells.map((headCell) => (
@@ -261,7 +261,7 @@ export default function CollapsibleTable(props: ArmorResultsTableProps) {
 		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
 			<TableContainer
 				component={Paper}
-				sx={{ width: '100%', height: 600, maxHeight: 600 }}
+				sx={{ width: '100%' /*, height: 600, maxHeight: 600*/ }}
 			>
 				<Table
 					aria-label="collapsible table"

@@ -5,7 +5,7 @@ import {
 	AvailableExoticArmorItem,
 	DestinyClasses,
 	EDestinyClass,
-	getArmorSlotDisplayName
+	getArmorSlotDisplayName,
 } from '@dlb/services/data';
 import {
 	Box,
@@ -13,12 +13,12 @@ import {
 	Card,
 	Autocomplete,
 	FormControl,
-	TextField
+	TextField,
 } from '@mui/material';
 
 import {
 	selectSelectedExoticArmor,
-	setSelectedExoticArmor
+	setSelectedExoticArmor,
 } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
@@ -30,13 +30,14 @@ import match from 'autosuggest-highlight/match';
 
 const Container = styled('div')(({ theme }) => ({
 	color: theme.palette.secondary.main,
+	width: '100%',
 	['.exotic-selector-text-field fieldset']: {
 		borderTopLeftRadius: '0px',
 		borderBottomLeftRadius: '0px',
 		//borderLeftColor: 'transparent'
 		padding: theme.spacing(1),
-		paddingRight: 0
-	}
+		paddingRight: 0,
+	},
 }));
 
 // TODO: Group by armor slot
@@ -60,7 +61,7 @@ function ExoticSelector() {
 			> = {
 				[EDestinyClass.Titan]: null,
 				[EDestinyClass.Hunter]: null,
-				[EDestinyClass.Warlock]: null
+				[EDestinyClass.Warlock]: null,
 			};
 			DestinyClasses.forEach((className) => {
 				if (availableExoticArmor[className]) {
@@ -84,7 +85,7 @@ function ExoticSelector() {
 		availableExoticArmor,
 		dispatch,
 		hasSelectedDefaultExotics,
-		selectedCharacterClass
+		selectedCharacterClass,
 	]);
 
 	useEffect(() => {
@@ -130,7 +131,7 @@ function ExoticSelector() {
 				<FormControl fullWidth>
 					<Autocomplete
 						id="country-select-demo"
-						sx={{ width: 400 }}
+						//sx={{ maxWidth: 400 }}
 						options={options}
 						autoHighlight
 						value={selectedExoticArmor[selectedCharacterClass]}
@@ -147,7 +148,7 @@ function ExoticSelector() {
 						}
 						renderOption={(props, option, { inputValue }) => {
 							const matches = match(option.name, inputValue, {
-								insideWords: true
+								insideWords: true,
 							});
 							const parts = parse(option.name, matches);
 							return (
@@ -162,7 +163,7 @@ function ExoticSelector() {
 											<span
 												key={index}
 												style={{
-													fontWeight: part.highlight ? 700 : 400
+													fontWeight: part.highlight ? 700 : 400,
 												}}
 											>
 												{part.text}
@@ -186,7 +187,7 @@ function ExoticSelector() {
 												sx={{
 													marginTop: '7.5px',
 													marginBottom: '1.5px',
-													marginLeft: '5px'
+													marginLeft: '5px',
 												}}
 											>
 												<BungieImage
@@ -196,7 +197,7 @@ function ExoticSelector() {
 												/>
 											</Box>
 										),
-										autoComplete: 'new-password' // disable autocomplete and autofill
+										autoComplete: 'new-password', // disable autocomplete and autofill
 									}}
 								/>
 							);

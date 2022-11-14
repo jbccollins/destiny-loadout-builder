@@ -18,6 +18,7 @@ a {
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+    overflow-y: hidden;
   }
   body {
     color: white;

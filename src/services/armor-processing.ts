@@ -254,7 +254,6 @@ const _processArmorBaseCase = ({
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
 	armorSlotItems.forEach((armorSlotItem) => {
-		// let isValid = true;
 		const finalSumOfSeenStats = getNextSeenStats(sumOfSeenStats, armorSlotItem);
 
 		const [shortCircuit, requiredStatMods, requiredStatModSumValues] =
@@ -268,20 +267,8 @@ const _processArmorBaseCase = ({
 			return;
 		}
 
-		// for (let i = 0; i < ArmorStats.length; i++) {
-		// 	const armorStat = ArmorStats[i];
-		// 	if (desiredArmorStats[armorStat] > finalSumOfSeenStats[i]) {
-		// 		// skip
-		// 		isValid = false;
-		// 		break;
-		// 	}
-		// }
-		// if (isValid) {
-		// 	// TODO: URGENT: Return the requiredStatMods here as well
-
-		// TODO: Convert this type into [StatList, EStatModifier[]]
+		// TODO: URGENT Convert this type into [StatList, EStatModifier[]]
 		output.push([...seenArmorIds, armorSlotItem.id, requiredStatMods] as Temp);
-		//}
 	});
 	console.log('>>>>>> Base Case output:', output);
 	return output;

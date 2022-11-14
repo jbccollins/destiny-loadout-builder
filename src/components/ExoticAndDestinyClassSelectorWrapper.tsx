@@ -6,10 +6,12 @@ const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
 	padding: theme.spacing(1),
 	display: 'flex',
-	justifyContent: 'left'
+	justifyContent: 'left',
 }));
 const ExoticSelectorWrapper = styled('div')(({ theme }) => ({
-	marginLeft: '-1px'
+	marginLeft: '-1px',
+	flexGrow: 1,
+	minWidth: 0,
 }));
 
 const ExoticAndDestinyClassSelectorWrapper = () => {

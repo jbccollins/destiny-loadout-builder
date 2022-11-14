@@ -9,17 +9,17 @@ import {
 	ArmorItem,
 	ArmorSlots,
 	ArmorStatMapping as ArmorStatToValue,
-	EArmorSlot
+	EArmorSlot,
 } from '@dlb/services/data';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import ArmorResultsTable from './ArmorResultsTable';
 import { useCallback, useMemo } from 'react';
 import {
 	getExtraMasterworkedStats,
-	StatList
+	StatList,
 } from '@dlb/services/armor-processing';
 const Container = styled(Box)(({ theme }) => ({
-	padding: theme.spacing(1)
+	// padding: theme.spacing(1)
 }));
 
 export type ResultsTableArmorItem = {
@@ -57,7 +57,7 @@ function ArmorResultsView() {
 			const resultArmorItem: ResultsTableArmorItem = {
 				totalStats: [0, 0, 0, 0, 0, 0],
 				armorItems: [],
-				id: ''
+				id: '',
 			};
 			ArmorSlots.forEach((armorSlot, i) => {
 				const armorItem = getArmorItem(armorIdsBySlot[i], armorSlot);

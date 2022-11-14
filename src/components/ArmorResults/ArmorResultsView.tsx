@@ -20,6 +20,8 @@ import {
 } from '@dlb/services/armor-processing';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
+	position: 'relative',
+	height: '100%',
 }));
 
 export type ResultsTableArmorItem = {
@@ -83,7 +85,7 @@ function ArmorResultsView() {
 				processedArmor &&
 				selectedExoticArmor &&
 				selectedExoticArmor[selectedCharacterClass] && (
-					<Container>
+					<Container className="armor-results-view">
 						<ArmorResultsTable items={resultsTableArmorItems} />
 					</Container>
 				)}

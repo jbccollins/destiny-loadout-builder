@@ -26,6 +26,7 @@ import ArmorSlotRestrictions from '@dlb/components/ArmorSlotRestrictions/ArmorSl
 import React from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import SubclassSelector from '@dlb/components/SubclassSelector/SubclassSelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -114,6 +115,7 @@ const Home: NextPage = () => {
 						<LeftSection>
 							<ExoticAndDestinyClassSelectorWrapper />
 							<ArmorSlotRestrictions />
+							<SubclassSelector />
 							<StatSelection locked />
 						</LeftSection>
 						{!isSmallScreen && (

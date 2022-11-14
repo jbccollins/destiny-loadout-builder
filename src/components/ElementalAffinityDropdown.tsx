@@ -1,9 +1,9 @@
 import {
 	ArmorElementalAffinities,
-	ArmorElementalAffinityIcons
+	ArmorElementalAffinityIcons,
 } from '@dlb/services/data';
 import { styled, Theme, SxProps } from '@mui/material';
-import IconDropdown from '../IconDropdown';
+import IconDropdown from './IconDropdown';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
 	// paddingRight: 0
@@ -12,38 +12,27 @@ const Container = styled('div')(({ theme }) => ({
 const IconDropdownContainer = styled('div')(({ theme }) => ({
 	['.demo-simple-select']: {
 		['.character-class-name']: {
-			display: 'none'
-		}
-	}
+			display: 'none',
+		},
+	},
 }));
 
-type Option = {
+export type ElementalAffinityOption = {
 	label: string;
 	id: string;
-	disabled: boolean;
 	icon: string;
 };
-
-const options: Option[] = ArmorElementalAffinities.map(
-	(armorElementalAffinity) => {
-		return {
-			label: armorElementalAffinity,
-			id: armorElementalAffinity,
-			disabled: false,
-			icon: ArmorElementalAffinityIcons[armorElementalAffinity]
-		};
-	}
-);
 
 type ElementalAffinityDropdownProps = {
 	value: string;
 	onChange: (value: string) => void;
 	title?: string;
 	selectComponentStyle?: SxProps<Theme>;
+	options: ElementalAffinityOption[];
 };
 
 function ElementalAffinityDropdown(props: ElementalAffinityDropdownProps) {
-	const getLabel = (option: Option) => option.label;
+	const getLabel = (option: ElementalAffinityOption) => option.label;
 	console.log();
 	return (
 		<Container>
@@ -54,10 +43,10 @@ function ElementalAffinityDropdown(props: ElementalAffinityDropdownProps) {
 							...props.selectComponentStyle,
 							maxWidth: 100,
 							borderTopRightRadius: 0,
-							borderBottomRightRadius: 0
-						}
+							borderBottomRightRadius: 0,
+						},
 					}}
-					options={options}
+					options={props.options}
 					getLabel={getLabel}
 					value={props.value}
 					onChange={props.onChange}

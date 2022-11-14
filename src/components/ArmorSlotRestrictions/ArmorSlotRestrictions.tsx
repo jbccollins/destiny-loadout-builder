@@ -1,5 +1,11 @@
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { ArmorSlots, EArmorSlot, EDestinyClass } from '@dlb/services/data';
+import {
+	ArmorElementalAffinities,
+	ArmorElementalAffinityIcons,
+	ArmorSlots,
+	EArmorSlot,
+	EDestinyClass,
+} from '@dlb/services/data';
 import {
 	Box,
 	styled,
@@ -7,11 +13,11 @@ import {
 	capitalize,
 	Typography,
 	SxProps,
-	Theme
+	Theme,
 } from '@mui/material';
 import {
 	selectSelectedCharacterClass,
-	setSelectedCharacterClass
+	setSelectedCharacterClass,
 } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -20,22 +26,33 @@ import IconDropdown from '../IconDropdown';
 import {
 	ArmorSlotRestrictionGroup,
 	selectSelectedArmorSlotRestrictions,
-	setSelectedArmorSlotRestrictions
+	setSelectedArmorSlotRestrictions,
 } from '@dlb/redux/features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
-import ElementalAffinityDropdown from './ElementalAffinityDropdown';
+import ElementalAffinityDropdown, {
+	ElementalAffinityOption,
+} from '../ElementalAffinityDropdown';
 import ExtraModSlotDropdown from './ExtraModSlotRestrictions';
 import StatModCostDropdown from './StatModCostDropdown';
 const Container = styled('div')(({ theme }) => ({
-	padding: theme.spacing(1)
+	padding: theme.spacing(1),
 	// paddingRight: 0
 }));
 
 const Row = styled('div')(({ theme }) => ({
-	display: 'flex'
+	display: 'flex',
 }));
 const OffsetWrapper = styled('div')(({ theme }) => ({
-	marginLeft: '-1px'
+	marginLeft: '-1px',
 }));
+
+const elementalAffinityOptions: ElementalAffinityOption[] =
+	ArmorElementalAffinities.map((armorElementalAffinity) => {
+		return {
+			label: armorElementalAffinity,
+			id: armorElementalAffinity,
+			icon: ArmorElementalAffinityIcons[armorElementalAffinity],
+		};
+	});
 
 function ArmorSlotRestrictions() {
 	const selectedArmorSlotRestrictions = useAppSelector(
@@ -53,8 +70,8 @@ function ArmorSlotRestrictions() {
 			...selectedArmorSlotRestrictions,
 			[armorSlot]: {
 				...selectedArmorSlotRestrictions[armorSlot],
-				[restrictionType]: value
-			}
+				[restrictionType]: value,
+			},
 		};
 		// newSelectedArmorSlotRestrictions[armorSlot][restrictionType] = value;
 		console.log(value);
@@ -77,12 +94,13 @@ function ArmorSlotRestrictions() {
 							title={armorSlot === EArmorSlot.Head ? 'Affinity' : ''}
 							selectComponentStyle={{
 								borderTopLeftRadius: armorSlot === EArmorSlot.Head ? '' : 0,
-								borderBottomLeftRadius: armorSlot === EArmorSlot.Leg ? '' : 0
+								borderBottomLeftRadius: armorSlot === EArmorSlot.Leg ? '' : 0,
 							}}
 							value={selectedArmorSlotRestrictions[armorSlot].elementalAffinity}
 							onChange={(value: string) =>
 								handleChange(value, armorSlot, 'elementalAffinity')
 							}
+							options={elementalAffinityOptions}
 						/>
 						<OffsetWrapper>
 							<ExtraModSlotDropdown
@@ -97,7 +115,8 @@ function ArmorSlotRestrictions() {
 							<StatModCostDropdown
 								selectComponentStyle={{
 									borderTopRightRadius: armorSlot === EArmorSlot.Head ? '' : 0,
-									borderBottomRightRadius: armorSlot === EArmorSlot.Leg ? '' : 0
+									borderBottomRightRadius:
+										armorSlot === EArmorSlot.Leg ? '' : 0,
 								}}
 								title={armorSlot === EArmorSlot.Head ? 'Cost' : ''}
 								value={selectedArmorSlotRestrictions[armorSlot].maxStatModCost}

@@ -258,10 +258,16 @@ export default function CollapsibleTable(props: ArmorResultsTableProps) {
 	// 	page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.items.length) : 0;
 
 	return (
-		<Paper sx={{ width: '100%', overflow: 'hidden' }}>
+		<Paper
+			sx={{ width: '100%', height: '100%', overflow: 'hidden' }}
+			className={'table-wrapper'}
+		>
 			<TableContainer
-				component={Paper}
-				sx={{ width: '100%' /*, height: 600, maxHeight: 600*/ }}
+				component={Box}
+				sx={{
+					width: '100%',
+					height: `calc(100% - 52px)` /*, height: 600, maxHeight: 600*/,
+				}}
 			>
 				<Table
 					aria-label="collapsible table"
@@ -294,6 +300,9 @@ export default function CollapsibleTable(props: ArmorResultsTableProps) {
 				</Table>
 			</TableContainer>
 			<TablePagination
+				sx={{
+					height: '52px',
+				}}
 				rowsPerPageOptions={[10, 25, 100]}
 				component="div"
 				count={props.items.length}

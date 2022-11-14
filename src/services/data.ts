@@ -3,7 +3,7 @@ import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 import {
 	DestinyClass,
-	DestinyEnergyType
+	DestinyEnergyType,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 
 import { StatList } from './armor-processing';
@@ -17,7 +17,7 @@ export type EnumDictionary<T extends string | symbol | number, U> = {
 export enum EDestinyClass {
 	Titan = 'titan',
 	Warlock = 'warlock',
-	Hunter = 'hunter'
+	Hunter = 'hunter',
 }
 
 export enum EArmorSlot {
@@ -25,7 +25,7 @@ export enum EArmorSlot {
 	Arm = 'arm',
 	Chest = 'chest',
 	Leg = 'leg',
-	ClassItem = 'classItem'
+	ClassItem = 'classItem',
 }
 
 export enum EArmorStat {
@@ -34,7 +34,7 @@ export enum EArmorStat {
 	Recovery = 'recovery',
 	Discipline = 'discipline',
 	Intellect = 'intellect',
-	Strength = 'strength'
+	Strength = 'strength',
 }
 
 export enum EArmorElementalAffinity {
@@ -43,7 +43,7 @@ export enum EArmorElementalAffinity {
 	Void = 'void',
 	Stasis = 'stasis',
 	// Strand = 'strand',
-	Any = 'any'
+	Any = 'any',
 }
 
 export enum EArmorExtraModSlot {
@@ -59,7 +59,7 @@ export enum EArmorExtraModSlot {
 	// IronBanner = 'IB',
 	// UniformedOfficer = 'UO',
 	// PlunderersTrappings = 'PT',
-	Any = 'any'
+	Any = 'any',
 }
 
 export const ArmorExtraModSlotNames: EnumDictionary<
@@ -76,7 +76,7 @@ export const ArmorExtraModSlotNames: EnumDictionary<
 	[EArmorExtraModSlot.VowOfTheDisciple]: 'Vow of the Disciple',
 	//[EArmorExtraModSlot.PerkIronBanner]: "Iron Banner Perk",
 	// [EArmorExtraModSlot.PerkUniformedOfficer]: "Uniformed Officer",
-	[EArmorExtraModSlot.KingsFall]: "King's Fall"
+	[EArmorExtraModSlot.KingsFall]: "King's Fall",
 	// [EArmorExtraModSlot.PerkPlunderersTrappings]: "Plunderer's Trappings",
 	// [EArmorExtraModSlot.COUNT]: "",
 };
@@ -106,7 +106,7 @@ export const ArmorExtraModSlotIcons: EnumDictionary<
 	// [EArmorExtraModSlot.PerkUniformedOfficer]: "https://bungie.net/common/destiny2_content/icons/b39b83dd5ea3d9144e4e63f103af8b46.png",
 	[EArmorExtraModSlot.KingsFall]:
 		// 'https://bungie.net/common/destiny2_content/icons/b4d05ef69d0c3227a7d4f7f35bbc2848.png'
-		'https://www.bungie.net/common/destiny2_content/icons/bc809878e0c2ed8fd32feb62aaae690c.png'
+		'https://www.bungie.net/common/destiny2_content/icons/bc809878e0c2ed8fd32feb62aaae690c.png',
 	// [EArmorExtraModSlot.PerkPlunderersTrappings]: "https://www.bungie.net/common/destiny2_content/icons/d7ad8979dab2f4544e2cfb66f262f7d1.png",
 	// [EArmorExtraModSlot.COUNT]: "",
 };
@@ -124,7 +124,7 @@ export const ArmorElementalAffinityIcons: EnumDictionary<
 	[EArmorElementalAffinity.Void]:
 		'https://www.bungie.net/common/destiny2_content/icons/DestinyEnergyTypeDefinition_ceb2f6197dccf3958bb31cc783eb97a0.png',
 	[EArmorElementalAffinity.Stasis]:
-		'https://www.bungie.net/common/destiny2_content/icons/DestinyEnergyTypeDefinition_530c4c3e7981dc2aefd24fd3293482bf.png'
+		'https://www.bungie.net/common/destiny2_content/icons/DestinyEnergyTypeDefinition_530c4c3e7981dc2aefd24fd3293482bf.png',
 	// [DestinyEnergyType.Ghost]: "",
 	// [DestinyEnergyType.Subclass]: ""
 };
@@ -138,7 +138,7 @@ export const getArmorStatMappingFromStatModifiers = (
 		[EArmorStat.Recovery]: 0,
 		[EArmorStat.Discipline]: 0,
 		[EArmorStat.Intellect]: 0,
-		[EArmorStat.Strength]: 0
+		[EArmorStat.Strength]: 0,
 	};
 	statModifiers.forEach((statModifier) => {
 		const [armorStat, value] = StatModValues[statModifier];
@@ -160,7 +160,7 @@ export enum EStatModifier {
 	MinorIntellect = 'int-minor',
 	MajorIntellect = 'int-major',
 	MinorStrength = 'str-minor',
-	MajorStrength = 'str-major'
+	MajorStrength = 'str-major',
 }
 
 // Stat Enum, bonus, cost, mod hash
@@ -180,7 +180,7 @@ export const StatModValues: EnumDictionary<
 	[EStatModifier.MinorIntellect]: [EArmorStat.Intellect, 5, 2, 1227870362],
 	[EStatModifier.MajorIntellect]: [EArmorStat.Intellect, 10, 5, 3355995799],
 	[EStatModifier.MinorStrength]: [EArmorStat.Strength, 5, 1, 3699676109],
-	[EStatModifier.MajorStrength]: [EArmorStat.Strength, 10, 3, 3253038666]
+	[EStatModifier.MajorStrength]: [EArmorStat.Strength, 10, 3, 3253038666],
 };
 
 // Stat Enum, bonus, cost, mod hash
@@ -193,28 +193,28 @@ export const ArmorStatModMapping: EnumDictionary<
 > = {
 	[EArmorStat.Mobility]: {
 		minor: EStatModifier.MinorMobility,
-		major: EStatModifier.MajorMobility
+		major: EStatModifier.MajorMobility,
 	},
 	[EArmorStat.Resilience]: {
 		minor: EStatModifier.MinorResilience,
-		major: EStatModifier.MajorResilience
+		major: EStatModifier.MajorResilience,
 	},
 	[EArmorStat.Recovery]: {
 		minor: EStatModifier.MinorRecovery,
-		major: EStatModifier.MajorRecovery
+		major: EStatModifier.MajorRecovery,
 	},
 	[EArmorStat.Discipline]: {
 		minor: EStatModifier.MinorDiscipline,
-		major: EStatModifier.MajorDiscipline
+		major: EStatModifier.MajorDiscipline,
 	},
 	[EArmorStat.Intellect]: {
 		minor: EStatModifier.MinorIntellect,
-		major: EStatModifier.MajorIntellect
+		major: EStatModifier.MajorIntellect,
 	},
 	[EArmorStat.Strength]: {
 		minor: EStatModifier.MinorStrength,
-		major: EStatModifier.MajorStrength
-	}
+		major: EStatModifier.MajorStrength,
+	},
 };
 
 /******** Lists of the enums above to make iteration easier. Iteration
@@ -222,7 +222,7 @@ export const ArmorStatModMapping: EnumDictionary<
 export const DestinyClasses = [
 	EDestinyClass.Titan,
 	EDestinyClass.Warlock,
-	EDestinyClass.Hunter
+	EDestinyClass.Hunter,
 ];
 
 // Intentionally exclude classItem for now. Will need to rework
@@ -230,7 +230,7 @@ export const ArmorSlots = [
 	EArmorSlot.Head,
 	EArmorSlot.Arm,
 	EArmorSlot.Chest,
-	EArmorSlot.Leg
+	EArmorSlot.Leg,
 ];
 
 export const ArmorStats = [
@@ -239,7 +239,7 @@ export const ArmorStats = [
 	EArmorStat.Recovery,
 	EArmorStat.Discipline,
 	EArmorStat.Intellect,
-	EArmorStat.Strength
+	EArmorStat.Strength,
 ];
 
 export const ArmorElementalAffinities = [
@@ -247,7 +247,14 @@ export const ArmorElementalAffinities = [
 	EArmorElementalAffinity.Arc,
 	EArmorElementalAffinity.Solar,
 	EArmorElementalAffinity.Void,
-	EArmorElementalAffinity.Stasis
+	EArmorElementalAffinity.Stasis,
+];
+
+export const SubclassElementalAffinities = [
+	EArmorElementalAffinity.Arc,
+	EArmorElementalAffinity.Solar,
+	EArmorElementalAffinity.Void,
+	EArmorElementalAffinity.Stasis,
 ];
 
 export const ArmorExtraModSlots = [
@@ -258,7 +265,7 @@ export const ArmorExtraModSlots = [
 	EArmorExtraModSlot.DeepStoneCrypt,
 	EArmorExtraModSlot.GardenOfSalvation,
 	EArmorExtraModSlot.LastWish,
-	EArmorExtraModSlot.NightmareHunt
+	EArmorExtraModSlot.NightmareHunt,
 ];
 
 /********* Mapping manifest hashes to our own enums *********/
@@ -267,7 +274,7 @@ export const ArmorExtraModSlots = [
 const DestinyClassHashToDestinyClass = {
 	[DestinyClass.Titan]: EDestinyClass.Titan,
 	[DestinyClass.Hunter]: EDestinyClass.Hunter,
-	[DestinyClass.Warlock]: EDestinyClass.Warlock
+	[DestinyClass.Warlock]: EDestinyClass.Warlock,
 };
 
 const BucketHashToArmorSlot = {
@@ -275,7 +282,7 @@ const BucketHashToArmorSlot = {
 	[BucketHashes.Gauntlets]: EArmorSlot.Arm,
 	[BucketHashes.ChestArmor]: EArmorSlot.Chest,
 	[BucketHashes.LegArmor]: EArmorSlot.Leg,
-	[BucketHashes.ClassArmor]: EArmorSlot.ClassItem
+	[BucketHashes.ClassArmor]: EArmorSlot.ClassItem,
 };
 
 // Get the english name for an armor stat
@@ -285,7 +292,7 @@ const StatHashToArmorStat = {
 	[StatHashes.Recovery]: EArmorStat.Recovery,
 	[StatHashes.Discipline]: EArmorStat.Discipline,
 	[StatHashes.Intellect]: EArmorStat.Intellect,
-	[StatHashes.Strength]: EArmorStat.Strength
+	[StatHashes.Strength]: EArmorStat.Strength,
 };
 
 const DestinyEnergyTypeToArmorElementalAffinity = {
@@ -293,7 +300,7 @@ const DestinyEnergyTypeToArmorElementalAffinity = {
 	[DestinyEnergyType.Thermal]: EArmorElementalAffinity.Solar,
 	[DestinyEnergyType.Void]: EArmorElementalAffinity.Void,
 	[DestinyEnergyType.Stasis]: EArmorElementalAffinity.Stasis,
-	[DestinyEnergyType.Any]: EArmorElementalAffinity.Any
+	[DestinyEnergyType.Any]: EArmorElementalAffinity.Any,
 	// [DestinyEnergyType.Strand]: EArmorElementalAffinity.Strand,
 };
 
@@ -303,13 +310,13 @@ const DestinyArmorTypeToArmorSlot = {
 	Gauntlets: EArmorSlot.Arm,
 	Chest: EArmorSlot.Chest,
 	Leg: EArmorSlot.Leg,
-	ClassItem: EArmorSlot.ClassItem
+	ClassItem: EArmorSlot.ClassItem,
 };
 
 const DestinyClassStringToDestinyClass = {
 	Titan: EDestinyClass.Titan,
 	Warlock: EDestinyClass.Warlock,
-	Hunter: EDestinyClass.Hunter
+	Hunter: EDestinyClass.Hunter,
 };
 
 export type ArmorStatMapping = {
@@ -434,7 +441,7 @@ export const generateAvailableExoticArmorGroup =
 			[EArmorSlot.Head]: [],
 			[EArmorSlot.Arm]: [],
 			[EArmorSlot.Chest]: [],
-			[EArmorSlot.Leg]: []
+			[EArmorSlot.Leg]: [],
 		};
 	};
 
@@ -445,7 +452,7 @@ export const generateArmorGroup = (): ArmorGroup => {
 		[EArmorSlot.Arm]: { exotic: {}, nonExotic: {} },
 		[EArmorSlot.Chest]: { exotic: {}, nonExotic: {} },
 		[EArmorSlot.Leg]: { exotic: {}, nonExotic: {} },
-		[EArmorSlot.ClassItem]: { exotic: {}, nonExotic: {} }
+		[EArmorSlot.ClassItem]: { exotic: {}, nonExotic: {} },
 	};
 };
 
@@ -456,13 +463,13 @@ export const extractArmor = (
 	const armor: Armor = {
 		[EDestinyClass.Titan]: generateArmorGroup(),
 		[EDestinyClass.Hunter]: generateArmorGroup(),
-		[EDestinyClass.Warlock]: generateArmorGroup()
+		[EDestinyClass.Warlock]: generateArmorGroup(),
 	};
 
 	const availableExoticArmor: AvailableExoticArmor = {
 		[EDestinyClass.Titan]: generateAvailableExoticArmorGroup(),
 		[EDestinyClass.Hunter]: generateAvailableExoticArmorGroup(),
-		[EDestinyClass.Warlock]: generateAvailableExoticArmorGroup()
+		[EDestinyClass.Warlock]: generateAvailableExoticArmorGroup(),
 	};
 
 	const seenExotics: Record<number, AvailableExoticArmorItem> = {};
@@ -486,7 +493,7 @@ export const extractArmor = (
 							armorSlot: DestinyArmorTypeToArmorSlot[item.type],
 							destinyClassName:
 								DestinyClassStringToDestinyClass[item.classTypeNameLocalized],
-							count: 1
+							count: 1,
 						};
 					}
 				}
@@ -508,7 +515,7 @@ export const extractArmor = (
 					hash: item.hash,
 					destinyClassName:
 						DestinyClassStringToDestinyClass[item.classTypeNameLocalized],
-					isMasterworked: item.masterwork
+					isMasterworked: item.masterwork,
 				};
 				if (item.isExotic) {
 					armor[destinyClassName][armorSlot].exotic[item.id] = armorItem;
@@ -565,7 +572,7 @@ export const extractCharacters = (stores: DimStore<DimItem>[]): Characters => {
 				destinyClass: DestinyClassStringToDestinyClass[store.className],
 				genderRace: store.genderRace,
 				icon: store.icon,
-				id: store.id
+				id: store.id,
 				// lastPlayed: store.lastPlayed.toISOString()
 			};
 			characters.push(character);

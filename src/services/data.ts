@@ -129,6 +129,24 @@ export const ArmorElementalAffinityIcons: EnumDictionary<
 	// [DestinyEnergyType.Subclass]: ""
 };
 
+export const getArmorStatMappingFromStatModifiers = (
+	statModifiers: EStatModifier[]
+): ArmorStatMapping => {
+	const res: ArmorStatMapping = {
+		[EArmorStat.Mobility]: 0,
+		[EArmorStat.Resilience]: 0,
+		[EArmorStat.Recovery]: 0,
+		[EArmorStat.Discipline]: 0,
+		[EArmorStat.Intellect]: 0,
+		[EArmorStat.Strength]: 0
+	};
+	statModifiers.forEach((statModifier) => {
+		const [armorStat, value] = StatModValues[statModifier];
+		res[armorStat] = res[armorStat] + value;
+	});
+	return res;
+};
+
 export enum EStatModifier {
 	None = 'none',
 	MinorMobility = 'mob-minor',
@@ -294,8 +312,7 @@ const DestinyClassStringToDestinyClass = {
 	Hunter: EDestinyClass.Hunter
 };
 
-// [STORED]: Used to store the stats the the user has configured with the stat picker
-export type DesiredArmorStats = {
+export type ArmorStatMapping = {
 	[EArmorStat.Mobility]: number;
 	[EArmorStat.Resilience]: number;
 	[EArmorStat.Recovery]: number;
@@ -555,3 +572,7 @@ export const extractCharacters = (stores: DimStore<DimItem>[]): Characters => {
 		});
 	return characters;
 };
+
+// export const sumStatLists = (a: StatList, b: StatList): StatList => {
+// 	return a.map((x, i) => x + b[i]) as StatList;
+// };

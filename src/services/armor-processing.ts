@@ -3,10 +3,11 @@ import {
 	ArmorSlots,
 	ArmorStatModMapping,
 	ArmorStats,
-	DesiredArmorStats,
+	ArmorStatMapping,
 	EArmorSlot,
 	EArmorStat,
-	EStatModifier
+	EStatModifier,
+	getArmorStatMappingFromStatModifiers,
 } from './data';
 
 // No masterworked legendary piece of armor has a single stat above 32
@@ -60,10 +61,10 @@ export interface ISelectedExoticArmor {
 }
 
 const getArmorSlotFromNumRemainingArmorPieces = (num: number) => {
-	if ([3, 2, 1].includes(num)) {
+	if ([3, 2, 1, 0].includes(num)) {
 		return numRemainingArmorPiecesToArmorSlot[num];
 	}
-	throw `num is not 3,2,1: ${num}`;
+	throw `num is not 3,2,1,0: ${num}`;
 };
 
 // Masterworking adds +2 to each stat
@@ -78,7 +79,8 @@ export const getExtraMasterworkedStats = ({ isMasterworked }: IArmorItem) =>
 const numRemainingArmorPiecesToArmorSlot = {
 	3: EArmorSlot.Head,
 	2: EArmorSlot.Arm,
-	1: EArmorSlot.Chest
+	1: EArmorSlot.Chest,
+	0: EArmorSlot.Leg,
 };
 
 // Round a number up to the nearest 5
@@ -97,7 +99,7 @@ function canUseMinorStatMod(x: number) {
 }
 
 export type GetRequiredArmorStatModsParams = {
-	desiredArmorStats: DesiredArmorStats;
+	desiredArmorStats: ArmorStatMapping;
 	stats: StatList; // Includes masterworked / assume masterworked
 	numRemainingArmorPieces: number;
 };
@@ -108,8 +110,8 @@ export type GetRequiredArmorStatModsParams = {
 export const getRequiredArmorStatMods = ({
 	desiredArmorStats,
 	stats,
-	numRemainingArmorPieces
-}: GetRequiredArmorStatModsParams): EStatModifier[] => {
+	numRemainingArmorPieces,
+}: GetRequiredArmorStatModsParams): [EStatModifier[], ArmorStatMapping] => {
 	const requiredArmorStatMods: EStatModifier[] = [];
 	stats.forEach((stat, i) => {
 		const armorStat = ArmorStats[i];
@@ -135,56 +137,84 @@ export const getRequiredArmorStatMods = ({
 			requiredArmorStatMods.push(ArmorStatModMapping[armorStat].minor);
 		}
 	});
-	return requiredArmorStatMods;
+	return [
+		requiredArmorStatMods,
+		getArmorStatMappingFromStatModifiers(requiredArmorStatMods),
+	];
 };
 
 export type ShouldShortCircuitParams = {
 	sumOfSeenStats: StatList;
-	armorStats: StatList;
-	requiredArmorStatMods: EStatModifier[];
-	desiredArmorStats: DesiredArmorStats;
+	desiredArmorStats: ArmorStatMapping;
 	numRemainingArmorPieces: number; // TODO: Can we enforce this to be one of 3 | 2 | 1
 };
 
+export type ShouldShortCircuitOutput = [
+	boolean,
+	EStatModifier[],
+	ArmorStatMapping,
+	EArmorStat | null, // null means that there were to many required mods
+	EArmorSlot.Head | EArmorSlot.Arm | EArmorSlot.Chest | EArmorSlot.Leg // TODO: This is probably just a keyof something I already have
+];
+
 export const shouldShortCircuit = (
 	params: ShouldShortCircuitParams
-): [
-	boolean,
-	EArmorStat | null,
-	EArmorSlot.Head | EArmorSlot.Arm | EArmorSlot.Chest | ''
-] => {
+): ShouldShortCircuitOutput => {
 	const {
 		sumOfSeenStats,
-		armorStats,
+		// armorStats,
 		desiredArmorStats,
-		requiredArmorStatMods,
-		numRemainingArmorPieces
+		numRemainingArmorPieces,
 	} = params;
-	const maxRemaning = MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces;
 
-	// TODO: I hate this entries thing, can we just use a forEach() or a normal for loop?
-	for (const [i, stat] of armorStats.entries()) {
+	// TODO: Knowing the rules around stat clustering [mob, res, rec] and [dis, int, str]
+	// how each of those groups adds up to a max base total of 34 we can probably short circuit
+	// muuuuuch more often. If we know that we needed to have a 30 in both mob and res for a
+	// single armor piece in order for it to work in this combination we can tell that's an impossible
+	// piece of armor so we are done right then and there. Combine that logic
+	// with dynamic MAX_SINGLE_STAT_VALUE and we can have a really efficient check here.
+	const maxRemaningPossibleStatValue =
+		MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces;
+
+	const [requiredArmorStatMods, armorStatMapping] = getRequiredArmorStatMods({
+		desiredArmorStats,
+		stats: sumOfSeenStats,
+		numRemainingArmorPieces,
+	});
+
+	const slot = getArmorSlotFromNumRemainingArmorPieces(numRemainingArmorPieces);
+
+	if (requiredArmorStatMods.length > 5) {
+		// console.log(`
+		// 		short-circuiting ${slot}:
+		// 			stat: none,
+		// 			requiredArmorStatMods: ${requiredArmorStatMods}
+		// 	`);
+		return [true, requiredArmorStatMods, armorStatMapping, null, slot];
+	}
+
+	for (let i = 0; i < ArmorStats.length; i++) {
+		const armorStat = ArmorStats[i];
 		if (
-			stat + sumOfSeenStats[i] + maxRemaning <
-			desiredArmorStats[ArmorStats[i]]
+			sumOfSeenStats[i] +
+				armorStatMapping[armorStat] +
+				maxRemaningPossibleStatValue <
+			desiredArmorStats[armorStat]
 		) {
-			const slot = getArmorSlotFromNumRemainingArmorPieces(
-				numRemainingArmorPieces
-			);
 			// console.log(`
 			// 	short-circuiting ${slot}:
 			// 		stat: ${desiredArmorStats[ArmorStats[i]]},
 			// 		sum: ${sumOfSeenStats[i]},
 			// 		value: ${stat}
 			// `);
-			return [true, ArmorStats[i], slot];
+			return [true, requiredArmorStatMods, armorStatMapping, armorStat, slot];
 		}
 	}
-	return [false, null, ''];
+	return [false, requiredArmorStatMods, armorStatMapping, null, null];
 };
 
 export type DoProcessArmorParams = {
-	desiredArmorStats: DesiredArmorStats;
+	desiredArmorStats: ArmorStatMapping;
 	armorItems: StrictArmorItems;
 };
 
@@ -196,14 +226,13 @@ export type DoProcessArmorParams = {
  */
 export const doProcessArmor = ({
 	desiredArmorStats,
-	armorItems
+	armorItems,
 }: DoProcessArmorParams): ProcessArmorOutput => {
 	return processArmor({
 		desiredArmorStats,
 		armorItems,
-		requiredArmorStatMods: [],
 		sumOfSeenStats: [0, 0, 0, 0, 0, 0],
-		seenArmorIds: []
+		seenArmorIds: [],
 	});
 };
 
@@ -220,24 +249,41 @@ const _processArmorBaseCase = ({
 	desiredArmorStats,
 	armorItems,
 	sumOfSeenStats,
-	seenArmorIds
+	seenArmorIds,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
 	armorSlotItems.forEach((armorSlotItem) => {
-		let isValid = true;
+		// let isValid = true;
 		const finalSumOfSeenStats = getNextSeenStats(sumOfSeenStats, armorSlotItem);
-		for (let i = 0; i < ArmorStats.length; i++) {
-			if (desiredArmorStats[ArmorStats[i]] > finalSumOfSeenStats[i]) {
-				// skip
-				isValid = false;
-				break;
-			}
+
+		const [shortCircuit, requiredStatMods, requiredStatModSumValues] =
+			shouldShortCircuit({
+				sumOfSeenStats: finalSumOfSeenStats,
+				desiredArmorStats: desiredArmorStats,
+				numRemainingArmorPieces: 0,
+			});
+		if (shortCircuit) {
+			console.log(`short circuiting base case.`);
+			return;
 		}
-		if (isValid) {
-			output.push([...seenArmorIds, armorSlotItem.id] as ArmorIdList);
-		}
+
+		// for (let i = 0; i < ArmorStats.length; i++) {
+		// 	const armorStat = ArmorStats[i];
+		// 	if (desiredArmorStats[armorStat] > finalSumOfSeenStats[i]) {
+		// 		// skip
+		// 		isValid = false;
+		// 		break;
+		// 	}
+		// }
+		// if (isValid) {
+		// 	// TODO: URGENT: Return the requiredStatMods here as well
+
+		// TODO: Convert this type into [StatList, EStatModifier[]]
+		output.push([...seenArmorIds, armorSlotItem.id, requiredStatMods] as Temp);
+		//}
 	});
+	console.log('>>>>>> Base Case output:', output);
 	return output;
 };
 
@@ -245,44 +291,41 @@ const _processArmorRecursiveCase = ({
 	desiredArmorStats,
 	armorItems,
 	sumOfSeenStats,
-	requiredArmorStatMods,
-	seenArmorIds
+	seenArmorIds,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
 	const output: ProcessArmorOutput[] = [];
 	armorSlotItems.forEach((armorSlotItem) => {
+		const nextSumOfSeenStats = getNextSeenStats(sumOfSeenStats, armorSlotItem);
+
 		const [shortCircuit] = shouldShortCircuit({
-			sumOfSeenStats,
-			armorStats: armorSlotItem.stats,
+			sumOfSeenStats: nextSumOfSeenStats,
 			desiredArmorStats: desiredArmorStats,
-			requiredArmorStatMods,
-			numRemainingArmorPieces: rest.length
+			numRemainingArmorPieces: rest.length,
 		});
 		if (shortCircuit) {
-			console.log(`short circuiting ${rest.length} slots`);
+			console.log(`short circuiting recursive case. ${rest.length} slots`);
 			return;
 		}
 
-		const nextSumOfSeenStats = getNextSeenStats(sumOfSeenStats, armorSlotItem);
 		output.push(
 			processArmor({
 				desiredArmorStats,
 				armorItems: rest,
 				sumOfSeenStats: nextSumOfSeenStats,
-				requiredArmorStatMods,
-				seenArmorIds: [...seenArmorIds, armorSlotItem.id]
+				seenArmorIds: [...seenArmorIds, armorSlotItem.id],
 			})
 		);
 	});
 	return output.flat(1);
 };
 
-export type ProcessArmorOutput = ArmorIdList[];
+type Temp = [string, string, string, string, any];
+export type ProcessArmorOutput = Temp[]; //ArmorIdList[];
 
 type ProcessArmorParams = {
-	desiredArmorStats: DesiredArmorStats;
+	desiredArmorStats: ArmorStatMapping;
 	armorItems: ArmorItems[];
-	requiredArmorStatMods: EStatModifier[];
 	sumOfSeenStats: StatList;
 	seenArmorIds: string[];
 };
@@ -292,15 +335,13 @@ const processArmor = ({
 	armorItems,
 	sumOfSeenStats,
 	seenArmorIds,
-	requiredArmorStatMods
 }: ProcessArmorParams): ProcessArmorOutput => {
 	if (armorItems.length === 1) {
 		return _processArmorBaseCase({
 			desiredArmorStats,
 			armorItems,
 			sumOfSeenStats,
-			requiredArmorStatMods,
-			seenArmorIds
+			seenArmorIds,
 		});
 	}
 
@@ -308,8 +349,7 @@ const processArmor = ({
 		desiredArmorStats,
 		armorItems,
 		sumOfSeenStats,
-		requiredArmorStatMods,
-		seenArmorIds
+		seenArmorIds,
 	});
 };
 

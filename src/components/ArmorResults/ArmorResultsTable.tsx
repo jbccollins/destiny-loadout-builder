@@ -21,10 +21,10 @@ import {
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { ResultsTableArmorItem } from './ArmorResultsView';
-import { ArmorStats, DesiredArmorStats, EArmorStat } from '@dlb/services/data';
+import { ArmorStats, ArmorStatMapping, EArmorStat } from '@dlb/services/data';
 
-// TODO: Rename DesiredArmorStats. It doesn't fit here
-const armorStatToOrder: DesiredArmorStats = {
+// TODO: This abuses the intended purpose of ArmorStatMapping
+const armorStatToOrder: ArmorStatMapping = {
 	[EArmorStat.Mobility]: 0,
 	[EArmorStat.Resilience]: 1,
 	[EArmorStat.Recovery]: 2,

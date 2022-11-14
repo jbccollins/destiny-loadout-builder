@@ -1,60 +1,133 @@
 import {
 	shouldShortCircuit,
-	ShouldShortCircuitParams
+	ShouldShortCircuitOutput,
+	ShouldShortCircuitParams,
 } from '@dlb/services/armor-processing';
-import { EArmorSlot, EArmorStat } from '@dlb/services/data';
+import {
+	ArmorStatMapping,
+	EArmorSlot,
+	EArmorStat,
+	EStatModifier,
+} from '@dlb/services/data';
 import { describe, expect, test } from '@jest/globals';
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 
 type ShouldShortCircuitTestCase = {
 	name: string;
 	input: ShouldShortCircuitParams;
-	output: [
-		boolean,
-		EArmorStat,
-		EArmorSlot.Head | EArmorSlot.Arm | EArmorSlot.Chest | ''
-	];
+	output: ShouldShortCircuitOutput;
 };
 
 const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 	{
-		name: 'It returns true when helmet and gauntlets mobility are both 2',
+		name: 'It returns true when helmet, gauntlets, and chest mobility are all 2',
 		input: {
-			sumOfSeenStats: [2, 16, 16, 16, 16, 2],
+			sumOfSeenStats: [6, 48, 48, 48, 48, 6],
 			desiredArmorStats: {
 				[EArmorStat.Mobility]: 100,
 				[EArmorStat.Resilience]: 0,
 				[EArmorStat.Recovery]: 0,
 				[EArmorStat.Discipline]: 0,
 				[EArmorStat.Intellect]: 0,
-				[EArmorStat.Strength]: 0
+				[EArmorStat.Strength]: 0,
 			},
-			requiredArmorStatMods: [],
-			armorStats: [2, 16, 16, 16, 16, 2],
-			numRemainingArmorPieces: 2
+			numRemainingArmorPieces: 1,
 		},
-		output: [true, EArmorStat.Mobility, EArmorSlot.Arm]
+		output: [
+			true,
+			[
+				EStatModifier.MajorMobility,
+				EStatModifier.MajorMobility,
+				EStatModifier.MajorMobility,
+				EStatModifier.MajorMobility,
+				EStatModifier.MajorMobility,
+				EStatModifier.MajorMobility,
+				EStatModifier.MinorMobility,
+			],
+			{
+				[EArmorStat.Mobility]: 65,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0,
+			},
+			null,
+			EArmorSlot.Chest,
+		],
 	},
 	{
-		name: 'It returns true when helmet and gauntlets strength are both 2',
+		name: 'It returns false when helmet and gauntlets strength are both 2',
 		input: {
-			sumOfSeenStats: [2, 16, 16, 16, 16, 2],
+			sumOfSeenStats: [4, 32, 32, 32, 32, 4],
 			desiredArmorStats: {
 				[EArmorStat.Mobility]: 0,
 				[EArmorStat.Resilience]: 0,
 				[EArmorStat.Recovery]: 0,
 				[EArmorStat.Discipline]: 0,
 				[EArmorStat.Intellect]: 0,
-				[EArmorStat.Strength]: 100
+				[EArmorStat.Strength]: 100,
 			},
-			requiredArmorStatMods: [],
-			armorStats: [2, 16, 16, 16, 16, 2],
-			numRemainingArmorPieces: 2
+			numRemainingArmorPieces: 2,
 		},
-		output: [true, EArmorStat.Strength, EArmorSlot.Arm]
+		output: [
+			false,
+			[
+				EStatModifier.MajorStrength,
+				EStatModifier.MajorStrength,
+				EStatModifier.MajorStrength,
+				EStatModifier.MinorStrength,
+			],
+			{
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 35,
+			},
+			null,
+			null,
+		],
 	},
 	{
-		name: 'It returns true when helmet and gauntlets discipline and strength are both 2',
+		name: 'It returns true when helmet and gauntlets strength are both 2, helmet discipline is 2 and gauntlets discipline is 16',
+		input: {
+			sumOfSeenStats: [4, 32, 32, 18, 46, 4],
+			desiredArmorStats: {
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 100,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 100,
+			},
+			numRemainingArmorPieces: 2,
+		},
+		output: [
+			true,
+			[
+				EStatModifier.MajorDiscipline,
+				EStatModifier.MajorDiscipline,
+				EStatModifier.MajorStrength,
+				EStatModifier.MajorStrength,
+				EStatModifier.MajorStrength,
+				EStatModifier.MinorStrength,
+			],
+			{
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 20,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 35,
+			},
+			null,
+			EArmorSlot.Arm,
+		],
+	},
+	{
+		name: 'It returns true immediately when the stat requirements are impossibly high',
 		input: {
 			sumOfSeenStats: [2, 16, 16, 2, 30, 2],
 			desiredArmorStats: {
@@ -63,70 +136,91 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStat.Recovery]: 0,
 				[EArmorStat.Discipline]: 100,
 				[EArmorStat.Intellect]: 0,
-				[EArmorStat.Strength]: 100
+				[EArmorStat.Strength]: 150,
 			},
-			requiredArmorStatMods: [],
-			armorStats: [2, 16, 16, 16, 16, 2],
-			numRemainingArmorPieces: 2
+			numRemainingArmorPieces: 3,
 		},
-		output: [true, EArmorStat.Discipline, EArmorSlot.Arm]
-	},
-
-	{
-		name: 'It returns true immediatley when the stat requirements are impossibly high',
-		input: {
-			sumOfSeenStats: [2, 16, 16, 2, 30, 2],
-			desiredArmorStats: {
+		output: [
+			true,
+			[
+				EStatModifier.MinorDiscipline,
+				EStatModifier.MajorStrength,
+				EStatModifier.MajorStrength,
+				EStatModifier.MajorStrength,
+				EStatModifier.MajorStrength,
+				EStatModifier.MajorStrength,
+				EStatModifier.MinorStrength,
+			],
+			{
 				[EArmorStat.Mobility]: 0,
 				[EArmorStat.Resilience]: 0,
 				[EArmorStat.Recovery]: 0,
-				[EArmorStat.Discipline]: 100,
+				[EArmorStat.Discipline]: 5,
 				[EArmorStat.Intellect]: 0,
-				[EArmorStat.Strength]: 400
+				[EArmorStat.Strength]: 55,
 			},
-			requiredArmorStatMods: [],
-			armorStats: [2, 16, 16, 16, 16, 2],
-			numRemainingArmorPieces: 3
-		},
-		output: [true, EArmorStat.Strength, EArmorSlot.Head]
+			null,
+			EArmorSlot.Head,
+		],
 	},
-
 	{
-		name: 'It returns false when gauntlets mobility is 30',
+		name: 'It returns false when gauntlets mobility is 46',
 		input: {
-			sumOfSeenStats: [16, 2, 16, 16, 16, 2],
+			sumOfSeenStats: [46, 4, 18, 32, 32, 4],
 			desiredArmorStats: {
 				[EArmorStat.Mobility]: 100,
 				[EArmorStat.Resilience]: 0,
 				[EArmorStat.Recovery]: 0,
 				[EArmorStat.Discipline]: 0,
 				[EArmorStat.Intellect]: 0,
-				[EArmorStat.Strength]: 0
+				[EArmorStat.Strength]: 0,
 			},
-			requiredArmorStatMods: [],
-			armorStats: [30, 2, 2, 16, 16, 2],
-			numRemainingArmorPieces: 2
+			numRemainingArmorPieces: 2,
 		},
-		output: [false, null, '']
+		output: [
+			false,
+			[],
+			{
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0,
+			},
+			null,
+			null,
+		],
 	},
 	{
-		name: 'It returns false when helmet mobility is 30',
+		name: 'It returns false when helmet mobility is 40',
 		input: {
-			sumOfSeenStats: [30, 2, 2, 16, 16, 2],
+			sumOfSeenStats: [40, 4, 24, 32, 32, 4],
 			desiredArmorStats: {
 				[EArmorStat.Mobility]: 100,
 				[EArmorStat.Resilience]: 0,
 				[EArmorStat.Recovery]: 0,
 				[EArmorStat.Discipline]: 0,
 				[EArmorStat.Intellect]: 0,
-				[EArmorStat.Strength]: 0
+				[EArmorStat.Strength]: 0,
 			},
-			requiredArmorStatMods: [],
-			armorStats: [10, 2, 22, 16, 16, 2],
-			numRemainingArmorPieces: 2
+			numRemainingArmorPieces: 2,
 		},
-		output: [false, null, '']
-	}
+		output: [
+			false,
+			[],
+			{
+				[EArmorStat.Mobility]: 0,
+				[EArmorStat.Resilience]: 0,
+				[EArmorStat.Recovery]: 0,
+				[EArmorStat.Discipline]: 0,
+				[EArmorStat.Intellect]: 0,
+				[EArmorStat.Strength]: 0,
+			},
+			null,
+			null,
+		],
+	},
 ];
 
 describe('shouldShortCircuit', () => {
@@ -148,6 +242,10 @@ describe('shouldShortCircuit', () => {
 	});
 	test(shouldShortCircuitTestCases[4].name, () => {
 		const { input, output } = shouldShortCircuitTestCases[4];
+		expect(shouldShortCircuit(input)).toEqual(output);
+	});
+	test(shouldShortCircuitTestCases[5].name, () => {
+		const { input, output } = shouldShortCircuitTestCases[5];
 		expect(shouldShortCircuit(input)).toEqual(output);
 	});
 });

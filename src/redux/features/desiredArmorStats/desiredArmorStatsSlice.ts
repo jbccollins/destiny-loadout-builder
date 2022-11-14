@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { DesiredArmorStats, EArmorStat } from '@dlb/services/data';
+import { ArmorStatMapping, EArmorStat } from '@dlb/services/data';
 import { AppState } from '@dlb/redux/store';
 
 // TODO: Consider refactoring all the "user configuration stuff"
@@ -10,7 +10,7 @@ import { AppState } from '@dlb/redux/store';
 import { v4 as uuid, NIL } from 'uuid';
 
 export interface DesiredArmorStatsState {
-	value: DesiredArmorStats;
+	value: ArmorStatMapping;
 	uuid: string;
 }
 
@@ -30,7 +30,7 @@ export const desiredArmorStatsSlice = createSlice({
 	name: 'desiredArmorStats',
 	initialState,
 	reducers: {
-		setDesiredArmorStats: (state, action: PayloadAction<DesiredArmorStats>) => {
+		setDesiredArmorStats: (state, action: PayloadAction<ArmorStatMapping>) => {
 			state.value = action.payload;
 			state.uuid = uuid();
 		}

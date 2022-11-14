@@ -22,6 +22,8 @@
     "no-relative-import-paths/no-relative-import-paths": [
       "warn",
       { "allowSameFolder": true }
-    ]
+    ],
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": ["warn", "only-multiline"]
   }
 }

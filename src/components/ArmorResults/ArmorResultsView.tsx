@@ -8,7 +8,7 @@ import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import {
 	ArmorItem,
 	ArmorSlots,
-	DesiredArmorStats as ArmorStatToValue,
+	ArmorStatMapping as ArmorStatToValue,
 	EArmorSlot
 } from '@dlb/services/data';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';

@@ -33,6 +33,7 @@ type IconAutocompleteDropdownProps = {
 	onChange: (value: IIconAutocompleteDropdownOption) => void;
 	getGroupBy: (value: IIconAutocompleteDropdownOption) => string;
 	getLabel: (value: IIconAutocompleteDropdownOption) => string;
+	title: string;
 };
 
 // TODO: Group by armor slot
@@ -42,6 +43,7 @@ function IconAutocompleteDropdown({
 	onChange,
 	getGroupBy,
 	getLabel,
+	title,
 }: IconAutocompleteDropdownProps) {
 	// TODO: fix all the copy/pasted "country" references
 	return (
@@ -94,7 +96,7 @@ function IconAutocompleteDropdown({
 						return (
 							<TextField
 								className="exotic-selector-text-field"
-								label="Exotic"
+								label={title}
 								{...params}
 								InputProps={{
 									...params.InputProps,

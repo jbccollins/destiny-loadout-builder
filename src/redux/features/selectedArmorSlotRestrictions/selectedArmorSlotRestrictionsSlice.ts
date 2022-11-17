@@ -10,7 +10,7 @@ import {
 
 export type ArmorSlotRestrictionGroup = {
 	maxStatModCost: number;
-	elementalAffinity: EElement;
+	element: EElement;
 	extraModSlot: EArmorExtraModSlotId;
 };
 
@@ -28,7 +28,7 @@ export interface SelectedArmorSlotRestrictionsState {
 const generateArmorSlotRestrictionGroup = (): ArmorSlotRestrictionGroup => {
 	return {
 		maxStatModCost: 5,
-		elementalAffinity: EElement.Any,
+		element: EElement.Any,
 		extraModSlot: EArmorExtraModSlotId.Any,
 	};
 };

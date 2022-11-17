@@ -80,9 +80,9 @@ function ArmorSlotRestrictions() {
 								borderTopLeftRadius: armorSlot === EArmorSlotId.Head ? '' : 0,
 								borderBottomLeftRadius: armorSlot === EArmorSlotId.Leg ? '' : 0,
 							}}
-							value={selectedArmorSlotRestrictions[armorSlot].elementalAffinity}
+							value={selectedArmorSlotRestrictions[armorSlot].element}
 							onChange={(value: string) =>
-								handleChange(value, armorSlot, 'elementalAffinity')
+								handleChange(value, armorSlot, 'element')
 							}
 							options={elementalAffinityOptions}
 						/>

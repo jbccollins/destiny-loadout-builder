@@ -1,4 +1,4 @@
-import { EDestinyClassId } from '@dlb/types/IdEnums';
+import { EDestinyClassId, EElement } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
 import { useEffect } from 'react';
 import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
@@ -10,6 +10,8 @@ import {
 } from '@dlb/types/DestinyClass';
 import { DestinySubclassIdToDestinySubclass } from '@dlb/types/DestinySubclass';
 import { EnumDictionary } from '@dlb/types/globals';
+import { DestinySuperAbilityIdToDestinySuperAbility } from '@dlb/types/DestinySuperAbility';
+import { ElementIdToElement } from '@dlb/types/Element';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -23,44 +25,37 @@ export type SubclassSelectorOption = {
 	id: string;
 	icon: string;
 	name: string;
+	element: EElement;
 };
 
-// TODO: Rework this to respect the EnumDictionary type not having a get
-const subclassAndSuperOptions: EnumDictionary<
-	EDestinyClassId,
-	SubclassSelectorOption[]
-> & {
-	append: (key: EDestinyClassId, value: SubclassSelectorOption) => void;
-	get: (key: EDestinyClassId) => SubclassSelectorOption;
-} = {
-	get: (x: EDestinyClassId) => subclassAndSuperOptions[x],
-	append: (key: EDestinyClassId, value: SubclassSelectorOption) =>
-		subclassAndSuperOptions[key].push(value),
-	[EDestinyClassId.Titan]: [],
-	[EDestinyClassId.Hunter]: [],
-	[EDestinyClassId.Warlock]: [],
-};
-
-const generateOptions = () => {
+const options = (() => {
+	const opts = {
+		[EDestinyClassId.Titan]: [],
+		[EDestinyClassId.Hunter]: [],
+		[EDestinyClassId.Warlock]: [],
+	};
 	DestinyClassIdList.forEach((destinyClassId) => {
 		const destinySubclassIds =
 			DestinyClassIdToDestinySubclasses.get(destinyClassId);
 		destinySubclassIds.forEach((destinySubclassId) => {
-			const { superAbilities, icon, name } =
+			const { destinySuperAbilityIds } =
 				DestinySubclassIdToDestinySubclass.get(destinySubclassId);
-			superAbilities.forEach((superAbility) => {
-				subclassAndSuperOptions.append(destinyClassId, {
-					label: superAbility,
-					id: superAbility,
+			destinySuperAbilityIds.forEach((destinySuperAbilityId) => {
+				const { icon, name, id, elementId } =
+					DestinySuperAbilityIdToDestinySuperAbility.get(destinySuperAbilityId);
+				const { name: elementName } = ElementIdToElement.get(elementId);
+				opts[destinyClassId].push({
+					label: name,
+					id: id,
 					icon: icon,
 					name: name,
+					element: elementName,
 				});
 			});
 		});
 	});
-};
-
-generateOptions();
+	return opts;
+})();
 
 const SubclassSelector = () => {
 	const handleChange = (x: any) => {
@@ -69,20 +64,18 @@ const SubclassSelector = () => {
 
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
 
-	return false;
-	// return (
-	// 	selectedCharacterClass && (
-	// 		<IconAutocompleteDropdown
-	// 			options={subclassAndSuperOptions.get(selectedCharacterClass)}
-	// 			value={null}
-	// 			onChange={handleChange}
-	// 			getGroupBy={(option: AvailableExoticArmorItem) =>
-	// 				getArmorSlotDisplayName(option.armorSlot)
-	// 			}
-	// 			getLabel={(option: AvailableExoticArmorItem) => option.name}
-	// 		/>
-	// 	)
-	// );
+	return (
+		selectedCharacterClass && (
+			<IconAutocompleteDropdown
+				title={'Super Ability'}
+				options={options[selectedCharacterClass]}
+				value={options[selectedCharacterClass][0]}
+				onChange={handleChange}
+				getGroupBy={(option: SubclassSelectorOption) => option.element}
+				getLabel={(option: SubclassSelectorOption) => option.name}
+			/>
+		)
+	);
 };
 
 export default SubclassSelector;

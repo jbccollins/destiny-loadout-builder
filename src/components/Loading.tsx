@@ -1,7 +1,7 @@
 import {
 	getMembershipData,
 	getDestinyAccountsForBungieAccount,
-	getCharacters
+	getCharacters,
 } from '@dlb/dim/bungie-api/destiny2-api';
 import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
@@ -9,6 +9,7 @@ import { setAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoade
 import { setArmor } from '@dlb/redux/features/armor/armorSlice';
 import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
+import { setSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { useAppDispatch } from '@dlb/redux/hooks';
 import { extractArmor, extractCharacters } from '@dlb/services/data';
 import { CheckCircleRounded } from '@mui/icons-material';
@@ -22,12 +23,12 @@ const Container = styled(Card)(({ theme }) => ({
 	position: 'fixed',
 	left: '50%',
 	top: '50%',
-	transform: 'translate(-50%, -50%)'
+	transform: 'translate(-50%, -50%)',
 }));
 
 const Item = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
-	display: 'flex'
+	display: 'flex',
 }));
 
 const ItemName = styled(Box)(({ theme }) => ({
@@ -35,19 +36,19 @@ const ItemName = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	flexDirection: 'column',
 	justifyContent: 'center',
-	paddingLeft: theme.spacing(1)
+	paddingLeft: theme.spacing(1),
 }));
 
 const LoadingSpinner = styled(CircularProgress)(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	width: '24px !important', // `${theme.spacing(2.6)} !important`,
-	height: '24px !important' // `${theme.spacing(2.6)} !important`
+	height: '24px !important', // `${theme.spacing(2.6)} !important`
 }));
 
 const LoadingSpinnerContainer = styled(Box)(() => ({
 	transform: `scale(0.8)`,
 	width: '24px !important', // `${theme.spacing(2.6)} !important`,
-	height: '24px !important' // `${theme.spacing(2.6)} !important`
+	height: '24px !important', // `${theme.spacing(2.6)} !important`
 }));
 
 function Loading() {
@@ -98,6 +99,7 @@ function Loading() {
 				);
 				const characters = extractCharacters(stores);
 				dispatch(setCharacters([...characters]));
+				dispatch(setSelectedCharacterClass(characters[0].destinyClassId));
 				console.log('>>>>>>>>>> characters <<<<<<<<<<<', characters);
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {
@@ -119,7 +121,7 @@ function Loading() {
 		['Platform Data', hasPlatformData],
 		['Destiny Manifest', hasManifest],
 		['Your Characters', hasRawCharacters],
-		['Your Inventory', hasStores]
+		['Your Inventory', hasStores],
 	];
 
 	return (

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
 import {
 	AvailableExoticArmor,
-	EDestinyClass,
-	generateAvailableExoticArmorGroup
-} from '@dlb/services/data';
+	generateAvailableExoticArmorGroup,
+} from '@dlb/types/Armor';
 
 export interface AvailableExoticArmorState {
 	value: AvailableExoticArmor;
@@ -13,10 +13,10 @@ export interface AvailableExoticArmorState {
 
 const initialState: AvailableExoticArmorState = {
 	value: {
-		[EDestinyClass.Titan]: generateAvailableExoticArmorGroup(),
-		[EDestinyClass.Hunter]: generateAvailableExoticArmorGroup(),
-		[EDestinyClass.Warlock]: generateAvailableExoticArmorGroup()
-	}
+		[EDestinyClassId.Titan]: generateAvailableExoticArmorGroup(),
+		[EDestinyClassId.Hunter]: generateAvailableExoticArmorGroup(),
+		[EDestinyClassId.Warlock]: generateAvailableExoticArmorGroup(),
+	},
 };
 export const availableExoticArmorSlice = createSlice({
 	name: 'availableExoticArmor',
@@ -27,8 +27,8 @@ export const availableExoticArmorSlice = createSlice({
 			action: PayloadAction<AvailableExoticArmor>
 		) => {
 			state.value = action.payload;
-		}
-	}
+		},
+	},
 });
 
 export const { setAvailableExoticArmor } = availableExoticArmorSlice.actions;

@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { EDestinyClass } from '@dlb/services/data';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { v4 as uuid, NIL } from 'uuid';
 
 export interface SelectedCharacterClassState {
-	value: EDestinyClass;
+	value: EDestinyClassId;
 	uuid: string;
 }
 
 const initialState: SelectedCharacterClassState = {
 	value: null,
-	uuid: NIL
+	uuid: NIL,
 };
 
 export const selectedCharacterClassSlice = createSlice({
@@ -20,12 +20,12 @@ export const selectedCharacterClassSlice = createSlice({
 	reducers: {
 		setSelectedCharacterClass: (
 			state,
-			action: PayloadAction<EDestinyClass>
+			action: PayloadAction<EDestinyClassId>
 		) => {
 			state.value = action.payload;
 			state.uuid = uuid();
-		}
-	}
+		},
+	},
 });
 
 export const { setSelectedCharacterClass } =

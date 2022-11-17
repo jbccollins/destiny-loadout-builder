@@ -1,25 +1,21 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
 import {
 	FormControl,
 	InputLabel,
 	MenuItem,
 	Select,
 	SelectProps,
-	styled
+	styled,
 } from '@mui/material';
-import { useState } from 'react';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { PropaneSharp } from '@mui/icons-material';
 
 const MenuItemContent = styled('div')(({ theme }) => ({
 	display: 'flex',
-	alignItems: 'center'
+	alignItems: 'center',
 }));
 
 const MenuItemText = styled('div')(({ theme }) => ({
 	marginLeft: theme.spacing(1),
-	textTransform: 'capitalize'
+	// textTransform: 'capitalize'
 }));
 
 interface IconDropdownOption {
@@ -43,7 +39,7 @@ const IconDropdown = ({
 	onChange,
 	value,
 	title,
-	selectComponentProps
+	selectComponentProps,
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		console.log('>>>>>>>>>>>> change <<<<<<<<<<<<<<', value);

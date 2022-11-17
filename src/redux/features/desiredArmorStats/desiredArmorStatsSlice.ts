@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ArmorStatMapping, EArmorStat } from '@dlb/services/data';
 import { AppState } from '@dlb/redux/store';
 
 // TODO: Consider refactoring all the "user configuration stuff"
@@ -8,6 +7,8 @@ import { AppState } from '@dlb/redux/store';
 // To use a single reducer with one uuid. Or....... keep it as is and just
 // Keep track of a single uuid in the store? idk... that might be harder to code around...
 import { v4 as uuid, NIL } from 'uuid';
+import { EArmorStatId } from '@dlb/types/IdEnums';
+import { ArmorStatMapping } from '@dlb/types/ArmorStat';
 
 export interface DesiredArmorStatsState {
 	value: ArmorStatMapping;
@@ -16,14 +17,14 @@ export interface DesiredArmorStatsState {
 
 const initialState: DesiredArmorStatsState = {
 	value: {
-		[EArmorStat.Mobility]: 0,
-		[EArmorStat.Resilience]: 0,
-		[EArmorStat.Recovery]: 0,
-		[EArmorStat.Discipline]: 0,
-		[EArmorStat.Intellect]: 0,
-		[EArmorStat.Strength]: 0
+		[EArmorStatId.Mobility]: 0,
+		[EArmorStatId.Resilience]: 0,
+		[EArmorStatId.Recovery]: 0,
+		[EArmorStatId.Discipline]: 0,
+		[EArmorStatId.Intellect]: 0,
+		[EArmorStatId.Strength]: 0,
 	},
-	uuid: NIL
+	uuid: NIL,
 };
 
 export const desiredArmorStatsSlice = createSlice({
@@ -33,8 +34,8 @@ export const desiredArmorStatsSlice = createSlice({
 		setDesiredArmorStats: (state, action: PayloadAction<ArmorStatMapping>) => {
 			state.value = action.payload;
 			state.uuid = uuid();
-		}
-	}
+		},
+	},
 });
 
 export const { setDesiredArmorStats } = desiredArmorStatsSlice.actions;

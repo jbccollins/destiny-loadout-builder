@@ -1,14 +1,16 @@
+import { ArmorGroup } from '@dlb/types/Armor';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import {
-	ArmorGroup,
-	ArmorSlots,
-	ArmorStatModMapping,
-	ArmorStats,
+	ArmorStatIdList,
+	ArmorStatIdToArmorStatModSplit,
 	ArmorStatMapping,
-	EArmorSlot,
-	EArmorStat,
-	EStatModifier,
-	getArmorStatMappingFromStatModifiers,
-} from './data';
+} from '@dlb/types/ArmorStat';
+import { getArmorStatMappingFromArmorStatMods } from '@dlb/types/ArmorStatMod';
+import {
+	EArmorSlotId,
+	EArmorStatModId,
+	EArmorStatId,
+} from '@dlb/types/IdEnums';
 
 // No masterworked legendary piece of armor has a single stat above 32
 // TODO: Can we dynamically set this per slot? Like not every user
@@ -57,7 +59,7 @@ export type ArmorIdList = [string, string, string, string];
 
 export interface ISelectedExoticArmor {
 	hash: number;
-	armorSlot: EArmorSlot;
+	armorSlot: EArmorSlotId;
 }
 
 const getArmorSlotFromNumRemainingArmorPieces = (num: number) => {
@@ -77,10 +79,10 @@ export const getExtraMasterworkedStats = ({ isMasterworked }: IArmorItem) =>
 // first since we have more chances to short circuit? Or does it not matter at all.
 // TOOD: Investigate this.
 const numRemainingArmorPiecesToArmorSlot = {
-	3: EArmorSlot.Head,
-	2: EArmorSlot.Arm,
-	1: EArmorSlot.Chest,
-	0: EArmorSlot.Leg,
+	3: EArmorSlotId.Head,
+	2: EArmorSlotId.Arm,
+	1: EArmorSlotId.Chest,
+	0: EArmorSlotId.Leg,
 };
 
 // Round a number up to the nearest 5
@@ -111,10 +113,10 @@ export const getRequiredArmorStatMods = ({
 	desiredArmorStats,
 	stats,
 	numRemainingArmorPieces,
-}: GetRequiredArmorStatModsParams): [EStatModifier[], ArmorStatMapping] => {
-	const requiredArmorStatMods: EStatModifier[] = [];
+}: GetRequiredArmorStatModsParams): [EArmorStatModId[], ArmorStatMapping] => {
+	const requiredArmorStatMods: EArmorStatModId[] = [];
 	stats.forEach((stat, i) => {
-		const armorStat = ArmorStats[i];
+		const armorStat = ArmorStatIdList[i];
 		const desiredStat = desiredArmorStats[armorStat];
 		// Assume that for each remaining armor piece we have perfect stats
 		const diff =
@@ -130,16 +132,17 @@ export const getRequiredArmorStatMods = ({
 		// Maybe that should be a setting.. like "Prefer minor mods" or something idk.
 		const numRequiredMajorMods =
 			roundUp10(diff) / 10 - (withMinorStatMod ? 1 : 0);
+		const { major, minor } = ArmorStatIdToArmorStatModSplit.get(armorStat);
 		for (let i = 0; i < numRequiredMajorMods; i++) {
-			requiredArmorStatMods.push(ArmorStatModMapping[armorStat].major);
+			requiredArmorStatMods.push(major);
 		}
 		if (withMinorStatMod) {
-			requiredArmorStatMods.push(ArmorStatModMapping[armorStat].minor);
+			requiredArmorStatMods.push(minor);
 		}
 	});
 	return [
 		requiredArmorStatMods,
-		getArmorStatMappingFromStatModifiers(requiredArmorStatMods),
+		getArmorStatMappingFromArmorStatMods(requiredArmorStatMods),
 	];
 };
 
@@ -151,10 +154,10 @@ export type ShouldShortCircuitParams = {
 
 export type ShouldShortCircuitOutput = [
 	boolean,
-	EStatModifier[],
+	EArmorStatModId[],
 	ArmorStatMapping,
-	EArmorStat | null, // null means that there were to many required mods
-	EArmorSlot.Head | EArmorSlot.Arm | EArmorSlot.Chest | EArmorSlot.Leg // TODO: This is probably just a keyof something I already have
+	EArmorStatId | null, // null means that there were to many required mods
+	EArmorSlotId.Head | EArmorSlotId.Arm | EArmorSlotId.Chest | EArmorSlotId.Leg // TODO: This is probably just a keyof something I already have
 ];
 
 export const shouldShortCircuit = (
@@ -193,8 +196,8 @@ export const shouldShortCircuit = (
 		return [true, requiredArmorStatMods, armorStatMapping, null, slot];
 	}
 
-	for (let i = 0; i < ArmorStats.length; i++) {
-		const armorStat = ArmorStats[i];
+	for (let i = 0; i < ArmorStatIdList.length; i++) {
+		const armorStat = ArmorStatIdList[i];
 		if (
 			sumOfSeenStats[i] +
 				armorStatMapping[armorStat] +
@@ -270,7 +273,7 @@ const _processArmorBaseCase = ({
 		// TODO: URGENT Convert this type into [StatList, EStatModifier[]]
 		output.push([...seenArmorIds, armorSlotItem.id, requiredStatMods] as Temp);
 	});
-	console.log('>>>>>> Base Case output:', output);
+	// console.log('>>>>>> Base Case output:', output);
 	return output;
 };
 
@@ -307,6 +310,7 @@ const _processArmorRecursiveCase = ({
 	return output.flat(1);
 };
 
+// TODO: FIX THIS!!!!!!
 type Temp = [string, string, string, string, any];
 export type ProcessArmorOutput = Temp[]; //ArmorIdList[];
 
@@ -347,7 +351,7 @@ export const preProcessArmor = (
 	selectedExoticArmor: ISelectedExoticArmor
 ): StrictArmorItems => {
 	const strictArmorItems: StrictArmorItems = [[], [], [], []];
-	ArmorSlots.forEach((armorSlot, i) => {
+	ArmorSlotIdList.forEach((armorSlot, i) => {
 		if (armorSlot === selectedExoticArmor.armorSlot) {
 			strictArmorItems[i] = Object.values(armorGroup[armorSlot].exotic).filter(
 				(item) => item.hash === selectedExoticArmor.hash

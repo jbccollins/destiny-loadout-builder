@@ -13,30 +13,26 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import Shield from '@mui/icons-material/Shield';
-import {
-	Checkbox,
-	styled,
-	TablePagination,
-	TableSortLabel,
-} from '@mui/material';
+import { styled, TablePagination, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { ResultsTableArmorItem } from './ArmorResultsView';
-import { ArmorStats, ArmorStatMapping, EArmorStat } from '@dlb/services/data';
+import { EArmorStatId } from '@dlb/types/IdEnums';
+import { ArmorStatIdList, ArmorStatMapping } from '@dlb/types/ArmorStat';
 
-// TODO: This abuses the intended purpose of ArmorStatMapping
+// TODO: This should be exported from ArmorStat.ts
 const armorStatToOrder: ArmorStatMapping = {
-	[EArmorStat.Mobility]: 0,
-	[EArmorStat.Resilience]: 1,
-	[EArmorStat.Recovery]: 2,
-	[EArmorStat.Discipline]: 3,
-	[EArmorStat.Intellect]: 4,
-	[EArmorStat.Strength]: 5,
+	[EArmorStatId.Mobility]: 0,
+	[EArmorStatId.Resilience]: 1,
+	[EArmorStatId.Recovery]: 2,
+	[EArmorStatId.Discipline]: 3,
+	[EArmorStatId.Intellect]: 4,
+	[EArmorStatId.Strength]: 5,
 };
 
 function descendingComparator(
 	a: ResultsTableArmorItem,
 	b: ResultsTableArmorItem,
-	orderBy: EArmorStat
+	orderBy: EArmorStatId
 ) {
 	if (
 		b.totalStats[armorStatToOrder[orderBy]] <
@@ -57,7 +53,7 @@ type Order = 'asc' | 'desc';
 
 function getComparator(
 	order: Order,
-	orderBy: EArmorStat
+	orderBy: EArmorStatId
 ): (a: ResultsTableArmorItem, b: ResultsTableArmorItem) => number {
 	return order === 'desc'
 		? (a, b) => descendingComparator(a, b, orderBy)
@@ -154,12 +150,12 @@ function Row(props: { row: ResultsTableArmorItem }) {
 
 interface HeadCell {
 	disablePadding: boolean;
-	id: EArmorStat;
+	id: EArmorStatId;
 	label: string;
 	numeric: boolean;
 }
 
-const headCells: readonly HeadCell[] = ArmorStats.map((armorStat) => {
+const headCells: readonly HeadCell[] = ArmorStatIdList.map((armorStat) => {
 	return {
 		id: armorStat,
 		numeric: true,
@@ -171,7 +167,7 @@ const headCells: readonly HeadCell[] = ArmorStats.map((armorStat) => {
 interface EnhancedTableProps {
 	onRequestSort: (
 		event: React.MouseEvent<unknown>,
-		property: EArmorStat
+		property: EArmorStatId
 	) => void;
 	order: Order;
 	orderBy: string;
@@ -181,7 +177,7 @@ interface EnhancedTableProps {
 function EnhancedTableHead(props: EnhancedTableProps) {
 	const { order, orderBy, rowCount, onRequestSort } = props;
 	const createSortHandler =
-		(property: EArmorStat) => (event: React.MouseEvent<unknown>) => {
+		(property: EArmorStatId) => (event: React.MouseEvent<unknown>) => {
 			onRequestSort(event, property);
 		};
 
@@ -228,11 +224,13 @@ export default function CollapsibleTable(props: ArmorResultsTableProps) {
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	const [order, setOrder] = React.useState<Order>('desc');
-	const [orderBy, setOrderBy] = React.useState<EArmorStat>(EArmorStat.Mobility);
+	const [orderBy, setOrderBy] = React.useState<EArmorStatId>(
+		EArmorStatId.Mobility
+	);
 
 	const handleRequestSort = (
 		event: React.MouseEvent<unknown>,
-		property: EArmorStat
+		property: EArmorStatId
 	) => {
 		if (orderBy !== property) {
 			setOrder('desc');

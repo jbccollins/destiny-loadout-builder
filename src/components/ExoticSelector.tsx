@@ -1,12 +1,6 @@
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 
-import {
-	ArmorSlots,
-	AvailableExoticArmorItem,
-	DestinyClasses,
-	EDestinyClass,
-	getArmorSlotDisplayName,
-} from '@dlb/services/data';
+import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 import {
 	Box,
 	styled,
@@ -27,10 +21,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+import IconAutocompleteDropdown from './IconAutocompleteDropdown';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
+import { ArmorSlotIdList, ArmorSlotIdToArmorSlot } from '@dlb/types/ArmorSlot';
+import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 
 const Container = styled('div')(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	width: '100%',
+	// TODO: Fix this styling. Make it actually apply to the child. Does nothing rn.
 	['.exotic-selector-text-field fieldset']: {
 		borderTopLeftRadius: '0px',
 		borderBottomLeftRadius: '0px',
@@ -56,16 +55,16 @@ function ExoticSelector() {
 			!hasSelectedDefaultExotics
 		) {
 			const newSelectedExoticArmor: Record<
-				EDestinyClass,
+				EDestinyClassId,
 				AvailableExoticArmorItem
 			> = {
-				[EDestinyClass.Titan]: null,
-				[EDestinyClass.Hunter]: null,
-				[EDestinyClass.Warlock]: null,
+				[EDestinyClassId.Titan]: null,
+				[EDestinyClassId.Hunter]: null,
+				[EDestinyClassId.Warlock]: null,
 			};
-			DestinyClasses.forEach((className) => {
+			DestinyClassIdList.forEach((className) => {
 				if (availableExoticArmor[className]) {
-					for (const armorSlot of ArmorSlots) {
+					for (const armorSlot of ArmorSlotIdList) {
 						// TODO: this lookup of className in the availableExoticArmor const is not
 						// typesafe and is not picked up by intellisense. remove all such mapping consts
 						// from the data file. `availableExoticArmor['derp']` is not caught!!!!!
@@ -99,12 +98,12 @@ function ExoticSelector() {
 	// TODO: Don't recalculate this every render
 	let options: AvailableExoticArmorItem[] = [];
 	if (availableExoticArmor && selectedCharacterClass) {
-		ArmorSlots.forEach((armorSlot) => {
+		ArmorSlotIdList.forEach((armorSlot) => {
 			options = options.concat(
 				availableExoticArmor[selectedCharacterClass][armorSlot]
 			);
 		});
-		console.log('>>>>>>>>>>> options <<<<<<<<<<<<', options);
+		// console.log('>>>>>>>>>>> options <<<<<<<<<<<<', options);
 	}
 
 	const handleChange = (armor: AvailableExoticArmorItem) => {
@@ -127,84 +126,15 @@ function ExoticSelector() {
 		selectedCharacterClass &&
 		selectedExoticArmor &&
 		selectedExoticArmor[selectedCharacterClass] && (
-			<Container>
-				<FormControl fullWidth>
-					<Autocomplete
-						id="country-select-demo"
-						//sx={{ maxWidth: 400 }}
-						options={options}
-						autoHighlight
-						value={selectedExoticArmor[selectedCharacterClass]}
-						disableClearable
-						groupBy={(option) => getArmorSlotDisplayName(option.armorSlot)}
-						onChange={(_, value) => {
-							handleChange(value as AvailableExoticArmorItem);
-						}}
-						isOptionEqualToValue={(option, value) => {
-							return option.name == value.name && option.icon == value.icon;
-						}}
-						getOptionLabel={(option) =>
-							(option as AvailableExoticArmorItem).name
-						}
-						renderOption={(props, option, { inputValue }) => {
-							const matches = match(option.name, inputValue, {
-								insideWords: true,
-							});
-							const parts = parse(option.name, matches);
-							return (
-								<Box
-									component="li"
-									sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-									{...props}
-								>
-									<BungieImage width="20" src={option.icon} alt="asdf" />
-									<div>
-										{parts.map((part, index) => (
-											<span
-												key={index}
-												style={{
-													fontWeight: part.highlight ? 700 : 400,
-												}}
-											>
-												{part.text}
-											</span>
-										))}
-									</div>
-								</Box>
-							);
-						}}
-						renderInput={(params) => {
-							return (
-								<TextField
-									className="exotic-selector-text-field"
-									label="Exotic"
-									//labelId="demo-simple-select-label-2"
-									{...params}
-									InputProps={{
-										...params.InputProps,
-										startAdornment: (
-											<Box
-												sx={{
-													marginTop: '7.5px',
-													marginBottom: '1.5px',
-													marginLeft: '5px',
-												}}
-											>
-												<BungieImage
-													width={40}
-													height={40}
-													src={selectedExoticArmor[selectedCharacterClass].icon}
-												/>
-											</Box>
-										),
-										autoComplete: 'new-password', // disable autocomplete and autofill
-									}}
-								/>
-							);
-						}}
-					/>
-				</FormControl>
-			</Container>
+			<IconAutocompleteDropdown
+				options={options}
+				value={selectedExoticArmor[selectedCharacterClass]}
+				onChange={handleChange}
+				getGroupBy={(option: AvailableExoticArmorItem) =>
+					ArmorSlotIdToArmorSlot.get(option.armorSlot).name
+				}
+				getLabel={(option: AvailableExoticArmorItem) => option.name}
+			/>
 		)
 	);
 }

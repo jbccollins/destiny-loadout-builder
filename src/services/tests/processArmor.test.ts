@@ -3,9 +3,9 @@ import {
 	ProcessArmorOutput,
 	DoProcessArmorParams,
 } from '@dlb/services/armor-processing';
-import { EArmorStat, EStatModifier } from '@dlb/services/data';
 import { describe, expect, test } from '@jest/globals';
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
+import { EArmorStatId, EArmorStatModId } from '@dlb/types/IdEnums';
 
 type ProcessArmorTestCase = {
 	name: string;
@@ -18,12 +18,12 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 		name: 'It returns results with one item in each slot',
 		input: {
 			desiredArmorStats: {
-				[EArmorStat.Mobility]: 0,
-				[EArmorStat.Resilience]: 60,
-				[EArmorStat.Recovery]: 60,
-				[EArmorStat.Discipline]: 0,
-				[EArmorStat.Intellect]: 0,
-				[EArmorStat.Strength]: 0,
+				[EArmorStatId.Mobility]: 0,
+				[EArmorStatId.Resilience]: 60,
+				[EArmorStatId.Recovery]: 60,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 0,
+				[EArmorStatId.Strength]: 0,
 			},
 			armorItems: [
 				[
@@ -71,12 +71,12 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 		name: 'temp',
 		input: {
 			desiredArmorStats: {
-				[EArmorStat.Mobility]: 100,
-				[EArmorStat.Resilience]: 0,
-				[EArmorStat.Recovery]: 0,
-				[EArmorStat.Discipline]: 0,
-				[EArmorStat.Intellect]: 0,
-				[EArmorStat.Strength]: 0,
+				[EArmorStatId.Mobility]: 100,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 0,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 0,
+				[EArmorStatId.Strength]: 0,
 			},
 			armorItems: [
 				[
@@ -124,11 +124,11 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				'2',
 				'3',
 				[
-					EStatModifier.MajorMobility,
-					EStatModifier.MajorMobility,
-					EStatModifier.MajorMobility,
-					EStatModifier.MajorMobility,
-					EStatModifier.MajorMobility,
+					EArmorStatModId.MajorMobility,
+					EArmorStatModId.MajorMobility,
+					EArmorStatModId.MajorMobility,
+					EArmorStatModId.MajorMobility,
+					EArmorStatModId.MajorMobility,
 				],
 			],
 		],
@@ -138,12 +138,12 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 	// 	name: 'It returns no results with one item in each slot',
 	// 	input: {
 	// 		desiredArmorStats: {
-	// 			[EArmorStat.Mobility]: 0,
-	// 			[EArmorStat.Resilience]: 100,
-	// 			[EArmorStat.Recovery]: 100,
-	// 			[EArmorStat.Discipline]: 0,
-	// 			[EArmorStat.Intellect]: 0,
-	// 			[EArmorStat.Strength]: 0,
+	// 			[EArmorStatId.Mobility]: 0,
+	// 			[EArmorStatId.Resilience]: 100,
+	// 			[EArmorStatId.Recovery]: 100,
+	// 			[EArmorStatId.Discipline]: 0,
+	// 			[EArmorStatId.Intellect]: 0,
+	// 			[EArmorStatId.Strength]: 0,
 	// 		},
 	// 		armorItems: [
 	// 			[
@@ -190,12 +190,12 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 	// 	name: 'It returns two results with two leg armor items',
 	// 	input: {
 	// 		desiredArmorStats: {
-	// 			[EArmorStat.Mobility]: 0,
-	// 			[EArmorStat.Resilience]: 60,
-	// 			[EArmorStat.Recovery]: 60,
-	// 			[EArmorStat.Discipline]: 0,
-	// 			[EArmorStat.Intellect]: 0,
-	// 			[EArmorStat.Strength]: 0,
+	// 			[EArmorStatId.Mobility]: 0,
+	// 			[EArmorStatId.Resilience]: 60,
+	// 			[EArmorStatId.Recovery]: 60,
+	// 			[EArmorStatId.Discipline]: 0,
+	// 			[EArmorStatId.Intellect]: 0,
+	// 			[EArmorStatId.Strength]: 0,
 	// 		},
 	// 		armorItems: [
 	// 			[
@@ -252,12 +252,12 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 	// 	name: 'It returns four results with two gauntlet items and two leg armor items',
 	// 	input: {
 	// 		desiredArmorStats: {
-	// 			[EArmorStat.Mobility]: 0,
-	// 			[EArmorStat.Resilience]: 60,
-	// 			[EArmorStat.Recovery]: 60,
-	// 			[EArmorStat.Discipline]: 0,
-	// 			[EArmorStat.Intellect]: 0,
-	// 			[EArmorStat.Strength]: 0,
+	// 			[EArmorStatId.Mobility]: 0,
+	// 			[EArmorStatId.Resilience]: 60,
+	// 			[EArmorStatId.Recovery]: 60,
+	// 			[EArmorStatId.Discipline]: 0,
+	// 			[EArmorStatId.Intellect]: 0,
+	// 			[EArmorStatId.Strength]: 0,
 	// 		},
 	// 		armorItems: [
 	// 			[
@@ -323,12 +323,12 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 	// 	name: 'It returns no results with two gauntlet items and two leg armor items',
 	// 	input: {
 	// 		desiredArmorStats: {
-	// 			[EArmorStat.Mobility]: 100,
-	// 			[EArmorStat.Resilience]: 0,
-	// 			[EArmorStat.Recovery]: 100,
-	// 			[EArmorStat.Discipline]: 0,
-	// 			[EArmorStat.Intellect]: 0,
-	// 			[EArmorStat.Strength]: 0,
+	// 			[EArmorStatId.Mobility]: 100,
+	// 			[EArmorStatId.Resilience]: 0,
+	// 			[EArmorStatId.Recovery]: 100,
+	// 			[EArmorStatId.Discipline]: 0,
+	// 			[EArmorStatId.Intellect]: 0,
+	// 			[EArmorStatId.Strength]: 0,
 	// 		},
 	// 		armorItems: [
 	// 			[
@@ -389,12 +389,12 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 	// 	name: 'It returns results with one item in each slot where each item is masterworked',
 	// 	input: {
 	// 		desiredArmorStats: {
-	// 			[EArmorStat.Mobility]: 0,
-	// 			[EArmorStat.Resilience]: 70,
-	// 			[EArmorStat.Recovery]: 70,
-	// 			[EArmorStat.Discipline]: 0,
-	// 			[EArmorStat.Intellect]: 0,
-	// 			[EArmorStat.Strength]: 0,
+	// 			[EArmorStatId.Mobility]: 0,
+	// 			[EArmorStatId.Resilience]: 70,
+	// 			[EArmorStatId.Recovery]: 70,
+	// 			[EArmorStatId.Discipline]: 0,
+	// 			[EArmorStatId.Intellect]: 0,
+	// 			[EArmorStatId.Strength]: 0,
 	// 		},
 	// 		armorItems: [
 	// 			[

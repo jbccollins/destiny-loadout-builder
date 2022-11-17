@@ -1,22 +1,9 @@
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import {
-	ArmorExtraModSlotIcons,
-	ArmorExtraModSlotNames,
-	ArmorExtraModSlots,
-	EArmorElementalAffinity,
-	EArmorExtraModSlot,
-	EDestinyClass
-} from '@dlb/services/data';
-import { Box, styled, Card, capitalize, Typography } from '@mui/material';
-import {
-	selectSelectedCharacterClass,
-	setSelectedCharacterClass
-} from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { useCallback, useEffect, useMemo } from 'react';
-import { selectCharacters } from '@dlb/redux/features/characters/charactersSlice';
-import IconDropdown from '../IconDropdown';
-import { selectSelectedArmorSlotRestrictions } from '@dlb/redux/features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
+	ArmorExtraModSlotIdList,
+	ArmorExtraMotSlotIdToArmorExtraMotSlot,
+} from '@dlb/types/ArmorExtraModSlot';
+import { styled } from '@mui/material';
+import IconDropdown from '@dlb/components/IconDropdown';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
 	// paddingRight: 0
@@ -25,9 +12,9 @@ const Container = styled('div')(({ theme }) => ({
 const IconDropdownContainer = styled('div')(({ theme }) => ({
 	['.demo-simple-select']: {
 		['.character-class-name']: {
-			display: 'none'
-		}
-	}
+			display: 'none',
+		},
+	},
 }));
 
 type Option = {
@@ -37,12 +24,14 @@ type Option = {
 	icon: string;
 };
 
-const options: Option[] = ArmorExtraModSlots.map((armorExtraModSlot) => {
+const options: Option[] = ArmorExtraModSlotIdList.map((armorExtraModSlotId) => {
+	const armorExtraModSlot =
+		ArmorExtraMotSlotIdToArmorExtraMotSlot.get(armorExtraModSlotId);
 	return {
-		label: ArmorExtraModSlotNames[armorExtraModSlot],
-		id: armorExtraModSlot,
+		label: armorExtraModSlot.name,
+		id: armorExtraModSlotId,
 		disabled: false,
-		icon: ArmorExtraModSlotIcons[armorExtraModSlot]
+		icon: armorExtraModSlot.icon,
 	};
 });
 
@@ -67,8 +56,8 @@ function ExtraModSlotDropdown(props: ExtraModSlotDropdownProps) {
 							borderTopRightRadius: 0,
 							borderTopLeftRadius: 0,
 							borderBottomRightRadius: 0,
-							borderBottomLeftRadius: 0
-						}
+							borderBottomLeftRadius: 0,
+						},
 					}}
 					options={options}
 					getLabel={getLabel}

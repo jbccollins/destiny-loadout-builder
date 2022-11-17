@@ -1,7 +1,3 @@
-import {
-	ArmorElementalAffinities,
-	ArmorElementalAffinityIcons,
-} from '@dlb/services/data';
 import { styled, Theme, SxProps } from '@mui/material';
 import IconDropdown from './IconDropdown';
 const Container = styled('div')(({ theme }) => ({

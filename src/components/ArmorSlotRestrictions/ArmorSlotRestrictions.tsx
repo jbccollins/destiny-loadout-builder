@@ -1,28 +1,7 @@
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import {
-	ArmorElementalAffinities,
-	ArmorElementalAffinityIcons,
-	ArmorSlots,
-	EArmorSlot,
-	EDestinyClass,
-} from '@dlb/services/data';
-import {
-	Box,
-	styled,
-	Card,
-	capitalize,
-	Typography,
-	SxProps,
-	Theme,
-} from '@mui/material';
-import {
-	selectSelectedCharacterClass,
-	setSelectedCharacterClass,
-} from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { styled } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { useCallback, useEffect, useMemo } from 'react';
-import { selectCharacters } from '@dlb/redux/features/characters/charactersSlice';
-import IconDropdown from '../IconDropdown';
+
 import {
 	ArmorSlotRestrictionGroup,
 	selectSelectedArmorSlotRestrictions,
@@ -30,9 +9,12 @@ import {
 } from '@dlb/redux/features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
 import ElementalAffinityDropdown, {
 	ElementalAffinityOption,
-} from '../ElementalAffinityDropdown';
+} from '@dlb/components/ElementalAffinityDropdown';
 import ExtraModSlotDropdown from './ExtraModSlotRestrictions';
 import StatModCostDropdown from './StatModCostDropdown';
+import { EArmorSlotId } from '@dlb/types/IdEnums';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import { ElementIdList, ElementIdToElement } from '@dlb/types/Element';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0
@@ -45,14 +27,16 @@ const OffsetWrapper = styled('div')(({ theme }) => ({
 	marginLeft: '-1px',
 }));
 
-const elementalAffinityOptions: ElementalAffinityOption[] =
-	ArmorElementalAffinities.map((armorElementalAffinity) => {
+const elementalAffinityOptions: ElementalAffinityOption[] = ElementIdList.map(
+	(elementId) => {
+		const { name, icon } = ElementIdToElement.get(elementId);
 		return {
-			label: armorElementalAffinity,
-			id: armorElementalAffinity,
-			icon: ArmorElementalAffinityIcons[armorElementalAffinity],
+			label: name,
+			id: elementId,
+			icon: icon,
 		};
-	});
+	}
+);
 
 function ArmorSlotRestrictions() {
 	const selectedArmorSlotRestrictions = useAppSelector(
@@ -63,7 +47,7 @@ function ArmorSlotRestrictions() {
 
 	const handleChange = (
 		value: string | number,
-		armorSlot: EArmorSlot,
+		armorSlot: EArmorSlotId,
 		restrictionType: keyof ArmorSlotRestrictionGroup
 	) => {
 		const newSelectedArmorSlotRestrictions = {
@@ -84,17 +68,17 @@ function ArmorSlotRestrictions() {
 	// This would need to change every time the selected character class changes
 	return (
 		<Container>
-			{ArmorSlots.map((armorSlot) => {
+			{ArmorSlotIdList.map((armorSlot) => {
 				return (
 					<Row
 						key={armorSlot}
-						sx={{ marginTop: armorSlot === EArmorSlot.Head ? '' : '-1px' }}
+						sx={{ marginTop: armorSlot === EArmorSlotId.Head ? '' : '-1px' }}
 					>
 						<ElementalAffinityDropdown
-							title={armorSlot === EArmorSlot.Head ? 'Affinity' : ''}
+							title={armorSlot === EArmorSlotId.Head ? 'Affinity' : ''}
 							selectComponentStyle={{
-								borderTopLeftRadius: armorSlot === EArmorSlot.Head ? '' : 0,
-								borderBottomLeftRadius: armorSlot === EArmorSlot.Leg ? '' : 0,
+								borderTopLeftRadius: armorSlot === EArmorSlotId.Head ? '' : 0,
+								borderBottomLeftRadius: armorSlot === EArmorSlotId.Leg ? '' : 0,
 							}}
 							value={selectedArmorSlotRestrictions[armorSlot].elementalAffinity}
 							onChange={(value: string) =>
@@ -104,7 +88,7 @@ function ArmorSlotRestrictions() {
 						/>
 						<OffsetWrapper>
 							<ExtraModSlotDropdown
-								title={armorSlot === EArmorSlot.Head ? 'Mod Slot' : ''}
+								title={armorSlot === EArmorSlotId.Head ? 'Mod Slot' : ''}
 								value={selectedArmorSlotRestrictions[armorSlot].extraModSlot}
 								onChange={(value: string) =>
 									handleChange(value, armorSlot, 'extraModSlot')
@@ -114,11 +98,12 @@ function ArmorSlotRestrictions() {
 						<OffsetWrapper>
 							<StatModCostDropdown
 								selectComponentStyle={{
-									borderTopRightRadius: armorSlot === EArmorSlot.Head ? '' : 0,
+									borderTopRightRadius:
+										armorSlot === EArmorSlotId.Head ? '' : 0,
 									borderBottomRightRadius:
-										armorSlot === EArmorSlot.Leg ? '' : 0,
+										armorSlot === EArmorSlotId.Leg ? '' : 0,
 								}}
-								title={armorSlot === EArmorSlot.Head ? 'Cost' : ''}
+								title={armorSlot === EArmorSlotId.Head ? 'Cost' : ''}
 								value={selectedArmorSlotRestrictions[armorSlot].maxStatModCost}
 								onChange={(value: number) =>
 									handleChange(value, armorSlot, 'maxStatModCost')

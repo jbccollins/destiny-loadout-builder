@@ -1,9 +1,10 @@
 import {
 	selectDesiredArmorStats,
-	setDesiredArmorStats
+	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { ArmorStats, EArmorStat } from '@dlb/services/data';
+import { ArmorStatIdList } from '@dlb/types/ArmorStat';
+import { EArmorStatId } from '@dlb/types/IdEnums';
 import { styled, Card, Box } from '@mui/material';
 import { useEffect } from 'react';
 import StatSlider from './StatSlider';
@@ -14,14 +15,14 @@ type StatSelectionProps = {
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
-	padding: theme.spacing(3)
+	padding: theme.spacing(3),
 }));
 
 const SliderWrapper = styled(Box)(({ theme }) => ({
-	color: theme.palette.secondary.main
+	color: theme.palette.secondary.main,
 }));
 const SliderTitle = styled(Box)(({ theme }) => ({
-	color: theme.palette.secondary.main
+	color: theme.palette.secondary.main,
 }));
 
 function valuetext(value: number) {
@@ -31,55 +32,55 @@ function valuetext(value: number) {
 const marks = [
 	{
 		value: 0,
-		label: '0'
+		label: '0',
 	},
 	{
 		value: 10,
-		label: '10'
+		label: '10',
 	},
 	{
 		value: 20,
-		label: '20'
+		label: '20',
 	},
 	{
 		value: 30,
-		label: '30'
+		label: '30',
 	},
 	{
 		value: 40,
-		label: '40'
+		label: '40',
 	},
 	{
 		value: 50,
-		label: '50'
+		label: '50',
 	},
 	{
 		value: 60,
-		label: '60'
+		label: '60',
 	},
 	{
 		value: 70,
-		label: '70'
+		label: '70',
 	},
 	{
 		value: 80,
-		label: '80'
+		label: '80',
 	},
 	{
 		value: 90,
-		label: '90'
+		label: '90',
 	},
 	{
 		value: 100,
-		label: '100'
-	}
+		label: '100',
+	},
 ];
 
 function StatSelection(props: StatSelectionProps) {
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
-	function handleSliderChange(statName: EArmorStat, value: number) {
+	function handleSliderChange(statName: EArmorStatId, value: number) {
 		if (desiredArmorStats && desiredArmorStats[statName] === value) {
 			// Don't trigger a redux dirty
 			return;
@@ -94,7 +95,7 @@ function StatSelection(props: StatSelectionProps) {
 
 	return (
 		<Container>
-			{ArmorStats.map((statName) => {
+			{ArmorStatIdList.map((statName) => {
 				return (
 					<SliderWrapper key={statName}>
 						<SliderTitle>{statName}</SliderTitle>

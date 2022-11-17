@@ -1,15 +1,11 @@
 import {
-	ArmorElementalAffinities,
-	ArmorElementalAffinityIcons
-} from '@dlb/services/data';
-import {
 	styled,
 	Theme,
 	SxProps,
 	MenuItem,
 	Select,
 	InputLabel,
-	FormControl
+	FormControl,
 } from '@mui/material';
 import IconDropdown from '../IconDropdown';
 const Container = styled('div')(({ theme }) => ({
@@ -20,9 +16,9 @@ const Container = styled('div')(({ theme }) => ({
 const IconDropdownContainer = styled('div')(({ theme }) => ({
 	['.demo-simple-select']: {
 		['.character-class-name']: {
-			display: 'none'
-		}
-	}
+			display: 'none',
+		},
+	},
 }));
 
 type Option = {
@@ -33,7 +29,7 @@ type Option = {
 const options: Option[] = [5, 4, 3, 2, 1, 0].map((statModCost) => {
 	return {
 		label: statModCost,
-		id: statModCost
+		id: statModCost,
 	};
 });
 
@@ -58,7 +54,7 @@ function StatModCostDropdown(props: StatModCostDropdownProps) {
 						borderTopLeftRadius: 0,
 						borderBottomLeftRadius: 0,
 						paddingTop: '8px',
-						paddingBottom: '9px'
+						paddingBottom: '9px',
 					}}
 					labelId="demo-simple-select-label-2"
 					id="demo-simple-select-2"

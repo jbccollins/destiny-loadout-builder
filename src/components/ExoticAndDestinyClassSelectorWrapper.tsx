@@ -1,5 +1,5 @@
 import { Box, Card, styled } from '@mui/material';
-import CharacterSelector from './CharacterSelector';
+import DestinyClassSelector from './DestinyClassSelector';
 import ExoticSelector from './ExoticSelector';
 
 const Container = styled(Box)(({ theme }) => ({
@@ -17,7 +17,7 @@ const ExoticSelectorWrapper = styled('div')(({ theme }) => ({
 const ExoticAndDestinyClassSelectorWrapper = () => {
 	return (
 		<Container>
-			<CharacterSelector />
+			<DestinyClassSelector />
 			<ExoticSelectorWrapper>
 				<ExoticSelector />
 			</ExoticSelectorWrapper>

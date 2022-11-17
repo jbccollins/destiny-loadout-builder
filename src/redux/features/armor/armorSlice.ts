@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { Armor, EDestinyClass, generateArmorGroup } from '@dlb/services/data';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
+import { Armor, generateArmorGroup } from '@dlb/types/Armor';
 
 export interface ArmorState {
 	value: Armor;
@@ -9,10 +10,10 @@ export interface ArmorState {
 
 const initialState: ArmorState = {
 	value: {
-		[EDestinyClass.Titan]: generateArmorGroup(),
-		[EDestinyClass.Hunter]: generateArmorGroup(),
-		[EDestinyClass.Warlock]: generateArmorGroup()
-	}
+		[EDestinyClassId.Titan]: generateArmorGroup(),
+		[EDestinyClassId.Hunter]: generateArmorGroup(),
+		[EDestinyClassId.Warlock]: generateArmorGroup(),
+	},
 };
 
 export const armorSlice = createSlice({
@@ -21,8 +22,8 @@ export const armorSlice = createSlice({
 	reducers: {
 		setArmor: (state, action: PayloadAction<Armor>) => {
 			state.value = action.payload;
-		}
-	}
+		},
+	},
 });
 
 export const { setArmor } = armorSlice.actions;

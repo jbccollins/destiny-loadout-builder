@@ -1,26 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
+import { Armor, generateArmorGroup } from '@dlb/services/data';
 import {
-	Armor,
-	EArmorElementalAffinity,
-	EArmorSlot,
-	EDestinyClass,
-	EArmorExtraModSlot,
-	generateArmorGroup
-} from '@dlb/services/data';
+	EElement,
+	EArmorExtraModSlotId,
+	EArmorSlotId,
+} from '@dlb/types/IdEnums';
 
 export type ArmorSlotRestrictionGroup = {
 	maxStatModCost: number;
-	elementalAffinity: EArmorElementalAffinity;
-	extraModSlot: EArmorExtraModSlot;
+	elementalAffinity: EElement;
+	extraModSlot: EArmorExtraModSlotId;
 };
 
 export type ArmorSlotRestrictions = {
-	[EArmorSlot.Head]: ArmorSlotRestrictionGroup;
-	[EArmorSlot.Arm]: ArmorSlotRestrictionGroup;
-	[EArmorSlot.Chest]: ArmorSlotRestrictionGroup;
-	[EArmorSlot.Leg]: ArmorSlotRestrictionGroup;
+	[EArmorSlotId.Head]: ArmorSlotRestrictionGroup;
+	[EArmorSlotId.Arm]: ArmorSlotRestrictionGroup;
+	[EArmorSlotId.Chest]: ArmorSlotRestrictionGroup;
+	[EArmorSlotId.Leg]: ArmorSlotRestrictionGroup;
 };
 
 export interface SelectedArmorSlotRestrictionsState {
@@ -30,18 +28,18 @@ export interface SelectedArmorSlotRestrictionsState {
 const generateArmorSlotRestrictionGroup = (): ArmorSlotRestrictionGroup => {
 	return {
 		maxStatModCost: 5,
-		elementalAffinity: EArmorElementalAffinity.Any,
-		extraModSlot: EArmorExtraModSlot.Any
+		elementalAffinity: EElement.Any,
+		extraModSlot: EArmorExtraModSlotId.Any,
 	};
 };
 
 const initialState: SelectedArmorSlotRestrictionsState = {
 	value: {
-		[EArmorSlot.Head]: generateArmorSlotRestrictionGroup(),
-		[EArmorSlot.Arm]: generateArmorSlotRestrictionGroup(),
-		[EArmorSlot.Chest]: generateArmorSlotRestrictionGroup(),
-		[EArmorSlot.Leg]: generateArmorSlotRestrictionGroup()
-	}
+		[EArmorSlotId.Head]: generateArmorSlotRestrictionGroup(),
+		[EArmorSlotId.Arm]: generateArmorSlotRestrictionGroup(),
+		[EArmorSlotId.Chest]: generateArmorSlotRestrictionGroup(),
+		[EArmorSlotId.Leg]: generateArmorSlotRestrictionGroup(),
+	},
 };
 
 export const selectedArmorSlotRestrictionsSlice = createSlice({
@@ -53,8 +51,8 @@ export const selectedArmorSlotRestrictionsSlice = createSlice({
 			action: PayloadAction<ArmorSlotRestrictions>
 		) => {
 			state.value = action.payload;
-		}
-	}
+		},
+	},
 });
 
 export const { setSelectedArmorSlotRestrictions } =

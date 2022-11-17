@@ -5,12 +5,6 @@ import { useAppSelector } from '@dlb/redux/hooks';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
-import {
-	ArmorItem,
-	ArmorSlots,
-	ArmorStatMapping as ArmorStatToValue,
-	EArmorSlot,
-} from '@dlb/services/data';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import ArmorResultsTable from './ArmorResultsTable';
 import { useCallback, useMemo } from 'react';
@@ -18,6 +12,9 @@ import {
 	getExtraMasterworkedStats,
 	StatList,
 } from '@dlb/services/armor-processing';
+import { EArmorSlotId } from '@dlb/types/IdEnums';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import { ArmorItem } from '@dlb/types/Armor';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
@@ -40,7 +37,7 @@ function ArmorResultsView() {
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 
 	const getArmorItem = useCallback(
-		(id: string, armorSlot: EArmorSlot) => {
+		(id: string, armorSlot: EArmorSlotId) => {
 			const selectedExoticArmorSlot =
 				selectedExoticArmor[selectedCharacterClass].armorSlot;
 			// console.log('>>>>>>>>>>>> getArmorItem <<<<<<<<<<<<<<', { id, armorSlot });
@@ -61,7 +58,7 @@ function ArmorResultsView() {
 				armorItems: [],
 				id: '',
 			};
-			ArmorSlots.forEach((armorSlot, i) => {
+			ArmorSlotIdList.forEach((armorSlot, i) => {
 				const armorItem = getArmorItem(armorIdsBySlot[i], armorSlot);
 				resultArmorItem.armorItems.push(armorItem);
 				armorItem.stats.forEach((value, j) => {

@@ -95,7 +95,7 @@ function ExoticSelector() {
 	// 	() => [],
 	// 	[availableExoticArmor, selectedCharacterClass]
 	// );
-	// TODO: Don't recalculate this every render
+	// TODO: Don't recalculate this every render. Set this in the loading component
 	let options: AvailableExoticArmorItem[] = [];
 	if (availableExoticArmor && selectedCharacterClass) {
 		ArmorSlotIdList.forEach((armorSlot) => {
@@ -127,6 +127,7 @@ function ExoticSelector() {
 		selectedExoticArmor &&
 		selectedExoticArmor[selectedCharacterClass] && (
 			<IconAutocompleteDropdown
+				title={'Exotic'}
 				options={options}
 				value={selectedExoticArmor[selectedCharacterClass]}
 				onChange={handleChange}

@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { Characters } from '@dlb/services/data';
+import { Characters } from '@dlb/types/Character';
 
 export interface CharactersState {
 	value: Characters;
 }
 
 const initialState: CharactersState = {
-	value: []
+	value: [],
 };
 
 export const charactersSlice = createSlice({
@@ -17,8 +17,8 @@ export const charactersSlice = createSlice({
 	reducers: {
 		setCharacters: (state, action: PayloadAction<Characters>) => {
 			state.value = action.payload;
-		}
-	}
+		},
+	},
 });
 
 export const { setCharacters } = charactersSlice.actions;

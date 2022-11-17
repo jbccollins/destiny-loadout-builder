@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { Armor, generateArmorGroup } from '@dlb/services/data';
 import {
 	EElement,
 	EArmorExtraModSlotId,

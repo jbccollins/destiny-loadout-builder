@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { AvailableExoticArmorItem } from '@dlb/services/data';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { v4 as uuid, NIL } from 'uuid';
+import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 
 export interface SelectedExoticArmorState {
 	value: Record<EDestinyClassId, AvailableExoticArmorItem>;

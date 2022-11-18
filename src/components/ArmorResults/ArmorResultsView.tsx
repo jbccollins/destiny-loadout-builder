@@ -50,6 +50,9 @@ function ArmorResultsView() {
 	);
 
 	const resultsTableArmorItems: ResultsTableArmorItem[] = useMemo(() => {
+		console.log(
+			'>>>>>>>>>>> [Memo] resultsTableArmorItems calcuated <<<<<<<<<<<'
+		);
 		const res: ResultsTableArmorItem[] = [];
 
 		processedArmor.forEach((armorIdsBySlot) => {

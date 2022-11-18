@@ -10,8 +10,13 @@ import { setArmor } from '@dlb/redux/features/armor/armorSlice';
 import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useAppDispatch } from '@dlb/redux/hooks';
 import { extractArmor, extractCharacters } from '@dlb/services/data';
+import { AvailableExoticArmorItem } from '@dlb/types/Armor';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import { DestinyClassIdList } from '@dlb/types/DestinyClass';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, styled, Checkbox, Card, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -68,7 +73,10 @@ function Loading() {
 				// TODO can any of these requests be paralellized? Like a Promise.All or whatever?
 				const membershipData = await getMembershipData();
 				setHasMembershipData(true);
-				console.log('>>>>>>>>>>> membership <<<<<<<<<<<', membershipData);
+				console.log(
+					'>>>>>>>>>>> [LOAD] membership <<<<<<<<<<<',
+					membershipData
+				);
 				const platformData = await getDestinyAccountsForBungieAccount(
 					membershipData.membershipId
 				);
@@ -76,31 +84,65 @@ function Loading() {
 					(platform) => platform.membershipId === membershipData.membershipId
 				);
 				setHasPlatformData(true);
-				console.log('>>>>>>>>>>> platform <<<<<<<<<<<', membershipData);
+				console.log('>>>>>>>>>>> [LOAD] platform <<<<<<<<<<<', membershipData);
 
 				const manifest = await getDefinitions();
-				console.log('>>>>>>>>>>> manifest <<<<<<<<<<<', manifest);
+				console.log('>>>>>>>>>>> [LOAD] manifest <<<<<<<<<<<', manifest);
 				setHasManifest(true);
 
 				const rawCharacters = await getCharacters(mostRecentPlatform);
-				console.log('>>>>>>>>>>> raw characters <<<<<<<<<<<', rawCharacters);
+				console.log(
+					'>>>>>>>>>>> [LOAD] raw characters <<<<<<<<<<<',
+					rawCharacters
+				);
 				setHasRawCharacters(true);
 
 				const stores = await loadStoresData(mostRecentPlatform);
-				console.log('>>>>>>>>>> stores <<<<<<<<<<<', stores);
+				console.log('>>>>>>>>>>> [LOAD] stores <<<<<<<<<<<', stores);
 				setHasStores(true);
 				const [armor, availableExoticArmor] = extractArmor(stores);
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
-				console.log('>>>>>>>>>> armor <<<<<<<<<<<', armor);
+				console.log('>>>>>>>>>>> [LOAD] armor <<<<<<<<<<<', armor);
 				console.log(
-					'>>>>>>>>>> availableExoticArmor <<<<<<<<<<<',
+					'>>>>>>>>>>> [LOAD] availableExoticArmor <<<<<<<<<<<',
 					availableExoticArmor
 				);
 				const characters = extractCharacters(stores);
 				dispatch(setCharacters([...characters]));
 				dispatch(setSelectedCharacterClass(characters[0].destinyClassId));
-				console.log('>>>>>>>>>> characters <<<<<<<<<<<', characters);
+				console.log('>>>>>>>>>>> [LOAD] characters <<<<<<<<<<<', characters);
+
+				const defaultSelectedExoticArmor: Record<
+					EDestinyClassId,
+					AvailableExoticArmorItem
+				> = {
+					[EDestinyClassId.Titan]: null,
+					[EDestinyClassId.Hunter]: null,
+					[EDestinyClassId.Warlock]: null,
+				};
+				DestinyClassIdList.forEach((destinyClassId) => {
+					if (availableExoticArmor[destinyClassId]) {
+						for (const armorSlotId of ArmorSlotIdList) {
+							// TODO: this lookup of className in the availableExoticArmor const is not
+							// typesafe and is not picked up by intellisense. remove all such mapping consts
+							// availableExoticArmor['derp'] is not caught!!!!!
+							if (
+								availableExoticArmor[destinyClassId][armorSlotId].length > 0
+							) {
+								// Just pick the first exotic item we find
+								defaultSelectedExoticArmor[destinyClassId] =
+									availableExoticArmor[destinyClassId][armorSlotId][0];
+								break;
+							}
+						}
+					}
+				});
+				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
+				console.log(
+					'>>>>>>>>>>> [LOAD] defaultSelectedExoticArmor <<<<<<<<<<<',
+					defaultSelectedExoticArmor
+				);
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {
 				// TODO redirect only on the right kind of error

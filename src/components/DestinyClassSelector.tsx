@@ -1,13 +1,10 @@
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
-import { Box, styled, Card, capitalize, Typography } from '@mui/material';
+import { styled } from '@mui/material';
 import {
 	selectSelectedCharacterClass,
 	setSelectedCharacterClass,
 } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { useCallback, useEffect, useMemo } from 'react';
-import { selectCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import IconDropdown from './IconDropdown';
 import {
 	DestinyClassIdList,

@@ -35,8 +35,6 @@ const options: Option[] = ArmorExtraModSlotIdList.map((armorExtraModSlotId) => {
 	};
 });
 
-console.log('>>>>>> OPTIONS', options);
-
 type ExtraModSlotDropdownProps = {
 	value: string;
 	onChange: (value: string) => void;

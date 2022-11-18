@@ -10,12 +10,12 @@ import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedE
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
 import selectedArmorSlotRestrictionsReducer from './features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
 import processedArmorReducer, {
-	setProcessedArmor
+	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
 import { NIL } from 'uuid';
 import {
 	doProcessArmor,
-	preProcessArmor
+	preProcessArmor,
 } from '@dlb/services/armor-processing';
 
 export function makeStore() {
@@ -30,8 +30,8 @@ export function makeStore() {
 			selectedExoticArmor: selectedExoticArmorReducer,
 			allDataLoaded: allDataLoadedReducer,
 			processedArmor: processedArmorReducer,
-			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer
-		}
+			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
+		},
 	});
 }
 
@@ -46,7 +46,7 @@ function handleChange() {
 		allDataLoaded: { value: hasAllDataLoaded },
 		desiredArmorStats: { uuid: nextDesiredArmorStatsUuid },
 		selectedCharacterClass: { uuid: nextSelectedCharacterClassUuid },
-		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid }
+		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid },
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -59,7 +59,7 @@ function handleChange() {
 		nextSelectedExoticArmorUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
-		console.log('>>>>>>>>>>>>>>> store is dirty');
+		console.log('>>>>>>>>>>> store is dirty <<<<<<<<<<<');
 		desiredArmorStatsUuid = nextDesiredArmorStatsUuid;
 		selectedCharacterClassUuid = nextSelectedCharacterClassUuid;
 		selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
@@ -69,7 +69,7 @@ function handleChange() {
 			armor: { value: armor },
 			selectedExoticArmor: { value: selectedExoticArmor },
 			selectedCharacterClass: { value: selectedCharacterClass },
-			desiredArmorStats: { value: desiredArmorStats }
+			desiredArmorStats: { value: desiredArmorStats },
 		} = store.getState();
 
 		// TODO: no need to preProcessArmor when only the stat slider has changed.
@@ -79,15 +79,12 @@ function handleChange() {
 			armor[selectedCharacterClass],
 			selectedExoticArmor[selectedCharacterClass]
 		);
-		console.log(
-			'>>>>>>>>>>>> preProcessedArmor <<<<<<<<<<<<<',
-			preProcessedArmor
-		);
+		console.log('>>>>>>>>>>> preProcessedArmor <<<<<<<<<<<', preProcessedArmor);
 		const results = doProcessArmor({
 			desiredArmorStats,
-			armorItems: preProcessedArmor
+			armorItems: preProcessedArmor,
 		});
-		console.log('>>>>>>>>>>>> results <<<<<<<<<<<<<', results);
+		console.log('>>>>>>>>>>> results <<<<<<<<<<<', results);
 		store.dispatch(setProcessedArmor(results));
 	}
 }

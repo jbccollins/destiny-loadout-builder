@@ -21,17 +21,18 @@ const DestinyClassIdToDestinyClassMapping: EnumDictionary<
 	[EDestinyClassId.Titan]: {
 		id: EDestinyClassId.Titan,
 		name: 'Titan',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/84fcf9589ae5320f282abe89bd0c5fff.jpg',
+		icon: 'https://raw.githubusercontent.com/justrealmilk/destiny-icons/2e747b9ab94cea9423a001710c35af35c79ff625/general/class_titan_outline.svg',
 	},
 	[EDestinyClassId.Warlock]: {
 		id: EDestinyClassId.Warlock,
 		name: 'Warlock',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/67f7bbf158f84c33802b178e463b7037.jpg',
+		icon: 'https://raw.githubusercontent.com/justrealmilk/destiny-icons/2e747b9ab94cea9423a001710c35af35c79ff625/general/class_warlock_outline.svg',
+		//icon: 'https://www.bungie.net/common/destiny2_content/icons/67f7bbf158f84c33802b178e463b7037.jpg',
 	},
 	[EDestinyClassId.Hunter]: {
 		id: EDestinyClassId.Hunter,
 		name: 'Hunter',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/57f35a636ef455069d04231d4a564013.jpg',
+		icon: 'https://raw.githubusercontent.com/justrealmilk/destiny-icons/2e747b9ab94cea9423a001710c35af35c79ff625/general/class_hunter_outline.svg',
 	},
 };
 

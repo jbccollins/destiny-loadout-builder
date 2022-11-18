@@ -14,10 +14,10 @@ import { DestinySuperAbilityIdToDestinySuperAbility } from '@dlb/types/DestinySu
 import { ElementIdToElement } from '@dlb/types/Element';
 
 const Container = styled(Box)(({ theme }) => ({
-	color: theme.palette.primary.main,
+	//color: theme.palette.primary.main,
 	padding: theme.spacing(1),
-	display: 'flex',
-	justifyContent: 'left',
+	// display: 'flex',
+	// justifyContent: 'left',
 }));
 
 export type SubclassSelectorOption = {
@@ -26,6 +26,7 @@ export type SubclassSelectorOption = {
 	icon: string;
 	name: string;
 	element: EElement;
+	subclassName: string;
 };
 
 const options = (() => {
@@ -38,7 +39,7 @@ const options = (() => {
 		const destinySubclassIds =
 			DestinyClassIdToDestinySubclasses.get(destinyClassId);
 		destinySubclassIds.forEach((destinySubclassId) => {
-			const { destinySuperAbilityIds } =
+			const { destinySuperAbilityIds, name: subclassName } =
 				DestinySubclassIdToDestinySubclass.get(destinySubclassId);
 			destinySuperAbilityIds.forEach((destinySuperAbilityId) => {
 				const { icon, name, id, elementId } =
@@ -50,9 +51,13 @@ const options = (() => {
 					icon: icon,
 					name: name,
 					element: elementName,
+					subclassName: subclassName,
 				});
 			});
 		});
+		opts[destinyClassId].sort((a, b) =>
+			(a.element + a.name).localeCompare(b.element + b.name)
+		);
 	});
 	return opts;
 })();
@@ -66,14 +71,18 @@ const SubclassSelector = () => {
 
 	return (
 		selectedCharacterClass && (
-			<IconAutocompleteDropdown
-				title={'Super Ability'}
-				options={options[selectedCharacterClass]}
-				value={options[selectedCharacterClass][0]}
-				onChange={handleChange}
-				getGroupBy={(option: SubclassSelectorOption) => option.element}
-				getLabel={(option: SubclassSelectorOption) => option.name}
-			/>
+			<Container>
+				<IconAutocompleteDropdown
+					title={'Super Ability'}
+					options={options[selectedCharacterClass]}
+					value={options[selectedCharacterClass][0]}
+					onChange={handleChange}
+					getGroupBy={(option: SubclassSelectorOption) =>
+						`${option.element} (${option.subclassName})`
+					}
+					getLabel={(option: SubclassSelectorOption) => option.name}
+				/>
+			</Container>
 		)
 	);
 };

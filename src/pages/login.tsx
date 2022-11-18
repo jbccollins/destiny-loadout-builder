@@ -1,19 +1,20 @@
 import Link from 'next/link';
 import { oauthClientId } from '@dlb/dim/bungie-api/bungie-api-utils';
 import { Button, styled, Box } from '@mui/material';
+import Image from 'next/image';
 
 const Container = styled(Box)(({ theme }) => ({
 	position: 'fixed',
 	top: '50%',
 	left: '50%',
-	transform: 'translate(-50%, -50%)'
+	transform: 'translate(-50%, -50%)',
 }));
 
 function Login() {
 	console.log('>>>>>>>>>> oauthClientId <<<<<<<<<<<<', oauthClientId());
 	const queryParams = new URLSearchParams({
 		client_id: oauthClientId(),
-		response_type: 'code'
+		response_type: 'code',
 	});
 
 	return (

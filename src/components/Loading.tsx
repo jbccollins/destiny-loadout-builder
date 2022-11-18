@@ -11,12 +11,26 @@ import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmo
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import {
+	SelectedSubclassOptions,
+	setSelectedSubclassOptions,
+} from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
 import { useAppDispatch } from '@dlb/redux/hooks';
 import { extractArmor, extractCharacters } from '@dlb/services/data';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
-import { DestinyClassIdList } from '@dlb/types/DestinyClass';
-import { EDestinyClassId } from '@dlb/types/IdEnums';
+import {
+	DestinyClassIdList,
+	DestinyClassIdToDestinySubclasses,
+} from '@dlb/types/DestinyClass';
+import { DestinySubclassIdToDestinySubclass } from '@dlb/types/DestinySubclass';
+import { DestinySuperAbilityIdToDestinySuperAbility } from '@dlb/types/DestinySuperAbility';
+import { ElementIdToElement } from '@dlb/types/Element';
+import {
+	EDestinyClassId,
+	EDestinySubclassId,
+	EDestinySuperAbilityId,
+} from '@dlb/types/IdEnums';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, styled, Checkbox, Card, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -121,7 +135,61 @@ function Loading() {
 					[EDestinyClassId.Hunter]: null,
 					[EDestinyClassId.Warlock]: null,
 				};
+				const defaultSelectedSubclassOptions: Record<
+					EDestinyClassId,
+					SelectedSubclassOptions
+				> = {
+					[EDestinyClassId.Titan]: null,
+					[EDestinyClassId.Hunter]: null,
+					[EDestinyClassId.Warlock]: null,
+				};
 				DestinyClassIdList.forEach((destinyClassId) => {
+					// const destinySubclassIds =
+					// 	DestinyClassIdToDestinySubclasses.get(destinyClassId);
+
+					// const { destinySuperAbilityIds } =
+					// 	DestinySubclassIdToDestinySubclass.get(destinySubclassIds[0]);
+					// defaultSelectedSubclassOptions[destinyClassId] = {
+					// 	destinySubclassId: destinySubclassIds[0],
+					// 	destinySuperAbilityId: destinySuperAbilityIds[0],
+					// };
+					const opts: {
+						destinySubclassId: EDestinySubclassId;
+						destinySuperAbilityId: EDestinySuperAbilityId;
+						superAbilityName: string;
+						elementName: string;
+					}[] = [];
+
+					const destinySubclassIds =
+						DestinyClassIdToDestinySubclasses.get(destinyClassId);
+					destinySubclassIds.forEach((destinySubclassId) => {
+						const { destinySuperAbilityIds } =
+							DestinySubclassIdToDestinySubclass.get(destinySubclassId);
+						destinySuperAbilityIds.forEach((destinySuperAbilityId) => {
+							const { name: superAbilityName, elementId } =
+								DestinySuperAbilityIdToDestinySuperAbility.get(
+									destinySuperAbilityId
+								);
+							const { name: elementName } = ElementIdToElement.get(elementId);
+							opts.push({
+								destinySubclassId,
+								destinySuperAbilityId,
+								superAbilityName,
+								elementName,
+							});
+						});
+					});
+					const { destinySubclassId, destinySuperAbilityId } = opts.sort(
+						(a, b) =>
+							(a.elementName + a.superAbilityName).localeCompare(
+								b.elementName + b.superAbilityName
+							)
+					)[0];
+					defaultSelectedSubclassOptions[destinyClassId] = {
+						destinySubclassId: destinySubclassId,
+						destinySuperAbilityId: destinySuperAbilityId,
+					};
+
 					if (availableExoticArmor[destinyClassId]) {
 						for (const armorSlotId of ArmorSlotIdList) {
 							// TODO: this lookup of className in the availableExoticArmor const is not
@@ -139,6 +207,7 @@ function Loading() {
 					}
 				});
 				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
+				dispatch(setSelectedSubclassOptions(defaultSelectedSubclassOptions));
 				console.log(
 					'>>>>>>>>>>> [LOAD] defaultSelectedExoticArmor <<<<<<<<<<<',
 					defaultSelectedExoticArmor

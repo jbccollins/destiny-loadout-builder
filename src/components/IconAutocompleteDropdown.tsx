@@ -76,7 +76,7 @@ function IconAutocompleteDropdown({
 								sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
 								{...props}
 							>
-								<BungieImage width="20" src={option.icon} alt="asdf" />
+								<BungieImage width="40" src={option.icon} alt="asdf" />
 								<div>
 									{parts.map((part, index) => (
 										<span

@@ -24,7 +24,6 @@ const Container = styled('div')(({ theme }) => ({
 
 interface IIconAutocompleteDropdownOption {
 	icon: string;
-	name: string;
 }
 
 type IconAutocompleteDropdownProps = {
@@ -33,6 +32,8 @@ type IconAutocompleteDropdownProps = {
 	onChange: (value: IIconAutocompleteDropdownOption) => void;
 	getGroupBy: (value: IIconAutocompleteDropdownOption) => string;
 	getLabel: (value: IIconAutocompleteDropdownOption) => string;
+	getId: (value: IIconAutocompleteDropdownOption) => string;
+	// getName: (value: IIconAutocompleteDropdownOption) => string
 	title: string;
 };
 
@@ -43,6 +44,7 @@ function IconAutocompleteDropdown({
 	onChange,
 	getGroupBy,
 	getLabel,
+	getId,
 	title,
 }: IconAutocompleteDropdownProps) {
 	// TODO: fix all the copy/pasted "country" references
@@ -60,16 +62,16 @@ function IconAutocompleteDropdown({
 						onChange(value as IIconAutocompleteDropdownOption);
 					}}
 					isOptionEqualToValue={(option, value) => {
-						return option.name == value.name && option.icon == value.icon;
+						return getId(option) === getId(value);
 					}}
 					getOptionLabel={(option) =>
 						getLabel(option as IIconAutocompleteDropdownOption)
 					}
 					renderOption={(props, option, { inputValue }) => {
-						const matches = match(option.name, inputValue, {
+						const matches = match(getLabel(option), inputValue, {
 							insideWords: true,
 						});
-						const parts = parse(option.name, matches);
+						const parts = parse(getLabel(option), matches);
 						return (
 							<Box
 								component="li"

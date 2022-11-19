@@ -4,7 +4,7 @@ export enum EAnimalId {
 	Lion = 'Lion',
 }
 
-export enum EElement {
+export enum EElementId {
 	Arc = 'arc',
 	Solar = 'solar',
 	Void = 'void',
@@ -37,7 +37,7 @@ export enum EDestinySubclassId {
 	Revenant = 'Revenant',
 }
 
-export enum EDestinySuperAbilityId {
+export enum ESuperAbilityId {
 	// Stormcaller
 	ChaosReach = 'ChaosReach',
 	Stormtrance = 'Stormtrance',

@@ -7,7 +7,7 @@ import {
 	EDestinyClassId,
 	EArmorSlotId,
 	EArmorStatId,
-	EElement,
+	EElementId,
 } from './IdEnums';
 
 /********* Mapping manifest hashes to our own enums *********/
@@ -38,10 +38,10 @@ export const StatHashToArmorStat = {
 };
 
 export const DestinyEnergyTypeToArmorElementalAffinity = {
-	[DestinyEnergyType.Arc]: EElement.Arc,
-	[DestinyEnergyType.Thermal]: EElement.Solar,
-	[DestinyEnergyType.Void]: EElement.Void,
-	[DestinyEnergyType.Stasis]: EElement.Stasis,
+	[DestinyEnergyType.Arc]: EElementId.Arc,
+	[DestinyEnergyType.Thermal]: EElementId.Solar,
+	[DestinyEnergyType.Void]: EElementId.Void,
+	[DestinyEnergyType.Stasis]: EElementId.Stasis,
 	// [DestinyEnergyType.Strand]: EArmorElementalAffinity.Strand,
 };
 

@@ -12,7 +12,7 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
-	EElement,
+	EElementId,
 	EArmorStatModId,
 } from '@dlb/types/IdEnums';
 import { EnumDictionary } from '@dlb/types/globals';

@@ -4,13 +4,13 @@ import { AppState } from '@dlb/redux/store';
 import {
 	EDestinyClassId,
 	EDestinySubclassId,
-	EDestinySuperAbilityId,
+	ESuperAbilityId,
 } from '@dlb/types/IdEnums';
 import { v4 as uuid, NIL } from 'uuid';
 
 export interface SelectedSubclassOptions {
 	destinySubclassId: EDestinySubclassId;
-	destinySuperAbilityId: EDestinySuperAbilityId;
+	superAbilityId: ESuperAbilityId;
 }
 
 export interface SelectedSubclassOptionsState {
@@ -36,7 +36,7 @@ export const selectedSubclassOptionsSlice = createSlice({
 			action: PayloadAction<Record<EDestinyClassId, SelectedSubclassOptions>>
 		) => {
 			state.value = action.payload;
-			// state.uuid = uuid();
+			state.uuid = uuid();
 		},
 	},
 });

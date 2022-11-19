@@ -23,13 +23,14 @@ import {
 	DestinyClassIdList,
 	DestinyClassIdToDestinySubclasses,
 } from '@dlb/types/DestinyClass';
+import DestinySubclassAndSuperAbilityOptions from '@dlb/constants/DestinySubclassAndSuperAbilityOptions';
 import { DestinySubclassIdToDestinySubclass } from '@dlb/types/DestinySubclass';
-import { DestinySuperAbilityIdToDestinySuperAbility } from '@dlb/types/DestinySuperAbility';
+import { SuperAbilityIdToDestinySuperAbility } from '@dlb/types/SuperAbility';
 import { ElementIdToElement } from '@dlb/types/Element';
 import {
 	EDestinyClassId,
 	EDestinySubclassId,
-	EDestinySuperAbilityId,
+	ESuperAbilityId,
 } from '@dlb/types/IdEnums';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, styled, Checkbox, Card, CircularProgress } from '@mui/material';
@@ -144,50 +145,13 @@ function Loading() {
 					[EDestinyClassId.Warlock]: null,
 				};
 				DestinyClassIdList.forEach((destinyClassId) => {
-					// const destinySubclassIds =
-					// 	DestinyClassIdToDestinySubclasses.get(destinyClassId);
-
-					// const { destinySuperAbilityIds } =
-					// 	DestinySubclassIdToDestinySubclass.get(destinySubclassIds[0]);
-					// defaultSelectedSubclassOptions[destinyClassId] = {
-					// 	destinySubclassId: destinySubclassIds[0],
-					// 	destinySuperAbilityId: destinySuperAbilityIds[0],
-					// };
-					const opts: {
-						destinySubclassId: EDestinySubclassId;
-						destinySuperAbilityId: EDestinySuperAbilityId;
-						superAbilityName: string;
-						elementName: string;
-					}[] = [];
-
-					const destinySubclassIds =
-						DestinyClassIdToDestinySubclasses.get(destinyClassId);
-					destinySubclassIds.forEach((destinySubclassId) => {
-						const { destinySuperAbilityIds } =
-							DestinySubclassIdToDestinySubclass.get(destinySubclassId);
-						destinySuperAbilityIds.forEach((destinySuperAbilityId) => {
-							const { name: superAbilityName, elementId } =
-								DestinySuperAbilityIdToDestinySuperAbility.get(
-									destinySuperAbilityId
-								);
-							const { name: elementName } = ElementIdToElement.get(elementId);
-							opts.push({
-								destinySubclassId,
-								destinySuperAbilityId,
-								superAbilityName,
-								elementName,
-							});
-						});
-					});
-					const { destinySubclassId, destinySuperAbilityId } = opts.sort(
-						(a, b) =>
-							(a.elementName + a.superAbilityName).localeCompare(
-								b.elementName + b.superAbilityName
-							)
-					)[0];
 					defaultSelectedSubclassOptions[destinyClassId] = {
-						destinySubclassId: destinySubclassId,
-						destinySuperAbilityId: destinySuperAbilityId,
+						destinySubclassId:
+							DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
+								.destinySubclassId,
+						superAbilityId:
+							DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
+								.superAbilityId,
 					};
 
 					if (availableExoticArmor[destinyClassId]) {

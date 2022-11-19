@@ -2,14 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 import {
-	EElement,
+	EElementId,
 	EArmorExtraModSlotId,
 	EArmorSlotId,
 } from '@dlb/types/IdEnums';
 
 export type ArmorSlotRestrictionGroup = {
 	maxStatModCost: number;
-	element: EElement;
+	element: EElementId;
 	extraModSlot: EArmorExtraModSlotId;
 };
 
@@ -27,7 +27,7 @@ export interface SelectedArmorSlotRestrictionsState {
 const generateArmorSlotRestrictionGroup = (): ArmorSlotRestrictionGroup => {
 	return {
 		maxStatModCost: 5,
-		element: EElement.Any,
+		element: EElementId.Any,
 		extraModSlot: EArmorExtraModSlotId.Any,
 	};
 };

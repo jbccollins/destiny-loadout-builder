@@ -6,14 +6,14 @@ import {
 	Mapping,
 	ValidateEnumList,
 } from './globals';
-import { EArmorSlotId, EDestinyClassId, EElement } from './IdEnums';
+import { EArmorSlotId, EDestinyClassId, EElementId } from './IdEnums';
 
 /***** Extra *****/
 export const ArmorElementIdList = [
-	EElement.Arc,
-	EElement.Solar,
-	EElement.Void,
-	EElement.Stasis,
+	EElementId.Arc,
+	EElementId.Solar,
+	EElementId.Void,
+	EElementId.Stasis,
 ];
 
 /********** Armor is all the armor that the user has *********/

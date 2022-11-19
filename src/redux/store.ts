@@ -44,28 +44,33 @@ const store = makeStore();
 let desiredArmorStatsUuid = NIL;
 let selectedCharacterClassUuid = NIL;
 let selectedExoticArmorUuid = NIL;
+let selectedSubclassOptionsUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
 		desiredArmorStats: { uuid: nextDesiredArmorStatsUuid },
 		selectedCharacterClass: { uuid: nextSelectedCharacterClassUuid },
 		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid },
+		selectedSubclassOptions: { uuid: nextSelectedSubclassOptionsUuid },
 	} = store.getState();
 
 	const hasMismatchedUuids =
 		desiredArmorStatsUuid !== nextDesiredArmorStatsUuid ||
 		selectedCharacterClassUuid !== nextSelectedCharacterClassUuid ||
-		selectedExoticArmorUuid !== nextSelectedExoticArmorUuid;
+		selectedExoticArmorUuid !== nextSelectedExoticArmorUuid ||
+		selectedSubclassOptionsUuid !== nextSelectedSubclassOptionsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedCharacterClassUuid !== NIL &&
 		nextSelectedExoticArmorUuid !== NIL;
+	nextSelectedSubclassOptionsUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> store is dirty <<<<<<<<<<<');
 		desiredArmorStatsUuid = nextDesiredArmorStatsUuid;
 		selectedCharacterClassUuid = nextSelectedCharacterClassUuid;
 		selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
+		selectedSubclassOptionsUuid = nextSelectedSubclassOptionsUuid;
 
 		// TODO: Move this out of the store file
 		const {

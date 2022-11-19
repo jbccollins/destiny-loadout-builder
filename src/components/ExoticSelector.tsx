@@ -70,6 +70,7 @@ function ExoticSelector() {
 				options={options}
 				value={selectedExoticArmor[selectedCharacterClass]}
 				onChange={handleChange}
+				getId={(option: AvailableExoticArmorItem) => option.hash.toString()}
 				getGroupBy={(option: AvailableExoticArmorItem) =>
 					ArmorSlotIdToArmorSlot.get(option.armorSlot).name
 				}

@@ -44,6 +44,7 @@ const Container = styled(Card)(({ theme }) => ({
 	left: '50%',
 	top: '50%',
 	transform: 'translate(-50%, -50%)',
+	minWidth: '270px',
 }));
 
 const Item = styled(Box)(({ theme }) => ({

@@ -31,14 +31,14 @@ import SubclassSelector from '@dlb/components/SubclassSelector/SubclassSelector'
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
-	padding: theme.spacing(1),
+	padding: 0, //theme.spacing(1),
 	display: 'flex',
 	width: '100%',
 	// maxWidth: '100%',
 	position: 'relative',
 	height: '100vh', //`calc(100vh - ${theme.spacing(2)})`,
 
-	//overflowY: 'auto',
+	overflowY: 'hidden',
 	[theme.breakpoints.down('md')]: {
 		display: 'block',
 		paddingBottom: theme.spacing(10),
@@ -53,7 +53,7 @@ const LeftSection = styled(Box)(({ theme }) => ({
 	overflowY: 'auto',
 	[theme.breakpoints.down('md')]: {
 		width: '100%', //`calc(100vw - ${theme.spacing(4)})`,
-		padding: theme.spacing(0),
+		// padding: theme.spacing(0),
 	},
 }));
 
@@ -62,7 +62,7 @@ const RightSection = styled(Box)(({ theme }) => ({
 	flexGrow: 1,
 	[theme.breakpoints.down('md')]: {
 		width: '100vw', //`calc(100vw - ${theme.spacing(4)})`,
-		padding: theme.spacing(0),
+		//padding: theme.spacing(0),
 	},
 }));
 

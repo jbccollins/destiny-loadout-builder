@@ -270,8 +270,16 @@ const _processArmorBaseCase = ({
 			return;
 		}
 
-		// TODO: URGENT Convert this type into [StatList, EStatModifier[]]
-		output.push([...seenArmorIds, armorSlotItem.id, requiredStatMods] as Temp);
+		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
+		output.push({
+			armorIdList,
+			armorStatModIdList: requiredStatMods,
+			metadata: {
+				totalModCost: 0,
+				totalStatTiers: 0,
+				wastedStats: 0,
+			},
+		});
 	});
 	// console.log('>>>>>> Base Case output:', output);
 	return output;
@@ -307,12 +315,20 @@ const _processArmorRecursiveCase = ({
 			})
 		);
 	});
+	// TODO: Can we find a way to not have to do this flattening?
 	return output.flat(1);
 };
 
-// TODO: FIX THIS!!!!!!
-type Temp = [string, string, string, string, any];
-export type ProcessArmorOutput = Temp[]; //ArmorIdList[];
+type ProcessArmorOutputItem = {
+	armorIdList: ArmorIdList;
+	armorStatModIdList: EArmorStatModId[];
+	metadata: {
+		totalModCost: number;
+		totalStatTiers: number;
+		wastedStats: number;
+	};
+};
+export type ProcessArmorOutput = ProcessArmorOutputItem[];
 
 type ProcessArmorParams = {
 	desiredArmorStats: ArmorStatMapping;

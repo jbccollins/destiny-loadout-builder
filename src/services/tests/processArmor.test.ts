@@ -64,7 +64,18 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				],
 			],
 		},
-		output: [['0', '1', '2', '3', []]],
+
+		output: [
+			{
+				armorIdList: ['0', '1', '2', '3'],
+				armorStatModIdList: [],
+				metadata: {
+					totalModCost: 0,
+					totalStatTiers: 0,
+					wastedStats: 0,
+				},
+			},
+		],
 	},
 
 	{
@@ -118,19 +129,21 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			],
 		},
 		output: [
-			[
-				'0',
-				'1',
-				'2',
-				'3',
-				[
+			{
+				armorIdList: ['0', '1', '2', '3'],
+				armorStatModIdList: [
 					EArmorStatModId.MajorMobility,
 					EArmorStatModId.MajorMobility,
 					EArmorStatModId.MajorMobility,
 					EArmorStatModId.MajorMobility,
 					EArmorStatModId.MajorMobility,
 				],
-			],
+				metadata: {
+					totalModCost: 0,
+					totalStatTiers: 0,
+					wastedStats: 0,
+				},
+			},
 		],
 	},
 
@@ -443,15 +456,14 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 // test() function boilerplate but I can't figure out how to run an individual
 // test case that way :(
 
-// TODO: Figure out how to avoid casting as string[][]
 describe('processArmor', () => {
 	test(processArmorTestCases[0].name, () => {
 		const { input, output } = processArmorTestCases[0];
-		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
+		expect(doProcessArmor(input)).toEqual(output);
 	});
 	test(processArmorTestCases[1].name, () => {
 		const { input, output } = processArmorTestCases[1];
-		expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
+		expect(doProcessArmor(input)).toEqual(output);
 	});
 	// test(processArmorTestCases[2].name, () => {
 	// 	const { input, output } = processArmorTestCases[2];

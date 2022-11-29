@@ -55,14 +55,14 @@ function ArmorResultsView() {
 		);
 		const res: ResultsTableArmorItem[] = [];
 
-		processedArmor.forEach((armorIdsBySlot) => {
+		processedArmor.forEach(({ armorIdList }) => {
 			const resultArmorItem: ResultsTableArmorItem = {
 				totalStats: [0, 0, 0, 0, 0, 0],
 				armorItems: [],
 				id: '',
 			};
 			ArmorSlotIdList.forEach((armorSlot, i) => {
-				const armorItem = getArmorItem(armorIdsBySlot[i], armorSlot);
+				const armorItem = getArmorItem(armorIdList[i], armorSlot);
 				resultArmorItem.armorItems.push(armorItem);
 				armorItem.stats.forEach((value, j) => {
 					resultArmorItem.totalStats[j] +=

@@ -25,6 +25,8 @@ const SubclassSelector = () => {
 
 	const handleChange = (option: DestinySubclassAndSuperAbilityOption) => {
 		// TODO: Don't trigger a redux dirty unless the subclass id changes, not just the super
+		// An easy half measure right now would be to just return right here if the selected super
+		// id didn't change but that doesn't help the subclass id not changing
 		dispatch(
 			setSelectedSubclassOptions({
 				...selectedSubclassOptions,

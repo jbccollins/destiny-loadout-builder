@@ -338,9 +338,5 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 };
 
-// export const AnimalIdToAnimal: Mapping<EAnimalId, IAnimal> = {
-// 	get: (key: EAnimalId) => AnimalIdToAnimalMapping[key],
-// };
-
 export const getAspect = (aspectId: EAspectId): IAspect =>
 	AspectIdToAspectMapping[aspectId];

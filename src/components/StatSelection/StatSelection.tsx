@@ -3,10 +3,11 @@ import {
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { ArmorStatIdList } from '@dlb/types/ArmorStat';
+import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import { EArmorStatId } from '@dlb/types/IdEnums';
 import { styled, Card, Box } from '@mui/material';
 import { useEffect } from 'react';
+import StatSelectorRow from './StatSelectorRow';
 import StatSlider from './StatSlider';
 
 type StatSelectionProps = {
@@ -15,7 +16,7 @@ type StatSelectionProps = {
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
-	padding: theme.spacing(3),
+	padding: theme.spacing(1),
 }));
 
 const SliderWrapper = styled(Box)(({ theme }) => ({
@@ -29,7 +30,12 @@ function valuetext(value: number) {
 	return `Tier ${value}`;
 }
 
-const marks = [
+export type Mark = {
+	value: number;
+	label: string;
+};
+
+const marks: Mark[] = [
 	{
 		value: 0,
 		label: '0',
@@ -80,7 +86,7 @@ function StatSelection(props: StatSelectionProps) {
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
-	function handleSliderChange(statName: EArmorStatId, value: number) {
+	function handleChange(statName: EArmorStatId, value: number) {
 		if (desiredArmorStats && desiredArmorStats[statName] === value) {
 			// Don't trigger a redux dirty
 			return;
@@ -88,31 +94,32 @@ function StatSelection(props: StatSelectionProps) {
 		dispatch(setDesiredArmorStats({ ...desiredArmorStats, [statName]: value }));
 	}
 
-	// This is a bit hacky but it's just here to ensure that we dirty the uuid for desiredArmorStats
-	useEffect(() => {
-		dispatch(setDesiredArmorStats(desiredArmorStats));
-	}, []);
-
 	return (
 		<Container>
-			{ArmorStatIdList.map((statName) => {
+			{ArmorStatIdList.map((armorStatId) => {
+				const { name } = getArmorStat(armorStatId);
 				return (
-					<SliderWrapper key={statName}>
-						<SliderTitle>{statName}</SliderTitle>
-						<StatSlider
+					<SliderWrapper key={armorStatId}>
+						<SliderTitle>{name}</SliderTitle>
+						{/* <StatSlider
 							onChange={(_, value) =>
-								handleSliderChange(statName, value as number)
+								handleChange(armorStatId, value as number)
 							}
 							locked
 							aria-label="Tier"
 							getAriaValueText={valuetext}
 							valueLabelDisplay="off"
-							value={desiredArmorStats[statName]}
+							value={desiredArmorStats[armorStatId]}
 							step={10}
 							size="medium"
 							marks={marks}
 							min={0}
 							max={100}
+						/> */}
+						<StatSelectorRow
+							value={desiredArmorStats[armorStatId]}
+							marks={marks}
+							onChange={(value) => handleChange(armorStatId, value)}
 						/>
 					</SliderWrapper>
 				);

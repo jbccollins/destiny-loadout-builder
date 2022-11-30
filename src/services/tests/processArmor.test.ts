@@ -71,15 +71,23 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				armorStatModIdList: [],
 				metadata: {
 					totalModCost: 0,
-					totalStatTiers: 0,
-					wastedStats: 0,
+					totalStatTiers: 24,
+					wastedStats: 32,
+					totalArmorStatMapping: {
+						[EArmorStatId.Mobility]: 8,
+						[EArmorStatId.Resilience]: 64,
+						[EArmorStatId.Recovery]: 64,
+						[EArmorStatId.Discipline]: 64,
+						[EArmorStatId.Intellect]: 64,
+						[EArmorStatId.Strength]: 8,
+					},
 				},
 			},
 		],
 	},
 
 	{
-		name: 'temp',
+		name: 'It returns results when five major mods are required',
 		input: {
 			desiredArmorStats: {
 				[EArmorStatId.Mobility]: 100,
@@ -139,9 +147,17 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EArmorStatModId.MajorMobility,
 				],
 				metadata: {
-					totalModCost: 0,
-					totalStatTiers: 0,
-					wastedStats: 0,
+					totalModCost: 15,
+					totalStatTiers: 30,
+					wastedStats: 22,
+					totalArmorStatMapping: {
+						[EArmorStatId.Mobility]: 100,
+						[EArmorStatId.Resilience]: 22,
+						[EArmorStatId.Recovery]: 64,
+						[EArmorStatId.Discipline]: 64,
+						[EArmorStatId.Intellect]: 64,
+						[EArmorStatId.Strength]: 8,
+					},
 				},
 			},
 		],

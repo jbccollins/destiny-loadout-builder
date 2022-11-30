@@ -15,7 +15,7 @@ import {
 	SelectedSubclassOptions,
 	setSelectedSubclassOptions,
 } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
-import { useAppDispatch } from '@dlb/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { extractArmor, extractCharacters } from '@dlb/services/data';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
@@ -36,6 +36,10 @@ import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, styled, Checkbox, Card, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import {
+	selectDesiredArmorStats,
+	setDesiredArmorStats,
+} from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -81,6 +85,7 @@ function Loading() {
 	const router = useRouter();
 
 	const dispatch = useAppDispatch();
+	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
 	useEffect(() => {
 		(async () => {
@@ -172,11 +177,19 @@ function Loading() {
 					}
 				});
 				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
-				dispatch(setSelectedSubclassOptions(defaultSelectedSubclassOptions));
 				console.log(
 					'>>>>>>>>>>> [LOAD] defaultSelectedExoticArmor <<<<<<<<<<<',
 					defaultSelectedExoticArmor
 				);
+				dispatch(setSelectedSubclassOptions(defaultSelectedSubclassOptions));
+				console.log(
+					'>>>>>>>>>>> [LOAD] defaultSelectedSubclassOptions <<<<<<<<<<<',
+					defaultSelectedSubclassOptions
+				);
+				// This is kinda hacky but by triggering a dispatch here with the existing
+				// armor stats we can "dirty" the store so it knows it needs to recalculate
+				// the processedArmorItems
+				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {
 				// TODO redirect only on the right kind of error

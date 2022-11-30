@@ -52,9 +52,11 @@ const ArmorStatIdToArmorStatMapping: EnumDictionary<EArmorStatId, IArmorStat> =
 		},
 	};
 
-export const ArmorStatIdToArmorStat: Mapping<EArmorStatId, IArmorStat> = {
-	get: (key: EArmorStatId) => ArmorStatIdToArmorStatMapping[key],
-};
+// export const ArmorStatIdToArmorStat: Mapping<EArmorStatId, IArmorStat> = {
+// 	get: (key: EArmorStatId) => ArmorStatIdToArmorStatMapping[key],
+// };
+export const getArmorStat = (id: EArmorStatId): IArmorStat =>
+	ArmorStatIdToArmorStatMapping[id];
 
 // TODO Move this to the ArmorStatMod file
 export type ArmorStatModSplit = {

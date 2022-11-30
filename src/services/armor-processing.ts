@@ -5,7 +5,10 @@ import {
 	ArmorStatIdToArmorStatModSplit,
 	ArmorStatMapping,
 } from '@dlb/types/ArmorStat';
-import { getArmorStatMappingFromArmorStatMods } from '@dlb/types/ArmorStatMod';
+import {
+	getArmorStatMappingFromArmorStatMods,
+	getArmorStatMod,
+} from '@dlb/types/ArmorStatMod';
 import {
 	EArmorSlotId,
 	EArmorStatModId,
@@ -90,9 +93,14 @@ function roundUp5(x: number) {
 	return Math.ceil(x / 5) * 5;
 }
 
-// Round a number down to the nearest 10
+// Round a number up to the nearest 10
 function roundUp10(x: number) {
 	return Math.ceil(x / 10) * 10;
+}
+
+// Round a number down to the nearest 10
+function roundDown10(x: number) {
+	return Math.floor(x / 10) * 10;
 }
 
 // If we need 25 stats we need one minor stat and two major
@@ -259,7 +267,7 @@ const _processArmorBaseCase = ({
 	armorSlotItems.forEach((armorSlotItem) => {
 		const finalSumOfSeenStats = getNextSeenStats(sumOfSeenStats, armorSlotItem);
 
-		const [shortCircuit, requiredStatMods, requiredStatModSumValues] =
+		const [shortCircuit, requiredStatMods, requiredStatModArmorStatMapping] =
 			shouldShortCircuit({
 				sumOfSeenStats: finalSumOfSeenStats,
 				desiredArmorStats: desiredArmorStats,
@@ -271,13 +279,18 @@ const _processArmorBaseCase = ({
 		}
 
 		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
+		const totalArmorStatMapping = sumArmorStatMappings([
+			getArmorStatMappingFromStatList(finalSumOfSeenStats),
+			requiredStatModArmorStatMapping,
+		]);
 		output.push({
 			armorIdList,
 			armorStatModIdList: requiredStatMods,
 			metadata: {
-				totalModCost: 0,
-				totalStatTiers: 0,
-				wastedStats: 0,
+				totalModCost: getTotalModCost(requiredStatMods),
+				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
+				wastedStats: getWastedStats(totalArmorStatMapping),
+				totalArmorStatMapping,
 			},
 		});
 	});
@@ -322,10 +335,12 @@ const _processArmorRecursiveCase = ({
 type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EArmorStatModId[];
+	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: {
 		totalModCost: number;
 		totalStatTiers: number;
 		wastedStats: number;
+		totalArmorStatMapping: ArmorStatMapping;
 	};
 };
 export type ProcessArmorOutput = ProcessArmorOutputItem[];
@@ -377,4 +392,67 @@ export const preProcessArmor = (
 		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic);
 	});
 	return strictArmorItems;
+};
+
+// Convert an ordered list of stats into a mapping
+const getArmorStatMappingFromStatList = (
+	statList: StatList
+): ArmorStatMapping => {
+	const res: ArmorStatMapping = {
+		[EArmorStatId.Mobility]: 0,
+		[EArmorStatId.Resilience]: 0,
+		[EArmorStatId.Recovery]: 0,
+		[EArmorStatId.Discipline]: 0,
+		[EArmorStatId.Intellect]: 0,
+		[EArmorStatId.Strength]: 0,
+	};
+	ArmorStatIdList.forEach((armorStatId, i) => {
+		res[armorStatId] = statList[i];
+	});
+	return res;
+};
+
+// Get the total number of stat tiers for an ArmorStatMapping
+const getTotalStatTiers = (armorStatMapping: ArmorStatMapping): number => {
+	let res = 0;
+	ArmorStatIdList.forEach((armorStatId) => {
+		res += roundDown10(armorStatMapping[armorStatId]) / 10;
+	});
+	return res;
+};
+
+// Add up an arbitrary number of ArmorStatMappings
+const sumArmorStatMappings = (
+	armorStatMappings: ArmorStatMapping[]
+): ArmorStatMapping => {
+	const res: ArmorStatMapping = {
+		[EArmorStatId.Mobility]: 0,
+		[EArmorStatId.Resilience]: 0,
+		[EArmorStatId.Recovery]: 0,
+		[EArmorStatId.Discipline]: 0,
+		[EArmorStatId.Intellect]: 0,
+		[EArmorStatId.Strength]: 0,
+	};
+	ArmorStatIdList.forEach((armorStatId) => {
+		armorStatMappings.forEach((armorStatMapping) => {
+			res[armorStatId] = res[armorStatId] + armorStatMapping[armorStatId];
+		});
+	});
+	return res;
+};
+
+const getTotalModCost = (armorStatModIds: EArmorStatModId[]): number => {
+	let res = 0;
+	armorStatModIds.forEach((id) => {
+		res += getArmorStatMod(id).cost;
+	});
+	return res;
+};
+
+const getWastedStats = (armorStatMapping: ArmorStatMapping): number => {
+	let res = 0;
+	ArmorStatIdList.forEach((armorStatId) => {
+		res += armorStatMapping[armorStatId] % 10;
+	});
+	return res;
 };

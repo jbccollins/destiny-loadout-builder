@@ -116,8 +116,8 @@ const Home: NextPage = () => {
 						<LeftSection>
 							<ExoticAndDestinyClassSelectorWrapper />
 							<SubclassSelector />
-							<ArmorSlotRestrictions />
 							<StatSelection locked />
+							<ArmorSlotRestrictions />
 						</LeftSection>
 						{!isSmallScreen && (
 							<RightSection>

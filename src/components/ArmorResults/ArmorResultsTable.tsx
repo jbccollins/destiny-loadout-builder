@@ -62,7 +62,7 @@ function getComparator(
 
 const CustomTableCell = styled(TableCell, {
 	shouldForwardProp: (prop) => prop !== 'open',
-})<{ open?: boolean }>(({ theme, color }) => ({
+})<{ open?: boolean }>(({ theme, color, open }) => ({
 	backgroundColor: open ? 'black' : '',
 	borderBottom: 0,
 }));

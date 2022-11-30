@@ -1,6 +1,7 @@
-import { ArmorStatMapping } from './ArmorStat';
+import { ArmorStatIdList, ArmorStatMapping } from './ArmorStat';
 import {
 	EnumDictionary,
+	IHash,
 	IIcon,
 	IIdentifiableName,
 	Mapping,
@@ -10,7 +11,11 @@ import { EArmorStatId, EArmorStatModId } from './IdEnums';
 
 export const ArmorStatModIdList = Object.values(EArmorStatModId);
 
-export interface IArmorStatMod extends IIdentifiableName, IIcon {}
+export interface IArmorStatMod extends IIdentifiableName, IIcon, IHash {
+	cost: number;
+	statBonus: number;
+	armorStatId: EArmorStatId;
+}
 
 const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	EArmorStatModId,
@@ -20,120 +25,136 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 		id: EArmorStatModId.None,
 		name: 'None',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 0,
+		statBonus: 0,
+		hash: 0,
+		armorStatId: null,
 	},
 	[EArmorStatModId.MajorMobility]: {
 		id: EArmorStatModId.MajorMobility,
 		name: 'Major Mobility',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 3,
+		statBonus: 10,
+		hash: 3961599962,
+		armorStatId: EArmorStatId.Mobility,
 	},
 	[EArmorStatModId.MinorMobility]: {
 		id: EArmorStatModId.MinorMobility,
 		name: 'Minor Mobility',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 1,
+		statBonus: 5,
+		hash: 204137529,
+		armorStatId: EArmorStatId.Mobility,
 	},
 	[EArmorStatModId.MajorResilience]: {
 		id: EArmorStatModId.MajorResilience,
 		name: 'Major Resilience',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 3,
+		statBonus: 10,
+		hash: 2850583378,
+		armorStatId: EArmorStatId.Resilience,
 	},
 	[EArmorStatModId.MinorResilience]: {
 		id: EArmorStatModId.MinorResilience,
-		name: 'Major Resilience',
+		name: 'Minor Resilience',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 1,
+		statBonus: 5,
+		hash: 3682186345,
+		armorStatId: EArmorStatId.Resilience,
 	},
 	[EArmorStatModId.MajorRecovery]: {
 		id: EArmorStatModId.MajorRecovery,
 		name: 'Major Recovery',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 4,
+		statBonus: 10,
+		hash: 2645858828,
+		armorStatId: EArmorStatId.Recovery,
 	},
 	[EArmorStatModId.MinorRecovery]: {
 		id: EArmorStatModId.MinorRecovery,
-		name: 'Major Recovery',
+		name: 'Minor Recovery',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 2,
+		statBonus: 5,
+		hash: 555005975,
+		armorStatId: EArmorStatId.Recovery,
 	},
 	[EArmorStatModId.MajorDiscipline]: {
 		id: EArmorStatModId.MajorDiscipline,
 		name: 'Major Discipline',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 3,
+		statBonus: 10,
+		hash: 4048838440,
+		armorStatId: EArmorStatId.Discipline,
 	},
 	[EArmorStatModId.MinorDiscipline]: {
 		id: EArmorStatModId.MinorDiscipline,
-		name: 'Major Discipline',
+		name: 'Minor Discipline',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 1,
+		statBonus: 5,
+		hash: 2623485440,
+		armorStatId: EArmorStatId.Discipline,
 	},
 	[EArmorStatModId.MajorIntellect]: {
 		id: EArmorStatModId.MajorIntellect,
 		name: 'Major Intellect',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 5,
+		statBonus: 10,
+		hash: 3355995799,
+		armorStatId: EArmorStatId.Intellect,
 	},
 	[EArmorStatModId.MinorIntellect]: {
 		id: EArmorStatModId.MinorIntellect,
-		name: 'Major Intellect',
+		name: 'Minor Intellect',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 2,
+		statBonus: 5,
+		hash: 1227870362,
+		armorStatId: EArmorStatId.Intellect,
 	},
 	[EArmorStatModId.MajorStrength]: {
 		id: EArmorStatModId.MajorStrength,
 		name: 'Major Strength',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 3,
+		statBonus: 10,
+		hash: 3253038666,
+		armorStatId: EArmorStatId.Strength,
 	},
 	[EArmorStatModId.MinorStrength]: {
 		id: EArmorStatModId.MinorStrength,
-		name: 'Major Strength',
+		name: 'Minor Strength',
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		cost: 1,
+		statBonus: 5,
+		hash: 3699676109,
+		armorStatId: EArmorStatId.Strength,
 	},
 };
 
-export const ArmmorStatModIdToArmorStatMod: Mapping<
-	EArmorStatModId,
-	IArmorStatMod
-> = {
-	get: (key: EArmorStatModId) => ArmorStatModIdToArmorStatModMapping[key],
-};
+// export const ArmmorStatModIdToArmorStatMod: Mapping<
+// 	EArmorStatModId,
+// 	IArmorStatMod
+// > = {
+// 	get: (key: EArmorStatModId) => ArmorStatModIdToArmorStatModMapping[key],
+// };
+// TODO: Move all types away from the ArmmorStatModIdToArmorStatMod get convention and over to this
+// functional getter convention
+export const getArmorStatMod = (id: EArmorStatModId): IArmorStatMod =>
+	ArmorStatModIdToArmorStatModMapping[id];
 
 /***** Extra *****/
-// TODO: Roll these into the IArmorStatMod interface
-// Stat Enum, bonus, cost, mod hash
-export const ArmorStatModValues: EnumDictionary<
-	EArmorStatModId,
-	[EArmorStatId, number, number, number]
-> = {
-	[EArmorStatModId.None]: [EArmorStatId.Strength, 0, 0, 0], // Lol this is fucky
-	[EArmorStatModId.MinorMobility]: [EArmorStatId.Mobility, 5, 1, 204137529],
-	[EArmorStatModId.MajorMobility]: [EArmorStatId.Mobility, 10, 3, 3961599962],
-	[EArmorStatModId.MinorResilience]: [
-		EArmorStatId.Resilience,
-		5,
-		1,
-		3682186345,
-	],
-	[EArmorStatModId.MajorResilience]: [
-		EArmorStatId.Resilience,
-		10,
-		3,
-		2850583378,
-	],
-	[EArmorStatModId.MinorRecovery]: [EArmorStatId.Recovery, 5, 2, 555005975],
-	[EArmorStatModId.MajorRecovery]: [EArmorStatId.Recovery, 10, 4, 2645858828],
-	[EArmorStatModId.MinorDiscipline]: [
-		EArmorStatId.Discipline,
-		5,
-		1,
-		2623485440,
-	],
-	[EArmorStatModId.MajorDiscipline]: [
-		EArmorStatId.Discipline,
-		10,
-		3,
-		4048838440,
-	],
-	[EArmorStatModId.MinorIntellect]: [EArmorStatId.Intellect, 5, 2, 1227870362],
-	[EArmorStatModId.MajorIntellect]: [EArmorStatId.Intellect, 10, 5, 3355995799],
-	[EArmorStatModId.MinorStrength]: [EArmorStatId.Strength, 5, 1, 3699676109],
-	[EArmorStatModId.MajorStrength]: [EArmorStatId.Strength, 10, 3, 3253038666],
-};
-
+// Get the ArmorStatMapping that represents the total stat bonuses for a list of ArmorStatMods
 export const getArmorStatMappingFromArmorStatMods = (
-	statModifiers: EArmorStatModId[]
+	armorStatModIds: EArmorStatModId[]
 ): ArmorStatMapping => {
 	const res: ArmorStatMapping = {
 		[EArmorStatId.Mobility]: 0,
@@ -143,9 +164,9 @@ export const getArmorStatMappingFromArmorStatMods = (
 		[EArmorStatId.Intellect]: 0,
 		[EArmorStatId.Strength]: 0,
 	};
-	statModifiers.forEach((statModifier) => {
-		const [armorStat, value] = ArmorStatModValues[statModifier];
-		res[armorStat] = res[armorStat] + value;
+	armorStatModIds.forEach((armorStatModId) => {
+		const { statBonus, armorStatId } = getArmorStatMod(armorStatModId);
+		res[armorStatId] = res[armorStatId] + statBonus;
 	});
 	return res;
 };

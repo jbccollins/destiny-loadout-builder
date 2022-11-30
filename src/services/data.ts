@@ -15,9 +15,6 @@ import {
 	EElementId,
 	EArmorStatModId,
 } from '@dlb/types/IdEnums';
-import { EnumDictionary } from '@dlb/types/globals';
-import { ArmorStatMapping } from '@dlb/types/ArmorStat';
-import { ArmorStatModValues } from '@dlb/types/ArmorStatMod';
 import {
 	DestinyClassHashToDestinyClass,
 	BucketHashToArmorSlot,

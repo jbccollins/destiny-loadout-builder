@@ -2,7 +2,7 @@ import {
 	DestinyClassIdList,
 	DestinyClassIdToDestinySubclasses,
 } from '@dlb/types/DestinyClass';
-import { DestinySubclassIdToDestinySubclass } from '@dlb/types/DestinySubclass';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { SuperAbilityIdToDestinySuperAbility } from '@dlb/types/SuperAbility';
 import { ElementIdToElement } from '@dlb/types/Element';
 import {
@@ -36,7 +36,7 @@ const options = (() => {
 			DestinyClassIdToDestinySubclasses.get(destinyClassId);
 		destinySubclassIds.forEach((destinySubclassId) => {
 			const { superAbilityIdList, name: destinySubclassName } =
-				DestinySubclassIdToDestinySubclass.get(destinySubclassId);
+				getDestinySubclass(destinySubclassId);
 			superAbilityIdList.forEach((superAbilityId) => {
 				const {
 					icon,

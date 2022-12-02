@@ -52,11 +52,12 @@ function IconAutocompleteDropdown({
 		<Container>
 			<FormControl fullWidth>
 				<Autocomplete
-					id="country-select-demo"
+					id={title}
 					options={options}
 					autoHighlight
 					value={value}
 					disableClearable
+					style={{ maxHeight: '80vh' }}
 					groupBy={(option) => getGroupBy(option)}
 					onChange={(_, value) => {
 						onChange(value as IIconAutocompleteDropdownOption);
@@ -78,6 +79,9 @@ function IconAutocompleteDropdown({
 								sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
 								{...props}
 							>
+								{
+									// TODO FIX ALT
+								}
 								<BungieImage width="40" src={option.icon} alt="asdf" />
 								<div>
 									{parts.map((part, index) => (

@@ -28,6 +28,8 @@ import React from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SubclassSelector from '@dlb/components/SubclassSelector/SubclassSelector';
+import FragmentSelector from '@dlb/components/SubclassSelector/FragmentSelector';
+import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -116,6 +118,8 @@ const Home: NextPage = () => {
 						<LeftSection>
 							<ExoticAndDestinyClassSelectorWrapper />
 							<SubclassSelector />
+							<AspectSelector />
+							<FragmentSelector />
 							<StatSelection locked />
 							<ArmorSlotRestrictions />
 						</LeftSection>

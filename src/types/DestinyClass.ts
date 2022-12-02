@@ -5,7 +5,7 @@ import {
 	ValidateEnumList,
 	Mapping,
 } from './globals';
-import { EDestinyClassId, EDestinySubclassId } from './IdEnums';
+import { EArmorStatId, EDestinyClassId, EDestinySubclassId } from './IdEnums';
 
 export const DestinyClassIdList = ValidateEnumList(
 	Object.values(EDestinyClassId),
@@ -74,3 +74,17 @@ export const DestinyClassIdToDestinySubclasses: Mapping<
 > = {
 	get: (key: EDestinyClassId) => DestinyClassIdToDestinySubclassesMapping[key],
 };
+
+// The mapping between destiny classes and the stats that control
+// dodge for hunter, rift for warlock and barricade for titan
+const DestinyClassIdToClassAbilityStat: EnumDictionary<
+	EDestinyClassId,
+	EArmorStatId
+> = {
+	[EDestinyClassId.Hunter]: EArmorStatId.Mobility,
+	[EDestinyClassId.Warlock]: EArmorStatId.Recovery,
+	[EDestinyClassId.Titan]: EArmorStatId.Resilience,
+};
+
+export const getDestinyClassAbilityStat = (id: EDestinyClassId): EArmorStatId =>
+	DestinyClassIdToClassAbilityStat[id];

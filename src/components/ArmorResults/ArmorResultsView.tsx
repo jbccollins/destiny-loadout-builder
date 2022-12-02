@@ -23,8 +23,6 @@ const Container = styled(Box)(({ theme }) => ({
 
 export type ResultsTableArmorItem = {
 	id: string;
-	// TODO: We should probably rename the 'DesiredArmorStats' type since it's being used
-	// in a different way here
 	totalStats: StatList; // Includes Masterwork
 	armorItems: ArmorItem[];
 };

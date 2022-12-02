@@ -10,6 +10,8 @@ import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedE
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
 import selectedArmorSlotRestrictionsReducer from './features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
 import selectedSubclassOptionsReducer from './features/selectedSubclassOptions/selectedSubclassOptionsSlice';
+import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
+import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
 
 import processedArmorReducer, {
 	setProcessedArmor,
@@ -34,6 +36,8 @@ export function makeStore() {
 			processedArmor: processedArmorReducer,
 			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
 			selectedSubclassOptions: selectedSubclassOptionsReducer,
+			selectedFragments: selectedFragmentsReducer,
+			selectedAspects: selectedAspectsReducer,
 		},
 	});
 }

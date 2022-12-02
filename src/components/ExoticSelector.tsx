@@ -60,6 +60,8 @@ function ExoticSelector() {
 		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
 	};
 
+	// TODO: No exotic?
+	// Icon might be: https://www.bungie.net/common/destiny2_content/icons/b4d05ef69d0c3227a7d4f7f35bbc2848.png
 	return (
 		availableExoticArmor &&
 		selectedCharacterClass &&

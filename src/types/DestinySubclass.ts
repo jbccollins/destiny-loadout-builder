@@ -35,7 +35,7 @@ export const DestinySubclassIdList = ValidateEnumList(
 export interface IDestinySubclass extends IIdentifiableName, IIcon, IHash {
 	superAbilityIdList: ESuperAbilityId[];
 	destinyClassId: EDestinyClassId;
-	element: EElementId;
+	elementId: EElementId;
 }
 
 const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
@@ -51,7 +51,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.Stormtrance,
 		],
 		destinyClassId: EDestinyClassId.Warlock,
-		element: EElementId.Arc,
+		elementId: EElementId.Arc,
 		hash: 3168997075,
 	},
 	[EDestinySubclassId.Dawnblade]: {
@@ -63,7 +63,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.WellOfRadiance,
 		],
 		destinyClassId: EDestinyClassId.Warlock,
-		element: EElementId.Solar,
+		elementId: EElementId.Solar,
 		hash: 3941205951,
 	},
 	[EDestinySubclassId.Voidwalker]: {
@@ -76,7 +76,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.NovaBombCataclysm,
 		],
 		destinyClassId: EDestinyClassId.Warlock,
-		element: EElementId.Void,
+		elementId: EElementId.Void,
 		hash: 2849050827,
 	},
 	[EDestinySubclassId.Shadebinder]: {
@@ -85,7 +85,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
 		superAbilityIdList: [ESuperAbilityId.WintersWrath],
 		destinyClassId: EDestinyClassId.Warlock,
-		element: EElementId.Stasis,
+		elementId: EElementId.Stasis,
 		hash: 3291545503,
 	},
 	[EDestinySubclassId.Striker]: {
@@ -97,7 +97,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.FistsOfHavoc,
 		],
 		destinyClassId: EDestinyClassId.Titan,
-		element: EElementId.Arc,
+		elementId: EElementId.Arc,
 		hash: 2932390016,
 	},
 	[EDestinySubclassId.Sentinel]: {
@@ -109,7 +109,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.WardOfDawn,
 		],
 		destinyClassId: EDestinyClassId.Titan,
-		element: EElementId.Void,
+		elementId: EElementId.Void,
 		hash: 2842471112,
 	},
 	[EDestinySubclassId.Sunbreaker]: {
@@ -121,7 +121,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.HammerOfSol,
 		],
 		destinyClassId: EDestinyClassId.Titan,
-		element: EElementId.Solar,
+		elementId: EElementId.Solar,
 		hash: 2550323932,
 	},
 	[EDestinySubclassId.Behemoth]: {
@@ -130,7 +130,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
 		superAbilityIdList: [ESuperAbilityId.GlacialQuake],
 		destinyClassId: EDestinyClassId.Titan,
-		element: EElementId.Stasis,
+		elementId: EElementId.Stasis,
 		hash: 613647804,
 	},
 	[EDestinySubclassId.Gunslinger]: {
@@ -143,7 +143,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.GoldenGunMarksman,
 		],
 		destinyClassId: EDestinyClassId.Hunter,
-		element: EElementId.Solar,
+		elementId: EElementId.Solar,
 		hash: 2240888816,
 	},
 	[EDestinySubclassId.Nightstalker]: {
@@ -157,7 +157,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.SpectralBlades,
 		],
 		destinyClassId: EDestinyClassId.Hunter,
-		element: EElementId.Void,
+		elementId: EElementId.Void,
 		hash: 2453351420,
 	},
 	[EDestinySubclassId.Arcstrider]: {
@@ -169,7 +169,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 			ESuperAbilityId.GatheringStorm,
 		],
 		destinyClassId: EDestinyClassId.Hunter,
-		element: EElementId.Arc,
+		elementId: EElementId.Arc,
 		hash: 2328211300,
 	},
 	[EDestinySubclassId.Revenant]: {
@@ -178,18 +178,13 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
 		superAbilityIdList: [ESuperAbilityId.SilenceAndSquall],
 		destinyClassId: EDestinyClassId.Hunter,
-		element: EElementId.Stasis,
+		elementId: EElementId.Stasis,
 		hash: 873720784,
 	},
 };
 
-export const DestinySubclassIdToDestinySubclass: Mapping<
-	EDestinySubclassId,
-	IDestinySubclass
-> = {
-	get: (key: EDestinySubclassId) =>
-		DestinySubclassIdToDestinySubclassMapping[key],
-};
+export const getDestinySubclass = (id: EDestinySubclassId): IDestinySubclass =>
+	DestinySubclassIdToDestinySubclassMapping[id];
 
 /******* Extra *******/
 

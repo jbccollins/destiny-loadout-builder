@@ -242,7 +242,7 @@ export enum EFragmentId {
 	EchoOfProvision = 'EchoOfProvision',
 	EchoOfRemnants = 'EchoOfRemnants',
 	EchoOfReprisal = 'EchoOfReprisal',
-	EchoOfResistance = 'EchoOfResistance',
+	EchoOfPersistence = 'EchoOfPersistence',
 	EchoOfStarvation = 'EchoOfStarvation',
 	EchoOfUndermining = 'EchoOfUndermining',
 	// Stasis

@@ -4,6 +4,9 @@ throughout the project. I was doing this a lot and needed a standard to follow
 since things were getting quite confusing.
 */
 
+import { getArmorStat } from './ArmorStat';
+import { EArmorStatId, EDestinyClassId } from './IdEnums';
+
 // Check Animals.ts for a simple example of how these get used
 
 /*
@@ -74,3 +77,24 @@ export function ValidateEnumList<T extends string | symbol | number>(
 
 	return list;
 }
+
+export type StatBonusStat =
+	| EArmorStatId
+	| ((destinyClassId: EDestinyClassId) => EArmorStatId);
+
+// Commonly used between CombatStyleMod and Fragment
+// TODO: Maybe there's a better place for this than the globals file
+export type StatBonus = {
+	stat: StatBonusStat;
+	value: number;
+};
+
+export const getStat = (
+	stat: StatBonusStat,
+	destinyClassId: EDestinyClassId
+) => {
+	if (typeof stat === 'string') {
+		return getArmorStat(stat);
+	}
+	return getArmorStat(stat(destinyClassId));
+};

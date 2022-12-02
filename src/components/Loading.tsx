@@ -19,21 +19,12 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { extractArmor, extractCharacters } from '@dlb/services/data';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
-import {
-	DestinyClassIdList,
-	DestinyClassIdToDestinySubclasses,
-} from '@dlb/types/DestinyClass';
+import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 import DestinySubclassAndSuperAbilityOptions from '@dlb/constants/DestinySubclassAndSuperAbilityOptions';
-import { DestinySubclassIdToDestinySubclass } from '@dlb/types/DestinySubclass';
-import { SuperAbilityIdToDestinySuperAbility } from '@dlb/types/SuperAbility';
-import { ElementIdToElement } from '@dlb/types/Element';
-import {
-	EDestinyClassId,
-	EDestinySubclassId,
-	ESuperAbilityId,
-} from '@dlb/types/IdEnums';
+
+import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { CheckCircleRounded } from '@mui/icons-material';
-import { Box, styled, Checkbox, Card, CircularProgress } from '@mui/material';
+import { Box, styled, Card, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import {
@@ -186,9 +177,9 @@ function Loading() {
 					'>>>>>>>>>>> [LOAD] defaultSelectedSubclassOptions <<<<<<<<<<<',
 					defaultSelectedSubclassOptions
 				);
-				// This is kinda hacky but by triggering a dispatch here with the existing
-				// armor stats we can "dirty" the store so it knows it needs to recalculate
-				// the processedArmorItems
+				// This is kinda hacky but by triggering a dispatch of desiredArmorStats
+				// here with the existing armor stats we can "dirty" the store so it knows
+				// it needs to recalculate the processedArmorItems
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {

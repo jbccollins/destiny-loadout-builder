@@ -26,6 +26,19 @@ type Option = {
 	id: number;
 };
 
+/*
+TODO:
+I think this would be the processing pseudo logic
+const requiredMods = getRequiredMods().sort() // Sort lowest cost to highest cost
+const availableSlotCosts = [3,5,5,2,1].sort() // Sort lowest cost to highest cost
+const neededSlots = availableSlotCosts.slice(-1 * requiredMods.length) // Get the highest cost slots that we will need
+for (var i = 0; i < requiredMods.length; i ++ ) {
+	if (requiredMods[i].cost > neededSlots[i]) {
+		// This armor piece does not work for the loadout
+	}
+}
+*/
+
 const options: Option[] = [5, 4, 3, 2, 1, 0].map((statModCost) => {
 	return {
 		label: statModCost,

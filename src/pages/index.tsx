@@ -31,6 +31,7 @@ import SubclassSelector from '@dlb/components/SubclassSelector/SubclassSelector'
 import FragmentSelector from '@dlb/components/SubclassSelector/FragmentSelector';
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
+import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -99,6 +100,7 @@ const ArmorResultsViewWrapper = styled(Box)(({ theme }) => ({
 const Home: NextPage = () => {
 	const [open, setOpen] = React.useState(false);
 	const allDataLoaded = useAppSelector(selectAllDataLoaded);
+	const processedArmor = useAppSelector(selectProcessedArmor);
 	const theme = useTheme();
 	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 	return (
@@ -136,7 +138,7 @@ const Home: NextPage = () => {
 									variant="contained"
 									onClick={() => setOpen(true)}
 								>
-									<Box>Show Results</Box>
+									<Box>Show Results ({processedArmor.length})</Box>
 								</SmallScreenResultsViewToggle>
 								{open && (
 									<SmallScreenResultsViewWrapper>

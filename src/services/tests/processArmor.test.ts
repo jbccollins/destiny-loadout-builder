@@ -90,7 +90,6 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			},
 		],
 	},
-
 	{
 		name: 'It returns results when five major mods are required',
 		input: {

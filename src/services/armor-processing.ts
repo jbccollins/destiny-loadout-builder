@@ -81,7 +81,9 @@ export const getExtraMasterworkedStats = (
 	isMasterworked ||
 	(isExotic && masterworkAssumption === EMasterworkAssumption.All) ||
 	// TODO: This is a bug. It will assume that blue, green and white gear can be masterworked
-	(!isExotic && masterworkAssumption === EMasterworkAssumption.Legendary)
+	(!isExotic &&
+		(masterworkAssumption === EMasterworkAssumption.All ||
+			masterworkAssumption === EMasterworkAssumption.Legendary))
 		? 2
 		: 0;
 
@@ -249,7 +251,11 @@ export const doProcessArmor = ({
 		masterworkAssumption,
 		desiredArmorStats,
 		armorItems,
-		sumOfSeenStats: [0, 0, 0, 0, 0, 0],
+		// Assume class item is masterworked
+		sumOfSeenStats:
+			masterworkAssumption !== EMasterworkAssumption.None
+				? [2, 2, 2, 2, 2, 2]
+				: [0, 0, 0, 0, 0, 0],
 		seenArmorIds: [],
 	});
 };

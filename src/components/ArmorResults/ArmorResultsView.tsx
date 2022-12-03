@@ -15,6 +15,7 @@ import {
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorItem } from '@dlb/types/Armor';
+import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
@@ -31,6 +32,9 @@ export type ResultsTableArmorItem = {
 function ArmorResultsView() {
 	const armor = useAppSelector(selectArmor);
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const selectedMasterworkAssumption = useAppSelector(
+		selectSelectedMasterworkAssumption
+	);
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 
@@ -64,7 +68,8 @@ function ArmorResultsView() {
 				resultArmorItem.armorItems.push(armorItem);
 				armorItem.stats.forEach((value, j) => {
 					resultArmorItem.totalStats[j] +=
-						armorItem.stats[j] + getExtraMasterworkedStats(armorItem);
+						armorItem.stats[j] +
+						getExtraMasterworkedStats(armorItem, selectedMasterworkAssumption);
 					resultArmorItem.id += `[${armorItem.id}]`;
 				});
 			});

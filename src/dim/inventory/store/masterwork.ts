@@ -2,18 +2,22 @@ import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { isPlugStatActive } from '@dlb/dim/utils/item-utils';
 import {
 	getFirstSocketByCategoryHash,
-	isWeaponMasterworkSocket
+	isWeaponMasterworkSocket,
 } from '@dlb/dim/utils/socket-utils';
 import {
 	DamageType,
-	DestinyInventoryItemDefinition
+	DestinyInventoryItemDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import {
 	ItemCategoryHashes,
 	SocketCategoryHashes,
-	StatHashes
+	StatHashes,
 } from '@dlb/dim/data/d2/generated-enums';
-import { DimItem, DimMasterwork, DimSockets } from '../item-types';
+import {
+	DimItem,
+	DimMasterwork,
+	DimSockets,
+} from '@dlb/dim/inventory/item-types';
 
 /**
  * These are the utilities that deal with figuring out Masterwork info.
@@ -27,7 +31,7 @@ const resistanceMods = {
 	1546607977: DamageType.Kinetic,
 	1546607980: DamageType.Void,
 	1546607978: DamageType.Arc,
-	1546607979: DamageType.Thermal
+	1546607979: DamageType.Thermal,
 };
 
 /**
@@ -74,7 +78,7 @@ function buildMasterworkInfo(
 		if (exoticWeapon) {
 			return {
 				tier: maxTier,
-				stats: undefined
+				stats: undefined,
 			};
 		}
 		return null;
@@ -103,7 +107,7 @@ function buildMasterworkInfo(
 		stats.push({
 			hash: stat.statTypeHash,
 			name: defs.Stat.get(stat.statTypeHash).displayProperties.name,
-			value: masterworkPlug.stats?.[stat.statTypeHash] || 0
+			value: masterworkPlug.stats?.[stat.statTypeHash] || 0,
 		});
 	}
 
@@ -111,7 +115,7 @@ function buildMasterworkInfo(
 		tier: exoticWeapon
 			? maxTier
 			: Math.abs(masterworkPlug.plugDef.investmentStats[0].value),
-		stats
+		stats,
 	};
 }
 

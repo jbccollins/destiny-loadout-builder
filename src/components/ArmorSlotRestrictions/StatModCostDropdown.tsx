@@ -7,7 +7,7 @@ import {
 	InputLabel,
 	FormControl,
 } from '@mui/material';
-import IconDropdown from '../IconDropdown';
+import IconDropdown from '@dlb/components/IconDropdown';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
 	// paddingRight: 0

@@ -2,20 +2,20 @@ import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import {
 	DimItem,
 	DimSocketCategory,
-	PluggableInventoryItemDefinition
+	PluggableInventoryItemDefinition,
 } from '@dlb/dim/inventory/item-types';
 import { getSubclassPlugCategories } from '@dlb/dim/inventory/subclass';
 import {
 	DestinyItemPlugDefinition,
 	DestinySocketCategoryStyle,
-	TierType
+	TierType,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import {
 	PlugCategoryHashes,
-	SocketCategoryHashes
+	SocketCategoryHashes,
 } from '@dlb/dim/data/d2/generated-enums';
 import _ from 'lodash';
-import { DimSocket, DimSockets } from '../inventory/item-types';
+import { DimSocket, DimSockets } from '@dlb/dim/inventory/item-types';
 import { isArmor2Mod } from './item-utils';
 
 type WithRequiredProperty<T, K extends keyof T> = T & {

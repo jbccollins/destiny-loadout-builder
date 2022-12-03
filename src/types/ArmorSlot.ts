@@ -3,6 +3,7 @@ import {
 	IIcon,
 	IIdentifiableName,
 	Mapping,
+	MISSING_ICON,
 	ValidateEnumList,
 } from './globals';
 import { EArmorSlotId } from './IdEnums';
@@ -21,27 +22,27 @@ const ArmorSlotIdToArmorSlotMapping: EnumDictionary<EArmorSlotId, IArmorSlot> =
 		[EArmorSlotId.Head]: {
 			id: EArmorSlotId.Head,
 			name: 'Helmet',
-			icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+			icon: MISSING_ICON,
 		},
 		[EArmorSlotId.Arm]: {
 			id: EArmorSlotId.Arm,
 			name: 'Gauntlets',
-			icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+			icon: MISSING_ICON,
 		},
 		[EArmorSlotId.Chest]: {
 			id: EArmorSlotId.Chest,
 			name: 'Chest Armor',
-			icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+			icon: MISSING_ICON,
 		},
 		[EArmorSlotId.Leg]: {
 			id: EArmorSlotId.Leg,
 			name: 'Leg Armor',
-			icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+			icon: MISSING_ICON,
 		},
 		[EArmorSlotId.ClassItem]: {
 			id: EArmorSlotId.ClassItem,
 			name: 'Class Item',
-			icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+			icon: MISSING_ICON,
 		},
 	};
 

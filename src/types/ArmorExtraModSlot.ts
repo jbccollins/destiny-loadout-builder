@@ -3,6 +3,7 @@ import {
 	IIcon,
 	IIdentifiableName,
 	Mapping,
+	MISSING_ICON,
 	ValidateEnumList,
 } from './globals';
 import { EArmorExtraModSlotId } from './IdEnums';
@@ -31,47 +32,47 @@ const ArmorExtraMotSlotIdToArmorExtraMotSlotMapping: EnumDictionary<
 	[EArmorExtraModSlotId.Any]: {
 		id: EArmorExtraModSlotId.Any,
 		name: 'Any',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EArmorExtraModSlotId.Artificer]: {
 		id: EArmorExtraModSlotId.Any,
 		name: 'Artificer',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EArmorExtraModSlotId.DeepStoneCrypt]: {
 		id: EArmorExtraModSlotId.Any,
 		name: 'Deep Stone Crypt',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EArmorExtraModSlotId.GardenOfSalvation]: {
 		id: EArmorExtraModSlotId.Any,
 		name: 'Garden of Salvation',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EArmorExtraModSlotId.KingsFall]: {
 		id: EArmorExtraModSlotId.Any,
 		name: "King's Fall",
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EArmorExtraModSlotId.LastWish]: {
 		id: EArmorExtraModSlotId.Any,
 		name: 'Last Wish',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EArmorExtraModSlotId.NightmareHunt]: {
 		id: EArmorExtraModSlotId.Any,
 		name: 'Nightmare Hunt',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EArmorExtraModSlotId.VaultOfGlass]: {
 		id: EArmorExtraModSlotId.Any,
 		name: 'Vault of Glass',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EArmorExtraModSlotId.VowOfTheDisciple]: {
 		id: EArmorExtraModSlotId.Any,
 		name: 'Vow of the Disciple',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 };
 
@@ -90,7 +91,7 @@ export const ArmorExtraMotSlotIdToArmorExtraMotSlot: Mapping<
 // 	string
 // > = {
 // 	[EArmorExtraModSlotId.Any]:
-// 		'https://www.bungie.net/img/misc/missing_icon_d2.png',
+// 		MISSING_ICON,
 // 	[EArmorExtraModSlotId.NightmareHunt]:
 // 		'https://bungie.net/common/destiny2_content/icons/6bf9ba37386b907ddb514ec422fc74c9.png',
 // 	[EArmorExtraModSlotId.Artificer]:

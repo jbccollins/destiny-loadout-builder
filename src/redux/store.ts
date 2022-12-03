@@ -12,6 +12,7 @@ import selectedArmorSlotRestrictionsReducer from './features/selectedArmorSlotRe
 import selectedSubclassOptionsReducer from './features/selectedSubclassOptions/selectedSubclassOptionsSlice';
 import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
 import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
+import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 
 import processedArmorReducer, {
 	setProcessedArmor,
@@ -38,6 +39,7 @@ export function makeStore() {
 			selectedSubclassOptions: selectedSubclassOptionsReducer,
 			selectedFragments: selectedFragmentsReducer,
 			selectedAspects: selectedAspectsReducer,
+			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
 		},
 	});
 }
@@ -49,6 +51,7 @@ let desiredArmorStatsUuid = NIL;
 let selectedCharacterClassUuid = NIL;
 let selectedExoticArmorUuid = NIL;
 let selectedSubclassOptionsUuid = NIL;
+let selectedMasterworkAssumptionUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
@@ -56,18 +59,26 @@ function handleChange() {
 		selectedCharacterClass: { uuid: nextSelectedCharacterClassUuid },
 		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid },
 		selectedSubclassOptions: { uuid: nextSelectedSubclassOptionsUuid },
+		selectedMasterworkAssumption: {
+			uuid: nextSelectedMasterworkAssumptionUuid,
+		},
 	} = store.getState();
 
 	const hasMismatchedUuids =
 		desiredArmorStatsUuid !== nextDesiredArmorStatsUuid ||
 		selectedCharacterClassUuid !== nextSelectedCharacterClassUuid ||
 		selectedExoticArmorUuid !== nextSelectedExoticArmorUuid ||
+		// TODO: We probably don't need to trigger a dirty if this changes to "All" but all
+		// variants of the selected exotic armor piece are masterworked. If we ever process
+		// armor without requiring an exotic then we would need to revisit that condition
+		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
 		selectedSubclassOptionsUuid !== nextSelectedSubclassOptionsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedCharacterClassUuid !== NIL &&
-		nextSelectedExoticArmorUuid !== NIL;
-	nextSelectedSubclassOptionsUuid !== NIL;
+		nextSelectedExoticArmorUuid !== NIL &&
+		nextSelectedSubclassOptionsUuid !== NIL &&
+		nextSelectedMasterworkAssumptionUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> store is dirty <<<<<<<<<<<');
@@ -75,6 +86,7 @@ function handleChange() {
 		selectedCharacterClassUuid = nextSelectedCharacterClassUuid;
 		selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
 		selectedSubclassOptionsUuid = nextSelectedSubclassOptionsUuid;
+		selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
 
 		// TODO: Move this out of the store file
 		const {
@@ -82,6 +94,7 @@ function handleChange() {
 			selectedExoticArmor: { value: selectedExoticArmor },
 			selectedCharacterClass: { value: selectedCharacterClass },
 			desiredArmorStats: { value: desiredArmorStats },
+			selectedMasterworkAssumption: { value: masterworkAssumption },
 		} = store.getState();
 
 		// TODO: no need to preProcessArmor when only the stat slider has changed.
@@ -93,6 +106,7 @@ function handleChange() {
 		);
 		console.log('>>>>>>>>>>> preProcessedArmor <<<<<<<<<<<', preProcessedArmor);
 		const results = doProcessArmor({
+			masterworkAssumption,
 			desiredArmorStats,
 			armorItems: preProcessedArmor,
 		});

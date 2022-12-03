@@ -5,6 +5,7 @@ import {
 	IHash,
 	EnumDictionary,
 	StatBonus,
+	MISSING_ICON,
 } from './globals';
 import { EArmorStatId, EFragmentId, EElementId } from './IdEnums';
 
@@ -26,7 +27,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Slow from your abilities lasts longer. For those abilities that linger, their duration will also increase.',
 		element: EElementId.Stasis,
 		bonuses: [{ stat: EArmorStatId.Strength, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 3469412969,
 	},
 	[EFragmentId.WhisperOfChains]: {
@@ -36,7 +37,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'While you are near frozen targets or a friendly Stasis crystal, you take reduced damage from targets.',
 		element: EElementId.Stasis,
 		bonuses: [{ stat: EArmorStatId.Recovery, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 537774540,
 	},
 	[EFragmentId.WhisperOfShards]: {
@@ -46,7 +47,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Shattering a Stasis crystal temporarily boosts your grenade recharge rate. Shattering additional Stasis crystals increases the duration of this benefit.',
 		element: EElementId.Stasis,
 		bonuses: [{ stat: EArmorStatId.Resilience, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 3469412975,
 	},
 	[EFragmentId.WhisperOfConduction]: {
@@ -58,7 +59,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			{ stat: EArmorStatId.Resilience, value: 10 },
 			{ stat: EArmorStatId.Intellect, value: 10 },
 		],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2483898429,
 	},
 	// NEGATIVE
@@ -71,7 +72,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			{ stat: EArmorStatId.Discipline, value: -10 },
 			{ stat: EArmorStatId.Intellect, value: -10 },
 		],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 3469412974,
 	},
 	[EFragmentId.WhisperOfHedrons]: {
@@ -81,7 +82,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Dramatically increases weapon stability, weapon aim assist, Mobility, Resilience, and Recovery after freezing a target with Stasis.',
 		element: EElementId.Stasis,
 		bonuses: [{ stat: EArmorStatId.Strength, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 3469412970,
 	},
 	[EFragmentId.WhisperOfFractures]: {
@@ -91,7 +92,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Your melee energy recharges faster when you are near two or more targets.',
 		element: EElementId.Stasis,
 		bonuses: [{ stat: EArmorStatId.Discipline, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 537774542,
 	},
 	[EFragmentId.WhisperOfHunger]: {
@@ -104,7 +105,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			{ stat: EArmorStatId.Mobility, value: -10 },
 			{ stat: EArmorStatId.Recovery, value: -10 },
 		],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2483898431,
 	},
 	// NEUTRAL
@@ -115,7 +116,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Increases the damage and size of the burst of Stasis when you destroy a Stasis crystal or defeat a frozen target.',
 		element: EElementId.Stasis,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0, // TODO
 	},
 	[EFragmentId.WhisperOfImpetus]: {
@@ -125,7 +126,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Damaging targets with a Stasis melee reloads your stowed weapons and grants you a temporary boost to weapon ready speed.',
 		element: EElementId.Stasis,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0, // TODO
 	},
 	[EFragmentId.WhisperOfRefraction]: {
@@ -135,7 +136,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Defeating slowed or frozen targets grants you class ability energy.',
 		element: EElementId.Stasis,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0, // TODO
 	},
 	[EFragmentId.WhisperOfRending]: {
@@ -145,7 +146,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Kinetic weapons do increased damage to Stasis crystals and frozen targets.',
 		element: EElementId.Stasis,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0, // TODO
 	},
 	[EFragmentId.WhisperOfRime]: {
@@ -155,7 +156,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Collecting a Stasis shard grants a small amount of overshield, which falls off after 10 seconds. Collecting additional shards adds to the overshield and refreshes the timer.',
 		element: EElementId.Stasis,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0, // TODO
 	},
 	[EFragmentId.WhisperOfTorment]: {
@@ -165,7 +166,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'You gain grenade energy each time you take damage from targets.',
 		element: EElementId.Stasis,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0, // TODO
 	},
 
@@ -177,7 +178,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Void ability final blows cause targets to explode.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Intellect, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2272984665,
 	},
 	[EFragmentId.EchoOfLeeching]: {
@@ -187,7 +188,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Melee final blows start health regeneration for you and nearby allies.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Resilience, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2272984670,
 	},
 	[EFragmentId.EchoOfDomineering]: {
@@ -197,7 +198,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'After suppressing a target, you gain greatly increased Mobility for a short duration and your equipped weapon is reloaded from reserves.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Discipline, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2272984657,
 	},
 	[EFragmentId.EchoOfDilation]: {
@@ -210,7 +211,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			{ stat: EArmorStatId.Mobility, value: 10 },
 			{ stat: EArmorStatId.Intellect, value: 10 },
 		],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2272984656,
 	},
 	[EFragmentId.EchoOfInstability]: {
@@ -220,7 +221,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Defeating targets with grenades grants Volatile Rounds to your Void weapons.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Strength, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2661180600,
 	},
 	[EFragmentId.EchoOfObscurity]: {
@@ -229,7 +230,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Finisher final blows grant Invisibility.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Recovery, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2661180602,
 	},
 	// NEGATIVE
@@ -239,7 +240,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Damaging targets with grenades grants melee energy.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Strength, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2272984664,
 	},
 	[EFragmentId.EchoOfPersistence]: {
@@ -249,7 +250,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Void buffs applied to you (Invisibility, Overshield, and Devour) have increased duration.',
 		element: EElementId.Void,
 		bonuses: [{ stat: getDestinyClassAbilityStat, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2272984671,
 	},
 	[EFragmentId.EchoOfUndermining]: {
@@ -258,7 +259,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Your Void grenades weaken targets.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Discipline, value: -20 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2272984668,
 	},
 	[EFragmentId.EchoOfHarvest]: {
@@ -268,7 +269,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Defeating weakened targets with precision final blows will create an Orb of Power.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Intellect, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2661180601,
 	},
 	[EFragmentId.EchoOfStarvation]: {
@@ -277,7 +278,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Picking up an Orb of Power grants Devour.',
 		element: EElementId.Void,
 		bonuses: [{ stat: EArmorStatId.Recovery, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 2661180603,
 	},
 	// NEUTRAL
@@ -287,7 +288,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Melee final blows grant grenade energy.',
 		element: EElementId.Void,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.EchoOfPersistence]: {
@@ -297,7 +298,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Void buffs applied to you (Invisibility, Overshield, and Devour) have increased duration.',
 		element: EElementId.Void,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.EchoOfRemnants]: {
@@ -307,7 +308,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Your lingering grenade effects (Vortex Grenade, Void Wall, Void Spike, and Axion Bolt) have increased duration.',
 		element: EElementId.Void,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.EchoOfReprisal]: {
@@ -317,7 +318,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Final blows when surrounded by combatants grant Super energy.',
 		element: EElementId.Void,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 
@@ -330,7 +331,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Your Solar Super projectiles have stronger target acquisition.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Intellect, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 362132295,
 	},
 	[EFragmentId.EmberOfCombustion]: {
@@ -339,7 +340,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Final blows with your Solar Super cause targets to ignite.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Strength, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 362132289,
 	},
 	[EFragmentId.EmberOfChar]: {
@@ -348,7 +349,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Your Solar ignitions spread scorch to affected targets.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Discipline, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 362132291,
 	},
 	[EFragmentId.EmberOfEruption]: {
@@ -357,7 +358,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Your Solar ignitions have increased area of effect.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Strength, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 1051276348,
 	},
 	[EFragmentId.EmberOfWonder]: {
@@ -367,7 +368,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Rapidly defeating multiple targets with Solar ignitions generates an Orb of Power.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Resilience, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 1051276350,
 	},
 	[EFragmentId.EmberOfSearing]: {
@@ -376,7 +377,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Defeating scorched targets grants melee energy.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Recovery, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 1051276351,
 	},
 	// NEGATIVE
@@ -387,7 +388,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Applying restoration, cure, or radiant to allies grants increased grenade, melee, and class ability regeneration for a short duration.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Discipline, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 362132292,
 	},
 	[EFragmentId.EmberOfEmpyrean]: {
@@ -397,7 +398,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Solar weapon or ability final blows extend the duration of restoration and radiant effects applied to you.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Resilience, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 362132294,
 	},
 	[EFragmentId.EmberOfTempering]: {
@@ -408,7 +409,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'While Ember of Tempering is active, your weapons have increased airborne effectiveness.',
 		element: EElementId.Solar,
 		bonuses: [{ stat: EArmorStatId.Recovery, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 362132290,
 	},
 	// NEUTRAL
@@ -418,7 +419,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'You apply more scorch stacks to targets.',
 		element: EElementId.Solar,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.EmberOfSingeing]: {
@@ -427,7 +428,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Your class ability recharges faster when you scorch targets.',
 		element: EElementId.Solar,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.EmberOfSolace]: {
@@ -437,7 +438,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Radiant and restoration effects applied to you have increased duration.',
 		element: EElementId.Solar,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.EmberOfTorches]: {
@@ -447,7 +448,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Powered melee attacks against combatants make you and nearby allies radiant.',
 		element: EElementId.Solar,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.EmberOfBlistering]: {
@@ -457,7 +458,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Defeating targets with Solar ignitions grants grenade energy.',
 		element: EElementId.Solar,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 
@@ -470,7 +471,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Defeating a blinded target with precision damage creates a blinding explosion.',
 		element: EElementId.Arc,
 		bonuses: [{ stat: EArmorStatId.Intellect, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 3277705905,
 	},
 	[EFragmentId.SparkOfFeedback]: {
@@ -480,7 +481,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Taking melee damage briefly increases your outgoing melee damage.',
 		element: EElementId.Arc,
 		bonuses: [{ stat: EArmorStatId.Resilience, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 3277705907,
 	},
 	[EFragmentId.SparkOfVolts]: {
@@ -489,7 +490,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Finishers make you amplified.',
 		element: EElementId.Arc,
 		bonuses: [{ stat: EArmorStatId.Recovery, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 3277705904,
 	},
 	[EFragmentId.SparkOfResistance]: {
@@ -499,7 +500,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'While surrounded by combatants, you are more resistant to incoming damage.',
 		element: EElementId.Arc,
 		bonuses: [{ stat: EArmorStatId.Strength, value: 10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 1727069366,
 	},
 	// NEGATIVE
@@ -510,7 +511,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Arc weapon final blows have a chance to create an Ionic Trace.',
 		element: EElementId.Arc,
 		bonuses: [{ stat: EArmorStatId.Strength, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 1727069362,
 	},
 	[EFragmentId.SparkOfFocus]: {
@@ -520,7 +521,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'After sprinting for a short time, your class ability regeneration is increased.',
 		element: EElementId.Arc,
 		bonuses: [{ stat: getDestinyClassAbilityStat, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 1727069360,
 	},
 	[EFragmentId.SparkOfShock]: {
@@ -529,7 +530,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Your Arc grenades jolt targets.',
 		element: EElementId.Arc,
 		bonuses: [{ stat: EArmorStatId.Discipline, value: -10 }],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 1727069364,
 	},
 	// NEUTRAL
@@ -540,7 +541,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Rapidly defeating targets while you are amplified creates an Orb of Power.',
 		element: EElementId.Arc,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.SparkOfBeacons]: {
@@ -550,7 +551,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'When the player is amplified, Arc special weapon kills create a blinding explosion.',
 		element: EElementId.Arc,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.SparkOfFrequency]: {
@@ -560,7 +561,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Melee hits greatly increase your reload speed for a short duration',
 		element: EElementId.Arc,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.SparkOfIons]: {
@@ -569,7 +570,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Defeating a jolted target creates an Ionic Trace.',
 		element: EElementId.Arc,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.SparkOfMagnitude]: {
@@ -579,7 +580,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Your lingering Arc grenades (Lightning Grenade, Pulse Grenade, and Storm Grenade) have extended duration.',
 		element: EElementId.Arc,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.SparkOfMomentum]: {
@@ -589,7 +590,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'Sliding over ammo will reload your weapon and grant a small amount of melee energy. Sliding over Heavy ammo increases the amount of energy granted.',
 		element: EElementId.Arc,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.SparkOfRecharge]: {
@@ -599,7 +600,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 			'While critically wounded, your melee and grenade energy regenerates more quickly.',
 		element: EElementId.Arc,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 	[EFragmentId.SparkOfVolts]: {
@@ -608,7 +609,7 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		description: 'Finishers make you amplified.',
 		element: EElementId.Arc,
 		bonuses: [],
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		hash: 0,
 	},
 };

@@ -5,7 +5,11 @@ import {
 } from '@dlb/services/armor-processing';
 import { describe, expect, test } from '@jest/globals';
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
-import { EArmorStatId, EArmorStatModId } from '@dlb/types/IdEnums';
+import {
+	EArmorStatId,
+	EArmorStatModId,
+	EMasterworkAssumption,
+} from '@dlb/types/IdEnums';
 
 type ProcessArmorTestCase = {
 	name: string;
@@ -17,6 +21,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 	{
 		name: 'It returns results with one item in each slot',
 		input: {
+			masterworkAssumption: EMasterworkAssumption.None,
 			desiredArmorStats: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 60,
@@ -89,6 +94,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 	{
 		name: 'It returns results when five major mods are required',
 		input: {
+			masterworkAssumption: EMasterworkAssumption.None,
 			desiredArmorStats: {
 				[EArmorStatId.Mobility]: 100,
 				[EArmorStatId.Resilience]: 0,

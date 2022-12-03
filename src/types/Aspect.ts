@@ -1,4 +1,10 @@
-import { IIcon, IIdentifiableName, EnumDictionary, IHash } from './globals';
+import {
+	IIcon,
+	IIdentifiableName,
+	EnumDictionary,
+	IHash,
+	MISSING_ICON,
+} from './globals';
 import { EAspectId, EDestinySubclassId } from './IdEnums';
 
 export const AspectIdList = Object.values(EAspectId);
@@ -13,7 +19,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Stasis
 	[EAspectId.BleakWatcher]: {
 		id: EAspectId.BleakWatcher,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Bleak Watcher',
 		description: '',
 		fragementSlots: 2,
@@ -21,7 +27,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.Frostpulse]: {
 		id: EAspectId.Frostpulse,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Frostpulse',
 		description: '',
 		fragementSlots: 2,
@@ -29,7 +35,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.GlacialHarvest]: {
 		id: EAspectId.GlacialHarvest,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Glacial Harvest',
 		description: '',
 		fragementSlots: 2,
@@ -37,7 +43,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.IceflareBolts]: {
 		id: EAspectId.IceflareBolts,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Iceflare Bolts',
 		description: '',
 		fragementSlots: 2,
@@ -46,7 +52,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Void
 	[EAspectId.ChaosAccelerant]: {
 		id: EAspectId.ChaosAccelerant,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Chaos Accelerant',
 		description: '',
 		fragementSlots: 1,
@@ -54,7 +60,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.FeedTheVoid]: {
 		id: EAspectId.FeedTheVoid,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Feed the Void',
 		description: '',
 		fragementSlots: 2,
@@ -62,7 +68,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.ChildOfTheOldGods]: {
 		id: EAspectId.ChildOfTheOldGods,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Child of the Old gods',
 		description: '',
 		fragementSlots: 2,
@@ -71,7 +77,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Solar
 	[EAspectId.IcarusDash]: {
 		id: EAspectId.IcarusDash,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Icarus Dash',
 		description: '',
 		fragementSlots: 2,
@@ -79,7 +85,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.HeatRises]: {
 		id: EAspectId.HeatRises,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Heat Rises',
 		description: '',
 		fragementSlots: 2,
@@ -87,7 +93,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.TouchOfFlame]: {
 		id: EAspectId.TouchOfFlame,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Touch of Flame',
 		description: '',
 		fragementSlots: 2,
@@ -96,7 +102,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Arc
 	[EAspectId.ArcSoul]: {
 		id: EAspectId.ArcSoul,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Arc Soul',
 		description: '',
 		fragementSlots: 2,
@@ -104,7 +110,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.ElectrostaticMind]: {
 		id: EAspectId.ElectrostaticMind,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Electrostatic Mind',
 		description: '',
 		fragementSlots: 2,
@@ -112,7 +118,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.LightningSurge]: {
 		id: EAspectId.LightningSurge,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Lightning Surge',
 		description: '',
 		fragementSlots: 2,
@@ -122,7 +128,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Stasis
 	[EAspectId.Cryoclasm]: {
 		id: EAspectId.Cryoclasm,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Cryoclasm',
 		description: '',
 		fragementSlots: 1,
@@ -130,7 +136,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.DiamondLance]: {
 		id: EAspectId.DiamondLance,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Diamond Lance',
 		description: '',
 		fragementSlots: 3,
@@ -138,7 +144,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.TectonicHarvest]: {
 		id: EAspectId.TectonicHarvest,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Tectonic Harvest',
 		description: '',
 		fragementSlots: 2,
@@ -146,7 +152,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.HowlOfTheStorm]: {
 		id: EAspectId.HowlOfTheStorm,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Howl of the Storm',
 		description: '',
 		fragementSlots: 2,
@@ -155,7 +161,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Void
 	[EAspectId.ControlledDemolition]: {
 		id: EAspectId.ControlledDemolition,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Controlled Demolition',
 		description: '',
 		fragementSlots: 2,
@@ -163,7 +169,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.Bastion]: {
 		id: EAspectId.Bastion,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Bastion',
 		description: '',
 		fragementSlots: 1,
@@ -171,7 +177,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.OffensiveBulwark]: {
 		id: EAspectId.OffensiveBulwark,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Offensive Bulwark',
 		description: '',
 		fragementSlots: 2,
@@ -180,7 +186,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Solar
 	[EAspectId.RoaringFlames]: {
 		id: EAspectId.RoaringFlames,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Roaring Flames',
 		description: '',
 		fragementSlots: 2,
@@ -188,7 +194,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.SolInvictus]: {
 		id: EAspectId.SolInvictus,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Sol Invictus',
 		description: '',
 		fragementSlots: 2,
@@ -196,7 +202,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.Consecration]: {
 		id: EAspectId.Consecration,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Consecration',
 		description: '',
 		fragementSlots: 2,
@@ -205,7 +211,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Arc
 	[EAspectId.Juggernaut]: {
 		id: EAspectId.Juggernaut,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Juggernaut',
 		description: '',
 		fragementSlots: 1,
@@ -213,7 +219,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.Knockout]: {
 		id: EAspectId.Knockout,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Knockout',
 		description: '',
 		fragementSlots: 2,
@@ -221,7 +227,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.TouchOfThunder]: {
 		id: EAspectId.TouchOfThunder,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Touch of Thunder',
 		description: '',
 		fragementSlots: 2,
@@ -231,7 +237,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Stasis
 	[EAspectId.GrimHarvest]: {
 		id: EAspectId.GrimHarvest,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Grim Harvest',
 		description: '',
 		fragementSlots: 3,
@@ -239,7 +245,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.Shatterdive]: {
 		id: EAspectId.Shatterdive,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Shatterdive',
 		description: '',
 		fragementSlots: 1,
@@ -247,7 +253,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.TouchOfWinter]: {
 		id: EAspectId.TouchOfWinter,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Touch of Winter',
 		description: '',
 		fragementSlots: 2,
@@ -255,7 +261,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.WintersShroud]: {
 		id: EAspectId.WintersShroud,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: "Winter's Shroud",
 		description: '',
 		fragementSlots: 1,
@@ -264,7 +270,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Void
 	[EAspectId.TrappersAmbush]: {
 		id: EAspectId.TrappersAmbush,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: "Trapper's Ambush",
 		description: '',
 		fragementSlots: 1,
@@ -272,7 +278,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.VanishingStep]: {
 		id: EAspectId.VanishingStep,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Vanishing Step',
 		description: '',
 		fragementSlots: 2,
@@ -280,7 +286,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.StylishExecutioner]: {
 		id: EAspectId.StylishExecutioner,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Stylish Executioner',
 		description: '',
 		fragementSlots: 2,
@@ -289,7 +295,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Solar
 	[EAspectId.OnYourMark]: {
 		id: EAspectId.OnYourMark,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'On Your Mark',
 		description: '',
 		fragementSlots: 3,
@@ -297,7 +303,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.KnockEmDown]: {
 		id: EAspectId.KnockEmDown,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: "Knock 'Em Down",
 		description: '',
 		fragementSlots: 2,
@@ -305,7 +311,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.GunpowderGamble]: {
 		id: EAspectId.GunpowderGamble,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Gunpowder Gamble',
 		description: '',
 		fragementSlots: 1,
@@ -314,7 +320,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	// Arc
 	[EAspectId.FlowState]: {
 		id: EAspectId.FlowState,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Flow State',
 		description: '',
 		fragementSlots: 2,
@@ -322,7 +328,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.LethalCurrent]: {
 		id: EAspectId.LethalCurrent,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Lethal Current',
 		description: '',
 		fragementSlots: 2,
@@ -330,7 +336,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 	},
 	[EAspectId.TempestStrike]: {
 		id: EAspectId.TempestStrike,
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		name: 'Tempest Strike',
 		description: '',
 		fragementSlots: 2,

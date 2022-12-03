@@ -10,6 +10,7 @@ import {
 	Chip,
 	FormControl,
 	InputLabel,
+	Menu,
 	MenuItem,
 	Select,
 	SelectChangeEvent,
@@ -19,7 +20,7 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { getFragment } from '@dlb/types/Fragment';
 import { EFragmentId } from '@dlb/types/IdEnums';
 import { getArmorStat, IArmorStat } from '@dlb/types/ArmorStat';
-import { StatBonus, StatBonusStat } from '@dlb/types/globals';
+import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -68,6 +69,7 @@ const MenuProps = {
 	PaperProps: {
 		style: {
 			// maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+			// maxHeight: '70vh',
 			width: 250,
 		},
 	},
@@ -92,6 +94,8 @@ type IIconMultiSelectDropdownProps = {
 	getOptionStat: (stat: StatBonusStat) => IArmorStat;
 };
 
+const PLACEHOLDER_OPTION = 'None Selected...';
+
 export default function IconMultiSelectDropdown({
 	options,
 	value,
@@ -107,7 +111,7 @@ export default function IconMultiSelectDropdown({
 		} = event;
 		// On autofill we get a stringified value.
 		// typeof value === 'string' ? value.split(',') : value,
-		onChange(value as string[]);
+		onChange((value as string[]).filter((id) => id != PLACEHOLDER_OPTION));
 	};
 
 	return (
@@ -116,14 +120,22 @@ export default function IconMultiSelectDropdown({
 			<Select
 				MenuProps={MenuProps}
 				multiple
-				value={value}
+				value={value.length > 0 ? value : [PLACEHOLDER_OPTION]}
 				id={id}
 				title={title}
 				label={title}
 				labelId={title}
 				onChange={handleChange}
-				renderValue={(options) =>
-					options.map((id) => {
+				renderValue={(options) => {
+					if (options.length === 1 && options[0] === PLACEHOLDER_OPTION) {
+						return (
+							<Tag>
+								<BungieImage src={MISSING_ICON} width={'40px'} />
+								<MenuItemText>None Selected...</MenuItemText>
+							</Tag>
+						);
+					}
+					return options.map((id) => {
 						const optionValue = getOptionValue(id);
 						return (
 							<Tag
@@ -134,8 +146,8 @@ export default function IconMultiSelectDropdown({
 								<MenuItemText>{optionValue.name}</MenuItemText>
 							</Tag>
 						);
-					})
-				}
+					});
+				}}
 				style={{ width: '100%' }}
 			>
 				{options.map((id) => {

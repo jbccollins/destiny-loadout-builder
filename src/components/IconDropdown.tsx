@@ -42,7 +42,6 @@ const IconDropdown = ({
 	selectComponentProps,
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
-		console.log('>>>>>>>>>>>> change <<<<<<<<<<<<<<', value);
 		onChange(value);
 	};
 	return (

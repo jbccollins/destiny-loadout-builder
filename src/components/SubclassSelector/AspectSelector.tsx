@@ -54,8 +54,6 @@ function AspectSelector() {
 
 	const handleChange = (aspectId: EAspectId, index: number) => {
 		const aspectIds = [...selectedAspects[destinySubclassId]];
-		console.log('>>>>>> current Aspect Ids', aspectIds);
-		console.log('>>>>>> index', index);
 		aspectIds[index] = aspectId;
 		dispatch(
 			setSelectedAspects({

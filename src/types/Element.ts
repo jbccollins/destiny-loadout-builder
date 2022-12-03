@@ -4,6 +4,7 @@ import {
 	IIdentifiableName,
 	ValidateEnumList,
 	Mapping,
+	MISSING_ICON,
 } from './globals';
 import { EElementId } from './IdEnums';
 
@@ -21,7 +22,7 @@ const ElementToElementMapping: EnumDictionary<EElementId, IElement> = {
 	[EElementId.Any]: {
 		id: EElementId.Any,
 		name: 'Any',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 	},
 	[EElementId.Arc]: {
 		id: EElementId.Arc,

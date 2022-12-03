@@ -15,7 +15,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci",
-    "test-test": "jest --env=node --colors --coverage test"
+    "test-test": "jest --env=node --colors --coverage test",
+    "find-circular-dependencies": "npx madge --circular --extensions ts ./"
   },
   "dependencies": {
     "@destinyitemmanager/dim-api-types": "^1.22.0",

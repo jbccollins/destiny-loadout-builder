@@ -5,6 +5,7 @@ import {
 	IIcon,
 	IIdentifiableName,
 	ValidateEnumList,
+	MISSING_ICON,
 } from './globals';
 import {
 	ESuperAbilityId,
@@ -45,7 +46,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Stormcaller]: {
 		id: EDestinySubclassId.Stormcaller,
 		name: 'Stormcaller',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.ChaosReach,
 			ESuperAbilityId.Stormtrance,
@@ -57,7 +58,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Dawnblade]: {
 		id: EDestinySubclassId.Dawnblade,
 		name: 'Dawnblade',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.Daybreak,
 			ESuperAbilityId.WellOfRadiance,
@@ -69,7 +70,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Voidwalker]: {
 		id: EDestinySubclassId.Voidwalker,
 		name: 'Voidwalker',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.NovaWarp,
 			ESuperAbilityId.NovaBombVortex,
@@ -82,7 +83,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Shadebinder]: {
 		id: EDestinySubclassId.Shadebinder,
 		name: 'Shadebinder',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [ESuperAbilityId.WintersWrath],
 		destinyClassId: EDestinyClassId.Warlock,
 		elementId: EElementId.Stasis,
@@ -91,7 +92,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Striker]: {
 		id: EDestinySubclassId.Striker,
 		name: 'Striker',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.Thundercrash,
 			ESuperAbilityId.FistsOfHavoc,
@@ -103,7 +104,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Sentinel]: {
 		id: EDestinySubclassId.Sentinel,
 		name: 'Sentinel',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.SentinelShield,
 			ESuperAbilityId.WardOfDawn,
@@ -115,7 +116,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Sunbreaker]: {
 		id: EDestinySubclassId.Sunbreaker,
 		name: 'Sunbreaker',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.BurningMaul,
 			ESuperAbilityId.HammerOfSol,
@@ -127,7 +128,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Behemoth]: {
 		id: EDestinySubclassId.Behemoth,
 		name: 'Glacial Quake',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [ESuperAbilityId.GlacialQuake],
 		destinyClassId: EDestinyClassId.Titan,
 		elementId: EElementId.Stasis,
@@ -136,7 +137,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Gunslinger]: {
 		id: EDestinySubclassId.Gunslinger,
 		name: 'Gunslinger',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.BladeBarrage,
 			ESuperAbilityId.GoldenGunDeadshot,
@@ -149,7 +150,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Nightstalker]: {
 		id: EDestinySubclassId.Nightstalker,
 		name: 'Nightstalker',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.ShadowshotDeadfall,
 			ESuperAbilityId.ShadowshotMoebiusQuiver,
@@ -163,7 +164,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Arcstrider]: {
 		id: EDestinySubclassId.Arcstrider,
 		name: 'Arcstrider',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [
 			ESuperAbilityId.ArcStaff,
 			ESuperAbilityId.GatheringStorm,
@@ -175,7 +176,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Revenant]: {
 		id: EDestinySubclassId.Revenant,
 		name: 'Revenant',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		superAbilityIdList: [ESuperAbilityId.SilenceAndSquall],
 		destinyClassId: EDestinyClassId.Hunter,
 		elementId: EElementId.Stasis,

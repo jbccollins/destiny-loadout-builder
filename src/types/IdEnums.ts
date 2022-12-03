@@ -261,3 +261,9 @@ export enum EFragmentId {
 	WhisperOfShards = 'WhisperOfShards',
 	WhisperOfTorment = 'WhisperOfTorment',
 }
+
+export enum EMasterworkAssumption {
+	All = 'All',
+	Legendary = 'Legendary',
+	None = 'None',
+}

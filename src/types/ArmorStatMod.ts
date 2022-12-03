@@ -5,6 +5,7 @@ import {
 	IIcon,
 	IIdentifiableName,
 	Mapping,
+	MISSING_ICON,
 	ValidateEnumList,
 } from './globals';
 import { EArmorStatId, EArmorStatModId } from './IdEnums';
@@ -24,7 +25,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.None]: {
 		id: EArmorStatModId.None,
 		name: 'None',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 0,
 		statBonus: 0,
 		hash: 0,
@@ -33,7 +34,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MajorMobility]: {
 		id: EArmorStatModId.MajorMobility,
 		name: 'Major Mobility',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 3,
 		statBonus: 10,
 		hash: 3961599962,
@@ -42,7 +43,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MinorMobility]: {
 		id: EArmorStatModId.MinorMobility,
 		name: 'Minor Mobility',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 1,
 		statBonus: 5,
 		hash: 204137529,
@@ -51,7 +52,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MajorResilience]: {
 		id: EArmorStatModId.MajorResilience,
 		name: 'Major Resilience',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 3,
 		statBonus: 10,
 		hash: 2850583378,
@@ -60,7 +61,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MinorResilience]: {
 		id: EArmorStatModId.MinorResilience,
 		name: 'Minor Resilience',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 1,
 		statBonus: 5,
 		hash: 3682186345,
@@ -69,7 +70,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MajorRecovery]: {
 		id: EArmorStatModId.MajorRecovery,
 		name: 'Major Recovery',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 4,
 		statBonus: 10,
 		hash: 2645858828,
@@ -78,7 +79,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MinorRecovery]: {
 		id: EArmorStatModId.MinorRecovery,
 		name: 'Minor Recovery',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 2,
 		statBonus: 5,
 		hash: 555005975,
@@ -87,7 +88,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MajorDiscipline]: {
 		id: EArmorStatModId.MajorDiscipline,
 		name: 'Major Discipline',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 3,
 		statBonus: 10,
 		hash: 4048838440,
@@ -96,7 +97,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MinorDiscipline]: {
 		id: EArmorStatModId.MinorDiscipline,
 		name: 'Minor Discipline',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 1,
 		statBonus: 5,
 		hash: 2623485440,
@@ -105,7 +106,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MajorIntellect]: {
 		id: EArmorStatModId.MajorIntellect,
 		name: 'Major Intellect',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 5,
 		statBonus: 10,
 		hash: 3355995799,
@@ -114,7 +115,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MinorIntellect]: {
 		id: EArmorStatModId.MinorIntellect,
 		name: 'Minor Intellect',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 2,
 		statBonus: 5,
 		hash: 1227870362,
@@ -123,7 +124,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MajorStrength]: {
 		id: EArmorStatModId.MajorStrength,
 		name: 'Major Strength',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 3,
 		statBonus: 10,
 		hash: 3253038666,
@@ -132,7 +133,7 @@ const ArmorStatModIdToArmorStatModMapping: EnumDictionary<
 	[EArmorStatModId.MinorStrength]: {
 		id: EArmorStatModId.MinorStrength,
 		name: 'Minor Strength',
-		icon: 'https://www.bungie.net/img/misc/missing_icon_d2.png',
+		icon: MISSING_ICON,
 		cost: 1,
 		statBonus: 5,
 		hash: 3699676109,

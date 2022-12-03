@@ -13,6 +13,7 @@ import {
 	EArmorSlotId,
 	EArmorStatModId,
 	EArmorStatId,
+	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 
 // No masterworked legendary piece of armor has a single stat above 32
@@ -73,8 +74,16 @@ const getArmorSlotFromNumRemainingArmorPieces = (num: number) => {
 };
 
 // Masterworking adds +2 to each stat
-export const getExtraMasterworkedStats = ({ isMasterworked }: IArmorItem) =>
-	isMasterworked ? 2 : 0;
+export const getExtraMasterworkedStats = (
+	{ isMasterworked, isExotic }: IArmorItem,
+	masterworkAssumption: EMasterworkAssumption
+) =>
+	isMasterworked ||
+	(isExotic && masterworkAssumption === EMasterworkAssumption.All) ||
+	// TODO: This is a bug. It will assume that blue, green and white gear can be masterworked
+	(!isExotic && masterworkAssumption === EMasterworkAssumption.Legendary)
+		? 2
+		: 0;
 
 // We never need to check legs as written since we always process top down.
 // TODO: This will need to change if prioritization of shortcircuiting based
@@ -171,12 +180,7 @@ export type ShouldShortCircuitOutput = [
 export const shouldShortCircuit = (
 	params: ShouldShortCircuitParams
 ): ShouldShortCircuitOutput => {
-	const {
-		sumOfSeenStats,
-		// armorStats,
-		desiredArmorStats,
-		numRemainingArmorPieces,
-	} = params;
+	const { sumOfSeenStats, desiredArmorStats, numRemainingArmorPieces } = params;
 
 	// TODO: Knowing the rules around stat clustering [mob, res, rec] and [dis, int, str]
 	// how each of those groups adds up to a max base total of 34 we can probably short circuit
@@ -227,6 +231,7 @@ export const shouldShortCircuit = (
 export type DoProcessArmorParams = {
 	desiredArmorStats: ArmorStatMapping;
 	armorItems: StrictArmorItems;
+	masterworkAssumption: EMasterworkAssumption;
 };
 
 /**
@@ -238,8 +243,10 @@ export type DoProcessArmorParams = {
 export const doProcessArmor = ({
 	desiredArmorStats,
 	armorItems,
+	masterworkAssumption,
 }: DoProcessArmorParams): ProcessArmorOutput => {
 	return processArmor({
+		masterworkAssumption,
 		desiredArmorStats,
 		armorItems,
 		sumOfSeenStats: [0, 0, 0, 0, 0, 0],
@@ -249,11 +256,14 @@ export const doProcessArmor = ({
 
 const getNextSeenStats = (
 	sumOfSeenStats: StatList,
-	armorSlotItem: IArmorItem
+	armorSlotItem: IArmorItem,
+	masterworkAssumption: EMasterworkAssumption
 ): StatList =>
 	sumOfSeenStats.map(
 		(x, i) =>
-			x + armorSlotItem.stats[i] + getExtraMasterworkedStats(armorSlotItem)
+			x +
+			armorSlotItem.stats[i] +
+			getExtraMasterworkedStats(armorSlotItem, masterworkAssumption)
 	) as StatList;
 
 const _processArmorBaseCase = ({
@@ -261,11 +271,16 @@ const _processArmorBaseCase = ({
 	armorItems,
 	sumOfSeenStats,
 	seenArmorIds,
+	masterworkAssumption,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
 	armorSlotItems.forEach((armorSlotItem) => {
-		const finalSumOfSeenStats = getNextSeenStats(sumOfSeenStats, armorSlotItem);
+		const finalSumOfSeenStats = getNextSeenStats(
+			sumOfSeenStats,
+			armorSlotItem,
+			masterworkAssumption
+		);
 
 		const [shortCircuit, requiredStatMods, requiredStatModArmorStatMapping] =
 			shouldShortCircuit({
@@ -303,11 +318,16 @@ const _processArmorRecursiveCase = ({
 	armorItems,
 	sumOfSeenStats,
 	seenArmorIds,
+	masterworkAssumption,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
 	const output: ProcessArmorOutput[] = [];
 	armorSlotItems.forEach((armorSlotItem) => {
-		const nextSumOfSeenStats = getNextSeenStats(sumOfSeenStats, armorSlotItem);
+		const nextSumOfSeenStats = getNextSeenStats(
+			sumOfSeenStats,
+			armorSlotItem,
+			masterworkAssumption
+		);
 
 		const [shortCircuit] = shouldShortCircuit({
 			sumOfSeenStats: nextSumOfSeenStats,
@@ -325,6 +345,7 @@ const _processArmorRecursiveCase = ({
 				armorItems: rest,
 				sumOfSeenStats: nextSumOfSeenStats,
 				seenArmorIds: [...seenArmorIds, armorSlotItem.id],
+				masterworkAssumption,
 			})
 		);
 	});
@@ -350,6 +371,7 @@ type ProcessArmorParams = {
 	armorItems: ArmorItems[];
 	sumOfSeenStats: StatList;
 	seenArmorIds: string[];
+	masterworkAssumption: EMasterworkAssumption;
 };
 
 const processArmor = ({
@@ -357,6 +379,7 @@ const processArmor = ({
 	armorItems,
 	sumOfSeenStats,
 	seenArmorIds,
+	masterworkAssumption,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	if (armorItems.length === 1) {
 		return _processArmorBaseCase({
@@ -364,6 +387,7 @@ const processArmor = ({
 			armorItems,
 			sumOfSeenStats,
 			seenArmorIds,
+			masterworkAssumption,
 		});
 	}
 
@@ -372,6 +396,7 @@ const processArmor = ({
 		armorItems,
 		sumOfSeenStats,
 		seenArmorIds,
+		masterworkAssumption,
 	});
 };
 

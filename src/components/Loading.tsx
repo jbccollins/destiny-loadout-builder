@@ -31,6 +31,10 @@ import {
 	selectDesiredArmorStats,
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import selectedMasterworkAssumptionSlice, {
+	selectSelectedMasterworkAssumption,
+	setSelectedMasterworkAssumption,
+} from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -77,6 +81,9 @@ function Loading() {
 
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
+	const selectedMasterworkAssumption = useAppSelector(
+		selectSelectedMasterworkAssumption
+	);
 
 	useEffect(() => {
 		(async () => {
@@ -177,10 +184,13 @@ function Loading() {
 					'>>>>>>>>>>> [LOAD] defaultSelectedSubclassOptions <<<<<<<<<<<',
 					defaultSelectedSubclassOptions
 				);
-				// This is kinda hacky but by triggering a dispatch of desiredArmorStats
-				// here with the existing armor stats we can "dirty" the store so it knows
-				// it needs to recalculate the processedArmorItems
+				// This is kinda hacky but by triggering a dispatch of the existing
+				// default values for [desiredArmorStats, selectedMasterworkAssumption]
+				// we can "dirty" the store so it knows it needs to recalculate the
+				// processedArmorItems
 				dispatch(setDesiredArmorStats(desiredArmorStats));
+				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
+				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {
 				// TODO redirect only on the right kind of error

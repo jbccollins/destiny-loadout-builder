@@ -1,3 +1,4 @@
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import {
 	selectDesiredArmorStats,
 	setDesiredArmorStats,
@@ -19,11 +20,18 @@ const Container = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(1),
 }));
 
-const SliderWrapper = styled(Box)(({ theme }) => ({
+const SliderWrapper = styled(Box, {
+	shouldForwardProp: (prop) => prop !== 'noMargin',
+})<{ noMargin?: boolean }>(({ theme, noMargin }) => ({
+	marginTop: noMargin ? '' : '4px',
 	color: theme.palette.secondary.main,
+	display: 'flex',
 }));
+
 const SliderTitle = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
+	marginRight: '4px',
+	paddingTop: '6px',
 }));
 
 function valuetext(value: number) {
@@ -42,43 +50,43 @@ const marks: Mark[] = [
 	},
 	{
 		value: 10,
-		label: '10',
+		label: '1',
 	},
 	{
 		value: 20,
-		label: '20',
+		label: '2',
 	},
 	{
 		value: 30,
-		label: '30',
+		label: '3',
 	},
 	{
 		value: 40,
-		label: '40',
+		label: '4',
 	},
 	{
 		value: 50,
-		label: '50',
+		label: '5',
 	},
 	{
 		value: 60,
-		label: '60',
+		label: '6',
 	},
 	{
 		value: 70,
-		label: '70',
+		label: '7',
 	},
 	{
 		value: 80,
-		label: '80',
+		label: '8',
 	},
 	{
 		value: 90,
-		label: '90',
+		label: '9',
 	},
 	{
 		value: 100,
-		label: '100',
+		label: '10',
 	},
 ];
 
@@ -96,26 +104,13 @@ function StatSelection(props: StatSelectionProps) {
 
 	return (
 		<Container>
-			{ArmorStatIdList.map((armorStatId) => {
-				const { name } = getArmorStat(armorStatId);
+			{ArmorStatIdList.map((armorStatId, i) => {
+				const { icon } = getArmorStat(armorStatId);
 				return (
-					<SliderWrapper key={armorStatId}>
-						<SliderTitle>{name}</SliderTitle>
-						{/* <StatSlider
-							onChange={(_, value) =>
-								handleChange(armorStatId, value as number)
-							}
-							locked
-							aria-label="Tier"
-							getAriaValueText={valuetext}
-							valueLabelDisplay="off"
-							value={desiredArmorStats[armorStatId]}
-							step={10}
-							size="medium"
-							marks={marks}
-							min={0}
-							max={100}
-						/> */}
+					<SliderWrapper noMargin={i === 0} key={armorStatId}>
+						<SliderTitle>
+							<BungieImage src={icon} width={26} height={26} />
+						</SliderTitle>
 						<StatSelectorRow
 							value={desiredArmorStats[armorStatId]}
 							marks={marks}

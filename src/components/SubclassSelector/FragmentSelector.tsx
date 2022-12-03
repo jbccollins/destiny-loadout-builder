@@ -1,13 +1,8 @@
 import { Box, styled } from '@mui/material';
 import IconMultiSelectDropdown from '@dlb/components/IconMultiSelectDropdown';
-import {
-	FragmentIdList,
-	getFragment,
-	getFragmentIdsByElementId,
-	IFragment,
-} from '@dlb/types/Fragment';
+import { getFragment, getFragmentIdsByElementId } from '@dlb/types/Fragment';
 import React from 'react';
-import { EArmorStatId, EDestinyClassId, EFragmentId } from '@dlb/types/IdEnums';
+import { EFragmentId } from '@dlb/types/IdEnums';
 import {
 	selectSelectedFragments,
 	setSelectedFragments,
@@ -16,14 +11,11 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
 import { selectSelectedSubclassOptions } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { getArmorStat } from '@dlb/types/ArmorStat';
-import { getStat, StatBonusStat } from '@dlb/types/globals';
+import { getStat } from '@dlb/types/ArmorStat';
+import { StatBonusStat } from '@dlb/types/globals';
 
 const Container = styled(Box)(({ theme }) => ({
-	//color: theme.palette.primary.main,
 	padding: theme.spacing(1),
-	// display: 'flex',
-	// justifyContent: 'left',
 }));
 
 const FragmentSelector = () => {

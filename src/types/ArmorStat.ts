@@ -4,8 +4,9 @@ import {
 	IIdentifiableName,
 	ValidateEnumList,
 	Mapping,
+	StatBonusStat,
 } from './globals';
-import { EArmorStatId, EArmorStatModId } from './IdEnums';
+import { EArmorStatId, EArmorStatModId, EDestinyClassId } from './IdEnums';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 	EArmorStatId.Mobility,
@@ -110,4 +111,14 @@ export type ArmorStatMapping = {
 	[EArmorStatId.Discipline]: number;
 	[EArmorStatId.Intellect]: number;
 	[EArmorStatId.Strength]: number;
+};
+
+export const getStat = (
+	stat: StatBonusStat,
+	destinyClassId: EDestinyClassId
+) => {
+	if (typeof stat === 'string') {
+		return getArmorStat(stat);
+	}
+	return getArmorStat(stat(destinyClassId));
 };

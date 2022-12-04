@@ -10,25 +10,30 @@ import ArmorResultsTable from './ArmorResultsTable';
 import { useCallback, useMemo } from 'react';
 import {
 	getExtraMasterworkedStats,
+	ProcessedArmorItemMetadata,
 	StatList,
 } from '@dlb/services/armor-processing';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
+import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorItem } from '@dlb/types/Armor';
 import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
+import { ArmorStatMapping } from '@dlb/types/ArmorStat';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
 	height: '100%',
 }));
 
-export type ResultsTableArmorItem = {
+type SortableFields = ArmorStatMapping & ProcessedArmorItemMetadata;
+
+export type ResultsTableLoadout = {
 	id: string;
-	totalStats: StatList; // Includes Masterwork
+	sortableFields: SortableFields;
+	// totalStats: StatList; // Includes Masterwork
 	armorItems: ArmorItem[];
+	//metadata: ProcessedArmorItemMetadata;
 };
 
-// TODO: Remove props and just read from redux?
 function ArmorResultsView() {
 	const armor = useAppSelector(selectArmor);
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
@@ -51,34 +56,67 @@ function ArmorResultsView() {
 		[armor, selectedCharacterClass, selectedExoticArmor]
 	);
 
-	const resultsTableArmorItems: ResultsTableArmorItem[] = useMemo(() => {
+	const resultsTableArmorItems: ResultsTableLoadout[] = useMemo(() => {
 		console.log(
 			'>>>>>>>>>>> [Memo] resultsTableArmorItems calcuated <<<<<<<<<<<'
 		);
-		const res: ResultsTableArmorItem[] = [];
+		const res: ResultsTableLoadout[] = [];
 
-		processedArmor.forEach(({ armorIdList }) => {
-			const resultArmorItem: ResultsTableArmorItem = {
-				totalStats: [0, 0, 0, 0, 0, 0],
+		processedArmor.forEach(({ armorIdList, metadata }) => {
+			const resultLoadout: ResultsTableLoadout = {
+				// totalStats: [0, 0, 0, 0, 0, 0],
 				armorItems: [],
 				id: '',
+				sortableFields: {
+					[EArmorStatId.Mobility]: 0,
+					[EArmorStatId.Resilience]: 0,
+					[EArmorStatId.Recovery]: 0,
+					[EArmorStatId.Discipline]: 0,
+					[EArmorStatId.Intellect]: 0,
+					[EArmorStatId.Strength]: 0,
+					totalModCost: 0,
+					totalStatTiers: 0,
+					wastedStats: 0,
+					// TODO: Remove totalArmorStatMapping from this type
+					totalArmorStatMapping: {
+						[EArmorStatId.Mobility]: 0,
+						[EArmorStatId.Resilience]: 0,
+						[EArmorStatId.Recovery]: 0,
+						[EArmorStatId.Discipline]: 0,
+						[EArmorStatId.Intellect]: 0,
+						[EArmorStatId.Strength]: 0,
+					},
+				},
 			};
 			ArmorSlotIdList.forEach((armorSlot, i) => {
 				const armorItem = getArmorItem(armorIdList[i], armorSlot);
-				resultArmorItem.armorItems.push(armorItem);
+				resultLoadout.armorItems.push(armorItem);
 				armorItem.stats.forEach((value, j) => {
-					resultArmorItem.totalStats[j] +=
-						armorItem.stats[j] +
-						getExtraMasterworkedStats(armorItem, selectedMasterworkAssumption);
-					resultArmorItem.id += `[${armorItem.id}]`;
+					// resultLoadout.totalStats[j] +=
+					// 	armorItem.stats[j] +
+					// 	getExtraMasterworkedStats(armorItem, selectedMasterworkAssumption);
+					resultLoadout.id += `[${armorItem.id}]`;
 				});
+				resultLoadout.sortableFields.totalModCost = metadata.totalModCost;
+				resultLoadout.sortableFields.totalStatTiers = metadata.totalStatTiers;
+				resultLoadout.sortableFields.wastedStats = metadata.wastedStats;
+				resultLoadout.sortableFields.mobility =
+					metadata.totalArmorStatMapping.mobility;
+				resultLoadout.sortableFields.resilience =
+					metadata.totalArmorStatMapping.resilience;
+				resultLoadout.sortableFields.recovery =
+					metadata.totalArmorStatMapping.recovery;
+				resultLoadout.sortableFields.discipline =
+					metadata.totalArmorStatMapping.discipline;
+				resultLoadout.sortableFields.intellect =
+					metadata.totalArmorStatMapping.intellect;
+				resultLoadout.sortableFields.strength =
+					metadata.totalArmorStatMapping.strength;
 			});
-			res.push(resultArmorItem);
+			res.push(resultLoadout);
 		});
 
 		return res;
-		// TODO: figure out a better pattern so that we can avoid this warning about getArmorItem
-		// not being in the dependency array
 	}, [processedArmor, getArmorItem]);
 
 	return (

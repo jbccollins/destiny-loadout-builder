@@ -120,12 +120,13 @@ const Home: NextPage = () => {
 					<>
 						<LeftSection>
 							<ExoticAndDestinyClassSelectorWrapper />
+							<StatSelection locked />
 							<SubclassSelector />
 							<AspectSelector />
 							<FragmentSelector />
 							<MasterworkAssumptionSelector />
-							<StatSelection locked />
-							<ArmorSlotRestrictions />
+
+							{/* <ArmorSlotRestrictions /> */}
 						</LeftSection>
 						{!isSmallScreen && (
 							<RightSection>

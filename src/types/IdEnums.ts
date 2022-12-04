@@ -262,6 +262,9 @@ export enum EFragmentId {
 	WhisperOfTorment = 'WhisperOfTorment',
 }
 
+// TODO: Name this like
+// All Armor Is Masterworked, Legendary Armor is Masterworked
+// No assumption is made
 export enum EMasterworkAssumption {
 	All = 'All',
 	Legendary = 'Legendary',

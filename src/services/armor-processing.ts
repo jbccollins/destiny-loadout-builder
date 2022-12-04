@@ -234,6 +234,7 @@ export type DoProcessArmorParams = {
 	desiredArmorStats: ArmorStatMapping;
 	armorItems: StrictArmorItems;
 	masterworkAssumption: EMasterworkAssumption;
+	fragmentArmorStatMapping: ArmorStatMapping;
 };
 
 /**
@@ -246,16 +247,22 @@ export const doProcessArmor = ({
 	desiredArmorStats,
 	armorItems,
 	masterworkAssumption,
+	fragmentArmorStatMapping,
 }: DoProcessArmorParams): ProcessArmorOutput => {
+	const sumOfSeenStats =
+		masterworkAssumption !== EMasterworkAssumption.None
+			? [2, 2, 2, 2, 2, 2]
+			: [0, 0, 0, 0, 0, 0];
+	ArmorStatIdList.forEach((id, i) => {
+		sumOfSeenStats[i] = sumOfSeenStats[i] + fragmentArmorStatMapping[id];
+	});
 	return processArmor({
 		masterworkAssumption,
 		desiredArmorStats,
 		armorItems,
 		// Assume class item is masterworked
-		sumOfSeenStats:
-			masterworkAssumption !== EMasterworkAssumption.None
-				? [2, 2, 2, 2, 2, 2]
-				: [0, 0, 0, 0, 0, 0],
+		// TODO: Get rid of the concept of StatList. Replace with ArmorStatMapping
+		sumOfSeenStats: sumOfSeenStats as StatList,
 		seenArmorIds: [],
 	});
 };
@@ -359,16 +366,18 @@ const _processArmorRecursiveCase = ({
 	return output.flat(1);
 };
 
+export type ProcessedArmorItemMetadata = {
+	totalModCost: number;
+	totalStatTiers: number;
+	wastedStats: number;
+	totalArmorStatMapping: ArmorStatMapping;
+};
+
 type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EArmorStatModId[];
 	// Anything that the user can sort the results by should be pre-calculated right here
-	metadata: {
-		totalModCost: number;
-		totalStatTiers: number;
-		wastedStats: number;
-		totalArmorStatMapping: ArmorStatMapping;
-	};
+	metadata: ProcessedArmorItemMetadata;
 };
 export type ProcessArmorOutput = ProcessArmorOutputItem[];
 

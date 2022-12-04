@@ -22,7 +22,7 @@ import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 import DestinySubclassAndSuperAbilityOptions from '@dlb/constants/DestinySubclassAndSuperAbilityOptions';
 
-import { EDestinyClassId } from '@dlb/types/IdEnums';
+import { EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, styled, Card, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -35,6 +35,10 @@ import selectedMasterworkAssumptionSlice, {
 	selectSelectedMasterworkAssumption,
 	setSelectedMasterworkAssumption,
 } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
+import {
+	selectSelectedFragments,
+	setSelectedFragments,
+} from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -81,6 +85,7 @@ function Loading() {
 
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
+	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
@@ -190,6 +195,14 @@ function Loading() {
 				// processedArmorItems
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
+				// TODO: Rework setSelectedFragments to not require an element id. Just set all elements
+				// with spread syntax
+				dispatch(
+					setSelectedFragments({
+						elementId: EElementId.Stasis,
+						fragments: selectedFragments[EElementId.Stasis],
+					})
+				);
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {

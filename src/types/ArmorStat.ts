@@ -1,3 +1,4 @@
+import { getFragment } from './Fragment';
 import {
 	EnumDictionary,
 	IIcon,
@@ -6,7 +7,12 @@ import {
 	Mapping,
 	StatBonusStat,
 } from './globals';
-import { EArmorStatId, EArmorStatModId, EDestinyClassId } from './IdEnums';
+import {
+	EArmorStatId,
+	EArmorStatModId,
+	EDestinyClassId,
+	EFragmentId,
+} from './IdEnums';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 	EArmorStatId.Mobility,
@@ -17,7 +23,9 @@ export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 	EArmorStatId.Strength,
 ]);
 
-export interface IArmorStat extends IIdentifiableName, IIcon {}
+export interface IArmorStat extends IIdentifiableName, IIcon {
+	id: EArmorStatId;
+}
 
 const ArmorStatIdToArmorStatMapping: EnumDictionary<EArmorStatId, IArmorStat> =
 	{
@@ -121,4 +129,26 @@ export const getStat = (
 		return getArmorStat(stat);
 	}
 	return getArmorStat(stat(destinyClassId));
+};
+
+export const getArmorStatMappingFromFragments = (
+	fragmentIds: EFragmentId[],
+	destinyClassId: EDestinyClassId
+): ArmorStatMapping => {
+	const armorStatMapping = {
+		[EArmorStatId.Mobility]: 0,
+		[EArmorStatId.Resilience]: 0,
+		[EArmorStatId.Recovery]: 0,
+		[EArmorStatId.Discipline]: 0,
+		[EArmorStatId.Intellect]: 0,
+		[EArmorStatId.Strength]: 0,
+	};
+	fragmentIds.forEach((id) => {
+		const { bonuses } = getFragment(id);
+		bonuses.map((bonus) => {
+			const armorStatId = getStat(bonus.stat, destinyClassId).id;
+			armorStatMapping[armorStatId] += bonus.value;
+		});
+	});
+	return armorStatMapping;
 };

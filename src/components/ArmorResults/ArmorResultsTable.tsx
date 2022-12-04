@@ -15,7 +15,7 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import Shield from '@mui/icons-material/Shield';
 import { styled, TablePagination, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-import { ResultsTableArmorItem } from './ArmorResultsView';
+import { ResultsTableLoadout } from './ArmorResultsView';
 import { EArmorStatId } from '@dlb/types/IdEnums';
 import { ArmorStatIdList, ArmorStatMapping } from '@dlb/types/ArmorStat';
 
@@ -30,20 +30,14 @@ const armorStatToOrder: ArmorStatMapping = {
 };
 
 function descendingComparator(
-	a: ResultsTableArmorItem,
-	b: ResultsTableArmorItem,
+	a: ResultsTableLoadout,
+	b: ResultsTableLoadout,
 	orderBy: EArmorStatId
 ) {
-	if (
-		b.totalStats[armorStatToOrder[orderBy]] <
-		a.totalStats[armorStatToOrder[orderBy]]
-	) {
+	if (b.sortableFields[orderBy] < a.sortableFields[orderBy]) {
 		return -1;
 	}
-	if (
-		b.totalStats[armorStatToOrder[orderBy]] >
-		a.totalStats[armorStatToOrder[orderBy]]
-	) {
+	if (b.sortableFields[orderBy] > a.sortableFields[orderBy]) {
 		return 1;
 	}
 	return 0;
@@ -54,7 +48,7 @@ type Order = 'asc' | 'desc';
 function getComparator(
 	order: Order,
 	orderBy: EArmorStatId
-): (a: ResultsTableArmorItem, b: ResultsTableArmorItem) => number {
+): (a: ResultsTableLoadout, b: ResultsTableLoadout) => number {
 	return order === 'desc'
 		? (a, b) => descendingComparator(a, b, orderBy)
 		: (a, b) => -descendingComparator(a, b, orderBy);
@@ -67,7 +61,7 @@ const CustomTableCell = styled(TableCell, {
 	borderBottom: 0,
 }));
 
-function Row(props: { row: ResultsTableArmorItem }) {
+function Row(props: { row: ResultsTableLoadout }) {
 	const { row } = props;
 	const [open, setOpen] = React.useState(false);
 
@@ -92,17 +86,20 @@ function Row(props: { row: ResultsTableArmorItem }) {
 						</IconButton>
 					</>
 				</CustomTableCell>
-				<CustomTableCell>{row.totalStats[0]}</CustomTableCell>
-				<CustomTableCell>{row.totalStats[1]}</CustomTableCell>
-				<CustomTableCell>{row.totalStats[2]}</CustomTableCell>
-				<CustomTableCell>{row.totalStats[3]}</CustomTableCell>
-				<CustomTableCell>{row.totalStats[4]}</CustomTableCell>
-				<CustomTableCell>{row.totalStats[5]}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.mobility}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.resilience}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.recovery}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.discipline}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.intellect}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.strength}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.totalStatTiers}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.totalModCost}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.wastedStats}</CustomTableCell>
 			</TableRow>
 			<TableRow>
 				<TableCell
 					sx={{ '& > *': { borderBottom: 'unset' }, padding: 0 }}
-					colSpan={7}
+					colSpan={10}
 				>
 					<Collapse in={open} timeout="auto" unmountOnExit>
 						<Box sx={{ padding: 0, borderTop: '1px solid' }}>
@@ -150,25 +147,41 @@ function Row(props: { row: ResultsTableArmorItem }) {
 
 interface HeadCell {
 	disablePadding: boolean;
-	id: EArmorStatId;
+	id: string;
 	label: string;
 	numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = ArmorStatIdList.map((armorStat) => {
 	return {
-		id: armorStat,
+		id: armorStat as string,
 		numeric: true,
 		disablePadding: false,
-		label: armorStat,
+		label: armorStat as string,
 	};
-});
+}).concat([
+	{
+		id: 'totalStatTiers',
+		numeric: true,
+		disablePadding: false,
+		label: 'Tiers',
+	},
+	{
+		id: 'totalModCost',
+		numeric: true,
+		disablePadding: false,
+		label: 'Cost',
+	},
+	{
+		id: 'wastedStats',
+		numeric: true,
+		disablePadding: false,
+		label: 'Wasted',
+	},
+]);
 
 interface EnhancedTableProps {
-	onRequestSort: (
-		event: React.MouseEvent<unknown>,
-		property: EArmorStatId
-	) => void;
+	onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
 	order: Order;
 	orderBy: string;
 	rowCount: number;
@@ -177,7 +190,7 @@ interface EnhancedTableProps {
 function EnhancedTableHead(props: EnhancedTableProps) {
 	const { order, orderBy, rowCount, onRequestSort } = props;
 	const createSortHandler =
-		(property: EArmorStatId) => (event: React.MouseEvent<unknown>) => {
+		(property: string) => (event: React.MouseEvent<unknown>) => {
 			onRequestSort(event, property);
 		};
 
@@ -217,7 +230,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 type ArmorResultsTableProps = {
-	items: ResultsTableArmorItem[];
+	items: ResultsTableLoadout[];
 };
 
 export default function CollapsibleTable(props: ArmorResultsTableProps) {

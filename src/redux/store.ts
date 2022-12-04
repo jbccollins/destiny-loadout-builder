@@ -22,6 +22,8 @@ import {
 	doProcessArmor,
 	preProcessArmor,
 } from '@dlb/services/armor-processing';
+import { getArmorStatMappingFromFragments } from '@dlb/types/ArmorStat';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 
 export function makeStore() {
 	return configureStore({
@@ -52,6 +54,7 @@ let selectedCharacterClassUuid = NIL;
 let selectedExoticArmorUuid = NIL;
 let selectedSubclassOptionsUuid = NIL;
 let selectedMasterworkAssumptionUuid = NIL;
+let selectedFragmentsUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
@@ -59,6 +62,7 @@ function handleChange() {
 		selectedCharacterClass: { uuid: nextSelectedCharacterClassUuid },
 		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid },
 		selectedSubclassOptions: { uuid: nextSelectedSubclassOptionsUuid },
+		selectedFragments: { uuid: nextSelectedFragmentsUuid },
 		selectedMasterworkAssumption: {
 			uuid: nextSelectedMasterworkAssumptionUuid,
 		},
@@ -72,13 +76,15 @@ function handleChange() {
 		// variants of the selected exotic armor piece are masterworked. If we ever process
 		// armor without requiring an exotic then we would need to revisit that condition
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
+		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
 		selectedSubclassOptionsUuid !== nextSelectedSubclassOptionsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedCharacterClassUuid !== NIL &&
 		nextSelectedExoticArmorUuid !== NIL &&
 		nextSelectedSubclassOptionsUuid !== NIL &&
-		nextSelectedMasterworkAssumptionUuid !== NIL;
+		nextSelectedMasterworkAssumptionUuid !== NIL &&
+		nextSelectedFragmentsUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> store is dirty <<<<<<<<<<<');
@@ -87,6 +93,7 @@ function handleChange() {
 		selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
 		selectedSubclassOptionsUuid = nextSelectedSubclassOptionsUuid;
 		selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
+		selectedFragmentsUuid = nextSelectedFragmentsUuid;
 
 		// TODO: Move this out of the store file
 		const {
@@ -95,7 +102,21 @@ function handleChange() {
 			selectedCharacterClass: { value: selectedCharacterClass },
 			desiredArmorStats: { value: desiredArmorStats },
 			selectedMasterworkAssumption: { value: masterworkAssumption },
+			selectedFragments: { value: selectedFragments },
+			selectedSubclassOptions: { value: selectedSubclassOptions },
 		} = store.getState();
+
+		const { destinySubclassId } =
+			selectedSubclassOptions[selectedCharacterClass];
+		const { elementId } = getDestinySubclass(destinySubclassId);
+		const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
+			selectedFragments[elementId],
+			selectedCharacterClass
+		);
+		console.log(
+			'>>>>>>>>>>>>>>>>>>> fragmentArmorStatMapping',
+			fragmentArmorStatMapping
+		);
 
 		// TODO: no need to preProcessArmor when only the stat slider has changed.
 		// Maybe we don't need to trigger that fake initial dispatch in
@@ -109,6 +130,7 @@ function handleChange() {
 			masterworkAssumption,
 			desiredArmorStats,
 			armorItems: preProcessedArmor,
+			fragmentArmorStatMapping,
 		});
 		console.log('>>>>>>>>>>> results <<<<<<<<<<<', results);
 		store.dispatch(setProcessedArmor(results));

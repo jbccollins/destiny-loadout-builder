@@ -1,3 +1,4 @@
+import { ArmorStatMapping } from './ArmorStat';
 import { getDestinyClassAbilityStat } from './DestinyClass';
 import {
 	IIdentifiableName,
@@ -7,7 +8,12 @@ import {
 	StatBonus,
 	MISSING_ICON,
 } from './globals';
-import { EArmorStatId, EFragmentId, EElementId } from './IdEnums';
+import {
+	EArmorStatId,
+	EFragmentId,
+	EElementId,
+	EDestinyClassId,
+} from './IdEnums';
 
 export const FragmentIdList = Object.values(EFragmentId);
 

@@ -24,7 +24,7 @@ import { useAppSelector } from '@dlb/redux/hooks';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
 import ArmorSlotRestrictions from '@dlb/components/ArmorSlotRestrictions/ArmorSlotRestrictions';
-import React from 'react';
+import React, { useEffect } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SubclassSelector from '@dlb/components/SubclassSelector/SubclassSelector';
@@ -35,39 +35,43 @@ import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/process
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
-	padding: 0, //theme.spacing(1),
+	padding: 0,
 	display: 'flex',
 	width: '100%',
-	// maxWidth: '100%',
 	position: 'relative',
-	height: '100vh', //`calc(100vh - ${theme.spacing(2)})`,
-
-	overflowY: 'hidden',
-	[theme.breakpoints.down('md')]: {
-		display: 'block',
-		paddingBottom: theme.spacing(10),
-		//flexWrap: 'wrap',
+	[theme.breakpoints.up('md')]: {
+		height: '100vh',
+		overflowY: 'hidden',
 	},
 }));
 
 const LeftSection = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(2),
 	width: '425px',
-	height: '100%',
-	overflowY: 'auto',
+	[theme.breakpoints.up('md')]: {
+		height: '100vh',
+		overflowY: 'auto',
+	},
 	[theme.breakpoints.down('md')]: {
 		width: '100%', //`calc(100vw - ${theme.spacing(4)})`,
-		// padding: theme.spacing(0),
+		paddingBottom: '80px',
 	},
 }));
 
 const RightSection = styled(Box)(({ theme }) => ({
-	padding: theme.spacing(0),
 	flexGrow: 1,
-	[theme.breakpoints.down('md')]: {
-		width: '100vw', //`calc(100vw - ${theme.spacing(4)})`,
-		//padding: theme.spacing(0),
+	[theme.breakpoints.up('md')]: {
+		height: '100vh',
 	},
+	[theme.breakpoints.down('md')]: {
+		width: '100vw',
+		height: `calc(100vh - 170px)`,
+	},
+}));
+
+const Spacer = styled(Box)(({ theme }) => ({
+	width: '100%',
+	height: '80px', //theme.spacing(10),d',
 }));
 
 const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
@@ -76,7 +80,6 @@ const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
 	position: 'fixed',
 	bottom: theme.spacing(1),
 	zIndex: 1,
-	//background: 'red',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
 }));
@@ -94,15 +97,40 @@ const SmallScreenResultsViewWrapper = styled(Box)(({ theme }) => ({
 
 const ArmorResultsViewWrapper = styled(Box)(({ theme }) => ({
 	maxHeight: `calc(100vh - ${theme.spacing(10)})`,
-	overflowY: 'auto',
+	// overflowY: 'auto',
 }));
 
+const handleScroll = (event) => {
+	console.log('>>>>> SCROLL <<<<<<: ', event.target.classList);
+};
+
+const LeftSectionComponent = () => (
+	<LeftSection className="left-section">
+		<ExoticAndDestinyClassSelectorWrapper />
+		<StatSelection />
+		<SubclassSelector />
+		<AspectSelector />
+		<FragmentSelector />
+		<MasterworkAssumptionSelector />
+
+		{/* <ArmorSlotRestrictions /> */}
+	</LeftSection>
+);
+
+const RightSectionComponent = () => (
+	<RightSection className="right-section">
+		<ArmorResultsView />
+	</RightSection>
+);
+
 const Home: NextPage = () => {
-	const [open, setOpen] = React.useState(false);
+	const [smallScreenResultsOpen, setSmallScreenResultsOpen] =
+		React.useState(false);
 	const allDataLoaded = useAppSelector(selectAllDataLoaded);
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const theme = useTheme();
 	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
 	return (
 		<>
 			<Head>
@@ -110,50 +138,33 @@ const Home: NextPage = () => {
 				<meta name="viewport" content="initial-scale=1.0, width=device-width" />
 			</Head>
 			{/* <WebWorkerTest derp={true} /> */}
-			<Container
-				sx={{
-					padding: open ? 0 : '',
-				}}
-			>
+			<Container className="application-container">
 				{!allDataLoaded && <Loading />}
 				{allDataLoaded && (
 					<>
-						<LeftSection>
-							<ExoticAndDestinyClassSelectorWrapper />
-							<StatSelection locked />
-							<SubclassSelector />
-							<AspectSelector />
-							<FragmentSelector />
-							<MasterworkAssumptionSelector />
-
-							{/* <ArmorSlotRestrictions /> */}
-						</LeftSection>
-						{!isSmallScreen && (
-							<RightSection>
-								<ArmorResultsView />
-							</RightSection>
-						)}
 						{isSmallScreen && (
 							<>
+								{smallScreenResultsOpen && <RightSectionComponent />}
+								{!smallScreenResultsOpen && <LeftSectionComponent />}
 								<SmallScreenResultsViewToggle
+									className="small-screen-results-view-toggle"
 									variant="contained"
-									onClick={() => setOpen(true)}
+									onClick={() =>
+										setSmallScreenResultsOpen(!smallScreenResultsOpen)
+									}
 								>
-									<Box>Show Results ({processedArmor.length})</Box>
+									<Box>
+										{smallScreenResultsOpen
+											? 'Back'
+											: `Show Results (${processedArmor.length})`}
+									</Box>
 								</SmallScreenResultsViewToggle>
-								{open && (
-									<SmallScreenResultsViewWrapper>
-										<SmallScreenResultsViewToggle
-											variant="contained"
-											onClick={() => setOpen(false)}
-										>
-											Back
-										</SmallScreenResultsViewToggle>
-										<ArmorResultsViewWrapper>
-											<ArmorResultsView />
-										</ArmorResultsViewWrapper>
-									</SmallScreenResultsViewWrapper>
-								)}
+							</>
+						)}
+						{!isSmallScreen && (
+							<>
+								<LeftSectionComponent />
+								<RightSectionComponent />
 							</>
 						)}
 					</>

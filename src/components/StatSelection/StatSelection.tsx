@@ -12,7 +12,7 @@ import StatSelectorRow from './StatSelectorRow';
 import StatSlider from './StatSlider';
 
 type StatSelectionProps = {
-	locked: boolean;
+	//
 };
 
 const Container = styled(Box)(({ theme }) => ({

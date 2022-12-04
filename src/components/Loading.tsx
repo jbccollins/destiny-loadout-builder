@@ -190,7 +190,7 @@ function Loading() {
 					defaultSelectedSubclassOptions
 				);
 				// This is kinda hacky but by triggering a dispatch of the existing
-				// default values for [desiredArmorStats, selectedMasterworkAssumption]
+				// default values for [desiredArmorStats, selectedMasterworkAssumption, selectedFragments]
 				// we can "dirty" the store so it knows it needs to recalculate the
 				// processedArmorItems
 				dispatch(setDesiredArmorStats(desiredArmorStats));

@@ -39,6 +39,10 @@ import {
 	selectSelectedFragments,
 	setSelectedFragments,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import selectedCombatStyleModsSlice, {
+	selectSelectedCombatStyleMods,
+	setSelectedCombatStyleMods,
+} from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -86,6 +90,7 @@ function Loading() {
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
+	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
@@ -203,6 +208,7 @@ function Loading() {
 						fragments: selectedFragments[EElementId.Stasis],
 					})
 				);
+				dispatch(setSelectedCombatStyleMods(selectedCombatStyleMods));
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {

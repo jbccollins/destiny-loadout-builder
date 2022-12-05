@@ -17,10 +17,11 @@ import {
 	styled,
 } from '@mui/material';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { getFragment } from '@dlb/types/Fragment';
-import { EFragmentId } from '@dlb/types/IdEnums';
+import { getFragment, getFragmentIdsByElementId } from '@dlb/types/Fragment';
+import { EElementId, EFragmentId } from '@dlb/types/IdEnums';
 import { getArmorStat, IArmorStat } from '@dlb/types/ArmorStat';
 import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
+import { getElement } from '@dlb/types/Element';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -81,6 +82,7 @@ interface IOption {
 	icon: string;
 	description: string;
 	bonuses?: StatBonus[];
+	element: EElementId;
 }
 
 type IIconMultiSelectDropdownProps = {
@@ -92,6 +94,7 @@ type IIconMultiSelectDropdownProps = {
 	id: string;
 	getOptionValue: (id: string) => IOption;
 	getOptionStat: (stat: StatBonusStat) => IArmorStat;
+	showElement?: boolean;
 };
 
 const PLACEHOLDER_OPTION = 'None Selected...';
@@ -104,6 +107,7 @@ export default function IconMultiSelectDropdown({
 	id,
 	getOptionValue,
 	getOptionStat,
+	showElement,
 }: IIconMultiSelectDropdownProps) {
 	const handleChange = (event: SelectChangeEvent<string[]>) => {
 		const {
@@ -168,6 +172,14 @@ export default function IconMultiSelectDropdown({
 									/>
 									<BungieImage width={40} height={40} src={optionValue.icon} />
 									<MenuItemText>{optionValue.name}</MenuItemText>
+									{showElement && (
+										<BungieImage
+											style={{ marginLeft: '6px' }}
+											width={20}
+											height={20}
+											src={getElement(optionValue.element).icon}
+										/>
+									)}
 								</MenuItemRow>
 								<MenuItemRow style={{ paddingTop: 8 }}>
 									<MenuItemText>{optionValue.description}</MenuItemText>

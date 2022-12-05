@@ -191,6 +191,7 @@ export type DoProcessArmorParams = {
 	armorItems: StrictArmorItems;
 	masterworkAssumption: EMasterworkAssumption;
 	fragmentArmorStatMapping: ArmorStatMapping;
+	combatStyleModArmorStatMapping: ArmorStatMapping;
 };
 
 /**
@@ -204,13 +205,17 @@ export const doProcessArmor = ({
 	armorItems,
 	masterworkAssumption,
 	fragmentArmorStatMapping,
+	combatStyleModArmorStatMapping,
 }: DoProcessArmorParams): ProcessArmorOutput => {
 	const sumOfSeenStats =
 		masterworkAssumption !== EMasterworkAssumption.None
 			? [2, 2, 2, 2, 2, 2]
 			: [0, 0, 0, 0, 0, 0];
 	ArmorStatIdList.forEach((id, i) => {
-		sumOfSeenStats[i] = sumOfSeenStats[i] + fragmentArmorStatMapping[id];
+		sumOfSeenStats[i] =
+			sumOfSeenStats[i] +
+			fragmentArmorStatMapping[id] +
+			combatStyleModArmorStatMapping[id];
 	});
 	return processArmor({
 		masterworkAssumption,

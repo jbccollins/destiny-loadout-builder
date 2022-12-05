@@ -32,6 +32,7 @@ import FragmentSelector from '@dlb/components/SubclassSelector/FragmentSelector'
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
+import CombatStyleModSelector from '@dlb/components/CombatStyleModSelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -108,10 +109,11 @@ const LeftSectionComponent = () => (
 	<LeftSection className="left-section">
 		<ExoticAndDestinyClassSelectorWrapper />
 		<StatSelection />
+		<MasterworkAssumptionSelector />
 		<SubclassSelector />
 		<AspectSelector />
 		<FragmentSelector />
-		<MasterworkAssumptionSelector />
+		<CombatStyleModSelector />
 
 		{/* <ArmorSlotRestrictions /> */}
 	</LeftSection>

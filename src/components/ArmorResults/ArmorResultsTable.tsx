@@ -313,42 +313,6 @@ function Row(props: { row: ResultsTableLoadout }) {
 								);
 							})}
 						</LoadoutDetails>
-						{/*<Box sx={{ padding: 0, borderTop: '1px solid' }}>
-							 <Table size="small" aria-label="purchases">
-								<TableHead>
-									<TableRow>
-										<CustomTableCell sx={{ width: '100px', height: '60px' }}>
-											<Shield sx={{ marginLeft: '5px', marginTop: '3px' }} />
-										</CustomTableCell>
-										<CustomTableCell>Mob</CustomTableCell>
-										<CustomTableCell>Res</CustomTableCell>
-										<CustomTableCell>Rec</CustomTableCell>
-										<CustomTableCell>Dis</CustomTableCell>
-										<CustomTableCell>Int</CustomTableCell>
-										<CustomTableCell>Str</CustomTableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{row.armorItems.map((armorItem) => (
-										<TableRow key={armorItem.id}>
-											<CustomTableCell sx={{ width: '100px', height: '60px' }}>
-												<BungieImage
-													width={'40px'}
-													height={'40px'}
-													src={armorItem.icon}
-												/>
-											</CustomTableCell>
-											<CustomTableCell>{armorItem.stats[0]}</CustomTableCell>
-											<CustomTableCell>{armorItem.stats[1]}</CustomTableCell>
-											<CustomTableCell>{armorItem.stats[2]}</CustomTableCell>
-											<CustomTableCell>{armorItem.stats[3]}</CustomTableCell>
-											<CustomTableCell>{armorItem.stats[4]}</CustomTableCell>
-											<CustomTableCell>{armorItem.stats[5]}</CustomTableCell>
-										</TableRow>
-									))}
-								</TableBody>
-							</Table>
-						</Box> */}
 					</Collapse>
 				</TableCell>
 			</TableRow>
@@ -368,7 +332,7 @@ const headCells: readonly HeadCell[] = ArmorStatIdList.map((armorStat) => {
 		id: armorStat as string,
 		numeric: true,
 		disablePadding: false,
-		label: armorStat as string,
+		label: getArmorStat(armorStat).name,
 	};
 }).concat([
 	{

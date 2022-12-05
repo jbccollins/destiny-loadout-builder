@@ -1,3 +1,4 @@
+import { getCombatStyleMod } from './CombatStyleMod';
 import { getFragment } from './Fragment';
 import {
 	EnumDictionary,
@@ -10,6 +11,7 @@ import {
 import {
 	EArmorStatId,
 	EArmorStatModId,
+	ECombatStyleModId,
 	EDestinyClassId,
 	EFragmentId,
 } from './IdEnums';
@@ -147,6 +149,21 @@ export const getArmorStatMappingFromFragments = (
 	const armorStatMapping = { ...DefaultArmorStatMapping };
 	fragmentIds.forEach((id) => {
 		const { bonuses } = getFragment(id);
+		bonuses.map((bonus) => {
+			const armorStatId = getStat(bonus.stat, destinyClassId).id;
+			armorStatMapping[armorStatId] += bonus.value;
+		});
+	});
+	return armorStatMapping;
+};
+
+export const getArmorStatMappingFromCombatStyleMods = (
+	combatStyleModIds: ECombatStyleModId[],
+	destinyClassId: EDestinyClassId
+): ArmorStatMapping => {
+	const armorStatMapping = { ...DefaultArmorStatMapping };
+	combatStyleModIds.forEach((id) => {
+		const { bonuses } = getCombatStyleMod(id);
 		bonuses.map((bonus) => {
 			const armorStatId = getStat(bonus.stat, destinyClassId).id;
 			armorStatMapping[armorStatId] += bonus.value;

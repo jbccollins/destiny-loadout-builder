@@ -13,6 +13,7 @@ import selectedSubclassOptionsReducer from './features/selectedSubclassOptions/s
 import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
 import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
 import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
+import selectedCombatStyleModsReducer from './features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
 
 import processedArmorReducer, {
 	setProcessedArmor,
@@ -22,7 +23,10 @@ import {
 	doProcessArmor,
 	preProcessArmor,
 } from '@dlb/services/armor-processing';
-import { getArmorStatMappingFromFragments } from '@dlb/types/ArmorStat';
+import {
+	getArmorStatMappingFromCombatStyleMods,
+	getArmorStatMappingFromFragments,
+} from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 
 export function makeStore() {
@@ -42,6 +46,7 @@ export function makeStore() {
 			selectedFragments: selectedFragmentsReducer,
 			selectedAspects: selectedAspectsReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
+			selectedCombatStyleMods: selectedCombatStyleModsReducer,
 		},
 	});
 }
@@ -55,6 +60,7 @@ let selectedExoticArmorUuid = NIL;
 let selectedSubclassOptionsUuid = NIL;
 let selectedMasterworkAssumptionUuid = NIL;
 let selectedFragmentsUuid = NIL;
+let selectedCombatStyleModsUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
@@ -63,6 +69,7 @@ function handleChange() {
 		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid },
 		selectedSubclassOptions: { uuid: nextSelectedSubclassOptionsUuid },
 		selectedFragments: { uuid: nextSelectedFragmentsUuid },
+		selectedCombatStyleMods: { uuid: nextSelectedCombatStyleModsUuid },
 		selectedMasterworkAssumption: {
 			uuid: nextSelectedMasterworkAssumptionUuid,
 		},
@@ -77,13 +84,15 @@ function handleChange() {
 		// armor without requiring an exotic then we would need to revisit that condition
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
-		selectedSubclassOptionsUuid !== nextSelectedSubclassOptionsUuid;
+		selectedSubclassOptionsUuid !== nextSelectedSubclassOptionsUuid ||
+		selectedCombatStyleModsUuid !== nextSelectedCombatStyleModsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedCharacterClassUuid !== NIL &&
 		nextSelectedExoticArmorUuid !== NIL &&
 		nextSelectedSubclassOptionsUuid !== NIL &&
 		nextSelectedMasterworkAssumptionUuid !== NIL &&
+		nextSelectedCombatStyleModsUuid !== NIL &&
 		nextSelectedFragmentsUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
@@ -94,6 +103,7 @@ function handleChange() {
 		selectedSubclassOptionsUuid = nextSelectedSubclassOptionsUuid;
 		selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
 		selectedFragmentsUuid = nextSelectedFragmentsUuid;
+		selectedCombatStyleModsUuid = nextSelectedCombatStyleModsUuid;
 
 		// TODO: Move this out of the store file
 		const {
@@ -103,6 +113,7 @@ function handleChange() {
 			desiredArmorStats: { value: desiredArmorStats },
 			selectedMasterworkAssumption: { value: masterworkAssumption },
 			selectedFragments: { value: selectedFragments },
+			selectedCombatStyleMods: { value: selectedCombatStyleMods },
 			selectedSubclassOptions: { value: selectedSubclassOptions },
 		} = store.getState();
 
@@ -113,6 +124,12 @@ function handleChange() {
 			selectedFragments[elementId],
 			selectedCharacterClass
 		);
+		const combatStyleModArmorStatMapping =
+			getArmorStatMappingFromCombatStyleMods(
+				selectedCombatStyleMods,
+				selectedCharacterClass
+			);
+
 		console.log(
 			'>>>>>>>>>>>>>>>>>>> fragmentArmorStatMapping',
 			fragmentArmorStatMapping
@@ -131,6 +148,7 @@ function handleChange() {
 			desiredArmorStats,
 			armorItems: preProcessedArmor,
 			fragmentArmorStatMapping,
+			combatStyleModArmorStatMapping,
 		});
 		console.log('>>>>>>>>>>> results <<<<<<<<<<<', results);
 		store.dispatch(setProcessedArmor(results));

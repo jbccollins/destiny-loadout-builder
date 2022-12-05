@@ -49,3 +49,6 @@ const ElementToElementMapping: EnumDictionary<EElementId, IElement> = {
 export const ElementIdToElement: Mapping<EElementId, IElement> = {
 	get: (key: EElementId) => ElementToElementMapping[key],
 };
+
+export const getElement = (id: EElementId): IElement =>
+	ElementToElementMapping[id];

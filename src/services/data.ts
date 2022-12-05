@@ -6,7 +6,6 @@ import {
 	DestinyEnergyType,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 
-import { StatList } from './armor-processing';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	EArmorSlotId,
@@ -28,6 +27,7 @@ import {
 	generateAvailableExoticArmorGroup,
 	AvailableExoticArmorItem,
 	ArmorItem,
+	StatList,
 } from '@dlb/types/Armor';
 import { Character, Characters } from '@dlb/types/Character';
 import {

@@ -1,6 +1,8 @@
-import { StatList } from './armor-processing';
 // TODO: Pull this out into a function isValidLegendaryArmorBaseStats that returns a [boolean, errorString]
 // TODO: Add unit tests for this.
+
+import { StatList } from '@dlb/types/Armor';
+
 /**
  *
  * @param stats

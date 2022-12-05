@@ -1,4 +1,13 @@
-import { ArmorGroup } from '@dlb/types/Armor';
+import {
+	ArmorGroup,
+	ArmorIdList,
+	ArmorItems,
+	getExtraMasterworkedStats,
+	IArmorItem,
+	ISelectedExoticArmor,
+	StatList,
+	StrictArmorItems,
+} from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
@@ -27,65 +36,12 @@ import {
 // and if there aren't then this is just 30. Probably not needed once done dynamically anyway tho
 const MAX_SINGLE_STAT_VALUE = 32;
 
-export type StatList = [number, number, number, number, number, number];
-
-export interface IDestinyItem {
-	// Unique identifier for this specific piece of armor.
-	id: string;
-	// Non-unique identifier. All "Crest of Alpha Lupi" armor pieces will have the same hash.
-	hash: number;
-}
-
-// "extend" the DestinyItem type
-export interface IArmorItem extends IDestinyItem {
-	// Mobility, Resilience, Recovery, Discipline, Intellect, Strength
-	stats: StatList;
-	// Is this piece of armor an exotic
-	isExotic: boolean;
-	// Is this piece of armor masterworked
-	isMasterworked: boolean;
-}
-
-// Strictly enforce the length of this array [Heads, Arms, Chests, Legs]
-export type StrictArmorItems = [
-	IArmorItem[],
-	IArmorItem[],
-	IArmorItem[],
-	IArmorItem[]
-];
-
-// We don't export this type... only in this file should we be able to use non-strict armor items
-// Otherwise we MUST pass in an array of length 4 for each [Heads, Arms, Chests, Legs]
-type ArmorItems = IArmorItem[];
-
-// Four armor ids [Heads, Arms, Chests, Legs]
-export type ArmorIdList = [string, string, string, string];
-
-export interface ISelectedExoticArmor {
-	hash: number;
-	armorSlot: EArmorSlotId;
-}
-
 const getArmorSlotFromNumRemainingArmorPieces = (num: number) => {
 	if ([3, 2, 1, 0].includes(num)) {
 		return numRemainingArmorPiecesToArmorSlot[num];
 	}
 	throw `num is not 3,2,1,0: ${num}`;
 };
-
-// Masterworking adds +2 to each stat
-export const getExtraMasterworkedStats = (
-	{ isMasterworked, isExotic }: IArmorItem,
-	masterworkAssumption: EMasterworkAssumption
-) =>
-	isMasterworked ||
-	(isExotic && masterworkAssumption === EMasterworkAssumption.All) ||
-	// TODO: This is a bug. It will assume that blue, green and white gear can be masterworked
-	(!isExotic &&
-		(masterworkAssumption === EMasterworkAssumption.All ||
-			masterworkAssumption === EMasterworkAssumption.Legendary))
-		? 2
-		: 0;
 
 // We never need to check legs as written since we always process top down.
 // TODO: This will need to change if prioritization of shortcircuiting based

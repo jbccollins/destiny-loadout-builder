@@ -3,7 +3,12 @@ This exists as a template for creating new identifiable objects to be used
 throughout the project. I was doing this a lot and needed a standard to follow
 since things were getting quite confusing.
 */
-import { EArmorStatId, EDestinyClassId } from './IdEnums';
+import { IArmorItem } from './Armor';
+import {
+	EArmorStatId,
+	EDestinyClassId,
+	EMasterworkAssumption,
+} from './IdEnums';
 
 // Check Animals.ts for a simple example of how these get used
 
@@ -89,3 +94,7 @@ export type StatBonus = {
 
 export const MISSING_ICON =
 	'https://www.bungie.net/img/misc/missing_icon_d2.png';
+
+export function copyToClipboard(text: string) {
+	navigator.clipboard.writeText(text);
+}

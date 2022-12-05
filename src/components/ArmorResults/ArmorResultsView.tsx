@@ -8,16 +8,15 @@ import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import ArmorResultsTable from './ArmorResultsTable';
 import { useCallback, useMemo } from 'react';
-import {
-	getExtraMasterworkedStats,
-	ProcessedArmorItemMetadata,
-	StatList,
-} from '@dlb/services/armor-processing';
+import { ProcessedArmorItemMetadata } from '@dlb/services/armor-processing';
 import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorItem } from '@dlb/types/Armor';
 import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import { ArmorStatMapping } from '@dlb/types/ArmorStat';
+import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { selectSelectedSubclassOptions } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
@@ -37,9 +36,6 @@ export type ResultsTableLoadout = {
 function ArmorResultsView() {
 	const armor = useAppSelector(selectArmor);
 	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
-	const selectedMasterworkAssumption = useAppSelector(
-		selectSelectedMasterworkAssumption
-	);
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 

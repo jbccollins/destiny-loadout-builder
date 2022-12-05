@@ -13,20 +13,49 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import Shield from '@mui/icons-material/Shield';
-import { styled, TablePagination, TableSortLabel } from '@mui/material';
+import { Button, styled, TablePagination, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { ResultsTableLoadout } from './ArmorResultsView';
-import { EArmorStatId } from '@dlb/types/IdEnums';
-import { ArmorStatIdList, ArmorStatMapping } from '@dlb/types/ArmorStat';
+import {
+	EArmorStatId,
+	EFragmentId,
+	EMasterworkAssumption,
+} from '@dlb/types/IdEnums';
+import {
+	ArmorStatIdList,
+	ArmorStatMapping,
+	DefaultArmorStatMapping,
+	getArmorStat,
+	getArmorStatMappingFromFragments,
+} from '@dlb/types/ArmorStat';
+import { getFragment } from '@dlb/types/Fragment';
+import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
+import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
+import { selectSelectedSubclassOptions } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
+import { useAppSelector } from '@dlb/redux/hooks';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import MasterworkedBungieImage from '../MasterworkedBungieImage';
+import { itemCanBeEquippedBy } from '@dlb/dim/utils/item-utils';
+import { copyToClipboard } from '@dlb/types/globals';
+import { ArmorItem, getExtraMasterworkedStats } from '@dlb/types/Armor';
 
-// TODO: This should be exported from ArmorStat.ts
-const armorStatToOrder: ArmorStatMapping = {
-	[EArmorStatId.Mobility]: 0,
-	[EArmorStatId.Resilience]: 1,
-	[EArmorStatId.Recovery]: 2,
-	[EArmorStatId.Discipline]: 3,
-	[EArmorStatId.Intellect]: 4,
-	[EArmorStatId.Strength]: 5,
+const calculateExtraMasterworkedStats = (
+	armorItems: ArmorItem[],
+	masterworkAssumption: EMasterworkAssumption
+): number => {
+	let extraMasterworkedStats = 0;
+	armorItems.forEach((armorItem) => {
+		if (!armorItem.isMasterworked) {
+			extraMasterworkedStats += getExtraMasterworkedStats(
+				armorItem,
+				masterworkAssumption
+			);
+		}
+	});
+	return extraMasterworkedStats;
 };
 
 function descendingComparator(
@@ -42,6 +71,40 @@ function descendingComparator(
 	}
 	return 0;
 }
+
+const LoadoutDetails = styled(Box)(({ theme }) => ({
+	display: 'flex',
+}));
+
+const LoadoutOverview = styled(Box)(({ theme }) => ({
+	display: 'flex',
+	flexDirection: 'column',
+}));
+
+const LoadoutOverviewItem = styled(Box)(({ theme }) => ({
+	display: 'flex',
+}));
+
+const StatsBreakdown = styled(Box)(({ theme }) => ({
+	display: 'flex',
+	flexDirection: 'column',
+}));
+
+// const StatsBreakdownItem = styled(Box)(({ theme }) => ({
+// 	width: '60px',
+// 	height: '35px',
+// 	padding: theme.spacing(1),
+// }));
+
+const StatsBreakdownItem = styled(Box, {
+	shouldForwardProp: (prop) => prop !== 'first',
+})<{ first?: boolean }>(({ theme, color, first }) => ({
+	width: first ? '70px' : '40px',
+	height: '22px',
+	paddingLeft: theme.spacing(1),
+	display: 'flex',
+	lineHeight: '22px',
+}));
 
 type Order = 'asc' | 'desc';
 
@@ -64,6 +127,48 @@ const CustomTableCell = styled(TableCell, {
 function Row(props: { row: ResultsTableLoadout }) {
 	const { row } = props;
 	const [open, setOpen] = React.useState(false);
+
+	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const selectedMasterworkAssumption = useAppSelector(
+		selectSelectedMasterworkAssumption
+	);
+	const selectedFragments = useAppSelector(selectSelectedFragments);
+	const selectedSubclassOptions = useAppSelector(selectSelectedSubclassOptions);
+	const { destinySubclassId } = selectedSubclassOptions[selectedCharacterClass];
+	const { elementId } = getDestinySubclass(destinySubclassId);
+	// TODO: Having to do this cast sucks
+	const fragmentIds = selectedFragments[elementId] as EFragmentId[];
+	const fragmentArmorStatMappings: Partial<
+		Record<EFragmentId, ArmorStatMapping>
+	> = {};
+	fragmentIds.forEach((id) => {
+		fragmentArmorStatMappings[id] = getArmorStatMappingFromFragments(
+			[id],
+			selectedCharacterClass
+		);
+	});
+
+	const getExtraMasterworkedStatsBreakdown = () => {
+		const extraMasterworkedStats = calculateExtraMasterworkedStats(
+			row.armorItems,
+			selectedMasterworkAssumption
+		);
+		return (
+			extraMasterworkedStats > 0 && (
+				<StatsBreakdown className="stats-breakdown">
+					<StatsBreakdownItem>E</StatsBreakdownItem>
+					{ArmorStatIdList.map((armorStatId) => (
+						<StatsBreakdownItem key={armorStatId} className="stats-breakdown">
+							{extraMasterworkedStats}
+						</StatsBreakdownItem>
+					))}
+				</StatsBreakdown>
+			)
+		);
+	};
+
+	// TODO: Figure this out from the initial ingestion of armor and store in redux
+	const hasMasterworkedClassItem = true;
 
 	return (
 		<React.Fragment>
@@ -102,8 +207,114 @@ function Row(props: { row: ResultsTableLoadout }) {
 					colSpan={10}
 				>
 					<Collapse in={open} timeout="auto" unmountOnExit>
-						<Box sx={{ padding: 0, borderTop: '1px solid' }}>
-							<Table size="small" aria-label="purchases">
+						<LoadoutOverview>
+							{row.armorItems.map((armorItem) => (
+								<LoadoutOverviewItem
+									key={armorItem.id}
+									className="stats-breakdown"
+								>
+									<MasterworkedBungieImage
+										isMasterworked={armorItem.isMasterworked}
+										width={'20px'}
+										height={'20px'}
+										src={armorItem.icon}
+									/>
+									<Box>{armorItem.name}</Box>
+								</LoadoutOverviewItem>
+							))}
+							<Button
+								sx={{ width: 200, margin: 2 }}
+								variant="contained"
+								onClick={() => {
+									copyToClipboard(
+										row.armorItems.map((x) => `id:'${x.id}'`).join(' or ')
+									);
+								}}
+							>
+								Copy DIM Query
+							</Button>
+						</LoadoutOverview>
+
+						<LoadoutDetails className="loadout-details">
+							<StatsBreakdown className="stats-breakdown">
+								<StatsBreakdownItem first>Total</StatsBreakdownItem>
+								{ArmorStatIdList.map((id) => {
+									return (
+										<StatsBreakdownItem
+											first
+											className="stats-breakdown-item"
+											key={id}
+										>
+											<BungieImage
+												width={20}
+												height={20}
+												src={getArmorStat(id).icon}
+											/>
+											<div style={{ marginLeft: '2px' }}>
+												{row.sortableFields[id]} =
+											</div>
+										</StatsBreakdownItem>
+									);
+								})}
+							</StatsBreakdown>
+							{row.armorItems.map((armorItem) => (
+								<StatsBreakdown key={armorItem.id} className="stats-breakdown">
+									<StatsBreakdownItem>
+										<MasterworkedBungieImage
+											isMasterworked={armorItem.isMasterworked}
+											width={'20px'}
+											height={'20px'}
+											src={armorItem.icon}
+										/>
+									</StatsBreakdownItem>
+									{armorItem.stats.map((stat, i) => (
+										<StatsBreakdownItem
+											key={ArmorStatIdList[i]}
+											className="stats-breakdown"
+										>
+											{stat}
+										</StatsBreakdownItem>
+									))}
+								</StatsBreakdown>
+							))}
+							{hasMasterworkedClassItem && (
+								<StatsBreakdown className="stats-breakdown">
+									<StatsBreakdownItem>C</StatsBreakdownItem>
+									{ArmorStatIdList.map((armorStatId) => (
+										<StatsBreakdownItem
+											key={armorStatId}
+											className="stats-breakdown"
+										>
+											2
+										</StatsBreakdownItem>
+									))}
+								</StatsBreakdown>
+							)}
+							{getExtraMasterworkedStatsBreakdown()}
+							{fragmentIds.map((fragmentId) => {
+								return (
+									<StatsBreakdown key={fragmentId} className="stats-breakdown">
+										<StatsBreakdownItem>
+											<BungieImage
+												width={20}
+												height={20}
+												src={getFragment(fragmentId).icon}
+											/>
+										</StatsBreakdownItem>
+										{ArmorStatIdList.map((armorStatId) => (
+											<StatsBreakdownItem
+												key={armorStatId}
+												className="stats-breakdown"
+											>
+												{fragmentArmorStatMappings[fragmentId][armorStatId]}
+											</StatsBreakdownItem>
+										))}
+									</StatsBreakdown>
+								);
+							})}
+						</LoadoutDetails>
+						{/*<Box sx={{ padding: 0, borderTop: '1px solid' }}>
+							 <Table size="small" aria-label="purchases">
 								<TableHead>
 									<TableRow>
 										<CustomTableCell sx={{ width: '100px', height: '60px' }}>
@@ -137,7 +348,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 									))}
 								</TableBody>
 							</Table>
-						</Box>
+						</Box> */}
 					</Collapse>
 				</TableCell>
 			</TableRow>

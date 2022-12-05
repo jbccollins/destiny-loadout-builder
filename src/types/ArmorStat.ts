@@ -121,6 +121,15 @@ export type ArmorStatMapping = {
 	[EArmorStatId.Strength]: number;
 };
 
+export const DefaultArmorStatMapping: ArmorStatMapping = {
+	[EArmorStatId.Mobility]: 0,
+	[EArmorStatId.Resilience]: 0,
+	[EArmorStatId.Recovery]: 0,
+	[EArmorStatId.Discipline]: 0,
+	[EArmorStatId.Intellect]: 0,
+	[EArmorStatId.Strength]: 0,
+};
+
 export const getStat = (
 	stat: StatBonusStat,
 	destinyClassId: EDestinyClassId
@@ -135,14 +144,7 @@ export const getArmorStatMappingFromFragments = (
 	fragmentIds: EFragmentId[],
 	destinyClassId: EDestinyClassId
 ): ArmorStatMapping => {
-	const armorStatMapping = {
-		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 0,
-		[EArmorStatId.Recovery]: 0,
-		[EArmorStatId.Discipline]: 0,
-		[EArmorStatId.Intellect]: 0,
-		[EArmorStatId.Strength]: 0,
-	};
+	const armorStatMapping = { ...DefaultArmorStatMapping };
 	fragmentIds.forEach((id) => {
 		const { bonuses } = getFragment(id);
 		bonuses.map((bonus) => {

@@ -8,12 +8,7 @@ import {
 	StatBonus,
 	MISSING_ICON,
 } from './globals';
-import {
-	EArmorStatId,
-	EFragmentId,
-	EElementId,
-	EDestinyClassId,
-} from './IdEnums';
+import { EArmorStatId, EFragmentId, EElementId } from './IdEnums';
 
 export const FragmentIdList = Object.values(EFragmentId);
 
@@ -418,6 +413,16 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/cddc93648f0917dc8bd6663d38d7c379.jpg',
 		hash: 362132290,
 	},
+	[EFragmentId.EmberOfTorches]: {
+		id: EFragmentId.EmberOfTorches,
+		name: 'Ember of Torches',
+		description:
+			'Powered melee attacks against combatants make you and nearby allies radiant.',
+		element: EElementId.Solar,
+		bonuses: [{ stat: EArmorStatId.Discipline, value: -10 }],
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/1ef2e34dad0d52c762ed96e8c932dc38.jpg',
+		hash: 362132288,
+	},
 	// NEUTRAL
 	[EFragmentId.EmberOfAshes]: {
 		id: EFragmentId.EmberOfAshes,
@@ -446,16 +451,6 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		bonuses: [],
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/fb46711e0dff2bc2f55c21271e838fe2.jpg',
 		hash: 362132300,
-	},
-	[EFragmentId.EmberOfTorches]: {
-		id: EFragmentId.EmberOfTorches,
-		name: 'Ember of Torches',
-		description:
-			'Powered melee attacks against combatants make you and nearby allies radiant.',
-		element: EElementId.Solar,
-		bonuses: [],
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/1ef2e34dad0d52c762ed96e8c932dc38.jpg',
-		hash: 362132288,
 	},
 	[EFragmentId.EmberOfBlistering]: {
 		id: EFragmentId.EmberOfBlistering,

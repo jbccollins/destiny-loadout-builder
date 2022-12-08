@@ -17,16 +17,16 @@ import {
 	getVendors as getVendorsApi,
 	BungieMembershipType,
 	DestinyProfileUserInfoCard,
-	PlatformErrorCodes
+	PlatformErrorCodes,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { DestinyAccount } from '@dlb/dim/accounts/destiny-account';
 import {
 	authenticatedHttpClient,
-	unauthenticatedHttpClient
+	unauthenticatedHttpClient,
 } from './bungie-service-helper';
 import {
 	getMembershipDataForCurrentUser,
-	UserInfoCard
+	UserInfoCard,
 } from 'bungie-api-ts-no-const-enum/user';
 import _ from 'lodash';
 import { API_KEY } from './bungie-api-utils';
@@ -49,7 +49,7 @@ const PLATFORM_LABELS = {
 	[BungieMembershipType.TigerSteam]: 'Steam',
 	[BungieMembershipType.TigerStadia]: 'Stadia',
 	[BungieMembershipType.TigerEgs]: 'Epic',
-	[BungieMembershipType.BungieNext]: 'Bungie.net'
+	[BungieMembershipType.BungieNext]: 'Bungie.net',
 };
 
 function formatBungieName(
@@ -82,7 +82,7 @@ async function generatePlatforms(
 				platformLabel: PLATFORM_LABELS[destinyAccount.membershipType],
 				destinyVersion: 2,
 				platforms: destinyAccount.applicableMembershipTypes,
-				lastPlayed: new Date(destinyAccount.dateLastPlayed)
+				lastPlayed: new Date(destinyAccount.dateLastPlayed),
 			};
 
 			return [account];
@@ -100,7 +100,7 @@ async function generatePlatforms(
 					platformLabel: PLATFORM_LABELS[destinyAccount.membershipType],
 					destinyVersion: 1,
 					platforms: [destinyAccount.membershipType],
-					lastPlayed: new Date()
+					lastPlayed: new Date(),
 				};
 
 				return [account];
@@ -155,7 +155,7 @@ export async function getMembershipData() {
 			const profile = await getProfileApi(authenticatedHttpClient, {
 				components: [DestinyComponentType.Profiles],
 				membershipType: membership.membershipType,
-				destinyMembershipId: membership.membershipId
+				destinyMembershipId: membership.membershipId,
 			});
 			if (!!profile && profile.Response?.profile.data?.dateLastPlayed) {
 				const date = Date.parse(profile.Response?.profile.data?.dateLastPlayed);
@@ -197,7 +197,7 @@ export async function getLinkedAccounts(
 	const response = await getLinkedProfiles(authenticatedHttpClient, {
 		membershipId: bungieMembershipId,
 		membershipType: BungieMembershipType.BungieNext,
-		getAllMemberships: true
+		getAllMemberships: true,
 	});
 	return response.Response;
 }
@@ -222,14 +222,14 @@ export function getStores(
 		DestinyComponentType.ItemInstances,
 		DestinyComponentType.ItemPerks,
 		DestinyComponentType.ItemSockets,
-		DestinyComponentType.ItemPlugStates
+		DestinyComponentType.ItemPlugStates,
 		// ------- END FROM D2 ARMOR PICKER ------
 		// // TODO: consider loading less item data, and then loading item details on click? Makes searches hard though.
 		// DestinyComponentType.ItemInstances,
 		// DestinyComponentType.ItemObjectives,
 		// DestinyComponentType.ItemSockets,
 		// DestinyComponentType.ItemCommonData,
-		// DestinyComponentType.Collectibles,
+		DestinyComponentType.Collectibles
 		// DestinyComponentType.ItemPlugStates,
 		// DestinyComponentType.ItemReusablePlugs,
 		// // TODO: We should try to defer this until the popup is open!
@@ -278,7 +278,7 @@ async function getCharacter(
 		destinyMembershipId: platform.membershipId,
 		characterId,
 		membershipType: platform.originalPlatformType,
-		components
+		components,
 	});
 
 	return response.Response;
@@ -295,12 +295,13 @@ async function getProfile(
 	const response = await getProfileApi(authenticatedHttpClient, {
 		destinyMembershipId: platform.membershipId,
 		membershipType: platform.originalPlatformType,
-		components
+		components,
 	});
 	// TODO: what does it actually look like to not have an account?
 	if (Object.keys(response.Response).length === 0) {
 		throw new Error('BungieService.NoAccountForPlatform');
 	}
+	console.log('>>>>>>>>> getProfile <<<<<<<<<<', response.Response);
 	return response.Response;
 }
 
@@ -318,8 +319,8 @@ export async function getItemPopupDetails(
 		itemInstanceId,
 		components: [
 			// Get plug objectives (kill trackers and catalysts)
-			DestinyComponentType.ItemPlugObjectives
-		]
+			DestinyComponentType.ItemPlugObjectives,
+		],
 	});
 	return response.Response;
 }
@@ -342,8 +343,8 @@ export async function getSingleItem(
 			DestinyComponentType.ItemCommonData,
 			DestinyComponentType.ItemPlugStates,
 			DestinyComponentType.ItemReusablePlugs,
-			DestinyComponentType.ItemPlugObjectives
-		]
+			DestinyComponentType.ItemPlugObjectives,
+		],
 	});
 	return response.Response;
 }
@@ -368,9 +369,9 @@ export async function getVendor(
 			DestinyComponentType.ItemPlugStates,
 			DestinyComponentType.ItemReusablePlugs,
 			// TODO: We should try to defer this until the popup is open!
-			DestinyComponentType.ItemPlugObjectives
+			DestinyComponentType.ItemPlugObjectives,
 		],
-		vendorHash
+		vendorHash,
 	});
 	return response.Response;
 }
@@ -394,8 +395,8 @@ export async function getVendors(
 			DestinyComponentType.ItemPlugStates,
 			DestinyComponentType.ItemReusablePlugs,
 			// TODO: We should try to defer this until the popup is open!
-			DestinyComponentType.ItemPlugObjectives
-		]
+			DestinyComponentType.ItemPlugObjectives,
+		],
 	});
 	return response.Response;
 }

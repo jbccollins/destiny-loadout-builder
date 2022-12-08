@@ -131,7 +131,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/8d72a8ff10f0078a6c9f9ff898ada54f.png',
 		name: 'Cryoclasm',
 		description: '',
-		fragementSlots: 1,
+		fragementSlots: 2,
 		hash: 2031919265,
 	},
 	[EAspectId.DiamondLance]: {
@@ -264,7 +264,7 @@ const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/6422d9f6d4a0a4fb679890eae17bd130.png',
 		name: "Winter's Shroud",
 		description: '',
-		fragementSlots: 1,
+		fragementSlots: 2,
 		hash: 2934767477,
 	},
 	// Void

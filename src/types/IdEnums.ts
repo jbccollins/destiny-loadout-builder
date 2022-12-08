@@ -270,3 +270,122 @@ export enum EMasterworkAssumption {
 	Legendary = 'Legendary',
 	None = 'None',
 }
+
+export enum EGrenadeId {
+	// Stasis
+	Glacier = 'Glacier',
+	Coldsnap = 'Coldsnap',
+	Duskfield = 'Duskfield',
+	// Void
+	Vortex = 'Vortex',
+	VoidSpike = 'VoidSpike',
+	VoidWall = 'VoidWall',
+	Supressor = 'Supressor',
+	Scatter = 'ScatterGrenade',
+	AxionBolt = 'AxionBolt',
+	Magnetic = 'Magnetic',
+	// Solar
+	Thermite = 'Thermite',
+	Swarm = 'Swarm',
+	Solar = 'Solar',
+	Incendiary = 'Incendiary',
+	Tripmine = 'Tripmine',
+	Fusion = 'Fusion',
+	Firebolt = 'Firebolt',
+	Healing = 'Healing',
+	// Arc
+	Pulse = 'Pulse',
+	Skip = 'Skip',
+	Flashbang = 'Flashbang',
+	Storm = 'Storm',
+	Lightning = 'Lightning',
+	Flux = 'Flux',
+	Arcbolt = 'Arcbolt',
+}
+
+export enum EMeleeId {
+	/*** Warlock ***/
+	// Stasis
+	PenumbralBlast = 'PenumbralBlast',
+	// Void
+	PocketSingularity = 'PocketSingularity',
+	// Solar
+	CelestialFire = 'CelestialFire',
+	IncineratorSnap = 'IncineratorSnap',
+	// Arc
+	BallLightning = 'BallLightning',
+	ChainLightning = 'ChainLightning',
+	/*** Titan ***/
+	// Stasis
+	ShiverStrike = 'ShiverStrike',
+	// Void
+	ShieldBash = 'ShieldBash',
+	ShieldThrow = 'ShieldThrow',
+	// Solar
+	ThrowingHammer = 'ThrowingHammer',
+	HammerStrike = 'HammerStrike',
+	// Arc
+	SeismicStrike = 'SeismicStrike',
+	Thunderclap = 'Thunderclap',
+	BallisticSlam = 'BallisticSlam',
+	/*** Hunter ***/
+	// TODO: Review these and make sure I'm not missing any
+	// Stasis
+	WitheringBlade = 'WitheringBlade',
+	// Void
+	SnareBomb = 'SnareBomb',
+	// Solar
+	KnifeTrick = 'KnifeTrick',
+	ProximityExplosiveKnife = 'ProximityExplosiveKnife',
+	LightweightKnife = 'LightweightKnife',
+	WeightedThrowingKnife = 'WeightedThrowingKnife',
+	// Arc
+	CombinationBlow = 'CombinationBlow',
+}
+
+// Class abilities often have the same name across all subclasses
+// But they have different hashes in the API, hence the weirdness here
+export enum EClassAbilityId {
+	/*** Warlock ***/
+	// Stasis
+	HealingRiftStasis = 'HealingRiftStasis',
+	EmpoweringRiftStasis = 'EmpoweringRiftStasis',
+	// Void
+	HealingRiftVoid = 'HealingRiftVoid',
+	EmpoweringRiftVoid = 'EmpoweringRiftVoid',
+	// Solar
+	HealingRiftSolar = 'HealingRiftSolar',
+	EmpoweringRiftSolar = 'EmpoweringRiftSolar',
+	PhonenixDive = 'PhoenixDive',
+	// Arc
+	HealingRiftArc = 'HealingRiftArc',
+	EmpoweringRiftArc = 'EmpoweringRiftArc',
+	/*** Titan ***/
+	// Stasis
+	ToweringBarricadeStasis = 'ToweringBarricadeStasis',
+	RallyBarricadeStasis = 'RallyBarricadeStasis',
+	// Void
+	ToweringBarricadeVoid = 'ToweringBarricadeVoid',
+	RallyBarricadeVoid = 'RallyBarricadeVoid',
+	// Solar
+	ToweringBarricadeSolar = 'ToweringBarricadeSolar',
+	RallyBarricadeSolar = 'RallyBarricadeSolar',
+	// Arc
+	Thruster = 'Thruster',
+	ToweringBarricadeArc = 'ToweringBarricadeArc',
+	RallyBarricadeArc = 'RallyBarricadeArc',
+	/*** Hunter ***/
+	// Stasis
+	GamblersDodgeStasis = 'GamblersDodgeStasis',
+	MarksmansDodgeStasis = 'MarksmansDodgeStasis',
+	// Void
+	GamblersDodgeVoid = 'GamblersDodgeVoid',
+	MarksmansDodgeVoid = 'MarksmansDodgeVoid',
+	// Solar
+	GamblersDodgeSolar = 'GamblersDodgeSolar',
+	MarksmansDodgeSolar = 'MarksmansDodgeSolar',
+	// Arc
+	GamblersDodgeArc = 'GamblersDodgeArc',
+	MarksmansDodgeArc = 'MarksmansDodgeArc',
+	AcrobatsDodge = 'AcrobatsDodge',
+}

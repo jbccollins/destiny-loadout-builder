@@ -1,7 +1,7 @@
 import { VENDORS } from '@dlb/dim/search/d2-known-values';
 import {
 	BucketCategory,
-	DestinyInventoryBucketDefinition
+	DestinyInventoryBucketDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 import _ from 'lodash';
@@ -9,7 +9,7 @@ import type {
 	D2BucketCategory,
 	DimBucketType,
 	InventoryBucket,
-	InventoryBuckets
+	InventoryBuckets,
 } from '@dlb/dim/inventory/inventory-buckets';
 import { D2Categories } from './d2-bucket-categories';
 import { D2ManifestDefinitions } from './d2-definitions';
@@ -48,7 +48,7 @@ const bucketToTypeRaw = {
 	[BucketHashes.Quests]: 'Pursuits',
 	[BucketHashes.SeasonalArtifact]: 'SeasonalArtifacts',
 	[BucketHashes.Finishers]: 'Finishers',
-	[BucketHashes.ClanBanners]: 'ClanBanner'
+	[BucketHashes.ClanBanners]: 'ClanBanner',
 } as const;
 
 export type D2BucketTypes =
@@ -82,11 +82,11 @@ export function getBuckets(defs: D2ManifestDefinitions) {
 			sort: 'Unknown',
 			type: 'Unknown',
 			accountWide: false,
-			category: BucketCategory.Item
+			category: BucketCategory.Item,
 		},
 		setHasUnknown() {
 			this.byCategory[this.unknown.sort] = [this.unknown];
-		}
+		},
 	};
 	_.forIn(defs.InventoryBucket, (def: DestinyInventoryBucketDefinition) => {
 		const type = bucketToType[def.hash];
@@ -100,7 +100,7 @@ export function getBuckets(defs: D2ManifestDefinitions) {
 			accountWide: def.scope === 1,
 			category: def.category,
 			type,
-			sort
+			sort,
 		};
 		// Add an easy helper property like "inPostmaster"
 		if (bucket.sort) {
@@ -123,5 +123,6 @@ export function getBuckets(defs: D2ManifestDefinitions) {
 			bucketHashes.map((bucketHash) => buckets.byHash[bucketHash])
 		);
 	});
+	console.log('>>>>>>>>>>>>>>>>> BUCKETS <<<<<<<<<<<<<<<<<<<', buckets);
 	return buckets;
 }

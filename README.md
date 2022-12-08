@@ -39,7 +39,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ---- CUSTOM ------
 
-# Setup:
+# Setup
 ## Get Local SSL working
 
 The Bungie API requires that your app run using https due to some OAuth stuff. To make https work locally we hack up a local ssl certificate.
@@ -56,6 +56,13 @@ TODO: Can local-ssl-proxy be installed as a dev dependency instead??
 
 ### TODOS
 - Turn strict mode back on in tsconfig.json
+
+# Attribution
+### Many thanks to the folks behind these projects:
+- DIM
+- D2ArmorPicker
+- Destiny Sets (https://discord.com/channels/296008008956248066/296008136785920001/899068290138275921)
+- Destiny Data Explorer
 
     
 

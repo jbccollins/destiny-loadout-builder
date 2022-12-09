@@ -58,7 +58,6 @@ function ArmorSlotRestrictions() {
 			},
 		};
 		// newSelectedArmorSlotRestrictions[armorSlot][restrictionType] = value;
-		console.log(value);
 		dispatch(
 			setSelectedArmorSlotRestrictions(newSelectedArmorSlotRestrictions)
 		);

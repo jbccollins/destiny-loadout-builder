@@ -2,13 +2,16 @@ import { BucketHashes, StatHashes } from '@dlb/dim/data/d2/generated-enums';
 import {
 	DestinyClass,
 	DestinyEnergyType,
+	TierType,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import {
 	EDestinyClassId,
 	EArmorSlotId,
 	EArmorStatId,
 	EElementId,
+	EGearTierId,
 } from './IdEnums';
+import { ItemTierName } from '@dlb/dim/search/d2-known-values';
 
 /********* Mapping manifest hashes to our own enums *********/
 // TODO these kinds of mappings don't seem to be type safe.
@@ -58,4 +61,24 @@ export const DestinyClassStringToDestinyClassId = {
 	Titan: EDestinyClassId.Titan,
 	Warlock: EDestinyClassId.Warlock,
 	Hunter: EDestinyClassId.Hunter,
+};
+
+export const ElementEnumToEElementId = {
+	[DestinyEnergyType.Stasis]: EElementId.Stasis,
+	[DestinyEnergyType.Void]: EElementId.Void,
+	[DestinyEnergyType.Thermal]: EElementId.Solar,
+	[DestinyEnergyType.Arc]: EElementId.Arc,
+	[DestinyEnergyType.Any]: EElementId.Any,
+	[DestinyEnergyType.Ghost]: EElementId.Any,
+	[DestinyEnergyType.Subclass]: EElementId.Any,
+};
+
+export const ItemTierNameToEGearTierId: Record<ItemTierName, EGearTierId> = {
+	Exotic: EGearTierId.Exotic,
+	Legendary: EGearTierId.Legendary,
+	Rare: EGearTierId.Rare,
+	Common: EGearTierId.Uncommon,
+	Uncommon: EGearTierId.Common,
+	Unknown: EGearTierId.Unknown,
+	Currency: EGearTierId.Unknown,
 };

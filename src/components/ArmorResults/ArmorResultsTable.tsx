@@ -108,6 +108,9 @@ const StatsBreakdownItem = styled(Box, {
 
 type Order = 'asc' | 'desc';
 
+// TODO: We'll need to support different default sort directions for
+// Different columns. Wasted stats should default to ascending sort. Mobility should
+// default to descending sort
 function getComparator(
 	order: Order,
 	orderBy: EArmorStatId
@@ -191,12 +194,12 @@ function Row(props: { row: ResultsTableLoadout }) {
 						</IconButton>
 					</>
 				</CustomTableCell>
-				<CustomTableCell>{row.sortableFields.mobility}</CustomTableCell>
-				<CustomTableCell>{row.sortableFields.resilience}</CustomTableCell>
-				<CustomTableCell>{row.sortableFields.recovery}</CustomTableCell>
-				<CustomTableCell>{row.sortableFields.discipline}</CustomTableCell>
-				<CustomTableCell>{row.sortableFields.intellect}</CustomTableCell>
-				<CustomTableCell>{row.sortableFields.strength}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.Mobility}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.Resilience}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.Recovery}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.Discipline}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.Intellect}</CustomTableCell>
+				<CustomTableCell>{row.sortableFields.Strength}</CustomTableCell>
 				<CustomTableCell>{row.sortableFields.totalStatTiers}</CustomTableCell>
 				<CustomTableCell>{row.sortableFields.totalModCost}</CustomTableCell>
 				<CustomTableCell>{row.sortableFields.wastedStats}</CustomTableCell>
@@ -272,7 +275,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 											key={ArmorStatIdList[i]}
 											className="stats-breakdown"
 										>
-											{stat}
+											{stat + (armorItem.isMasterworked ? 2 : 0)}
 										</StatsBreakdownItem>
 									))}
 								</StatsBreakdown>

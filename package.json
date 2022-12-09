@@ -17,7 +17,9 @@
     "test:watch": "jest --watch",
     "test:ci": "jest --ci",
     "test-test": "jest --env=node --colors --coverage test",
-    "find-circular-dependencies": "npx madge --circular --extensions ts ./"
+    "find-circular-dependencies": "npx madge --circular --extensions ts ./",
+    "generate:old": "npx ts-node -O '{\"module\":\"commonjs\"}' src/scripts/generateMods2.ts",
+    "generate": "npx ts-node src/scripts/generation/generate.ts"
   },
   "dependencies": {
     "@destinyitemmanager/dim-api-types": "^1.22.0",
@@ -54,16 +56,20 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
+    "crypto": "^1.0.1",
     "eslint": "^8.26.0",
     "eslint-config-next": "12.3.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.2",
     "eslint-plugin-no-relative-import-paths": "^1.4.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "fs": "^0.0.1-security",
     "jest": "^29.2.2",
+    "path": "^0.12.7",
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.1",
     "typescript": "4.8.4"
   }
 }

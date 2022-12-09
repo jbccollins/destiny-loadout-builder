@@ -30,16 +30,8 @@ type Option = {
 	id: string;
 	disabled?: boolean;
 	icon: string;
+	description: string;
 };
-
-const options = AspectIdList.map((aspectId) => {
-	const { name, id, icon } = getAspect(aspectId);
-	return {
-		name: name,
-		icon: icon,
-		id: id,
-	};
-});
 
 function AspectSelector() {
 	const selectedAspects = useAppSelector(selectSelectedAspects);
@@ -48,6 +40,7 @@ function AspectSelector() {
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.name;
+	const getDescription = (option: Option) => option.description;
 
 	const { destinySubclassId } = selectedSubclassOptions[selectedDestinyClass];
 	const aspectIds = [...selectedAspects[destinySubclassId]];
@@ -83,6 +76,7 @@ function AspectSelector() {
 								};
 							}
 						)}
+						getDescription={getDescription}
 						getLabel={getLabel}
 						value={aspectIds[0] || ''}
 						onChange={(aspectId: EAspectId) => handleChange(aspectId, 0)}
@@ -106,6 +100,7 @@ function AspectSelector() {
 							}
 						)}
 						getLabel={getLabel}
+						getDescription={getDescription}
 						value={aspectIds[1] || ''}
 						onChange={(aspectId: EAspectId) => handleChange(aspectId, 1)}
 						// title="Class"

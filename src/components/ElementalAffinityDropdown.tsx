@@ -29,7 +29,6 @@ type ElementalAffinityDropdownProps = {
 
 function ElementalAffinityDropdown(props: ElementalAffinityDropdownProps) {
 	const getLabel = (option: ElementalAffinityOption) => option.label;
-	console.log();
 	return (
 		<Container>
 			<IconDropdownContainer>

@@ -18,7 +18,7 @@ export const ElementIdList = ValidateEnumList(Object.values(EElementId), [
 
 export interface IElement extends IIdentifiableName, IIcon {}
 
-const ElementToElementMapping: EnumDictionary<EElementId, IElement> = {
+const ElementIdToElementMapping: EnumDictionary<EElementId, IElement> = {
 	[EElementId.Any]: {
 		id: EElementId.Any,
 		name: 'Any',
@@ -47,8 +47,28 @@ const ElementToElementMapping: EnumDictionary<EElementId, IElement> = {
 };
 
 export const ElementIdToElement: Mapping<EElementId, IElement> = {
-	get: (key: EElementId) => ElementToElementMapping[key],
+	get: (key: EElementId) => ElementIdToElementMapping[key],
 };
 
+export enum EElementHash {
+	Any = 1198124803,
+	Arc = 728351493,
+	Solar = 591714140,
+	Void = 4069572561,
+	Stasis = 1819698290,
+}
+
 export const getElement = (id: EElementId): IElement =>
-	ElementToElementMapping[id];
+	ElementIdToElementMapping[id];
+
+const ElementHashToElementIdMapping: EnumDictionary<EElementHash, EElementId> =
+	{
+		[EElementHash.Any]: EElementId.Any,
+		[EElementHash.Arc]: EElementId.Arc,
+		[EElementHash.Solar]: EElementId.Solar,
+		[EElementHash.Void]: EElementId.Void,
+		[EElementHash.Stasis]: EElementId.Stasis,
+	};
+
+export const getElementIdByHash = (hash: EElementHash): EElementId =>
+	ElementHashToElementIdMapping[hash];

@@ -70,11 +70,6 @@ const RightSection = styled(Box)(({ theme }) => ({
 	},
 }));
 
-const Spacer = styled(Box)(({ theme }) => ({
-	width: '100%',
-	height: '80px', //theme.spacing(10),d',
-}));
-
 const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
 	display: 'flex',
 	width: '300px',
@@ -84,26 +79,6 @@ const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
 }));
-
-const SmallScreenResultsViewWrapper = styled(Box)(({ theme }) => ({
-	display: 'block',
-	position: 'fixed',
-	top: 0,
-	left: 0,
-	width: '100%',
-	zIndex: 2,
-	height: '100vh',
-	background: 'black',
-}));
-
-const ArmorResultsViewWrapper = styled(Box)(({ theme }) => ({
-	maxHeight: `calc(100vh - ${theme.spacing(10)})`,
-	// overflowY: 'auto',
-}));
-
-const handleScroll = (event) => {
-	console.log('>>>>> SCROLL <<<<<<: ', event.target.classList);
-};
 
 const LeftSectionComponent = () => (
 	<LeftSection className="left-section">

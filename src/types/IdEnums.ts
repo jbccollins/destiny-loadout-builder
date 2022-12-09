@@ -5,18 +5,18 @@ export enum EAnimalId {
 }
 
 export enum EElementId {
-	Arc = 'arc',
-	Solar = 'solar',
-	Void = 'void',
-	Stasis = 'stasis',
+	Arc = 'Arc',
+	Solar = 'Solar',
+	Void = 'Void',
+	Stasis = 'Stasis',
 	// Strand = 'strand',
-	Any = 'any',
+	Any = 'Any',
 }
 
 export enum EDestinyClassId {
-	Titan = 'titan',
-	Warlock = 'warlock',
-	Hunter = 'hunter',
+	Titan = 'Titan',
+	Warlock = 'Warlock',
+	Hunter = 'Hunter',
 }
 
 export enum EDestinySubclassId {
@@ -77,20 +77,20 @@ export enum ESuperAbilityId {
 }
 
 export enum EArmorSlotId {
-	Head = 'head',
-	Arm = 'arm',
-	Chest = 'chest',
-	Leg = 'leg',
-	ClassItem = 'classItem',
+	Head = 'Head',
+	Arm = 'Arm',
+	Chest = 'Chest',
+	Leg = 'Leg',
+	ClassItem = 'ClassItem',
 }
 
 export enum EArmorStatId {
-	Mobility = 'mobility',
-	Resilience = 'resilience',
-	Recovery = 'recovery',
-	Discipline = 'discipline',
-	Intellect = 'intellect',
-	Strength = 'strength',
+	Mobility = 'Mobility',
+	Resilience = 'Resilience',
+	Recovery = 'Recovery',
+	Discipline = 'Discipline',
+	Intellect = 'Intellect',
+	Strength = 'Strength',
 }
 
 export enum EArmorExtraModSlotId {
@@ -388,4 +388,47 @@ export enum EClassAbilityId {
 	GamblersDodgeArc = 'GamblersDodgeArc',
 	MarksmansDodgeArc = 'MarksmansDodgeArc',
 	AcrobatsDodge = 'AcrobatsDodge',
+}
+
+// export enum EModSocketCategoryId {
+// 	Stat = 'Stat', // e.g. major/minor resilience
+// 	ArmorSlot = 'ArmorSlot', // e.g. bomber
+// 	CombatStyle = 'CombatStyle', // e.g. powerful friends
+// 	Artifice = 'Artifice',
+// 	LastWish = 'LastWish',
+// 	GardenOfSalvation = 'GardenOfSalvation',
+// 	DeepStoneCrypt = 'DeepStoneCrypt',
+// 	VaultOfGlass = 'VaultOfGlass',
+// 	VowOfTheDisciple = 'VowOfTheDisciple',
+// 	KingsFall = 'KingsFall',
+// 	Other = 'Other', // TODO: Dreambane, etc..
+// }
+
+export enum EModTypeDisplayNameId {
+	ArmsArmorMod = 'ArmsArmorMod',
+	LegArmorMod = 'LegArmorMod',
+	ChestArmorMod = 'ChestArmorMod',
+	WarmindCellMod = 'WarmindCellMod',
+	GeneralArmorMod = 'GeneralArmorMod',
+	HelmetArmorMod = 'HelmetArmorMod',
+	ElementalWellMod = 'ElementalWellMod',
+	LastWishRaidMod = 'LastWishRaidMod',
+	ClassItemArmorMod = 'ClassItemArmorMod',
+	VaultofGlassArmorMod = 'VaultofGlassArmorMod',
+	ClassItemMod = 'ClassItemMod',
+	DeepStoneCryptRaidMod = 'DeepStoneCryptRaidMod',
+	KingsFallMod = 'KingsFallMod',
+	GardenofSalvationRaidMod = 'GardenofSalvationRaidMod',
+	VowoftheDiscipleRaidMod = 'VowoftheDiscipleRaidMod',
+	ChargedwithLightMod = 'ChargedwithLightMod',
+	NightmareMod = 'NightmareMod',
+}
+
+export enum EGearTierId {
+	Exotic = 'Exotic',
+	Legendary = 'Legendary',
+	Rare = 'Rare',
+	Uncommon = 'Uncommon',
+	Common = 'Common',
+	Unknown = 'Unknown',
 }

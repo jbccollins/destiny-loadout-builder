@@ -2,6 +2,7 @@ import {
 	EArmorSlotId,
 	EDestinyClassId,
 	EElementId,
+	EGearTierId,
 	EMasterworkAssumption,
 } from './IdEnums';
 
@@ -40,6 +41,7 @@ export type ArmorRaritySplit = {
 // Data about each individual piece of armor
 export type ArmorItem = {
 	// Is this piece of armor exotic
+	// TODO: Get rid of isExotic and just check gearTierId
 	isExotic: boolean;
 	// The english display name
 	name: string;
@@ -61,9 +63,12 @@ export type ArmorItem = {
 	destinyClassName: EDestinyClassId;
 	// breakerType: ??? TODO: Do exotics have a breaker type set? I think some should
 	// exoticDescription: string TODO: Figure out how to add this
-
 	// Is this armor masterworked
 	isMasterworked: boolean;
+	// Elemental Affinity
+	elementId: EElementId;
+	// Exotic, Legendary, Rare, etc...
+	gearTierId: EGearTierId;
 };
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/

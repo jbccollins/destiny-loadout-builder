@@ -1,4 +1,5 @@
 import {
+	Box,
 	FormControl,
 	InputLabel,
 	MenuItem,
@@ -8,13 +9,22 @@ import {
 } from '@mui/material';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 
-const MenuItemContent = styled('div')(({ theme }) => ({
+// const MenuItemContent = styled('div')(({ theme }) => ({
+// 	display: 'flex',
+// 	alignItems: 'center',
+// }));
+
+const MenuItemContent = styled('div', {
+	shouldForwardProp: (prop) => prop !== 'hasDescription',
+})<{ hasDescription?: boolean }>(({ theme, hasDescription }) => ({
 	display: 'flex',
-	alignItems: 'center',
+	alignItems: hasDescription ? '' : 'center',
 }));
 
 const MenuItemText = styled('div')(({ theme }) => ({
 	marginLeft: theme.spacing(1),
+
+	// overflow: 'none',
 	// textTransform: 'capitalize'
 }));
 
@@ -27,6 +37,7 @@ interface IconDropdownOption {
 type IconDropdownProps = {
 	options: IconDropdownOption[];
 	getLabel: (option: IconDropdownOption) => string;
+	getDescription?: (option: IconDropdownOption) => string;
 	onChange: (value: string) => void;
 	value: string;
 	title?: string;
@@ -40,6 +51,7 @@ const IconDropdown = ({
 	value,
 	title,
 	selectComponentProps,
+	getDescription,
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		onChange(value);
@@ -60,16 +72,34 @@ const IconDropdown = ({
 			>
 				{options.map((option) => {
 					const label = getLabel(option);
+					let description: string = null;
+					let hasDescription = false;
+					if (getDescription) {
+						description = getDescription(option);
+						hasDescription = true;
+					}
 					return (
 						<MenuItem
 							key={option.id}
 							value={option.id}
 							disabled={option.disabled}
 						>
-							<MenuItemContent>
+							<MenuItemContent hasDescription={hasDescription}>
 								<BungieImage width={40} height={40} src={option.icon} />
 								<MenuItemText className="character-class-name">
 									{label}
+									{hasDescription && (
+										<Box
+											className="icon-dropdown-description"
+											sx={{
+												maxWidth: 300,
+												whiteSpace: 'break-spaces',
+												wordWrap: 'wrap',
+											}}
+										>
+											{description}
+										</Box>
+									)}
 								</MenuItemText>
 							</MenuItemContent>
 						</MenuItem>

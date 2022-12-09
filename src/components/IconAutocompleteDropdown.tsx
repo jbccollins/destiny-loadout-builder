@@ -6,6 +6,8 @@ import {
 	Autocomplete,
 	FormControl,
 	TextField,
+	AutocompleteProps,
+	SxProps,
 } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
@@ -13,13 +15,14 @@ import match from 'autosuggest-highlight/match';
 const Container = styled('div')(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	width: '100%',
-	// ['.exotic-selector-text-field fieldset']: {
-	// 	borderTopLeftRadius: '0px',
-	// 	borderBottomLeftRadius: '0px',
-	// 	//borderLeftColor: 'transparent'
-	// 	padding: theme.spacing(1),
-	// 	paddingRight: 0,
-	// },
+	// TODO: this is a bit clunky given that it's passed by the exotic selector. Find a better way.
+	['.exotic-selector-text-field fieldset']: {
+		borderTopLeftRadius: '0px',
+		borderBottomLeftRadius: '0px',
+		//borderLeftColor: 'transparent'
+		padding: theme.spacing(1),
+		paddingRight: 0,
+	},
 }));
 
 interface IIconAutocompleteDropdownOption {
@@ -35,6 +38,7 @@ type IconAutocompleteDropdownProps = {
 	getId: (value: IIconAutocompleteDropdownOption) => string;
 	// getName: (value: IIconAutocompleteDropdownOption) => string
 	title: string;
+	textFieldClassName?: string;
 };
 
 // TODO: Group by armor slot
@@ -46,6 +50,7 @@ function IconAutocompleteDropdown({
 	getLabel,
 	getId,
 	title,
+	textFieldClassName,
 }: IconAutocompleteDropdownProps) {
 	// TODO: fix all the copy/pasted "country" references
 	return (
@@ -57,7 +62,7 @@ function IconAutocompleteDropdown({
 					autoHighlight
 					value={value}
 					disableClearable
-					style={{ maxHeight: '80vh' }}
+					sx={{ maxHeight: '80vh' }}
 					groupBy={(option) => getGroupBy(option)}
 					onChange={(_, value) => {
 						onChange(value as IIconAutocompleteDropdownOption);
@@ -101,7 +106,7 @@ function IconAutocompleteDropdown({
 					renderInput={(params) => {
 						return (
 							<TextField
-								className="exotic-selector-text-field"
+								className={textFieldClassName}
 								label={title}
 								{...params}
 								InputProps={{

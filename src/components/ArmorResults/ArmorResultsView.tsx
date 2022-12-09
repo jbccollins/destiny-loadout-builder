@@ -43,7 +43,6 @@ function ArmorResultsView() {
 		(id: string, armorSlot: EArmorSlotId) => {
 			const selectedExoticArmorSlot =
 				selectedExoticArmor[selectedCharacterClass].armorSlot;
-			// console.log('>>>>>>>>>>>> getArmorItem <<<<<<<<<<<<<<', { id, armorSlot });
 			if (selectedExoticArmorSlot === armorSlot) {
 				return armor[selectedCharacterClass][armorSlot].exotic[id];
 			}
@@ -96,18 +95,18 @@ function ArmorResultsView() {
 				resultLoadout.sortableFields.totalModCost = metadata.totalModCost;
 				resultLoadout.sortableFields.totalStatTiers = metadata.totalStatTiers;
 				resultLoadout.sortableFields.wastedStats = metadata.wastedStats;
-				resultLoadout.sortableFields.mobility =
-					metadata.totalArmorStatMapping.mobility;
-				resultLoadout.sortableFields.resilience =
-					metadata.totalArmorStatMapping.resilience;
-				resultLoadout.sortableFields.recovery =
-					metadata.totalArmorStatMapping.recovery;
-				resultLoadout.sortableFields.discipline =
-					metadata.totalArmorStatMapping.discipline;
-				resultLoadout.sortableFields.intellect =
-					metadata.totalArmorStatMapping.intellect;
-				resultLoadout.sortableFields.strength =
-					metadata.totalArmorStatMapping.strength;
+				resultLoadout.sortableFields.Mobility =
+					metadata.totalArmorStatMapping.Mobility;
+				resultLoadout.sortableFields.Resilience =
+					metadata.totalArmorStatMapping.Resilience;
+				resultLoadout.sortableFields.Recovery =
+					metadata.totalArmorStatMapping.Recovery;
+				resultLoadout.sortableFields.Discipline =
+					metadata.totalArmorStatMapping.Discipline;
+				resultLoadout.sortableFields.Intellect =
+					metadata.totalArmorStatMapping.Intellect;
+				resultLoadout.sortableFields.Strength =
+					metadata.totalArmorStatMapping.Strength;
 			});
 			res.push(resultLoadout);
 		});

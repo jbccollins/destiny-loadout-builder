@@ -77,6 +77,7 @@ function ExoticSelector() {
 					ArmorSlotIdToArmorSlot.get(option.armorSlot).name
 				}
 				getLabel={(option: AvailableExoticArmorItem) => option.name}
+				textFieldClassName={'exotic-selector-text-field'}
 			/>
 		)
 	);

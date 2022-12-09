@@ -5,11 +5,7 @@ import {
 	EnumDictionary,
 	MISSING_ICON,
 } from './globals';
-import {
-	EDestinySubclassId,
-	EClassAbilityId,
-	EDestinyClassId,
-} from './IdEnums';
+import { EDestinySubclassId, EClassAbilityId } from './IdEnums';
 
 export const ClassAbilityIdList = Object.values(EClassAbilityId);
 

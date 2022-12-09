@@ -1,3 +1,4 @@
+import { ItemCategoryHashes } from '@dlb/dim/data/d2/generated-enums';
 import {
 	EnumDictionary,
 	IIcon,
@@ -61,3 +62,28 @@ export const ArmorSlotWithClassItemIdList = ValidateEnumList(
 		EArmorSlotId.ClassItem,
 	]
 );
+
+/*ItemCategoryHashes
+	ArmorMods = 4104513227,
+	ArmorModsChest = 3723676689,
+	ArmorModsClass = 3196106184,
+	ArmorModsClassHunter = 1037516129,
+	ArmorModsClassTitan = 1650311619,
+	ArmorModsClassWarlock = 2955376534,
+	ArmorModsGameplay = 4062965806,
+	ArmorModsGauntlets = 3872696960,
+	ArmorModsGlowEffects = 1875601085,
+	ArmorModsHelmet = 1362265421,
+	ArmorModsLegs = 3607371986,
+*/
+
+const ArmorSlotHashToArmorSlotIdMapping: Record<number, EArmorSlotId> = {
+	[ItemCategoryHashes.ArmorModsHelmet]: EArmorSlotId.Head,
+	[ItemCategoryHashes.ArmorModsGauntlets]: EArmorSlotId.Arm,
+	[ItemCategoryHashes.ArmorModsChest]: EArmorSlotId.Chest,
+	[ItemCategoryHashes.ArmorModsLegs]: EArmorSlotId.Leg,
+	[ItemCategoryHashes.ArmorModsClass]: EArmorSlotId.ClassItem,
+};
+
+export const getArmorSlotIdByHash = (hash: number): EArmorSlotId =>
+	ArmorSlotHashToArmorSlotIdMapping[hash];

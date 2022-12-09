@@ -4,6 +4,7 @@ import { DimStore } from '@dlb/dim/inventory/store-types';
 import {
 	DestinyClass,
 	DestinyEnergyType,
+	DestinyEnergyTypeDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 
 import { bungieNetPath } from '@dlb/utils/item-utils';
@@ -13,12 +14,15 @@ import {
 	EDestinyClassId,
 	EElementId,
 	EArmorStatModId,
+	EGearTierId,
 } from '@dlb/types/IdEnums';
 import {
 	DestinyClassHashToDestinyClass,
 	BucketHashToArmorSlot,
 	DestinyArmorTypeToArmorSlotId,
 	DestinyClassStringToDestinyClassId,
+	ElementEnumToEElementId,
+	ItemTierNameToEGearTierId,
 } from '@dlb/types/External';
 import {
 	Armor,
@@ -55,7 +59,8 @@ export const extractArmor = (
 
 	stores.forEach(({ items }) => {
 		items.forEach((item) => {
-			if (item.location.inArmor) {
+			// Filter out all items that don't have an element. These are really old armor
+			if (item.location.inArmor && item.element?.enumValue) {
 				const destinyClassName = DestinyClassHashToDestinyClass[
 					item.classType
 				] as EDestinyClassId;
@@ -97,6 +102,12 @@ export const extractArmor = (
 					destinyClassName:
 						DestinyClassStringToDestinyClassId[item.classTypeNameLocalized],
 					isMasterworked: item.masterwork,
+					elementId: item?.element?.enumValue
+						? ElementEnumToEElementId[item.element.enumValue]
+						: EElementId.Any,
+					gearTierId: item?.tier
+						? ItemTierNameToEGearTierId[item.tier]
+						: EGearTierId.Unknown,
 				};
 				if (item.isExotic) {
 					armor[destinyClassName][armorSlot].exotic[item.id] = armorItem;

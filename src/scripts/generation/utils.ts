@@ -15,6 +15,13 @@ const hashString = (string: string) =>
 	crypto.createHash('md5').update(string).digest('hex');
 
 export async function getDefinitions() {
+	try {
+		await fs.access(CACHED_DEFINITIONS_DIRECTORY);
+	} catch (e) {
+		console.log('Creating the cached-definitions directory');
+		await fs.mkdir(CACHED_DEFINITIONS_DIRECTORY);
+	}
+
 	const manifestResponse = await axios.get(
 		'https://www.bungie.net/Platform/Destiny2/Manifest/',
 		{ headers: { 'x-api-key': API_KEY } }

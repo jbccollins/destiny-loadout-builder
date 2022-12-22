@@ -1,9 +1,9 @@
 import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { styled } from '@mui/material';
 import {
-	selectSelectedCharacterClass,
-	setSelectedCharacterClass,
-} from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+	selectSelectedDestinyClass,
+	setSelectedDestinyClass,
+} from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import IconDropdown from './IconDropdown';
 import {
@@ -16,11 +16,7 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const IconDropdownContainer = styled('div')(({ theme }) => ({
-	['.demo-simple-select']: {
-		['.character-class-name']: {
-			display: 'none',
-		},
-	},
+	//
 }));
 
 type Option = {
@@ -40,17 +36,17 @@ const options = DestinyClassIdList.map((destinyClassId) => {
 });
 
 function DestinyClassSelector() {
-	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.label;
 
-	const handleChange = (characterClass: EDestinyClassId) => {
-		if (selectedCharacterClass && selectedCharacterClass === characterClass) {
+	const handleChange = (destinyClass: EDestinyClassId) => {
+		if (selectedDestinyClass && selectedDestinyClass === destinyClass) {
 			// Don't trigger a redux dirty
 			return;
 		}
-		dispatch(setSelectedCharacterClass(characterClass));
+		dispatch(setSelectedDestinyClass(destinyClass));
 	};
 
 	return (
@@ -58,6 +54,7 @@ function DestinyClassSelector() {
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						hideSelectedOptionText={true}
 						selectComponentProps={{
 							sx: {
 								maxWidth: 100,
@@ -67,7 +64,7 @@ function DestinyClassSelector() {
 						}}
 						options={options}
 						getLabel={getLabel}
-						value={selectedCharacterClass || ''}
+						value={selectedDestinyClass || ''}
 						onChange={handleChange}
 						title="Class"
 					/>

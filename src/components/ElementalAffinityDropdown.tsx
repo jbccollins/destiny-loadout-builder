@@ -6,11 +6,7 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const IconDropdownContainer = styled('div')(({ theme }) => ({
-	['.demo-simple-select']: {
-		['.character-class-name']: {
-			display: 'none',
-		},
-	},
+	//
 }));
 
 export type ElementalAffinityOption = {
@@ -33,6 +29,7 @@ function ElementalAffinityDropdown(props: ElementalAffinityDropdownProps) {
 		<Container>
 			<IconDropdownContainer>
 				<IconDropdown
+					hideSelectedOptionText={true}
 					selectComponentProps={{
 						sx: {
 							...props.selectComponentStyle,

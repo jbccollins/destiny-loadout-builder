@@ -30,17 +30,17 @@ import {
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
-import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
-import { selectSelectedSubclassOptions } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import MasterworkedBungieImage from '../MasterworkedBungieImage';
 import { itemCanBeEquippedBy } from '@dlb/dim/utils/item-utils';
 import { copyToClipboard } from '@dlb/types/globals';
 import { ArmorItem, getExtraMasterworkedStats } from '@dlb/types/Armor';
+import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 
 const calculateExtraMasterworkedStats = (
 	armorItems: ArmorItem[],
@@ -131,13 +131,13 @@ function Row(props: { row: ResultsTableLoadout }) {
 	const { row } = props;
 	const [open, setOpen] = React.useState(false);
 
-	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
-	const selectedSubclassOptions = useAppSelector(selectSelectedSubclassOptions);
-	const { destinySubclassId } = selectedSubclassOptions[selectedCharacterClass];
+	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
+	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 	const { elementId } = getDestinySubclass(destinySubclassId);
 	// TODO: Having to do this cast sucks
 	const fragmentIds = selectedFragments[elementId] as EFragmentId[];
@@ -147,7 +147,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 	fragmentIds.forEach((id) => {
 		fragmentArmorStatMappings[id] = getArmorStatMappingFromFragments(
 			[id],
-			selectedCharacterClass
+			selectedDestinyClass
 		);
 	});
 

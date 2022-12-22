@@ -4,17 +4,20 @@ import counterReducer from './features/counter/counterSlice';
 import desiredArmorStatsReducer from './features/desiredArmorStats/desiredArmorStatsSlice';
 import armorReducer from './features/armor/armorSlice';
 import charactersReducer from './features/characters/charactersSlice';
-import selectedCharacterClassReducer from './features/selectedCharacterClass/selectedCharacterClassSlice';
+import selectedDestinyClassReducer from './features/selectedDestinyClass/selectedDestinyClassSlice';
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
 import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedExoticArmorSlice';
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
 import selectedArmorSlotRestrictionsReducer from './features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
-import selectedSubclassOptionsReducer from './features/selectedSubclassOptions/selectedSubclassOptionsSlice';
 import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
 import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
 import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import selectedCombatStyleModsReducer from './features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
-
+import selectedMeleeReducer from './features/selectedMelee/selectedMeleeSlice';
+import selectedGrenadeReducer from './features/selectedGrenade/selectedGrenadeSlice';
+import selectedClassAbilityReducer from './features/selectedClassAbility/selectedClassAbilitySlice';
+import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
+import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
@@ -36,17 +39,22 @@ export function makeStore() {
 			desiredArmorStats: desiredArmorStatsReducer,
 			armor: armorReducer,
 			characters: charactersReducer,
-			selectedCharacterClass: selectedCharacterClassReducer,
+			selectedDestinyClass: selectedDestinyClassReducer,
 			availableExoticArmor: availableExoticArmorReducer,
 			selectedExoticArmor: selectedExoticArmorReducer,
 			allDataLoaded: allDataLoadedReducer,
 			processedArmor: processedArmorReducer,
 			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
-			selectedSubclassOptions: selectedSubclassOptionsReducer,
+			// selectedSubclassOptions: selectedSubclassOptionsReducer,
 			selectedFragments: selectedFragmentsReducer,
 			selectedAspects: selectedAspectsReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
 			selectedCombatStyleMods: selectedCombatStyleModsReducer,
+			selectedMelee: selectedMeleeReducer,
+			selectedGrenade: selectedGrenadeReducer,
+			selectedClassAbility: selectedClassAbilityReducer,
+			selectedDestinySubclass: selectedDestinySubclassReducer,
+			selectedSuperAbility: selectedSuperAbilityReducer,
 		},
 	});
 }
@@ -55,9 +63,9 @@ const store = makeStore();
 
 /**** This is a janky way to check when a change that would trigger a re-process of armor is needed *****/
 let desiredArmorStatsUuid = NIL;
-let selectedCharacterClassUuid = NIL;
+let selectedDestinyClassUuid = NIL;
 let selectedExoticArmorUuid = NIL;
-let selectedSubclassOptionsUuid = NIL;
+let selectedDestinySubclassUuid = NIL;
 let selectedMasterworkAssumptionUuid = NIL;
 let selectedFragmentsUuid = NIL;
 let selectedCombatStyleModsUuid = NIL;
@@ -65,9 +73,9 @@ function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
 		desiredArmorStats: { uuid: nextDesiredArmorStatsUuid },
-		selectedCharacterClass: { uuid: nextSelectedCharacterClassUuid },
+		selectedDestinyClass: { uuid: nextSelectedDestinyClassUuid },
 		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid },
-		selectedSubclassOptions: { uuid: nextSelectedSubclassOptionsUuid },
+		selectedDestinySubclass: { uuid: nextSelectedDestinySubclassUuid },
 		selectedFragments: { uuid: nextSelectedFragmentsUuid },
 		selectedCombatStyleMods: { uuid: nextSelectedCombatStyleModsUuid },
 		selectedMasterworkAssumption: {
@@ -77,20 +85,20 @@ function handleChange() {
 
 	const hasMismatchedUuids =
 		desiredArmorStatsUuid !== nextDesiredArmorStatsUuid ||
-		selectedCharacterClassUuid !== nextSelectedCharacterClassUuid ||
+		selectedDestinyClassUuid !== nextSelectedDestinyClassUuid ||
 		selectedExoticArmorUuid !== nextSelectedExoticArmorUuid ||
 		// TODO: We probably don't need to trigger a dirty if this changes to "All" but all
 		// variants of the selected exotic armor piece are masterworked. If we ever process
 		// armor without requiring an exotic then we would need to revisit that condition
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
-		selectedSubclassOptionsUuid !== nextSelectedSubclassOptionsUuid ||
+		selectedDestinySubclassUuid !== nextSelectedDestinySubclassUuid ||
 		selectedCombatStyleModsUuid !== nextSelectedCombatStyleModsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
-		nextSelectedCharacterClassUuid !== NIL &&
+		nextSelectedDestinyClassUuid !== NIL &&
 		nextSelectedExoticArmorUuid !== NIL &&
-		nextSelectedSubclassOptionsUuid !== NIL &&
+		nextSelectedDestinySubclassUuid !== NIL &&
 		nextSelectedMasterworkAssumptionUuid !== NIL &&
 		nextSelectedCombatStyleModsUuid !== NIL &&
 		nextSelectedFragmentsUuid !== NIL;
@@ -98,9 +106,9 @@ function handleChange() {
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> store is dirty <<<<<<<<<<<');
 		desiredArmorStatsUuid = nextDesiredArmorStatsUuid;
-		selectedCharacterClassUuid = nextSelectedCharacterClassUuid;
+		selectedDestinyClassUuid = nextSelectedDestinyClassUuid;
 		selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
-		selectedSubclassOptionsUuid = nextSelectedSubclassOptionsUuid;
+		selectedDestinySubclassUuid = nextSelectedDestinySubclassUuid;
 		selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
 		selectedFragmentsUuid = nextSelectedFragmentsUuid;
 		selectedCombatStyleModsUuid = nextSelectedCombatStyleModsUuid;
@@ -109,25 +117,24 @@ function handleChange() {
 		const {
 			armor: { value: armor },
 			selectedExoticArmor: { value: selectedExoticArmor },
-			selectedCharacterClass: { value: selectedCharacterClass },
+			selectedDestinyClass: { value: selectedDestinyClass },
 			desiredArmorStats: { value: desiredArmorStats },
 			selectedMasterworkAssumption: { value: masterworkAssumption },
 			selectedFragments: { value: selectedFragments },
 			selectedCombatStyleMods: { value: selectedCombatStyleMods },
-			selectedSubclassOptions: { value: selectedSubclassOptions },
+			selectedDestinySubclass: { value: selectedDestinySubclass },
 		} = store.getState();
 
-		const { destinySubclassId } =
-			selectedSubclassOptions[selectedCharacterClass];
+		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 		const { elementId } = getDestinySubclass(destinySubclassId);
 		const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
 			selectedFragments[elementId],
-			selectedCharacterClass
+			selectedDestinyClass
 		);
 		const combatStyleModArmorStatMapping =
 			getArmorStatMappingFromCombatStyleMods(
 				selectedCombatStyleMods,
-				selectedCharacterClass
+				selectedDestinyClass
 			);
 
 		console.log(
@@ -139,8 +146,8 @@ function handleChange() {
 		// Maybe we don't need to trigger that fake initial dispatch in
 		// the slider component if we fix this?
 		const preProcessedArmor = preProcessArmor(
-			armor[selectedCharacterClass],
-			selectedExoticArmor[selectedCharacterClass]
+			armor[selectedDestinyClass],
+			selectedExoticArmor[selectedDestinyClass]
 		);
 		console.log('>>>>>>>>>>> preProcessedArmor <<<<<<<<<<<', preProcessedArmor);
 		const results = doProcessArmor({

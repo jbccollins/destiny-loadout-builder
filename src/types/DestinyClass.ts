@@ -68,12 +68,10 @@ const DestinyClassIdToDestinySubclassesMapping: EnumDictionary<
 	],
 };
 
-export const DestinyClassIdToDestinySubclasses: Mapping<
-	EDestinyClassId,
-	EDestinySubclassId[]
-> = {
-	get: (key: EDestinyClassId) => DestinyClassIdToDestinySubclassesMapping[key],
-};
+export const getDestinySubclassIdListByDestinyClassId = (
+	destinyClassId: EDestinyClassId
+): EDestinySubclassId[] =>
+	DestinyClassIdToDestinySubclassesMapping[destinyClassId];
 
 // The mapping between destiny classes and the stats that control
 // dodge for hunter, rift for warlock and barricade for titan

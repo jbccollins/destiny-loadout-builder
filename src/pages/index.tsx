@@ -27,12 +27,15 @@ import ArmorSlotRestrictions from '@dlb/components/ArmorSlotRestrictions/ArmorSl
 import React, { useEffect } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import SubclassSelector from '@dlb/components/SubclassSelector/SubclassSelector';
+import DestinySubclassSelector from '@dlb/components/SubclassSelector/DestinySubclassSelector';
 import FragmentSelector from '@dlb/components/SubclassSelector/FragmentSelector';
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import CombatStyleModSelector from '@dlb/components/CombatStyleModSelector';
+import GrenadeSelector from '@dlb/components/SubclassSelector/GrenadeSelector';
+import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
+import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -85,8 +88,11 @@ const LeftSectionComponent = () => (
 		<ExoticAndDestinyClassSelectorWrapper />
 		<StatSelection />
 		<MasterworkAssumptionSelector />
-		<SubclassSelector />
+		<DestinySubclassSelector />
 		<AspectSelector />
+		<GrenadeSelector />
+		<MeleeSelector />
+		{/* <ClassAbilitySelector /> */}
 		<FragmentSelector />
 		<CombatStyleModSelector />
 

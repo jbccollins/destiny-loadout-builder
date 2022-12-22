@@ -10,11 +10,7 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const IconDropdownContainer = styled('div')(({ theme }) => ({
-	['.demo-simple-select']: {
-		['.character-class-name']: {
-			display: 'none',
-		},
-	},
+	//
 }));
 
 type Option = {
@@ -48,6 +44,7 @@ function ExtraModSlotDropdown(props: ExtraModSlotDropdownProps) {
 		<Container>
 			<IconDropdownContainer>
 				<IconDropdown
+					hideSelectedOptionText={true}
 					selectComponentProps={{
 						sx: {
 							maxWidth: 100,

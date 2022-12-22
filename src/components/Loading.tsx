@@ -9,12 +9,10 @@ import { setAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoade
 import { setArmor } from '@dlb/redux/features/armor/armorSlice';
 import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
-import { setSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
-import {
-	SelectedSubclassOptions,
-	setSelectedSubclassOptions,
-} from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
+import { setSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { extractArmor, extractCharacters } from '@dlb/services/data';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
@@ -22,7 +20,11 @@ import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 import DestinySubclassAndSuperAbilityOptions from '@dlb/constants/DestinySubclassAndSuperAbilityOptions';
 
-import { EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
+import {
+	EDestinyClassId,
+	EDestinySubclassId,
+	EElementId,
+} from '@dlb/types/IdEnums';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, styled, Card, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -139,7 +141,7 @@ function Loading() {
 				);
 				const characters = extractCharacters(stores);
 				dispatch(setCharacters([...characters]));
-				dispatch(setSelectedCharacterClass(characters[0].destinyClassId));
+				dispatch(setSelectedDestinyClass(characters[0].destinyClassId));
 				console.log('>>>>>>>>>>> [LOAD] characters <<<<<<<<<<<', characters);
 
 				const defaultSelectedExoticArmor: Record<
@@ -150,23 +152,27 @@ function Loading() {
 					[EDestinyClassId.Hunter]: null,
 					[EDestinyClassId.Warlock]: null,
 				};
-				const defaultSelectedSubclassOptions: Record<
+				const defaultSelectedDestinySubclass: Record<
 					EDestinyClassId,
-					SelectedSubclassOptions
+					EDestinySubclassId
 				> = {
 					[EDestinyClassId.Titan]: null,
 					[EDestinyClassId.Hunter]: null,
 					[EDestinyClassId.Warlock]: null,
 				};
 				DestinyClassIdList.forEach((destinyClassId) => {
-					defaultSelectedSubclassOptions[destinyClassId] = {
-						destinySubclassId:
-							DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
-								.destinySubclassId,
-						superAbilityId:
-							DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
-								.superAbilityId,
-					};
+					defaultSelectedDestinySubclass[destinyClassId] =
+						DestinySubclassAndSuperAbilityOptions[
+							destinyClassId
+						][0].destinySubclassId;
+					// {
+					// 	destinySubclassId:
+					// 		DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
+					// 			.destinySubclassId,
+					// 	superAbilityId:
+					// 		DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
+					// 			.superAbilityId,
+					// };
 
 					if (availableExoticArmor[destinyClassId]) {
 						for (const armorSlotId of ArmorSlotIdList) {
@@ -189,10 +195,10 @@ function Loading() {
 					'>>>>>>>>>>> [LOAD] defaultSelectedExoticArmor <<<<<<<<<<<',
 					defaultSelectedExoticArmor
 				);
-				dispatch(setSelectedSubclassOptions(defaultSelectedSubclassOptions));
+				dispatch(setSelectedDestinySubclass(defaultSelectedDestinySubclass));
 				console.log(
-					'>>>>>>>>>>> [LOAD] defaultSelectedSubclassOptions <<<<<<<<<<<',
-					defaultSelectedSubclassOptions
+					'>>>>>>>>>>> [LOAD] defaultSelectedDestinySubclass <<<<<<<<<<<',
+					defaultSelectedDestinySubclass
 				);
 				// This is kinda hacky but by triggering a dispatch of the existing
 				// default values for [desiredArmorStats, selectedMasterworkAssumption, selectedFragments]

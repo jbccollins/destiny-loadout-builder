@@ -7,18 +7,9 @@ import {
 	InputLabel,
 	FormControl,
 } from '@mui/material';
-import IconDropdown from '@dlb/components/IconDropdown';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
 	// paddingRight: 0
-}));
-
-const IconDropdownContainer = styled('div')(({ theme }) => ({
-	['.demo-simple-select']: {
-		['.character-class-name']: {
-			display: 'none',
-		},
-	},
 }));
 
 type Option = {
@@ -57,7 +48,7 @@ function StatModCostDropdown(props: StatModCostDropdownProps) {
 	return (
 		<Container>
 			<FormControl fullWidth>
-				<InputLabel id="demo-simple-select-label-2">
+				<InputLabel id="icon-dropdown-select-label-2">
 					{props.title || ''}
 				</InputLabel>
 				<Select
@@ -69,9 +60,9 @@ function StatModCostDropdown(props: StatModCostDropdownProps) {
 						paddingTop: '8px',
 						paddingBottom: '9px',
 					}}
-					labelId="demo-simple-select-label-2"
-					id="demo-simple-select-2"
-					className="demo-simple-select-2"
+					labelId="icon-dropdown-select-label-2"
+					id="icon-dropdown-select-2"
+					className="icon-dropdown-select-2"
 					value={props.value}
 					label={props.title || ''}
 					onChange={(e) => props.onChange(e.target.value as number)}

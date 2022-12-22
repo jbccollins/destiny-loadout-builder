@@ -8,11 +8,11 @@ import {
 	setSelectedFragments,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
-import { selectSelectedSubclassOptions } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getStat } from '@dlb/types/ArmorStat';
 import { StatBonusStat } from '@dlb/types/globals';
+import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 
 const Container = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(1),
@@ -22,13 +22,12 @@ const FragmentSelector = () => {
 	// const [value, setValue] = React.useState<EFragmentId[]>([FragmentIdList[0]]);
 
 	const selectedFragments = useAppSelector(selectSelectedFragments);
-	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
-	const selectedSubclassOptions = useAppSelector(selectSelectedSubclassOptions);
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
+	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	let fragments: EFragmentId[] = [];
 	let elementId = null;
-	if (selectedCharacterClass && selectedFragments && selectedSubclassOptions) {
-		const { destinySubclassId } =
-			selectedSubclassOptions[selectedCharacterClass];
+	if (selectedDestinyClass && selectedFragments && selectedDestinySubclass) {
+		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 		const { elementId: subclassElementId } =
 			getDestinySubclass(destinySubclassId);
 		elementId = subclassElementId;
@@ -45,7 +44,7 @@ const FragmentSelector = () => {
 	const getOptionValue = (id: EFragmentId) => getFragment(id);
 
 	const getOptionStat = (stat: StatBonusStat) =>
-		getStat(stat, selectedCharacterClass);
+		getStat(stat, selectedDestinyClass);
 
 	return (
 		<Container>

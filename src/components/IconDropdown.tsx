@@ -9,10 +9,23 @@ import {
 } from '@mui/material';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 
-// const MenuItemContent = styled('div')(({ theme }) => ({
-// 	display: 'flex',
-// 	alignItems: 'center',
-// }));
+const Container = styled(Box, {
+	shouldForwardProp: (prop) => prop !== 'hideSelectedOptionText',
+})<{ hideSelectedOptionText?: boolean }>(
+	({ theme, hideSelectedOptionText }) => ({
+		['.icon-dropdown-select']: {
+			['.icon-dropdown-menu-item-text-description']: {
+				display: 'none',
+			},
+			['.icon-dropdown-menu-item-content']: {
+				alignItems: 'center ',
+			},
+			['.icon-dropdown-menu-item-text']: {
+				display: hideSelectedOptionText ? 'none' : '',
+			},
+		},
+	})
+);
 
 const MenuItemContent = styled('div', {
 	shouldForwardProp: (prop) => prop !== 'hasDescription',
@@ -41,7 +54,8 @@ type IconDropdownProps = {
 	onChange: (value: string) => void;
 	value: string;
 	title?: string;
-	selectComponentProps: SelectProps;
+	selectComponentProps?: SelectProps;
+	hideSelectedOptionText?: boolean;
 };
 
 const IconDropdown = ({
@@ -52,61 +66,68 @@ const IconDropdown = ({
 	title,
 	selectComponentProps,
 	getDescription,
+	hideSelectedOptionText,
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		onChange(value);
 	};
 	return (
-		<FormControl fullWidth>
-			<InputLabel id="demo-simple-select-label">{title || ''}</InputLabel>
-			<Select
-				{...selectComponentProps}
-				labelId="demo-simple-select-label"
-				id="demo-simple-select"
-				className="demo-simple-select"
-				value={value}
-				label={title || ''}
-				onChange={(e) => {
-					handleChange(e.target.value as string);
-				}}
-			>
-				{options.map((option) => {
-					const label = getLabel(option);
-					let description: string = null;
-					let hasDescription = false;
-					if (getDescription) {
-						description = getDescription(option);
-						hasDescription = true;
-					}
-					return (
-						<MenuItem
-							key={option.id}
-							value={option.id}
-							disabled={option.disabled}
-						>
-							<MenuItemContent hasDescription={hasDescription}>
-								<BungieImage width={40} height={40} src={option.icon} />
-								<MenuItemText className="character-class-name">
-									{label}
-									{hasDescription && (
-										<Box
-											className="icon-dropdown-description"
-											sx={{
-												maxWidth: 300,
-												whiteSpace: 'break-spaces',
-												wordWrap: 'wrap',
-											}}
-										>
-											{description}
-										</Box>
-									)}
-								</MenuItemText>
-							</MenuItemContent>
-						</MenuItem>
-					);
-				})}
-			</Select>
-		</FormControl>
+		<Container hideSelectedOptionText={hideSelectedOptionText}>
+			<FormControl fullWidth>
+				<InputLabel id="icon-dropdown-select-label">{title || ''}</InputLabel>
+				<Select
+					{...selectComponentProps}
+					labelId="icon-dropdown-select-label"
+					id="icon-dropdown-select"
+					className="icon-dropdown-select"
+					value={value}
+					label={title || ''}
+					onChange={(e) => {
+						handleChange(e.target.value as string);
+					}}
+				>
+					{options.map((option) => {
+						const label = getLabel(option);
+						let description: string = null;
+						let hasDescription = false;
+						if (getDescription) {
+							description = getDescription(option);
+							hasDescription = true;
+						}
+						return (
+							<MenuItem
+								className="icon-dropdown-menu-item"
+								key={option.id}
+								value={option.id}
+								disabled={option.disabled}
+							>
+								<MenuItemContent
+									className="icon-dropdown-menu-item-content"
+									hasDescription={hasDescription}
+								>
+									<BungieImage width={40} height={40} src={option.icon} />
+									<MenuItemText className="icon-dropdown-menu-item-text">
+										{label}
+										{hasDescription && (
+											<Box
+												className="icon-dropdown-menu-item-text-description"
+												sx={{
+													maxWidth: 300,
+													whiteSpace: 'break-spaces',
+													wordWrap: 'wrap',
+												}}
+											>
+												{description}
+											</Box>
+										)}
+									</MenuItemText>
+								</MenuItemContent>
+							</MenuItem>
+						);
+					})}
+				</Select>
+			</FormControl>
+		</Container>
 	);
 };
 

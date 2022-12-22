@@ -1,22 +1,14 @@
 import { EAspectId } from '@dlb/types/IdEnums';
 import { styled } from '@mui/material';
-import {
-	selectSelectedCharacterClass,
-	setSelectedCharacterClass,
-} from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import IconDropdown from '@dlb/components/IconDropdown';
-import {
-	AspectIdList,
-	getAspect,
-	getAspectIdsByDestinySubclassId,
-	getAspectsByDestinySubclassId,
-} from '@dlb/types/Aspect';
+import { getAspectsByDestinySubclassId } from '@dlb/types/Aspect';
 import {
 	selectSelectedAspects,
 	setSelectedAspects,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
-import { selectSelectedSubclassOptions } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
+import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));
@@ -35,14 +27,14 @@ type Option = {
 
 function AspectSelector() {
 	const selectedAspects = useAppSelector(selectSelectedAspects);
-	const selectedDestinyClass = useAppSelector(selectSelectedCharacterClass);
-	const selectedSubclassOptions = useAppSelector(selectSelectedSubclassOptions);
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
+	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.name;
 	const getDescription = (option: Option) => option.description;
 
-	const { destinySubclassId } = selectedSubclassOptions[selectedDestinyClass];
+	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 	const aspectIds = [...selectedAspects[destinySubclassId]];
 
 	const handleChange = (aspectId: EAspectId, index: number) => {

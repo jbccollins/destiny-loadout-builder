@@ -5,7 +5,7 @@ import {
 	setSelectedExoticArmor,
 } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 
@@ -28,7 +28,7 @@ import { useMemo } from 'react';
 // }));
 
 function ExoticSelector() {
-	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const dispatch = useAppDispatch();
@@ -38,25 +38,25 @@ function ExoticSelector() {
 			'>>>>>>>>>>> [Memo] availableExoticArmorItems calcuated <<<<<<<<<<<'
 		);
 		const res: AvailableExoticArmorItem[] = [];
-		if (availableExoticArmor && selectedCharacterClass) {
+		if (availableExoticArmor && selectedDestinyClass) {
 			ArmorSlotIdList.forEach((armorSlot) => {
-				res.push(availableExoticArmor[selectedCharacterClass][armorSlot]);
+				res.push(availableExoticArmor[selectedDestinyClass][armorSlot]);
 			});
 			return res.flat();
 		}
-	}, [availableExoticArmor, selectedCharacterClass]);
+	}, [availableExoticArmor, selectedDestinyClass]);
 
 	const handleChange = (armor: AvailableExoticArmorItem) => {
 		if (
 			selectedExoticArmor &&
-			selectedCharacterClass &&
-			armor.hash === selectedExoticArmor[selectedCharacterClass].hash
+			selectedDestinyClass &&
+			armor.hash === selectedExoticArmor[selectedDestinyClass].hash
 		) {
 			// Don't trigger a redux dirty
 			return;
 		}
 		const newSelectedExoticArmor = { ...selectedExoticArmor };
-		newSelectedExoticArmor[selectedCharacterClass] = armor;
+		newSelectedExoticArmor[selectedDestinyClass] = armor;
 		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
 	};
 
@@ -64,13 +64,13 @@ function ExoticSelector() {
 	// Icon might be: https://www.bungie.net/common/destiny2_content/icons/b4d05ef69d0c3227a7d4f7f35bbc2848.png
 	return (
 		availableExoticArmor &&
-		selectedCharacterClass &&
+		selectedDestinyClass &&
 		selectedExoticArmor &&
-		selectedExoticArmor[selectedCharacterClass] && (
+		selectedExoticArmor[selectedDestinyClass] && (
 			<IconAutocompleteDropdown
 				title={'Exotic'}
 				options={options}
-				value={selectedExoticArmor[selectedCharacterClass]}
+				value={selectedExoticArmor[selectedDestinyClass]}
 				onChange={handleChange}
 				getId={(option: AvailableExoticArmorItem) => option.hash.toString()}
 				getGroupBy={(option: AvailableExoticArmorItem) =>

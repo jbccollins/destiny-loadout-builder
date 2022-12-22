@@ -1,5 +1,5 @@
 import { IIdentifiableName, IHash, IIcon } from './globals';
-import { EElementId, EArmorSlotId } from './IdEnums';
+import { EElementId, EArmorSlotId, EDestinySubclassId } from './IdEnums';
 
 // Define the types/enums/interfaces used by generated files here
 
@@ -45,4 +45,15 @@ export interface IMod extends IIdentifiableName, IHash, IIcon {
 export interface IAspect extends IIdentifiableName, IIcon, IHash {
 	description: string;
 	fragementSlots: number;
+}
+
+export interface IGrenade extends IIdentifiableName, IIcon, IHash {
+	description: string;
+	elementId: EElementId;
+}
+
+export interface IMelee extends IIdentifiableName, IIcon, IHash {
+	description: string;
+	elementId: EElementId;
+	destinySubclassId: EDestinySubclassId;
 }

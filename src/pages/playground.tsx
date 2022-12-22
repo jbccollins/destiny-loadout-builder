@@ -12,7 +12,7 @@ import {
 	Tab,
 	Tabs,
 	Typography,
-	Avatar
+	Avatar,
 } from '@mui/material';
 import { useState } from 'react';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
@@ -22,29 +22,29 @@ import match from 'autosuggest-highlight/match';
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
 	display: 'flex',
-	flexDirection: 'column'
+	flexDirection: 'column',
 }));
 
-const CharacterClassAndExoticContainer = styled(Box)(({ theme }) => ({
+const DestinyClassAndExoticContainer = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
 	padding: theme.spacing(4),
 	display: 'flex',
 	justifyContent: 'left',
-	['.demo-simple-select']: {
-		['.character-class-name']: {
-			display: 'none'
-		}
+	['.icon-dropdown-select']: {
+		['.icon-dropdown-menu-item-text']: {
+			display: 'none',
+		},
 	},
 	['.exotic-selector-text-field fieldset']: {
 		borderTopLeftRadius: '0px',
 		borderBottomLeftRadius: '0px',
-		borderLeftColor: 'transparent'
-	}
+		borderLeftColor: 'transparent',
+	},
 }));
 
 const SubclassSelectorContainer = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(4),
-	flexBasis: '100%'
+	flexBasis: '100%',
 }));
 
 const SelectContainer = styled(Box)(({ theme }) => ({}));
@@ -52,56 +52,56 @@ const SelectContainer = styled(Box)(({ theme }) => ({}));
 const MenuItemContent = styled('div')(({ theme }) => ({
 	display: 'flex',
 	// justifyContent: 'center',
-	alignItems: 'center'
+	alignItems: 'center',
 }));
 
 const MenuItemText = styled('div')(({ theme }) => ({
 	// position: 'absolute'
 	marginLeft: theme.spacing(1),
-	textTransform: 'capitalize'
+	textTransform: 'capitalize',
 }));
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
 	width: 22,
 	height: 22,
-	border: `2px solid ${theme.palette.background.paper}`
+	border: `2px solid ${theme.palette.background.paper}`,
 }));
-type CharacterClassOption = {
+type DestinyClassOption = {
 	icon: string;
 	name: string;
 };
 
-const characterClassOptions: CharacterClassOption[] = [
+const destinyClassOptions: DestinyClassOption[] = [
 	{
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/66289d9dce869bca5aa53beb88edf15c.jpg',
-		name: 'warlock'
+		name: 'warlock',
 	},
 	{
 		icon: 'https://bungie.net//common/destiny2_content/icons/dded5f2f4730ea8515e71dbb36111393.jpg',
-		name: 'titan'
+		name: 'titan',
 	},
 	{
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/f3207249663fd5f4297656e73f942a42.jpg',
-		name: 'hunter'
-	}
+		name: 'hunter',
+	},
 ];
 
-const exoticOptions: CharacterClassOption[] = [
+const exoticOptions: DestinyClassOption[] = [
 	{
 		icon: 'https://bungie.net//common/destiny2_content/icons/dded5f2f4730ea8515e71dbb36111393.jpg',
-		name: 'Heart of Inmost Light'
+		name: 'Heart of Inmost Light',
 	},
 	{
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/67f7bbf158f84c33802b178e463b7037.jpg',
-		name: 'Crest of Alpha Lupi'
+		name: 'Crest of Alpha Lupi',
 	},
 	{
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/78874c268891725a68bdcc35432fec9e.jpg',
-		name: 'Point Contact Cannon Brace'
-	}
+		name: 'Point Contact Cannon Brace',
+	},
 ];
 
-const CharacterClassSelector = () => {
+const DestinyClassSelector = () => {
 	const [value, setValue] = useState('warlock');
 
 	const handleChange = (value: string) => {
@@ -111,28 +111,28 @@ const CharacterClassSelector = () => {
 	};
 	return (
 		<FormControl fullWidth>
-			<InputLabel id="demo-simple-select-label">Class</InputLabel>
+			<InputLabel id="icon-dropdown-select-label">Class</InputLabel>
 			<Select
 				sx={{
 					maxWidth: 100,
 					borderTopRightRadius: 0,
-					borderBottomRightRadius: 0
+					borderBottomRightRadius: 0,
 				}}
-				labelId="demo-simple-select-label"
-				id="demo-simple-select"
-				className="demo-simple-select"
+				labelId="icon-dropdown-select-label"
+				id="icon-dropdown-select"
+				className="icon-dropdown-select"
 				value={value}
 				label="Class"
 				onChange={(e) => {
 					handleChange(e.target.value as string);
 				}}
 			>
-				{characterClassOptions.map((x) => {
+				{destinyClassOptions.map((x) => {
 					return (
 						<MenuItem key={x.name} value={x.name}>
 							<MenuItemContent>
 								<BungieImage width={40} height={40} src={x.icon} />
-								<MenuItemText className="character-class-name">
+								<MenuItemText className="icon-dropdown-menu-item-text">
 									{x.name}
 								</MenuItemText>
 							</MenuItemContent>
@@ -147,7 +147,7 @@ const CharacterClassSelector = () => {
 const ExoticSelector = () => {
 	const [value, setValue] = useState(exoticOptions[0]);
 
-	const handleChange = (value: CharacterClassOption) => {
+	const handleChange = (value: DestinyClassOption) => {
 		console.log('>>>>>>>>>>>> selected exotic <<<<<<<<<<<<<<', value);
 		setValue(value);
 	};
@@ -161,12 +161,12 @@ const ExoticSelector = () => {
 				value={value}
 				disableClearable
 				onChange={(_, value) => {
-					handleChange(value as CharacterClassOption);
+					handleChange(value as DestinyClassOption);
 				}}
 				isOptionEqualToValue={(option, value) => {
 					return option.name == value.name && option.icon == value.icon;
 				}}
-				getOptionLabel={(option) => (option as CharacterClassOption).name}
+				getOptionLabel={(option) => (option as DestinyClassOption).name}
 				renderOption={(props, option, { inputValue }) => {
 					const matches = match(option.name, inputValue, { insideWords: true });
 					const parts = parse(option.name, matches);
@@ -182,7 +182,7 @@ const ExoticSelector = () => {
 									<span
 										key={index}
 										style={{
-											fontWeight: part.highlight ? 700 : 400
+											fontWeight: part.highlight ? 700 : 400,
 										}}
 									>
 										{part.text}
@@ -198,7 +198,7 @@ const ExoticSelector = () => {
 						<TextField
 							className="exotic-selector-text-field"
 							label="Exotic"
-							//labelId="demo-simple-select-label-2"
+							//labelId="icon-dropdown-select-label-2"
 							{...params}
 							InputProps={{
 								...params.InputProps,
@@ -207,13 +207,13 @@ const ExoticSelector = () => {
 										sx={{
 											marginTop: '7.5px',
 											marginBottom: '1.5px',
-											marginLeft: '5px'
+											marginLeft: '5px',
 										}}
 									>
 										<BungieImage width={40} height={40} src={value.icon} />
 									</Box>
 								),
-								autoComplete: 'new-password' // disable autocomplete and autofill
+								autoComplete: 'new-password', // disable autocomplete and autofill
 							}}
 						/>
 						// </div>
@@ -253,7 +253,7 @@ function TabPanel(props: TabPanelProps) {
 function a11yProps(index: number) {
 	return {
 		id: `simple-tab-${index}`,
-		'aria-controls': `simple-tabpanel-${index}`
+		'aria-controls': `simple-tabpanel-${index}`,
 	};
 }
 
@@ -361,14 +361,14 @@ const Home: NextPage = () => {
 				<meta name="viewport" content="initial-scale=1.0, width=device-width" />
 			</Head>
 			<Container>
-				<CharacterClassAndExoticContainer>
+				<DestinyClassAndExoticContainer>
 					<SelectContainer>
-						<CharacterClassSelector />
+						<DestinyClassSelector />
 					</SelectContainer>
 					<SelectContainer>
 						<ExoticSelector />
 					</SelectContainer>
-				</CharacterClassAndExoticContainer>
+				</DestinyClassAndExoticContainer>
 				<SubclassSelectorContainer>
 					<ExoticSelector />
 				</SubclassSelectorContainer>

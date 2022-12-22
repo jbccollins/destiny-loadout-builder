@@ -3,7 +3,7 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { styled, Card, Box } from '@mui/material';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
-import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import ArmorResultsTable from './ArmorResultsTable';
@@ -12,11 +12,7 @@ import { ProcessedArmorItemMetadata } from '@dlb/services/armor-processing';
 import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorItem } from '@dlb/types/Armor';
-import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import { ArmorStatMapping } from '@dlb/types/ArmorStat';
-import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
-import { selectSelectedSubclassOptions } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
@@ -35,20 +31,20 @@ export type ResultsTableLoadout = {
 
 function ArmorResultsView() {
 	const armor = useAppSelector(selectArmor);
-	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 
 	const getArmorItem = useCallback(
 		(id: string, armorSlot: EArmorSlotId) => {
 			const selectedExoticArmorSlot =
-				selectedExoticArmor[selectedCharacterClass].armorSlot;
+				selectedExoticArmor[selectedDestinyClass].armorSlot;
 			if (selectedExoticArmorSlot === armorSlot) {
-				return armor[selectedCharacterClass][armorSlot].exotic[id];
+				return armor[selectedDestinyClass][armorSlot].exotic[id];
 			}
-			return armor[selectedCharacterClass][armorSlot].nonExotic[id];
+			return armor[selectedDestinyClass][armorSlot].nonExotic[id];
 		},
-		[armor, selectedCharacterClass, selectedExoticArmor]
+		[armor, selectedDestinyClass, selectedExoticArmor]
 	);
 
 	const resultsTableArmorItems: ResultsTableLoadout[] = useMemo(() => {
@@ -117,10 +113,10 @@ function ArmorResultsView() {
 	return (
 		<>
 			{armor &&
-				selectedCharacterClass &&
+				selectedDestinyClass &&
 				processedArmor &&
 				selectedExoticArmor &&
-				selectedExoticArmor[selectedCharacterClass] && (
+				selectedExoticArmor[selectedDestinyClass] && (
 					<Container className="armor-results-view">
 						<ArmorResultsTable items={resultsTableArmorItems} />
 					</Container>

@@ -11,9 +11,7 @@ import {
 	setSelectedCombatStyleMods,
 } from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { selectSelectedCharacterClass } from '@dlb/redux/features/selectedCharacterClass/selectedCharacterClassSlice';
-import { selectSelectedSubclassOptions } from '@dlb/redux/features/selectedSubclassOptions/selectedSubclassOptionsSlice';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { getStat } from '@dlb/types/ArmorStat';
 import { StatBonusStat } from '@dlb/types/globals';
 
@@ -25,7 +23,7 @@ const CombatStyleModSelector = () => {
 	// const [value, setValue] = React.useState<ECombatStyleModId[]>([CombatStyleModIdList[0]]);
 
 	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
-	const selectedCharacterClass = useAppSelector(selectSelectedCharacterClass);
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 
 	const dispatch = useAppDispatch();
 
@@ -38,7 +36,7 @@ const CombatStyleModSelector = () => {
 	const getOptionValue = (id: ECombatStyleModId) => getCombatStyleMod(id);
 
 	const getOptionStat = (stat: StatBonusStat) =>
-		getStat(stat, selectedCharacterClass);
+		getStat(stat, selectedDestinyClass);
 
 	return (
 		<Container>

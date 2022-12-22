@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '@dlb/redux/store';
 
 import { v4 as uuid, NIL } from 'uuid';
-import { EElementId, EAspectId, EDestinySubclassId } from '@dlb/types/IdEnums';
+import { EAspectId, EDestinySubclassId } from '@dlb/types/IdEnums';
 import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
 import { getAspectIdsByDestinySubclassId } from '@dlb/types/Aspect';
 

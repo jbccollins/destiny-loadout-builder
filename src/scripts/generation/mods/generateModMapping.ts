@@ -1,9 +1,13 @@
-import { EArmorSlotId, EElementId } from '@dlb/types/IdEnums';
+import {
+	EArmorSlotId,
+	EElementId,
+	EModSocketCategoryId,
+} from '@dlb/types/IdEnums';
 import { IMod } from '@dlb/types/generation';
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	formatStringForFile,
-	getSerializableObject,
+	getSerializableValue,
 } from '@dlb/scripts/generation/utils';
 
 export const generateModMapping = (mods: IMod[]): string => {
@@ -11,20 +15,22 @@ export const generateModMapping = (mods: IMod[]): string => {
 		armorSlotId: { enumDefinition: EArmorSlotId, enumName: 'EArmorSlotId' },
 		id: { enumDefinition: EModId, enumName: 'EModId' },
 		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
+		modSocketCategoryId: {
+			enumDefinition: EModSocketCategoryId,
+			enumName: 'EModSocketCategoryId',
+		},
 	};
 
 	const serializeMods: Record<string, unknown>[] = [];
 	mods.forEach((mod) => {
 		const serializedMod = { ...mod } as Record<string, unknown>;
-		// TODO: This is dumb. We shouldn't serialize the whole object. Just the key/value pair that we need per iteration
 		Object.keys(enumsToSerialize).forEach((key) => {
-			const serializedResult = getSerializableObject(
-				serializedMod,
-				key,
+			const serializedResult = getSerializableValue(
+				mod[key],
 				enumsToSerialize[key].enumDefinition,
 				enumsToSerialize[key].enumName
-			) as Record<string, unknown>;
-			serializedMod[key] = serializedResult[key];
+			);
+			serializedMod[key] = serializedResult;
 		});
 		serializeMods.push(serializedMod);
 	});
@@ -39,7 +45,8 @@ export const generateModMapping = (mods: IMod[]): string => {
 	import { EnumDictionary } from '@dlb/types/globals';
 	import { IMod } from '@dlb/types/generation';
   import { EModId } from '@dlb/generated/mod/EModId';
-  import { EArmorSlotId, EElementId } from "@dlb/types/IdEnums";
+	import { EArmorSlotId, EElementId, EModSocketCategoryId } from "@dlb/types/IdEnums";
+	
 
 	export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
 		${modIdToModMappingString.join(' ')}

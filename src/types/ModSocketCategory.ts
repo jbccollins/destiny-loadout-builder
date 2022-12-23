@@ -1,3 +1,4 @@
+import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 import { ArmorStatMapping } from './ArmorStat';
 import { getDestinyClassAbilityStat } from './DestinyClass';
 import {
@@ -8,6 +9,7 @@ import {
 	StatBonus,
 	MISSING_ICON,
 } from './globals';
+import { EModSocketCategoryId } from './IdEnums';
 // import { EModSocketCategoryId } from './IdEnums';
 
 // export const ModSocketCategoryIdList = Object.values(EModSocketCategoryId);
@@ -72,3 +74,36 @@ import {
 // 		name: '',
 // 	},
 // };
+
+const EModDisplayNameIdToModSocketCategoryIdMapping: EnumDictionary<
+	EModDisplayNameId,
+	EModSocketCategoryId
+> = {
+	[EModDisplayNameId.HelmetArmorMod]: EModSocketCategoryId.ArmorSlot,
+	[EModDisplayNameId.ArmsArmorMod]: EModSocketCategoryId.ArmorSlot,
+	[EModDisplayNameId.ChestArmorMod]: EModSocketCategoryId.ArmorSlot,
+	[EModDisplayNameId.LegArmorMod]: EModSocketCategoryId.ArmorSlot,
+	[EModDisplayNameId.ClassItemArmorMod]: EModSocketCategoryId.ArmorSlot,
+	[EModDisplayNameId.ClassItemMod]: EModSocketCategoryId.ArmorSlot,
+
+	[EModDisplayNameId.ChargedWithLightMod]: EModSocketCategoryId.CombatStyle,
+	[EModDisplayNameId.WarmindCellMod]: EModSocketCategoryId.CombatStyle,
+	[EModDisplayNameId.ElementalWellMod]: EModSocketCategoryId.CombatStyle,
+
+	[EModDisplayNameId.LastWishRaidMod]: EModSocketCategoryId.LastWish,
+	[EModDisplayNameId.GardenOfSalvationRaidMod]:
+		EModSocketCategoryId.GardenOfSalvation,
+	[EModDisplayNameId.DeepStoneCryptRaidMod]:
+		EModSocketCategoryId.DeepStoneCrypt,
+	[EModDisplayNameId.VaultOfGlassArmorMod]: EModSocketCategoryId.VaultOfGlass,
+	[EModDisplayNameId.VowOfTheDiscipleRaidMod]:
+		EModSocketCategoryId.VowOfTheDisciple,
+	[EModDisplayNameId.KingsFallMod]: EModSocketCategoryId.KingsFall,
+
+	[EModDisplayNameId.GeneralArmorMod]: EModSocketCategoryId.Stat,
+	[EModDisplayNameId.NightmareMod]: EModSocketCategoryId.Other,
+};
+
+export const getModSocketCategoryIdByModDisplayNameId = (
+	id: EModDisplayNameId
+): EModSocketCategoryId => EModDisplayNameIdToModSocketCategoryIdMapping[id];

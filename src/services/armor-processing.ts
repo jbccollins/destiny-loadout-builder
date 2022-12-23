@@ -276,6 +276,7 @@ const _processArmorBaseCase = ({
 			armorIdList,
 			armorStatModIdList: requiredStatMods,
 			metadata: {
+				requiredStatModIdList: requiredStatMods,
 				totalModCost: getTotalModCost(requiredStatMods),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
 				wastedStats: getWastedStats(totalArmorStatMapping),
@@ -332,6 +333,7 @@ export type ProcessedArmorItemMetadata = {
 	totalStatTiers: number;
 	wastedStats: number;
 	totalArmorStatMapping: ArmorStatMapping;
+	requiredStatModIdList: EArmorStatModId[];
 };
 
 type ProcessArmorOutputItem = {

@@ -126,28 +126,44 @@ export function getEnumKeyByEnumValue<
 }
 
 const SERIALIZED = 'SERIALIZED';
-export function getSerializableObject<
+// export function getSerializableObject<
+// 	TEnumKey extends string, // EArmorSlotId
+// 	TEnumVal extends string | number // "arm"
+// >(
+// 	input: Record<string, unknown>, // {..., armorslotId: "arm" ....}
+// 	keyToReplace: string, // "armorSlotId"
+// 	enumDefinition: { [key in TEnumKey]: TEnumVal }, // EArmorSlotId
+// 	enumName: string // "EArmorSlotId"
+// ): unknown {
+// 	const res = {
+// 		...input,
+// 	};
+
+// 	const stringifiedEnumKey = getEnumKeyByEnumValue(
+// 		enumDefinition,
+// 		res[keyToReplace] as string | number
+// 	);
+// 	res[keyToReplace] = stringifiedEnumKey
+// 		? `${SERIALIZED}${enumName}.${stringifiedEnumKey}`
+// 		: `${SERIALIZED}null`;
+
+// 	return res;
+// }
+
+export function getSerializableValue<
 	TEnumKey extends string, // EArmorSlotId
 	TEnumVal extends string | number // "arm"
 >(
-	input: Record<string, unknown>, // {..., armorslotId: "arm" ....}
-	keyToReplace: string, // "armorSlotId"
+	// input: Record<string, unknown>, // {..., armorslotId: "arm" ....}
+	// keyToReplace: string, // "armorSlotId"
+	value: string | number,
 	enumDefinition: { [key in TEnumKey]: TEnumVal }, // EArmorSlotId
 	enumName: string // "EArmorSlotId"
-): unknown {
-	const res = {
-		...input,
-	};
-
-	const stringifiedEnumKey = getEnumKeyByEnumValue(
-		enumDefinition,
-		res[keyToReplace] as string | number
-	);
-	res[keyToReplace] = stringifiedEnumKey
+): string {
+	const stringifiedEnumKey = getEnumKeyByEnumValue(enumDefinition, value);
+	return stringifiedEnumKey
 		? `${SERIALIZED}${enumName}.${stringifiedEnumKey}`
 		: `${SERIALIZED}null`;
-
-	return res;
 }
 
 // Replace all unquoted and quoted instances of SERIALIZEDEArmorSlotId.Arm with ArmorSlotId.Arm

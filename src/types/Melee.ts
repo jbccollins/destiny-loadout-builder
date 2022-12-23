@@ -22,7 +22,10 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.WeightedThrowingKnife,
 		EMeleeId.ProximityExplosiveKnife,
 	],
-	[EDestinySubclassId.Arcstrider]: [EMeleeId.CombinationBlow],
+	[EDestinySubclassId.Arcstrider]: [
+		EMeleeId.CombinationBlow,
+		EMeleeId.DisorientingBlow,
+	],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [EMeleeId.PenumbralBlast],

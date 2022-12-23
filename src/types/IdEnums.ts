@@ -37,45 +37,6 @@ export enum EDestinySubclassId {
 	Revenant = 'Revenant',
 }
 
-export enum ESuperAbilityId {
-	// Stormcaller
-	ChaosReach = 'ChaosReach',
-	Stormtrance = 'Stormtrance',
-	// Dawnblade
-	Daybreak = 'Daybreak',
-	WellOfRadiance = 'WellOfRadiance',
-	// Voidwalker
-	NovaWarp = 'NovaWarp',
-	NovaBombVortex = 'NovaBombVortex',
-	NovaBombCataclysm = 'NovaBombCataclysm',
-	// Shadebinder
-	WintersWrath = 'WintersWrath',
-	// Behemoth
-	GlacialQuake = 'GlacialQuake',
-	// Sunbreaker
-	HammerOfSol = 'HammerOfSol',
-	BurningMaul = 'BurningMaul',
-	// Sentinel
-	SentinelShield = 'SentinelShield',
-	WardOfDawn = 'WardOfDawn',
-	// Striker
-	Thundercrash = 'Thundercrash',
-	FistsOfHavoc = 'FistsOfHavoc',
-	// Revenant
-	SilenceAndSquall = 'SilenceAndSquall',
-	// Gunslinger
-	GoldenGunDeadshot = 'GoldenGunDeadshot',
-	GoldenGunMarksman = 'GoldentGunMarksman',
-	BladeBarrage = 'BladeBarrage',
-	// Arcstrider
-	ArcStaff = 'ArcStaff',
-	GatheringStorm = 'GatheringStorm',
-	// Nightstalker
-	ShadowshotDeadfall = 'ShadowshotDeadfall',
-	ShadowshotMoebiusQuiver = 'ShadowshotMoebiusQuiver',
-	SpectralBlades = 'SpectralBlades',
-}
-
 export enum EArmorSlotId {
 	Head = 'Head',
 	Arm = 'Arm',
@@ -271,66 +232,19 @@ export enum EMasterworkAssumption {
 	None = 'None',
 }
 
-// Class abilities often have the same name across all subclasses
-// But they have different hashes in the API, hence the weirdness here
-export enum EClassAbilityId {
-	/*** Warlock ***/
-	// Stasis
-	HealingRiftStasis = 'HealingRiftStasis',
-	EmpoweringRiftStasis = 'EmpoweringRiftStasis',
-	// Void
-	HealingRiftVoid = 'HealingRiftVoid',
-	EmpoweringRiftVoid = 'EmpoweringRiftVoid',
-	// Solar
-	HealingRiftSolar = 'HealingRiftSolar',
-	EmpoweringRiftSolar = 'EmpoweringRiftSolar',
-	PhonenixDive = 'PhoenixDive',
-	// Arc
-	HealingRiftArc = 'HealingRiftArc',
-	EmpoweringRiftArc = 'EmpoweringRiftArc',
-	/*** Titan ***/
-	// Stasis
-	ToweringBarricadeStasis = 'ToweringBarricadeStasis',
-	RallyBarricadeStasis = 'RallyBarricadeStasis',
-	// Void
-	ToweringBarricadeVoid = 'ToweringBarricadeVoid',
-	RallyBarricadeVoid = 'RallyBarricadeVoid',
-	// Solar
-	ToweringBarricadeSolar = 'ToweringBarricadeSolar',
-	RallyBarricadeSolar = 'RallyBarricadeSolar',
-	// Arc
-	Thruster = 'Thruster',
-	ToweringBarricadeArc = 'ToweringBarricadeArc',
-	RallyBarricadeArc = 'RallyBarricadeArc',
-	/*** Hunter ***/
-	// Stasis
-	GamblersDodgeStasis = 'GamblersDodgeStasis',
-	MarksmansDodgeStasis = 'MarksmansDodgeStasis',
-	// Void
-	GamblersDodgeVoid = 'GamblersDodgeVoid',
-	MarksmansDodgeVoid = 'MarksmansDodgeVoid',
-	// Solar
-	GamblersDodgeSolar = 'GamblersDodgeSolar',
-	MarksmansDodgeSolar = 'MarksmansDodgeSolar',
-	// Arc
-	GamblersDodgeArc = 'GamblersDodgeArc',
-	MarksmansDodgeArc = 'MarksmansDodgeArc',
-	AcrobatsDodge = 'AcrobatsDodge',
+export enum EModSocketCategoryId {
+	Stat = 'Stat', // e.g. major/minor resilience
+	ArmorSlot = 'ArmorSlot', // e.g. bomber
+	CombatStyle = 'CombatStyle', // e.g. powerful friends
+	Artifice = 'Artifice',
+	LastWish = 'LastWish',
+	GardenOfSalvation = 'GardenOfSalvation',
+	DeepStoneCrypt = 'DeepStoneCrypt',
+	VaultOfGlass = 'VaultOfGlass',
+	VowOfTheDisciple = 'VowOfTheDisciple',
+	KingsFall = 'KingsFall',
+	Other = 'Other', // TODO: Dreambane, etc..
 }
-
-// export enum EModSocketCategoryId {
-// 	Stat = 'Stat', // e.g. major/minor resilience
-// 	ArmorSlot = 'ArmorSlot', // e.g. bomber
-// 	CombatStyle = 'CombatStyle', // e.g. powerful friends
-// 	Artifice = 'Artifice',
-// 	LastWish = 'LastWish',
-// 	GardenOfSalvation = 'GardenOfSalvation',
-// 	DeepStoneCrypt = 'DeepStoneCrypt',
-// 	VaultOfGlass = 'VaultOfGlass',
-// 	VowOfTheDisciple = 'VowOfTheDisciple',
-// 	KingsFall = 'KingsFall',
-// 	Other = 'Other', // TODO: Dreambane, etc..
-// }
 
 export enum EModTypeDisplayNameId {
 	ArmsArmorMod = 'ArmsArmorMod',

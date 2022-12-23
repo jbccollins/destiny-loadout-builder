@@ -1,20 +1,17 @@
 import { styled } from '@mui/material';
 import {
-	selectSelectedMelee,
-	setSelectedMelee,
-} from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+	selectSelectedSuperAbility,
+	setSelectedSuperAbility,
+} from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
-	MeleeIdList,
-	getMelee,
-	getMeleeIdsByDestinySubclassId,
-} from '@dlb/types/Melee';
+	getSuperAbility,
+	getSuperAbilityIdsByDestinySubclassId,
+} from '@dlb/types/SuperAbility';
 import IconDropdown from '@dlb/components/IconDropdown';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
-import { Description } from '@mui/icons-material';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0
@@ -32,32 +29,33 @@ type Option = {
 	description: string;
 };
 
-function MeleeSelector() {
-	const selectedMelee = useAppSelector(selectSelectedMelee);
+function SuperAbilitySelector() {
+	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.label;
+
 	const getDescription = (option: Option) => option.description;
 
 	const selectedDestinySubclassId =
 		selectedDestinySubclass[selectedDestinyClass];
 
-	const handleChange = (meleeId: EMeleeId) => {
+	const handleChange = (superAbilityId: ESuperAbilityId) => {
 		dispatch(
-			setSelectedMelee({
-				...selectedMelee,
-				[selectedDestinySubclassId]: meleeId,
+			setSelectedSuperAbility({
+				...selectedSuperAbility,
+				[selectedDestinySubclassId]: superAbilityId,
 			})
 		);
 	};
 
 	// TODO: Memoize these options
-	const options: Option[] = getMeleeIdsByDestinySubclassId(
+	const options: Option[] = getSuperAbilityIdsByDestinySubclassId(
 		selectedDestinySubclassId
-	).map((meleeId) => {
-		const { name, id, icon, description } = getMelee(meleeId);
+	).map((superAbilityId) => {
+		const { name, id, icon, description } = getSuperAbility(superAbilityId);
 		return {
 			label: name,
 			icon: icon,
@@ -65,8 +63,6 @@ function MeleeSelector() {
 			description: description,
 		};
 	});
-
-	console.log('>>>>>>>', options);
 
 	return (
 		<>
@@ -76,9 +72,9 @@ function MeleeSelector() {
 						options={options}
 						getLabel={getLabel}
 						getDescription={getDescription}
-						value={selectedMelee[selectedDestinySubclassId] || ''}
+						value={selectedSuperAbility[selectedDestinySubclassId] || ''}
 						onChange={handleChange}
-						title="Melee"
+						title="Super"
 					/>
 				</IconDropdownContainer>
 			</Container>
@@ -86,4 +82,4 @@ function MeleeSelector() {
 	);
 }
 
-export default MeleeSelector;
+export default SuperAbilitySelector;

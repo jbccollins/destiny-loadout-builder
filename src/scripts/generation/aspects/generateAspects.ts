@@ -3,20 +3,12 @@ USAGE: From the root directory run "npm run generate"
 */
 import lodash from 'lodash';
 import path from 'path';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
-import { getArmorSlotIdByHash } from '@dlb/types/ArmorSlot';
 import {
 	DestinyInventoryItemDefinition,
 	DestinySandboxPerkDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
-import { getElementIdByHash } from '@dlb/types/Element';
-import { IMod } from '@dlb/types/generation';
-import {
-	collectRewardsFromArtifacts,
-	generateId,
-	getDefinitions,
-} from '@dlb/scripts/generation/utils';
+import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
 import { IAspect } from '@dlb/types/generation';
 import { generateAspectIdEnumFileString } from './generateAspectIdEnum';
 import { generateAspectMapping } from './generateAspectMapping';
@@ -26,14 +18,6 @@ const buildAspectData = (
 	aspect: DestinyInventoryItemDefinition,
 	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>
 ): IAspect => {
-	let armorSlotId: EArmorSlotId = null;
-	aspect.itemCategoryHashes.forEach((hash) => {
-		const _armorSlotId = getArmorSlotIdByHash(hash);
-		if (_armorSlotId) {
-			armorSlotId = _armorSlotId;
-		}
-	});
-
 	return {
 		name: aspect.displayProperties.name,
 		id: generateId(aspect.displayProperties.name),
@@ -42,7 +26,6 @@ const buildAspectData = (
 				.description,
 		icon: bungieNetPath(aspect.displayProperties.icon),
 		hash: aspect.hash,
-		// elementId: getElementIdByHash(aspect.plug.energyCapacity.energyTypeHash),
 		fragementSlots: aspect.plug.energyCapacity.capacityValue,
 	};
 };
@@ -50,7 +33,6 @@ const buildAspectData = (
 export async function run() {
 	const {
 		DestinyInventoryItemDefinition: destinyInventoryItemDefinitions,
-		DestinyArtifactDefinition: destinyArtifactDefinitions,
 		DestinySandboxPerkDefinition: destinySandboxPerkDefinitions,
 	} = await getDefinitions();
 	const sandboxPerkDefinitions = destinySandboxPerkDefinitions as Record<
@@ -68,8 +50,8 @@ export async function run() {
 		.filter((v) => v.traitIds.includes('item_type.aspect'))
 		.value() as DestinyInventoryItemDefinition[];
 
-	allAspects.forEach((mod) => {
-		aspects.push(buildAspectData(mod, sandboxPerkDefinitions));
+	allAspects.forEach((aspect) => {
+		aspects.push(buildAspectData(aspect, sandboxPerkDefinitions));
 	});
 
 	const aspectsPath = ['.', 'src', 'generated', 'aspect'];

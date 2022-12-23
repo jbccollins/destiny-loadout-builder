@@ -22,6 +22,12 @@ export const DestinyClassHashToDestinyClass = {
 	[DestinyClass.Warlock]: EDestinyClassId.Warlock,
 };
 
+export const DestinyClassIdToDestinyClassHash = {
+	[EDestinyClassId.Titan]: DestinyClass.Titan,
+	[EDestinyClassId.Hunter]: DestinyClass.Hunter,
+	[EDestinyClassId.Warlock]: DestinyClass.Warlock,
+};
+
 export const BucketHashToArmorSlot = {
 	[BucketHashes.Helmet]: EArmorSlotId.Head,
 	[BucketHashes.Gauntlets]: EArmorSlotId.Arm,

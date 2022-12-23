@@ -36,6 +36,8 @@ import CombatStyleModSelector from '@dlb/components/CombatStyleModSelector';
 import GrenadeSelector from '@dlb/components/SubclassSelector/GrenadeSelector';
 import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
 import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
+import JumpSelector from '@dlb/components/SubclassSelector/JumpSelector';
+import SuperAbilitySelector from '@dlb/components/SubclassSelector/SuperAbilitySelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -89,11 +91,13 @@ const LeftSectionComponent = () => (
 		<StatSelection />
 		<MasterworkAssumptionSelector />
 		<DestinySubclassSelector />
+		<SuperAbilitySelector />
 		<AspectSelector />
+		<FragmentSelector />
 		<GrenadeSelector />
 		<MeleeSelector />
-		{/* <ClassAbilitySelector /> */}
-		<FragmentSelector />
+		<ClassAbilitySelector />
+		<JumpSelector />
 		<CombatStyleModSelector />
 
 		{/* <ArmorSlotRestrictions /> */}

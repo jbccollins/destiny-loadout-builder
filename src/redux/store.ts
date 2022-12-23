@@ -18,6 +18,8 @@ import selectedGrenadeReducer from './features/selectedGrenade/selectedGrenadeSl
 import selectedClassAbilityReducer from './features/selectedClassAbility/selectedClassAbilitySlice';
 import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
 import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
+
 import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
@@ -31,6 +33,7 @@ import {
 	getArmorStatMappingFromFragments,
 } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import selectedJumpSlice from './features/selectedJump/selectedJumpSlice';
 
 export function makeStore() {
 	return configureStore({
@@ -55,6 +58,7 @@ export function makeStore() {
 			selectedClassAbility: selectedClassAbilityReducer,
 			selectedDestinySubclass: selectedDestinySubclassReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
+			selectedJump: selectedJumpSlice,
 		},
 	});
 }

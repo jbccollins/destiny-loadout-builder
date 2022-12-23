@@ -3,13 +3,10 @@ import {
 	getDestinySubclassIdListByDestinyClassId,
 } from '@dlb/types/DestinyClass';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { SuperAbilityIdToDestinySuperAbility } from '@dlb/types/SuperAbility';
+import { getSuperAbility } from '@dlb/types/SuperAbility';
 import { ElementIdToElement } from '@dlb/types/Element';
-import {
-	EDestinyClassId,
-	EDestinySubclassId,
-	ESuperAbilityId,
-} from '@dlb/types/IdEnums';
+import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 
 export type DestinySubclassAndSuperAbilityOption = {
 	superAbilityId: ESuperAbilityId;
@@ -42,7 +39,7 @@ const options = (() => {
 					icon,
 					name: superAbilityName,
 					elementId,
-				} = SuperAbilityIdToDestinySuperAbility.get(superAbilityId);
+				} = getSuperAbility(superAbilityId);
 				const { name: elementName } = ElementIdToElement.get(elementId);
 				opts[destinyClassId].push({
 					superAbilityId,

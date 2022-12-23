@@ -3,7 +3,7 @@ USAGE: From the root directory run "npm run generate"
 */
 import lodash from 'lodash';
 import path from 'path';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
+import { EArmorSlotId, EModSocketCategoryId } from '@dlb/types/IdEnums';
 import { getArmorSlotIdByHash } from '@dlb/types/ArmorSlot';
 import {
 	DestinyInventoryItemDefinition,
@@ -19,11 +19,16 @@ import {
 } from '@dlb/scripts/generation/utils';
 import { generateModIdEnumFileString } from './generateModIdEnums';
 import { generateModMapping } from './generateModMapping';
+import { generateModDisplayNameIdEnumFileString } from './generageModDisplayNameIdEnum';
+import { getModSocketCategoryIdByModDisplayNameId } from '@dlb/types/ModSocketCategory';
+import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
 // TODO: What about the Aeon Mods? Sect of Force, Insight and Vigor
 const excludedModHashes = [
 	2979161761, // Lucky Pants Hand Cannon Holster Mod clashes with the base hand cannon holster mod
 ];
+
+// const getModSocketCategoryIdFromRawMod = (rawMod: DestinyInventoryItemDefinition): EModSocketCategoryId {}
 
 const buildModData = (
 	mod: DestinyInventoryItemDefinition,
@@ -53,7 +58,9 @@ const buildModData = (
 				.description,
 		icon: mod.displayProperties.icon,
 		hash: mod.hash,
-		// socketCategoryId: getModSocketCategoryIdFromRawMod(mod),
+		modSocketCategoryId: getModSocketCategoryIdByModDisplayNameId(
+			generateId(mod.itemTypeDisplayName) as EModDisplayNameId
+		),
 		armorSocketIndex: 0,
 		armorSlotId: armorSlotId,
 		elementId: getElementIdByHash(mod.plug.energyCost.energyTypeHash),
@@ -78,7 +85,7 @@ export async function run() {
 	console.log('Finding mods');
 	const mods: IMod[] = [];
 
-	const modNames: Record<string, string[]> = {};
+	const modDisplayNames: Set<string> = new Set<string>();
 
 	const artifactMods = collectRewardsFromArtifacts(destinyArtifactDefinitions);
 
@@ -94,10 +101,7 @@ export async function run() {
 	allMods
 		.filter((mod) => !excludedModHashes.includes(mod.hash))
 		.forEach((mod) => {
-			if (!modNames[mod.itemTypeDisplayName]) {
-				modNames[mod.itemTypeDisplayName] = [];
-			}
-			modNames[mod.itemTypeDisplayName].push(mod.displayProperties.name);
+			modDisplayNames.add(generateId(mod.itemTypeDisplayName));
 			mods.push(buildModData(mod, sandboxPerkDefinitions, artifactMods));
 		});
 
@@ -120,5 +124,17 @@ export async function run() {
 	await fs.writeFile(
 		path.resolve(modMappingGeneratedPath),
 		modMappingExportString
+	);
+
+	const modDisplayNameIdEnumGeneratedPath = path.join(
+		...[...modsPath, 'EModDisplayNameId.ts']
+	);
+	const modDisplayNameIdEnumExportString =
+		generateModDisplayNameIdEnumFileString(Array.from(modDisplayNames));
+
+	console.log('Writing to file: ', modDisplayNameIdEnumGeneratedPath);
+	await fs.writeFile(
+		path.resolve(modDisplayNameIdEnumGeneratedPath),
+		modDisplayNameIdEnumExportString
 	);
 }

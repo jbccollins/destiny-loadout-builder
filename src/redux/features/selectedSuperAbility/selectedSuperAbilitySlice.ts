@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { EDestinySubclassId, ESuperAbilityId } from '@dlb/types/IdEnums';
+import { EDestinySubclassId } from '@dlb/types/IdEnums';
 import { v4 as uuid, NIL } from 'uuid';
 import {
 	DestinySubclassIdList,
 	getDestinySubclass,
 } from '@dlb/types/DestinySubclass';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 
 type SelectedSuperAbility = {
 	[key in EDestinySubclassId]: ESuperAbilityId;

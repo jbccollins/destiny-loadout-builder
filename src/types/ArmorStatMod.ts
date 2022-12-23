@@ -1,4 +1,8 @@
-import { ArmorStatIdList, ArmorStatMapping } from './ArmorStat';
+import {
+	ArmorStatIdList,
+	ArmorStatMapping,
+	DefaultArmorStatMapping,
+} from './ArmorStat';
 import {
 	EnumDictionary,
 	IHash,
@@ -157,17 +161,10 @@ export const getArmorStatMod = (id: EArmorStatModId): IArmorStatMod =>
 export const getArmorStatMappingFromArmorStatMods = (
 	armorStatModIds: EArmorStatModId[]
 ): ArmorStatMapping => {
-	const res: ArmorStatMapping = {
-		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 0,
-		[EArmorStatId.Recovery]: 0,
-		[EArmorStatId.Discipline]: 0,
-		[EArmorStatId.Intellect]: 0,
-		[EArmorStatId.Strength]: 0,
-	};
+	const armorStatMapping: ArmorStatMapping = { ...DefaultArmorStatMapping };
 	armorStatModIds.forEach((armorStatModId) => {
 		const { statBonus, armorStatId } = getArmorStatMod(armorStatModId);
-		res[armorStatId] = res[armorStatId] + statBonus;
+		armorStatMapping[armorStatId] += statBonus;
 	});
-	return res;
+	return armorStatMapping;
 };

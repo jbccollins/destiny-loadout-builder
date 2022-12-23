@@ -1,14 +1,13 @@
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import {
 	formatStringForFile,
-	getSerializableObject,
+	getSerializableValue,
 } from '@dlb/scripts/generation/utils';
 import { IGrenade } from '@dlb/types/generation';
 import { EElementId } from '@dlb/types/IdEnums';
 
 export const generateGrenadeMapping = (grenades: IGrenade[]): string => {
 	const enumsToSerialize = {
-		// armorSlotId: { enumDefinition: EArmorSlotId, enumName: 'EArmorSlotId' },
 		id: { enumDefinition: EGrenadeId, enumName: 'EGrenadeId' },
 		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
 	};
@@ -16,15 +15,13 @@ export const generateGrenadeMapping = (grenades: IGrenade[]): string => {
 	const serializeGrenades: Record<string, unknown>[] = [];
 	grenades.forEach((grenade) => {
 		const serializedGrenade = { ...grenade } as Record<string, unknown>;
-		// TODO: This is dumb. We shouldn't serialize the whole object. Just the key/value pair that we need per iteration
 		Object.keys(enumsToSerialize).forEach((key) => {
-			const serializedResult = getSerializableObject(
-				serializedGrenade,
-				key,
+			const serializedResult = getSerializableValue(
+				grenade[key],
 				enumsToSerialize[key].enumDefinition,
 				enumsToSerialize[key].enumName
-			) as Record<string, unknown>;
-			serializedGrenade[key] = serializedResult[key];
+			);
+			serializedGrenade[key] = serializedResult;
 		});
 		serializeGrenades.push(serializedGrenade);
 	});

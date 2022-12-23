@@ -77,11 +77,13 @@ function ArmorResultsView() {
 						[EArmorStatId.Intellect]: 0,
 						[EArmorStatId.Strength]: 0,
 					},
+					requiredStatModIdList: metadata.requiredStatModIdList,
 				},
 			};
 			ArmorSlotIdList.forEach((armorSlot, i) => {
 				const armorItem = getArmorItem(armorIdList[i], armorSlot);
 				resultLoadout.armorItems.push(armorItem);
+				// TODO: This id generation logic is probably wrong
 				armorItem.stats.forEach((value, j) => {
 					// resultLoadout.totalStats[j] +=
 					// 	armorItem.stats[j] +

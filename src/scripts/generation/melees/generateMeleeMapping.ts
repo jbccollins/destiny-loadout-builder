@@ -1,14 +1,13 @@
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import {
 	formatStringForFile,
-	getSerializableObject,
+	getSerializableValue,
 } from '@dlb/scripts/generation/utils';
 import { IMelee } from '@dlb/types/generation';
 import { EDestinySubclassId, EElementId } from '@dlb/types/IdEnums';
 
 export const generateMeleeMapping = (melees: IMelee[]): string => {
 	const enumsToSerialize = {
-		// armorSlotId: { enumDefinition: EArmorSlotId, enumName: 'EArmorSlotId' },
 		id: { enumDefinition: EMeleeId, enumName: 'EMeleeId' },
 		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
 		destinySubclassId: {
@@ -20,15 +19,13 @@ export const generateMeleeMapping = (melees: IMelee[]): string => {
 	const serializeMelees: Record<string, unknown>[] = [];
 	melees.forEach((melee) => {
 		const serializedMelee = { ...melee } as Record<string, unknown>;
-		// TODO: This is dumb. We shouldn't serialize the whole object. Just the key/value pair that we need per iteration
 		Object.keys(enumsToSerialize).forEach((key) => {
-			const serializedResult = getSerializableObject(
-				serializedMelee,
-				key,
+			const serializedResult = getSerializableValue(
+				melee[key],
 				enumsToSerialize[key].enumDefinition,
 				enumsToSerialize[key].enumName
-			) as Record<string, unknown>;
-			serializedMelee[key] = serializedResult[key];
+			);
+			serializedMelee[key] = serializedResult;
 		});
 		serializeMelees.push(serializedMelee);
 	});

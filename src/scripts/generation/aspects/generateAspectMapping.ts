@@ -1,29 +1,25 @@
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 import {
 	formatStringForFile,
-	getSerializableObject,
+	getSerializableValue,
 } from '@dlb/scripts/generation/utils';
 import { IAspect } from '@dlb/types/generation';
 
 export const generateAspectMapping = (aspects: IAspect[]): string => {
 	const enumsToSerialize = {
-		// armorSlotId: { enumDefinition: EArmorSlotId, enumName: 'EArmorSlotId' },
 		id: { enumDefinition: EAspectId, enumName: 'EAspectId' },
-		// elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
 	};
 
 	const serializeAspects: Record<string, unknown>[] = [];
 	aspects.forEach((aspect) => {
 		const serializedAspect = { ...aspect } as Record<string, unknown>;
-		// TODO: This is dumb. We shouldn't serialize the whole object. Just the key/value pair that we need per iteration
 		Object.keys(enumsToSerialize).forEach((key) => {
-			const serializedResult = getSerializableObject(
-				serializedAspect,
-				key,
+			const serializedResult = getSerializableValue(
+				aspect[key],
 				enumsToSerialize[key].enumDefinition,
 				enumsToSerialize[key].enumName
-			) as Record<string, unknown>;
-			serializedAspect[key] = serializedResult[key];
+			);
+			serializedAspect[key] = serializedResult;
 		});
 		serializeAspects.push(serializedAspect);
 	});

@@ -18,6 +18,8 @@ import { visuallyHidden } from '@mui/utils';
 import { ResultsTableLoadout } from './ArmorResultsView';
 import {
 	EArmorStatId,
+	EArmorStatModId,
+	ECombatStyleModId,
 	EFragmentId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
@@ -26,6 +28,7 @@ import {
 	ArmorStatMapping,
 	DefaultArmorStatMapping,
 	getArmorStat,
+	getArmorStatMappingFromCombatStyleMods,
 	getArmorStatMappingFromFragments,
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
@@ -41,6 +44,23 @@ import { itemCanBeEquippedBy } from '@dlb/dim/utils/item-utils';
 import { copyToClipboard } from '@dlb/types/globals';
 import { ArmorItem, getExtraMasterworkedStats } from '@dlb/types/Armor';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import selectedCombatStyleModsSlice, {
+	selectSelectedCombatStyleMods,
+} from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
+import { getCombatStyleMod } from '@dlb/types/CombatStyleMod';
+import generateDimLink from '@dlb/services/dim/generateDimLoadoutLink';
+import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
+import { selectSelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+import { selectSelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
+import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { AspectIdList } from '@dlb/types/Aspect';
+import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import {
+	getArmorStatMappingFromArmorStatMods,
+	getArmorStatMod,
+} from '@dlb/types/ArmorStatMod';
 
 const calculateExtraMasterworkedStats = (
 	armorItems: ArmorItem[],
@@ -131,24 +151,79 @@ function Row(props: { row: ResultsTableLoadout }) {
 	const { row } = props;
 	const [open, setOpen] = React.useState(false);
 
+	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
+	const masterworkAssumption = useAppSelector(
+		selectSelectedMasterworkAssumption
+	);
+
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
+
+	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
+	const exoticArmor = selectedExoticArmor[selectedDestinyClass];
+	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
+	const selectedJump = useAppSelector(selectSelectedJump);
+	const selectedMelee = useAppSelector(selectSelectedMelee);
+	const selectedGrenade = useAppSelector(selectSelectedGrenade);
+	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
+	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
+	const selectedAspects = useAppSelector(selectSelectedAspects);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 	const { elementId } = getDestinySubclass(destinySubclassId);
+	const aspectIds = selectedAspects[destinySubclassId];
 	// TODO: Having to do this cast sucks
 	const fragmentIds = selectedFragments[elementId] as EFragmentId[];
 	const fragmentArmorStatMappings: Partial<
 		Record<EFragmentId, ArmorStatMapping>
 	> = {};
 	fragmentIds.forEach((id) => {
-		fragmentArmorStatMappings[id] = getArmorStatMappingFromFragments(
-			[id],
-			selectedDestinyClass
-		);
+		const { bonuses } = getFragment(id);
+		if (bonuses.length > 0) {
+			fragmentArmorStatMappings[id] = getArmorStatMappingFromFragments(
+				[id],
+				selectedDestinyClass
+			);
+		}
+	});
+
+	const armorStatModArmorStatMappings: Partial<
+		Record<
+			EArmorStatModId,
+			{ armorStatMapping: ArmorStatMapping; count: number }
+		>
+	> = {};
+	const modCounts: Partial<Record<EArmorStatModId, number>> = {};
+	row.sortableFields.requiredStatModIdList.forEach((id) => {
+		if (!modCounts[id]) {
+			modCounts[id] = 1;
+		} else {
+			modCounts[id] += 1;
+		}
+	});
+	Object.keys(modCounts).forEach((armorStatModId: EArmorStatModId) => {
+		const statModIds: EArmorStatModId[] = [];
+		const count = modCounts[armorStatModId];
+		for (let i = 0; i < count; i++) {
+			statModIds.push(armorStatModId);
+			armorStatModArmorStatMappings[armorStatModId] = {
+				count,
+				armorStatMapping: getArmorStatMappingFromArmorStatMods(statModIds),
+			};
+		}
+	});
+	const combatStyleModArmorStatMappings: Partial<
+		Record<ECombatStyleModId, ArmorStatMapping>
+	> = {};
+	selectedCombatStyleMods.forEach((id) => {
+		const { bonuses } = getCombatStyleMod(id);
+		if (bonuses.length > 0) {
+			combatStyleModArmorStatMappings[id] =
+				getArmorStatMappingFromCombatStyleMods([id], selectedDestinyClass);
+		}
 	});
 
 	const getExtraMasterworkedStatsBreakdown = () => {
@@ -225,7 +300,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 									<Box>{armorItem.name}</Box>
 								</LoadoutOverviewItem>
 							))}
-							<Button
+							{/* <Button
 								sx={{ width: 200, margin: 2 }}
 								variant="contained"
 								onClick={() => {
@@ -235,6 +310,31 @@ function Row(props: { row: ResultsTableLoadout }) {
 								}}
 							>
 								Copy DIM Query
+							</Button> */}
+
+							<Button
+								sx={{ width: 200, margin: 2 }}
+								variant="contained"
+								target={'_blank'}
+								href={`${generateDimLink({
+									modIdList: selectedCombatStyleMods,
+									armorList: row.armorItems,
+									fragmentIdList: fragmentIds,
+									aspectIdList: aspectIds,
+									armorStatModIdList: row.sortableFields.requiredStatModIdList,
+									exoticArmor: exoticArmor,
+									stats: desiredArmorStats,
+									masterworkAssumption: masterworkAssumption,
+									destinySubclassId,
+									destinyClassId: selectedDestinyClass,
+									jumpId: selectedJump[destinySubclassId],
+									meleeId: selectedMelee[destinySubclassId],
+									superAbilityId: selectedSuperAbility[destinySubclassId],
+									classAbilityId: selectedClassAbility[destinySubclassId],
+									grenadeId: selectedGrenade[elementId],
+								})}`}
+							>
+								Open loadout in DIM
 							</Button>
 						</LoadoutOverview>
 
@@ -294,27 +394,97 @@ function Row(props: { row: ResultsTableLoadout }) {
 								</StatsBreakdown>
 							)}
 							{getExtraMasterworkedStatsBreakdown()}
-							{fragmentIds.map((fragmentId) => {
-								return (
-									<StatsBreakdown key={fragmentId} className="stats-breakdown">
-										<StatsBreakdownItem>
-											<BungieImage
-												width={20}
-												height={20}
-												src={getFragment(fragmentId).icon}
-											/>
-										</StatsBreakdownItem>
-										{ArmorStatIdList.map((armorStatId) => (
-											<StatsBreakdownItem
-												key={armorStatId}
-												className="stats-breakdown"
-											>
-												{fragmentArmorStatMappings[fragmentId][armorStatId]}
+
+							{Object.keys(fragmentArmorStatMappings).map(
+								(fragmentId: EFragmentId) => {
+									return (
+										<StatsBreakdown
+											key={fragmentId}
+											className="stats-breakdown"
+										>
+											<StatsBreakdownItem>
+												<BungieImage
+													width={20}
+													height={20}
+													src={getFragment(fragmentId).icon}
+												/>
 											</StatsBreakdownItem>
-										))}
-									</StatsBreakdown>
-								);
-							})}
+											{ArmorStatIdList.map((armorStatId) => (
+												<StatsBreakdownItem
+													key={armorStatId}
+													className="stats-breakdown"
+												>
+													{fragmentArmorStatMappings[fragmentId][armorStatId]}
+												</StatsBreakdownItem>
+											))}
+										</StatsBreakdown>
+									);
+								}
+							)}
+							{Object.keys(armorStatModArmorStatMappings).map(
+								(armorStatModId: EArmorStatModId) => {
+									return (
+										<StatsBreakdown
+											key={armorStatModId}
+											className="stats-breakdown"
+										>
+											<StatsBreakdownItem>
+												<BungieImage
+													width={20}
+													height={20}
+													src={getArmorStatMod(armorStatModId).icon}
+												/>
+												({armorStatModArmorStatMappings[armorStatModId].count})
+											</StatsBreakdownItem>
+											{ArmorStatIdList.map((armorStatId) => (
+												<StatsBreakdownItem
+													key={armorStatId}
+													className="stats-breakdown"
+												>
+													{
+														armorStatModArmorStatMappings[armorStatModId]
+															.armorStatMapping[armorStatId]
+													}
+												</StatsBreakdownItem>
+											))}
+										</StatsBreakdown>
+									);
+								}
+							)}
+							{Object.keys(combatStyleModArmorStatMappings).map(
+								(combatStyleModId) => {
+									return (
+										<StatsBreakdown
+											key={combatStyleModId}
+											className="stats-breakdown"
+										>
+											<StatsBreakdownItem>
+												<BungieImage
+													width={20}
+													height={20}
+													src={
+														getCombatStyleMod(
+															combatStyleModId as ECombatStyleModId
+														).icon
+													}
+												/>
+											</StatsBreakdownItem>
+											{ArmorStatIdList.map((armorStatId) => (
+												<StatsBreakdownItem
+													key={armorStatId}
+													className="stats-breakdown"
+												>
+													{
+														combatStyleModArmorStatMappings[combatStyleModId][
+															armorStatId
+														]
+													}
+												</StatsBreakdownItem>
+											))}
+										</StatsBreakdown>
+									);
+								}
+							)}
 						</LoadoutDetails>
 					</Collapse>
 				</TableCell>

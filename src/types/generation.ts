@@ -1,5 +1,10 @@
 import { IIdentifiableName, IHash, IIcon } from './globals';
-import { EElementId, EArmorSlotId, EDestinySubclassId } from './IdEnums';
+import {
+	EElementId,
+	EArmorSlotId,
+	EDestinySubclassId,
+	EModSocketCategoryId,
+} from './IdEnums';
 
 // Define the types/enums/interfaces used by generated files here
 
@@ -33,7 +38,7 @@ export enum ECategoryName {
 
 export interface IMod extends IIdentifiableName, IHash, IIcon {
 	description: string;
-	// socketCategoryId: EModSocketCategoryId;
+	modSocketCategoryId: EModSocketCategoryId;
 	elementId: EElementId;
 	cost: number;
 	isArtifactMod: boolean;
@@ -53,6 +58,24 @@ export interface IGrenade extends IIdentifiableName, IIcon, IHash {
 }
 
 export interface IMelee extends IIdentifiableName, IIcon, IHash {
+	description: string;
+	elementId: EElementId;
+	destinySubclassId: EDestinySubclassId;
+}
+
+export interface IClassAbility extends IIdentifiableName, IIcon, IHash {
+	description: string;
+	elementId: EElementId;
+	destinySubclassId: EDestinySubclassId;
+}
+
+export interface IJump extends IIdentifiableName, IIcon, IHash {
+	description: string;
+	elementId: EElementId;
+	destinySubclassId: EDestinySubclassId;
+}
+
+export interface ISuperAbility extends IIdentifiableName, IIcon, IHash {
 	description: string;
 	elementId: EElementId;
 	destinySubclassId: EDestinySubclassId;

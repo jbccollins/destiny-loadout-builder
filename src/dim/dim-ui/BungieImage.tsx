@@ -21,6 +21,7 @@ export default React.memo(function BungieImage(props: BungieImageProps) {
 	return (
 		// eslint-disable-next-line @next/next/no-img-element
 		<img
+			// style={{ border: '1px solid green' }}
 			alt="src"
 			src={src}
 			draggable={false}
@@ -36,7 +37,7 @@ export default React.memo(function BungieImage(props: BungieImageProps) {
  */
 export function bungieBackgroundStyle(src: BungieImagePath) {
 	return {
-		backgroundImage: `url("${bungieNetPath(src)}")`
+		backgroundImage: `url("${bungieNetPath(src)}")`,
 	};
 }
 /**
@@ -55,7 +56,7 @@ export function bungieBackgroundStyleAdvanced(
 	}
 
 	return {
-		backgroundImage: backgrounds.join(', ')
+		backgroundImage: backgrounds.join(', '),
 	};
 }
 

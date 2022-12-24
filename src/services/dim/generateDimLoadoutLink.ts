@@ -27,6 +27,10 @@ import { getSuperAbility } from '@dlb/types/SuperAbility';
 import { getJump } from '@dlb/types/Jump';
 import { getMelee } from '@dlb/types/Melee';
 import { getGrenade } from '@dlb/types/Grenade';
+import { SelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import { getMod } from '@dlb/types/Mod';
+import { EModId } from '@dlb/generated/mod/EModId';
 
 export type DimLoadoutConfiguration = {
 	modIdList: ECombatStyleModId[];
@@ -44,11 +48,10 @@ export type DimLoadoutConfiguration = {
 	destinySubclassId: EDestinySubclassId;
 	destinyClassId: EDestinyClassId;
 	armorList: IArmorItem[];
+	armorSlotMods: SelectedArmorSlotMods;
 };
 
-export const generateDimLink = (
-	configuration: DimLoadoutConfiguration
-): string => {
+const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	const {
 		modIdList,
 		fragmentIdList,
@@ -65,13 +68,23 @@ export const generateDimLink = (
 		classAbilityId,
 		grenadeId,
 		superAbilityId,
+		armorSlotMods,
 	} = configuration;
 	const fragmentHashes: number[] = fragmentIdList.map(
 		(fragmentId: EFragmentId) => getFragment(fragmentId).hash
 	);
-	const modHashes: number[] = modIdList.map(
+	const combatStyleModHashes: number[] = modIdList.map(
 		(modId: ECombatStyleModId) => getCombatStyleMod(modId).hash
 	);
+	const armorSlotModHashes: number[] = [];
+	ArmorSlotIdList.forEach((armorSlotId) => {
+		armorSlotMods[armorSlotId].forEach((id: EModId) => {
+			if (id !== null) {
+				armorSlotModHashes.push(getMod(id).hash);
+			}
+		});
+	});
+	const modHashes: number[] = [...combatStyleModHashes, ...armorSlotModHashes];
 	const aspectHashes: number[] = aspectIdList.map(
 		(aspectId: EAspectId) => getAspect(aspectId).hash
 	);
@@ -132,8 +145,6 @@ export const generateDimLink = (
 		clearSpace: false,
 	};
 
-	console.log('>>>>>> LOADOUT', loadout);
-
 	// Configure subclass
 	const socketOverrides: Record<number, number> = {};
 
@@ -151,7 +162,8 @@ export const generateDimLink = (
 	});
 
 	socketOverrides[2] = loadout.equipped.push({
-		id: destinySubclassId, // This shouldn't need to be specified but right now it does. The value doesn't matter
+		// id: destinySubclassId, // This shouldn't need to be specified but right now it does. The value doesn't matter
+		id: '12345',
 		hash: getDestinySubclass(destinySubclassId).hash,
 		socketOverrides,
 	});

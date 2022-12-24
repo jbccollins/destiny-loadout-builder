@@ -1,6 +1,7 @@
 import {
 	EArmorSlotId,
 	EElementId,
+	EModCategoryId,
 	EModSocketCategoryId,
 } from '@dlb/types/IdEnums';
 import { IMod } from '@dlb/types/generation';
@@ -18,6 +19,10 @@ export const generateModMapping = (mods: IMod[]): string => {
 		modSocketCategoryId: {
 			enumDefinition: EModSocketCategoryId,
 			enumName: 'EModSocketCategoryId',
+		},
+		modCategoryId: {
+			enumDefinition: EModCategoryId,
+			enumName: 'EModCategoryId',
 		},
 	};
 
@@ -45,8 +50,12 @@ export const generateModMapping = (mods: IMod[]): string => {
 	import { EnumDictionary } from '@dlb/types/globals';
 	import { IMod } from '@dlb/types/generation';
   import { EModId } from '@dlb/generated/mod/EModId';
-	import { EArmorSlotId, EElementId, EModSocketCategoryId } from "@dlb/types/IdEnums";
-	
+	import {
+		EArmorSlotId,
+		EElementId,
+		EModCategoryId,
+		EModSocketCategoryId,
+	} from "@dlb/types/IdEnums";	
 
 	export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
 		${modIdToModMappingString.join(' ')}

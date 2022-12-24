@@ -19,6 +19,7 @@ import selectedClassAbilityReducer from './features/selectedClassAbility/selecte
 import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
 import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
+import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 
 import processedArmorReducer, {
 	setProcessedArmor,
@@ -58,7 +59,8 @@ export function makeStore() {
 			selectedClassAbility: selectedClassAbilityReducer,
 			selectedDestinySubclass: selectedDestinySubclassReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
-			selectedJump: selectedJumpSlice,
+			selectedJump: selectedJumpReducer,
+			selectedArmorSlotMods: selectedArmorSlotModsReducer,
 		},
 	});
 }

@@ -8,10 +8,10 @@ import { run as generateSuperAbilities } from './superAbilities/generateSuperAbi
 
 (async function run() {
 	await generateMods();
-	await generateAspects();
-	await generateGrenades();
-	await generateMelees();
-	await generateClassAbilities();
-	await generateJumps();
-	await generateSuperAbilities();
+	// await generateAspects();
+	// await generateGrenades();
+	// await generateMelees();
+	// await generateClassAbilities();
+	// await generateJumps();
+	// await generateSuperAbilities();
 })();

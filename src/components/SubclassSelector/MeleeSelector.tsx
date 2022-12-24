@@ -66,8 +66,6 @@ function MeleeSelector() {
 		};
 	});
 
-	console.log('>>>>>>>', options);
-
 	return (
 		<>
 			<Container>

@@ -61,6 +61,7 @@ import {
 	getArmorStatMappingFromArmorStatMods,
 	getArmorStatMod,
 } from '@dlb/types/ArmorStatMod';
+import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 
 const calculateExtraMasterworkedStats = (
 	armorItems: ArmorItem[],
@@ -172,6 +173,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
+	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 	const { elementId } = getDestinySubclass(destinySubclassId);
 	const aspectIds = selectedAspects[destinySubclassId];
@@ -332,6 +334,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 									superAbilityId: selectedSuperAbility[destinySubclassId],
 									classAbilityId: selectedClassAbility[destinySubclassId],
 									grenadeId: selectedGrenade[elementId],
+									armorSlotMods: selectedArmorSlotMods,
 								})}`}
 							>
 								Open loadout in DIM

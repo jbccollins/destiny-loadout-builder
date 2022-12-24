@@ -236,14 +236,15 @@ export enum EModSocketCategoryId {
 	Stat = 'Stat', // e.g. major/minor resilience
 	ArmorSlot = 'ArmorSlot', // e.g. bomber
 	CombatStyle = 'CombatStyle', // e.g. powerful friends
-	Artifice = 'Artifice',
-	LastWish = 'LastWish',
-	GardenOfSalvation = 'GardenOfSalvation',
-	DeepStoneCrypt = 'DeepStoneCrypt',
-	VaultOfGlass = 'VaultOfGlass',
-	VowOfTheDisciple = 'VowOfTheDisciple',
-	KingsFall = 'KingsFall',
-	Other = 'Other', // TODO: Dreambane, etc..
+	Raid = 'Raid',
+	// Artifice = 'Artifice',
+	// LastWish = 'LastWish',
+	// GardenOfSalvation = 'GardenOfSalvation',
+	// DeepStoneCrypt = 'DeepStoneCrypt',
+	// VaultOfGlass = 'VaultOfGlass',
+	// VowOfTheDisciple = 'VowOfTheDisciple',
+	// KingsFall = 'KingsFall',
+	// Other = 'Other', // TODO: Dreambane, etc..
 }
 
 export enum EModTypeDisplayNameId {
@@ -264,6 +265,27 @@ export enum EModTypeDisplayNameId {
 	VowoftheDiscipleRaidMod = 'VowoftheDiscipleRaidMod',
 	ChargedwithLightMod = 'ChargedwithLightMod',
 	NightmareMod = 'NightmareMod',
+}
+
+// TODO: These could easily change. Find a better way to generate them so this isn't so fragile
+export enum EModCategoryId {
+	AmmoFinder = 'AmmoFinder',
+	Scavenger = 'Scavenger',
+	Reserves = 'Reserves',
+	Targeting = 'Targeting',
+	Dexterity = 'Dexterity',
+	Holster = 'Holster',
+	Loader = 'Loader',
+	Unflinching = 'Unflinching',
+	LastWish = 'LastWish',
+	GardenOfSalvation = 'GardenOfSalvation',
+	DeepStoneCrypt = 'DeepStoneCrypt',
+	VaultOfGlass = 'VaultOfGlass',
+	VowOfTheDisciple = 'VowOfTheDisciple',
+	KingsFall = 'KingsFall',
+	General = 'General',
+	// TODO: Stat mods???
+	// SeasonalArtifact = 'SeasonalArtifact',
 }
 
 export enum EGearTierId {

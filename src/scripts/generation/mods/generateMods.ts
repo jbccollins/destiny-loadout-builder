@@ -3,15 +3,17 @@ USAGE: From the root directory run "npm run generate"
 */
 import lodash from 'lodash';
 import path from 'path';
-import { EArmorSlotId, EModSocketCategoryId } from '@dlb/types/IdEnums';
+import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { getArmorSlotIdByHash } from '@dlb/types/ArmorSlot';
 import {
+	DestinyEnergyTypeDefinition,
 	DestinyInventoryItemDefinition,
 	DestinySandboxPerkDefinition,
+	DestinyStatDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
 import { getElementIdByHash } from '@dlb/types/Element';
-import { ECategoryName, IMod } from '@dlb/types/generation';
+import { IMod } from '@dlb/types/generation';
 import {
 	collectRewardsFromArtifacts,
 	generateId,
@@ -22,6 +24,9 @@ import { generateModMapping } from './generateModMapping';
 import { generateModDisplayNameIdEnumFileString } from './generageModDisplayNameIdEnum';
 import { getModSocketCategoryIdByModDisplayNameId } from '@dlb/types/ModSocketCategory';
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
+import { bungieNetPath } from '@dlb/utils/item-utils';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { getModCategoryIdByModName } from '@dlb/types/ModCategory';
 
 // TODO: What about the Aeon Mods? Sect of Force, Insight and Vigor
 const excludedModHashes = [
@@ -30,9 +35,26 @@ const excludedModHashes = [
 
 // const getModSocketCategoryIdFromRawMod = (rawMod: DestinyInventoryItemDefinition): EModSocketCategoryId {}
 
+const getElementOverlayIcon = (
+	mod: DestinyInventoryItemDefinition,
+	energyTypeDefinitions: Record<number, DestinyEnergyTypeDefinition>,
+	statDefinitions: Record<number, DestinyStatDefinition>
+): string => {
+	if (mod.plug?.energyCost?.energyTypeHash) {
+		const energyType =
+			energyTypeDefinitions[mod.plug.energyCost.energyTypeHash];
+		if (energyType?.capacityStatHash) {
+			return statDefinitions[energyType.capacityStatHash].displayProperties
+				?.icon;
+		}
+	}
+	return null;
+};
 const buildModData = (
 	mod: DestinyInventoryItemDefinition,
 	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>,
+	energyTypeDefinitions: Record<number, DestinyEnergyTypeDefinition>,
+	statDefinitions: Record<number, DestinyStatDefinition>,
 	artifactMods: number[]
 ): IMod => {
 	let armorSlotId: EArmorSlotId = null;
@@ -40,10 +62,17 @@ const buildModData = (
 		const _armorSlotId = getArmorSlotIdByHash(hash);
 		if (_armorSlotId) {
 			armorSlotId = _armorSlotId;
+			// TODO: Should it break here?
 		}
 	});
 
 	const isArtifactMod = artifactMods.includes(mod.hash);
+	const elementOverlayIcon = getElementOverlayIcon(
+		mod,
+		energyTypeDefinitions,
+		statDefinitions
+	);
+
 	return {
 		name: mod.displayProperties.name,
 		id: generateId(
@@ -52,11 +81,11 @@ const buildModData = (
 					? `Artifact ${mod.displayProperties.name}`
 					: mod.displayProperties.name
 			}`
-		),
+		) as EModId,
 		description:
 			sandboxPerkDefinitions[mod.perks[0].perkHash].displayProperties
 				.description,
-		icon: mod.displayProperties.icon,
+		icon: bungieNetPath(mod.displayProperties.icon),
 		hash: mod.hash,
 		modSocketCategoryId: getModSocketCategoryIdByModDisplayNameId(
 			generateId(mod.itemTypeDisplayName) as EModDisplayNameId
@@ -66,7 +95,10 @@ const buildModData = (
 		elementId: getElementIdByHash(mod.plug.energyCost.energyTypeHash),
 		cost: mod.plug.energyCost.energyCost,
 		isArtifactMod: isArtifactMod,
-		category: null, //ECategoryName.CATEGORY_AMMO_FINDER,
+		modCategoryId: getModCategoryIdByModName(mod.displayProperties.name), //ECategoryName.CATEGORY_AMMO_FINDER,
+		elementOverlayIcon: elementOverlayIcon
+			? bungieNetPath(elementOverlayIcon)
+			: null,
 	};
 };
 
@@ -75,10 +107,20 @@ export async function run() {
 		DestinyInventoryItemDefinition: destinyInventoryItemDefinitions,
 		DestinyArtifactDefinition: destinyArtifactDefinitions,
 		DestinySandboxPerkDefinition: destinySandboxPerkDefinitions,
+		DestinyEnergyTypeDefinition: destinyEnergyTypeDefinitions,
+		DestinyStatDefinition: destinyStatDefinitions,
 	} = await getDefinitions();
 	const sandboxPerkDefinitions = destinySandboxPerkDefinitions as Record<
 		number,
 		DestinySandboxPerkDefinition
+	>;
+	const energyTypeDefinitions = destinyEnergyTypeDefinitions as Record<
+		number,
+		DestinyEnergyTypeDefinition
+	>;
+	const statDefinitions = destinyStatDefinitions as Record<
+		number,
+		DestinyStatDefinition
 	>;
 
 	console.log('Received definitions');
@@ -102,7 +144,15 @@ export async function run() {
 		.filter((mod) => !excludedModHashes.includes(mod.hash))
 		.forEach((mod) => {
 			modDisplayNames.add(generateId(mod.itemTypeDisplayName));
-			mods.push(buildModData(mod, sandboxPerkDefinitions, artifactMods));
+			mods.push(
+				buildModData(
+					mod,
+					sandboxPerkDefinitions,
+					energyTypeDefinitions,
+					statDefinitions,
+					artifactMods
+				)
+			);
 		});
 
 	const modsPath = ['.', 'src', 'generated', 'mod'];

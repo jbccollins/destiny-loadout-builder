@@ -10,7 +10,7 @@ import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyC
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
-import { ArmorSlotIdList, ArmorSlotIdToArmorSlot } from '@dlb/types/ArmorSlot';
+import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { useMemo } from 'react';
 
@@ -74,7 +74,7 @@ function ExoticSelector() {
 				onChange={handleChange}
 				getId={(option: AvailableExoticArmorItem) => option.hash.toString()}
 				getGroupBy={(option: AvailableExoticArmorItem) =>
-					ArmorSlotIdToArmorSlot.get(option.armorSlot).name
+					getArmorSlot(option.armorSlot).name
 				}
 				getLabel={(option: AvailableExoticArmorItem) => option.name}
 				textFieldClassName={'exotic-selector-text-field'}

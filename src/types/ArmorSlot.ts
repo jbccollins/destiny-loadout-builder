@@ -47,9 +47,8 @@ const ArmorSlotIdToArmorSlotMapping: EnumDictionary<EArmorSlotId, IArmorSlot> =
 		},
 	};
 
-export const ArmorSlotIdToArmorSlot: Mapping<EArmorSlotId, IArmorSlot> = {
-	get: (key: EArmorSlotId) => ArmorSlotIdToArmorSlotMapping[key],
-};
+export const getArmorSlot = (id: EArmorSlotId): IArmorSlot =>
+	ArmorSlotIdToArmorSlotMapping[id];
 
 /****** Extra ******/
 export const ArmorSlotWithClassItemIdList = ValidateEnumList(

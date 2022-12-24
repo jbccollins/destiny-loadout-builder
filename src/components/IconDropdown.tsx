@@ -8,6 +8,7 @@ import {
 	styled,
 } from '@mui/material';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { MISSING_ICON } from '@dlb/types/globals';
 
 const Container = styled(Box, {
 	shouldForwardProp: (prop) => prop !== 'hideSelectedOptionText',
@@ -56,8 +57,10 @@ type IconDropdownProps = {
 	title?: string;
 	selectComponentProps?: SelectProps;
 	hideSelectedOptionText?: boolean;
+	allowNoSelection?: boolean;
 };
 
+const PLACEHOLDER_OPTION = 'None Selected...';
 const IconDropdown = ({
 	options,
 	getLabel,
@@ -67,6 +70,7 @@ const IconDropdown = ({
 	selectComponentProps,
 	getDescription,
 	hideSelectedOptionText,
+	allowNoSelection,
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		onChange(value);
@@ -80,12 +84,27 @@ const IconDropdown = ({
 					labelId="icon-dropdown-select-label"
 					id="icon-dropdown-select"
 					className="icon-dropdown-select"
-					value={value}
+					value={
+						allowNoSelection ? (value ? value : PLACEHOLDER_OPTION) : value
+					}
 					label={title || ''}
 					onChange={(e) => {
 						handleChange(e.target.value as string);
 					}}
 				>
+					{allowNoSelection && (
+						<MenuItem
+							className="icon-dropdown-menu-item"
+							value={PLACEHOLDER_OPTION}
+						>
+							<MenuItemContent className="icon-dropdown-menu-item-content">
+								<BungieImage width={40} height={40} src={MISSING_ICON} />
+								<MenuItemText className="icon-dropdown-menu-item-text">
+									{PLACEHOLDER_OPTION}
+								</MenuItemText>
+							</MenuItemContent>
+						</MenuItem>
+					)}
 					{options.map((option) => {
 						const label = getLabel(option);
 						let description: string = null;

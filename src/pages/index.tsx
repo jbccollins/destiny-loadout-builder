@@ -38,6 +38,9 @@ import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
 import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
 import JumpSelector from '@dlb/components/SubclassSelector/JumpSelector';
 import SuperAbilitySelector from '@dlb/components/SubclassSelector/SuperAbilitySelector';
+import ArmorSlotModSelector from '@dlb/components/ModSelecton/ArmorSlotModsSelector';
+import TabContainer from '@dlb/components/TabContainer';
+import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -87,18 +90,47 @@ const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
 
 const LeftSectionComponent = () => (
 	<LeftSection className="left-section">
-		<ExoticAndDestinyClassSelectorWrapper />
-		<StatSelection />
-		<MasterworkAssumptionSelector />
-		<DestinySubclassSelector />
-		<SuperAbilitySelector />
-		<AspectSelector />
-		<FragmentSelector />
-		<GrenadeSelector />
-		<MeleeSelector />
-		<ClassAbilitySelector />
-		<JumpSelector />
-		<CombatStyleModSelector />
+		<TabContainer
+			tabs={[
+				{
+					content: (
+						<>
+							<SelectionControlGroup title="Class and Exotic">
+								<ExoticAndDestinyClassSelectorWrapper />
+							</SelectionControlGroup>
+							<SelectionControlGroup title="Desired Stats">
+								<StatSelection />
+							</SelectionControlGroup>
+							<SelectionControlGroup title="Subclass Options">
+								<DestinySubclassSelector />
+								<SuperAbilitySelector />
+								<AspectSelector />
+								<FragmentSelector />
+								<GrenadeSelector />
+								<MeleeSelector />
+								<ClassAbilitySelector />
+								<JumpSelector />
+							</SelectionControlGroup>
+							<SelectionControlGroup title="Mods">
+								<ArmorSlotModSelector />
+								<CombatStyleModSelector />
+							</SelectionControlGroup>
+						</>
+					),
+					index: 0,
+					title: 'Loadout',
+				},
+				{
+					content: (
+						<>
+							<MasterworkAssumptionSelector />
+						</>
+					),
+					index: 1,
+					title: 'Settings',
+				},
+			]}
+		/>
 
 		{/* <ArmorSlotRestrictions /> */}
 	</LeftSection>

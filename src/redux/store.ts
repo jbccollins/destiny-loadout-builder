@@ -2,6 +2,9 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 
 import counterReducer from './features/counter/counterSlice';
 import desiredArmorStatsReducer from './features/desiredArmorStats/desiredArmorStatsSlice';
+import maxPossibleStatsReducer, {
+	setMaxPossibleStats,
+} from './features/maxPossibleStats/maxPossibleStatsSlice';
 import armorReducer from './features/armor/armorSlice';
 import charactersReducer from './features/characters/charactersSlice';
 import selectedDestinyClassReducer from './features/selectedDestinyClass/selectedDestinyClassSlice';
@@ -30,6 +33,9 @@ import {
 	preProcessArmor,
 } from '@dlb/services/armor-processing';
 import {
+	ArmorStatIdList,
+	ArmorStatMapping,
+	DefaultArmorStatMapping,
 	getArmorStatMappingFromCombatStyleMods,
 	getArmorStatMappingFromFragments,
 } from '@dlb/types/ArmorStat';
@@ -49,7 +55,6 @@ export function makeStore() {
 			allDataLoaded: allDataLoadedReducer,
 			processedArmor: processedArmorReducer,
 			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
-			// selectedSubclassOptions: selectedSubclassOptionsReducer,
 			selectedFragments: selectedFragmentsReducer,
 			selectedAspects: selectedAspectsReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
@@ -61,6 +66,7 @@ export function makeStore() {
 			selectedSuperAbility: selectedSuperAbilityReducer,
 			selectedJump: selectedJumpReducer,
 			selectedArmorSlotMods: selectedArmorSlotModsReducer,
+			maxPossibleStats: maxPossibleStatsReducer,
 		},
 	});
 }
@@ -164,6 +170,22 @@ function handleChange() {
 			combatStyleModArmorStatMapping,
 		});
 		console.log('>>>>>>>>>>> results <<<<<<<<<<<', results);
+		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };
+		results.forEach((result) => {
+			const availableMods = 5 - result.armorStatModIdList.length;
+			ArmorStatIdList.forEach((armorStatId) => {
+				const possibleStat =
+					result.metadata.totalArmorStatMapping[armorStatId] +
+					10 * availableMods;
+				if (possibleStat > maxPossibleStats[armorStatId]) {
+					maxPossibleStats[armorStatId] = possibleStat;
+				}
+			});
+		});
+		// TODO: We can probably calculate max possible stats while doing armor processing without
+		// the need to loop over the processed armor again here.
+		console.log('>>>>>>>>>>> maxPossibleStats <<<<<<<<<<<', maxPossibleStats);
+		store.dispatch(setMaxPossibleStats(maxPossibleStats));
 		store.dispatch(setProcessedArmor(results));
 	}
 }

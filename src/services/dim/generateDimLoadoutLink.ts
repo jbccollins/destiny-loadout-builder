@@ -161,7 +161,7 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 		socketOverrides[i + 7] = hash;
 	});
 
-	socketOverrides[2] = loadout.equipped.push({
+	loadout.equipped.push({
 		// id: destinySubclassId, // This shouldn't need to be specified but right now it does. The value doesn't matter
 		id: '12345',
 		hash: getDestinySubclass(destinySubclassId).hash,

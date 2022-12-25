@@ -1,57 +1,69 @@
 import { Box, styled } from '@mui/material';
-import IconMultiSelectDropdown from '@dlb/components/IconMultiSelectDropdown';
-import {
-	CombatStyleModIdList,
-	getCombatStyleMod,
-} from '@dlb/types/CombatStyleMod';
-import React from 'react';
-import { ECombatStyleModId } from '@dlb/types/IdEnums';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	selectSelectedCombatStyleMods,
 	setSelectedCombatStyleMods,
 } from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { EModId } from '@dlb/generated/mod/EModId';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { getStat } from '@dlb/types/ArmorStat';
-import { StatBonusStat } from '@dlb/types/globals';
-
-const Container = styled(Box)(({ theme }) => ({
+import { CombatStyleModIdList } from '@dlb/types/Mod';
+import ModSelector from './ModSelection/ModSelector';
+const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));
 
-const CombatStyleModSelector = () => {
-	// const [value, setValue] = React.useState<ECombatStyleModId[]>([CombatStyleModIdList[0]]);
+const IconDropdownContainer = styled('div')(({ theme }) => ({
+	paddingTop: theme.spacing(1),
+	paddingBottom: theme.spacing(2),
+}));
 
+type Option = {
+	name: string;
+	id: string;
+	disabled?: boolean;
+	icon: string;
+	description: string;
+	extraIcons?: string[];
+	cost: number;
+};
+
+function CombatStyleModSelector() {
 	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
-	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
-
 	const dispatch = useAppDispatch();
 
-	const handleChange = (combatStyleModIds: ECombatStyleModId[]) => {
-		// TODO: We can probably avoid triggering a redux dirty if they switch to
-		// A set of combatStyleMods that has the same stat bonuses
-		dispatch(setSelectedCombatStyleMods(combatStyleModIds));
+	const getLabel = (option: Option) => option.name;
+	const getDescription = (option: Option) => option.description;
+	const getCost = (option: Option) => option.cost;
+	const getTitle = () => '';
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
+
+	const handleChange = (combatStyleModId: EModId, index: number) => {
+		const modIds = [...selectedCombatStyleMods];
+		modIds[index] = combatStyleModId;
+		dispatch(setSelectedCombatStyleMods(modIds));
 	};
-
-	const getOptionValue = (id: ECombatStyleModId) => getCombatStyleMod(id);
-
-	const getOptionStat = (stat: StatBonusStat) =>
-		getStat(stat, selectedDestinyClass);
-
+	const dropdownIndices = selectedCombatStyleMods.map((_, i) => i);
 	return (
 		<Container>
-			<IconMultiSelectDropdown
-				getOptionValue={getOptionValue}
-				getOptionStat={getOptionStat}
-				options={CombatStyleModIdList}
-				value={selectedCombatStyleMods}
-				onChange={handleChange}
-				title={'Combat Style Mods'}
-				id={'combat-style-mod-selector'}
-				showElement
-			/>
+			{dropdownIndices.map((index) => (
+				<ModSelector
+					enforceMatchingElementRule={false}
+					key={index}
+					selectedDestinyClass={selectedDestinyClass}
+					availableMods={CombatStyleModIdList}
+					getTitle={index === 0 ? () => 'Combat Style Mods' : null}
+					selectedMods={selectedCombatStyleMods}
+					handleChange={handleChange}
+					getLabel={getLabel}
+					getDescription={getDescription}
+					getCost={getCost}
+					index={index}
+					first={index === 0}
+					last={index === 1}
+				/>
+			))}
 		</Container>
 	);
-};
+}
 
 export default CombatStyleModSelector;

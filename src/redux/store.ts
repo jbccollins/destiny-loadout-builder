@@ -36,7 +36,7 @@ import {
 	ArmorStatIdList,
 	ArmorStatMapping,
 	DefaultArmorStatMapping,
-	getArmorStatMappingFromCombatStyleMods,
+	getArmorStatMappingFromMods,
 	getArmorStatMappingFromFragments,
 } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
@@ -143,11 +143,10 @@ function handleChange() {
 			selectedFragments[elementId],
 			selectedDestinyClass
 		);
-		const combatStyleModArmorStatMapping =
-			getArmorStatMappingFromCombatStyleMods(
-				selectedCombatStyleMods,
-				selectedDestinyClass
-			);
+		const combatStyleModArmorStatMapping = getArmorStatMappingFromMods(
+			selectedCombatStyleMods,
+			selectedDestinyClass
+		);
 
 		console.log(
 			'>>>>>>>>>>>>>>>>>>> fragmentArmorStatMapping',

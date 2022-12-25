@@ -126,29 +126,6 @@ export function getEnumKeyByEnumValue<
 }
 
 const SERIALIZED = 'SERIALIZED';
-// export function getSerializableObject<
-// 	TEnumKey extends string, // EArmorSlotId
-// 	TEnumVal extends string | number // "arm"
-// >(
-// 	input: Record<string, unknown>, // {..., armorslotId: "arm" ....}
-// 	keyToReplace: string, // "armorSlotId"
-// 	enumDefinition: { [key in TEnumKey]: TEnumVal }, // EArmorSlotId
-// 	enumName: string // "EArmorSlotId"
-// ): unknown {
-// 	const res = {
-// 		...input,
-// 	};
-
-// 	const stringifiedEnumKey = getEnumKeyByEnumValue(
-// 		enumDefinition,
-// 		res[keyToReplace] as string | number
-// 	);
-// 	res[keyToReplace] = stringifiedEnumKey
-// 		? `${SERIALIZED}${enumName}.${stringifiedEnumKey}`
-// 		: `${SERIALIZED}null`;
-
-// 	return res;
-// }
 
 export function getSerializableValue<
 	TEnumKey extends string, // EArmorSlotId

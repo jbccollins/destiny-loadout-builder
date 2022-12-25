@@ -53,6 +53,21 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 		name: 'Unflinching',
 		description: '',
 	},
+	[EModCategoryId.ChargedWithLight]: {
+		id: EModCategoryId.ChargedWithLight,
+		name: 'Charged With Light',
+		description: '',
+	},
+	[EModCategoryId.ElementalWell]: {
+		id: EModCategoryId.ElementalWell,
+		name: 'Elemental Well',
+		description: '',
+	},
+	[EModCategoryId.WarmindCell]: {
+		id: EModCategoryId.WarmindCell,
+		name: 'Warmind Cell',
+		description: '',
+	},
 	[EModCategoryId.LastWish]: {
 		id: EModCategoryId.LastWish,
 		name: 'Last Wish',
@@ -100,7 +115,19 @@ const findTerm = (name: string, term: string) => {
 	}
 };
 
-export const getModCategoryIdByModName = (name: string): EModCategoryId => {
+export const getModCategoryIdByModName = (
+	displayNameId: EModDisplayNameId,
+	name: string
+): EModCategoryId => {
+	if (displayNameId === EModDisplayNameId.ChargedWithLightMod) {
+		return EModCategoryId.ChargedWithLight;
+	}
+	if (displayNameId === EModDisplayNameId.ElementalWellMod) {
+		return EModCategoryId.ElementalWell;
+	}
+	if (displayNameId === EModDisplayNameId.WarmindCellMod) {
+		return EModCategoryId.WarmindCell;
+	}
 	switch (name) {
 		case findTerm(name, 'Ammo Finder'):
 			return EModCategoryId.AmmoFinder;

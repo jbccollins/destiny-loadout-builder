@@ -5,7 +5,7 @@ import { AppState } from '@dlb/redux/store';
 import { v4 as uuid, NIL } from 'uuid';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 
 export type SelectedArmorSlotMods = {
 	[key in EArmorSlotId]: EModId[];
@@ -17,7 +17,7 @@ export interface SelectedArmorSlotModsState {
 }
 
 const generateIntitalState = (): SelectedArmorSlotMods => {
-	return ArmorSlotIdList.reduce((accumulator, currentValue) => {
+	return ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
 		accumulator[currentValue] = [null, null];
 		return accumulator;
 	}, {}) as SelectedArmorSlotMods;

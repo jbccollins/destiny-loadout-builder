@@ -166,7 +166,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -183,7 +183,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon: null,
   },
   [EModId.BlessingOfRasputin]: {
@@ -199,7 +199,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -216,7 +216,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -232,7 +232,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -310,7 +310,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -870,7 +870,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -1098,7 +1098,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
   },
   [EModId.DistortedGlyphkeeper]: {
@@ -1162,7 +1162,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
   },
   [EModId.UnflinchingSniperAim]: {
@@ -1336,7 +1336,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -1353,7 +1353,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -1597,7 +1597,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 5,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -1614,7 +1614,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 5,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -1631,7 +1631,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 7,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -1648,7 +1648,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -1713,7 +1713,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
   },
   [EModId.ShotgunLoader]: {
@@ -1872,7 +1872,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -1889,7 +1889,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
   },
   [EModId.MachineGunDexterity]: {
@@ -1919,7 +1919,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 5,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -1936,7 +1936,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -1953,7 +1953,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -1969,7 +1969,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -2001,7 +2001,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
   },
   [EModId.FocusingStrike]: {
@@ -2098,7 +2098,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Stasis,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
   },
@@ -2115,7 +2115,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Stasis,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
   },
@@ -2132,7 +2132,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Stasis,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
   },
@@ -2149,7 +2149,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Stasis,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
   },
@@ -2456,7 +2456,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -2504,7 +2504,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 5,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -2521,7 +2521,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -2538,7 +2538,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -2555,7 +2555,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -2572,7 +2572,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -2605,7 +2605,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -2622,7 +2622,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -2639,7 +2639,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -2656,7 +2656,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -2889,7 +2889,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -2906,7 +2906,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -2922,7 +2922,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -2939,7 +2939,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -2956,7 +2956,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -3162,7 +3162,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
   },
   [EModId.HandCannonTargeting]: {
@@ -3307,7 +3307,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 5,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -3324,7 +3324,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -3341,7 +3341,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -3358,7 +3358,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -3470,7 +3470,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -3597,7 +3597,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -3614,7 +3614,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -3630,7 +3630,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -3647,7 +3647,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -3897,7 +3897,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -3914,7 +3914,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.Reserves,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -3931,7 +3931,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -3948,7 +3948,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -4124,7 +4124,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon: null,
   },
   [EModId.HighEnergyFire]: {
@@ -4140,7 +4140,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon: null,
   },
   [EModId.TakingCharge]: {
@@ -4155,7 +4155,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 3,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon: null,
   },
   [EModId.ShieldBreakCharge]: {
@@ -4171,7 +4171,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon: null,
   },
   [EModId.PowerPreservation]: {
@@ -4297,7 +4297,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
   },
   [EModId.NightmareCrusher]: {
@@ -4396,7 +4396,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Void,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
   },
@@ -4653,7 +4653,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -4670,7 +4670,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Arc,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
   },
@@ -4930,7 +4930,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Any,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
   },
   [EModId.IntoTheLight]: {
@@ -5062,7 +5062,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 5,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -5079,7 +5079,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 4,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -5096,7 +5096,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 5,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -5113,7 +5113,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -5130,7 +5130,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 2,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },
@@ -5147,7 +5147,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     elementId: EElementId.Solar,
     cost: 1,
     isArtifactMod: false,
-    modCategoryId: EModCategoryId.General,
+    modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
   },

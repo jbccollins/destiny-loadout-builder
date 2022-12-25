@@ -73,29 +73,36 @@ const buildModData = (
 		statDefinitions
 	);
 
+	const modId = generateId(
+		`${
+			isArtifactMod
+				? `Artifact ${mod.displayProperties.name}`
+				: mod.displayProperties.name
+		}`
+	) as EModId;
+
+	const displayNameId = generateId(
+		mod.itemTypeDisplayName
+	) as EModDisplayNameId;
 	return {
 		name: mod.displayProperties.name,
-		id: generateId(
-			`${
-				isArtifactMod
-					? `Artifact ${mod.displayProperties.name}`
-					: mod.displayProperties.name
-			}`
-		) as EModId,
+		id: modId,
 		description:
 			sandboxPerkDefinitions[mod.perks[0].perkHash].displayProperties
 				.description,
 		icon: bungieNetPath(mod.displayProperties.icon),
 		hash: mod.hash,
-		modSocketCategoryId: getModSocketCategoryIdByModDisplayNameId(
-			generateId(mod.itemTypeDisplayName) as EModDisplayNameId
-		),
+		modSocketCategoryId:
+			getModSocketCategoryIdByModDisplayNameId(displayNameId),
 		armorSocketIndex: 0,
 		armorSlotId: armorSlotId,
 		elementId: getElementIdByHash(mod.plug.energyCost.energyTypeHash),
 		cost: mod.plug.energyCost.energyCost,
 		isArtifactMod: isArtifactMod,
-		modCategoryId: getModCategoryIdByModName(mod.displayProperties.name), //ECategoryName.CATEGORY_AMMO_FINDER,
+		modCategoryId: getModCategoryIdByModName(
+			displayNameId,
+			mod.displayProperties.name
+		), //ECategoryName.CATEGORY_AMMO_FINDER,
 		elementOverlayIcon: elementOverlayIcon
 			? bungieNetPath(elementOverlayIcon)
 			: null,

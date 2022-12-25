@@ -105,8 +105,6 @@ const DestinyClassSelector = () => {
 	const [value, setValue] = useState('warlock');
 
 	const handleChange = (value: string) => {
-		console.log('>>>>>>>>>>>> selected character class <<<<<<<<<<<<<<', value);
-		setValue(value);
 		setValue(value);
 	};
 	return (
@@ -148,7 +146,6 @@ const ExoticSelector = () => {
 	const [value, setValue] = useState(exoticOptions[0]);
 
 	const handleChange = (value: DestinyClassOption) => {
-		console.log('>>>>>>>>>>>> selected exotic <<<<<<<<<<<<<<', value);
 		setValue(value);
 	};
 	return (

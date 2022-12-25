@@ -3,7 +3,6 @@ import {
 	EArmorStatId,
 	EArmorStatModId,
 	EAspectId,
-	ECombatStyleModId,
 	EDestinyClassId,
 	EDestinySubclassId,
 	EFragmentId,
@@ -15,7 +14,6 @@ import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
 import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
 import { AvailableExoticArmorItem, IArmorItem } from '@dlb/types/Armor';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { getCombatStyleMod } from '@dlb/types/CombatStyleMod';
 import { getAspect } from '@dlb/types/Aspect';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
@@ -33,7 +31,7 @@ import { getMod } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
 
 export type DimLoadoutConfiguration = {
-	modIdList: ECombatStyleModId[];
+	selectedModIdList: EModId[];
 	fragmentIdList: EFragmentId[];
 	aspectIdList: EAspectId[];
 	jumpId: EJumpId;
@@ -53,7 +51,7 @@ export type DimLoadoutConfiguration = {
 
 const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	const {
-		modIdList,
+		selectedModIdList,
 		fragmentIdList,
 		aspectIdList,
 		armorStatModIdList,
@@ -73,9 +71,9 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	const fragmentHashes: number[] = fragmentIdList.map(
 		(fragmentId: EFragmentId) => getFragment(fragmentId).hash
 	);
-	const combatStyleModHashes: number[] = modIdList.map(
-		(modId: ECombatStyleModId) => getCombatStyleMod(modId).hash
-	);
+	const selectedModHashes: number[] = selectedModIdList
+		.filter((modId) => modId !== null)
+		.map((modId: EModId) => getMod(modId).hash);
 	const armorSlotModHashes: number[] = [];
 	ArmorSlotIdList.forEach((armorSlotId) => {
 		armorSlotMods[armorSlotId].forEach((id: EModId) => {
@@ -84,7 +82,7 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 			}
 		});
 	});
-	const modHashes: number[] = [...combatStyleModHashes, ...armorSlotModHashes];
+	const modHashes: number[] = [...selectedModHashes, ...armorSlotModHashes];
 	const aspectHashes: number[] = aspectIdList.map(
 		(aspectId: EAspectId) => getAspect(aspectId).hash
 	);
@@ -162,8 +160,7 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	});
 
 	loadout.equipped.push({
-		// id: destinySubclassId, // This shouldn't need to be specified but right now it does. The value doesn't matter
-		id: '12345',
+		id: '12345', // This doesn't matter and will be overriden but apparently it's required and must be numeric. Idfk.
 		hash: getDestinySubclass(destinySubclassId).hash,
 		socketOverrides,
 	});

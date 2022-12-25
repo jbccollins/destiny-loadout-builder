@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+import DecoratedBungieIcon from './DecoratedBungieIcon';
 
 const Container = styled('div')(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -22,24 +23,25 @@ const Container = styled('div')(({ theme }) => ({
 		padding: theme.spacing(1),
 		paddingRight: 0,
 	},
-	['.armor-slot-mod-selector-text-field-0 fieldset']: {
+	['.exotic-selector-text-field > div']: {
+		height: '73px',
+	},
+	['.armor-slot-mod-selector-text-field fieldset']: {
+		borderRadius: '0px',
+		marginTop: '-1px',
+	},
+	['.armor-slot-mod-selector-text-field-first fieldset']: {
 		borderBottomLeftRadius: '0px',
 		borderBottomRightRadius: '0px',
 	},
-	['.armor-slot-mod-selector-text-field-1 fieldset']: {
+	['.armor-slot-mod-selector-text-field-last fieldset']: {
 		borderTopLeftRadius: '0px',
 		borderTopRightRadius: '0px',
 		marginTop: '-1px',
 	},
 }));
 
-const ExtraIconWrapper = styled(Box, {
-	shouldForwardProp: (prop) => prop !== 'withMarginTop',
-})<{ withMarginTop?: boolean }>(({ theme, withMarginTop }) => ({
-	position: 'absolute',
-	top: '0px',
-	marginTop: withMarginTop ? '6px' : '0px',
-}));
+const ExtraContentWrapper = styled(Box)(({ theme }) => ({}));
 
 interface IIconAutocompleteDropdownOption {
 	icon: string;
@@ -56,6 +58,7 @@ type IconAutocompleteDropdownProps = {
 	getDescription?: (value: IIconAutocompleteDropdownOption) => string;
 	getId: (value: IIconAutocompleteDropdownOption) => string;
 	getExtraContent?: (value: IIconAutocompleteDropdownOption) => React.ReactNode;
+	getCost?: (value: IIconAutocompleteDropdownOption) => number;
 	// getName: (value: IIconAutocompleteDropdownOption) => string
 	title: string;
 	textFieldClassName?: string;
@@ -68,6 +71,7 @@ function IconAutocompleteDropdown({
 	getGroupBy,
 	getLabel,
 	getDescription,
+	getCost,
 	getExtraContent,
 	getId,
 	title,
@@ -79,6 +83,7 @@ function IconAutocompleteDropdown({
 				<Autocomplete
 					id={title}
 					options={options}
+					// open={true}
 					autoHighlight
 					value={value}
 					disableClearable
@@ -99,46 +104,47 @@ function IconAutocompleteDropdown({
 							insideWords: true,
 						});
 						const parts = parse(getLabel(option), matches);
+						// console.log('>>>>>>>>>>> props', props);
 						return (
 							<Box
 								component="li"
 								sx={{
 									'& > img': { mr: 2, flexShrink: 0 },
-									position: 'relative',
+									flexWrap: 'wrap',
 								}}
 								{...props}
-								// This does not fix the unique key issue
-								// key={getId(option)}
 							>
-								{/* <Box sx={{ position: 'relative' }}> */}
-								<BungieImage
-									width="40"
-									src={option.icon}
-									alt={getLabel(option)}
-								/>
-								{option.elementOverlayIcon && (
-									<ExtraIconWrapper withMarginTop>
-										<BungieImage
-											width="40"
-											src={option.elementOverlayIcon}
-											alt={`${getLabel(option)}-element-overlay`}
-										/>
-									</ExtraIconWrapper>
+								<Box sx={{ display: 'flex', flexWrap: 'nowrap' }}>
+									<DecoratedBungieIcon
+										getCost={getCost ? () => getCost(option) : null}
+										icon={option.icon}
+										elementOverlayIcon={option.elementOverlayIcon}
+										getAltText={() => getLabel(option)}
+									/>
+									<div
+										style={{
+											paddingTop: '8px',
+											paddingLeft: '6px',
+											whiteSpace: 'nowrap',
+										}}
+									>
+										{parts.map((part, index) => (
+											<span
+												key={index}
+												style={{
+													fontWeight: part.highlight ? 700 : 400,
+												}}
+											>
+												{part.text}
+											</span>
+										))}
+									</div>
+								</Box>
+								{getExtraContent && (
+									<ExtraContentWrapper className="icon-extra-content-wrapper">
+										{getExtraContent(option)}
+									</ExtraContentWrapper>
 								)}
-								{/* </Box> */}
-								<div>
-									{parts.map((part, index) => (
-										<span
-											key={index}
-											style={{
-												fontWeight: part.highlight ? 700 : 400,
-											}}
-										>
-											{part.text}
-										</span>
-									))}
-								</div>
-								{getExtraContent && getExtraContent(option)}
 							</Box>
 						);
 					}}
@@ -154,23 +160,28 @@ function IconAutocompleteDropdown({
 										<Box
 											sx={{
 												position: 'relative',
-												marginTop: '7.5px',
-												marginBottom: '1.5px',
+												marginTop: '3px',
+												marginBottom: '2px',
 												marginLeft: '5px',
 											}}
 										>
-											<BungieImage width={40} height={40} src={value.icon} />
-											{value.elementOverlayIcon && (
-												<ExtraIconWrapper>
-													<BungieImage
-														width="40"
-														src={value.elementOverlayIcon}
-														alt={`${getLabel(value)}-element-overlay`}
-													/>
-												</ExtraIconWrapper>
-											)}
+											<DecoratedBungieIcon
+												getCost={getCost ? () => getCost(value) : null}
+												icon={value.icon}
+												elementOverlayIcon={value.elementOverlayIcon}
+												getAltText={() => getLabel(value)}
+											/>
 										</Box>
 									),
+									// endAdornment: (
+									// 	<Box>
+									// 		{getExtraContent && (
+									// 			<ExtraContentWrapper className="icon-extra-content-wrapper">
+									// 				{getExtraContent(value)}
+									// 			</ExtraContentWrapper>
+									// 		)}
+									// 	</Box>
+									// ),
 									autoComplete: 'new-password', // disable autocomplete and autofill
 								}}
 							/>

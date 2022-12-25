@@ -7,21 +7,15 @@ import { AppState } from '@dlb/redux/store';
 // To use a single reducer with one uuid. Or....... keep it as is and just
 // Keep track of a single uuid in the store? idk... that might be harder to code around...
 import { v4 as uuid, NIL } from 'uuid';
-import {
-	EArmorStatId,
-	ECombatStyleModId,
-	EElementId,
-	EFragmentId,
-} from '@dlb/types/IdEnums';
-import { ArmorStatMapping } from '@dlb/types/ArmorStat';
+import { EModId } from '@dlb/generated/mod/EModId';
 
 export interface SelectedCombatStyleModsState {
-	value: ECombatStyleModId[];
+	value: EModId[];
 	uuid: string;
 }
 
 const initialState: SelectedCombatStyleModsState = {
-	value: [],
+	value: [null, null, null, null, null],
 	uuid: NIL,
 };
 
@@ -29,10 +23,7 @@ export const selectedCombatStyleModsSlice = createSlice({
 	name: 'selectedCombatStyleMods',
 	initialState,
 	reducers: {
-		setSelectedCombatStyleMods: (
-			state,
-			action: PayloadAction<ECombatStyleModId[]>
-		) => {
+		setSelectedCombatStyleMods: (state, action: PayloadAction<EModId[]>) => {
 			state.value = action.payload;
 			state.uuid = uuid();
 		},

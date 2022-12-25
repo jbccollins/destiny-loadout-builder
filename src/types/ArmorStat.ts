@@ -1,5 +1,5 @@
+import { EModId } from '@dlb/generated/mod/EModId';
 import { getArmorStatMod } from './ArmorStatMod';
-import { getCombatStyleMod } from './CombatStyleMod';
 import { getFragment } from './Fragment';
 import {
 	EnumDictionary,
@@ -13,10 +13,10 @@ import {
 import {
 	EArmorStatId,
 	EArmorStatModId,
-	ECombatStyleModId,
 	EDestinyClassId,
 	EFragmentId,
 } from './IdEnums';
+import { getStatBonusesFromMod } from './Mod';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 	EArmorStatId.Mobility,
@@ -176,17 +176,21 @@ export const getArmorStatMappingFromFragments = (
 // 	return armorStatMapping;
 // };
 
-export const getArmorStatMappingFromCombatStyleMods = (
-	combatStyleModIds: ECombatStyleModId[],
+export const getArmorStatMappingFromMods = (
+	modIds: EModId[],
 	destinyClassId: EDestinyClassId
 ): ArmorStatMapping => {
 	const armorStatMapping = { ...DefaultArmorStatMapping };
-	combatStyleModIds.forEach((id) => {
-		const { bonuses } = getCombatStyleMod(id);
-		bonuses.map((bonus) => {
-			const armorStatId = getStat(bonus.stat, destinyClassId).id;
-			armorStatMapping[armorStatId] += bonus.value;
+	modIds
+		.filter((modId) => modId !== null)
+		.forEach((id) => {
+			const bonuses = getStatBonusesFromMod(id);
+			if (bonuses !== null) {
+				bonuses.forEach((bonus) => {
+					const armorStatId = getStat(bonus.stat, destinyClassId).id;
+					armorStatMapping[armorStatId] += bonus.value;
+				});
+			}
 		});
-	});
 	return armorStatMapping;
 };

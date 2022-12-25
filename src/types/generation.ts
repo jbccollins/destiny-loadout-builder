@@ -1,5 +1,5 @@
 import { EModId } from '@dlb/generated/mod/EModId';
-import { IIdentifiableName, IHash, IIcon } from './globals';
+import { IIdentifiableName, IHash, IIcon, StatBonus } from './globals';
 import {
 	EElementId,
 	EArmorSlotId,

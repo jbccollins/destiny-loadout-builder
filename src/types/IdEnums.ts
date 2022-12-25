@@ -86,21 +86,6 @@ export enum EArmorStatModId {
 	MajorStrength = 'MajorStrength',
 }
 
-export enum ECombatStyleModId {
-	// Positive Mods
-	PowerfulFriends = 'PowerfulFriends',
-	RadiantLight = 'RadiantLight',
-	// Negative Mods
-	ProtectiveLight = 'ProtectiveLight',
-	ExtraReserves = 'ExtraReserves',
-	PreciselyCharged = 'PreciselyCharged',
-	StacksOnStacks = 'StacksOnStacks',
-	PrecisionCharge = 'PrecisionCharge',
-	SurpriseAttack = 'SupriseAttack',
-	EnergyConverter = 'EnergyConverter',
-	ChargeHarvester = 'ChargeHarvester',
-}
-
 export enum EAspectId {
 	/*** Warlock ***/
 	// Stasis
@@ -277,6 +262,9 @@ export enum EModCategoryId {
 	Holster = 'Holster',
 	Loader = 'Loader',
 	Unflinching = 'Unflinching',
+	ChargedWithLight = 'ChargedWithLight',
+	ElementalWell = 'ElementalWell',
+	WarmindCell = 'WarmindCell',
 	LastWish = 'LastWish',
 	GardenOfSalvation = 'GardenOfSalvation',
 	DeepStoneCrypt = 'DeepStoneCrypt',

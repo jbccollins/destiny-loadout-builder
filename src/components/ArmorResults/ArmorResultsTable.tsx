@@ -19,7 +19,6 @@ import { ResultsTableLoadout } from './ArmorResultsView';
 import {
 	EArmorStatId,
 	EArmorStatModId,
-	ECombatStyleModId,
 	EFragmentId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
@@ -28,7 +27,7 @@ import {
 	ArmorStatMapping,
 	DefaultArmorStatMapping,
 	getArmorStat,
-	getArmorStatMappingFromCombatStyleMods,
+	getArmorStatMappingFromMods,
 	getArmorStatMappingFromFragments,
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
@@ -47,7 +46,6 @@ import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDesti
 import selectedCombatStyleModsSlice, {
 	selectSelectedCombatStyleMods,
 } from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
-import { getCombatStyleMod } from '@dlb/types/CombatStyleMod';
 import generateDimLink from '@dlb/services/dim/generateDimLoadoutLink';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
@@ -62,6 +60,8 @@ import {
 	getArmorStatMod,
 } from '@dlb/types/ArmorStatMod';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { getMod, getStatBonusesFromMod } from '@dlb/types/Mod';
 
 const calculateExtraMasterworkedStats = (
 	armorItems: ArmorItem[],
@@ -217,14 +217,14 @@ function Row(props: { row: ResultsTableLoadout }) {
 			};
 		}
 	});
-	const combatStyleModArmorStatMappings: Partial<
-		Record<ECombatStyleModId, ArmorStatMapping>
-	> = {};
+	const modArmorStatMapping: Partial<Record<EModId, ArmorStatMapping>> = {};
 	selectedCombatStyleMods.forEach((id) => {
-		const { bonuses } = getCombatStyleMod(id);
-		if (bonuses.length > 0) {
-			combatStyleModArmorStatMappings[id] =
-				getArmorStatMappingFromCombatStyleMods([id], selectedDestinyClass);
+		const bonuses = getStatBonusesFromMod(id);
+		if (bonuses && bonuses.length > 0) {
+			modArmorStatMapping[id] = getArmorStatMappingFromMods(
+				[id],
+				selectedDestinyClass
+			);
 		}
 	});
 
@@ -319,7 +319,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 								variant="contained"
 								target={'_blank'}
 								href={`${generateDimLink({
-									modIdList: selectedCombatStyleMods,
+									selectedModIdList: selectedCombatStyleMods,
 									armorList: row.armorItems,
 									fragmentIdList: fragmentIds,
 									aspectIdList: aspectIds,
@@ -454,40 +454,27 @@ function Row(props: { row: ResultsTableLoadout }) {
 									);
 								}
 							)}
-							{Object.keys(combatStyleModArmorStatMappings).map(
-								(combatStyleModId) => {
-									return (
-										<StatsBreakdown
-											key={combatStyleModId}
-											className="stats-breakdown"
-										>
-											<StatsBreakdownItem>
-												<BungieImage
-													width={20}
-													height={20}
-													src={
-														getCombatStyleMod(
-															combatStyleModId as ECombatStyleModId
-														).icon
-													}
-												/>
+							{Object.keys(modArmorStatMapping).map((modId) => {
+								return (
+									<StatsBreakdown key={modId} className="stats-breakdown">
+										<StatsBreakdownItem>
+											<BungieImage
+												width={20}
+												height={20}
+												src={getMod(modId as EModId).icon}
+											/>
+										</StatsBreakdownItem>
+										{ArmorStatIdList.map((armorStatId) => (
+											<StatsBreakdownItem
+												key={armorStatId}
+												className="stats-breakdown"
+											>
+												{modArmorStatMapping[modId][armorStatId]}
 											</StatsBreakdownItem>
-											{ArmorStatIdList.map((armorStatId) => (
-												<StatsBreakdownItem
-													key={armorStatId}
-													className="stats-breakdown"
-												>
-													{
-														combatStyleModArmorStatMappings[combatStyleModId][
-															armorStatId
-														]
-													}
-												</StatsBreakdownItem>
-											))}
-										</StatsBreakdown>
-									);
-								}
-							)}
+										))}
+									</StatsBreakdown>
+								);
+							})}
 						</LoadoutDetails>
 					</Collapse>
 				</TableCell>

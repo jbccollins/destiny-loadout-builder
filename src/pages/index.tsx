@@ -5,17 +5,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Loading from '@dlb/components/Loading';
-import Image from 'next/image';
-import {
-	Box,
-	Button,
-	Collapse,
-	Hidden,
-	IconButton,
-	styled,
-	useMediaQuery,
-	useTheme,
-} from '@mui/material';
+import { Box, Button, styled, useMediaQuery, useTheme } from '@mui/material';
 import StatSelection from '@dlb/components/StatSelection/StatSelection';
 import WebWorkerTest from '@dlb/components/WebWorkerTest/WebWorkerTest';
 
@@ -23,10 +13,7 @@ import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLo
 import { useAppSelector } from '@dlb/redux/hooks';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
-import ArmorSlotRestrictions from '@dlb/components/ArmorSlotRestrictions/ArmorSlotRestrictions';
-import React, { useEffect } from 'react';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import React from 'react';
 import DestinySubclassSelector from '@dlb/components/SubclassSelector/DestinySubclassSelector';
 import FragmentSelector from '@dlb/components/SubclassSelector/FragmentSelector';
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
@@ -38,7 +25,7 @@ import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
 import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
 import JumpSelector from '@dlb/components/SubclassSelector/JumpSelector';
 import SuperAbilitySelector from '@dlb/components/SubclassSelector/SuperAbilitySelector';
-import ArmorSlotModSelector from '@dlb/components/ModSelecton/ArmorSlotModsSelector';
+import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import TabContainer from '@dlb/components/TabContainer';
 import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 

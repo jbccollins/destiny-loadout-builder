@@ -41,6 +41,7 @@ import {
 } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import selectedJumpSlice from './features/selectedJump/selectedJumpSlice';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 
 export function makeStore() {
 	return configureStore({
@@ -81,6 +82,7 @@ let selectedDestinySubclassUuid = NIL;
 let selectedMasterworkAssumptionUuid = NIL;
 let selectedFragmentsUuid = NIL;
 let selectedCombatStyleModsUuid = NIL;
+let selectedArmorSlotModsUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
@@ -90,6 +92,7 @@ function handleChange() {
 		selectedDestinySubclass: { uuid: nextSelectedDestinySubclassUuid },
 		selectedFragments: { uuid: nextSelectedFragmentsUuid },
 		selectedCombatStyleMods: { uuid: nextSelectedCombatStyleModsUuid },
+		selectedArmorSlotMods: { uuid: nextSelectedArmorSlotModsUuid },
 		selectedMasterworkAssumption: {
 			uuid: nextSelectedMasterworkAssumptionUuid,
 		},
@@ -105,7 +108,8 @@ function handleChange() {
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
 		selectedDestinySubclassUuid !== nextSelectedDestinySubclassUuid ||
-		selectedCombatStyleModsUuid !== nextSelectedCombatStyleModsUuid;
+		selectedCombatStyleModsUuid !== nextSelectedCombatStyleModsUuid ||
+		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedDestinyClassUuid !== NIL &&
@@ -113,7 +117,8 @@ function handleChange() {
 		nextSelectedDestinySubclassUuid !== NIL &&
 		nextSelectedMasterworkAssumptionUuid !== NIL &&
 		nextSelectedCombatStyleModsUuid !== NIL &&
-		nextSelectedFragmentsUuid !== NIL;
+		nextSelectedFragmentsUuid !== NIL &&
+		nextSelectedArmorSlotModsUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> store is dirty <<<<<<<<<<<');
@@ -124,6 +129,7 @@ function handleChange() {
 		selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
 		selectedFragmentsUuid = nextSelectedFragmentsUuid;
 		selectedCombatStyleModsUuid = nextSelectedCombatStyleModsUuid;
+		selectedArmorSlotModsUuid = nextSelectedArmorSlotModsUuid;
 
 		// TODO: Move this out of the store file
 		const {
@@ -135,6 +141,7 @@ function handleChange() {
 			selectedFragments: { value: selectedFragments },
 			selectedCombatStyleMods: { value: selectedCombatStyleMods },
 			selectedDestinySubclass: { value: selectedDestinySubclass },
+			selectedArmorSlotMods: { value: selectedArmorSlotMods },
 		} = store.getState();
 
 		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -143,8 +150,12 @@ function handleChange() {
 			selectedFragments[elementId],
 			selectedDestinyClass
 		);
-		const combatStyleModArmorStatMapping = getArmorStatMappingFromMods(
-			selectedCombatStyleMods,
+		let mods = [...selectedCombatStyleMods];
+		ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+			mods = [...mods, ...selectedArmorSlotMods[armorSlotId]];
+		});
+		const modsArmorStatMapping = getArmorStatMappingFromMods(
+			mods,
 			selectedDestinyClass
 		);
 
@@ -166,7 +177,7 @@ function handleChange() {
 			desiredArmorStats,
 			armorItems: preProcessedArmor,
 			fragmentArmorStatMapping,
-			combatStyleModArmorStatMapping,
+			combatStyleModArmorStatMapping: modsArmorStatMapping,
 		});
 		console.log('>>>>>>>>>>> results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };

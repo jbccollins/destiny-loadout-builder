@@ -29,6 +29,7 @@ import {
 	getArmorStat,
 	getArmorStatMappingFromMods,
 	getArmorStatMappingFromFragments,
+	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
@@ -62,6 +63,7 @@ import {
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getMod, getStatBonusesFromMod } from '@dlb/types/Mod';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 
 const calculateExtraMasterworkedStats = (
 	armorItems: ArmorItem[],
@@ -217,16 +219,58 @@ function Row(props: { row: ResultsTableLoadout }) {
 			};
 		}
 	});
-	const modArmorStatMapping: Partial<Record<EModId, ArmorStatMapping>> = {};
+	const combatStyleModArmorStatMapping: Partial<
+		Record<EModId, ArmorStatMapping>
+	> = {};
 	selectedCombatStyleMods.forEach((id) => {
 		const bonuses = getStatBonusesFromMod(id);
 		if (bonuses && bonuses.length > 0) {
-			modArmorStatMapping[id] = getArmorStatMappingFromMods(
-				[id],
-				selectedDestinyClass
-			);
+			if (combatStyleModArmorStatMapping[id]) {
+				console.log('>>>>> SUMMING');
+				combatStyleModArmorStatMapping[id] = sumArmorStatMappings([
+					combatStyleModArmorStatMapping[id],
+					getArmorStatMappingFromMods([id], selectedDestinyClass),
+				]);
+			} else {
+				combatStyleModArmorStatMapping[id] = getArmorStatMappingFromMods(
+					[id],
+					selectedDestinyClass
+				);
+			}
 		}
 	});
+
+	const armorSlotModArmorStatMappping: Partial<
+		Record<EModId, ArmorStatMapping>
+	> = {};
+	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+		selectedArmorSlotMods[armorSlotId].forEach((id: EModId) => {
+			const bonuses = getStatBonusesFromMod(id);
+			if (bonuses && bonuses.length > 0) {
+				if (armorSlotModArmorStatMappping[id]) {
+					console.log('>>>>> SUMMING');
+					armorSlotModArmorStatMappping[id] = sumArmorStatMappings([
+						armorSlotModArmorStatMappping[id],
+						getArmorStatMappingFromMods([id], selectedDestinyClass),
+					]);
+				} else {
+					armorSlotModArmorStatMappping[id] = getArmorStatMappingFromMods(
+						[id],
+						selectedDestinyClass
+					);
+				}
+			}
+		});
+	});
+	// selectedCombatStyleMods.forEach((id) => {
+	// 	const bonuses = getStatBonusesFromMod(id);
+	// 	if (bonuses && bonuses.length > 0) {
+	// 		combatStyleModArmorStatMapping[id] = getArmorStatMappingFromMods(
+	// 			[id],
+	// 			selectedDestinyClass
+	// 		);
+	// 	}
+	// });
 
 	const getExtraMasterworkedStatsBreakdown = () => {
 		const extraMasterworkedStats = calculateExtraMasterworkedStats(
@@ -319,11 +363,12 @@ function Row(props: { row: ResultsTableLoadout }) {
 								variant="contained"
 								target={'_blank'}
 								href={`${generateDimLink({
-									selectedModIdList: selectedCombatStyleMods,
+									combatStyleModIdList: selectedCombatStyleMods,
+									armorStatModIdList: row.sortableFields.requiredStatModIdList,
+									armorSlotMods: selectedArmorSlotMods,
 									armorList: row.armorItems,
 									fragmentIdList: fragmentIds,
 									aspectIdList: aspectIds,
-									armorStatModIdList: row.sortableFields.requiredStatModIdList,
 									exoticArmor: exoticArmor,
 									stats: desiredArmorStats,
 									masterworkAssumption: masterworkAssumption,
@@ -334,7 +379,6 @@ function Row(props: { row: ResultsTableLoadout }) {
 									superAbilityId: selectedSuperAbility[destinySubclassId],
 									classAbilityId: selectedClassAbility[destinySubclassId],
 									grenadeId: selectedGrenade[elementId],
-									armorSlotMods: selectedArmorSlotMods,
 								})}`}
 							>
 								Open loadout in DIM
@@ -454,7 +498,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 									);
 								}
 							)}
-							{Object.keys(modArmorStatMapping).map((modId) => {
+							{Object.keys(armorSlotModArmorStatMappping).map((modId) => {
 								return (
 									<StatsBreakdown key={modId} className="stats-breakdown">
 										<StatsBreakdownItem>
@@ -469,7 +513,28 @@ function Row(props: { row: ResultsTableLoadout }) {
 												key={armorStatId}
 												className="stats-breakdown"
 											>
-												{modArmorStatMapping[modId][armorStatId]}
+												{armorSlotModArmorStatMappping[modId][armorStatId]}
+											</StatsBreakdownItem>
+										))}
+									</StatsBreakdown>
+								);
+							})}
+							{Object.keys(combatStyleModArmorStatMapping).map((modId) => {
+								return (
+									<StatsBreakdown key={modId} className="stats-breakdown">
+										<StatsBreakdownItem>
+											<BungieImage
+												width={20}
+												height={20}
+												src={getMod(modId as EModId).icon}
+											/>
+										</StatsBreakdownItem>
+										{ArmorStatIdList.map((armorStatId) => (
+											<StatsBreakdownItem
+												key={armorStatId}
+												className="stats-breakdown"
+											>
+												{combatStyleModArmorStatMapping[modId][armorStatId]}
 											</StatsBreakdownItem>
 										))}
 									</StatsBreakdown>

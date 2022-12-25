@@ -26,12 +26,15 @@ import { getJump } from '@dlb/types/Jump';
 import { getMelee } from '@dlb/types/Melee';
 import { getGrenade } from '@dlb/types/Grenade';
 import { SelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import {
+	ArmorSlotIdList,
+	ArmorSlotWithClassItemIdList,
+} from '@dlb/types/ArmorSlot';
 import { getMod } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
 
 export type DimLoadoutConfiguration = {
-	selectedModIdList: EModId[];
+	combatStyleModIdList: EModId[];
 	fragmentIdList: EFragmentId[];
 	aspectIdList: EAspectId[];
 	jumpId: EJumpId;
@@ -51,7 +54,7 @@ export type DimLoadoutConfiguration = {
 
 const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	const {
-		selectedModIdList,
+		combatStyleModIdList,
 		fragmentIdList,
 		aspectIdList,
 		armorStatModIdList,
@@ -71,11 +74,11 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	const fragmentHashes: number[] = fragmentIdList.map(
 		(fragmentId: EFragmentId) => getFragment(fragmentId).hash
 	);
-	const selectedModHashes: number[] = selectedModIdList
+	const selectedModHashes: number[] = combatStyleModIdList
 		.filter((modId) => modId !== null)
 		.map((modId: EModId) => getMod(modId).hash);
 	const armorSlotModHashes: number[] = [];
-	ArmorSlotIdList.forEach((armorSlotId) => {
+	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 		armorSlotMods[armorSlotId].forEach((id: EModId) => {
 			if (id !== null) {
 				armorSlotModHashes.push(getMod(id).hash);

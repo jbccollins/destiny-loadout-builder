@@ -13,6 +13,7 @@ import {
 	ArmorStatIdList,
 	ArmorStatIdToArmorStatModSplit,
 	ArmorStatMapping,
+	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import {
 	getArmorStatMappingFromArmorStatMods,
@@ -420,26 +421,6 @@ const getTotalStatTiers = (armorStatMapping: ArmorStatMapping): number => {
 	let res = 0;
 	ArmorStatIdList.forEach((armorStatId) => {
 		res += roundDown10(armorStatMapping[armorStatId]) / 10;
-	});
-	return res;
-};
-
-// Add up an arbitrary number of ArmorStatMappings
-const sumArmorStatMappings = (
-	armorStatMappings: ArmorStatMapping[]
-): ArmorStatMapping => {
-	const res: ArmorStatMapping = {
-		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 0,
-		[EArmorStatId.Recovery]: 0,
-		[EArmorStatId.Discipline]: 0,
-		[EArmorStatId.Intellect]: 0,
-		[EArmorStatId.Strength]: 0,
-	};
-	ArmorStatIdList.forEach((armorStatId) => {
-		armorStatMappings.forEach((armorStatMapping) => {
-			res[armorStatId] = res[armorStatId] + armorStatMapping[armorStatId];
-		});
 	});
 	return res;
 };

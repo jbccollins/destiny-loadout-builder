@@ -194,3 +194,23 @@ export const getArmorStatMappingFromMods = (
 		});
 	return armorStatMapping;
 };
+
+// Add up an arbitrary number of ArmorStatMappings
+export const sumArmorStatMappings = (
+	armorStatMappings: ArmorStatMapping[]
+): ArmorStatMapping => {
+	const res: ArmorStatMapping = {
+		[EArmorStatId.Mobility]: 0,
+		[EArmorStatId.Resilience]: 0,
+		[EArmorStatId.Recovery]: 0,
+		[EArmorStatId.Discipline]: 0,
+		[EArmorStatId.Intellect]: 0,
+		[EArmorStatId.Strength]: 0,
+	};
+	ArmorStatIdList.forEach((armorStatId) => {
+		armorStatMappings.forEach((armorStatMapping) => {
+			res[armorStatId] = res[armorStatId] + armorStatMapping[armorStatId];
+		});
+	});
+	return res;
+};

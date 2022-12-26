@@ -59,7 +59,7 @@ function CombatStyleModSelector() {
 					getCost={getCost}
 					index={index}
 					first={index === 0}
-					last={index === 1}
+					last={index === dropdownIndices.length - 1}
 				/>
 			))}
 		</Container>

@@ -1,9 +1,16 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
 import { IMod } from './generation';
-import { EArmorSlotId, EArmorStatId, EModSocketCategoryId } from './IdEnums';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EElementId,
+	EModSocketCategoryId,
+} from './IdEnums';
 import { EnumDictionary, StatBonus } from './globals';
 import { getDestinyClassAbilityStat } from './DestinyClass';
+import { permute } from '@dlb/utils/permutations';
+import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
 
 export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 
@@ -97,4 +104,119 @@ const ModIdToStatBonusMapping: Partial<EnumDictionary<EModId, StatBonus[]>> = {
 
 export const getStatBonusesFromMod = (id: EModId): StatBonus[] => {
 	return ModIdToStatBonusMapping[id] || null;
+};
+
+export type ArmorSlotIdToModIdListMapping = {
+	[key in EArmorSlotId]: EModId[];
+};
+
+type ArmorSlotCapacity = {
+	armorSlotId: EArmorSlotId;
+	elementId: EElementId;
+	capacity: number;
+};
+
+const defaultValidPlacement: Record<EArmorSlotId, EModId> = {
+	[EArmorSlotId.Head]: null,
+	[EArmorSlotId.Arm]: null,
+	[EArmorSlotId.Chest]: null,
+	[EArmorSlotId.Leg]: null,
+	[EArmorSlotId.ClassItem]: null,
+};
+
+// TODO: Probably have a valid placement look like
+// { [EArmorSlotId.Head]: {modId: EModId.ArgentOrdinance, remainingCapacity: 5, elementId: EElementId.Solar}}
+// Just for the sake of making the next step of figuring out where to place
+// stat mods a bit easier to reason about. The element isn't useful right now but it will
+// be useful for filtering out armor that will require an affinity change if it will be used.
+
+// Get a list of all the valid placements for the selected combat style mods
+export const getValidCombatStyleModArmorSlotPlacements = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping,
+	combatStyleModIdList: EModId[]
+): Partial<Record<EArmorSlotId, EModId>>[] => {
+	const validPlacements: Record<EArmorSlotId, EModId>[] = [];
+	// const armorSlotElementMapping: Record<EArmorSlotId, EElementId> = {};
+	// Sort by armor slots with the most remaining energy capacity to the least remaining capacity.
+	const armorSlotCapacities: ArmorSlotCapacity[] = [];
+	ArmorSlotWithClassItemIdList.forEach((armorSlotId: EArmorSlotId) => {
+		const modIdList: EModId[] = armorSlotMods[armorSlotId];
+		let elementId: EElementId = EElementId.Any;
+		let capacity = 10;
+		modIdList.forEach((id) => {
+			if (id === null) {
+				return;
+			}
+			const { cost, elementId: e } = getMod(id);
+			capacity -= cost;
+			//const e = getMod(id).elementId;
+			if (e !== null && e !== EElementId.Any) {
+				elementId = e;
+			}
+			// TODO: maybe break here
+		});
+		armorSlotCapacities.push({ capacity, elementId, armorSlotId });
+	});
+
+	const nonNullCombatStyleModIdList = combatStyleModIdList.filter(
+		(id) => id !== null
+	);
+	const offset =
+		ArmorSlotWithClassItemIdList.length - nonNullCombatStyleModIdList.length;
+
+	const combatStyleModIdListPermutations = permute(nonNullCombatStyleModIdList);
+	if (combatStyleModIdListPermutations.length === 0) {
+		return [{ ...defaultValidPlacement }];
+	}
+	let modIdPermutation: EModId[] = [];
+	let mod: IMod = null;
+	let armorSlotCapacity: ArmorSlotCapacity = null;
+	let isValidPermutation = false;
+	let validPlacement: Partial<Record<EArmorSlotId, EModId>> = {};
+	let offsetIndex = 0;
+	// TODO: Hardcoding 5 is bad
+	let paddedPermutation = [null, null, null, null, null];
+	do {
+		for (let i = 0; i < combatStyleModIdListPermutations.length; i++) {
+			modIdPermutation = combatStyleModIdListPermutations[i];
+			paddedPermutation = [null, null, null, null, null];
+			for (
+				let k = offsetIndex;
+				k - offsetIndex < modIdPermutation.length;
+				k++
+			) {
+				paddedPermutation[k] = modIdPermutation[k - offsetIndex];
+			}
+			isValidPermutation = true;
+			validPlacement = {};
+			for (let j = 0; j < paddedPermutation.length; j++) {
+				armorSlotCapacity = armorSlotCapacities[j];
+				if (paddedPermutation[j] !== null) {
+					mod = getMod(paddedPermutation[j]);
+					if (
+						mod.cost > armorSlotCapacity.capacity ||
+						(armorSlotCapacity.elementId !== EElementId.Any &&
+							armorSlotCapacity.elementId !== mod.elementId)
+					) {
+						isValidPermutation = false;
+						break;
+					}
+					validPlacement[armorSlotCapacity.armorSlotId] = mod.id;
+				} else {
+					validPlacement[armorSlotCapacity.armorSlotId] = null;
+				}
+			}
+			if (isValidPermutation) {
+				validPlacements.push({ ...validPlacement } as Record<
+					EArmorSlotId,
+					EModId
+				>);
+			}
+		}
+		offsetIndex++;
+	} while (offsetIndex <= offset);
+	console.log('>>>>>>>> valid placements:', validPlacements);
+	return validPlacements.length > 0
+		? validPlacements
+		: [{ ...defaultValidPlacement }];
 };

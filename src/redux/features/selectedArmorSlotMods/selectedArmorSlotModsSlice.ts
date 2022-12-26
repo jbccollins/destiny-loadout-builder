@@ -6,21 +6,18 @@ import { v4 as uuid, NIL } from 'uuid';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
-
-export type SelectedArmorSlotMods = {
-	[key in EArmorSlotId]: EModId[];
-};
+import { ArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 
 export interface SelectedArmorSlotModsState {
-	value: SelectedArmorSlotMods;
+	value: ArmorSlotIdToModIdListMapping;
 	uuid: string;
 }
 
-const generateIntitalState = (): SelectedArmorSlotMods => {
+const generateIntitalState = (): ArmorSlotIdToModIdListMapping => {
 	return ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
 		accumulator[currentValue] = [null, null];
 		return accumulator;
-	}, {}) as SelectedArmorSlotMods;
+	}, {}) as ArmorSlotIdToModIdListMapping;
 };
 
 const initialState: SelectedArmorSlotModsState = {
@@ -34,7 +31,7 @@ export const selectedArmorSlotModsSlice = createSlice({
 	reducers: {
 		setSelectedArmorSlotMods: (
 			state,
-			action: PayloadAction<SelectedArmorSlotMods>
+			action: PayloadAction<ArmorSlotIdToModIdListMapping>
 		) => {
 			state.value = action.payload;
 			state.uuid = uuid();

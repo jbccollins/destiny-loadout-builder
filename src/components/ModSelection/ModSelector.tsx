@@ -1,6 +1,5 @@
 import options from '@dlb/constants/DestinySubclassAndSuperAbilityOptions';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { SelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { getArmorSlot } from '@dlb/types/ArmorSlot';
 import { getStat } from '@dlb/types/ArmorStat';
 import { IMod } from '@dlb/types/generation';

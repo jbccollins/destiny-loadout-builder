@@ -42,6 +42,7 @@ import {
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import selectedJumpSlice from './features/selectedJump/selectedJumpSlice';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import { getValidCombatStyleModArmorSlotPlacements } from '@dlb/types/Mod';
 
 export function makeStore() {
 	return configureStore({
@@ -159,9 +160,9 @@ function handleChange() {
 			selectedDestinyClass
 		);
 
-		console.log(
-			'>>>>>>>>>>>>>>>>>>> fragmentArmorStatMapping',
-			fragmentArmorStatMapping
+		getValidCombatStyleModArmorSlotPlacements(
+			selectedArmorSlotMods,
+			selectedCombatStyleMods
 		);
 
 		// TODO: no need to preProcessArmor when only the stat slider has changed.

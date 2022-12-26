@@ -25,12 +25,11 @@ import { getSuperAbility } from '@dlb/types/SuperAbility';
 import { getJump } from '@dlb/types/Jump';
 import { getMelee } from '@dlb/types/Melee';
 import { getGrenade } from '@dlb/types/Grenade';
-import { SelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import {
 	ArmorSlotIdList,
 	ArmorSlotWithClassItemIdList,
 } from '@dlb/types/ArmorSlot';
-import { getMod } from '@dlb/types/Mod';
+import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
 
 export type DimLoadoutConfiguration = {
@@ -49,7 +48,7 @@ export type DimLoadoutConfiguration = {
 	destinySubclassId: EDestinySubclassId;
 	destinyClassId: EDestinyClassId;
 	armorList: IArmorItem[];
-	armorSlotMods: SelectedArmorSlotMods;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
 };
 
 const generateDimLink = (configuration: DimLoadoutConfiguration): string => {

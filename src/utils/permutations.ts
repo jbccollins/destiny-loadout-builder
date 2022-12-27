@@ -1,4 +1,7 @@
 // https://stackoverflow.com/a/37580979
+
+import { uniqWith, isEqual } from 'lodash';
+
 // Find all the permutations of an array
 export function permute<T>(permutation: T[]) {
 	if (permutation.length > 5) {
@@ -28,5 +31,7 @@ export function permute<T>(permutation: T[]) {
 			++i;
 		}
 	}
-	return result;
+
+	// TODO: This is inefficient. We should just generate only unique permutations in the first place.
+	return uniqWith(result, isEqual);
 }

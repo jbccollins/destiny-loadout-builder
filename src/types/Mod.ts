@@ -135,6 +135,9 @@ export const getValidCombatStyleModArmorSlotPlacements = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping,
 	combatStyleModIdList: EModId[]
 ): Partial<Record<EArmorSlotId, EModId>>[] => {
+	if (combatStyleModIdList.filter((modId) => modId !== null).length === 0) {
+		return [{ ...defaultValidPlacement }];
+	}
 	const validPlacements: Record<EArmorSlotId, EModId>[] = [];
 	// const armorSlotElementMapping: Record<EArmorSlotId, EElementId> = {};
 	// Sort by armor slots with the most remaining energy capacity to the least remaining capacity.
@@ -158,63 +161,55 @@ export const getValidCombatStyleModArmorSlotPlacements = (
 		armorSlotCapacities.push({ capacity, elementId, armorSlotId });
 	});
 
-	const nonNullCombatStyleModIdList = combatStyleModIdList.filter(
-		(id) => id !== null
-	);
-	const offset =
-		ArmorSlotWithClassItemIdList.length - nonNullCombatStyleModIdList.length;
-
-	const combatStyleModIdListPermutations = permute(nonNullCombatStyleModIdList);
-	if (combatStyleModIdListPermutations.length === 0) {
-		return [{ ...defaultValidPlacement }];
+	// const nonNullCombatStyleModIdList = combatStyleModIdList.filter(
+	// 	(id) => id !== null
+	// );
+	const paddedCombatStyleModIdList = [null, null, null, null, null];
+	for (let i = 0; i < combatStyleModIdList.length; i++) {
+		paddedCombatStyleModIdList[i] = combatStyleModIdList[i];
 	}
-	let modIdPermutation: EModId[] = [];
+
+	const combatStyleModIdListPermutations = permute(paddedCombatStyleModIdList);
+	// if (
+	// 	combatStyleModIdListPermutations.filter((modId) => modId !== null)
+	// 		.length === 0
+	// ) {
+	// 	return [{ ...defaultValidPlacement }];
+	// }
+	let modIdListPermutation: EModId[] = [];
 	let mod: IMod = null;
 	let armorSlotCapacity: ArmorSlotCapacity = null;
 	let isValidPermutation = false;
 	let validPlacement: Partial<Record<EArmorSlotId, EModId>> = {};
-	let offsetIndex = 0;
-	// TODO: Hardcoding 5 is bad
-	let paddedPermutation = [null, null, null, null, null];
-	do {
-		for (let i = 0; i < combatStyleModIdListPermutations.length; i++) {
-			modIdPermutation = combatStyleModIdListPermutations[i];
-			paddedPermutation = [null, null, null, null, null];
-			for (
-				let k = offsetIndex;
-				k - offsetIndex < modIdPermutation.length;
-				k++
-			) {
-				paddedPermutation[k] = modIdPermutation[k - offsetIndex];
-			}
-			isValidPermutation = true;
-			validPlacement = {};
-			for (let j = 0; j < paddedPermutation.length; j++) {
-				armorSlotCapacity = armorSlotCapacities[j];
-				if (paddedPermutation[j] !== null) {
-					mod = getMod(paddedPermutation[j]);
-					if (
-						mod.cost > armorSlotCapacity.capacity ||
-						(armorSlotCapacity.elementId !== EElementId.Any &&
-							armorSlotCapacity.elementId !== mod.elementId)
-					) {
-						isValidPermutation = false;
-						break;
-					}
-					validPlacement[armorSlotCapacity.armorSlotId] = mod.id;
-				} else {
-					validPlacement[armorSlotCapacity.armorSlotId] = null;
+
+	for (let i = 0; i < combatStyleModIdListPermutations.length; i++) {
+		modIdListPermutation = combatStyleModIdListPermutations[i];
+		isValidPermutation = true;
+		validPlacement = {};
+		for (let j = 0; j < modIdListPermutation.length; j++) {
+			armorSlotCapacity = armorSlotCapacities[j];
+			if (modIdListPermutation[j] !== null) {
+				mod = getMod(modIdListPermutation[j]);
+				if (
+					mod.cost > armorSlotCapacity.capacity ||
+					(armorSlotCapacity.elementId !== EElementId.Any &&
+						armorSlotCapacity.elementId !== mod.elementId)
+				) {
+					isValidPermutation = false;
+					break;
 				}
-			}
-			if (isValidPermutation) {
-				validPlacements.push({ ...validPlacement } as Record<
-					EArmorSlotId,
-					EModId
-				>);
+				validPlacement[armorSlotCapacity.armorSlotId] = mod.id;
+			} else {
+				validPlacement[armorSlotCapacity.armorSlotId] = null;
 			}
 		}
-		offsetIndex++;
-	} while (offsetIndex <= offset);
+		if (isValidPermutation) {
+			validPlacements.push({ ...validPlacement } as Record<
+				EArmorSlotId,
+				EModId
+			>);
+		}
+	}
 	console.log('>>>>>>>> valid placements:', validPlacements);
 	return validPlacements.length > 0
 		? validPlacements

@@ -8,8 +8,13 @@ import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-ut
 import {
 	EArmorStatId,
 	EArmorStatModId,
+	EDestinyClassId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
+import {
+	DefaultArmorStatMapping,
+	getArmorStatMappingFromFragments,
+} from '@dlb/types/ArmorStat';
 
 type ProcessArmorTestCase = {
 	name: string;
@@ -30,6 +35,11 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
+			fragmentArmorStatMapping: getArmorStatMappingFromFragments(
+				[],
+				EDestinyClassId.Warlock
+			),
+			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			armorItems: [
 				[
 					{
@@ -75,6 +85,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [],
 				metadata: {
+					requiredStatModIdList: [],
 					totalModCost: 0,
 					totalStatTiers: 24,
 					wastedStats: 32,
@@ -102,6 +113,11 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
+			fragmentArmorStatMapping: getArmorStatMappingFromFragments(
+				[],
+				EDestinyClassId.Warlock
+			),
+			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			armorItems: [
 				[
 					{
@@ -152,6 +168,13 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EArmorStatModId.MajorMobility,
 				],
 				metadata: {
+					requiredStatModIdList: [
+						EArmorStatModId.MajorMobility,
+						EArmorStatModId.MajorMobility,
+						EArmorStatModId.MajorMobility,
+						EArmorStatModId.MajorMobility,
+						EArmorStatModId.MajorMobility,
+					],
 					totalModCost: 15,
 					totalStatTiers: 30,
 					wastedStats: 22,

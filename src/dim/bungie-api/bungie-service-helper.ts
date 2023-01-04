@@ -11,7 +11,7 @@ import {
 	createHttpClient,
 	HttpStatusError,
 	responsivelyThrottleHttpClient,
-	sentryTraceHttpClient
+	sentryTraceHttpClient,
 } from './http-client';
 import { rateLimitedFetch } from './rate-limiter';
 
@@ -160,6 +160,9 @@ export function handleErrors(error: Error) {
 				throw new Error('BungieService.AppNotPermitted');
 
 			case PlatformErrorCodes.SystemDisabled:
+				alert(
+					'The Bungie API is down for maintainence. This app will not work until the Bungie API is back up. Check @BungieHelp on twitter for status updates.'
+				);
 				throw new Error('BungieService.Maintenance');
 
 			case PlatformErrorCodes.ThrottleLimitExceededMinutes:

@@ -42,7 +42,10 @@ import {
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import selectedJumpSlice from './features/selectedJump/selectedJumpSlice';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
-import { getValidCombatStyleModArmorSlotPlacements } from '@dlb/types/Mod';
+import {
+	getValidCombatStyleModArmorSlotPlacements,
+	hasValidModPermutation,
+} from '@dlb/types/Mod';
 
 export function makeStore() {
 	return configureStore({
@@ -165,6 +168,8 @@ function handleChange() {
 			selectedCombatStyleMods
 		);
 
+		hasValidModPermutation(selectedArmorSlotMods, selectedCombatStyleMods);
+
 		// TODO: no need to preProcessArmor when only the stat slider has changed.
 		// Maybe we don't need to trigger that fake initial dispatch in
 		// the slider component if we fix this?
@@ -178,7 +183,7 @@ function handleChange() {
 			desiredArmorStats,
 			armorItems: preProcessedArmor,
 			fragmentArmorStatMapping,
-			combatStyleModArmorStatMapping: modsArmorStatMapping,
+			modArmorStatMapping: modsArmorStatMapping,
 		});
 		console.log('>>>>>>>>>>> results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };

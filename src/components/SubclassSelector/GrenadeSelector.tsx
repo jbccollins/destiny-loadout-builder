@@ -55,9 +55,7 @@ function GrenadeSelector() {
 	// TODO: Memoize these options
 	const options: Option[] = getGrenadeIdsByElementId(elementId).map(
 		(grenadeId) => {
-			const grenade = getGrenade(grenadeId);
 			const { name, id, icon, description } = getGrenade(grenadeId);
-			console.log(grenadeId, grenade);
 			return {
 				label: name,
 				icon,

@@ -604,15 +604,6 @@ const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/cf0315c1051a75b37620efa79d5a8719.jpg',
 		hash: 1727069375,
 	},
-	[EFragmentId.SparkOfVolts]: {
-		id: EFragmentId.SparkOfVolts,
-		name: 'Spark of Volts',
-		description: 'Finishers make you amplified.',
-		element: EElementId.Arc,
-		bonuses: [],
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/77e0281c6537838e182329c84ff77f1a.jpg',
-		hash: 3277705904,
-	},
 };
 
 export const getFragment = (id: EFragmentId): IFragment =>

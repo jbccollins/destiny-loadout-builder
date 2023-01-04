@@ -192,7 +192,7 @@ export type DoProcessArmorParams = {
 	armorItems: StrictArmorItems;
 	masterworkAssumption: EMasterworkAssumption;
 	fragmentArmorStatMapping: ArmorStatMapping;
-	combatStyleModArmorStatMapping: ArmorStatMapping;
+	modArmorStatMapping: ArmorStatMapping;
 };
 
 /**
@@ -206,7 +206,7 @@ export const doProcessArmor = ({
 	armorItems,
 	masterworkAssumption,
 	fragmentArmorStatMapping,
-	combatStyleModArmorStatMapping,
+	modArmorStatMapping,
 }: DoProcessArmorParams): ProcessArmorOutput => {
 	const sumOfSeenStats =
 		masterworkAssumption !== EMasterworkAssumption.None
@@ -216,7 +216,7 @@ export const doProcessArmor = ({
 		sumOfSeenStats[i] =
 			sumOfSeenStats[i] +
 			fragmentArmorStatMapping[id] +
-			combatStyleModArmorStatMapping[id];
+			modArmorStatMapping[id];
 	});
 	return processArmor({
 		masterworkAssumption,
@@ -277,7 +277,7 @@ const _processArmorBaseCase = ({
 			armorIdList,
 			armorStatModIdList: requiredStatMods,
 			metadata: {
-				requiredStatModIdList: requiredStatMods,
+				requiredStatModIdList: requiredStatMods, // TODO: Why is this necessary when it's returned right above here?
 				totalModCost: getTotalModCost(requiredStatMods),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
 				wastedStats: getWastedStats(totalArmorStatMapping),

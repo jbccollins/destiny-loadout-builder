@@ -191,7 +191,8 @@ export const getValidCombatStyleModArmorSlotPlacements = (
 				mod = getMod(modIdListPermutation[j]);
 				if (
 					mod.cost > armorSlotCapacity.capacity ||
-					(armorSlotCapacity.elementId !== EElementId.Any &&
+					(mod.elementId !== EElementId.Any &&
+						armorSlotCapacity.elementId !== EElementId.Any &&
 						armorSlotCapacity.elementId !== mod.elementId)
 				) {
 					isValidPermutation = false;
@@ -236,24 +237,28 @@ forEach(armorSlot) { // head, arm, legs....
 		}
 	}
 }
-
-function hasOneValidPerumtation() {
-	// 1. Get the element and cost for each slot. The cost is the sum of the cost for all the armorSlotMods in that slot
-	// 2. Group slots into arrays by element that are sorted in ascending order by cost
-	// 3. For each combat style mod pick the highest cost armorSlot with a matching element to insert it into.
-	// 4. If no matching element armor slot exists then pick the the highest cost armorSlot from the "any" element slots
-	
-	make sure to do all of this by first processing the combat style mods that require a specific element. do the any element
-	combat style mods last.
-}
-
 */
 
 // Determine if there is at least one valid mod permutation
+/*
+	// 1. Get the element and capacity for each slot. The capacity is 10 - the sum of the cost for all the armorSlotMods in that slot
+	// 2. Group slots into arrays by element that are sorted from lowest to highest capacity
+	// 3. For each combat style mod pick the lowest capacity armorSlot with a matching element to insert that mod.
+	// 4. If no matching element armor slot exists then pick the the lowest capacity armorSlot from the "any" element slots
+	
+	make sure to do all of this by first processing the combat style mods that require a specific element. do the any element
+	combat style mods last.
+*/
 export const hasValidModPermutation = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping,
 	combatStyleModIdList: EModId[]
 ): boolean => {
+	const _combatStyleMods = combatStyleModIdList
+		.filter((x) => x !== null)
+		.map((modId) => getMod(modId));
+	if (_combatStyleMods.length === 0) {
+		return true;
+	}
 	const armorSlotCapacities = getArmorSlotElementCapacity(armorSlotMods);
 	// TODO: We probably want to pre-calculate the sortedArmorSlotCapacities and pass that in as a param
 	const sortedArmorSlotCapacities: Partial<
@@ -277,12 +282,47 @@ export const hasValidModPermutation = (
 			});
 		}
 	});
+	const elementalCombatStyleMods = _combatStyleMods.filter(
+		(x) => x.elementId !== EElementId.Any
+	);
+	const nonElementalCombatStyleMods = _combatStyleMods.filter(
+		(x) => x.elementId === EElementId.Any
+	);
+	const hasValidElementalCombatStyleModPermutation = placeCombatStyleMods(
+		sortedArmorSlotCapacities,
+		elementalCombatStyleMods
+	);
+	if (!hasValidElementalCombatStyleModPermutation) {
+		return false;
+	}
+
+	// Group all of the unused armor slots under the any element now, regardless of what element
+	// the armor slot is forced to have. Combat style mods with any element can go in a solar armor slot
+	let remainingArmorSlotCapacities = [];
+	Object.values(sortedArmorSlotCapacities).forEach(
+		(x) =>
+			(remainingArmorSlotCapacities = remainingArmorSlotCapacities.concat(x))
+	);
+	const remainingSortedArmorSlotCapacities: Partial<
+		Record<EElementId, ArmorSlotCapacity[]>
+	> = {
+		[EElementId.Any]: remainingArmorSlotCapacities.sort((a, b) => {
+			return a.capacity - b.capacity;
+		}),
+	};
+	return placeCombatStyleMods(
+		remainingSortedArmorSlotCapacities,
+		nonElementalCombatStyleMods
+	);
+};
+
+const placeCombatStyleMods = (
+	sortedArmorSlotCapacities: Partial<Record<EElementId, ArmorSlotCapacity[]>>,
+	mods: IMod[]
+): boolean => {
 	let isValid = true;
-	for (const modId of combatStyleModIdList) {
-		if (modId === null) {
-			continue;
-		}
-		const { elementId, cost } = getMod(modId);
+	for (const mod of mods) {
+		const { elementId, cost } = mod;
 		if (sortedArmorSlotCapacities[elementId]?.length > 0) {
 			let _isValid = false;
 			for (let i = 0; i < sortedArmorSlotCapacities[elementId].length; i++) {
@@ -296,7 +336,11 @@ export const hasValidModPermutation = (
 				continue;
 			}
 		}
-		if (sortedArmorSlotCapacities[EElementId.Any]?.length > 0) {
+		if (
+			// We already checked any above if the mod element was any
+			elementId !== EElementId.Any &&
+			sortedArmorSlotCapacities[EElementId.Any]?.length > 0
+		) {
 			let _isValid = false;
 			for (
 				let i = 0;
@@ -310,6 +354,7 @@ export const hasValidModPermutation = (
 				}
 			}
 			if (!_isValid) {
+				console.log('>>>>>>>>+ isValid', _isValid);
 				return false;
 			}
 		} else {

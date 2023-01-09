@@ -145,6 +145,7 @@ const getArmorSlotElementCapacity = (
 			}
 			// TODO: maybe break here if the element is anything other than Any
 		});
+
 		armorSlotCapacities[armorSlotId] = { capacity, elementId, armorSlotId };
 	});
 	return armorSlotCapacities as Record<EArmorSlotId, ArmorSlotCapacity>;
@@ -297,7 +298,8 @@ export const hasValidModPermutation = (
 	}
 
 	// Group all of the unused armor slots under the any element now, regardless of what element
-	// the armor slot is forced to have. Combat style mods with any element can go in a solar armor slot
+	// the armor slot has. Combat style mods with any element can go in a solar armor slot, for example,
+	// so at this point the slot element does not matter
 	let remainingArmorSlotCapacities = [];
 	Object.values(sortedArmorSlotCapacities).forEach(
 		(x) =>

@@ -43,9 +43,12 @@ import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import selectedJumpSlice from './features/selectedJump/selectedJumpSlice';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
+	ArmorSlotIdToArmorSlotModIdListMapping,
+	ArmorSlotIdToModIdListMapping,
 	getValidCombatStyleModArmorSlotPlacements,
 	hasValidModPermutation,
 } from '@dlb/types/Mod';
+import { EModId } from '@dlb/generated/mod/EModId';
 
 export function makeStore() {
 	return configureStore({
@@ -169,6 +172,11 @@ function handleChange() {
 		);
 
 		hasValidModPermutation(selectedArmorSlotMods, selectedCombatStyleMods);
+		const disabledMods = getDisabledMods(
+			selectedArmorSlotMods,
+			selectedCombatStyleMods
+		);
+		console.log('>>>>>+ disabledMods', disabledMods);
 
 		// TODO: no need to preProcessArmor when only the stat slider has changed.
 		// Maybe we don't need to trigger that fake initial dispatch in
@@ -208,6 +216,37 @@ function handleChange() {
 
 const unsubscribe = store.subscribe(handleChange);
 // unsubscribe();
+
+// TODO: Move this helper function out of the store
+// This is not vey efficient. It will do a bunch of duplicate checks
+// and doesn't do the very cheap sanity checks of just looking at elements
+// and cost. Those could be big optimizations if this ends up being very slow.
+const getDisabledMods = (
+	selectedArmorSlotMods: ArmorSlotIdToModIdListMapping,
+	selectedCombatStyleMods: EModId[]
+): Partial<Record<EModId, boolean>> => {
+	const disabledMods: Partial<Record<EModId, boolean>> = {};
+	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+		selectedArmorSlotMods[armorSlotId].forEach((_, i) => {
+			ArmorSlotIdToArmorSlotModIdListMapping[armorSlotId].forEach((modId) => {
+				const potentialSelectedArmorSlotMods = { ...selectedArmorSlotMods };
+				potentialSelectedArmorSlotMods[armorSlotId] = [
+					...selectedArmorSlotMods[armorSlotId],
+				];
+				potentialSelectedArmorSlotMods[armorSlotId][i] = modId;
+				const isValid = hasValidModPermutation(
+					potentialSelectedArmorSlotMods,
+					selectedCombatStyleMods
+				);
+				if (!isValid) {
+					console.log('>>>>>>+ !isValid', armorSlotId, modId);
+					disabledMods[modId] = true;
+				}
+			});
+		});
+	});
+	return disabledMods;
+};
 
 export type AppState = ReturnType<typeof store.getState>;
 

@@ -9,10 +9,12 @@ import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
+import { EArmorSlotId, EElementId } from '@dlb/types/IdEnums';
 import ModSelector from './ModSelector';
-import { ArmorSlotIdToArmorSlotModIdListMapping } from '@dlb/types/Mod';
+import { ArmorSlotIdToArmorSlotModIdListMapping, getMod } from '@dlb/types/Mod';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { IMod } from '@dlb/types/generation';
+import { selectDisabledArmorSlotMods } from '@dlb/redux/features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));
@@ -33,6 +35,7 @@ type Option = {
 };
 
 function ArmorSlotModSelector() {
+	const disabledMods = useAppSelector(selectDisabledArmorSlotMods);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const dispatch = useAppDispatch();
 
@@ -54,6 +57,33 @@ function ArmorSlotModSelector() {
 		dispatch(setSelectedArmorSlotMods(armorSlotModIds));
 	};
 
+	const isModDisabled = (
+		mod: IMod,
+		index: number,
+		selectedMods: EModId[]
+	): boolean => {
+		if (disabledMods[mod.id] && disabledMods[mod.id][index]) {
+			return true;
+		}
+		let otherSelectedModsElementId: EElementId = EElementId.Any;
+		for (let i = 0; i < selectedMods.length; i++) {
+			const modId = selectedMods[i];
+			if (modId === null || i === index) {
+				continue;
+			}
+			const elementId = getMod(modId).elementId;
+			if (elementId !== EElementId.Any) {
+				otherSelectedModsElementId = getMod(modId).elementId;
+				break;
+			}
+		}
+		return (
+			!(mod.elementId === EElementId.Any) &&
+			!(mod.elementId === otherSelectedModsElementId) &&
+			!(otherSelectedModsElementId === EElementId.Any)
+		);
+	};
+
 	return (
 		<>
 			<Container>
@@ -65,6 +95,13 @@ function ArmorSlotModSelector() {
 						<IconDropdownContainer key={armorSlotId}>
 							{dropdownIndices.map((index) => (
 								<ModSelector
+									isModDisabled={(mod: IMod) =>
+										isModDisabled(
+											mod,
+											index,
+											selectedArmorSlotMods[armorSlotId]
+										)
+									}
 									enforceMatchingElementRule
 									key={index}
 									selectedDestinyClass={selectedDestinyClass}

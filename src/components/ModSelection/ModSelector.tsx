@@ -1,5 +1,6 @@
 import options from '@dlb/constants/DestinySubclassAndSuperAbilityOptions';
 import { EModId } from '@dlb/generated/mod/EModId';
+import { selectDisabledCombatStyleMods } from '@dlb/redux/features/disabledCombatStyleMods/disabledCombatStyleModsSlice';
 import { getArmorSlot } from '@dlb/types/ArmorSlot';
 import { getStat } from '@dlb/types/ArmorStat';
 import { IMod } from '@dlb/types/generation';
@@ -14,6 +15,7 @@ import { getModCategory } from '@dlb/types/ModCategory';
 import { Avatar, Box, Chip, Typography } from '@mui/material';
 import { first, last } from 'lodash';
 import { ReactNode } from 'react';
+import { useSelector } from 'react-redux';
 import IconAutocompleteDropdown from '../IconAutocompleteDropdown';
 
 type Option = {
@@ -118,6 +120,7 @@ const ModSelector = ({
 	getTitle,
 	selectedDestinyClass,
 	enforceMatchingElementRule,
+	isModDisabled,
 }: {
 	selectedMods: EModId[];
 	availableMods: EModId[];
@@ -131,20 +134,9 @@ const ModSelector = ({
 	last?: boolean;
 	selectedDestinyClass: EDestinyClassId;
 	enforceMatchingElementRule: boolean;
+	isModDisabled: (mod: IMod) => boolean;
 }) => {
 	const selectedMod = getMod(selectedMods[index]);
-	let otherSelectedModsElementId: EElementId = EElementId.Any;
-	for (let i = 0; i < selectedMods.length; i++) {
-		const modId = selectedMods[i];
-		if (modId === null || i === index) {
-			continue;
-		}
-		const elementId = getMod(modId).elementId;
-		if (elementId !== EElementId.Any) {
-			otherSelectedModsElementId = getMod(modId).elementId;
-			break;
-		}
-	}
 	const options: Option[] = [
 		{ ...placeholderOption, bonuses: null },
 		...availableMods
@@ -156,12 +148,7 @@ const ModSelector = ({
 					// TODO: This name thing is fucking dumb but it's to prevent duplicate keys.
 					// Since the Autocomplete in it's infintite wisdom uses the name as a key.
 					name: mod.name + (mod.isArtifactMod ? ' (Artifact)' : ''),
-					disabled:
-						enforceMatchingElementRule &&
-						!(mod.elementId === EElementId.Any) &&
-						!(mod.elementId === otherSelectedModsElementId) &&
-						!(otherSelectedModsElementId === EElementId.Any),
-					//disabled: armorSlotModIds.indexOf(x.id as EModId) > -1,
+					disabled: isModDisabled(mod),
 				};
 			})
 			// TODO: Sort this so that the general mods always appear at the top right after no option

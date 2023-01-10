@@ -23,6 +23,12 @@ import selectedSuperAbilityReducer from './features/selectedSuperAbility/selecte
 import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
 import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import disabledCombatStyleModsReducer, {
+	setDisabledCombatStyleMods,
+} from './features/disabledCombatStyleMods/disabledCombatStyleModsSlice';
+import disabledArmorSlotModsReducere, {
+	setDisabledArmorSlotMods,
+} from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
 
 import processedArmorReducer, {
 	setProcessedArmor,
@@ -40,11 +46,11 @@ import {
 	getArmorStatMappingFromFragments,
 } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import selectedJumpSlice from './features/selectedJump/selectedJumpSlice';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorSlotIdToArmorSlotModIdListMapping,
 	ArmorSlotIdToModIdListMapping,
+	CombatStyleModIdList,
 	getValidCombatStyleModArmorSlotPlacements,
 	hasValidModPermutation,
 } from '@dlb/types/Mod';
@@ -75,6 +81,8 @@ export function makeStore() {
 			selectedJump: selectedJumpReducer,
 			selectedArmorSlotMods: selectedArmorSlotModsReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
+			disabledCombatStyleMods: disabledCombatStyleModsReducer,
+			disabledArmorSlotMods: disabledArmorSlotModsReducere,
 		},
 	});
 }
@@ -172,11 +180,19 @@ function handleChange() {
 		);
 
 		hasValidModPermutation(selectedArmorSlotMods, selectedCombatStyleMods);
-		const disabledMods = getDisabledMods(
+		const disabledArmorSlotMods = getDisabledArmorSlotMods(
 			selectedArmorSlotMods,
 			selectedCombatStyleMods
 		);
-		console.log('>>>>>+ disabledMods', disabledMods);
+		console.log('>>>>>+ disabledArmorSlotMods', disabledArmorSlotMods);
+		store.dispatch(setDisabledArmorSlotMods(disabledArmorSlotMods));
+
+		const disabledCombatStyleMods = getDisabledCombatStyleMods(
+			selectedArmorSlotMods,
+			selectedCombatStyleMods
+		);
+		console.log('>>>>>+ disabledCombatStyleMods', disabledCombatStyleMods);
+		store.dispatch(setDisabledCombatStyleMods(disabledCombatStyleMods));
 
 		// TODO: no need to preProcessArmor when only the stat slider has changed.
 		// Maybe we don't need to trigger that fake initial dispatch in
@@ -221,11 +237,11 @@ const unsubscribe = store.subscribe(handleChange);
 // This is not vey efficient. It will do a bunch of duplicate checks
 // and doesn't do the very cheap sanity checks of just looking at elements
 // and cost. Those could be big optimizations if this ends up being very slow.
-const getDisabledMods = (
+const getDisabledArmorSlotMods = (
 	selectedArmorSlotMods: ArmorSlotIdToModIdListMapping,
 	selectedCombatStyleMods: EModId[]
-): Partial<Record<EModId, boolean>> => {
-	const disabledMods: Partial<Record<EModId, boolean>> = {};
+): Partial<Record<EModId, Record<number, boolean>>> => {
+	const disabledMods: Partial<Record<EModId, Record<number, boolean>>> = {};
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 		selectedArmorSlotMods[armorSlotId].forEach((_, i) => {
 			ArmorSlotIdToArmorSlotModIdListMapping[armorSlotId].forEach((modId) => {
@@ -239,10 +255,36 @@ const getDisabledMods = (
 					selectedCombatStyleMods
 				);
 				if (!isValid) {
-					console.log('>>>>>>+ !isValid', armorSlotId, modId);
-					disabledMods[modId] = true;
+					console.log('>>>>>>+ !isValid armorSlot', armorSlotId, modId, i);
+
+					if (!disabledMods[modId]) {
+						disabledMods[modId] = {};
+					}
+					disabledMods[modId][i] = true;
 				}
 			});
+		});
+	});
+	return disabledMods;
+};
+
+const getDisabledCombatStyleMods = (
+	selectedArmorSlotMods: ArmorSlotIdToModIdListMapping,
+	selectedCombatStyleMods: EModId[]
+): Partial<Record<EModId, boolean>> => {
+	const disabledMods: Partial<Record<EModId, boolean>> = {};
+	selectedCombatStyleMods.forEach((_, i) => {
+		CombatStyleModIdList.forEach((modId) => {
+			const potentialSelectedCombatStyleMods = [...selectedCombatStyleMods];
+			potentialSelectedCombatStyleMods[i] = modId;
+			const isValid = hasValidModPermutation(
+				selectedArmorSlotMods,
+				potentialSelectedCombatStyleMods
+			);
+			if (!isValid) {
+				console.log('>>>>>>+ !isValid combatStyle', modId);
+				disabledMods[modId] = true;
+			}
 		});
 	});
 	return disabledMods;

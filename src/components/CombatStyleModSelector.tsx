@@ -8,6 +8,8 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { CombatStyleModIdList } from '@dlb/types/Mod';
 import ModSelector from './ModSelection/ModSelector';
+import { selectDisabledCombatStyleMods } from '@dlb/redux/features/disabledCombatStyleMods/disabledCombatStyleModsSlice';
+import { IMod } from '@dlb/types/generation';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));
@@ -29,6 +31,7 @@ type Option = {
 
 function CombatStyleModSelector() {
 	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
+	const disabledMods = useAppSelector(selectDisabledCombatStyleMods);
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.name;
@@ -42,11 +45,15 @@ function CombatStyleModSelector() {
 		modIds[index] = combatStyleModId;
 		dispatch(setSelectedCombatStyleMods(modIds));
 	};
+
+	const isModDisabled = (mod: IMod): boolean => disabledMods[mod.id];
+
 	const dropdownIndices = selectedCombatStyleMods.map((_, i) => i);
 	return (
 		<Container>
 			{dropdownIndices.map((index) => (
 				<ModSelector
+					isModDisabled={isModDisabled}
 					enforceMatchingElementRule={false}
 					key={index}
 					selectedDestinyClass={selectedDestinyClass}

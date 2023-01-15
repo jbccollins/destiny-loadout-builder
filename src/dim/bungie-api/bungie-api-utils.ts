@@ -1,6 +1,5 @@
 import { HttpClientConfig } from 'bungie-api-ts-no-const-enum/http';
 
-// TODO: Put this behind a SECRET environment variable
 export const API_KEY = process.env.NEXT_PUBLIC_BNET_API_KEY;
 
 export function bungieApiUpdate(
@@ -10,7 +9,7 @@ export function bungieApiUpdate(
 	return {
 		method: 'POST',
 		url: `https://www.bungie.net${path}`,
-		body: data
+		body: data,
 	};
 }
 
@@ -21,7 +20,7 @@ export function bungieApiQuery(
 	return {
 		method: 'GET',
 		url: `https://www.bungie.net${path}`,
-		params
+		params,
 	};
 }
 export function oauthClientId(): string {

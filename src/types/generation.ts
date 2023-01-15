@@ -21,6 +21,7 @@ export interface IMod extends IIdentifiableName, IHash, IIcon {
 	armorSlotId: EArmorSlotId | null;
 	armorSocketIndex: number;
 	elementOverlayIcon: string;
+	similarModsAllowed: boolean;
 }
 
 export interface IAspect extends IIdentifiableName, IIcon, IHash {

@@ -28,6 +28,7 @@ import SuperAbilitySelector from '@dlb/components/SubclassSelector/SuperAbilityS
 import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import TabContainer from '@dlb/components/TabContainer';
 import SelectionControlGroup from '@dlb/components/SectionControlGroup';
+import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -111,6 +112,7 @@ const LeftSectionComponent = () => (
 					content: (
 						<>
 							<MasterworkAssumptionSelector />
+							<DimLoadoutsFilterSelector />
 						</>
 					),
 					index: 1,

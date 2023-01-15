@@ -43,6 +43,7 @@ const placeholderOption: IMod = {
 	armorSlotId: null,
 	armorSocketIndex: 0,
 	elementOverlayIcon: null,
+	similarModsAllowed: true,
 };
 
 const getOptionStat = (

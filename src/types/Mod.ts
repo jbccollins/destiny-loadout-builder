@@ -356,7 +356,6 @@ const placeCombatStyleMods = (
 				}
 			}
 			if (!_isValid) {
-				console.log('>>>>>>>>+ isValid', _isValid);
 				return false;
 			}
 		} else {
@@ -364,6 +363,5 @@ const placeCombatStyleMods = (
 			break;
 		}
 	}
-	console.log('>>>>>>>>+ isValid', isValid);
 	return isValid;
 };

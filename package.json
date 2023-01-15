@@ -22,7 +22,7 @@
     "generate": "npx ts-node src/scripts/generation/generate.ts"
   },
   "dependencies": {
-    "@destinyitemmanager/dim-api-types": "^1.22.0",
+    "@destinyitemmanager/dim-api-types": "^1.23.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",

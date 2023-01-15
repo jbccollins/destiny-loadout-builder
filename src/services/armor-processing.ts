@@ -1,3 +1,4 @@
+import { Loadout } from '@destinyitemmanager/dim-api-types/loadouts';
 import {
 	ArmorGroup,
 	ArmorIdList,
@@ -24,6 +25,7 @@ import {
 	EArmorStatModId,
 	EArmorStatId,
 	EMasterworkAssumption,
+	EDimLoadoutsFilterId,
 } from '@dlb/types/IdEnums';
 
 // No masterworked legendary piece of armor has a single stat above 32
@@ -383,17 +385,30 @@ const processArmor = ({
 // Filter out any armor items that will definitely not be used.
 export const preProcessArmor = (
 	armorGroup: ArmorGroup,
-	selectedExoticArmor: ISelectedExoticArmor
+	selectedExoticArmor: ISelectedExoticArmor,
+	dimLoadouts: Loadout[],
+	dimLoadoutsFilterId: EDimLoadoutsFilterId
 ): StrictArmorItems => {
+	const excludedItemIds: Record<string, boolean> = {};
+	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
+		dimLoadouts.forEach((loadout) =>
+			loadout.equipped.forEach((equipped) => {
+				excludedItemIds[equipped.id] = true;
+			})
+		);
+	}
 	const strictArmorItems: StrictArmorItems = [[], [], [], []];
 	ArmorSlotIdList.forEach((armorSlot, i) => {
 		if (armorSlot === selectedExoticArmor.armorSlot) {
 			strictArmorItems[i] = Object.values(armorGroup[armorSlot].exotic).filter(
-				(item) => item.hash === selectedExoticArmor.hash
+				(item) =>
+					!excludedItemIds[item.id] && item.hash === selectedExoticArmor.hash
 			);
 			return;
 		}
-		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic);
+		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic).filter(
+			(item) => !excludedItemIds[item.id]
+		);
 	});
 	return strictArmorItems;
 };

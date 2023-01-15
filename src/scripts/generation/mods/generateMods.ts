@@ -102,10 +102,13 @@ const buildModData = (
 		modCategoryId: getModCategoryIdByModName(
 			displayNameId,
 			mod.displayProperties.name
-		), //ECategoryName.CATEGORY_AMMO_FINDER,
+		),
 		elementOverlayIcon: elementOverlayIcon
 			? bungieNetPath(elementOverlayIcon)
 			: null,
+		similarModsAllowed: !mod.plug.insertionRules?.some((x) =>
+			x?.failureMessage.includes('Similar mod already applied')
+		),
 	};
 };
 

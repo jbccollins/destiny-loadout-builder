@@ -284,3 +284,14 @@ export enum EGearTierId {
 	Common = 'Common',
 	Unknown = 'Unknown',
 }
+
+export enum EModViolationId {
+	WrongElement = 'WrongElement',
+	NotEnoughSpace = 'NotEnoughSpace',
+	Duplicate = 'Duplicate',
+}
+
+export enum EDimLoadoutsFilterId {
+	All = 'All',
+	None = 'None',
+}

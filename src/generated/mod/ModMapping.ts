@@ -28,6 +28,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.AutoRifleHolster]: {
     name: "Auto Rifle Holster",
@@ -44,6 +45,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.AutoRifleDexterity]: {
     name: "Auto Rifle Dexterity",
@@ -59,6 +61,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.FusionRifleHolster]: {
     name: "Fusion Rifle Holster",
@@ -75,6 +78,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.VoidResistance]: {
     name: "Void Resistance",
@@ -91,6 +95,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.SniperRifleDexterity]: {
     name: "Sniper Rifle Dexterity",
@@ -106,6 +111,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GlaiveScavenger]: {
     name: "Glaive Scavenger",
@@ -122,6 +128,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MachineGunLoader]: {
     name: "Machine Gun Loader",
@@ -137,6 +144,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.LinearFusionRifleLoader]: {
     name: "Linear Fusion Rifle Loader",
@@ -152,6 +160,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GraspOfTheWarmind]: {
     name: "Grasp of the Warmind",
@@ -169,6 +178,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.GlobalReach]: {
     name: "Global Reach",
@@ -185,6 +195,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.BlessingOfRasputin]: {
     name: "Blessing of Rasputin",
@@ -202,6 +213,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.LightOfTheFire]: {
     name: "Light of the Fire",
@@ -219,6 +231,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.WarmindsLight]: {
     name: "Warmind's Light",
@@ -235,6 +248,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.BowReserves]: {
     name: "Bow Reserves",
@@ -250,6 +264,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MinorMobilityMod]: {
     name: "Minor Mobility Mod",
@@ -265,6 +280,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.HarmonicSiphon]: {
     name: "Harmonic Siphon",
@@ -281,6 +297,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ShotgunDexterity]: {
     name: "Shotgun Dexterity",
@@ -296,6 +313,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ReapingWellmaker]: {
     name: "Reaping Wellmaker",
@@ -313,6 +331,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.RocketLauncherScavenger]: {
     name: "Rocket Launcher Scavenger",
@@ -329,6 +348,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.TraceRifleHolster]: {
     name: "Trace Rifle Holster",
@@ -345,6 +365,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.AshesToAssets]: {
     name: "Ashes to Assets",
@@ -361,6 +382,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingShotgunAim]: {
     name: "Unflinching Shotgun Aim",
@@ -376,6 +398,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Innervation]: {
     name: "Innervation",
@@ -393,6 +416,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.TakenInvigoration]: {
     name: "Taken Invigoration",
@@ -409,6 +433,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Fastball]: {
     name: "Fastball",
@@ -424,6 +449,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.FusionRifleLoader]: {
     name: "Fusion Rifle Loader",
@@ -439,6 +465,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UtilityKickstart]: {
     name: "Utility Kickstart",
@@ -456,6 +483,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.SubmachineGunDexterity]: {
     name: "Submachine Gun Dexterity",
@@ -471,6 +499,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SniperRifleScavenger]: {
     name: "Sniper Rifle Scavenger",
@@ -487,6 +516,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.PreciseOracleDisruptor]: {
     name: "Precise Oracle Disruptor",
@@ -504,6 +534,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.VexStriker]: {
     name: "Vex Striker",
@@ -521,6 +552,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.SuperstructureDefender]: {
     name: "Superstructure Defender",
@@ -538,6 +570,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.TraceRifleDexterity]: {
     name: "Trace Rifle Dexterity",
@@ -553,6 +586,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MinorRecoveryMod]: {
     name: "Minor Recovery Mod",
@@ -568,6 +602,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ScoutRifleTargeting]: {
     name: "Scout Rifle Targeting",
@@ -584,6 +619,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactSoloOperative]: {
     name: "Solo Operative",
@@ -600,6 +636,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactLucentFinisher]: {
     name: "Lucent Finisher",
@@ -616,6 +653,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactPassiveAggressiveGuard]: {
     name: "Passive Aggressive Guard",
@@ -632,6 +670,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactWeakenedClear]: {
     name: "Weakened Clear",
@@ -648,6 +687,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactMonochromaticMaestro]: {
     name: "Monochromatic Maestro",
@@ -664,6 +704,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.HandCannonAmmoFinder]: {
     name: "Hand Cannon Ammo Finder",
@@ -680,6 +721,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingLinearFusionAim]: {
     name: "Unflinching Linear Fusion Aim",
@@ -696,6 +738,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ScoutRifleLoader]: {
     name: "Scout Rifle Loader",
@@ -711,6 +754,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GlaiveHolster]: {
     name: "Glaive Holster",
@@ -727,6 +771,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Insulation]: {
     name: "Insulation",
@@ -744,6 +789,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.GlaiveAmmoFinder]: {
     name: "Glaive Ammo Finder",
@@ -760,6 +806,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.LinearFusionRifleReserves]: {
     name: "Linear Fusion Rifle Reserves",
@@ -776,6 +823,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GrenadeLauncherAmmoFinder]: {
     name: "Grenade Launcher Ammo Finder",
@@ -792,6 +840,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MeleeDamageResistance]: {
     name: "Melee Damage Resistance",
@@ -808,6 +857,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SidearmLoader]: {
     name: "Sidearm Loader",
@@ -823,6 +873,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingGrenadeLauncherAim]: {
     name: "Unflinching Grenade Launcher Aim",
@@ -839,6 +890,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.EnhancedOperatorAugment]: {
     name: "Enhanced Operator Augment",
@@ -856,6 +908,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.ExplosiveWellmaker]: {
     name: "Explosive Wellmaker",
@@ -873,6 +926,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.WillOfLightVoid]: {
     name: "Will of Light (Void)",
@@ -890,6 +944,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.EnhancedVoltaicMoteCollector]: {
     name: "Enhanced Voltaic Mote Collector",
@@ -907,6 +962,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.StagnantGlyphkeeper]: {
     name: "Stagnant Glyphkeeper",
@@ -924,6 +980,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.VoltaicAmmoCollector]: {
     name: "Voltaic Ammo Collector",
@@ -941,6 +998,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.GlaiveReserves]: {
     name: "Glaive Reserves",
@@ -956,6 +1014,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.RestorativeFinisher]: {
     name: "Restorative Finisher",
@@ -973,6 +1032,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: false,
   },
   [EModId.ArrowScavenger]: {
     name: "Arrow Scavenger",
@@ -989,6 +1049,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MachineGunTargeting]: {
     name: "Machine Gun Targeting",
@@ -1005,6 +1066,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Dynamo]: {
     name: "Dynamo",
@@ -1022,6 +1084,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.VoidSiphon]: {
     name: "Void Siphon",
@@ -1038,6 +1101,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.HandCannonReserves]: {
     name: "Hand Cannon Reserves",
@@ -1053,6 +1117,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SidearmAmmoFinder]: {
     name: "Sidearm Ammo Finder",
@@ -1069,6 +1134,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.HandCannonLoader]: {
     name: "Hand Cannon Loader",
@@ -1084,6 +1150,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ShieldcrashWellmaker]: {
     name: "Shieldcrash Wellmaker",
@@ -1100,6 +1167,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.DistortedGlyphkeeper]: {
     name: "Distorted Glyphkeeper",
@@ -1117,6 +1185,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.MachineGunHolster]: {
     name: "Machine Gun Holster",
@@ -1133,6 +1202,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.PulseRifleLoader]: {
     name: "Pulse Rifle Loader",
@@ -1148,6 +1218,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.FontOfWisdom]: {
     name: "Font of Wisdom",
@@ -1164,6 +1235,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingSniperAim]: {
     name: "Unflinching Sniper Aim",
@@ -1180,6 +1252,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Absolution]: {
     name: "Absolution",
@@ -1196,6 +1269,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MinorIntellectMod]: {
     name: "Minor Intellect Mod",
@@ -1211,6 +1285,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingScoutRifleAim]: {
     name: "Unflinching Scout Rifle Aim",
@@ -1227,6 +1302,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.WillOfLightKinetic]: {
     name: "Will of Light (Kinetic)",
@@ -1243,6 +1319,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.OldGodsBoon]: {
     name: "Old Gods' Boon",
@@ -1258,6 +1335,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.RunForYourLife]: {
     name: "Run for Your Life",
@@ -1274,6 +1352,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MortalMedicine]: {
     name: "Mortal Medicine",
@@ -1290,6 +1369,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.RocketLauncherReserves]: {
     name: "Rocket Launcher Reserves",
@@ -1305,6 +1385,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.BetterAlready]: {
     name: "Better Already",
@@ -1322,6 +1403,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.WellOfUtility]: {
     name: "Well of Utility",
@@ -1339,6 +1421,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.EnduringWells]: {
     name: "Enduring Wells",
@@ -1356,6 +1439,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.ArtifactUnstoppableHandCannon]: {
     name: "Unstoppable Hand Cannon",
@@ -1372,6 +1456,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactOverloadScoutRifle]: {
     name: "Overload Scout Rifle",
@@ -1388,6 +1473,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactPiercingBowstring]: {
     name: "Piercing Bowstring",
@@ -1404,6 +1490,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactAntiBarrierPulseRifle]: {
     name: "Anti-Barrier Pulse Rifle",
@@ -1420,6 +1507,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactOverloadRounds]: {
     name: "Overload Rounds",
@@ -1436,6 +1524,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.EnhancedSuppressorAugment]: {
     name: "Enhanced Suppressor Augment",
@@ -1453,6 +1542,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.MeleeKickstart]: {
     name: "Melee Kickstart",
@@ -1470,6 +1560,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.VexDestroyer]: {
     name: "Vex Destroyer",
@@ -1487,6 +1578,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.AggressiveOracleDisruptor]: {
     name: "Aggressive Oracle Disruptor",
@@ -1504,6 +1596,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.SuperstructureMedic]: {
     name: "Superstructure Medic",
@@ -1521,6 +1614,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingGlaiveAim]: {
     name: "Unflinching Glaive Aim",
@@ -1536,6 +1630,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SolarResistance]: {
     name: "Solar Resistance",
@@ -1552,6 +1647,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.LinearFusionDexterity]: {
     name: "Linear Fusion Dexterity",
@@ -1567,6 +1663,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SwordAmmoFinder]: {
     name: "Sword Ammo Finder",
@@ -1583,6 +1680,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.QuickCharge]: {
     name: "Quick Charge",
@@ -1600,6 +1698,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.StrikingLight]: {
     name: "Striking Light",
@@ -1617,6 +1716,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.HeavyHanded]: {
     name: "Heavy Handed",
@@ -1634,6 +1734,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.PowerfulFriends]: {
     name: "Powerful Friends",
@@ -1651,6 +1752,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.LinearFusionRifleAmmoFinder]: {
     name: "Linear Fusion Rifle Ammo Finder",
@@ -1667,6 +1769,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SidearmTargeting]: {
     name: "Sidearm Targeting",
@@ -1683,6 +1786,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Distribution]: {
     name: "Distribution",
@@ -1699,6 +1803,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ElementalArmaments]: {
     name: "Elemental Armaments",
@@ -1715,6 +1820,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ShotgunLoader]: {
     name: "Shotgun Loader",
@@ -1730,6 +1836,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MachineGunScavenger]: {
     name: "Machine Gun Scavenger",
@@ -1745,6 +1852,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.NightmareBreaker]: {
     name: "Nightmare Breaker",
@@ -1762,6 +1870,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.EnhancedNightmareCrusher]: {
     name: "Enhanced Nightmare Crusher",
@@ -1779,6 +1888,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.EnhancedScannerAugment]: {
     name: "Enhanced Scanner Augment",
@@ -1796,6 +1906,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.SniperRifleHolster]: {
     name: "Sniper Rifle Holster",
@@ -1812,6 +1923,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GlaiveLoader]: {
     name: "Glaive Loader",
@@ -1827,6 +1939,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.BowDexterity]: {
     name: "Bow Dexterity",
@@ -1842,6 +1955,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.BowAmmoFinder]: {
     name: "Bow Ammo Finder",
@@ -1858,6 +1972,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.WellOfIons]: {
     name: "Well of Ions",
@@ -1875,6 +1990,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.FontOfMight]: {
     name: "Font of Might",
@@ -1891,6 +2007,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MachineGunDexterity]: {
     name: "Machine Gun Dexterity",
@@ -1906,6 +2023,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ShelteringEnergy]: {
     name: "Sheltering Energy",
@@ -1922,6 +2040,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.ChosenOfTheWarmind]: {
     name: "Chosen of the Warmind",
@@ -1939,6 +2058,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.ModularLightning]: {
     name: "Modular Lightning",
@@ -1956,6 +2076,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.StrengthOfRasputin]: {
     name: "Strength of Rasputin",
@@ -1972,6 +2093,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.TraceRifleLoader]: {
     name: "Trace Rifle Loader",
@@ -1987,6 +2109,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ElementalOrdnance]: {
     name: "Elemental Ordnance",
@@ -2003,6 +2126,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.FocusingStrike]: {
     name: "Focusing Strike",
@@ -2020,6 +2144,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingHandCannonAim]: {
     name: "Unflinching Hand Cannon Aim",
@@ -2036,6 +2161,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Recuperation]: {
     name: "Recuperation",
@@ -2052,6 +2178,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.UmbralRecharge]: {
     name: "Umbral Recharge",
@@ -2069,6 +2196,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.RocketLauncherDexterity]: {
     name: "Rocket Launcher Dexterity",
@@ -2084,6 +2212,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ElementalShards]: {
     name: "Elemental Shards",
@@ -2101,6 +2230,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.SupremeWellmaker]: {
     name: "Supreme Wellmaker",
@@ -2118,6 +2248,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.ElementalTimeDilation]: {
     name: "Elemental Time Dilation",
@@ -2135,6 +2266,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.WellOfRestoration]: {
     name: "Well of Restoration",
@@ -2152,6 +2284,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.OrbsOfRestoration]: {
     name: "Orbs of Restoration",
@@ -2169,6 +2302,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.EnhancedNightmareBanisher]: {
     name: "Enhanced Nightmare Banisher",
@@ -2186,6 +2320,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.PulseRifleHolster]: {
     name: "Pulse Rifle Holster",
@@ -2202,6 +2337,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SupremeNightmareBreaker]: {
     name: "Supreme Nightmare Breaker",
@@ -2219,6 +2355,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.EnhancedResistantTether]: {
     name: "Enhanced Resistant Tether",
@@ -2236,6 +2373,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.SniperRifleLoader]: {
     name: "Sniper Rifle Loader",
@@ -2251,6 +2389,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SupremeNightmareCrusher]: {
     name: "Supreme Nightmare Crusher",
@@ -2268,6 +2407,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.LinearFusionRifleScavenger]: {
     name: "Linear Fusion Rifle Scavenger",
@@ -2284,6 +2424,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.WillOfLightStasis]: {
     name: "Will of Light (Stasis)",
@@ -2301,6 +2442,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.BowTargeting]: {
     name: "Bow Targeting",
@@ -2317,6 +2459,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactSharpShooting]: {
     name: "Sharp Shooting",
@@ -2333,6 +2476,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactResilientRetrofit]: {
     name: "Resilient Retrofit",
@@ -2348,6 +2492,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactPulseRifleLoader]: {
     name: "Pulse Rifle Loader",
@@ -2363,6 +2508,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactEnergyDiffusionSubstrate]: {
     name: "Energy Diffusion Substrate",
@@ -2379,6 +2525,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactHandCannonTargeting]: {
     name: "Hand Cannon Targeting",
@@ -2395,6 +2542,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MachineGunAmmoFinder]: {
     name: "Machine Gun Ammo Finder",
@@ -2411,6 +2559,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.HerdThinner]: {
     name: "Herd Thinner",
@@ -2427,6 +2576,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SwordScavenger]: {
     name: "Sword Scavenger",
@@ -2442,6 +2592,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.WellOfLife]: {
     name: "Well of Life",
@@ -2459,6 +2610,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.SidearmScavenger]: {
     name: "Sidearm Scavenger",
@@ -2475,6 +2627,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.HandCannonDexterity]: {
     name: "Hand Cannon Dexterity",
@@ -2490,6 +2643,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.RageOfTheWarmind]: {
     name: "Rage of the Warmind",
@@ -2507,6 +2661,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.FireteamMedic]: {
     name: "Fireteam Medic",
@@ -2524,6 +2679,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.WrathOfRasputin]: {
     name: "Wrath of Rasputin",
@@ -2541,6 +2697,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.BurningCells]: {
     name: "Burning Cells",
@@ -2558,6 +2715,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.IncineratingLight]: {
     name: "Incinerating Light",
@@ -2575,6 +2733,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.LinearFusionRifleHolster]: {
     name: "Linear Fusion Rifle Holster",
@@ -2591,6 +2750,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.PrecisionCharge]: {
     name: "Precision Charge",
@@ -2608,6 +2768,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.SurpriseAttack]: {
     name: "Surprise Attack",
@@ -2625,6 +2786,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.EnergyConverter]: {
     name: "Energy Converter",
@@ -2642,6 +2804,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.ChargeHarvester]: {
     name: "Charge Harvester",
@@ -2659,6 +2822,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.SniperRifleTargeting]: {
     name: "Sniper Rifle Targeting",
@@ -2675,6 +2839,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.TraceRifleReserves]: {
     name: "Trace Rifle Reserves",
@@ -2690,6 +2855,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.RocketLauncherLoader]: {
     name: "Rocket Launcher Loader",
@@ -2705,6 +2871,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.FusionRifleScavenger]: {
     name: "Fusion Rifle Scavenger",
@@ -2721,6 +2888,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SidearmDexterity]: {
     name: "Sidearm Dexterity",
@@ -2736,6 +2904,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ScoutRifleHolster]: {
     name: "Scout Rifle Holster",
@@ -2752,6 +2921,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ShotgunReserves]: {
     name: "Shotgun Reserves",
@@ -2767,6 +2937,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingPulseRifleAim]: {
     name: "Unflinching Pulse Rifle Aim",
@@ -2783,6 +2954,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ShotgunHolster]: {
     name: "Shotgun Holster",
@@ -2799,6 +2971,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingAutoRifleAim]: {
     name: "Unflinching Auto Rifle Aim",
@@ -2815,6 +2988,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.KineticSiphon]: {
     name: "Kinetic Siphon",
@@ -2830,6 +3004,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.AutoRifleLoader]: {
     name: "Auto Rifle Loader",
@@ -2845,6 +3020,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ConcussiveDampener]: {
     name: "Concussive Dampener",
@@ -2860,6 +3036,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.TakenRepurposing]: {
     name: "Taken Repurposing",
@@ -2875,6 +3052,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.LightFromDarkness]: {
     name: "Light from Darkness",
@@ -2892,6 +3070,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.WarmindsProtection]: {
     name: "Warmind's Protection",
@@ -2909,6 +3088,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.WarmindsLongevity]: {
     name: "Warmind's Longevity",
@@ -2925,6 +3105,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.CellularSuppression]: {
     name: "Cellular Suppression",
@@ -2942,6 +3123,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.PowerOfRasputin]: {
     name: "Power of Rasputin",
@@ -2959,6 +3141,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.WarmindCell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.RocketLauncherAmmoFinder]: {
     name: "Rocket Launcher Ammo Finder",
@@ -2975,6 +3158,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MinorDisciplineMod]: {
     name: "Minor Discipline Mod",
@@ -2990,6 +3174,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GrenadeLauncherHolster]: {
     name: "Grenade Launcher Holster",
@@ -3006,6 +3191,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.RecoveryMod]: {
     name: "Recovery Mod",
@@ -3021,6 +3207,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.AntiOracle]: {
     name: "Anti-Oracle",
@@ -3036,6 +3223,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.AntiPraetorian]: {
     name: "Anti-Praetorian",
@@ -3051,6 +3239,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SniperRifleAmmoFinder]: {
     name: "Sniper Rifle Ammo Finder",
@@ -3067,6 +3256,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.HandCannonScavenger]: {
     name: "Hand Cannon Scavenger",
@@ -3083,6 +3273,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SiphonedGlyphkeeper]: {
     name: "Siphoned Glyphkeeper",
@@ -3100,6 +3291,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.SubmachineGunLoader]: {
     name: "Submachine Gun Loader",
@@ -3115,6 +3307,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Invigoration]: {
     name: "Invigoration",
@@ -3132,6 +3325,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.UmbralSharpening]: {
     name: "Umbral Sharpening",
@@ -3148,6 +3342,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ElementalLight]: {
     name: "Elemental Light",
@@ -3164,6 +3359,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.HandCannonTargeting]: {
     name: "Hand Cannon Targeting",
@@ -3180,6 +3376,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ResilienceMod]: {
     name: "Resilience Mod",
@@ -3195,6 +3392,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SmolderingGlyphkeeper]: {
     name: "Smoldering Glyphkeeper",
@@ -3212,6 +3410,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.TakenArmaments]: {
     name: "Taken Armaments",
@@ -3228,6 +3427,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.NightmareBanisher]: {
     name: "Nightmare Banisher",
@@ -3245,6 +3445,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingSidearmAim]: {
     name: "Unflinching Sidearm Aim",
@@ -3260,6 +3461,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ResistantTether]: {
     name: "Resistant Tether",
@@ -3277,6 +3479,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.ShotgunTargeting]: {
     name: "Shotgun Targeting",
@@ -3293,6 +3496,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SwiftCharge]: {
     name: "Swift Charge",
@@ -3310,6 +3514,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.LucentBlade]: {
     name: "Lucent Blade",
@@ -3327,6 +3532,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.ReactivePulse]: {
     name: "Reactive Pulse",
@@ -3344,6 +3550,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.RadiantLight]: {
     name: "Radiant Light",
@@ -3361,6 +3568,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.SidearmHolster]: {
     name: "Sidearm Holster",
@@ -3377,6 +3585,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SolarSiphon]: {
     name: "Solar Siphon",
@@ -3393,6 +3602,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.GrenadeLauncherDexterity]: {
     name: "Grenade Launcher Dexterity",
@@ -3408,6 +3618,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.HandsOn]: {
     name: "Hands-On",
@@ -3424,6 +3635,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.ArcResistance]: {
     name: "Arc Resistance",
@@ -3440,6 +3652,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingMachineGun]: {
     name: "Unflinching Machine Gun",
@@ -3456,6 +3669,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.OverchargeWellmaker]: {
     name: "Overcharge Wellmaker",
@@ -3473,6 +3687,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.GlaiveTargeting]: {
     name: "Glaive Targeting",
@@ -3488,6 +3703,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingFusionRifleAim]: {
     name: "Unflinching Fusion Rifle Aim",
@@ -3504,6 +3720,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactLowEntropySuperconductor]: {
     name: "Low Entropy Superconductor",
@@ -3520,6 +3737,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactLordKelvinsBasilisk]: {
     name: "Lord Kelvin's Basilisk",
@@ -3536,6 +3754,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactAdvanceScout]: {
     name: "Advance Scout",
@@ -3551,6 +3770,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactUnstoppableGrenadeLauncher]: {
     name: "Unstoppable Grenade Launcher",
@@ -3567,6 +3787,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.StasisResistance]: {
     name: "Stasis Resistance",
@@ -3583,6 +3804,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.Firepower]: {
     name: "Firepower",
@@ -3600,6 +3822,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.HealThyself]: {
     name: "Heal Thyself",
@@ -3617,6 +3840,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.ChargedUp]: {
     name: "Charged Up",
@@ -3633,6 +3857,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.BlastRadius]: {
     name: "Blast Radius",
@@ -3650,6 +3875,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.MachineGunReserves]: {
     name: "Machine Gun Reserves",
@@ -3665,6 +3891,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.AutoRifleTargeting]: {
     name: "Auto Rifle Targeting",
@@ -3681,6 +3908,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.PulseRifleDexterity]: {
     name: "Pulse Rifle Dexterity",
@@ -3696,6 +3924,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.StrengthMod]: {
     name: "Strength Mod",
@@ -3711,6 +3940,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.PulseRifleTargeting]: {
     name: "Pulse Rifle Targeting",
@@ -3727,6 +3957,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.TraceRifleTargeting]: {
     name: "Trace Rifle Targeting",
@@ -3743,6 +3974,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GrenadeLauncherReserves]: {
     name: "Grenade Launcher Reserves",
@@ -3758,6 +3990,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ScoutRifleDexterity]: {
     name: "Scout Rifle Dexterity",
@@ -3773,6 +4006,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.LinearFusionRifleTargeting]: {
     name: "Linear Fusion Rifle Targeting",
@@ -3789,6 +4023,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.IntellectMod]: {
     name: "Intellect Mod",
@@ -3804,6 +4039,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.FusionRifleAmmoFinder]: {
     name: "Fusion Rifle Ammo Finder",
@@ -3820,6 +4056,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.RelayDefender]: {
     name: "Relay Defender",
@@ -3836,6 +4073,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.BowReloader]: {
     name: "Bow Reloader",
@@ -3851,6 +4089,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ImpactInduction]: {
     name: "Impact Induction",
@@ -3868,6 +4107,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.FusionRifleDexterity]: {
     name: "Fusion Rifle Dexterity",
@@ -3883,6 +4123,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ProtectiveLight]: {
     name: "Protective Light",
@@ -3900,6 +4141,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.ExtraReserves]: {
     name: "Extra Reserves",
@@ -3917,6 +4159,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.PreciselyCharged]: {
     name: "Precisely Charged",
@@ -3934,6 +4177,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.StacksOnStacks]: {
     name: "Stacks on Stacks",
@@ -3951,6 +4195,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.FusionRifleReserves]: {
     name: "Fusion Rifle Reserves",
@@ -3966,6 +4211,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.WillOfLightSolar]: {
     name: "Will of Light (Solar)",
@@ -3983,6 +4229,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.SwordReserves]: {
     name: "Sword Reserves",
@@ -3998,6 +4245,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Bomber]: {
     name: "Bomber",
@@ -4014,6 +4262,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.SubmachineGunHolster]: {
     name: "Submachine Gun Holster",
@@ -4030,6 +4279,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SniperDamageResistance]: {
     name: "Sniper Damage Resistance",
@@ -4046,6 +4296,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.TakenBarrier]: {
     name: "Taken Barrier",
@@ -4062,6 +4313,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingSubmachineGunAim]: {
     name: "Unflinching Submachine Gun Aim",
@@ -4078,6 +4330,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.EnhancedRelayDefender]: {
     name: "Enhanced Relay Defender",
@@ -4094,6 +4347,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.TraceRifleScavenger]: {
     name: "Trace Rifle Scavenger",
@@ -4110,6 +4364,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.EmpoweredFinish]: {
     name: "Empowered Finish",
@@ -4126,6 +4381,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.HighEnergyFire]: {
     name: "High-Energy Fire",
@@ -4142,6 +4398,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.TakingCharge]: {
     name: "Taking Charge",
@@ -4157,6 +4414,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ShieldBreakCharge]: {
     name: "Shield Break Charge",
@@ -4173,6 +4431,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.PowerPreservation]: {
     name: "Power Preservation",
@@ -4190,6 +4449,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.WillOfLightArc]: {
     name: "Will of Light (Arc)",
@@ -4207,6 +4467,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingBowAim]: {
     name: "Unflinching Bow Aim",
@@ -4222,6 +4483,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GrenadeLauncherScavenger]: {
     name: "Grenade Launcher Scavenger",
@@ -4238,6 +4500,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MinorResilienceMod]: {
     name: "Minor Resilience Mod",
@@ -4253,6 +4516,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MinorStrengthMod]: {
     name: "Minor Strength Mod",
@@ -4268,6 +4532,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.GlaiveDexterity]: {
     name: "Glaive Dexterity",
@@ -4283,6 +4548,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ElementalCharge]: {
     name: "Elemental Charge",
@@ -4299,6 +4565,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.NightmareCrusher]: {
     name: "Nightmare Crusher",
@@ -4316,6 +4583,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.BolsteringDetonation]: {
     name: "Bolstering Detonation",
@@ -4333,6 +4601,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.HandCannonHolster]: {
     name: "Hand Cannon Holster",
@@ -4349,6 +4618,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MomentumTransfer]: {
     name: "Momentum Transfer",
@@ -4365,6 +4635,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.ShockedGlyphkeeper]: {
     name: "Shocked Glyphkeeper",
@@ -4382,6 +4653,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.WellOfTenacity]: {
     name: "Well of Tenacity",
@@ -4399,6 +4671,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.StasisSiphon]: {
     name: "Stasis Siphon",
@@ -4415,6 +4688,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/1b5b8be865ba3d7285b4c25e2c7481da.png",
+    similarModsAllowed: true,
   },
   [EModId.SupremeNightmareBanisher]: {
     name: "Supreme Nightmare Banisher",
@@ -4432,6 +4706,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.ShotgunScavenger]: {
     name: "Shotgun Scavenger",
@@ -4448,6 +4723,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Scavenger,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SubmachineGunTargeting]: {
     name: "Submachine Gun Targeting",
@@ -4464,6 +4740,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.SidearmReserves]: {
     name: "Sidearm Reserves",
@@ -4479,6 +4756,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.DreambaneMod]: {
     name: "Dreambane Mod",
@@ -4495,6 +4773,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArcSiphon]: {
     name: "Arc Siphon",
@@ -4511,6 +4790,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.FusionRifleTargeting]: {
     name: "Fusion Rifle Targeting",
@@ -4527,6 +4807,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Targeting,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UmbralHastening]: {
     name: "Umbral Hastening",
@@ -4544,6 +4825,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.SniperRifleReserves]: {
     name: "Sniper Rifle Reserves",
@@ -4559,6 +4841,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Reserves,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.MobilityMod]: {
     name: "Mobility Mod",
@@ -4574,6 +4857,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.TraceRifleAmmoFinder]: {
     name: "Trace Rifle Ammo Finder",
@@ -4590,6 +4874,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.Outreach]: {
     name: "Outreach",
@@ -4606,6 +4891,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.EnhancedVoltaicAmmoCollector]: {
     name: "Enhanced Voltaic Ammo Collector",
@@ -4623,6 +4909,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.UnflinchingTraceRifleAim]: {
     name: "Unflinching Trace Rifle Aim",
@@ -4639,6 +4926,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Unflinching,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.WellOfStriking]: {
     name: "Well of Striking",
@@ -4656,6 +4944,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.SeekingWells]: {
     name: "Seeking Wells",
@@ -4673,6 +4962,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.DisciplineMod]: {
     name: "Discipline Mod",
@@ -4688,6 +4978,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.UtilityFinisher]: {
     name: "Utility Finisher",
@@ -4705,6 +4996,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: false,
   },
   [EModId.ArtifactGrenadeLauncherHolster]: {
     name: "Grenade Launcher Holster",
@@ -4721,6 +5013,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.Holster,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactInFlightCompensator]: {
     name: "In-Flight Compensator",
@@ -4737,6 +5030,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ArtifactLegacyAmbush]: {
     name: "Legacy Ambush",
@@ -4753,6 +5047,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactMobileRetrofit]: {
     name: "Mobile Retrofit",
@@ -4768,6 +5063,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ArtifactBowDexterity]: {
     name: "Bow Dexterity",
@@ -4783,6 +5079,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: true,
     modCategoryId: EModCategoryId.Dexterity,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.RapidOracleDisruptor]: {
     name: "Rapid Oracle Disruptor",
@@ -4800,6 +5097,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.VexBreaker]: {
     name: "Vex Breaker",
@@ -4817,6 +5115,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.SuperstructureStriker]: {
     name: "Superstructure Striker",
@@ -4834,6 +5133,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: true,
   },
   [EModId.VoltaicMoteCollector]: {
     name: "Voltaic Mote Collector",
@@ -4851,6 +5151,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.Perpetuation]: {
     name: "Perpetuation",
@@ -4868,6 +5169,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: true,
   },
   [EModId.GrenadeLauncherLoader]: {
     name: "Grenade Launcher Loader",
@@ -4883,6 +5185,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.Loader,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.ShotgunAmmoFinder]: {
     name: "Shotgun Ammo Finder",
@@ -4899,6 +5202,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.AmmoFinder,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.EnhancedNightmareBreaker]: {
     name: "Enhanced Nightmare Breaker",
@@ -4916,6 +5220,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.MeleeWellmaker]: {
     name: "Melee Wellmaker",
@@ -4932,6 +5237,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon: null,
+    similarModsAllowed: true,
   },
   [EModId.IntoTheLight]: {
     name: "Into the Light",
@@ -4949,6 +5255,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.BulwarkFinisher]: {
     name: "Bulwark Finisher",
@@ -4966,6 +5273,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/32a1a3e44cbbe2b484b9c926d9dc1f08.png",
+    similarModsAllowed: false,
   },
   [EModId.HealthyFinisher]: {
     name: "Healthy Finisher",
@@ -4982,6 +5290,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: false,
   },
   [EModId.SpecialFinisher]: {
     name: "Special Finisher",
@@ -4998,6 +5307,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.OneTwoFinisher]: {
     name: "One-Two Finisher",
@@ -5015,6 +5325,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/6c9c49d0f718f1499c8ced1ecf7c51fb.png",
+    similarModsAllowed: false,
   },
   [EModId.SnaploadFinisher]: {
     name: "Snapload Finisher",
@@ -5031,6 +5342,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     isArtifactMod: false,
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon: null,
+    similarModsAllowed: false,
   },
   [EModId.ExplosiveFinisher]: {
     name: "Explosive Finisher",
@@ -5048,6 +5360,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.General,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: false,
   },
   [EModId.ArgentOrdnance]: {
     name: "Argent Ordnance",
@@ -5065,6 +5378,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.SustainedCharge]: {
     name: "Sustained Charge",
@@ -5082,6 +5396,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.Supercharged]: {
     name: "Supercharged",
@@ -5099,6 +5414,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.KindlingTheFlame]: {
     name: "Kindling the Flame",
@@ -5116,6 +5432,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ChargedWithLight,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.BountifulWells]: {
     name: "Bountiful Wells",
@@ -5133,6 +5450,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
   [EModId.WellOfOrdnance]: {
     name: "Well of Ordnance",
@@ -5150,5 +5468,6 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     modCategoryId: EModCategoryId.ElementalWell,
     elementOverlayIcon:
       "https://www.bungie.net/common/destiny2_content/icons/255298bfb79e87c56736647c9e015d31.png",
+    similarModsAllowed: true,
   },
 };

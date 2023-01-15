@@ -49,6 +49,15 @@ import {
 	selectSelectedArmorSlotMods,
 	setSelectedArmorSlotMods,
 } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
+import {
+	selectDimLoadouts,
+	setDimLoadouts,
+} from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import {
+	selectDimLoadoutsFilter,
+	setDimLoadoutsFilter,
+} from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -97,6 +106,8 @@ function Loading() {
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
+	const dimLoadouts = useAppSelector(selectDimLoadouts);
+	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
@@ -121,6 +132,17 @@ function Loading() {
 				);
 				setHasPlatformData(true);
 				console.log('>>>>>>>>>>> [LOAD] platform <<<<<<<<<<<', membershipData);
+
+				let hasDimLoadoutsError = false;
+				try {
+					// throw 'heck';
+					const dimProfile = await getDimApiProfile(mostRecentPlatform);
+					dispatch(setDimLoadouts(dimProfile.loadouts));
+					console.log('>>>>>>>>>>> [LOAD] DIM profile <<<<<<<<<<<', dimProfile);
+				} catch (e) {
+					console.warn('Unable to load DIM loadouts');
+					hasDimLoadoutsError = true;
+				}
 
 				const manifest = await getDefinitions();
 				console.log('>>>>>>>>>>> [LOAD] manifest <<<<<<<<<<<', manifest);
@@ -206,7 +228,8 @@ function Loading() {
 					defaultSelectedDestinySubclass
 				);
 				// This is kinda hacky but by triggering a dispatch of the existing
-				// default values for [desiredArmorStats, selectedMasterworkAssumption, selectedFragments]
+				// default values for
+				// [desiredArmorStats, selectedMasterworkAssumption, selectedFragments, dimLoadouts, dimLoadoutsFilter]
 				// we can "dirty" the store so it knows it needs to recalculate the
 				// processedArmorItems
 				dispatch(setDesiredArmorStats(desiredArmorStats));
@@ -221,6 +244,10 @@ function Loading() {
 				);
 				dispatch(setSelectedCombatStyleMods(selectedCombatStyleMods));
 				dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
+				if (hasDimLoadoutsError) {
+					dispatch(setDimLoadouts(dimLoadouts));
+				}
+				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {

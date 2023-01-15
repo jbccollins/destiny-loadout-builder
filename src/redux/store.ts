@@ -23,12 +23,17 @@ import selectedSuperAbilityReducer from './features/selectedSuperAbility/selecte
 import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
 import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
+import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import disabledCombatStyleModsReducer, {
 	setDisabledCombatStyleMods,
 } from './features/disabledCombatStyleMods/disabledCombatStyleModsSlice';
-import disabledArmorSlotModsReducere, {
+import disabledArmorSlotModsReducer, {
 	setDisabledArmorSlotMods,
 } from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
+import armorSlotModViolationsReducer, {
+	setArmorSlotModViolations,
+} from './features/armorSlotModViolations/armorSlotModViolationsSlice';
 
 import processedArmorReducer, {
 	setProcessedArmor,
@@ -55,6 +60,8 @@ import {
 	hasValidModPermutation,
 } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
+import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
+import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 
 export function makeStore() {
 	return configureStore({
@@ -82,7 +89,10 @@ export function makeStore() {
 			selectedArmorSlotMods: selectedArmorSlotModsReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
 			disabledCombatStyleMods: disabledCombatStyleModsReducer,
-			disabledArmorSlotMods: disabledArmorSlotModsReducere,
+			disabledArmorSlotMods: disabledArmorSlotModsReducer,
+			armorSlotModViolations: armorSlotModViolationsReducer,
+			dimLoadouts: dimLoadoutsReducer,
+			dimLoadoutsFilter: dimLoadoutsFilterReducer,
 		},
 	});
 }
@@ -98,6 +108,8 @@ let selectedMasterworkAssumptionUuid = NIL;
 let selectedFragmentsUuid = NIL;
 let selectedCombatStyleModsUuid = NIL;
 let selectedArmorSlotModsUuid = NIL;
+let dimLoadoutsUuid = NIL;
+let dimLoadoutsFilterUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
@@ -111,6 +123,8 @@ function handleChange() {
 		selectedMasterworkAssumption: {
 			uuid: nextSelectedMasterworkAssumptionUuid,
 		},
+		dimLoadouts: { uuid: nextDimLoadoutsUuid },
+		dimLoadoutsFilter: { uuid: nextDimLoadoutsFilterUuid },
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -124,7 +138,9 @@ function handleChange() {
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
 		selectedDestinySubclassUuid !== nextSelectedDestinySubclassUuid ||
 		selectedCombatStyleModsUuid !== nextSelectedCombatStyleModsUuid ||
-		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid;
+		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
+		dimLoadoutsUuid !== nextDimLoadoutsUuid ||
+		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedDestinyClassUuid !== NIL &&
@@ -133,7 +149,9 @@ function handleChange() {
 		nextSelectedMasterworkAssumptionUuid !== NIL &&
 		nextSelectedCombatStyleModsUuid !== NIL &&
 		nextSelectedFragmentsUuid !== NIL &&
-		nextSelectedArmorSlotModsUuid !== NIL;
+		nextSelectedArmorSlotModsUuid !== NIL &&
+		nextDimLoadoutsUuid !== NIL &&
+		nextDimLoadoutsFilterUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> store is dirty <<<<<<<<<<<');
@@ -145,6 +163,8 @@ function handleChange() {
 		selectedFragmentsUuid = nextSelectedFragmentsUuid;
 		selectedCombatStyleModsUuid = nextSelectedCombatStyleModsUuid;
 		selectedArmorSlotModsUuid = nextSelectedArmorSlotModsUuid;
+		dimLoadoutsUuid = nextDimLoadoutsUuid;
+		dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
 
 		// TODO: Move this out of the store file
 		const {
@@ -157,6 +177,8 @@ function handleChange() {
 			selectedCombatStyleMods: { value: selectedCombatStyleMods },
 			selectedDestinySubclass: { value: selectedDestinySubclass },
 			selectedArmorSlotMods: { value: selectedArmorSlotMods },
+			dimLoadouts: { value: dimLoadouts },
+			dimLoadoutsFilter: { value: dimLoadoutsFilter },
 		} = store.getState();
 
 		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -194,12 +216,22 @@ function handleChange() {
 		console.log('>>>>>+ disabledCombatStyleMods', disabledCombatStyleMods);
 		store.dispatch(setDisabledCombatStyleMods(disabledCombatStyleMods));
 
+		const armorSlotModViolations = getArmorSlotModViolations(
+			selectedArmorSlotMods
+		);
+		store.dispatch(setArmorSlotModViolations(armorSlotModViolations));
+
 		// TODO: no need to preProcessArmor when only the stat slider has changed.
 		// Maybe we don't need to trigger that fake initial dispatch in
 		// the slider component if we fix this?
 		const preProcessedArmor = preProcessArmor(
 			armor[selectedDestinyClass],
-			selectedExoticArmor[selectedDestinyClass]
+			selectedExoticArmor[selectedDestinyClass],
+			dimLoadouts.filter(
+				(x) =>
+					DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
+			),
+			dimLoadoutsFilter
 		);
 		console.log('>>>>>>>>>>> preProcessedArmor <<<<<<<<<<<', preProcessedArmor);
 		const results = doProcessArmor({

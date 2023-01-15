@@ -140,7 +140,12 @@ function Loading() {
 					dispatch(setDimLoadouts(dimProfile.loadouts));
 					console.log('>>>>>>>>>>> [LOAD] DIM profile <<<<<<<<<<<', dimProfile);
 				} catch (e) {
-					console.warn('Unable to load DIM loadouts');
+					console.warn(
+						'Unable to load DIM loadouts. Error:',
+						e,
+						'DIM API Key is: ',
+						process.env.NEXT_PUBLIC_DIM_API_KEY
+					);
 					hasDimLoadoutsError = true;
 				}
 

@@ -10,10 +10,8 @@ import {
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	EArmorSlotId,
-	EArmorStatId,
 	EDestinyClassId,
 	EElementId,
-	EArmorStatModId,
 	EGearTierId,
 } from '@dlb/types/IdEnums';
 import {

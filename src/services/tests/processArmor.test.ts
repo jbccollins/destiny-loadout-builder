@@ -7,7 +7,6 @@ import { describe, expect, test } from '@jest/globals';
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 import {
 	EArmorStatId,
-	EArmorStatModId,
 	EDestinyClassId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';

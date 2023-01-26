@@ -92,6 +92,19 @@ const ModIdToStatBonusMapping: Partial<EnumDictionary<EModId, StatBonus[]>> = {
 		{ stat: EArmorStatId.Resilience, value: 5 },
 	],
 	[EModId.ArtifactMobileRetrofit]: [{ stat: EArmorStatId.Mobility, value: 5 }],
+
+	[EModId.MobilityMod]: [{ stat: EArmorStatId.Mobility, value: 10 }],
+	[EModId.ResilienceMod]: [{ stat: EArmorStatId.Resilience, value: 10 }],
+	[EModId.RecoveryMod]: [{ stat: EArmorStatId.Recovery, value: 10 }],
+	[EModId.DisciplineMod]: [{ stat: EArmorStatId.Discipline, value: 10 }],
+	[EModId.IntellectMod]: [{ stat: EArmorStatId.Intellect, value: 10 }],
+	[EModId.StrengthMod]: [{ stat: EArmorStatId.Strength, value: 10 }],
+	[EModId.MinorMobilityMod]: [{ stat: EArmorStatId.Mobility, value: 5 }],
+	[EModId.MinorResilienceMod]: [{ stat: EArmorStatId.Resilience, value: 5 }],
+	[EModId.MinorRecoveryMod]: [{ stat: EArmorStatId.Recovery, value: 5 }],
+	[EModId.MinorDisciplineMod]: [{ stat: EArmorStatId.Discipline, value: 5 }],
+	[EModId.MinorIntellectMod]: [{ stat: EArmorStatId.Intellect, value: 5 }],
+	[EModId.MinorStrengthMod]: [{ stat: EArmorStatId.Strength, value: 5 }],
 	// NEGATIVE Mods
 	[EModId.ProtectiveLight]: [{ stat: EArmorStatId.Strength, value: -10 }],
 	[EModId.ExtraReserves]: [{ stat: EArmorStatId.Intellect, value: -10 }],
@@ -151,6 +164,10 @@ const getArmorSlotElementCapacity = (
 	return armorSlotCapacities as Record<EArmorSlotId, ArmorSlotCapacity>;
 };
 
+export type ValidCombatStyleModPlacements = Partial<
+	Record<EArmorSlotId, EModId>
+>[];
+
 // TODO: Probably have a valid placement look like
 // { [EArmorSlotId.Head]: {modId: EModId.ArgentOrdinance, remainingCapacity: 5, elementId: EElementId.Solar}}
 // Just for the sake of making the next step of figuring out where to place
@@ -161,7 +178,7 @@ const getArmorSlotElementCapacity = (
 export const getValidCombatStyleModArmorSlotPlacements = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping,
 	combatStyleModIdList: EModId[]
-): Partial<Record<EArmorSlotId, EModId>>[] => {
+): ValidCombatStyleModPlacements => {
 	if (combatStyleModIdList.filter((modId) => modId !== null).length === 0) {
 		return [{ ...defaultValidPlacement }];
 	}
@@ -240,7 +257,49 @@ forEach(armorSlot) { // head, arm, legs....
 }
 */
 
-// Determine if there is at least one valid mod permutation
+export const hasValidArmorStatModPermutation = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping,
+	armorStatMods: EModId[],
+	validCombatStyleModArmorSlotPlacements: ValidCombatStyleModPlacements
+): boolean => {
+	const sortedArmorStatMods = [...armorStatMods].sort(
+		(a, b) => getMod(b).cost - getMod(a).cost
+	);
+	for (let i = 0; i < validCombatStyleModArmorSlotPlacements.length; i++) {
+		const armorSlotCapacities = getArmorSlotElementCapacity(armorSlotMods);
+		const combatStyleModPlacement = validCombatStyleModArmorSlotPlacements[i];
+		// Update the armorSlotCapacities for this particular combat style mod placement permutation
+		for (let j = 0; j < ArmorSlotWithClassItemIdList.length; j++) {
+			const armorSlotId = ArmorSlotWithClassItemIdList[j];
+			if (combatStyleModPlacement[armorSlotId]) {
+				armorSlotCapacities[armorSlotId].capacity -= getMod(
+					combatStyleModPlacement[armorSlotId]
+				).cost;
+			}
+		}
+		const sortedArmorSlotCapacities = Object.values(armorSlotCapacities).sort(
+			(a, b) => b.capacity - a.capacity
+		);
+		let isValid = true;
+		// Check if the highest cost armor stat mod can fit into the highest capacity slot
+		// Check if the second highest cost armor stat mod can fit in to the second highest capacity slot, etc...
+		for (let i = 0; i < sortedArmorStatMods.length; i++) {
+			if (
+				getMod(sortedArmorStatMods[i]).cost >
+				sortedArmorSlotCapacities[i].capacity
+			) {
+				isValid = false;
+				break;
+			}
+		}
+		if (isValid) {
+			return true;
+		}
+	}
+	return false;
+};
+
+// Determine if there is at least one valid combat style mod permutation
 /*
 	// 1. Get the element and capacity for each slot. The capacity is 10 - the sum of the cost for all the armorSlotMods in that slot
 	// 2. Group slots into arrays by element that are sorted from lowest to highest capacity
@@ -250,7 +309,7 @@ forEach(armorSlot) { // head, arm, legs....
 	make sure to do all of this by first processing the combat style mods that require a specific element. do the any element
 	combat style mods last.
 */
-export const hasValidModPermutation = (
+export const hasValidCombatStyleModPermutation = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping,
 	combatStyleModIdList: EModId[]
 ): boolean => {

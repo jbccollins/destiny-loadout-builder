@@ -4,12 +4,35 @@ import {
 	ShouldShortCircuitParams,
 } from '@dlb/services/armor-processing';
 import { describe, expect, test } from '@jest/globals';
-import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 import {
 	EArmorStatId,
 	EArmorSlotId,
-	EArmorStatModId,
+	EDestinyClassId,
 } from '@dlb/types/IdEnums';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import {
+	ArmorSlotIdToModIdListMapping,
+	ValidCombatStyleModPlacements,
+} from '@dlb/types/Mod';
+import { EModId } from '@dlb/generated/mod/EModId';
+
+const generateDefaultArmorSlotIdToModIDListMapping =
+	(): ArmorSlotIdToModIdListMapping => {
+		return ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
+			accumulator[currentValue] = [null, null];
+			return accumulator;
+		}, {}) as ArmorSlotIdToModIdListMapping;
+	};
+
+const generateDefaultValidCombatStyleModPlacements =
+	(): ValidCombatStyleModPlacements => {
+		return [
+			ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
+				accumulator[currentValue] = null;
+				return accumulator;
+			}, {}),
+		] as ValidCombatStyleModPlacements;
+	};
 
 type ShouldShortCircuitTestCase = {
 	name: string;
@@ -31,17 +54,21 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 1,
+			validCombatStyleModArmorSlotPlacements:
+				generateDefaultValidCombatStyleModPlacements(),
+			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
 			true,
 			[
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MinorMobility,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MinorMobilityMod,
 			],
 			{
 				[EArmorStatId.Mobility]: 65,
@@ -68,14 +95,18 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 100,
 			},
 			numRemainingArmorPieces: 2,
+			validCombatStyleModArmorSlotPlacements:
+				generateDefaultValidCombatStyleModPlacements(),
+			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
 			false,
 			[
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MinorStrength,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.MinorStrengthMod,
 			],
 			{
 				[EArmorStatId.Mobility]: 0,
@@ -102,16 +133,20 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 100,
 			},
 			numRemainingArmorPieces: 2,
+			validCombatStyleModArmorSlotPlacements:
+				generateDefaultValidCombatStyleModPlacements(),
+			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
 			true,
 			[
-				EArmorStatModId.MajorDiscipline,
-				EArmorStatModId.MajorDiscipline,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MinorStrength,
+				EModId.DisciplineMod,
+				EModId.DisciplineMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.MinorStrengthMod,
 			],
 			{
 				[EArmorStatId.Mobility]: 0,
@@ -138,17 +173,21 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 150,
 			},
 			numRemainingArmorPieces: 3,
+			validCombatStyleModArmorSlotPlacements:
+				generateDefaultValidCombatStyleModPlacements(),
+			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
 			true,
 			[
-				EArmorStatModId.MinorDiscipline,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MinorStrength,
+				EModId.MinorDisciplineMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.MinorStrengthMod,
 			],
 			{
 				[EArmorStatId.Mobility]: 0,
@@ -175,6 +214,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 2,
+			validCombatStyleModArmorSlotPlacements:
+				generateDefaultValidCombatStyleModPlacements(),
+			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
 			false,
@@ -204,6 +247,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 2,
+			validCombatStyleModArmorSlotPlacements:
+				generateDefaultValidCombatStyleModPlacements(),
+			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
 			false,
@@ -212,6 +259,196 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 0,
+				[EArmorStatId.Strength]: 0,
+			},
+			null,
+			null,
+		],
+	},
+	{
+		name: 'It returns true when there is nowhere to put the required armor stat mods due to the cost of combat style mods',
+		input: {
+			sumOfSeenStats: [0, 0, 0, 0, 50, 0],
+			desiredArmorStats: {
+				[EArmorStatId.Mobility]: 0,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 0,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 100,
+				[EArmorStatId.Strength]: 0,
+			},
+			numRemainingArmorPieces: 0,
+			validCombatStyleModArmorSlotPlacements: [
+				{
+					[EArmorSlotId.Head]: EModId.HeavyHanded,
+					[EArmorSlotId.Arm]: null,
+					[EArmorSlotId.Chest]: null,
+					[EArmorSlotId.Leg]: null,
+					[EArmorSlotId.ClassItem]: null,
+				},
+			],
+			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			destinyClassId: EDestinyClassId.Hunter,
+		},
+		output: [
+			true,
+			[
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+			],
+			{
+				[EArmorStatId.Mobility]: 0,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 0,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 50,
+				[EArmorStatId.Strength]: 0,
+			},
+			null,
+			null,
+		],
+	},
+	{
+		name: 'It returns true when there is nowhere to put the required armor stat mods due to the cost of armor slot mods',
+		input: {
+			sumOfSeenStats: [0, 0, 0, 0, 60, 0],
+			desiredArmorStats: {
+				[EArmorStatId.Mobility]: 0,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 10,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 100,
+				[EArmorStatId.Strength]: 0,
+			},
+			numRemainingArmorPieces: 0,
+			validCombatStyleModArmorSlotPlacements:
+				generateDefaultValidCombatStyleModPlacements(),
+			armorSlotMods: {
+				...generateDefaultArmorSlotIdToModIDListMapping(),
+				[EArmorSlotId.Chest]: [
+					EModId.UnflinchingSniperAim,
+					EModId.UnflinchingAutoRifleAim,
+				],
+				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber],
+			},
+			destinyClassId: EDestinyClassId.Hunter,
+		},
+		output: [
+			true,
+			[
+				EModId.RecoveryMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+			],
+			{
+				[EArmorStatId.Mobility]: 0,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 10,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 40,
+				[EArmorStatId.Strength]: 0,
+			},
+			null,
+			null,
+		],
+	},
+	{
+		name: 'It returns true when there is nowhere to put the required armor stat mods due to the combined cost of armor slot mods and combat style mods',
+		input: {
+			sumOfSeenStats: [0, 0, 0, 0, 95, 0],
+			desiredArmorStats: {
+				[EArmorStatId.Mobility]: 10,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 10,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 100,
+				[EArmorStatId.Strength]: 0,
+			},
+			numRemainingArmorPieces: 0,
+			validCombatStyleModArmorSlotPlacements: [
+				{
+					[EArmorSlotId.Head]: EModId.HeavyHanded,
+					[EArmorSlotId.Arm]: EModId.BountifulWells,
+					[EArmorSlotId.Chest]: EModId.TakingCharge,
+					[EArmorSlotId.Leg]: EModId.PowerfulFriends,
+					[EArmorSlotId.ClassItem]: EModId.ArgentOrdnance,
+				},
+			],
+			armorSlotMods: {
+				[EArmorSlotId.Head]: [null, EModId.BowAmmoFinder], // Capacity: Full
+				[EArmorSlotId.Arm]: [EModId.HandCannonLoader, null], // Capacity: 4
+				[EArmorSlotId.Chest]: [
+					EModId.UnflinchingSniperAim,
+					EModId.UnflinchingAutoRifleAim,
+				], // Capacity: Full
+				[EArmorSlotId.Leg]: [null, EModId.Absolution], // Capacity: 3
+				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber], // Capacity: 1
+			},
+			destinyClassId: EDestinyClassId.Hunter,
+		},
+		output: [
+			true,
+			[EModId.MobilityMod, EModId.RecoveryMod, EModId.MinorIntellectMod],
+			{
+				[EArmorStatId.Mobility]: 10,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 10,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 5,
+				[EArmorStatId.Strength]: 0,
+			},
+			null,
+			null,
+		],
+	},
+	{
+		name: 'It returns false when there is space to put the required armor stat mods even with the combined cost of armor slot mods and combat style mods',
+		input: {
+			sumOfSeenStats: [0, 0, 0, 0, 100, 0],
+			desiredArmorStats: {
+				[EArmorStatId.Mobility]: 10,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 10,
+				[EArmorStatId.Discipline]: 0,
+				[EArmorStatId.Intellect]: 100,
+				[EArmorStatId.Strength]: 0,
+			},
+			numRemainingArmorPieces: 0,
+			validCombatStyleModArmorSlotPlacements: [
+				{
+					[EArmorSlotId.Head]: EModId.HeavyHanded,
+					[EArmorSlotId.Arm]: EModId.BountifulWells,
+					[EArmorSlotId.Chest]: EModId.TakingCharge,
+					[EArmorSlotId.Leg]: EModId.PowerfulFriends,
+					[EArmorSlotId.ClassItem]: EModId.ArgentOrdnance,
+				},
+			],
+			armorSlotMods: {
+				[EArmorSlotId.Head]: [null, EModId.BowAmmoFinder], // Capacity: Full
+				[EArmorSlotId.Arm]: [EModId.HandCannonLoader, null], // Capacity: 4
+				[EArmorSlotId.Chest]: [
+					EModId.UnflinchingSniperAim,
+					EModId.UnflinchingAutoRifleAim,
+				], // Capacity: Full
+				[EArmorSlotId.Leg]: [null, EModId.Absolution], // Capacity: 3
+				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber], // Capacity: 1
+			},
+			destinyClassId: EDestinyClassId.Hunter,
+		},
+		output: [
+			false,
+			[EModId.MobilityMod, EModId.RecoveryMod],
+			{
+				[EArmorStatId.Mobility]: 10,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 10,
 				[EArmorStatId.Discipline]: 0,
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
@@ -245,6 +482,22 @@ describe('shouldShortCircuit', () => {
 	});
 	test(shouldShortCircuitTestCases[5].name, () => {
 		const { input, output } = shouldShortCircuitTestCases[5];
+		expect(shouldShortCircuit(input)).toEqual(output);
+	});
+	test(shouldShortCircuitTestCases[6].name, () => {
+		const { input, output } = shouldShortCircuitTestCases[6];
+		expect(shouldShortCircuit(input)).toEqual(output);
+	});
+	test(shouldShortCircuitTestCases[7].name, () => {
+		const { input, output } = shouldShortCircuitTestCases[7];
+		expect(shouldShortCircuit(input)).toEqual(output);
+	});
+	test(shouldShortCircuitTestCases[8].name, () => {
+		const { input, output } = shouldShortCircuitTestCases[8];
+		expect(shouldShortCircuit(input)).toEqual(output);
+	});
+	test(shouldShortCircuitTestCases[9].name, () => {
+		const { input, output } = shouldShortCircuitTestCases[9];
 		expect(shouldShortCircuit(input)).toEqual(output);
 	});
 });

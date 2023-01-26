@@ -98,6 +98,11 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 		name: "King's Fall",
 		description: '',
 	},
+	[EModCategoryId.ArmorStat]: {
+		id: EModCategoryId.ArmorStat,
+		name: 'Armor Stat',
+		description: '',
+	},
 	[EModCategoryId.General]: {
 		id: EModCategoryId.General,
 		name: 'General',
@@ -127,6 +132,9 @@ export const getModCategoryIdByModName = (
 	}
 	if (displayNameId === EModDisplayNameId.WarmindCellMod) {
 		return EModCategoryId.WarmindCell;
+	}
+	if (displayNameId === EModDisplayNameId.GeneralArmorMod) {
+		return EModCategoryId.ArmorStat;
 	}
 	switch (name) {
 		case findTerm(name, 'Ammo Finder'):

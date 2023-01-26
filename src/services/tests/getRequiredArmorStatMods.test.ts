@@ -1,16 +1,17 @@
+import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	getRequiredArmorStatMods,
 	GetRequiredArmorStatModsParams,
 } from '@dlb/services/armor-processing';
 import { ArmorStatMapping } from '@dlb/types/ArmorStat';
-import { EArmorStatId, EArmorStatModId } from '@dlb/types/IdEnums';
+import { EArmorStatId, EDestinyClassId } from '@dlb/types/IdEnums';
 
 import { describe, expect, test } from '@jest/globals';
 
 type GetRequiredArmorStatModsTestCase = {
 	name: string;
 	input: GetRequiredArmorStatModsParams;
-	output: [EArmorStatModId[], ArmorStatMapping];
+	output: [EModId[], ArmorStatMapping];
 };
 
 const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
@@ -27,9 +28,10 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 0,
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
-			[EArmorStatModId.MajorMobility],
+			[EModId.MobilityMod],
 			{
 				[EArmorStatId.Mobility]: 10,
 				[EArmorStatId.Resilience]: 0,
@@ -53,9 +55,10 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 0,
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
-			[EArmorStatModId.MajorMobility, EArmorStatModId.MinorMobility],
+			[EModId.MobilityMod, EModId.MinorMobilityMod],
 			{
 				[EArmorStatId.Mobility]: 15,
 				[EArmorStatId.Resilience]: 0,
@@ -79,21 +82,22 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Strength]: 60,
 			},
 			numRemainingArmorPieces: 0,
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
 			[
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MinorMobility,
-				EArmorStatModId.MajorResilience,
-				EArmorStatModId.MajorRecovery,
-				EArmorStatModId.MajorRecovery,
-				EArmorStatModId.MajorRecovery,
-				EArmorStatModId.MajorRecovery,
-				EArmorStatModId.MajorRecovery,
-				EArmorStatModId.MajorRecovery,
-				EArmorStatModId.MinorIntellect,
-				EArmorStatModId.MajorStrength,
-				EArmorStatModId.MajorStrength,
+				EModId.MobilityMod,
+				EModId.MinorMobilityMod,
+				EModId.ResilienceMod,
+				EModId.RecoveryMod,
+				EModId.RecoveryMod,
+				EModId.RecoveryMod,
+				EModId.RecoveryMod,
+				EModId.RecoveryMod,
+				EModId.RecoveryMod,
+				EModId.MinorIntellectMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
 			],
 			{
 				[EArmorStatId.Mobility]: 15,
@@ -118,9 +122,10 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 3,
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
-			[EArmorStatModId.MinorMobility],
+			[EModId.MinorMobilityMod],
 			{
 				[EArmorStatId.Mobility]: 5,
 				[EArmorStatId.Resilience]: 0,
@@ -144,13 +149,14 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 2,
+			destinyClassId: EDestinyClassId.Hunter,
 		},
 		output: [
 			[
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MajorMobility,
-				EArmorStatModId.MinorRecovery,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MinorRecoveryMod,
 			],
 			{
 				[EArmorStatId.Mobility]: 30,

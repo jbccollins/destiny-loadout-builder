@@ -1,5 +1,4 @@
 import { EModId } from '@dlb/generated/mod/EModId';
-import { getArmorStatMod } from './ArmorStatMod';
 import { getFragment } from './Fragment';
 import {
 	EnumDictionary,
@@ -10,12 +9,7 @@ import {
 	StatBonusStat,
 	IHash,
 } from './globals';
-import {
-	EArmorStatId,
-	EArmorStatModId,
-	EDestinyClassId,
-	EFragmentId,
-} from './IdEnums';
+import { EArmorStatId, EDestinyClassId, EFragmentId } from './IdEnums';
 import { getStatBonusesFromMod } from './Mod';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
@@ -79,8 +73,8 @@ export const getArmorStat = (id: EArmorStatId): IArmorStat =>
 
 // TODO Move this to the ArmorStatMod file
 export type ArmorStatModSplit = {
-	major: EArmorStatModId;
-	minor: EArmorStatModId;
+	major: EModId;
+	minor: EModId;
 };
 
 /***** Extra  *****/
@@ -89,37 +83,33 @@ const ArmorStatIdToArmorStatModSplitMapping: EnumDictionary<
 	ArmorStatModSplit
 > = {
 	[EArmorStatId.Mobility]: {
-		minor: EArmorStatModId.MinorMobility,
-		major: EArmorStatModId.MajorMobility,
+		minor: EModId.MinorMobilityMod,
+		major: EModId.MobilityMod,
 	},
 	[EArmorStatId.Resilience]: {
-		minor: EArmorStatModId.MinorResilience,
-		major: EArmorStatModId.MajorResilience,
+		minor: EModId.MinorResilienceMod,
+		major: EModId.ResilienceMod,
 	},
 	[EArmorStatId.Recovery]: {
-		minor: EArmorStatModId.MinorRecovery,
-		major: EArmorStatModId.MajorRecovery,
+		minor: EModId.MinorRecoveryMod,
+		major: EModId.RecoveryMod,
 	},
 	[EArmorStatId.Discipline]: {
-		minor: EArmorStatModId.MinorDiscipline,
-		major: EArmorStatModId.MajorDiscipline,
+		minor: EModId.MinorDisciplineMod,
+		major: EModId.DisciplineMod,
 	},
 	[EArmorStatId.Intellect]: {
-		minor: EArmorStatModId.MinorIntellect,
-		major: EArmorStatModId.MajorIntellect,
+		minor: EModId.MinorIntellectMod,
+		major: EModId.IntellectMod,
 	},
 	[EArmorStatId.Strength]: {
-		minor: EArmorStatModId.MinorStrength,
-		major: EArmorStatModId.MajorStrength,
+		minor: EModId.MinorStrengthMod,
+		major: EModId.StrengthMod,
 	},
 };
 
-export const ArmorStatIdToArmorStatModSplit: Mapping<
-	EArmorStatId,
-	ArmorStatModSplit
-> = {
-	get: (key: EArmorStatId) => ArmorStatIdToArmorStatModSplitMapping[key],
-};
+export const getArmorStatModSpitFromArmorStatId = (armorStatId: EArmorStatId) =>
+	ArmorStatIdToArmorStatModSplitMapping[armorStatId];
 
 /***** Extra *****/
 export type ArmorStatMapping = {
@@ -164,17 +154,6 @@ export const getArmorStatMappingFromFragments = (
 	});
 	return armorStatMapping;
 };
-
-// export const getArmorStatMappingFromArmorStatMods = (
-// 	armorStatModIds: EArmorStatModId[]
-// ): ArmorStatMapping => {
-// 	const armorStatMapping = { ...DefaultArmorStatMapping };
-// 	armorStatModIds.forEach((id) => {
-// 		const { statBonus, armorStatId } = getArmorStatMod(id);
-// 		armorStatMapping[armorStatId] += statBonus;
-// 	});
-// 	return armorStatMapping;
-// };
 
 export const getArmorStatMappingFromMods = (
 	modIds: EModId[],

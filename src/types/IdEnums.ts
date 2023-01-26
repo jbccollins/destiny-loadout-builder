@@ -70,22 +70,6 @@ export enum EArmorExtraModSlotId {
 	Any = 'any',
 }
 
-export enum EArmorStatModId {
-	None = 'None',
-	MinorMobility = 'MinorMobility',
-	MajorMobility = 'MajorMobility',
-	MinorResilience = 'MinorResilience',
-	MajorResilience = 'MajorResilience',
-	MinorRecovery = 'MinorRecovery',
-	MajorRecovery = 'MajorRecovery',
-	MinorDiscipline = 'MinorDiscipline',
-	MajorDiscipline = 'MajorDiscipline',
-	MinorIntellect = 'MinorIntellect',
-	MajorIntellect = 'MajorIntellect',
-	MinorStrength = 'MinorStrength',
-	MajorStrength = 'MajorStrength',
-}
-
 export enum EAspectId {
 	/*** Warlock ***/
 	// Stasis
@@ -271,8 +255,8 @@ export enum EModCategoryId {
 	VaultOfGlass = 'VaultOfGlass',
 	VowOfTheDisciple = 'VowOfTheDisciple',
 	KingsFall = 'KingsFall',
+	ArmorStat = 'ArmorStat',
 	General = 'General',
-	// TODO: Stat mods???
 	// SeasonalArtifact = 'SeasonalArtifact',
 }
 

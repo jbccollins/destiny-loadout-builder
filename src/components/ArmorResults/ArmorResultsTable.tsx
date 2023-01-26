@@ -12,41 +12,33 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import Shield from '@mui/icons-material/Shield';
 import { Button, styled, TablePagination, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { ResultsTableLoadout } from './ArmorResultsView';
 import {
 	EArmorStatId,
-	EArmorStatModId,
 	EFragmentId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
 	ArmorStatIdList,
 	ArmorStatMapping,
-	DefaultArmorStatMapping,
 	getArmorStat,
 	getArmorStatMappingFromMods,
 	getArmorStatMappingFromFragments,
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
-import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import MasterworkedBungieImage from '../MasterworkedBungieImage';
-import { itemCanBeEquippedBy } from '@dlb/dim/utils/item-utils';
-import { copyToClipboard } from '@dlb/types/globals';
+import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
 import { ArmorItem, getExtraMasterworkedStats } from '@dlb/types/Armor';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import selectedCombatStyleModsSlice, {
-	selectSelectedCombatStyleMods,
-} from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
+import { selectSelectedCombatStyleMods } from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
 import generateDimLink from '@dlb/services/dim/generateDimLoadoutLink';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
@@ -54,12 +46,7 @@ import { selectSelectedGrenade } from '@dlb/redux/features/selectedGrenade/selec
 import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { selectSelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
-import { AspectIdList } from '@dlb/types/Aspect';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
-import {
-	getArmorStatMappingFromArmorStatMods,
-	getArmorStatMod,
-} from '@dlb/types/ArmorStatMod';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getMod, getStatBonusesFromMod } from '@dlb/types/Mod';
@@ -195,12 +182,9 @@ function Row(props: { row: ResultsTableLoadout }) {
 	});
 
 	const armorStatModArmorStatMappings: Partial<
-		Record<
-			EArmorStatModId,
-			{ armorStatMapping: ArmorStatMapping; count: number }
-		>
+		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	> = {};
-	const modCounts: Partial<Record<EArmorStatModId, number>> = {};
+	const modCounts: Partial<Record<EModId, number>> = {};
 	row.sortableFields.requiredStatModIdList.forEach((id) => {
 		if (!modCounts[id]) {
 			modCounts[id] = 1;
@@ -208,14 +192,17 @@ function Row(props: { row: ResultsTableLoadout }) {
 			modCounts[id] += 1;
 		}
 	});
-	Object.keys(modCounts).forEach((armorStatModId: EArmorStatModId) => {
-		const statModIds: EArmorStatModId[] = [];
+	Object.keys(modCounts).forEach((armorStatModId: EModId) => {
+		const statModIds: EModId[] = [];
 		const count = modCounts[armorStatModId];
 		for (let i = 0; i < count; i++) {
 			statModIds.push(armorStatModId);
 			armorStatModArmorStatMappings[armorStatModId] = {
 				count,
-				armorStatMapping: getArmorStatMappingFromArmorStatMods(statModIds),
+				armorStatMapping: getArmorStatMappingFromMods(
+					statModIds,
+					selectedDestinyClass
+				),
 			};
 		}
 	});
@@ -469,7 +456,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 								}
 							)}
 							{Object.keys(armorStatModArmorStatMappings).map(
-								(armorStatModId: EArmorStatModId) => {
+								(armorStatModId: EModId) => {
 									return (
 										<StatsBreakdown
 											key={armorStatModId}
@@ -479,7 +466,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 												<BungieImage
 													width={20}
 													height={20}
-													src={getArmorStatMod(armorStatModId).icon}
+													src={getMod(armorStatModId).icon}
 												/>
 												({armorStatModArmorStatMappings[armorStatModId].count})
 											</StatsBreakdownItem>

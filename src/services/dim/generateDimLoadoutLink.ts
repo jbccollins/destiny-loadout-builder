@@ -1,7 +1,6 @@
 import { Loadout, LoadoutParameters } from '@destinyitemmanager/dim-api-types';
 import {
 	EArmorStatId,
-	EArmorStatModId,
 	EAspectId,
 	EDestinyClassId,
 	EDestinySubclassId,
@@ -9,7 +8,6 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { getFragment } from '@dlb/types/Fragment';
-import { getArmorStatMod } from '@dlb/types/ArmorStatMod';
 import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
 import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
 import { AvailableExoticArmorItem, IArmorItem } from '@dlb/types/Armor';
@@ -25,10 +23,7 @@ import { getSuperAbility } from '@dlb/types/SuperAbility';
 import { getJump } from '@dlb/types/Jump';
 import { getMelee } from '@dlb/types/Melee';
 import { getGrenade } from '@dlb/types/Grenade';
-import {
-	ArmorSlotIdList,
-	ArmorSlotWithClassItemIdList,
-} from '@dlb/types/ArmorSlot';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
 
@@ -41,7 +36,7 @@ export type DimLoadoutConfiguration = {
 	meleeId: EMeleeId;
 	classAbilityId: EClassAbilityId;
 	superAbilityId: ESuperAbilityId;
-	armorStatModIdList: EArmorStatModId[];
+	armorStatModIdList: EModId[];
 	exoticArmor: AvailableExoticArmorItem;
 	stats: ArmorStatMapping;
 	masterworkAssumption: EMasterworkAssumption;
@@ -88,8 +83,8 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	const aspectHashes: number[] = aspectIdList.map(
 		(aspectId: EAspectId) => getAspect(aspectId).hash
 	);
-	armorStatModIdList.forEach((armorStatModId: EArmorStatModId) => {
-		modHashes.push(getArmorStatMod(armorStatModId).hash);
+	armorStatModIdList.forEach((armorStatModId: EModId) => {
+		modHashes.push(getMod(armorStatModId).hash);
 	});
 
 	const data: LoadoutParameters = {

@@ -57,7 +57,7 @@ import {
 	ArmorSlotIdToModIdListMapping,
 	CombatStyleModIdList,
 	getValidCombatStyleModArmorSlotPlacements,
-	hasValidModPermutation,
+	hasValidCombatStyleModPermutation,
 } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
@@ -196,12 +196,20 @@ function handleChange() {
 			selectedDestinyClass
 		);
 
-		getValidCombatStyleModArmorSlotPlacements(
+		const validCombatStyleModArmorSlotPlacements =
+			getValidCombatStyleModArmorSlotPlacements(
+				selectedArmorSlotMods,
+				selectedCombatStyleMods
+			);
+		console.log(
+			'>>>>>>+ validCombatStyleModArmorSlotPlacements',
+			validCombatStyleModArmorSlotPlacements
+		);
+
+		hasValidCombatStyleModPermutation(
 			selectedArmorSlotMods,
 			selectedCombatStyleMods
 		);
-
-		hasValidModPermutation(selectedArmorSlotMods, selectedCombatStyleMods);
 		const disabledArmorSlotMods = getDisabledArmorSlotMods(
 			selectedArmorSlotMods,
 			selectedCombatStyleMods
@@ -240,6 +248,9 @@ function handleChange() {
 			armorItems: preProcessedArmor,
 			fragmentArmorStatMapping,
 			modArmorStatMapping: modsArmorStatMapping,
+			validCombatStyleModArmorSlotPlacements,
+			armorSlotMods: selectedArmorSlotMods,
+			destinyClassId: selectedDestinyClass,
 		});
 		console.log('>>>>>>>>>>> results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };
@@ -282,7 +293,7 @@ const getDisabledArmorSlotMods = (
 					...selectedArmorSlotMods[armorSlotId],
 				];
 				potentialSelectedArmorSlotMods[armorSlotId][i] = modId;
-				const isValid = hasValidModPermutation(
+				const isValid = hasValidCombatStyleModPermutation(
 					potentialSelectedArmorSlotMods,
 					selectedCombatStyleMods
 				);
@@ -309,7 +320,7 @@ const getDisabledCombatStyleMods = (
 		CombatStyleModIdList.forEach((modId) => {
 			const potentialSelectedCombatStyleMods = [...selectedCombatStyleMods];
 			potentialSelectedCombatStyleMods[i] = modId;
-			const isValid = hasValidModPermutation(
+			const isValid = hasValidCombatStyleModPermutation(
 				selectedArmorSlotMods,
 				potentialSelectedCombatStyleMods
 			);

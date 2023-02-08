@@ -44,7 +44,8 @@ const Container = styled(Box)(({ theme }) => ({
 
 const LeftSection = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(2),
-	width: '425px',
+	width: '400px',
+	minWidth: '400px',
 	[theme.breakpoints.up('md')]: {
 		height: '100vh',
 		overflowY: 'auto',

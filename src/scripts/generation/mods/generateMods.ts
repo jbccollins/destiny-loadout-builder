@@ -17,11 +17,12 @@ import { IMod } from '@dlb/types/generation';
 import {
 	collectRewardsFromArtifacts,
 	generateId,
+	getBonuses,
 	getDefinitions,
 } from '@dlb/scripts/generation/utils';
-import { generateModIdEnumFileString } from './generateModIdEnums';
+import { generateModIdEnumFileString } from './generateModIdEnum';
 import { generateModMapping } from './generateModMapping';
-import { generateModDisplayNameIdEnumFileString } from './generageModDisplayNameIdEnum';
+import { generateModDisplayNameIdEnumFileString } from './generateModDisplayNameIdEnum';
 import { getModSocketCategoryIdByModDisplayNameId } from '@dlb/types/ModSocketCategory';
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 import { bungieNetPath } from '@dlb/utils/item-utils';
@@ -109,6 +110,7 @@ const buildModData = (
 		similarModsAllowed: !mod.plug.insertionRules?.some((x) =>
 			x?.failureMessage.includes('Similar mod already applied')
 		),
+		bonuses: getBonuses(mod),
 	};
 };
 

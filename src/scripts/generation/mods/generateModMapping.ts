@@ -9,6 +9,7 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	formatStringForFile,
 	getSerializableValue,
+	getSerializedBonusStats,
 } from '@dlb/scripts/generation/utils';
 
 export const generateModMapping = (mods: IMod[]): string => {
@@ -37,6 +38,10 @@ export const generateModMapping = (mods: IMod[]): string => {
 			);
 			serializedMod[key] = serializedResult;
 		});
+		const serialzedBonusStats = getSerializedBonusStats(mod);
+		mod.bonuses.forEach((_, i) => {
+			serializedMod.bonuses[i].stat = serialzedBonusStats[i];
+		});
 		serializeMods.push(serializedMod);
 	});
 
@@ -55,6 +60,7 @@ export const generateModMapping = (mods: IMod[]): string => {
 		EElementId,
 		EModCategoryId,
 		EModSocketCategoryId,
+		EArmorStatId,
 	} from "@dlb/types/IdEnums";	
 
 	export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {

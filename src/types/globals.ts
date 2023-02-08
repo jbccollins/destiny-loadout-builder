@@ -36,6 +36,10 @@ export interface IHash {
 	hash: number;
 }
 
+export interface IBonuses {
+	bonuses: StatBonus[];
+}
+
 // Way to store the mapping of an id enum to an identifiable item
 export type EnumDictionary<T extends string | symbol | number, U> = {
 	[K in T]: U;
@@ -81,9 +85,10 @@ export function ValidateEnumList<T extends string | symbol | number>(
 	return list;
 }
 
-export type StatBonusStat =
-	| EArmorStatId
-	| ((destinyClassId: EDestinyClassId) => EArmorStatId);
+export type ClassAbilityStat = 'ClassAbilityStat';
+
+export type StatBonusStat = EArmorStatId | ClassAbilityStat;
+// | ((destinyClassId: EDestinyClassId) => EArmorStatId);
 
 // Commonly used between CombatStyleMod and Fragment
 // TODO: Maybe there's a better place for this than the globals file

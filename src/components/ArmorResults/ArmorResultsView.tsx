@@ -13,21 +13,42 @@ import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorItem } from '@dlb/types/Armor';
 import { ArmorStatMapping } from '@dlb/types/ArmorStat';
+import { EModId } from '@dlb/generated/mod/EModId';
+import ArmorResultsList from './ArmorResultsList';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
-	height: '100%',
+	height: 'calc(100% - 40px)',
 }));
 
-type SortableFields = ArmorStatMapping & ProcessedArmorItemMetadata;
+const HeaderContainer = styled(Box)(({ theme }) => ({
+	// padding: theme.spacing(1)
+	position: 'relative',
+	height: '40px',
+}));
+
+export type SortableFields = {
+	Mobility: number;
+	Resilience: number;
+	Recovery: number;
+	Discipline: number;
+	Intellect: number;
+	Strength: number;
+	totalModCost: number;
+	totalStatTiers: number;
+	wastedStats: number;
+};
 
 export type ResultsTableLoadout = {
 	id: string;
 	sortableFields: SortableFields;
-	// totalStats: StatList; // Includes Masterwork
 	armorItems: ArmorItem[];
-	//metadata: ProcessedArmorItemMetadata;
+	requiredStatModIdList: EModId[];
 };
+
+function Header() {
+	return <HeaderContainer>Results</HeaderContainer>;
+}
 
 function ArmorResultsView() {
 	const armor = useAppSelector(selectArmor);
@@ -56,8 +77,9 @@ function ArmorResultsView() {
 		processedArmor.forEach(({ armorIdList, metadata }) => {
 			const resultLoadout: ResultsTableLoadout = {
 				// totalStats: [0, 0, 0, 0, 0, 0],
-				armorItems: [],
 				id: '',
+				armorItems: [],
+				requiredStatModIdList: [],
 				sortableFields: {
 					[EArmorStatId.Mobility]: 0,
 					[EArmorStatId.Resilience]: 0,
@@ -68,28 +90,16 @@ function ArmorResultsView() {
 					totalModCost: 0,
 					totalStatTiers: 0,
 					wastedStats: 0,
-					// TODO: Remove totalArmorStatMapping from this type
-					totalArmorStatMapping: {
-						[EArmorStatId.Mobility]: 0,
-						[EArmorStatId.Resilience]: 0,
-						[EArmorStatId.Recovery]: 0,
-						[EArmorStatId.Discipline]: 0,
-						[EArmorStatId.Intellect]: 0,
-						[EArmorStatId.Strength]: 0,
-					},
-					requiredStatModIdList: metadata.requiredStatModIdList,
 				},
 			};
 			ArmorSlotIdList.forEach((armorSlot, i) => {
 				const armorItem = getArmorItem(armorIdList[i], armorSlot);
-				resultLoadout.armorItems.push(armorItem);
 				// TODO: This id generation logic is probably wrong
-				armorItem.stats.forEach((value, j) => {
-					// resultLoadout.totalStats[j] +=
-					// 	armorItem.stats[j] +
-					// 	getExtraMasterworkedStats(armorItem, selectedMasterworkAssumption);
+				armorItem.stats.forEach(() => {
 					resultLoadout.id += `[${armorItem.id}]`;
 				});
+				resultLoadout.armorItems.push(armorItem);
+				resultLoadout.requiredStatModIdList = metadata.requiredStatModIdList;
 				resultLoadout.sortableFields.totalModCost = metadata.totalModCost;
 				resultLoadout.sortableFields.totalStatTiers = metadata.totalStatTiers;
 				resultLoadout.sortableFields.wastedStats = metadata.wastedStats;
@@ -120,7 +130,9 @@ function ArmorResultsView() {
 				selectedExoticArmor &&
 				selectedExoticArmor[selectedDestinyClass] && (
 					<Container className="armor-results-view">
-						<ArmorResultsTable items={resultsTableArmorItems} />
+						<Header />
+						{/* <ArmorResultsTable items={resultsTableArmorItems} /> */}
+						<ArmorResultsList items={resultsTableArmorItems} />
 					</Container>
 				)}
 		</>

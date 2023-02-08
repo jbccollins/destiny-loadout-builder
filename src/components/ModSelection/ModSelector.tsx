@@ -6,11 +6,7 @@ import { getStat } from '@dlb/types/ArmorStat';
 import { IMod } from '@dlb/types/generation';
 import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
 import { EArmorSlotId, EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
-import {
-	getMod,
-	ArmorSlotIdToArmorSlotModIdListMapping,
-	getStatBonusesFromMod,
-} from '@dlb/types/Mod';
+import { getMod, ArmorSlotIdToArmorSlotModIdListMapping } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
 import { Avatar, Box, Chip, Typography } from '@mui/material';
 import { first, last } from 'lodash';
@@ -44,6 +40,7 @@ const placeholderOption: IMod = {
 	armorSocketIndex: 0,
 	elementOverlayIcon: null,
 	similarModsAllowed: true,
+	bonuses: [],
 };
 
 const getOptionStat = (
@@ -145,7 +142,7 @@ const ModSelector = ({
 				const mod = getMod(id);
 				return {
 					...mod,
-					bonuses: getStatBonusesFromMod(id),
+					bonuses: mod.bonuses,
 					// TODO: This name thing is fucking dumb but it's to prevent duplicate keys.
 					// Since the Autocomplete in it's infintite wisdom uses the name as a key.
 					name: mod.name + (mod.isArtifactMod ? ' (Artifact)' : ''),

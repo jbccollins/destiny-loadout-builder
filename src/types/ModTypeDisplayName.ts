@@ -30,20 +30,25 @@ const ModTypeDisplayNameIdToModTypeDisplayNameMapping: EnumDictionary<
 	[EModTypeDisplayNameId.LastWishRaidMod]: { name: 'Last Wish Raid Mod' },
 	[EModTypeDisplayNameId.ClassItemArmorMod]: { name: 'Class Item Armor Mod' },
 	[EModTypeDisplayNameId.VaultofGlassArmorMod]: {
+		bonuses: [],
 		name: 'Vault of Glass Armor Mod',
 	},
 	[EModTypeDisplayNameId.ClassItemMod]: { name: 'Class Item Mod' },
 	[EModTypeDisplayNameId.DeepStoneCryptRaidMod]: {
+		bonuses: [],
 		name: 'Deep Stone Crypt Raid Mod',
 	},
 	[EModTypeDisplayNameId.KingsFallMod]: { name: "King's Fall Mod" },
 	[EModTypeDisplayNameId.GardenofSalvationRaidMod]: {
+		bonuses: [],
 		name: 'Garden of Salvation Raid Mod',
 	},
 	[EModTypeDisplayNameId.VowoftheDiscipleRaidMod]: {
+		bonuses: [],
 		name: 'Vow of the Disciple Raid Mod',
 	},
 	[EModTypeDisplayNameId.ChargedwithLightMod]: {
+		bonuses: [],
 		name: 'Charged with Light Mod',
 	},
 	[EModTypeDisplayNameId.NightmareMod]: { name: 'Nightmare Mod' },

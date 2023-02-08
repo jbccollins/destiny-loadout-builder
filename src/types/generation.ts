@@ -1,5 +1,5 @@
 import { EModId } from '@dlb/generated/mod/EModId';
-import { IIdentifiableName, IHash, IIcon, StatBonus } from './globals';
+import { IIdentifiableName, IHash, IIcon, IBonuses } from './globals';
 import {
 	EElementId,
 	EArmorSlotId,
@@ -10,7 +10,7 @@ import {
 
 // Define the types/enums/interfaces used by generated files here
 
-export interface IMod extends IIdentifiableName, IHash, IIcon {
+export interface IMod extends IIdentifiableName, IHash, IIcon, IBonuses {
 	id: EModId;
 	description: string;
 	modSocketCategoryId: EModSocketCategoryId;
@@ -27,6 +27,10 @@ export interface IMod extends IIdentifiableName, IHash, IIcon {
 export interface IAspect extends IIdentifiableName, IIcon, IHash {
 	description: string;
 	fragementSlots: number;
+}
+
+export interface IFragment extends IIdentifiableName, IIcon, IHash, IBonuses {
+	description: string;
 }
 
 export interface IGrenade extends IIdentifiableName, IIcon, IHash {

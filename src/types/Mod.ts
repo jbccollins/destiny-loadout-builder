@@ -1,14 +1,8 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
 import { IMod } from './generation';
-import {
-	EArmorSlotId,
-	EArmorStatId,
-	EElementId,
-	EModSocketCategoryId,
-} from './IdEnums';
-import { EnumDictionary, StatBonus } from './globals';
-import { getDestinyClassAbilityStat } from './DestinyClass';
+import { EArmorSlotId, EElementId, EModSocketCategoryId } from './IdEnums';
+import { EnumDictionary } from './globals';
 import { permute } from '@dlb/utils/permutations';
 import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
 import { ElementIdList } from './Element';
@@ -80,45 +74,6 @@ export const ModSocketCategoryIdToModIdListMapping: EnumDictionary<
 
 export const getModIdListFromModSocketCategory = (id: EModSocketCategoryId) =>
 	ModSocketCategoryIdToModIdListMapping[id];
-
-// TODO: This will need to be manually updated every season if bungie continues to add stat mods
-// to the artifact. Figure out a way to incorporate this directly into mod generation.
-// This would be much easier if some mods didn't rely on your class ability stat
-const ModIdToStatBonusMapping: Partial<EnumDictionary<EModId, StatBonus[]>> = {
-	// POSITIVE Mods
-	[EModId.PowerfulFriends]: [{ stat: EArmorStatId.Mobility, value: 20 }],
-	[EModId.RadiantLight]: [{ stat: EArmorStatId.Strength, value: 20 }],
-	[EModId.ArtifactResilientRetrofit]: [
-		{ stat: EArmorStatId.Resilience, value: 5 },
-	],
-	[EModId.ArtifactMobileRetrofit]: [{ stat: EArmorStatId.Mobility, value: 5 }],
-
-	[EModId.MobilityMod]: [{ stat: EArmorStatId.Mobility, value: 10 }],
-	[EModId.ResilienceMod]: [{ stat: EArmorStatId.Resilience, value: 10 }],
-	[EModId.RecoveryMod]: [{ stat: EArmorStatId.Recovery, value: 10 }],
-	[EModId.DisciplineMod]: [{ stat: EArmorStatId.Discipline, value: 10 }],
-	[EModId.IntellectMod]: [{ stat: EArmorStatId.Intellect, value: 10 }],
-	[EModId.StrengthMod]: [{ stat: EArmorStatId.Strength, value: 10 }],
-	[EModId.MinorMobilityMod]: [{ stat: EArmorStatId.Mobility, value: 5 }],
-	[EModId.MinorResilienceMod]: [{ stat: EArmorStatId.Resilience, value: 5 }],
-	[EModId.MinorRecoveryMod]: [{ stat: EArmorStatId.Recovery, value: 5 }],
-	[EModId.MinorDisciplineMod]: [{ stat: EArmorStatId.Discipline, value: 5 }],
-	[EModId.MinorIntellectMod]: [{ stat: EArmorStatId.Intellect, value: 5 }],
-	[EModId.MinorStrengthMod]: [{ stat: EArmorStatId.Strength, value: 5 }],
-	// NEGATIVE Mods
-	[EModId.ProtectiveLight]: [{ stat: EArmorStatId.Strength, value: -10 }],
-	[EModId.ExtraReserves]: [{ stat: EArmorStatId.Intellect, value: -10 }],
-	[EModId.PreciselyCharged]: [{ stat: EArmorStatId.Discipline, value: -10 }],
-	[EModId.StacksOnStacks]: [{ stat: EArmorStatId.Recovery, value: -10 }],
-	[EModId.PrecisionCharge]: [{ stat: EArmorStatId.Strength, value: -10 }],
-	[EModId.SurpriseAttack]: [{ stat: EArmorStatId.Intellect, value: -10 }],
-	[EModId.EnergyConverter]: [{ stat: EArmorStatId.Discipline, value: -10 }],
-	[EModId.ChargeHarvester]: [{ stat: getDestinyClassAbilityStat, value: -10 }],
-};
-
-export const getStatBonusesFromMod = (id: EModId): StatBonus[] => {
-	return ModIdToStatBonusMapping[id] || null;
-};
 
 export type ArmorSlotIdToModIdListMapping = {
 	[key in EArmorSlotId]: EModId[];

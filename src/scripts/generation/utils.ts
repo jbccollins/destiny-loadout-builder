@@ -4,6 +4,10 @@ import prettier from 'prettier';
 import crypto from 'crypto';
 import path from 'path';
 import { promises as fs } from 'fs';
+import { IBonuses, StatBonus } from '@dlb/types/globals';
+import { EArmorStatId } from '@dlb/types/IdEnums';
+import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
+import { getArmorStatIdFromBungieHash } from '@dlb/types/ArmorStat';
 
 const API_KEY = process.env.NEXT_PUBLIC_BNET_API_KEY;
 const CACHED_DEFINITIONS_DIRECTORY = './src/scripts/cached-definitions/';
@@ -159,4 +163,52 @@ export const formatStringForFile = (s: string) => {
 		});
 	}
 	return prettier.format(deSerializedString, { parser: 'typescript' });
+};
+
+// Pull the extraction of bonuses out into a common function that can be used by mods and fragments
+export const getBonuses = (
+	item: DestinyInventoryItemDefinition
+): StatBonus[] => {
+	const bonuses: StatBonus[] = [];
+	// TODO: This is a super fragile hack. Checking this length is just checking
+	// to see if this has three bonuses. If it does I'm assuming it's the three
+	// class ability stat bonuses. I can't figure out a better way to determine this
+	// Relevant discord discussion:
+	// https://discord.com/channels/296008008956248066/296008136785920001/1072704762367184966
+	if (item.investmentStats.length === 4) {
+		// Just pick a random value... in theory they should all be the same
+		bonuses.push({
+			stat: 'ClassAbilityStat',
+			value: item.investmentStats[3].value,
+		});
+	} else {
+		item.investmentStats.forEach(({ statTypeHash, value }) => {
+			const armorStatId = getArmorStatIdFromBungieHash(statTypeHash);
+			if (armorStatId) {
+				bonuses.push({ stat: armorStatId, value });
+			}
+		});
+	}
+	return bonuses;
+};
+
+// Pull the serialization of bounses out into a common function to be used by mods and fragments
+export const getSerializedBonusStats = (
+	item: IBonuses
+): Record<number, string> => {
+	const bonuses: Record<number, string> = {};
+	// TODO: Pull the serialization of bounses out into a common function to be used by mods and fragments
+	item.bonuses.forEach((bonus, i) => {
+		if (bonus.stat === 'ClassAbilityStat') {
+			bonuses[i] = 'ClassAbilityStat';
+			return;
+		}
+		const serializedBonusStat = getSerializableValue(
+			bonus.stat,
+			EArmorStatId,
+			'EArmorStatId'
+		);
+		bonuses[i] = serializedBonusStat;
+	});
+	return bonuses;
 };

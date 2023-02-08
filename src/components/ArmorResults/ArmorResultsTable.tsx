@@ -49,7 +49,7 @@ import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbi
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { getMod, getStatBonusesFromMod } from '@dlb/types/Mod';
+import { getMod } from '@dlb/types/Mod';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 
 const calculateExtraMasterworkedStats = (
@@ -185,7 +185,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	> = {};
 	const modCounts: Partial<Record<EModId, number>> = {};
-	row.sortableFields.requiredStatModIdList.forEach((id) => {
+	row.requiredStatModIdList.forEach((id) => {
 		if (!modCounts[id]) {
 			modCounts[id] = 1;
 		} else {
@@ -210,7 +210,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 		Record<EModId, ArmorStatMapping>
 	> = {};
 	selectedCombatStyleMods.forEach((id) => {
-		const bonuses = getStatBonusesFromMod(id);
+		const { bonuses } = getMod(id);
 		if (bonuses && bonuses.length > 0) {
 			if (combatStyleModArmorStatMapping[id]) {
 				console.log('>>>>> SUMMING');
@@ -232,7 +232,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 	> = {};
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 		selectedArmorSlotMods[armorSlotId].forEach((id: EModId) => {
-			const bonuses = getStatBonusesFromMod(id);
+			const { bonuses } = getMod(id);
 			if (bonuses && bonuses.length > 0) {
 				if (armorSlotModArmorStatMappping[id]) {
 					console.log('>>>>> SUMMING');
@@ -250,7 +250,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 		});
 	});
 	// selectedCombatStyleMods.forEach((id) => {
-	// 	const bonuses = getStatBonusesFromMod(id);
+	// 	const { bonuses } = getMod(id);
 	// 	if (bonuses && bonuses.length > 0) {
 	// 		combatStyleModArmorStatMapping[id] = getArmorStatMappingFromMods(
 	// 			[id],
@@ -351,7 +351,7 @@ function Row(props: { row: ResultsTableLoadout }) {
 								target={'_blank'}
 								href={`${generateDimLink({
 									combatStyleModIdList: selectedCombatStyleMods,
-									armorStatModIdList: row.sortableFields.requiredStatModIdList,
+									armorStatModIdList: row.requiredStatModIdList,
 									armorSlotMods: selectedArmorSlotMods,
 									armorList: row.armorItems,
 									fragmentIdList: fragmentIds,

@@ -1,4 +1,5 @@
 import { EModId } from '@dlb/generated/mod/EModId';
+import { getDestinyClassAbilityStat } from './DestinyClass';
 import { getFragment } from './Fragment';
 import {
 	EnumDictionary,
@@ -8,9 +9,10 @@ import {
 	Mapping,
 	StatBonusStat,
 	IHash,
+	ClassAbilityStat,
 } from './globals';
 import { EArmorStatId, EDestinyClassId, EFragmentId } from './IdEnums';
-import { getStatBonusesFromMod } from './Mod';
+import { getMod } from './Mod';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 	EArmorStatId.Mobility,
@@ -130,14 +132,25 @@ export const DefaultArmorStatMapping: ArmorStatMapping = {
 	[EArmorStatId.Strength]: 0,
 };
 
+// export const getStat = (
+// 	stat: StatBonusStat,
+// 	destinyClassId: EDestinyClassId
+// ) => {
+// 	if (typeof stat === 'string') {
+// 		return getArmorStat(stat);
+// 	}
+// 	return getArmorStat(stat(destinyClassId));
+// };
+
 export const getStat = (
 	stat: StatBonusStat,
 	destinyClassId: EDestinyClassId
 ) => {
-	if (typeof stat === 'string') {
-		return getArmorStat(stat);
+	// TODO: Can we compare this to a non-literal string?
+	if (stat === 'ClassAbilityStat') {
+		return getArmorStat(getDestinyClassAbilityStat(destinyClassId));
 	}
-	return getArmorStat(stat(destinyClassId));
+	return getArmorStat(stat);
 };
 
 export const getArmorStatMappingFromFragments = (
@@ -163,7 +176,7 @@ export const getArmorStatMappingFromMods = (
 	modIds
 		.filter((modId) => modId !== null)
 		.forEach((id) => {
-			const bonuses = getStatBonusesFromMod(id);
+			const { bonuses } = getMod(id);
 			if (bonuses !== null) {
 				bonuses.forEach((bonus) => {
 					const armorStatId = getStat(bonus.stat, destinyClassId).id;
@@ -192,4 +205,12 @@ export const sumArmorStatMappings = (
 		});
 	});
 	return res;
+};
+
+// This should only be used by generation. If it's needed somewhere else then refactor this
+export const getArmorStatIdFromBungieHash = (hash: number): EArmorStatId => {
+	const armorStatId = ArmorStatIdList.find(
+		(id) => getArmorStat(id).hash === hash
+	);
+	return armorStatId ?? null;
 };

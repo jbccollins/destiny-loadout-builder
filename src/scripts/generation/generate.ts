@@ -5,8 +5,10 @@ import { run as generateMelees } from './melees/generateMelees';
 import { run as generateClassAbilities } from './classAbilities/generateClassAbilities';
 import { run as generateJumps } from './jumps/generateJumps';
 import { run as generateSuperAbilities } from './superAbilities/generateSuperAbilities';
+import { run as generateFragments } from './fragments/generateFragments';
 
 (async function run() {
+	await generateFragments();
 	await generateMods();
 	// await generateAspects();
 	// await generateGrenades();

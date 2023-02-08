@@ -82,7 +82,7 @@ interface IOption {
 	icon: string;
 	description: string;
 	bonuses?: StatBonus[];
-	element: EElementId;
+	elementId: EElementId;
 }
 
 type IIconMultiSelectDropdownProps = {
@@ -177,7 +177,7 @@ export default function IconMultiSelectDropdown({
 											style={{ marginLeft: '6px' }}
 											width={20}
 											height={20}
-											src={getElement(optionValue.element).icon}
+											src={getElement(optionValue.elementId).icon}
 										/>
 									)}
 								</MenuItemRow>

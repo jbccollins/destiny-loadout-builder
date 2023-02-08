@@ -4,7 +4,7 @@
 import { EnumDictionary } from "@dlb/types/globals";
 import { IFragment } from "@dlb/types/generation";
 import { EFragmentId } from "@dlb/generated/fragment/EFragmentId";
-import { EArmorStatId } from "@dlb/types/IdEnums";
+import { EArmorStatId, EElementId } from "@dlb/types/IdEnums";
 
 export const FragmentIdToFragmentMapping: EnumDictionary<
   EFragmentId,
@@ -23,6 +23,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfCombustion]: {
     name: "Ember of Combustion",
@@ -36,6 +37,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfTempering]: {
     name: "Ember of Tempering",
@@ -50,6 +52,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfChar]: {
     name: "Ember of Char",
@@ -63,6 +66,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfBenevolence]: {
     name: "Ember of Benevolence",
@@ -77,6 +81,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfSingeing]: {
     name: "Ember of Singeing",
@@ -85,6 +90,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/c9e392abb5417ecab2dccd85fe23c00f.jpg",
     hash: 362132293,
     bonuses: [],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfEmpyrean]: {
     name: "Ember of Empyrean",
@@ -99,6 +105,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfBeams]: {
     name: "Ember of Beams",
@@ -113,6 +120,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfSolace]: {
     name: "Ember of Solace",
@@ -122,6 +130,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/fb46711e0dff2bc2f55c21271e838fe2.jpg",
     hash: 362132300,
     bonuses: [],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfBlistering]: {
     name: "Ember of Blistering",
@@ -131,6 +140,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/52dc6ef9a4b0642e36551542b3a2936e.jpg",
     hash: 362132301,
     bonuses: [],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.WhisperOfChains]: {
     name: "Whisper of Chains",
@@ -145,6 +155,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfTorment]: {
     name: "Whisper of Torment",
@@ -154,6 +165,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/557294f02042a60ed1aca7420c5e3873.png",
     hash: 537774541,
     bonuses: [],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfFractures]: {
     name: "Whisper of Fractures",
@@ -168,6 +180,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfImpetus]: {
     name: "Whisper of Impetus",
@@ -177,6 +190,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/488155e2c0af761888b6c9013d3df1b8.png",
     hash: 537774543,
     bonuses: [],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.EmberOfEruption]: {
     name: "Ember of Eruption",
@@ -190,6 +204,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfAshes]: {
     name: "Ember of Ashes",
@@ -198,6 +213,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/82203cd4545f6dccc3b231d138664ecd.jpg",
     hash: 1051276349,
     bonuses: [],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfWonder]: {
     name: "Ember of Wonder",
@@ -212,6 +228,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.EmberOfSearing]: {
     name: "Ember of Searing",
@@ -225,6 +242,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Solar,
   },
   [EFragmentId.SparkOfFocus]: {
     name: "Spark of Focus",
@@ -239,6 +257,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfFrequency]: {
     name: "Spark of Frequency",
@@ -248,6 +267,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/a2284206fa7f64f2b759d7a6ab0b30f2.jpg",
     hash: 1727069361,
     bonuses: [],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfDischarge]: {
     name: "Spark of Discharge",
@@ -262,6 +282,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfIons]: {
     name: "Spark of Ions",
@@ -270,6 +291,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/a5fcd930857f55a26be897ebe970876c.jpg",
     hash: 1727069363,
     bonuses: [],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfShock]: {
     name: "Spark of Shock",
@@ -283,6 +305,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfMomentum]: {
     name: "Spark of Momentum",
@@ -292,6 +315,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/9d29b48dd38c57d65dc2fb38406faf37.jpg",
     hash: 1727069365,
     bonuses: [],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfResistance]: {
     name: "Spark of Resistance",
@@ -306,6 +330,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfBeacons]: {
     name: "Spark of Beacons",
@@ -315,6 +340,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/70277aba7cb9f53c2771651a6d67eb6d.jpg",
     hash: 1727069367,
     bonuses: [],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfMagnitude]: {
     name: "Spark of Magnitude",
@@ -324,6 +350,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/1f1bf91b93b3acddbc56ade6d48300b7.jpg",
     hash: 1727069374,
     bonuses: [],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfRecharge]: {
     name: "Spark of Recharge",
@@ -333,6 +360,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/cf0315c1051a75b37620efa79d5a8719.jpg",
     hash: 1727069375,
     bonuses: [],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.EchoOfDilation]: {
     name: "Echo of Dilation",
@@ -351,6 +379,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfDomineering]: {
     name: "Echo of Domineering",
@@ -365,6 +394,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfProvision]: {
     name: "Echo of Provision",
@@ -378,6 +408,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfExpulsion]: {
     name: "Echo of Expulsion",
@@ -391,6 +422,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfRemnants]: {
     name: "Echo of Remnants",
@@ -400,6 +432,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/ce12bd0f246e834c8f7e102079814bf9.jpg",
     hash: 2272984666,
     bonuses: [],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfExchange]: {
     name: "Echo of Exchange",
@@ -408,6 +441,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/e5a6ac0f38df212a40dc541bb46f354f.jpg",
     hash: 2272984667,
     bonuses: [],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfUndermining]: {
     name: "Echo of Undermining",
@@ -421,6 +455,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -20,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfReprisal]: {
     name: "Echo of Reprisal",
@@ -430,6 +465,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/6a0118280ba432e796048648993d7765.jpg",
     hash: 2272984669,
     bonuses: [],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfLeeching]: {
     name: "Echo of Leeching",
@@ -444,6 +480,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfPersistence]: {
     name: "Echo of Persistence",
@@ -458,6 +495,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.WhisperOfRending]: {
     name: "Whisper of Rending",
@@ -467,6 +505,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/8e53a7df5257ba6eb07608b829afc808.png",
     hash: 2483898428,
     bonuses: [],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfConduction]: {
     name: "Whisper of Conduction",
@@ -484,6 +523,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfRime]: {
     name: "Whisper of Rime",
@@ -493,6 +533,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/24fd250f6c23137597567b1061bb5e96.png",
     hash: 2483898430,
     bonuses: [],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfHunger]: {
     name: "Whisper of Hunger",
@@ -511,6 +552,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.EchoOfInstability]: {
     name: "Echo of Instability",
@@ -525,6 +567,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfHarvest]: {
     name: "Echo of Harvest",
@@ -539,6 +582,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfObscurity]: {
     name: "Echo of Obscurity",
@@ -552,6 +596,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.EchoOfStarvation]: {
     name: "Echo of Starvation",
@@ -565,6 +610,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Void,
   },
   [EFragmentId.SparkOfVolts]: {
     name: "Spark of Volts",
@@ -578,6 +624,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfBrilliance]: {
     name: "Spark of Brilliance",
@@ -592,6 +639,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfAmplitude]: {
     name: "Spark of Amplitude",
@@ -601,6 +649,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/b8f972ce6d63a48b8533652090fd9966.jpg",
     hash: 3277705906,
     bonuses: [],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.SparkOfFeedback]: {
     name: "Spark of Feedback",
@@ -615,6 +664,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Arc,
   },
   [EFragmentId.WhisperOfRefraction]: {
     name: "Whisper of Refraction",
@@ -624,6 +674,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/83f0937d1d3599a70054ef7c5cb2d372.png",
     hash: 3469412968,
     bonuses: [],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfDurance]: {
     name: "Whisper of Durance",
@@ -638,6 +689,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfHedrons]: {
     name: "Whisper of Hedrons",
@@ -652,6 +704,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfFissures]: {
     name: "Whisper of Fissures",
@@ -661,6 +714,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     icon: "https://www.bungie.net/common/destiny2_content/icons/d7873bd4ff3999ae933f2efbc84f75c3.png",
     hash: 3469412971,
     bonuses: [],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfBonds]: {
     name: "Whisper of Bonds",
@@ -678,6 +732,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: -10,
       },
     ],
+    elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfShards]: {
     name: "Whisper of Shards",
@@ -692,5 +747,6 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
         value: 10,
       },
     ],
+    elementId: EElementId.Stasis,
   },
 };

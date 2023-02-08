@@ -31,6 +31,7 @@ export interface IAspect extends IIdentifiableName, IIcon, IHash {
 
 export interface IFragment extends IIdentifiableName, IIcon, IHash, IBonuses {
 	description: string;
+	elementId: EElementId;
 }
 
 export interface IGrenade extends IIdentifiableName, IIcon, IHash {

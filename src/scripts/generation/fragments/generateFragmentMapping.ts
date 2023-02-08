@@ -5,10 +5,12 @@ import {
 	getSerializedBonusStats,
 } from '@dlb/scripts/generation/utils';
 import { IFragment } from '@dlb/types/generation';
+import { EElementId } from '@dlb/types/IdEnums';
 
 export const generateFragmentMapping = (fragments: IFragment[]): string => {
 	const enumsToSerialize = {
 		id: { enumDefinition: EFragmentId, enumName: 'EFragmentId' },
+		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
 	};
 
 	const serializeFragments: Record<string, unknown>[] = [];
@@ -39,7 +41,7 @@ export const generateFragmentMapping = (fragments: IFragment[]): string => {
 	import { EnumDictionary } from '@dlb/types/globals';
 	import { IFragment } from '@dlb/types/generation';
   import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
-	import { EArmorStatId } from "@dlb/types/IdEnums";
+	import { EArmorStatId, EElementId } from "@dlb/types/IdEnums";
 
 	export const FragmentIdToFragmentMapping: EnumDictionary<EFragmentId, IFragment> = {
 		${fragmentIdToFragmentMappingString.join(' ')}

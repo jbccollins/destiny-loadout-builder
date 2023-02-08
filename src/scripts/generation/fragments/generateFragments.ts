@@ -17,16 +17,16 @@ import { IFragment } from '@dlb/types/generation';
 import { generateFragmentIdEnumFileString } from './generateFragmentIdEnum';
 import { generateFragmentMapping } from './generateFragmentMapping';
 import { bungieNetPath } from '@dlb/utils/item-utils';
-import { getArmorStatIdFromBungieHash } from '@dlb/types/ArmorStat';
-import { StatBonus } from '@dlb/types/globals';
+import { EElementId } from '@dlb/types/IdEnums';
 
 const buildFragmentData = (
 	fragment: DestinyInventoryItemDefinition,
 	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>
 ): IFragment => {
-	if (fragment.displayProperties.name === 'Spark of Focus') {
-		console.log('lol');
-	}
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [_, unsafeElementString] =
+		fragment.plug.plugCategoryIdentifier.split('.');
+	const elementId = generateId(unsafeElementString) as EElementId;
 	return {
 		name: fragment.displayProperties.name,
 		id: generateId(fragment.displayProperties.name),
@@ -36,7 +36,7 @@ const buildFragmentData = (
 		icon: bungieNetPath(fragment.displayProperties.icon),
 		hash: fragment.hash,
 		bonuses: getBonuses(fragment),
-		//fragementSlots: fragment.plug.energyCapacity.capacityValue,
+		elementId,
 	};
 };
 

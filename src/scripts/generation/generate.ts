@@ -10,10 +10,10 @@ import { run as generateFragments } from './fragments/generateFragments';
 (async function run() {
 	await generateFragments();
 	await generateMods();
-	// await generateAspects();
-	// await generateGrenades();
-	// await generateMelees();
-	// await generateClassAbilities();
-	// await generateJumps();
-	// await generateSuperAbilities();
+	await generateAspects();
+	await generateGrenades();
+	await generateMelees();
+	await generateClassAbilities();
+	await generateJumps();
+	await generateSuperAbilities();
 })();

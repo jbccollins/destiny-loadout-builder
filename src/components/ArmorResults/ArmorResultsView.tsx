@@ -321,7 +321,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const [order, setOrder] = useState<Order>('desc');
+	const [order, setOrder] = useState<Order>('asc');
 	const [orderBy, setOrderBy] = useState<SortableFieldsKey>('totalModCost');
 
 	const handleChangeOrderDirection = (order: Order) => {

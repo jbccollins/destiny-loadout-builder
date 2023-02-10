@@ -44,11 +44,13 @@ const Container = styled(Box)(({ theme }) => ({
 
 const LeftSection = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(2),
-	width: '400px',
-	minWidth: '400px',
+	// width: '400px',
+	// minWidth: '400px',
 	[theme.breakpoints.up('md')]: {
 		height: '100vh',
 		overflowY: 'auto',
+		minWidth: '400px',
+		width: '400px',
 	},
 	[theme.breakpoints.down('md')]: {
 		width: '100%', //`calc(100vw - ${theme.spacing(4)})`,
@@ -58,12 +60,13 @@ const LeftSection = styled(Box)(({ theme }) => ({
 
 const RightSection = styled(Box)(({ theme }) => ({
 	flexGrow: 1,
-	[theme.breakpoints.up('md')]: {
-		height: '100vh',
-	},
+	height: '100vh',
+	// [theme.breakpoints.up('md')]: {
+	// 	height: '100vh',
+	// },
 	[theme.breakpoints.down('md')]: {
 		width: '100vw',
-		height: `calc(100vh - 170px)`,
+		// height: `calc(100vh - 170px)`,
 	},
 }));
 
@@ -87,7 +90,7 @@ const LeftSectionComponent = () => (
 							<SelectionControlGroup title="Class and Exotic">
 								<ExoticAndDestinyClassSelectorWrapper />
 							</SelectionControlGroup>
-							<SelectionControlGroup title="Desired Stats">
+							<SelectionControlGroup title="Desired Stat Tiers">
 								<StatSelection />
 							</SelectionControlGroup>
 							<SelectionControlGroup title="Subclass Options">
@@ -126,9 +129,19 @@ const LeftSectionComponent = () => (
 	</LeftSection>
 );
 
-const RightSectionComponent = () => (
+export type SmallScreenData = {
+	isSmallScreen: boolean;
+	isSmallScreenResultsOpen: boolean;
+	toggleSmallScreenResultsView: () => void;
+};
+
+type RightSectionProps = {
+	smallScreenData: SmallScreenData;
+};
+
+const RightSectionComponent = ({ smallScreenData }: RightSectionProps) => (
 	<RightSection className="right-section">
-		<ArmorResultsView />
+		<ArmorResultsView smallScreenData={smallScreenData} />
 	</RightSection>
 );
 
@@ -140,6 +153,12 @@ const Home: NextPage = () => {
 	const theme = useTheme();
 	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+	const smallScreenData: SmallScreenData = {
+		isSmallScreen,
+		isSmallScreenResultsOpen: smallScreenResultsOpen,
+		toggleSmallScreenResultsView: () =>
+			setSmallScreenResultsOpen(!smallScreenResultsOpen),
+	};
 	return (
 		<>
 			<Head>
@@ -153,27 +172,27 @@ const Home: NextPage = () => {
 					<>
 						{isSmallScreen && (
 							<>
-								{smallScreenResultsOpen && <RightSectionComponent />}
+								{smallScreenResultsOpen && (
+									<RightSectionComponent smallScreenData={smallScreenData} />
+								)}
 								{!smallScreenResultsOpen && <LeftSectionComponent />}
-								<SmallScreenResultsViewToggle
-									className="small-screen-results-view-toggle"
-									variant="contained"
-									onClick={() =>
-										setSmallScreenResultsOpen(!smallScreenResultsOpen)
-									}
-								>
-									<Box>
-										{smallScreenResultsOpen
-											? 'Back'
-											: `Show Results (${processedArmor.length})`}
-									</Box>
-								</SmallScreenResultsViewToggle>
+								{!smallScreenResultsOpen && (
+									<SmallScreenResultsViewToggle
+										className="small-screen-results-view-toggle"
+										variant="contained"
+										onClick={() =>
+											setSmallScreenResultsOpen(!smallScreenResultsOpen)
+										}
+									>
+										<Box>{`Show Results (${processedArmor.length})`}</Box>
+									</SmallScreenResultsViewToggle>
+								)}
 							</>
 						)}
 						{!isSmallScreen && (
 							<>
 								<LeftSectionComponent />
-								<RightSectionComponent />
+								<RightSectionComponent smallScreenData={smallScreenData} />
 							</>
 						)}
 					</>

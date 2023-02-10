@@ -23,7 +23,11 @@ import { getMod } from '@dlb/types/Mod';
 import { styled, Box, Collapse, IconButton, Button } from '@mui/material';
 import React from 'react';
 import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
-import { ResultsTableLoadout, SortableFields } from './ArmorResultsView';
+import {
+	getSortableFieldDisplayName,
+	ResultsTableLoadout,
+	SortableFieldsDisplayOrder,
+} from './ArmorResultsView';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import StatTiers from '@dlb/components/StatTiers';
@@ -44,8 +48,8 @@ import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedM
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 
-type Order = 'asc' | 'desc';
-type SortableFieldsKey = keyof SortableFields;
+const ClassItemSvgString =
+	"data:image/svg+xml,%3csvg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 51 51'%3e%3cpath d='M43.12 7.12c-4.13 2.33-17.62 1.9-17.62 1.9s-13.49.43-17.62-1.9c-.37-.21-.85-.03-.94.39-.36 1.49-.87 4.42.09 5.86.09.13.22.21.38.25 1.23.3 7.36 1.65 18.09 1.65s16.86-1.35 18.09-1.65c.15-.04.29-.12.38-.25.96-1.44.45-4.37.1-5.86-.1-.42-.58-.6-.95-.39zM9.27 28.34s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V15.73c-1.93-.22-3.45-.45-4.55-.65v13.26zM16.3 34.8s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V16.24c-1.66-.06-3.18-.16-4.55-.27V34.8zM37.18 28.34s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V15.08c-1.09.2-2.61.44-4.55.65v12.61zM30.15 34.8s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V15.97c-1.36.11-2.88.21-4.55.27V34.8zM23.23 16.31v25.31s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V16.31c-.74.01-1.49.02-2.27.02-.78.01-1.54 0-2.27-.02z'/%3e%3c/svg%3e";
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];
@@ -60,39 +64,10 @@ type ResultsItemProps = {
 	dimLink: string;
 };
 
-const getSortableFieldDisplayName = (key: SortableFieldsKey) => {
-	if (ArmorStatIdList.includes(key as EArmorStatId)) {
-		return getArmorStat(key as EArmorStatId).name;
-	}
-	if (key === 'totalModCost') {
-		return 'Total Mod Cost';
-	}
-	if (key === 'totalStatTiers') {
-		return 'Total Stat Tiers';
-	}
-	if (key === 'wastedStats') {
-		return 'Wasted Stats';
-	}
-	return '';
-};
-
-const SortableFieldsDisplayOrder: SortableFieldsKey[] = [
-	// EArmorStatId.Mobility,
-	// EArmorStatId.Resilience,
-	// EArmorStatId.Recovery,
-	// EArmorStatId.Discipline,
-	// EArmorStatId.Intellect,
-	// EArmorStatId.Strength,
-	'totalModCost',
-	'totalStatTiers',
-	'wastedStats',
-];
-
 const ResultsContainer = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	flexDirection: 'column',
-	height: '100vh',
-	overflowY: 'auto',
+	height: '100%',
 }));
 
 const ResultsItemContainer = styled(Box)(({ theme }) => ({
@@ -102,6 +77,7 @@ const ResultsItemContainer = styled(Box)(({ theme }) => ({
 	flexWrap: 'wrap',
 	'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
 	flexBasis: '100%',
+	alignContent: 'flex-start',
 }));
 
 const ResultsSection = styled(Box, {
@@ -111,11 +87,9 @@ const ResultsSection = styled(Box, {
 	flexDirection: fullWidth ? 'row' : 'column',
 	alignItems: 'stretch',
 	padding: theme.spacing(1),
-	// borderRight: `1px solid rgb(128, 128, 128)`,
-	// ':last-of-type': {
-	// 	borderRight: '0',
-	// },
+	minWidth: '350px',
 	flexBasis: fullWidth ? '100%' : '',
+	flexWrap: fullWidth ? 'wrap' : 'initial',
 }));
 
 const IconTextContainer = styled(Box)(({ theme }) => ({
@@ -131,6 +105,13 @@ const Title = styled(Box)(({ theme }) => ({
 	fontSize: `1.15rem`,
 	paddingBottom: theme.spacing(1),
 }));
+const Description = styled(Box)(({ theme }) => ({
+	transform: `rotate(-35deg)`,
+	transformOrigin: 'top right',
+	minWidth: '300px',
+	marginLeft: '-298px',
+	textAlign: 'right',
+}));
 
 const StatsBreakdown = styled(Box)(({ theme }) => ({
 	display: 'flex',
@@ -140,7 +121,7 @@ const StatsBreakdown = styled(Box)(({ theme }) => ({
 const StatsBreakdownItem = styled(Box, {
 	shouldForwardProp: (prop) => prop !== 'first',
 })<{ first?: boolean }>(({ theme, color, first }) => ({
-	width: first ? '70px' : '40px',
+	width: first ? '75px' : '40px',
 	height: '22px',
 	paddingLeft: theme.spacing(1),
 	display: 'flex',
@@ -149,6 +130,9 @@ const StatsBreakdownItem = styled(Box, {
 
 const LoadoutDetails = styled(Box)(({ theme }) => ({
 	display: 'flex',
+	height: '400px',
+	marginLeft: '60px',
+	// overflowX: 'auto',
 }));
 
 // TODO: Figure this out from the initial ingestion of armor and store in redux
@@ -218,12 +202,18 @@ function ResultsItem({
 		return (
 			extraMasterworkedStats > 0 && (
 				<StatsBreakdown className="stats-breakdown">
-					<StatsBreakdownItem>E</StatsBreakdownItem>
+					<StatsBreakdownItem></StatsBreakdownItem>
 					{ArmorStatIdList.map((armorStatId) => (
 						<StatsBreakdownItem key={armorStatId} className="stats-breakdown">
 							{extraMasterworkedStats}
 						</StatsBreakdownItem>
 					))}
+					<StatsBreakdownItem>
+						<Description>
+							Masterwork Unmasterworked Armor (x
+							{`${extraMasterworkedStats / 2}`})
+						</Description>
+					</StatsBreakdownItem>
 				</StatsBreakdown>
 			)
 		);
@@ -245,29 +235,49 @@ function ResultsItem({
 						</IconTextContainer>
 					);
 				})}
-			</ResultsSection>
-
-			<ResultsSection>
-				<Title>Required Stat Mods</Title>
-				{Object.keys(modCounts).map((modId) => {
-					const mod = getMod(modId as EModId);
-					return (
-						// Extra margin to account for masterworkedbungieImage border
-						<IconTextContainer key={modId} sx={{ margin: '1px' }}>
-							<BungieImage width={40} height={40} src={mod.icon} />
-							<IconText>
-								{mod.name}
-								{modCounts[modId] > 1 ? ` x ${modCounts[modId]}` : ''}
-							</IconText>
-						</IconTextContainer>
-					);
-				})}
+				<IconTextContainer>
+					<MasterworkedBungieImage
+						isMasterworked={true}
+						width={'40px'}
+						height={'40px'}
+						src={ClassItemSvgString}
+					/>
+					<IconText>Any Masterworked Class Item</IconText>
+				</IconTextContainer>
 			</ResultsSection>
 			<ResultsSection>
 				<Title>Achieved Stats</Title>
 				<StatTiers armorStatMapping={totalStatMapping} />
+				{SortableFieldsDisplayOrder.filter(
+					(x) => !ArmorStatIdList.includes(x as EArmorStatId)
+				).map((sortableFieldKey) => {
+					return (
+						<Box key={sortableFieldKey}>
+							{getSortableFieldDisplayName(sortableFieldKey)}:{' '}
+							{item.sortableFields[sortableFieldKey]}
+						</Box>
+					);
+				})}
 			</ResultsSection>
-			<ResultsSection>
+			{item.requiredStatModIdList.length > 0 && (
+				<ResultsSection>
+					<Title>Required Stat Mods</Title>
+					{Object.keys(modCounts).map((modId) => {
+						const mod = getMod(modId as EModId);
+						return (
+							// Extra margin to account for masterworkedbungieImage border
+							<IconTextContainer key={modId} sx={{ margin: '1px' }}>
+								<BungieImage width={40} height={40} src={mod.icon} />
+								<IconText>
+									{mod.name}
+									{modCounts[modId] > 1 ? ` x ${modCounts[modId]}` : ''}
+								</IconText>
+							</IconTextContainer>
+						);
+					})}
+				</ResultsSection>
+			)}
+			{/* <ResultsSection>
 				<Title>Metadata</Title>
 				{SortableFieldsDisplayOrder.map((sortableFieldKey) => {
 					return (
@@ -277,17 +287,11 @@ function ResultsItem({
 						</Box>
 					);
 				})}
-			</ResultsSection>
+			</ResultsSection> */}
 			<ResultsSection fullWidth>
-				<Box onClick={() => setOpen(!open)} sx={{ width: '400px' }}>
-					Show Detailed Stat Breakdown
-					<IconButton aria-label="expand row" size="small">
-						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-					</IconButton>
-				</Box>
 				<Box sx={{ flexBasis: '100%' }}>
 					<Button
-						sx={{ width: 200, float: 'right' }}
+						sx={{ width: 200 }}
 						variant="contained"
 						target={'_blank'}
 						href={dimLink}
@@ -295,8 +299,17 @@ function ResultsItem({
 						Open loadout in DIM
 					</Button>
 				</Box>
+				<Box
+					onClick={() => setOpen(!open)}
+					sx={{ cursor: 'pointer', marginTop: '16px' }}
+				>
+					Show Detailed Stat Breakdown
+					<IconButton aria-label="expand row" size="small">
+						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+					</IconButton>
+				</Box>
 			</ResultsSection>
-			<ResultsSection fullWidth>
+			<ResultsSection fullWidth sx={{ overflowX: 'auto' }}>
 				<Collapse in={open} timeout="auto" unmountOnExit>
 					<LoadoutDetails className="loadout-details">
 						<StatsBreakdown className="stats-breakdown">
@@ -313,7 +326,13 @@ function ResultsItem({
 											height={20}
 											src={getArmorStat(id).icon}
 										/>
-										<div style={{ marginLeft: '2px' }}>
+										<div
+											style={{
+												marginLeft: '2px',
+												textAlign: 'right',
+												width: '100%',
+											}}
+										>
 											{item.sortableFields[id]} =
 										</div>
 									</StatsBreakdownItem>
@@ -338,11 +357,21 @@ function ResultsItem({
 										{stat + (armorItem.isMasterworked ? 2 : 0)}
 									</StatsBreakdownItem>
 								))}
+								<StatsBreakdownItem>
+									<Description>{armorItem.name}</Description>
+								</StatsBreakdownItem>
 							</StatsBreakdown>
 						))}
 						{hasMasterworkedClassItem && (
 							<StatsBreakdown className="stats-breakdown">
-								<StatsBreakdownItem>C</StatsBreakdownItem>
+								<StatsBreakdownItem>
+									<MasterworkedBungieImage
+										isMasterworked={true}
+										width={'20px'}
+										height={'20px'}
+										src={ClassItemSvgString}
+									/>
+								</StatsBreakdownItem>
 								{ArmorStatIdList.map((armorStatId) => (
 									<StatsBreakdownItem
 										key={armorStatId}
@@ -351,20 +380,20 @@ function ResultsItem({
 										2
 									</StatsBreakdownItem>
 								))}
+								<StatsBreakdownItem>
+									<Description>Any Masterworked Class Item</Description>
+								</StatsBreakdownItem>
 							</StatsBreakdown>
 						)}
 						{getExtraMasterworkedStatsBreakdown()}
 
 						{Object.keys(fragmentArmorStatMappings).map(
 							(fragmentId: EFragmentId) => {
+								const { name, icon } = getFragment(fragmentId);
 								return (
 									<StatsBreakdown key={fragmentId} className="stats-breakdown">
 										<StatsBreakdownItem>
-											<BungieImage
-												width={20}
-												height={20}
-												src={getFragment(fragmentId).icon}
-											/>
+											<BungieImage width={20} height={20} src={icon} />
 										</StatsBreakdownItem>
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
@@ -374,6 +403,9 @@ function ResultsItem({
 												{fragmentArmorStatMappings[fragmentId][armorStatId]}
 											</StatsBreakdownItem>
 										))}
+										<StatsBreakdownItem>
+											<Description>{name}</Description>
+										</StatsBreakdownItem>
 									</StatsBreakdown>
 								);
 							}
@@ -391,7 +423,6 @@ function ResultsItem({
 												height={20}
 												src={getMod(armorStatModId).icon}
 											/>
-											({armorStatModArmorStatMappings[armorStatModId].count})
 										</StatsBreakdownItem>
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
@@ -404,6 +435,14 @@ function ResultsItem({
 												}
 											</StatsBreakdownItem>
 										))}
+										<StatsBreakdownItem>
+											<Description>
+												{getMod(armorStatModId).name}
+												{armorStatModArmorStatMappings[armorStatModId].count > 1
+													? ` (x${armorStatModArmorStatMappings[armorStatModId].count})`
+													: ''}
+											</Description>
+										</StatsBreakdownItem>
 									</StatsBreakdown>
 								);
 							}
@@ -481,12 +520,6 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const { elementId } = getDestinySubclass(destinySubclassId);
 	const aspectIds = selectedAspects[destinySubclassId];
 
-	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
-	const [order, setOrder] = React.useState<Order>('desc');
-	const [orderBy, setOrderBy] =
-		React.useState<SortableFieldsKey>('totalModCost');
-
 	// TODO: Having to do this cast sucks
 	const fragmentIds = selectedFragments[elementId] as EFragmentId[];
 	const fragmentArmorStatMappings: Partial<
@@ -524,26 +557,10 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 		});
 	});
 
-	const handleRequestSort = (
-		event: React.MouseEvent<unknown>,
-		property: SortableFieldsKey
-	) => {
-		if (orderBy !== property) {
-			setOrder('desc');
-			setOrderBy(property);
-		} else {
-			setOrder(order === 'asc' ? 'desc' : 'asc');
-		}
-	};
-
-	const handleChangePage = (event: unknown, newPage: number) => {
-		setPage(newPage);
-	};
-
 	return (
 		<ResultsContainer>
 			{items
-				.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+				//  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 				.map((item) => {
 					return (
 						<ResultsItem

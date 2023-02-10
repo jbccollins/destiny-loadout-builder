@@ -54,7 +54,7 @@ function StatSelectorRow(props: StatSelectorRowProps) {
 						last={i === marks.length - 1}
 						filled={mark.value <= value}
 						key={mark.value}
-						possible={mark.value < maxPossible}
+						possible={mark.value <= maxPossible}
 						onClick={() => onChange(mark.value)}
 					>
 						{mark.label}

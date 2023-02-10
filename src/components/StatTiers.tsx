@@ -51,7 +51,7 @@ const TierContainer = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	flexDirection: 'row',
 	paddingLeft: '6px',
-	width: '300px',
+	width: '280px',
 }));
 
 const StatTierContainer = styled(Box)(({ theme }) => ({
@@ -80,15 +80,15 @@ function StatTier({ armorStatId, value }: StatTierProps) {
 					);
 				})}
 			</TierContainer>
-			<Box sx={{ lineHeight: '24px', paddingLeft: '6px' }}>
+			{/* <Box sx={{ lineHeight: '24px', paddingLeft: '6px' }}>
 				{armorStat.name}:
-			</Box>
+			</Box> */}
 			<Box
 				sx={{
 					lineHeight: '24px',
 					paddingLeft: '6px',
 					flex: 1,
-					textAlign: 'right',
+					textAlign: 'left',
 				}}
 			>
 				{value}

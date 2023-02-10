@@ -1,30 +1,88 @@
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-
-import { styled, Card, Box } from '@mui/material';
+import {
+	styled,
+	Box,
+	TablePagination,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+	IconButton,
+} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
-import ArmorResultsTable from './ArmorResultsTable';
-import { useCallback, useMemo } from 'react';
-import { ProcessedArmorItemMetadata } from '@dlb/services/armor-processing';
+import { useCallback, useMemo, useState } from 'react';
 import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorItem } from '@dlb/types/Armor';
-import { ArmorStatMapping } from '@dlb/types/ArmorStat';
+import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import { EModId } from '@dlb/generated/mod/EModId';
 import ArmorResultsList from './ArmorResultsList';
+import React from 'react';
+import { SmallScreenData } from '@dlb/pages';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
-	height: 'calc(100% - 40px)',
+	height: '100%',
+	// overflowY: 'hidden',
 }));
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
-	position: 'relative',
-	height: '40px',
+	height: '80px',
+	display: 'flex',
+	padding: theme.spacing(1.5),
+	position: 'sticky',
+	top: 0,
+	background: 'black',
+	justifyContent: 'space-between',
+}));
+
+const ArmorResultsListContainer = styled(Box)(({ theme }) => ({
+	height: 'calc(100% - 160px)',
+	overflowY: 'auto',
+}));
+
+const FooterContainer = styled(Box)(({ theme }) => ({
+	// padding: theme.spacing(1)
+	position: 'sticky',
+	height: '80px',
+	display: 'flex',
+	padding: theme.spacing(1.5),
+	bottom: 0,
+	background: 'black',
+	width: '100%',
+	flexDirection: 'row',
+	justifyContent: 'space-between',
+}));
+
+const OrderContainer = styled(Box)(({ theme }) => ({
+	display: 'flex',
+}));
+const PaginationContainer = styled(Box)(({ theme }) => ({
+	// flex: '1',
+}));
+
+const OrderByFieldFormControl = styled(FormControl)(({ theme }) => ({
+	['fieldset']: {
+		borderTopRightRadius: '0px',
+		borderBottomRightRadius: '0px',
+		// padding: theme.spacing(1),
+		// paddingRight: 0,
+	},
+}));
+
+const OrderByFormControl = styled(FormControl)(({ theme }) => ({
+	['fieldset']: {
+		borderTopLeftRadius: '0px',
+		borderBottomLeftRadius: '0px',
+		// padding: theme.spacing(1),
+		// paddingRight: 0,
+		marginLeft: '-1px',
+	},
 }));
 
 export type SortableFields = {
@@ -39,6 +97,71 @@ export type SortableFields = {
 	wastedStats: number;
 };
 
+function descendingComparator(
+	a: ResultsTableLoadout,
+	b: ResultsTableLoadout,
+	orderBy: SortableFieldsKey
+) {
+	if (b.sortableFields[orderBy] < a.sortableFields[orderBy]) {
+		return -1;
+	}
+	if (b.sortableFields[orderBy] > a.sortableFields[orderBy]) {
+		return 1;
+	}
+	return 0;
+}
+
+function getComparator(
+	order: Order,
+	orderBy: SortableFieldsKey
+): (a: ResultsTableLoadout, b: ResultsTableLoadout) => number {
+	return order === 'desc'
+		? (a, b) => descendingComparator(a, b, orderBy)
+		: (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+export type SortableFieldsKey = keyof SortableFields;
+
+export const getSortableFieldDisplayName = (key: SortableFieldsKey) => {
+	if (ArmorStatIdList.includes(key as EArmorStatId)) {
+		return getArmorStat(key as EArmorStatId).name;
+	}
+	if (key === 'totalModCost') {
+		return 'Total Mod Cost';
+	}
+	if (key === 'totalStatTiers') {
+		return 'Total Stat Tiers';
+	}
+	if (key === 'wastedStats') {
+		return 'Wasted Stats';
+	}
+	return '';
+};
+
+export const SortableFieldsDisplayOrder: SortableFieldsKey[] = [
+	EArmorStatId.Mobility,
+	EArmorStatId.Resilience,
+	EArmorStatId.Recovery,
+	EArmorStatId.Discipline,
+	EArmorStatId.Intellect,
+	EArmorStatId.Strength,
+	'totalModCost',
+	'totalStatTiers',
+	'wastedStats',
+];
+
+const SortableFieldsDefaultSortOrder: Record<SortableFieldsKey, Order> = {
+	Mobility: 'desc',
+	Resilience: 'desc',
+	Recovery: 'desc',
+	Discipline: 'desc',
+	Intellect: 'desc',
+	Strength: 'desc',
+	totalModCost: 'asc',
+	totalStatTiers: 'desc',
+	wastedStats: 'asc',
+};
+
 export type ResultsTableLoadout = {
 	id: string;
 	sortableFields: SortableFields;
@@ -46,15 +169,179 @@ export type ResultsTableLoadout = {
 	requiredStatModIdList: EModId[];
 };
 
-function Header() {
-	return <HeaderContainer>Results</HeaderContainer>;
+export type Order = 'asc' | 'desc';
+
+interface HeaderProps {
+	handleChangeOrderDirection: (order: Order) => void;
+	handleChangeOrderBy: (orderBy: SortableFieldsKey) => void;
+	order: Order;
+	orderBy: string;
+	sortableFields: SortableFieldsKey[];
 }
 
-function ArmorResultsView() {
+interface FooterProps {
+	rowsPerPage: number;
+	count: number;
+	page: number;
+	handleChangePage: (event: unknown, newPage: number) => void;
+	handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	smallScreenData: SmallScreenData;
+}
+
+function Header({
+	handleChangeOrderDirection,
+	handleChangeOrderBy,
+	order,
+	orderBy,
+	sortableFields,
+}: HeaderProps) {
+	const [
+		hasManuallyChangedOrderDirection,
+		setHasManuallyChangedOrderDirection,
+	] = useState(false);
+	// This is just a little QoL change to set sensible defaults for
+	// the sortable fields so that the user doesn't have to manually
+	// do the obvious thing
+	const _handleChangeOrderBy = (orderBy: SortableFieldsKey): void => {
+		if (!hasManuallyChangedOrderDirection) {
+			handleChangeOrderDirection(SortableFieldsDefaultSortOrder[orderBy]);
+		}
+		handleChangeOrderBy(orderBy);
+	};
+	const _handleChangeOrderDirection = (order: Order): void => {
+		setHasManuallyChangedOrderDirection(true);
+		handleChangeOrderDirection(order);
+	};
+	return (
+		<HeaderContainer>
+			<Box
+				sx={{
+					marginTop: '16px',
+					fontWeight: '500',
+					fontSize: '0.875rem',
+					lineHeight: '1.25',
+					letterSpacing: '0.02857em',
+					textTransform: 'uppercase',
+				}}
+			>
+				Results
+			</Box>
+			<OrderContainer>
+				<OrderByFieldFormControl>
+					<InputLabel id="order-by-field-select-label">Order By</InputLabel>
+					<Select
+						sx={{ width: '170px' }}
+						labelId="order-by-field-select-label"
+						label="Order By"
+						id="order-by-field-select"
+						value={orderBy}
+						onChange={(e) =>
+							_handleChangeOrderBy(e.target.value as SortableFieldsKey)
+						}
+					>
+						{sortableFields.map((s) => (
+							<MenuItem key={s} value={s}>
+								{getSortableFieldDisplayName(s)}
+							</MenuItem>
+						))}
+					</Select>
+				</OrderByFieldFormControl>
+				<OrderByFormControl>
+					<InputLabel id="order-by-select-label">Direction</InputLabel>
+					<Select
+						sx={{ width: '90px' }}
+						labelId="order-by-select-label"
+						label="Direction"
+						id="order-by-select"
+						value={order}
+						onChange={(e) =>
+							_handleChangeOrderDirection(e.target.value as Order)
+						}
+					>
+						<MenuItem value={'asc'}>Asc</MenuItem>
+						<MenuItem value={'desc'}>Desc</MenuItem>
+					</Select>
+				</OrderByFormControl>
+			</OrderContainer>
+		</HeaderContainer>
+	);
+}
+
+function Footer({
+	rowsPerPage,
+	count,
+	page,
+	handleChangePage,
+	handleChangeRowsPerPage,
+	smallScreenData,
+}: FooterProps) {
+	const { isSmallScreen, toggleSmallScreenResultsView } = smallScreenData;
+	return (
+		<FooterContainer className="FooterContainer">
+			<Box>
+				{' '}
+				{isSmallScreen && (
+					<IconButton
+						aria-label="back"
+						onClick={toggleSmallScreenResultsView}
+						sx={{ marginTop: '8px' }}
+					>
+						<ArrowBackIcon />
+					</IconButton>
+				)}
+			</Box>
+			<PaginationContainer>
+				<TablePagination
+					sx={{
+						height: '52px',
+					}}
+					// Hide the "Rows per page UI"
+					rowsPerPageOptions={[]}
+					component="div"
+					count={count}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onPageChange={handleChangePage}
+					onRowsPerPageChange={handleChangeRowsPerPage}
+				/>
+			</PaginationContainer>
+		</FooterContainer>
+	);
+}
+
+type ArmorResultsViewProps = {
+	smallScreenData: SmallScreenData;
+};
+
+function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 	const armor = useAppSelector(selectArmor);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
+
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [order, setOrder] = useState<Order>('desc');
+	const [orderBy, setOrderBy] = useState<SortableFieldsKey>('totalModCost');
+
+	const handleChangeOrderDirection = (order: Order) => {
+		setOrder(order);
+	};
+
+	const handleChangeOrderBy = (orderBy: SortableFieldsKey) => {
+		setOrderBy(orderBy);
+	};
+
+	const handleChangePage = (event: unknown, newPage: number) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setRowsPerPage(+event.target.value);
+		setPage(0);
+	};
 
 	const getArmorItem = useCallback(
 		(id: string, armorSlot: EArmorSlotId) => {
@@ -76,7 +363,6 @@ function ArmorResultsView() {
 
 		processedArmor.forEach(({ armorIdList, metadata }) => {
 			const resultLoadout: ResultsTableLoadout = {
-				// totalStats: [0, 0, 0, 0, 0, 0],
 				id: '',
 				armorItems: [],
 				requiredStatModIdList: [],
@@ -130,9 +416,29 @@ function ArmorResultsView() {
 				selectedExoticArmor &&
 				selectedExoticArmor[selectedDestinyClass] && (
 					<Container className="armor-results-view">
-						<Header />
+						<Header
+							order={order}
+							orderBy={orderBy}
+							handleChangeOrderDirection={handleChangeOrderDirection}
+							sortableFields={SortableFieldsDisplayOrder}
+							handleChangeOrderBy={handleChangeOrderBy}
+						/>
 						{/* <ArmorResultsTable items={resultsTableArmorItems} /> */}
-						<ArmorResultsList items={resultsTableArmorItems} />
+						<ArmorResultsListContainer className="ArmorResultsListContainer">
+							<ArmorResultsList
+								items={resultsTableArmorItems
+									.sort(getComparator(order, orderBy))
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
+							/>
+						</ArmorResultsListContainer>
+						<Footer
+							smallScreenData={smallScreenData}
+							count={resultsTableArmorItems.length}
+							rowsPerPage={rowsPerPage}
+							handleChangePage={handleChangePage}
+							handleChangeRowsPerPage={handleChangeRowsPerPage}
+							page={page}
+						/>
 					</Container>
 				)}
 		</>

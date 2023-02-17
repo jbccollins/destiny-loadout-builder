@@ -5,6 +5,7 @@ import {
 	DestinyClass,
 	DestinyEnergyType,
 	DestinyEnergyTypeDefinition,
+	DestinyInventoryItemDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 
 import { bungieNetPath } from '@dlb/utils/item-utils';
@@ -30,17 +31,22 @@ import {
 	AvailableExoticArmorItem,
 	ArmorItem,
 	StatList,
+	ArmorMetadata,
+	getDefaultArmorMetadata,
+	getDefaultArmorMaxStatsMetadata,
 } from '@dlb/types/Armor';
 import { Character, Characters } from '@dlb/types/Character';
 import {
 	DestinyClassIdList,
 	DestinyClassIdToDestinyClass,
 } from '@dlb/types/DestinyClass';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import { ArmorStatIdList } from '@dlb/types/ArmorStat';
 
 // Convert a DimStore into our own, smaller, types and transform the data into the desired shape.
 export const extractArmor = (
 	stores: DimStore<DimItem>[]
-): [Armor, AvailableExoticArmor] => {
+): [Armor, AvailableExoticArmor, ArmorMetadata] => {
 	const armor: Armor = {
 		[EDestinyClassId.Titan]: generateArmorGroup(),
 		[EDestinyClassId.Hunter]: generateArmorGroup(),
@@ -52,6 +58,8 @@ export const extractArmor = (
 		[EDestinyClassId.Hunter]: generateAvailableExoticArmorGroup(),
 		[EDestinyClassId.Warlock]: generateAvailableExoticArmorGroup(),
 	};
+
+	const armorMetadata: ArmorMetadata = getDefaultArmorMetadata();
 
 	const seenExotics: Record<number, AvailableExoticArmorItem> = {};
 
@@ -70,6 +78,8 @@ export const extractArmor = (
 					if (seenExotics[item.hash]) {
 						seenExotics[item.hash].count++;
 					} else {
+						armorMetadata[destinyClassName].exotic.items[armorSlot][item.hash] =
+							getDefaultArmorMaxStatsMetadata();
 						seenExotics[item.hash] = {
 							hash: item.hash,
 							name: item.name,
@@ -82,7 +92,6 @@ export const extractArmor = (
 					}
 				}
 				const armorItem: ArmorItem = {
-					isExotic: item.isExotic,
 					name: item.name,
 					icon: bungieNetPath(item.icon),
 					id: item.id,
@@ -106,8 +115,29 @@ export const extractArmor = (
 					gearTierId: item?.tier
 						? ItemTierNameToEGearTierId[item.tier]
 						: EGearTierId.Unknown,
+					isArtifice: isArtificeArmor(item),
 				};
-				if (item.isExotic) {
+
+				if (armorItem.gearTierId === EGearTierId.Exotic) {
+					ArmorStatIdList.forEach((armorStatId, i) => {
+						const currentValue =
+							armorMetadata[destinyClassName].exotic.items[armorSlot][
+								item.hash
+							][armorStatId];
+						let itemValue = armorItem.stats[i];
+						if (armorItem.isMasterworked) {
+							itemValue += 2;
+						}
+						if (itemValue > currentValue.max) {
+							armorMetadata[destinyClassName].exotic.items[armorSlot][
+								item.hash
+							][armorStatId] = {
+								max: itemValue,
+								withMasterwork: armorItem.isMasterworked,
+							};
+						}
+					});
+					armorMetadata[destinyClassName].exotic.items[armorSlot];
 					armor[destinyClassName][armorSlot].exotic[item.id] = armorItem;
 				} else {
 					armor[destinyClassName][armorSlot].nonExotic[item.id] = armorItem;
@@ -115,6 +145,8 @@ export const extractArmor = (
 			}
 		});
 	});
+
+	console.log('>>>>>>>>>>> [ArmorMetadata] <<<<<<<<<<<', armorMetadata);
 
 	Object.values(seenExotics)
 		// Alphabetical order
@@ -125,7 +157,18 @@ export const extractArmor = (
 			);
 		});
 
-	return [armor, availableExoticArmor];
+	return [armor, availableExoticArmor, armorMetadata];
+};
+
+const isArtificeArmor = (item: DimItem): boolean => {
+	return (item.perks || []).filter((p) => p.perkHash == 229248542).length > 0;
+	// return (
+	// 	(
+	// 		item.sockets?.socketEntries.filter(
+	// 			(socket) => socket.reusablePlugSetHash == 1183
+	// 		) || []
+	// 	).length > 0
+	// );
 };
 
 // TODO: It may make more sense to just extract character classes. Like if you have

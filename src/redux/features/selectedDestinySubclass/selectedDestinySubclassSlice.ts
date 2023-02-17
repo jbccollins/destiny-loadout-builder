@@ -26,7 +26,6 @@ export const selectedDestinySubclassSlice = createSlice({
 			state,
 			action: PayloadAction<Record<EDestinyClassId, EDestinySubclassId>>
 		) => {
-			console.log('????selectedDestinySubclass', action.payload, state.value);
 			state.value = action.payload;
 			state.uuid = uuid();
 		},

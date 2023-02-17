@@ -213,7 +213,6 @@ function Row(props: { row: ResultsTableLoadout }) {
 		const { bonuses } = getMod(id);
 		if (bonuses && bonuses.length > 0) {
 			if (combatStyleModArmorStatMapping[id]) {
-				console.log('>>>>> SUMMING');
 				combatStyleModArmorStatMapping[id] = sumArmorStatMappings([
 					combatStyleModArmorStatMapping[id],
 					getArmorStatMappingFromMods([id], selectedDestinyClass),
@@ -235,7 +234,6 @@ function Row(props: { row: ResultsTableLoadout }) {
 			const { bonuses } = getMod(id);
 			if (bonuses && bonuses.length > 0) {
 				if (armorSlotModArmorStatMappping[id]) {
-					console.log('>>>>> SUMMING');
 					armorSlotModArmorStatMappping[id] = sumArmorStatMappings([
 						armorSlotModArmorStatMappping[id],
 						getArmorStatMappingFromMods([id], selectedDestinyClass),

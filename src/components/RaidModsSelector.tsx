@@ -1,22 +1,17 @@
 import { Box, styled } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
-	selectSelectedCombatStyleMods,
-	setSelectedCombatStyleMods,
-} from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
+	selectSelectedRaidMods,
+	setSelectedRaidMods,
+} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { CombatStyleModIdList } from '@dlb/types/Mod';
+import { RaidModIdList } from '@dlb/types/Mod';
 import ModSelector from './ModSelection/ModSelector';
-import { selectDisabledCombatStyleMods } from '@dlb/redux/features/disabledCombatStyleMods/disabledCombatStyleModsSlice';
+import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';
 import { IMod } from '@dlb/types/generation';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
-}));
-
-const IconDropdownContainer = styled('div')(({ theme }) => ({
-	paddingTop: theme.spacing(1),
-	paddingBottom: theme.spacing(2),
 }));
 
 type Option = {
@@ -29,9 +24,9 @@ type Option = {
 	cost: number;
 };
 
-function CombatStyleModSelector() {
-	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
-	const disabledMods = useAppSelector(selectDisabledCombatStyleMods);
+function RaidModSelector() {
+	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
+	const disabledMods = useAppSelector(selectDisabledRaidMods);
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.name;
@@ -40,27 +35,29 @@ function CombatStyleModSelector() {
 	const getTitle = () => '';
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 
-	const handleChange = (combatStyleModId: EModId, index: number) => {
-		const modIds = [...selectedCombatStyleMods];
-		modIds[index] = combatStyleModId;
-		dispatch(setSelectedCombatStyleMods(modIds));
+	const handleChange = (modId: EModId, index: number) => {
+		const modIds = [...selectedRaidMods];
+		modIds[index] = modId;
+		dispatch(setSelectedRaidMods(modIds));
 	};
 
-	const isModDisabled = (mod: IMod): boolean => disabledMods[mod.id];
+	const isModDisabled = (mod: IMod): boolean => {
+		return disabledMods[mod.id];
+	};
 
-	const dropdownIndices = selectedCombatStyleMods.map((_, i) => i);
+	const dropdownIndices = selectedRaidMods.map((_, i) => i);
 	return (
 		<Container>
 			{dropdownIndices.map((index) => (
 				<ModSelector
-					idPrefix={'combat-style-mod-selector'}
+					idPrefix={'raid-mod-selector'}
 					isModDisabled={isModDisabled}
 					enforceMatchingElementRule={false}
 					key={index}
 					selectedDestinyClass={selectedDestinyClass}
-					availableMods={CombatStyleModIdList}
-					getTitle={index === 0 ? () => 'Combat Style Mods' : null}
-					selectedMods={selectedCombatStyleMods}
+					availableMods={RaidModIdList}
+					getTitle={index === 0 ? () => 'Raid Mods' : null}
+					selectedMods={selectedRaidMods}
 					handleChange={handleChange}
 					getLabel={getLabel}
 					getDescription={getDescription}
@@ -68,7 +65,7 @@ function CombatStyleModSelector() {
 					index={index}
 					first={index === 0}
 					last={index === dropdownIndices.length - 1}
-					textFieldClassName={'combat-style-mod-selector-text-field'}
+					textFieldClassName={'raid-mod-selector-text-field'}
 					compact={false}
 				/>
 			))}
@@ -76,4 +73,4 @@ function CombatStyleModSelector() {
 	);
 }
 
-export default CombatStyleModSelector;
+export default RaidModSelector;

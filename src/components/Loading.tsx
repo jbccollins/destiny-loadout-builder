@@ -58,6 +58,14 @@ import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import {
+	selectSelectedMinimumGearTier,
+	setSelectedMinimumGearTier,
+} from '@dlb/redux/features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import selectedRaidModsSlice, {
+	selectSelectedRaidMods,
+	setSelectedRaidMods,
+} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -108,6 +116,8 @@ function Loading() {
 	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
+	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
+	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
@@ -234,9 +244,18 @@ function Loading() {
 				);
 				// This is kinda hacky but by triggering a dispatch of the existing
 				// default values for
-				// [desiredArmorStats, selectedMasterworkAssumption, selectedFragments, dimLoadouts, dimLoadoutsFilter]
+				//  [
+				// 		desiredArmorStats,
+				// 		selectedMasterworkAssumption,
+				// 		selectedFragments,
+				// 		dimLoadouts,
+				// 		dimLoadoutsFilter,
+				// 		selectedMinimumGearTier,
+				// 		selectedRaidMods
+				// 	]
 				// we can "dirty" the store so it knows it needs to recalculate the
 				// processedArmorItems
+				dispatch(setSelectedRaidMods(selectedRaidMods));
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
 				// TODO: Rework setSelectedFragments to not require an element id. Just set all elements
@@ -253,6 +272,7 @@ function Loading() {
 					dispatch(setDimLoadouts(dimLoadouts));
 				}
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
+				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
 			} catch (e) {

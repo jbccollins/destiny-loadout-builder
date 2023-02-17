@@ -29,6 +29,8 @@ import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSele
 import TabContainer from '@dlb/components/TabContainer';
 import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
+import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
+import RaidModSelector from '@dlb/components/RaidModsSelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -46,9 +48,9 @@ const LeftSection = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(2),
 	// width: '400px',
 	// minWidth: '400px',
+	height: '100vh',
+	overflowY: 'auto',
 	[theme.breakpoints.up('md')]: {
-		height: '100vh',
-		overflowY: 'auto',
 		minWidth: '400px',
 		width: '400px',
 	},
@@ -93,6 +95,11 @@ const LeftSectionComponent = () => (
 							<SelectionControlGroup title="Desired Stat Tiers">
 								<StatSelection />
 							</SelectionControlGroup>
+							<SelectionControlGroup title="Mods">
+								<ArmorSlotModSelector />
+								<RaidModSelector />
+								<CombatStyleModSelector />
+							</SelectionControlGroup>
 							<SelectionControlGroup title="Subclass Options">
 								<DestinySubclassSelector />
 								<SuperAbilitySelector />
@@ -103,10 +110,6 @@ const LeftSectionComponent = () => (
 								<ClassAbilitySelector />
 								<JumpSelector />
 							</SelectionControlGroup>
-							<SelectionControlGroup title="Mods">
-								<ArmorSlotModSelector />
-								<CombatStyleModSelector />
-							</SelectionControlGroup>
 						</>
 					),
 					index: 0,
@@ -116,6 +119,7 @@ const LeftSectionComponent = () => (
 					content: (
 						<>
 							<MasterworkAssumptionSelector />
+							<MinimumGearTierSelector />
 							<DimLoadoutsFilterSelector />
 						</>
 					),

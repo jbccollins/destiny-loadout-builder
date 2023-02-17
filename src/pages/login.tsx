@@ -11,7 +11,6 @@ const Container = styled(Box)(({ theme }) => ({
 }));
 
 function Login() {
-	console.log('>>>>>>>>>> oauthClientId <<<<<<<<<<<<', oauthClientId());
 	const queryParams = new URLSearchParams({
 		client_id: oauthClientId(),
 		response_type: 'code',

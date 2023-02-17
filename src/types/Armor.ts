@@ -1,10 +1,13 @@
 import {
 	EArmorSlotId,
+	EArmorStatId,
 	EDestinyClassId,
 	EElementId,
 	EGearTierId,
 	EMasterworkAssumption,
+	EModCategoryId,
 } from './IdEnums';
+import { cloneDeep } from 'lodash';
 
 /***** Extra *****/
 export const ArmorElementIdList = [
@@ -40,9 +43,6 @@ export type ArmorRaritySplit = {
 
 // Data about each individual piece of armor
 export type ArmorItem = {
-	// Is this piece of armor exotic
-	// TODO: Get rid of isExotic and just check gearTierId
-	isExotic: boolean;
 	// The english display name
 	name: string;
 	// The path to icon url
@@ -69,6 +69,7 @@ export type ArmorItem = {
 	elementId: EElementId;
 	// Exotic, Legendary, Rare, etc...
 	gearTierId: EGearTierId;
+	isArtifice: boolean;
 };
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/
@@ -115,6 +116,101 @@ export const generateAvailableExoticArmorGroup =
 		};
 	};
 
+export type ArmorMaxStatsMetadata = Record<
+	EArmorStatId,
+	{ max: number; withMasterwork: boolean }
+>;
+
+export type ArmorCountMaxStatsMetadata = {
+	count: number;
+	maxStats: ArmorMaxStatsMetadata | null;
+};
+
+export type ArmorSlotMetadata = {
+	count: number;
+	items: Record<EArmorSlotId, ArmorCountMaxStatsMetadata>;
+};
+
+export type ArmorMetadataItem = {
+	nonExotic: {
+		count: number;
+		legendary: ArmorSlotMetadata;
+		rare: ArmorSlotMetadata;
+	};
+	exotic: {
+		count: number;
+		items: Record<EArmorSlotId, Record<string, ArmorMaxStatsMetadata>>;
+	};
+	artifice: ArmorSlotMetadata;
+	raid: {
+		count: number;
+		items: Partial<Record<EModCategoryId, ArmorSlotMetadata>>;
+	};
+};
+
+const defaultArmorMaxStatsMetadata: ArmorMaxStatsMetadata = {
+	[EArmorStatId.Mobility]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Resilience]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Recovery]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Discipline]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Intellect]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Strength]: { max: 0, withMasterwork: false },
+};
+
+const DefaultArmorSlotMetadata: ArmorSlotMetadata = {
+	count: 0,
+	items: {
+		[EArmorSlotId.Head]: { count: 0, maxStats: null },
+		[EArmorSlotId.Arm]: { count: 0, maxStats: null },
+		[EArmorSlotId.Chest]: { count: 0, maxStats: null },
+		[EArmorSlotId.Leg]: { count: 0, maxStats: null },
+		[EArmorSlotId.ClassItem]: { count: 0, maxStats: null },
+	},
+};
+
+const ArmorMetadataItem: ArmorMetadataItem = {
+	nonExotic: {
+		count: 0,
+		legendary: DefaultArmorSlotMetadata,
+		rare: DefaultArmorSlotMetadata,
+	},
+	exotic: {
+		count: 0,
+		items: {
+			[EArmorSlotId.Head]: {},
+			[EArmorSlotId.Arm]: {},
+			[EArmorSlotId.Chest]: {},
+			[EArmorSlotId.Leg]: {},
+			[EArmorSlotId.ClassItem]: {},
+		},
+	},
+	artifice: DefaultArmorSlotMetadata,
+	raid: {
+		count: 0,
+		items: {
+			[EModCategoryId.LastWish]: DefaultArmorSlotMetadata,
+			[EModCategoryId.GardenOfSalvation]: DefaultArmorSlotMetadata,
+			[EModCategoryId.DeepStoneCrypt]: DefaultArmorSlotMetadata,
+			[EModCategoryId.VaultOfGlass]: DefaultArmorSlotMetadata,
+			[EModCategoryId.VowOfTheDisciple]: DefaultArmorSlotMetadata,
+			[EModCategoryId.KingsFall]: DefaultArmorSlotMetadata,
+		},
+	},
+};
+
+export type ArmorMetadata = Record<EDestinyClassId, ArmorMetadataItem>;
+
+const defaultArmorMetadata: ArmorMetadata = {
+	[EDestinyClassId.Hunter]: ArmorMetadataItem,
+	[EDestinyClassId.Warlock]: ArmorMetadataItem,
+	[EDestinyClassId.Titan]: ArmorMetadataItem,
+};
+
+export const getDefaultArmorMetadata = () => cloneDeep(defaultArmorMetadata);
+
+export const getDefaultArmorMaxStatsMetadata = () =>
+	cloneDeep(defaultArmorMaxStatsMetadata);
+
 // TODO: Maybe do this on a loop over EArmorSlot?
 export const generateArmorGroup = (): ArmorGroup => {
 	return {
@@ -140,8 +236,8 @@ export interface IDestinyItem {
 export interface IArmorItem extends IDestinyItem {
 	// Mobility, Resilience, Recovery, Discipline, Intellect, Strength
 	stats: StatList;
-	// Is this piece of armor an exotic
-	isExotic: boolean;
+	// Is this piece of armor Exotic, Legendary, etc...
+	gearTierId: EGearTierId;
 	// Is this piece of armor masterworked
 	isMasterworked: boolean;
 }
@@ -170,13 +266,13 @@ export interface ISelectedExoticArmor {
 
 // Masterworking adds +2 to each stat
 export const getExtraMasterworkedStats = (
-	{ isMasterworked, isExotic }: IArmorItem,
+	{ isMasterworked, gearTierId }: IArmorItem,
 	masterworkAssumption: EMasterworkAssumption
 ) =>
 	isMasterworked ||
-	(isExotic && masterworkAssumption === EMasterworkAssumption.All) ||
-	// TODO: This is a bug. It will assume that blue, green and white gear can be masterworked
-	(!isExotic &&
+	(gearTierId === EGearTierId.Exotic &&
+		masterworkAssumption === EMasterworkAssumption.All) ||
+	(gearTierId === EGearTierId.Legendary &&
 		(masterworkAssumption === EMasterworkAssumption.All ||
 			masterworkAssumption === EMasterworkAssumption.Legendary))
 		? 2

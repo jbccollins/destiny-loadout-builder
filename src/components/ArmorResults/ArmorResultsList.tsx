@@ -11,6 +11,7 @@ import {
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import {
+	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
 	EFragmentId,
@@ -36,7 +37,10 @@ import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selected
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import { getFragment } from '@dlb/types/Fragment';
-import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import {
+	ArmorSlotWithClassItemIdList,
+	getArmorSlot,
+} from '@dlb/types/ArmorSlot';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import { selectSelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
@@ -47,9 +51,6 @@ import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJum
 import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
-
-const ClassItemSvgString =
-	"data:image/svg+xml,%3csvg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 51 51'%3e%3cpath d='M43.12 7.12c-4.13 2.33-17.62 1.9-17.62 1.9s-13.49.43-17.62-1.9c-.37-.21-.85-.03-.94.39-.36 1.49-.87 4.42.09 5.86.09.13.22.21.38.25 1.23.3 7.36 1.65 18.09 1.65s16.86-1.35 18.09-1.65c.15-.04.29-.12.38-.25.96-1.44.45-4.37.1-5.86-.1-.42-.58-.6-.95-.39zM9.27 28.34s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V15.73c-1.93-.22-3.45-.45-4.55-.65v13.26zM16.3 34.8s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V16.24c-1.66-.06-3.18-.16-4.55-.27V34.8zM37.18 28.34s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V15.08c-1.09.2-2.61.44-4.55.65v12.61zM30.15 34.8s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V15.97c-1.36.11-2.88.21-4.55.27V34.8zM23.23 16.31v25.31s0 2.34 2.27 2.34 2.27-2.34 2.27-2.34V16.31c-.74.01-1.49.02-2.27.02-.78.01-1.54 0-2.27-.02z'/%3e%3c/svg%3e";
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];
@@ -240,7 +241,7 @@ function ResultsItem({
 						isMasterworked={true}
 						width={'40px'}
 						height={'40px'}
-						src={ClassItemSvgString}
+						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 					/>
 					<IconText>Any Masterworked Class Item</IconText>
 				</IconTextContainer>
@@ -270,7 +271,7 @@ function ResultsItem({
 								<BungieImage width={40} height={40} src={mod.icon} />
 								<IconText>
 									{mod.name}
-									{modCounts[modId] > 1 ? ` x ${modCounts[modId]}` : ''}
+									{modCounts[modId] > 1 ? ` (x${modCounts[modId]})` : ''}
 								</IconText>
 							</IconTextContainer>
 						);
@@ -369,7 +370,7 @@ function ResultsItem({
 										isMasterworked={true}
 										width={'20px'}
 										height={'20px'}
-										src={ClassItemSvgString}
+										src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 									/>
 								</StatsBreakdownItem>
 								{ArmorStatIdList.map((armorStatId) => (

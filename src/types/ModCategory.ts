@@ -98,6 +98,11 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 		name: "King's Fall",
 		description: '',
 	},
+	[EModCategoryId.Nightmare]: {
+		id: EModCategoryId.Nightmare,
+		name: 'Nightmare',
+		description: '',
+	},
 	[EModCategoryId.ArmorStat]: {
 		id: EModCategoryId.ArmorStat,
 		name: 'Armor Stat',
@@ -136,6 +141,27 @@ export const getModCategoryIdByModName = (
 	if (displayNameId === EModDisplayNameId.GeneralArmorMod) {
 		return EModCategoryId.ArmorStat;
 	}
+	if (displayNameId === EModDisplayNameId.LastWishRaidMod) {
+		return EModCategoryId.LastWish;
+	}
+	if (displayNameId === EModDisplayNameId.GardenOfSalvationRaidMod) {
+		return EModCategoryId.GardenOfSalvation;
+	}
+	if (displayNameId === EModDisplayNameId.DeepStoneCryptRaidMod) {
+		return EModCategoryId.DeepStoneCrypt;
+	}
+	if (displayNameId === EModDisplayNameId.VaultOfGlassArmorMod) {
+		return EModCategoryId.VaultOfGlass;
+	}
+	if (displayNameId === EModDisplayNameId.VowOfTheDiscipleRaidMod) {
+		return EModCategoryId.VowOfTheDisciple;
+	}
+	if (displayNameId === EModDisplayNameId.KingsFallMod) {
+		return EModCategoryId.KingsFall;
+	}
+	if (displayNameId === EModDisplayNameId.NightmareMod) {
+		return EModCategoryId.Nightmare;
+	}
 	switch (name) {
 		case findTerm(name, 'Ammo Finder'):
 			return EModCategoryId.AmmoFinder;
@@ -153,18 +179,6 @@ export const getModCategoryIdByModName = (
 			return EModCategoryId.Loader;
 		case findTerm(name, 'Unflinching'):
 			return EModCategoryId.Unflinching;
-		case findTerm(name, 'Last Wish'):
-			return EModCategoryId.LastWish;
-		case findTerm(name, 'Garden of Salvation'):
-			return EModCategoryId.GardenOfSalvation;
-		case findTerm(name, 'Deep Stone Crypt'):
-			return EModCategoryId.DeepStoneCrypt;
-		case findTerm(name, 'Vault of Glass'):
-			return EModCategoryId.VaultOfGlass;
-		case findTerm(name, 'Vow of the Disciple'):
-			return EModCategoryId.VowOfTheDisciple;
-		case findTerm(name, "King's Fall"):
-			return EModCategoryId.KingsFall;
 		default:
 			return EModCategoryId.General;
 	}

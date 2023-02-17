@@ -43,7 +43,6 @@ function DestinySubclassSelector() {
 	const getLabel = (option: Option) => option.label;
 
 	const handleChange = (destinySubclass: EDestinySubclassId) => {
-		console.log('+++++ handleChange', destinySubclass);
 		if (
 			selectedDestinySubclassId &&
 			selectedDestinySubclassId === destinySubclass
@@ -51,7 +50,6 @@ function DestinySubclassSelector() {
 			// Don't trigger a redux dirty
 			return;
 		}
-		console.log('+++++ dispatching', destinySubclass);
 		dispatch(
 			setSelectedDestinySubclass({
 				...selectedDestinySubclass,

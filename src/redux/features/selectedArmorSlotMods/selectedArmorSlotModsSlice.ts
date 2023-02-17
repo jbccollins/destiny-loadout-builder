@@ -3,8 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '@dlb/redux/store';
 
 import { v4 as uuid, NIL } from 'uuid';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
-import { EModId } from '@dlb/generated/mod/EModId';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 
@@ -15,7 +13,7 @@ export interface SelectedArmorSlotModsState {
 
 const generateIntitalState = (): ArmorSlotIdToModIdListMapping => {
 	return ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
-		accumulator[currentValue] = [null, null];
+		accumulator[currentValue] = [null, null, null];
 		return accumulator;
 	}, {}) as ArmorSlotIdToModIdListMapping;
 };

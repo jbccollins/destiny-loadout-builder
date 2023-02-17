@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {
 	oauthClientId,
-	oauthClientSecret
+	oauthClientSecret,
 } from '@dlb/dim/bungie-api/bungie-api-utils';
 import { getMembershipData } from '@dlb/dim/bungie-api/destiny2-api';
 import { Token } from '@dlb/dim/bungie-api/oauth-tokens';
@@ -35,19 +35,18 @@ export default async function handler(
 		grant_type: 'refresh_token',
 		refresh_token: refreshTokenValue,
 		client_id: oauthClientId(),
-		client_secret: oauthClientSecret()
+		client_secret: oauthClientSecret(),
 	});
 
 	const response = await axios
 		.post(TOKEN_URL, body, {
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			}
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
 		})
 		.then((res) => res.data)
 		.catch(function (error) {
 			if (error.response) {
-				console.log('>>>>>>>>>>>>>>>>>>>>>> ERROR FETCHING OAUTH TOKEN');
 				console.error(error.response.data);
 				// console.error(error.response.status);
 				// console.error(error.response.headers);

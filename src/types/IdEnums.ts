@@ -213,7 +213,7 @@ export enum EModSocketCategoryId {
 	// VaultOfGlass = 'VaultOfGlass',
 	// VowOfTheDisciple = 'VowOfTheDisciple',
 	// KingsFall = 'KingsFall',
-	// Other = 'Other', // TODO: Dreambane, etc..
+	// Nightmare = 'Nightmare',
 }
 
 export enum EModTypeDisplayNameId {
@@ -255,6 +255,7 @@ export enum EModCategoryId {
 	VaultOfGlass = 'VaultOfGlass',
 	VowOfTheDisciple = 'VowOfTheDisciple',
 	KingsFall = 'KingsFall',
+	Nightmare = 'Nightmare',
 	ArmorStat = 'ArmorStat',
 	General = 'General',
 	// SeasonalArtifact = 'SeasonalArtifact',

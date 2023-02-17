@@ -218,7 +218,7 @@ export function getStores(
 		// DestinyComponentType.CharacterProgressions,
 		DestinyComponentType.CharacterEquipment,
 		// ------- FROM D2 ARMOR PICKER ------
-		// DestinyComponentType.ItemStats,
+		DestinyComponentType.ItemStats,
 		DestinyComponentType.ItemInstances,
 		DestinyComponentType.ItemPerks,
 		DestinyComponentType.ItemSockets,
@@ -301,7 +301,6 @@ async function getProfile(
 	if (Object.keys(response.Response).length === 0) {
 		throw new Error('BungieService.NoAccountForPlatform');
 	}
-	console.log('>>>>>>>>> getProfile <<<<<<<<<<', response.Response);
 	return response.Response;
 }
 

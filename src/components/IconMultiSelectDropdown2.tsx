@@ -110,7 +110,6 @@ export default function IconMultiSelectDropdown({
 	showElement,
 }: IIconMultiSelectDropdownProps) {
 	const handleChange = (event: unknown, value: any) => {
-		console.log('>>>>>>>>>>> CHANGE', event, value);
 		// On autofill we get a stringified value.
 		// typeof value === 'string' ? value.split(',') : value,
 		// onChange(value.filter(({ id }) => id != PLACEHOLDER_OPTION));

@@ -17,7 +17,6 @@ export const getAccessTokenFromRefreshToken = async (
 		})
 		.catch(function (error) {
 			if (error.response) {
-				console.log('>>>>>>>>>>>>>>>>>>>>>> ERROR REFRESHING OAUTH TOKEN');
 				console.error(error.response.data);
 			}
 		});
@@ -31,7 +30,6 @@ export const getAccessTokenFromCode = async (code: string): Promise<void> => {
 		})
 		.catch(function (error) {
 			if (error.response) {
-				console.log('>>>>>>>>>>>>>>>>>>>>>> ERROR FETCHING OAUTH TOKEN');
 				console.error(error.response.data);
 			}
 		});
@@ -48,7 +46,6 @@ function handleAccessToken(
 		  }
 		| undefined
 ): Tokens {
-	console.log('>>>>>>>> handleAccessToken: ', response?.access_token);
 	if (response?.access_token) {
 		const data = response;
 		const inception = Date.now();
@@ -56,12 +53,12 @@ function handleAccessToken(
 			value: data.access_token,
 			expires: data.expires_in,
 			name: 'access',
-			inception
+			inception,
 		};
 
 		const tokens: Tokens = {
 			accessToken,
-			bungieMembershipId: data.membership_id
+			bungieMembershipId: data.membership_id,
 		};
 
 		if (data.refresh_token) {
@@ -69,7 +66,7 @@ function handleAccessToken(
 				value: data.refresh_token,
 				expires: data.refresh_expires_in,
 				name: 'refresh',
-				inception
+				inception,
 			};
 		}
 

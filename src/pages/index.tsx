@@ -97,8 +97,8 @@ const LeftSectionComponent = () => (
 							</SelectionControlGroup>
 							<SelectionControlGroup title="Mods">
 								<ArmorSlotModSelector />
-								<RaidModSelector />
-								<CombatStyleModSelector />
+								{/* <RaidModSelector />
+								<CombatStyleModSelector /> */}
 							</SelectionControlGroup>
 							<SelectionControlGroup title="Subclass Options">
 								<DestinySubclassSelector />

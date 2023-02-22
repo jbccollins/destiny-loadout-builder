@@ -70,6 +70,7 @@ export type ArmorItem = {
 	// Exotic, Legendary, Rare, etc...
 	gearTierId: EGearTierId;
 	isArtifice: boolean;
+	artificeBoostedStat: EArmorStatId | null;
 };
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/
@@ -123,7 +124,7 @@ export type ArmorMaxStatsMetadata = Record<
 
 export type ArmorCountMaxStatsMetadata = {
 	count: number;
-	maxStats: ArmorMaxStatsMetadata | null;
+	maxStats: ArmorMaxStatsMetadata;
 };
 
 export type ArmorSlotMetadata = {
@@ -139,7 +140,7 @@ export type ArmorMetadataItem = {
 	};
 	exotic: {
 		count: number;
-		items: Record<EArmorSlotId, Record<string, ArmorMaxStatsMetadata>>;
+		items: Record<EArmorSlotId, Record<string, ArmorCountMaxStatsMetadata>>;
 	};
 	artifice: ArmorSlotMetadata;
 	raid: {
@@ -157,22 +158,48 @@ const defaultArmorMaxStatsMetadata: ArmorMaxStatsMetadata = {
 	[EArmorStatId.Strength]: { max: 0, withMasterwork: false },
 };
 
-const DefaultArmorSlotMetadata: ArmorSlotMetadata = {
+export const getDefaultArmorMaxStatsMetadata = () =>
+	cloneDeep(defaultArmorMaxStatsMetadata);
+
+const defaultArmorCountMaxStatsMetadata: ArmorCountMaxStatsMetadata = {
+	count: 0,
+	maxStats: getDefaultArmorMaxStatsMetadata(),
+};
+export const getDefaultArmorCountMaxStatsMetadata = () =>
+	cloneDeep(defaultArmorCountMaxStatsMetadata);
+
+const defaultArmorSlotMetadata: ArmorSlotMetadata = {
 	count: 0,
 	items: {
-		[EArmorSlotId.Head]: { count: 0, maxStats: null },
-		[EArmorSlotId.Arm]: { count: 0, maxStats: null },
-		[EArmorSlotId.Chest]: { count: 0, maxStats: null },
-		[EArmorSlotId.Leg]: { count: 0, maxStats: null },
-		[EArmorSlotId.ClassItem]: { count: 0, maxStats: null },
+		[EArmorSlotId.Head]: {
+			count: 0,
+			maxStats: getDefaultArmorMaxStatsMetadata(),
+		},
+		[EArmorSlotId.Arm]: {
+			count: 0,
+			maxStats: getDefaultArmorMaxStatsMetadata(),
+		},
+		[EArmorSlotId.Chest]: {
+			count: 0,
+			maxStats: getDefaultArmorMaxStatsMetadata(),
+		},
+		[EArmorSlotId.Leg]: {
+			count: 0,
+			maxStats: getDefaultArmorMaxStatsMetadata(),
+		},
+		[EArmorSlotId.ClassItem]: {
+			count: 0,
+			maxStats: getDefaultArmorMaxStatsMetadata(),
+		},
 	},
 };
+const getDefaultArmorSlotMetadata = () => cloneDeep(defaultArmorSlotMetadata);
 
 const ArmorMetadataItem: ArmorMetadataItem = {
 	nonExotic: {
 		count: 0,
-		legendary: DefaultArmorSlotMetadata,
-		rare: DefaultArmorSlotMetadata,
+		legendary: getDefaultArmorSlotMetadata(),
+		rare: getDefaultArmorSlotMetadata(),
 	},
 	exotic: {
 		count: 0,
@@ -184,32 +211,31 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 			[EArmorSlotId.ClassItem]: {},
 		},
 	},
-	artifice: DefaultArmorSlotMetadata,
+	artifice: getDefaultArmorSlotMetadata(),
 	raid: {
 		count: 0,
 		items: {
-			[EModCategoryId.LastWish]: DefaultArmorSlotMetadata,
-			[EModCategoryId.GardenOfSalvation]: DefaultArmorSlotMetadata,
-			[EModCategoryId.DeepStoneCrypt]: DefaultArmorSlotMetadata,
-			[EModCategoryId.VaultOfGlass]: DefaultArmorSlotMetadata,
-			[EModCategoryId.VowOfTheDisciple]: DefaultArmorSlotMetadata,
-			[EModCategoryId.KingsFall]: DefaultArmorSlotMetadata,
+			[EModCategoryId.LastWish]: getDefaultArmorSlotMetadata(),
+			[EModCategoryId.GardenOfSalvation]: getDefaultArmorSlotMetadata(),
+			[EModCategoryId.DeepStoneCrypt]: getDefaultArmorSlotMetadata(),
+			[EModCategoryId.VaultOfGlass]: getDefaultArmorSlotMetadata(),
+			[EModCategoryId.VowOfTheDisciple]: getDefaultArmorSlotMetadata(),
+			[EModCategoryId.KingsFall]: getDefaultArmorSlotMetadata(),
 		},
 	},
 };
 
+const getDefaultArmorMetadataItem = () => cloneDeep(ArmorMetadataItem);
+
 export type ArmorMetadata = Record<EDestinyClassId, ArmorMetadataItem>;
 
 const defaultArmorMetadata: ArmorMetadata = {
-	[EDestinyClassId.Hunter]: ArmorMetadataItem,
-	[EDestinyClassId.Warlock]: ArmorMetadataItem,
-	[EDestinyClassId.Titan]: ArmorMetadataItem,
+	[EDestinyClassId.Hunter]: getDefaultArmorMetadataItem(),
+	[EDestinyClassId.Warlock]: getDefaultArmorMetadataItem(),
+	[EDestinyClassId.Titan]: getDefaultArmorMetadataItem(),
 };
 
 export const getDefaultArmorMetadata = () => cloneDeep(defaultArmorMetadata);
-
-export const getDefaultArmorMaxStatsMetadata = () =>
-	cloneDeep(defaultArmorMaxStatsMetadata);
 
 // TODO: Maybe do this on a loop over EArmorSlot?
 export const generateArmorGroup = (): ArmorGroup => {
@@ -240,6 +266,8 @@ export interface IArmorItem extends IDestinyItem {
 	gearTierId: EGearTierId;
 	// Is this piece of armor masterworked
 	isMasterworked: boolean;
+	// Is this a piece of artifice armor
+	isArtifice: boolean;
 }
 
 export type StatList = [number, number, number, number, number, number];

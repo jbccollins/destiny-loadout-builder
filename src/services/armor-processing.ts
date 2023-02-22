@@ -3,6 +3,7 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	ArmorGroup,
 	ArmorIdList,
+	ArmorItem,
 	ArmorItems,
 	getExtraMasterworkedStats,
 	IArmorItem,
@@ -248,6 +249,7 @@ export const doProcessArmor = ({
 	armorSlotMods,
 	destinyClassId,
 }: DoProcessArmorParams): ProcessArmorOutput => {
+	// Add in the class item
 	const sumOfSeenStats =
 		masterworkAssumption !== EMasterworkAssumption.None
 			? [2, 2, 2, 2, 2, 2]

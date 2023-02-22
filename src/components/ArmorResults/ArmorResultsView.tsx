@@ -385,10 +385,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 			};
 			ArmorSlotIdList.forEach((armorSlot, i) => {
 				const armorItem = getArmorItem(armorIdList[i], armorSlot);
-				// TODO: This id generation logic is probably wrong
-				armorItem.stats.forEach(() => {
-					resultLoadout.id += `[${armorItem.id}]`;
-				});
+				resultLoadout.id += `[${armorItem.id}]`;
 				resultLoadout.armorItems.push(armorItem);
 				resultLoadout.requiredStatModIdList = metadata.requiredStatModIdList;
 				resultLoadout.sortableFields.totalModCost = metadata.totalModCost;

@@ -123,6 +123,5 @@ export function getBuckets(defs: D2ManifestDefinitions) {
 			bucketHashes.map((bucketHash) => buckets.byHash[bucketHash])
 		);
 	});
-	console.log('>>>>>>>>>>>>>>>>> BUCKETS <<<<<<<<<<<<<<<<<<<', buckets);
 	return buckets;
 }

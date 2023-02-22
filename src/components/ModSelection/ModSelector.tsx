@@ -12,6 +12,7 @@ import { Avatar, Box, Chip, Typography } from '@mui/material';
 import { first, last } from 'lodash';
 import { ReactNode } from 'react';
 import { useSelector } from 'react-redux';
+import CompactIconAutocompleteDropdown from '../CompactIconAutocompleteDropdown';
 import IconAutocompleteDropdown from '../IconAutocompleteDropdown';
 
 type Option = {
@@ -119,6 +120,9 @@ const ModSelector = ({
 	selectedDestinyClass,
 	enforceMatchingElementRule,
 	isModDisabled,
+	idPrefix,
+	textFieldClassName,
+	compact,
 }: {
 	selectedMods: EModId[];
 	availableMods: EModId[];
@@ -133,6 +137,9 @@ const ModSelector = ({
 	selectedDestinyClass: EDestinyClassId;
 	enforceMatchingElementRule: boolean;
 	isModDisabled: (mod: IMod) => boolean;
+	idPrefix: string;
+	textFieldClassName: string;
+	compact: boolean;
 }) => {
 	const selectedMod = getMod(selectedMods[index]);
 	const options: Option[] = [
@@ -145,6 +152,8 @@ const ModSelector = ({
 					bonuses: mod.bonuses,
 					// TODO: This name thing is fucking dumb but it's to prevent duplicate keys.
 					// Since the Autocomplete in it's infintite wisdom uses the name as a key.
+					// TODO: This probably won't necessary in Lightfall when artifice mods
+					// are automatically active instead of socketed
 					name: mod.name + (mod.isArtifactMod ? ' (Artifact)' : ''),
 					disabled: isModDisabled(mod),
 				};
@@ -158,8 +167,13 @@ const ModSelector = ({
 				)
 			),
 	];
+	const Dropdown = compact
+		? CompactIconAutocompleteDropdown
+		: IconAutocompleteDropdown;
 	return (
-		<IconAutocompleteDropdown
+		<Dropdown
+			showPopupIcon={last ? true : false}
+			id={`mod-selector-${idPrefix}-${index}`}
 			title={getTitle ? getTitle() : ''}
 			// TODO: Memoize these options
 			options={options}
@@ -178,8 +192,8 @@ const ModSelector = ({
 			getExtraContent={(option: Option) =>
 				getExtraContent(option, selectedDestinyClass)
 			}
-			textFieldClassName={`armor-slot-mod-selector-text-field${
-				first ? '-first' : last ? '-last' : ''
+			textFieldClassName={`${textFieldClassName} ${
+				first ? 'first' : last ? 'last' : ''
 			}`}
 		/>
 	);

@@ -12,19 +12,19 @@ export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 export const ModIdList = Object.values(EModId);
 
 export const ArmorSlotModIdList = ModIdList.filter(
-	(id) => getMod(id).modSocketCategoryId === EModSocketCategoryId.ArmorSlot
+	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot
 );
 
 export const CombatStyleModIdList = ModIdList.filter(
-	(id) => getMod(id).modSocketCategoryId === EModSocketCategoryId.CombatStyle
+	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.CombatStyle
 );
 
 export const RaidModIdList = ModIdList.filter(
-	(id) => getMod(id).modSocketCategoryId === EModSocketCategoryId.Raid
+	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.Raid
 );
 
 export const StatModIdList = ModIdList.filter(
-	(id) => getMod(id).modSocketCategoryId === EModSocketCategoryId.Stat
+	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.Stat
 );
 
 // TODO: Pre-generate this with a generation script.
@@ -62,7 +62,10 @@ const generateModSocketCategoryIdToModIdListMapping = (): EnumDictionary<
 		[EModSocketCategoryId.Stat]: [],
 	};
 	ModIdList.forEach((id) => {
-		mapping[getMod(id).modSocketCategoryId].push(id);
+		const mod = getMod(id);
+		if (mod) {
+			mapping[mod.modSocketCategoryId].push(id);
+		}
 	});
 	return mapping;
 };

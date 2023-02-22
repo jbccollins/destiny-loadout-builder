@@ -3,7 +3,7 @@ import {
 	D2ItemTiers,
 	d2MissingIcon,
 	THE_FORBIDDEN_BUCKET,
-	uniqueEquipBuckets
+	uniqueEquipBuckets,
 } from '@dlb/dim/search/d2-known-values';
 import { lightStats } from '@dlb/dim/search/search-filter-values';
 import { errorLog, warnLog } from '@dlb/dim/utils/log';
@@ -30,7 +30,7 @@ import {
 	ItemPerkVisibility,
 	ItemState,
 	SingleComponentResponse,
-	TransferStatuses
+	TransferStatuses,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 // import enhancedIntrinsics from 'data/d2/crafting-enhanced-intrinsics';
 import extendedBreaker from '@dlb/dim/data/d2/extended-breaker.json';
@@ -39,7 +39,7 @@ import extendedICH from '@dlb/dim/data/d2/extended-ich.json';
 import {
 	BucketHashes,
 	ItemCategoryHashes,
-	StatHashes
+	StatHashes,
 } from '@dlb/dim/data/d2/generated-enums';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
@@ -137,7 +137,7 @@ export function processItems(
 						hasQuestLineName: Boolean(itemDef?.setData?.questLineName),
 						itemBucketHash: item.bucketHash,
 						defBucketHash: itemDef?.inventory?.bucketTypeHash,
-						bucketName: bucketDef.displayProperties.name
+						bucketName: bucketDef.displayProperties.name,
 					})
 				);
 
@@ -380,7 +380,7 @@ export function makeItem(
 		primaryStat = {
 			...itemInstanceData.primaryStat,
 			stat: defs.Stat.get(itemInstanceData.primaryStat.statHash),
-			value: itemInstanceData.primaryStat.value
+			value: itemInstanceData.primaryStat.value,
 		};
 	}
 
@@ -399,7 +399,8 @@ export function makeItem(
 			stat: defs.Stat.get(StatHashes.Power),
 			statHash: StatHashes.Power,
 			value:
-				(itemInstanceData.itemLevel ?? 0) * 10 + (itemInstanceData.quality ?? 0)
+				(itemInstanceData.itemLevel ?? 0) * 10 +
+				(itemInstanceData.quality ?? 0),
 		};
 	}
 
@@ -579,7 +580,7 @@ export function makeItem(
 						defs.EnergyType.get(itemDef.plug.energyCost.energyTypeHash)
 							.costStatHash
 				  ).displayProperties.icon
-				: undefined
+				: undefined,
 		},
 		metricHash: item.metricHash,
 		metricObjective: item.metricObjective,
@@ -603,7 +604,7 @@ export function makeItem(
 		sockets: null,
 		masterworkInfo: null,
 		infusionQuality: null,
-		tooltipNotifications
+		tooltipNotifications,
 	};
 
 	// *able
@@ -627,13 +628,13 @@ export function makeItem(
 	if (extendedICH[createdItem.hash]) {
 		createdItem.itemCategoryHashes = [
 			...createdItem.itemCategoryHashes,
-			extendedICH[createdItem.hash]
+			extendedICH[createdItem.hash],
 		];
 		// Masks are helmets too
 		if (extendedICH[createdItem.hash] === ItemCategoryHashes.Mask) {
 			createdItem.itemCategoryHashes = [
 				...createdItem.itemCategoryHashes,
-				ItemCategoryHashes.Helmets
+				ItemCategoryHashes.Helmets,
 			];
 		}
 	}
@@ -726,16 +727,41 @@ export function makeItem(
 	// 	reportException('Objectives', e, { itemHash: item.itemHash });
 	// }
 
-	if (itemDef.perks?.length) {
-		const perks = itemDef.perks.filter(
-			(p) =>
-				p.perkVisibility === ItemPerkVisibility.Visible &&
-				defs.SandboxPerk.get(p.perkHash)?.isDisplayable
+	const statData = itemComponents.perks.data || {};
+	const perks = (statData[item.itemInstanceId || ''] || {})['perks'] || [];
+	if (item.itemInstanceId === '6917529863882213618') {
+		console.log(
+			'+++++++++++++++++++++++',
+			statData,
+			perks,
+			itemDef,
+			itemDef.perks,
+			(
+				itemDef.sockets?.socketEntries.filter(
+					(d) => d.reusablePlugSetHash == 1183
+				) || []
+			).length > 0
 		);
-		if (perks.length) {
-			createdItem.perks = perks;
-		}
 	}
+	// if (itemDef.perks?.length) {
+	// 	const perks = itemDef.perks.filter(
+	// 		(p) =>
+	// 			p.perkVisibility === ItemPerkVisibility.Visible &&
+	// 			defs.SandboxPerk.get(p.perkHash)?.isDisplayable
+	// 	);
+	// 	if (perks.length) {
+	// 		createdItem.perks = perks;
+	// 	}
+	// }
+
+	// TODO: This is a departure from what DIM does
+	createdItem.perks = perks.map((perk) => {
+		return {
+			requirementDisplayString: '',
+			perkHash: perk.perkHash,
+			perkVisibility: 0,
+		};
+	});
 
 	// // Compute complete / completion percentage
 	// if (createdItem.objectives) {
@@ -894,7 +920,7 @@ function buildPursuitInfo(
 				itemDef.inventory!.suppressExpirationWhenObjectivesComplete
 			),
 			expiredInActivityMessage: itemDef.inventory!.expiredInActivityMessage,
-			modifierHashes: []
+			modifierHashes: [],
 		};
 	}
 	const rewards = itemDef.value
@@ -905,7 +931,7 @@ function buildPursuitInfo(
 			suppressExpirationWhenObjectivesComplete: false,
 			modifierHashes: [],
 			...createdItem.pursuit,
-			rewards
+			rewards,
 		};
 	}
 	if (
@@ -919,7 +945,7 @@ function buildPursuitInfo(
 			questStepNum:
 				itemDef.setData.itemList.findIndex((i) => i.itemHash === itemDef.hash) +
 				1,
-			questStepsTotal: itemDef.setData.itemList.length
+			questStepsTotal: itemDef.setData.itemList.length,
 		};
 	}
 }

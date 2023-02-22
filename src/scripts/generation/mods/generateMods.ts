@@ -155,9 +155,6 @@ export async function run() {
 	allMods
 		.filter((mod) => !excludedModHashes.includes(mod.hash))
 		.forEach((mod) => {
-			if (mod.displayProperties.name === 'Minor Resilience Mod') {
-				console.log('derp');
-			}
 			modDisplayNames.add(generateId(mod.itemTypeDisplayName));
 			mods.push(
 				buildModData(

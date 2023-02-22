@@ -9,7 +9,7 @@ import {
 	IconButton,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useAppSelector } from '@dlb/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
@@ -23,6 +23,10 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import ArmorResultsList from './ArmorResultsList';
 import React from 'react';
 import { SmallScreenData } from '@dlb/pages';
+import {
+	selectResultsPagination,
+	setResultsPagination,
+} from '@dlb/redux/features/resultsPagination/resultsPaginationSlice';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
@@ -314,12 +318,13 @@ type ArmorResultsViewProps = {
 };
 
 function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
+	const dispatch = useAppDispatch();
 	const armor = useAppSelector(selectArmor);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
+	const page = useAppSelector(selectResultsPagination);
 
-	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState<Order>('asc');
 	const [orderBy, setOrderBy] = useState<SortableFieldsKey>('totalModCost');
@@ -333,14 +338,14 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 	};
 
 	const handleChangePage = (event: unknown, newPage: number) => {
-		setPage(newPage);
+		dispatch(setResultsPagination(newPage));
 	};
 
 	const handleChangeRowsPerPage = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		setRowsPerPage(+event.target.value);
-		setPage(0);
+		handleChangePage(null, 0);
 	};
 
 	const getArmorItem = useCallback(
@@ -380,10 +385,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 			};
 			ArmorSlotIdList.forEach((armorSlot, i) => {
 				const armorItem = getArmorItem(armorIdList[i], armorSlot);
-				// TODO: This id generation logic is probably wrong
-				armorItem.stats.forEach(() => {
-					resultLoadout.id += `[${armorItem.id}]`;
-				});
+				resultLoadout.id += `[${armorItem.id}]`;
 				resultLoadout.armorItems.push(armorItem);
 				resultLoadout.requiredStatModIdList = metadata.requiredStatModIdList;
 				resultLoadout.sortableFields.totalModCost = metadata.totalModCost;

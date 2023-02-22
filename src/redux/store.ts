@@ -23,18 +23,26 @@ import selectedSuperAbilityReducer from './features/selectedSuperAbility/selecte
 import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
 import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
+
+import resultsPaginationReducer, {
+	setResultsPagination,
+} from './features/resultsPagination/resultsPaginationSlice';
 import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
 import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import disabledCombatStyleModsReducer, {
 	setDisabledCombatStyleMods,
 } from './features/disabledCombatStyleMods/disabledCombatStyleModsSlice';
+import disabledRaidModsReducer, {
+	setDisabledRaidMods,
+} from './features/disabledRaidMods/disabledRaidModsSlice';
 import disabledArmorSlotModsReducer, {
 	setDisabledArmorSlotMods,
 } from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
 import armorSlotModViolationsReducer, {
 	setArmorSlotModViolations,
 } from './features/armorSlotModViolations/armorSlotModViolationsSlice';
-
+import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
 import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
@@ -58,6 +66,7 @@ import {
 	CombatStyleModIdList,
 	getValidCombatStyleModArmorSlotPlacements,
 	hasValidCombatStyleModPermutation,
+	RaidModIdList,
 } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
@@ -87,12 +96,16 @@ export function makeStore() {
 			selectedSuperAbility: selectedSuperAbilityReducer,
 			selectedJump: selectedJumpReducer,
 			selectedArmorSlotMods: selectedArmorSlotModsReducer,
+			selectedMinimumGearTier: selectedMinimumGearTierReducer,
+			selectedRaidMods: selectedRaidModsReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
 			disabledCombatStyleMods: disabledCombatStyleModsReducer,
+			disabledRaidMods: disabledRaidModsReducer,
 			disabledArmorSlotMods: disabledArmorSlotModsReducer,
 			armorSlotModViolations: armorSlotModViolationsReducer,
 			dimLoadouts: dimLoadoutsReducer,
 			dimLoadoutsFilter: dimLoadoutsFilterReducer,
+			resultsPagination: resultsPaginationReducer,
 		},
 	});
 }
@@ -107,7 +120,9 @@ let selectedDestinySubclassUuid = NIL;
 let selectedMasterworkAssumptionUuid = NIL;
 let selectedFragmentsUuid = NIL;
 let selectedCombatStyleModsUuid = NIL;
+let selectedRaidModsUuid = NIL;
 let selectedArmorSlotModsUuid = NIL;
+let selectedMinimumGearTierUuid = NIL;
 let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
 function handleChange() {
@@ -119,10 +134,12 @@ function handleChange() {
 		selectedDestinySubclass: { uuid: nextSelectedDestinySubclassUuid },
 		selectedFragments: { uuid: nextSelectedFragmentsUuid },
 		selectedCombatStyleMods: { uuid: nextSelectedCombatStyleModsUuid },
+		selectedRaidMods: { uuid: nextSelectedRaidModsUuid },
 		selectedArmorSlotMods: { uuid: nextSelectedArmorSlotModsUuid },
 		selectedMasterworkAssumption: {
 			uuid: nextSelectedMasterworkAssumptionUuid,
 		},
+		selectedMinimumGearTier: { uuid: nextSelectedMinimumGearTierUuid },
 		dimLoadouts: { uuid: nextDimLoadoutsUuid },
 		dimLoadoutsFilter: { uuid: nextDimLoadoutsFilterUuid },
 	} = store.getState();
@@ -138,7 +155,9 @@ function handleChange() {
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
 		selectedDestinySubclassUuid !== nextSelectedDestinySubclassUuid ||
 		selectedCombatStyleModsUuid !== nextSelectedCombatStyleModsUuid ||
+		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
+		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
 		dimLoadoutsUuid !== nextDimLoadoutsUuid ||
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid;
 	const hasNonDefaultUuids =
@@ -149,12 +168,14 @@ function handleChange() {
 		nextSelectedMasterworkAssumptionUuid !== NIL &&
 		nextSelectedCombatStyleModsUuid !== NIL &&
 		nextSelectedFragmentsUuid !== NIL &&
+		nextSelectedRaidModsUuid !== NIL &&
 		nextSelectedArmorSlotModsUuid !== NIL &&
+		nextSelectedMinimumGearTierUuid !== NIL &&
 		nextDimLoadoutsUuid !== NIL &&
 		nextDimLoadoutsFilterUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
-		console.log('>>>>>>>>>>> store is dirty <<<<<<<<<<<');
+		console.log('>>>>>>>>>>> [STORE] store is dirty <<<<<<<<<<<');
 		desiredArmorStatsUuid = nextDesiredArmorStatsUuid;
 		selectedDestinyClassUuid = nextSelectedDestinyClassUuid;
 		selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
@@ -162,7 +183,9 @@ function handleChange() {
 		selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
 		selectedFragmentsUuid = nextSelectedFragmentsUuid;
 		selectedCombatStyleModsUuid = nextSelectedCombatStyleModsUuid;
+		selectedRaidModsUuid = nextSelectedRaidModsUuid;
 		selectedArmorSlotModsUuid = nextSelectedArmorSlotModsUuid;
+		selectedMinimumGearTierUuid = nextSelectedMinimumGearTierUuid;
 		dimLoadoutsUuid = nextDimLoadoutsUuid;
 		dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
 
@@ -176,7 +199,9 @@ function handleChange() {
 			selectedFragments: { value: selectedFragments },
 			selectedCombatStyleMods: { value: selectedCombatStyleMods },
 			selectedDestinySubclass: { value: selectedDestinySubclass },
+			selectedRaidMods: { value: selectedRaidMods },
 			selectedArmorSlotMods: { value: selectedArmorSlotMods },
+			selectedMinimumGearTier: { value: selectedMinimumGearTier },
 			dimLoadouts: { value: dimLoadouts },
 			dimLoadoutsFilter: { value: dimLoadoutsFilter },
 		} = store.getState();
@@ -187,7 +212,7 @@ function handleChange() {
 			selectedFragments[elementId],
 			selectedDestinyClass
 		);
-		let mods = [...selectedCombatStyleMods];
+		let mods = [...selectedCombatStyleMods, ...selectedRaidMods];
 		ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 			mods = [...mods, ...selectedArmorSlotMods[armorSlotId]];
 		});
@@ -202,7 +227,7 @@ function handleChange() {
 				selectedCombatStyleMods
 			);
 		console.log(
-			'>>>>>>+ validCombatStyleModArmorSlotPlacements',
+			'>>>>>>>>>>> [STORE] validCombatStyleModArmorSlotPlacements <<<<<<<<<<<',
 			validCombatStyleModArmorSlotPlacements
 		);
 
@@ -214,21 +239,37 @@ function handleChange() {
 			selectedArmorSlotMods,
 			selectedCombatStyleMods
 		);
-		console.log('>>>>>+ disabledArmorSlotMods', disabledArmorSlotMods);
+		console.log(
+			'>>>>>>>>>>> [STORE] disabledArmorSlotMods <<<<<<<<<<<',
+			disabledArmorSlotMods
+		);
 		store.dispatch(setDisabledArmorSlotMods(disabledArmorSlotMods));
 
 		const disabledCombatStyleMods = getDisabledCombatStyleMods(
 			selectedArmorSlotMods,
 			selectedCombatStyleMods
 		);
-		console.log('>>>>>+ disabledCombatStyleMods', disabledCombatStyleMods);
+		console.log(
+			'>>>>>>>>>>> [STORE] disabledCombatStyleMods <<<<<<<<<<<',
+			disabledCombatStyleMods
+		);
 		store.dispatch(setDisabledCombatStyleMods(disabledCombatStyleMods));
+
+		const disabledRaidMods = getDisabledRaidMods(
+			selectedArmorSlotMods,
+			selectedRaidMods
+		);
+		console.log(
+			'>>>>>>>>>>> [STORE] disabledRaidMods <<<<<<<<<<<',
+			disabledRaidMods
+		);
+		store.dispatch(setDisabledRaidMods(disabledRaidMods));
 
 		const armorSlotModViolations = getArmorSlotModViolations(
 			selectedArmorSlotMods
 		);
 		store.dispatch(setArmorSlotModViolations(armorSlotModViolations));
-
+		store.dispatch(setResultsPagination(0));
 		// TODO: no need to preProcessArmor when only the stat slider has changed.
 		// Maybe we don't need to trigger that fake initial dispatch in
 		// the slider component if we fix this?
@@ -239,9 +280,13 @@ function handleChange() {
 				(x) =>
 					DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
 			),
-			dimLoadoutsFilter
+			dimLoadoutsFilter,
+			selectedMinimumGearTier
 		);
-		console.log('>>>>>>>>>>> preProcessedArmor <<<<<<<<<<<', preProcessedArmor);
+		console.log(
+			'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',
+			preProcessedArmor
+		);
 		const results = doProcessArmor({
 			masterworkAssumption,
 			desiredArmorStats,
@@ -252,11 +297,14 @@ function handleChange() {
 			armorSlotMods: selectedArmorSlotMods,
 			destinyClassId: selectedDestinyClass,
 		});
-		console.log('>>>>>>>>>>> results <<<<<<<<<<<', results);
+		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };
 		results.forEach((result) => {
 			const availableMods = 5 - result.armorStatModIdList.length;
 			ArmorStatIdList.forEach((armorStatId) => {
+				// TODO: this "* 10" is a bug that assumes you can always fit major mods.
+				// This causes the desired armor stat tiers to show you can achieve stat
+				// tiers that aren't actually possible.
 				const possibleStat =
 					result.metadata.totalArmorStatMapping[armorStatId] +
 					10 * availableMods;
@@ -267,7 +315,10 @@ function handleChange() {
 		});
 		// TODO: We can probably calculate max possible stats while doing armor processing without
 		// the need to loop over the processed armor again here.
-		console.log('>>>>>>>>>>> maxPossibleStats <<<<<<<<<<<', maxPossibleStats);
+		console.log(
+			'>>>>>>>>>>> [STORE] maxPossibleStats <<<<<<<<<<<',
+			maxPossibleStats
+		);
 		store.dispatch(setMaxPossibleStats(maxPossibleStats));
 		store.dispatch(setProcessedArmor(results));
 	}
@@ -298,8 +349,6 @@ const getDisabledArmorSlotMods = (
 					selectedCombatStyleMods
 				);
 				if (!isValid) {
-					console.log('>>>>>>+ !isValid armorSlot', armorSlotId, modId, i);
-
 					if (!disabledMods[modId]) {
 						disabledMods[modId] = {};
 					}
@@ -325,7 +374,27 @@ const getDisabledCombatStyleMods = (
 				potentialSelectedCombatStyleMods
 			);
 			if (!isValid) {
-				console.log('>>>>>>+ !isValid combatStyle', modId);
+				disabledMods[modId] = true;
+			}
+		});
+	});
+	return disabledMods;
+};
+
+const getDisabledRaidMods = (
+	selectedArmorSlotMods: ArmorSlotIdToModIdListMapping,
+	selectedRaidMods: EModId[]
+): Partial<Record<EModId, boolean>> => {
+	const disabledMods: Partial<Record<EModId, boolean>> = {};
+	selectedRaidMods.forEach((_, i) => {
+		RaidModIdList.forEach((modId) => {
+			const potentialSelectedRaidMods = [...selectedRaidMods];
+			potentialSelectedRaidMods[i] = modId;
+			const isValid = hasValidCombatStyleModPermutation(
+				selectedArmorSlotMods,
+				potentialSelectedRaidMods
+			);
+			if (!isValid) {
 				disabledMods[modId] = true;
 			}
 		});

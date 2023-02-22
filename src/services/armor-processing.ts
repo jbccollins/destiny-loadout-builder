@@ -3,6 +3,7 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	ArmorGroup,
 	ArmorIdList,
+	ArmorItem,
 	ArmorItems,
 	getExtraMasterworkedStats,
 	IArmorItem,
@@ -27,6 +28,7 @@ import {
 	EMasterworkAssumption,
 	EDimLoadoutsFilterId,
 	EDestinyClassId,
+	EGearTierId,
 } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToModIdListMapping,
@@ -247,6 +249,7 @@ export const doProcessArmor = ({
 	armorSlotMods,
 	destinyClassId,
 }: DoProcessArmorParams): ProcessArmorOutput => {
+	// Add in the class item
 	const sumOfSeenStats =
 		masterworkAssumption !== EMasterworkAssumption.None
 			? [2, 2, 2, 2, 2, 2]
@@ -454,7 +457,8 @@ export const preProcessArmor = (
 	armorGroup: ArmorGroup,
 	selectedExoticArmor: ISelectedExoticArmor,
 	dimLoadouts: Loadout[],
-	dimLoadoutsFilterId: EDimLoadoutsFilterId
+	dimLoadoutsFilterId: EDimLoadoutsFilterId,
+	minimumGearTier: EGearTierId
 ): StrictArmorItems => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
@@ -474,7 +478,24 @@ export const preProcessArmor = (
 			return;
 		}
 		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic).filter(
-			(item) => !excludedItemIds[item.id]
+			(item) => {
+				// TODO: Write a better comparator for gear tiers
+				if (
+					item.gearTierId === EGearTierId.Uncommon ||
+					item.gearTierId === EGearTierId.Common ||
+					item.gearTierId === EGearTierId.Unknown
+				) {
+					return false;
+				}
+				// TODO: If the gear tier selector ever allows lower than blue this will need to be changed
+				if (
+					minimumGearTier === EGearTierId.Legendary &&
+					item.gearTierId !== EGearTierId.Legendary
+				) {
+					return false;
+				}
+				return !excludedItemIds[item.id];
+			}
 		);
 	});
 	return strictArmorItems;

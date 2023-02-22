@@ -2,10 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-// TODO: Consider refactoring all the "user configuration stuff"
-// (e.g, selectedCombatStyleMods, selectedDestinyClass, selectedExoticArmor, etc...)
-// To use a single reducer with one uuid. Or....... keep it as is and just
-// Keep track of a single uuid in the store? idk... that might be harder to code around...
 import { v4 as uuid, NIL } from 'uuid';
 import { EModId } from '@dlb/generated/mod/EModId';
 

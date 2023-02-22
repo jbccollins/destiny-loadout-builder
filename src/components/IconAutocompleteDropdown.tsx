@@ -12,6 +12,7 @@ import {
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import DecoratedBungieIcon from './DecoratedBungieIcon';
+import { toDashCase } from '@dlb/utils/string';
 
 const Container = styled('div')(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -26,18 +27,29 @@ const Container = styled('div')(({ theme }) => ({
 	['.exotic-selector-text-field > div']: {
 		height: '73px',
 	},
-	['.armor-slot-mod-selector-text-field fieldset']: {
-		borderRadius: '0px',
-		marginTop: '-1px',
-	},
-	['.armor-slot-mod-selector-text-field-first fieldset']: {
-		borderBottomLeftRadius: '0px',
-		borderBottomRightRadius: '0px',
-	},
-	['.armor-slot-mod-selector-text-field-last fieldset']: {
+	['.controlled fieldset']: {
 		borderTopLeftRadius: '0px',
 		borderTopRightRadius: '0px',
-		marginTop: '-1px',
+		legend: {
+			maxWidth: '0px', // this is hacky. Would rather just not show the legend
+		},
+	},
+
+	['.combat-style-mod-selector-text-field, .raid-mod-selector-text-field']: {
+		//borderRadius: '0px',
+		['fieldset']: {
+			marginTop: '-1px',
+			borderRadius: '0px',
+		},
+		['&.first fieldset']: {
+			marginTop: 0,
+			borderTopLeftRadius: 'inherit',
+			borderTopRightRadius: 'inherit',
+		},
+		['&.last fieldset']: {
+			borderBottomRightRadius: 'inherit',
+			borderBottomLeftRadius: 'inherit',
+		},
 	},
 }));
 
@@ -62,6 +74,11 @@ type IconAutocompleteDropdownProps = {
 	// getName: (value: IIconAutocompleteDropdownOption) => string
 	title: string;
 	textFieldClassName?: string;
+	isControlled?: boolean; // Is this component's open/close status controlled externally
+	isOpen?: boolean; // If isControlled, is it open
+	onClose?: () => void; // If isControlled, trigger this
+	id?: string;
+	showIcon?: boolean;
 };
 
 function IconAutocompleteDropdown({
@@ -76,12 +93,33 @@ function IconAutocompleteDropdown({
 	getId,
 	title,
 	textFieldClassName,
+	isControlled,
+	isOpen,
+	onClose,
+	id,
+	showIcon,
 }: IconAutocompleteDropdownProps) {
+	const handleClose = () => {
+		onClose();
+	};
+
+	// const handleOpen = () => {
+	// 	console.log('HANDLE OPEN');
+	// 	console.log(document.getElementById(toDashCase(title)));
+	// };
+
+	const controlledProps = isControlled
+		? { open: isOpen, onClose: handleClose }
+		: {};
+
+	const _showIcon = showIcon ?? true;
 	return (
 		<Container>
 			<FormControl fullWidth>
 				<Autocomplete
-					id={title}
+					{...controlledProps}
+					forcePopupIcon={_showIcon ? true : false}
+					id={`${id ?? ''}`}
 					options={options}
 					// open={true}
 					autoHighlight
@@ -104,7 +142,6 @@ function IconAutocompleteDropdown({
 							insideWords: true,
 						});
 						const parts = parse(getLabel(option), matches);
-						// console.log('>>>>>>>>>>> props', props);
 						return (
 							<Box
 								component="li"
@@ -151,12 +188,14 @@ function IconAutocompleteDropdown({
 					renderInput={(params) => {
 						return (
 							<TextField
-								className={textFieldClassName}
-								label={title}
+								className={`${textFieldClassName}${
+									isControlled ? ' controlled' : ''
+								}`}
+								label={isControlled ? false : title}
 								{...params}
 								InputProps={{
 									...params.InputProps,
-									startAdornment: (
+									startAdornment: _showIcon ? (
 										<Box
 											sx={{
 												position: 'relative',
@@ -172,7 +211,7 @@ function IconAutocompleteDropdown({
 												getAltText={() => getLabel(value)}
 											/>
 										</Box>
-									),
+									) : null,
 									// endAdornment: (
 									// 	<Box>
 									// 		{getExtraContent && (

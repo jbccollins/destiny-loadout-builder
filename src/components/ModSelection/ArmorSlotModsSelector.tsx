@@ -15,13 +15,16 @@ import { ArmorSlotIdToArmorSlotModIdListMapping, getMod } from '@dlb/types/Mod';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { IMod } from '@dlb/types/generation';
 import { selectDisabledArmorSlotMods } from '@dlb/redux/features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));
 
 const IconDropdownContainer = styled('div')(({ theme }) => ({
-	paddingTop: theme.spacing(1),
-	paddingBottom: theme.spacing(2),
+	paddingBottom: theme.spacing(1),
+	display: 'flex',
+	position: 'relative',
 }));
 
 type Option = {
@@ -42,7 +45,7 @@ function ArmorSlotModSelector() {
 	const getLabel = (option: Option) => option.name;
 	const getDescription = (option: Option) => option.description;
 	const getCost = (option: Option) => option.cost;
-	const getTitle = (id: EArmorSlotId) => `${getArmorSlot(id).name} Mods`;
+	const getTitle = (id: EArmorSlotId) => ''; //`${getArmorSlot(id).name} Mods`;
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 
 	const handleChange = (
@@ -92,7 +95,17 @@ function ArmorSlotModSelector() {
 						(_, i) => i
 					);
 					return (
-						<IconDropdownContainer key={armorSlotId}>
+						<IconDropdownContainer
+							key={armorSlotId}
+							className={'icon-dropdown-container'}
+						>
+							<Box sx={{ paddingTop: '16px', paddingRight: '6px' }}>
+								<BungieImage
+									width={'30px'}
+									height={'30px'}
+									src={getArmorSlot(armorSlotId).icon}
+								/>
+							</Box>
 							{dropdownIndices.map((index) => (
 								<ModSelector
 									isModDisabled={(mod: IMod) =>
@@ -117,8 +130,11 @@ function ArmorSlotModSelector() {
 									getDescription={getDescription}
 									getCost={getCost}
 									index={index}
+									idPrefix={armorSlotId}
 									first={index === 0}
 									last={index === dropdownIndices.length - 1}
+									textFieldClassName={'armor-slot-mod-selector-text-field'}
+									compact
 								/>
 							))}
 						</IconDropdownContainer>

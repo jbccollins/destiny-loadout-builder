@@ -1,50 +1,26 @@
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjbccollins%2Fdestiny-loadout-builder)
-
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+#### Create a your own app on Bungie.net
+TODO: Fill in instructions on how to do this and what to put
+in the .env.local file
+
+#### Get a DIM API key
+TODO: Fill in instructions on how to do this. This probably is optional for most people
+
+#### Installation
+Install the required packages using
 
 ```bash
-npm run dev
-# or
-yarn dev
+npm i
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
----- CUSTOM ------
-
-# Setup
-## Get Local SSL working
+#### Get local SSL working
 
 The Bungie API requires that your app run using https due to some OAuth stuff. To make https work locally we hack up a local ssl certificate.
 
-The local dev server will run on https://localhost:4001
+The local dev server will run on [http://localhost:40001](http://localhost:4001)
 
 Before doing anything else run these commands ([source](https://github.com/vercel/next.js/discussions/10935#discussioncomment-2855809)):
      
@@ -54,18 +30,28 @@ Before doing anything else run these commands ([source](https://github.com/verce
 > npm install -g local-ssl-proxy // This actually is done with npx in the script so it's not necessary atm
 TODO: Can local-ssl-proxy be installed as a dev dependency instead??
 
-### TODOS
-- Turn strict mode back on in tsconfig.json
 
-# Attribution
-### Many thanks to the folks behind these projects:
+#### Run the app!
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:40001](http://localhost:4001) with your browser to see the result.
+
+You can start editing any file and see your changes automatically propagate to the browser.
+
+## Deploy on Vercel
+
+Just push to master. It will deploy automatically [here](https://vercel.com/jbccollins/destiny-loadout-builder).
+
+### Attribution
+#### Many thanks to the folks behind these projects:
 - DIM
 - D2ArmorPicker
-- Destiny Sets (https://discord.com/channels/296008008956248066/296008136785920001/899068290138275921)
+- [Destiny Sets](https://discord.com/channels/296008008956248066/296008136785920001/899068290138275921)
 - Destiny Data Explorer
 
-    
-
-
-
-
+### TODOS
+- Turn strict mode back on in tsconfig.json

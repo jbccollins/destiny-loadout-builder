@@ -9,7 +9,7 @@ export interface SelectedMinimumArtificeExtrapolationStatTierState {
 }
 
 const initialState: SelectedMinimumArtificeExtrapolationStatTierState = {
-	value: 7,
+	value: 0,
 	uuid: NIL,
 };
 

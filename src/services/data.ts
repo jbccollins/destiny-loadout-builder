@@ -50,29 +50,6 @@ const updateMaxStatsMetadata = (
 	});
 };
 
-const extrapolateArtificeArmor = (armorItem: ArmorItem): ArmorItem[] => {
-	// TODO: This splits an artifice piece of armor into 7 pieces. But the
-	// unboosted base piece is only useful from a calculation perspective when
-	// considering wasted stats. It may make sense to reduce the overhead here
-	// and just consider the six boosted pieces.
-	const result: ArmorItem[] = [armorItem];
-	if (!armorItem.isArtifice) {
-		return result;
-	}
-
-	ArmorStatIdList.forEach((armorStatId, i) => {
-		const newStats: StatList = [...armorItem.stats];
-		newStats[i] += 3;
-		result.push({
-			...armorItem,
-			stats: newStats,
-			artificeBoostedStat: armorStatId,
-			id: `${armorItem.id}-${armorStatId}`,
-		});
-	});
-	return result;
-};
-
 // Convert a DimStore into our own, smaller, types and transform the data into the desired shape.
 export const extractArmor = (
 	stores: DimStore<DimItem>[]
@@ -208,12 +185,6 @@ export const extractArmor = (
 						armorMetadata[destinyClassName].artifice.items[armorItem.armorSlot]
 							.count++;
 					}
-					// const extrapolatedArmorItems = extrapolateArtificeArmor(armorItem);
-					// extrapolatedArmorItems.forEach((extrapolatedArmorItem) => {
-					// 	armor[destinyClassName][armorSlot].nonExotic[
-					// 		extrapolatedArmorItem.id
-					// 	] = extrapolatedArmorItem;
-					// });
 					armor[destinyClassName][armorSlot].nonExotic[armorItem.id] =
 						armorItem;
 				}

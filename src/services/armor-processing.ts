@@ -791,15 +791,6 @@ export const preProcessArmor = (
 		}
 		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic).filter(
 			(item) => {
-				// Filter out artifice armor with boosted stats that do not meet
-				// the extrapolation threshold
-				if (
-					item.isArtifice &&
-					item.artificeBoostedStat &&
-					!artificeExtrapolationStats[item.artificeBoostedStat]
-				) {
-					return false;
-				}
 				// TODO: Write a better comparator for gear tiers
 				if (
 					item.gearTierId === EGearTierId.Uncommon ||

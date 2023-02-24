@@ -155,6 +155,16 @@ const calculateExtraMasterworkedStats = (
 	return extraMasterworkedStats;
 };
 
+// TODO: This isn't taking into consideration the possibility that the user
+// Does not have a masterworked class item
+const getClassItemText = (item: ResultsTableLoadout): string => {
+	const artificeArmorItems = item.armorItems.filter((x) => x.isArtifice);
+	if (artificeArmorItems.length < item.requiredArtificeStatModsIdList.length) {
+		return 'Any Masterworked Artifice Class Item';
+	}
+	return 'Any Masterworked Class Item';
+};
+
 function ResultsItem({
 	item,
 	destinyClassId,
@@ -269,10 +279,8 @@ function ResultsItem({
 						height={'40px'}
 						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 					/>
-					{/* TODO: Pull this out into a function */}
-					<IconText>{`Any Masterworked${
-						item.requiredArtificeStatModsIdList.length === 4 ? ' Artifice' : ''
-					} Class Item`}</IconText>
+					{/* TODO: Pull this out into a function. Also this > 0 logic is just wrong. */}
+					<IconText>{getClassItemText(item)}</IconText>
 				</IconTextContainer>
 			</ResultsSection>
 			<ResultsSection>
@@ -431,11 +439,7 @@ function ResultsItem({
 									</StatsBreakdownItem>
 								))}
 								<StatsBreakdownItem>
-									<Description>{`Any Masterworked${
-										item.requiredArtificeStatModsIdList.length === 4
-											? ' Artifice'
-											: ''
-									} Class Item`}</Description>
+									<Description>{getClassItemText(item)}</Description>
 								</StatsBreakdownItem>
 							</StatsBreakdown>
 						)}

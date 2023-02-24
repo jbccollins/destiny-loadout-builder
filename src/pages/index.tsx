@@ -121,7 +121,7 @@ const LeftSectionComponent = () => (
 						<>
 							<MasterworkAssumptionSelector />
 							<MinimumGearTierSelector />
-							<MinimumArtificeExtrapolationStatTierSelector />
+							{/* <MinimumArtificeExtrapolationStatTierSelector /> */}
 							<DimLoadoutsFilterSelector />
 						</>
 					),

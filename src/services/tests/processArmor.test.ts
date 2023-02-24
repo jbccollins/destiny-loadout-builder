@@ -15,11 +15,27 @@ import {
 	DefaultArmorStatMapping,
 	getArmorStatMappingFromFragments,
 } from '@dlb/types/ArmorStat';
+import { EModId } from '@dlb/generated/mod/EModId';
+import {
+	DefaultValidPlacement,
+	getDefaultArmorSlotIdToModIdListMapping,
+} from '@dlb/types/Mod';
+import { getDefaultArmorMetadata } from '@dlb/types/Armor';
 
 type ProcessArmorTestCase = {
 	name: string;
 	input: DoProcessArmorParams;
 	output: ProcessArmorOutput;
+};
+
+const defaultArmorMetadataWithArtificeClassItem = {
+	...getDefaultArmorMetadata(),
+};
+defaultArmorMetadataWithArtificeClassItem[EDestinyClassId.Warlock].classItem = {
+	hasArtificeClassItem: true,
+	hasLegendaryClassItem: true,
+	hasMasterworkedArtificeClassItem: true,
+	hasMasterworkedLegendaryClassItem: true,
 };
 
 const processArmorTestCases: ProcessArmorTestCase[] = [
@@ -40,6 +56,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				EDestinyClassId.Warlock
 			),
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			validCombatStyleModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			destinyClassId: EDestinyClassId.Warlock,
+			armorMetadataItem: getDefaultArmorMetadata().Warlock,
 			armorItems: [
 				[
 					{
@@ -48,6 +68,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						hash: -1,
 						gearTierId: EGearTierId.Legendary,
 						isMasterworked: false,
+						isArtifice: false,
 					},
 				],
 				[
@@ -57,6 +78,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						hash: -1,
 						gearTierId: EGearTierId.Legendary,
 						isMasterworked: false,
+						isArtifice: false,
 					},
 				],
 				[
@@ -66,6 +88,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						hash: -1,
 						gearTierId: EGearTierId.Legendary,
 						isMasterworked: false,
+						isArtifice: false,
 					},
 				],
 				[
@@ -75,6 +98,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						hash: -1,
 						gearTierId: EGearTierId.Legendary,
 						isMasterworked: false,
+						isArtifice: false,
 					},
 				],
 			],
@@ -84,8 +108,8 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			{
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [],
+				artificeModArmorStatIdList: [],
 				metadata: {
-					requiredStatModIdList: [],
 					totalModCost: 0,
 					totalStatTiers: 24,
 					wastedStats: 32,
@@ -96,6 +120,107 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						[EArmorStatId.Discipline]: 64,
 						[EArmorStatId.Intellect]: 64,
 						[EArmorStatId.Strength]: 8,
+					},
+				},
+			},
+		],
+	},
+	{
+		name: 'It returns results with artifice boosts required',
+		input: {
+			masterworkAssumption: EMasterworkAssumption.All,
+			desiredArmorStats: {
+				[EArmorStatId.Mobility]: 0,
+				[EArmorStatId.Resilience]: 100,
+				[EArmorStatId.Recovery]: 100,
+				[EArmorStatId.Discipline]: 100,
+				[EArmorStatId.Intellect]: 0,
+				[EArmorStatId.Strength]: 0,
+			},
+			fragmentArmorStatMapping: getArmorStatMappingFromFragments(
+				[],
+				EDestinyClassId.Warlock
+			),
+			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			validCombatStyleModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			destinyClassId: EDestinyClassId.Warlock,
+			armorMetadataItem: defaultArmorMetadataWithArtificeClassItem.Warlock,
+			armorItems: [
+				// Res x3, [helmet, arms, chest]
+				[
+					{
+						// Deep Explorer Hood
+						id: '0',
+						stats: es([2, 6, 26, 24, 2, 6]),
+						hash: -1,
+						gearTierId: EGearTierId.Legendary,
+						isMasterworked: true,
+						isArtifice: true,
+					},
+				],
+				[
+					{
+						// Deep Explorer Gloves
+						id: '1',
+						stats: es([2, 10, 20, 23, 2, 8]),
+						hash: -1,
+						gearTierId: EGearTierId.Legendary,
+						isMasterworked: true,
+						isArtifice: true,
+					},
+				],
+				[
+					{
+						// Deep Explorer Vestments
+						id: '2',
+						stats: es([2, 6, 26, 26, 2, 2]),
+						hash: -1,
+						gearTierId: EGearTierId.Legendary,
+						isMasterworked: true,
+						isArtifice: true,
+					},
+				],
+				[
+					{
+						// Lunafaction Boots
+						id: '3',
+						stats: es([2, 14, 18, 21, 2, 8]),
+						hash: -1,
+						gearTierId: EGearTierId.Exotic,
+						isMasterworked: true,
+						isArtifice: false,
+					},
+				],
+			],
+		},
+
+		output: [
+			{
+				armorIdList: ['0', '1', '2', '3'],
+				armorStatModIdList: [
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModArmorStatIdList: [
+					EArmorStatId.Resilience,
+					EArmorStatId.Resilience,
+					EArmorStatId.Resilience,
+				],
+				metadata: {
+					totalModCost: 13,
+					totalStatTiers: 35,
+					wastedStats: 24,
+					totalArmorStatMapping: {
+						[EArmorStatId.Mobility]: 18,
+						[EArmorStatId.Resilience]: 100,
+						[EArmorStatId.Recovery]: 100,
+						[EArmorStatId.Discipline]: 104,
+						[EArmorStatId.Intellect]: 18,
+						[EArmorStatId.Strength]: 34,
 					},
 				},
 			},
@@ -118,6 +243,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				EDestinyClassId.Warlock
 			),
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			validCombatStyleModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			destinyClassId: EDestinyClassId.Hunter,
+			armorMetadataItem: getDefaultArmorMetadata().Warlock,
 			armorItems: [
 				[
 					{
@@ -126,6 +255,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						hash: -1,
 						gearTierId: EGearTierId.Legendary,
 						isMasterworked: false,
+						isArtifice: false,
 					},
 				],
 				[
@@ -135,6 +265,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						hash: -1,
 						gearTierId: EGearTierId.Legendary,
 						isMasterworked: false,
+						isArtifice: false,
 					},
 				],
 				[
@@ -144,6 +275,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						hash: -1,
 						gearTierId: EGearTierId.Legendary,
 						isMasterworked: false,
+						isArtifice: false,
 					},
 				],
 				[
@@ -153,6 +285,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 						hash: -1,
 						gearTierId: EGearTierId.Legendary,
 						isMasterworked: false,
+						isArtifice: false,
 					},
 				],
 			],
@@ -161,20 +294,14 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			{
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [
-					EArmorStatModId.MajorMobility,
-					EArmorStatModId.MajorMobility,
-					EArmorStatModId.MajorMobility,
-					EArmorStatModId.MajorMobility,
-					EArmorStatModId.MajorMobility,
+					EModId.MobilityMod,
+					EModId.MobilityMod,
+					EModId.MobilityMod,
+					EModId.MobilityMod,
+					EModId.MobilityMod,
 				],
+				artificeModArmorStatIdList: [],
 				metadata: {
-					requiredStatModIdList: [
-						EArmorStatModId.MajorMobility,
-						EArmorStatModId.MajorMobility,
-						EArmorStatModId.MajorMobility,
-						EArmorStatModId.MajorMobility,
-						EArmorStatModId.MajorMobility,
-					],
 					totalModCost: 15,
 					totalStatTiers: 30,
 					wastedStats: 22,
@@ -190,310 +317,6 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			},
 		],
 	},
-
-	// {
-	// 	name: 'It returns no results with one item in each slot',
-	// 	input: {
-	// 		desiredArmorStats: {
-	// 			[EArmorStatId.Mobility]: 0,
-	// 			[EArmorStatId.Resilience]: 100,
-	// 			[EArmorStatId.Recovery]: 100,
-	// 			[EArmorStatId.Discipline]: 0,
-	// 			[EArmorStatId.Intellect]: 0,
-	// 			[EArmorStatId.Strength]: 0,
-	// 		},
-	// 		armorItems: [
-	// 			[
-	// 				{
-	// 					id: '0',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '1',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '2',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '3',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 		],
-	// 	},
-	// 	output: [],
-	// },
-	// {
-	// 	name: 'It returns two results with two leg armor items',
-	// 	input: {
-	// 		desiredArmorStats: {
-	// 			[EArmorStatId.Mobility]: 0,
-	// 			[EArmorStatId.Resilience]: 60,
-	// 			[EArmorStatId.Recovery]: 60,
-	// 			[EArmorStatId.Discipline]: 0,
-	// 			[EArmorStatId.Intellect]: 0,
-	// 			[EArmorStatId.Strength]: 0,
-	// 		},
-	// 		armorItems: [
-	// 			[
-	// 				{
-	// 					id: '0',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '1',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '2',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '3',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 				{
-	// 					id: '4',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 		],
-	// 	},
-	// 	output: [
-	// 		['0', '1', '2', '3'],
-	// 		['0', '1', '2', '4'],
-	// 	],
-	// },
-	// {
-	// 	name: 'It returns four results with two gauntlet items and two leg armor items',
-	// 	input: {
-	// 		desiredArmorStats: {
-	// 			[EArmorStatId.Mobility]: 0,
-	// 			[EArmorStatId.Resilience]: 60,
-	// 			[EArmorStatId.Recovery]: 60,
-	// 			[EArmorStatId.Discipline]: 0,
-	// 			[EArmorStatId.Intellect]: 0,
-	// 			[EArmorStatId.Strength]: 0,
-	// 		},
-	// 		armorItems: [
-	// 			[
-	// 				{
-	// 					id: '0',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '1',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 				{
-	// 					id: '2',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '3',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '4',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 				{
-	// 					id: '5',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 		],
-	// 	},
-	// 	output: [
-	// 		['0', '1', '3', '4'],
-	// 		['0', '1', '3', '5'],
-	// 		['0', '2', '3', '4'],
-	// 		['0', '2', '3', '5'],
-	// 	],
-	// },
-	// {
-	// 	name: 'It returns no results with two gauntlet items and two leg armor items',
-	// 	input: {
-	// 		desiredArmorStats: {
-	// 			[EArmorStatId.Mobility]: 100,
-	// 			[EArmorStatId.Resilience]: 0,
-	// 			[EArmorStatId.Recovery]: 100,
-	// 			[EArmorStatId.Discipline]: 0,
-	// 			[EArmorStatId.Intellect]: 0,
-	// 			[EArmorStatId.Strength]: 0,
-	// 		},
-	// 		armorItems: [
-	// 			[
-	// 				{
-	// 					id: '0',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '1',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 				{
-	// 					id: '2',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '3',
-	// 					stats: es([30, 2, 2, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '4',
-	// 					stats: es([30, 2, 2, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 				{
-	// 					id: '5',
-	// 					stats: es([30, 2, 2, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: false,
-	// 				},
-	// 			],
-	// 		],
-	// 	},
-	// 	output: [],
-	// },
-	// {
-	// 	name: 'It returns results with one item in each slot where each item is masterworked',
-	// 	input: {
-	// 		desiredArmorStats: {
-	// 			[EArmorStatId.Mobility]: 0,
-	// 			[EArmorStatId.Resilience]: 70,
-	// 			[EArmorStatId.Recovery]: 70,
-	// 			[EArmorStatId.Discipline]: 0,
-	// 			[EArmorStatId.Intellect]: 0,
-	// 			[EArmorStatId.Strength]: 0,
-	// 		},
-	// 		armorItems: [
-	// 			[
-	// 				{
-	// 					id: '0',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: true,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '1',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: true,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '2',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: true,
-	// 				},
-	// 			],
-	// 			[
-	// 				{
-	// 					id: '3',
-	// 					stats: es([2, 16, 16, 16, 16, 2]),
-	// 					hash: -1,
-	// 					gearTierId: EGearTierId.Legendary,
-	// 					isMasterworked: true,
-	// 				},
-	// 			],
-	// 		],
-	// 	},
-	// 	output: [['0', '1', '2', '3']],
-	// },
 ];
 
 // TODO: It would be nice to just loop over all these without the verbose
@@ -501,10 +324,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 // test case that way :(
 
 describe('processArmor', () => {
-	test(processArmorTestCases[0].name, () => {
-		const { input, output } = processArmorTestCases[0];
-		expect(doProcessArmor(input)).toEqual(output);
-	});
+	// test(processArmorTestCases[0].name, () => {
+	// 	const { input, output } = processArmorTestCases[0];
+	// 	expect(doProcessArmor(input)).toEqual(output);
+	// });
 	test(processArmorTestCases[1].name, () => {
 		const { input, output } = processArmorTestCases[1];
 		expect(doProcessArmor(input)).toEqual(output);

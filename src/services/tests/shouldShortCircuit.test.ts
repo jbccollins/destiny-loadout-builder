@@ -58,6 +58,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				generateDefaultValidCombatStyleModPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			true,
@@ -99,6 +100,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				generateDefaultValidCombatStyleModPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			false,
@@ -137,6 +139,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				generateDefaultValidCombatStyleModPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			true,
@@ -177,6 +180,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				generateDefaultValidCombatStyleModPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			true,
@@ -218,6 +222,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				generateDefaultValidCombatStyleModPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			false,
@@ -251,6 +256,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				generateDefaultValidCombatStyleModPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			false,
@@ -291,6 +297,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			],
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			true,
@@ -337,6 +344,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber],
 			},
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			true,
@@ -392,6 +400,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber], // Capacity: 1
 			},
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			true,
@@ -441,6 +450,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber], // Capacity: 1
 			},
 			destinyClassId: EDestinyClassId.Hunter,
+			numSeenArtificeArmorItems: 0,
 		},
 		output: [
 			false,

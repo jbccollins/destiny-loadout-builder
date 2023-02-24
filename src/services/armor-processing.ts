@@ -5,6 +5,8 @@ import {
 	ArmorIdList,
 	ArmorItem,
 	ArmorItems,
+	ArmorMetadata,
+	ArmorMetadataItem,
 	getExtraMasterworkedStats,
 	IArmorItem,
 	ISelectedExoticArmor,
@@ -21,6 +23,8 @@ import {
 	getArmorStatModSpitFromArmorStatId,
 	getArmorStatMappingFromMods,
 	sumArmorStatMappings,
+	getArtificeArmorStatsToExtrapolate,
+	DefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
@@ -34,8 +38,11 @@ import {
 	ArmorSlotIdToModIdListMapping,
 	getMod,
 	hasValidArmorStatModPermutation,
+	MajorStatModIdList,
+	MinorStatModIdList,
 	ValidCombatStyleModPlacements,
 } from '@dlb/types/Mod';
+import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
 
 // No masterworked legendary piece of armor has a single stat above 32
 // TODO: Can we dynamically set this per slot? Like not every user
@@ -87,11 +94,37 @@ function canUseMinorStatMod(x: number) {
 	return roundUp5(x) % 10 === 5;
 }
 
+type GetRequiredArtificeModArmorStatIdListParams = {
+	desiredArmorStats: ArmorStatMapping;
+	totalArmorStatMapping: ArmorStatMapping;
+};
+
+const getRequiredArtificeModArmorStatIdList = ({
+	desiredArmorStats,
+	totalArmorStatMapping,
+}: GetRequiredArtificeModArmorStatIdListParams): EArmorStatId[] => {
+	const requiredArtificeModArmorStatIdList: EArmorStatId[] = [];
+	ArmorStatIdList.forEach((armorStatId) => {
+		const desiredArmorStat = desiredArmorStats[armorStatId];
+		const achievedArmorStat = totalArmorStatMapping[armorStatId];
+		const diff = desiredArmorStat - achievedArmorStat;
+		let numRequiredArtificeMods = 0;
+		if (diff > 0) {
+			numRequiredArtificeMods += Math.ceil(diff / 3);
+			for (let i = 0; i < numRequiredArtificeMods; i++) {
+				requiredArtificeModArmorStatIdList.push(armorStatId);
+			}
+		}
+	});
+	return requiredArtificeModArmorStatIdList;
+};
+
 export type GetRequiredArmorStatModsParams = {
 	desiredArmorStats: ArmorStatMapping;
 	stats: StatList; // Includes masterworked / assume masterworked
 	numRemainingArmorPieces: number;
 	destinyClassId: EDestinyClassId;
+	numSeenArtificeArmorItems: number;
 };
 
 // Get the required armor stat mods for a given combination.
@@ -102,16 +135,26 @@ export const getRequiredArmorStatMods = ({
 	stats,
 	numRemainingArmorPieces,
 	destinyClassId,
-}: GetRequiredArmorStatModsParams): [EModId[], ArmorStatMapping] => {
+	numSeenArtificeArmorItems,
+}: GetRequiredArmorStatModsParams): [
+	EModId[],
+	EArmorStatId[],
+	ArmorStatMapping
+] => {
 	const requiredArmorStatMods: EModId[] = [];
 	stats.forEach((stat, i) => {
 		const armorStat = ArmorStatIdList[i];
 		const desiredStat = desiredArmorStats[armorStat];
 		// Assume that for each remaining armor piece we have perfect stats
 		const diff =
-			desiredStat - (stat + MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces);
+			desiredStat -
+			(stat +
+				getMaxPossibleRemainingStatValue(
+					numRemainingArmorPieces,
+					0 // numSeenArtificeArmorItems
+				));
 		// If the desired stat is less than or equal to the total possible stat
-		// then we don't need any stat mods to boost that stat
+		// then we don't need any stat mods or artifice stat mods to boost that stat
 		if (diff <= 0) {
 			return;
 		}
@@ -129,9 +172,114 @@ export const getRequiredArmorStatMods = ({
 			requiredArmorStatMods.push(minor);
 		}
 	});
+	let requiredArtificeModArmorStatIdList: EArmorStatId[] = [];
+	let adjustedArmorStatMods: EModId[] = [...requiredArmorStatMods];
+	// Find a single permutation of artifice mods to pad the stats. Only do this if necessary
+	if (numRemainingArmorPieces === 0 || requiredArmorStatMods.length > 5) {
+		// TODO: This is an upper bound for the number of artifice items left.
+		// Constrain this further by checking which slot has an exotic and which
+		// slots even have artifice pieces available.
+		// In the future if we allow the usage of a loadout without an exotic this will need to change.
+		const numPotentialArtificeItems =
+			numSeenArtificeArmorItems + numRemainingArmorPieces;
+
+		const baseArmorStatMapping = getArmorStatMappingFromStatList(stats);
+		const sortedRequiredArmorStatMods = [...requiredArmorStatMods].sort(
+			(a, b) => getMod(b).cost - getMod(a).cost
+		);
+		adjustedArmorStatMods = [...sortedRequiredArmorStatMods];
+		const removedIndices: number[] = [];
+		for (let i = 0; i < sortedRequiredArmorStatMods.length; i++) {
+			const _adjustedArmorStatMods = [...sortedRequiredArmorStatMods];
+			// Rip out the currently considered mod
+			_adjustedArmorStatMods.splice(i, 1);
+			// Rip out the other mods that we are not considering
+			for (let j = removedIndices.length - 1; j >= 0; j--) {
+				_adjustedArmorStatMods.splice(removedIndices[j], 1);
+			}
+
+			const adjustedArmorStatMapping = getArmorStatMappingFromMods(
+				_adjustedArmorStatMods,
+				destinyClassId
+			);
+			const _requiredArtificeModArmorStatIdList =
+				getRequiredArtificeModArmorStatIdList({
+					desiredArmorStats,
+					totalArmorStatMapping: sumArmorStatMappings([
+						adjustedArmorStatMapping,
+						baseArmorStatMapping,
+					]),
+				});
+			if (
+				_requiredArtificeModArmorStatIdList.length > numPotentialArtificeItems
+			) {
+				continue;
+			} else {
+				removedIndices.push(i);
+				adjustedArmorStatMods = _adjustedArmorStatMods;
+				requiredArtificeModArmorStatIdList =
+					_requiredArtificeModArmorStatIdList;
+			}
+		}
+	}
+	// Try to optimize a bit further by swapping out major mods with minor mods and padding with artifice mods
+	if (
+		numRemainingArmorPieces === 0 &&
+		requiredArtificeModArmorStatIdList.length <= numSeenArtificeArmorItems
+	) {
+		let optimizedArmorStatMods = [...adjustedArmorStatMods];
+		for (let i = 0; i < adjustedArmorStatMods.length; i++) {
+			// If this is a minor mod we can't optimize it any further
+			// TODO: This is almost certainly wrong behavior. In the case
+			// where all we need is a single minor mod to reach our desired stats
+			// we can just replace that minor mod with one or two artifice mods
+			if (MinorStatModIdList.includes(adjustedArmorStatMods[i])) {
+				continue;
+			}
+			// TODO: If stat mods ever give more than one bonus this won't work
+			// Additionally this cast to EArmorStatId won't work if there are ever class specific
+			// Armor stat mods...
+			const armorStatId = getMod(adjustedArmorStatMods[i]).bonuses[0]
+				.stat as EArmorStatId;
+			const minorMod = getArmorStatModSpitFromArmorStatId(armorStatId).minor;
+			const _optimizedArmorStatMods = [...optimizedArmorStatMods];
+			// Swap out the currently considered mod
+			_optimizedArmorStatMods[i] = minorMod;
+
+			const optimizedArmorStatMapping = getArmorStatMappingFromMods(
+				_optimizedArmorStatMods,
+				destinyClassId
+			);
+
+			const baseArmorStatMapping = getArmorStatMappingFromStatList(stats);
+			//const temp_MasterworkClassItemAssumptionStatMapping =
+			// getArmorStatMappingFromStatList([2, 2, 2, 2, 2, 2]);
+			const totalArmorStatMapping = sumArmorStatMappings([
+				//temp_MasterworkClassItemAssumptionStatMapping,
+				optimizedArmorStatMapping,
+				baseArmorStatMapping,
+			]);
+			const _requiredArtificeModArmorStatIdList =
+				getRequiredArtificeModArmorStatIdList({
+					desiredArmorStats,
+					totalArmorStatMapping,
+				});
+			if (
+				_requiredArtificeModArmorStatIdList.length > numSeenArtificeArmorItems
+			) {
+				continue;
+			} else {
+				optimizedArmorStatMods = _optimizedArmorStatMods;
+				requiredArtificeModArmorStatIdList =
+					_requiredArtificeModArmorStatIdList;
+			}
+		}
+		adjustedArmorStatMods = optimizedArmorStatMods;
+	}
 	return [
-		requiredArmorStatMods,
-		getArmorStatMappingFromMods(requiredArmorStatMods, destinyClassId),
+		adjustedArmorStatMods,
+		requiredArtificeModArmorStatIdList,
+		getArmorStatMappingFromMods(adjustedArmorStatMods, destinyClassId),
 	];
 };
 
@@ -142,15 +290,26 @@ export type ShouldShortCircuitParams = {
 	validCombatStyleModArmorSlotPlacements: ValidCombatStyleModPlacements;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	destinyClassId: EDestinyClassId;
+	numSeenArtificeArmorItems: number;
 };
 
 export type ShouldShortCircuitOutput = [
 	boolean,
 	EModId[],
+	EArmorStatId[],
 	ArmorStatMapping,
 	EArmorStatId | null, // null means that there were to many required mods
 	EArmorSlotId.Head | EArmorSlotId.Arm | EArmorSlotId.Chest | EArmorSlotId.Leg // TODO: This is probably just a keyof something I already have
 ];
+
+// TODO: Clean up these assumptions by checking against armor metadata
+const getMaxPossibleRemainingStatValue = (
+	numRemainingArmorPieces: number,
+	numSeenArtificeArmorItems: number
+): number =>
+	MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces + // Assume the best possible stats for each remaining piece
+	numRemainingArmorPieces * 3 + // Assume all remaining pieces are artifice pieces
+	numSeenArtificeArmorItems * 3;
 
 export const shouldShortCircuit = (
 	params: ShouldShortCircuitParams
@@ -162,6 +321,7 @@ export const shouldShortCircuit = (
 		validCombatStyleModArmorSlotPlacements,
 		armorSlotMods,
 		destinyClassId,
+		numSeenArtificeArmorItems,
 	} = params;
 
 	// TODO: Knowing the rules around stat clustering [mob, res, rec] and [dis, int, str]
@@ -170,14 +330,21 @@ export const shouldShortCircuit = (
 	// single armor piece in order for it to work in this combination we can tell that's an impossible
 	// piece of armor so we are done right then and there. Combine that logic
 	// with dynamic MAX_SINGLE_STAT_VALUE and we can have a really efficient check here.
-	const maxRemaningPossibleStatValue =
-		MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces;
+	const maxRemaningPossibleStatValue = getMaxPossibleRemainingStatValue(
+		numRemainingArmorPieces,
+		numSeenArtificeArmorItems
+	);
 
-	const [requiredArmorStatMods, armorStatMapping] = getRequiredArmorStatMods({
+	const [
+		requiredArmorStatMods,
+		requiredArtificeModArmorStatIdList,
+		armorStatMapping,
+	] = getRequiredArmorStatMods({
 		desiredArmorStats,
 		stats: sumOfSeenStats,
 		numRemainingArmorPieces,
 		destinyClassId,
+		numSeenArtificeArmorItems,
 	});
 
 	const slot = getArmorSlotFromNumRemainingArmorPieces(numRemainingArmorPieces);
@@ -188,7 +355,30 @@ export const shouldShortCircuit = (
 		// 			stat: none,
 		// 			requiredArmorStatMods: ${requiredArmorStatMods}
 		// 	`);
-		return [true, requiredArmorStatMods, armorStatMapping, null, slot];
+		return [
+			true,
+			requiredArmorStatMods,
+			requiredArtificeModArmorStatIdList,
+			armorStatMapping,
+			null,
+			slot,
+		];
+	}
+
+	// TODO: This is an upper bound. We can constrain this further
+	const maxNumPotentialArtificeItems =
+		numSeenArtificeArmorItems + numRemainingArmorPieces;
+	if (
+		requiredArtificeModArmorStatIdList.length > maxNumPotentialArtificeItems
+	) {
+		return [
+			true,
+			requiredArmorStatMods,
+			requiredArtificeModArmorStatIdList,
+			armorStatMapping,
+			null,
+			slot,
+		];
 	}
 
 	const hasValidArmorStatMods = hasValidArmorStatModPermutation(
@@ -198,7 +388,14 @@ export const shouldShortCircuit = (
 	);
 
 	if (!hasValidArmorStatMods) {
-		return [true, requiredArmorStatMods, armorStatMapping, null, null];
+		return [
+			true,
+			requiredArmorStatMods,
+			requiredArtificeModArmorStatIdList,
+			armorStatMapping,
+			null,
+			null,
+		];
 	}
 
 	for (let i = 0; i < ArmorStatIdList.length; i++) {
@@ -215,11 +412,25 @@ export const shouldShortCircuit = (
 			// 		sum: ${sumOfSeenStats[i]},
 			// 		value: ${stat}
 			// `);
-			return [true, requiredArmorStatMods, armorStatMapping, armorStat, slot];
+			return [
+				true,
+				requiredArmorStatMods,
+				requiredArtificeModArmorStatIdList,
+				armorStatMapping,
+				armorStat,
+				slot,
+			];
 		}
 	}
 
-	return [false, requiredArmorStatMods, armorStatMapping, null, null];
+	return [
+		false,
+		requiredArmorStatMods,
+		requiredArtificeModArmorStatIdList,
+		armorStatMapping,
+		null,
+		null,
+	];
 };
 
 export type DoProcessArmorParams = {
@@ -231,6 +442,31 @@ export type DoProcessArmorParams = {
 	validCombatStyleModArmorSlotPlacements: ValidCombatStyleModPlacements;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	destinyClassId: EDestinyClassId;
+	armorMetadataItem: ArmorMetadataItem;
+};
+
+const getExtraSumOfSeenStats = (
+	fragmentArmorStatMapping: ArmorStatMapping,
+	modArmorStatMapping: ArmorStatMapping
+): StatList => {
+	const sumOfSeenStats: StatList = [0, 0, 0, 0, 0, 0];
+	ArmorStatIdList.forEach((id, i) => {
+		sumOfSeenStats[i] =
+			sumOfSeenStats[i] +
+			fragmentArmorStatMapping[id] +
+			modArmorStatMapping[id];
+	});
+	return sumOfSeenStats;
+};
+
+const getArmorStatMappingFromArtificeModArmorStatIdList = (
+	artificeModArmorStatIdList: EArmorStatId[]
+): ArmorStatMapping => {
+	const armorStatMapping: ArmorStatMapping = { ...DefaultArmorStatMapping };
+	artificeModArmorStatIdList.forEach((armorStatId) => {
+		armorStatMapping[armorStatId] += ARTIFICE_BONUS_VALUE;
+	});
+	return armorStatMapping;
 };
 
 /**
@@ -248,30 +484,69 @@ export const doProcessArmor = ({
 	validCombatStyleModArmorSlotPlacements,
 	armorSlotMods,
 	destinyClassId,
+	armorMetadataItem, // TODO: We probably don't need to pass in the full fat armorMetadata. Preselect just the metadata for the current class
 }: DoProcessArmorParams): ProcessArmorOutput => {
 	// Add in the class item
-	const sumOfSeenStats =
-		masterworkAssumption !== EMasterworkAssumption.None
-			? [2, 2, 2, 2, 2, 2]
-			: [0, 0, 0, 0, 0, 0];
-	ArmorStatIdList.forEach((id, i) => {
-		sumOfSeenStats[i] =
-			sumOfSeenStats[i] +
-			fragmentArmorStatMapping[id] +
-			modArmorStatMapping[id];
-	});
-	return processArmor({
+	const extraSumOfSeenStats = getExtraSumOfSeenStats(
+		fragmentArmorStatMapping,
+		modArmorStatMapping
+	);
+	let sumOfSeenStats = [...extraSumOfSeenStats];
+	if (
+		armorMetadataItem.classItem.hasMasterworkedLegendaryClassItem ||
+		(masterworkAssumption !== EMasterworkAssumption.None &&
+			armorMetadataItem.classItem.hasLegendaryClassItem)
+	) {
+		sumOfSeenStats = sumOfSeenStats.map((x) => x + 2);
+	}
+
+	// const artificeExtrapolationStats = getArtificeArmorStatsToExtrapolate(
+	// 	minimumArtificeExtrapolationStatTier,
+	// 	desiredArmorStats
+	// );
+
+	const processArmorParams: ProcessArmorParams = {
 		masterworkAssumption,
 		desiredArmorStats,
 		armorItems,
-		// Assume class item is masterworked
-		// TODO: Get rid of the concept of StatList. Replace with ArmorStatMapping
 		sumOfSeenStats: sumOfSeenStats as StatList,
 		seenArmorIds: [],
 		validCombatStyleModArmorSlotPlacements,
 		armorSlotMods,
 		destinyClassId,
-	});
+		numSeenArtificeArmorItems: armorMetadataItem.classItem.hasArtificeClassItem
+			? 1
+			: 0,
+	};
+
+	const processedArmor: ProcessArmorOutput = processArmor(processArmorParams);
+
+	// // Make sure we include the artifice class items bonus stats
+	// if (armorMetadata[destinyClassId].classItem.hasArtificeClassItem) {
+	// 	sumOfSeenStats = [...extraSumOfSeenStats];
+	// 	if (
+	// 		armorMetadata[destinyClassId].classItem
+	// 			.hasMasterworkedArtificeClassItem ||
+	// 		masterworkAssumption !== EMasterworkAssumption.None
+	// 	) {
+	// 		sumOfSeenStats = sumOfSeenStats.map((x) => x + 2);
+	// 	}
+
+	// 	// ArmorStatIdList.forEach((armorStatId, i) => {
+	// 	// 	if (artificeExtrapolationStats[armorStatId]) {
+	// 	// 		const _sumOfSeenStats = [...sumOfSeenStats];
+	// 	// 		_sumOfSeenStats[i] += 3;
+	// 	// 		processedArmor = processedArmor.concat(
+	// 	// 			processArmor({
+	// 	// 				...processArmorParams,
+	// 	// 				sumOfSeenStats: _sumOfSeenStats as StatList,
+	// 	// 				hasArtificeClassItem: armorStatId,
+	// 	// 			})
+	// 	// 		);
+	// 	// 	}
+	// 	// });
+	// }
+	return processedArmor;
 };
 
 const getNextSeenStats = (
@@ -295,44 +570,63 @@ const _processArmorBaseCase = ({
 	validCombatStyleModArmorSlotPlacements,
 	armorSlotMods,
 	destinyClassId,
+	numSeenArtificeArmorItems,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
 	armorSlotItems.forEach((armorSlotItem) => {
+		const finalNumSeenArtificeArmorItems = armorSlotItem.isArtifice
+			? numSeenArtificeArmorItems + 1
+			: numSeenArtificeArmorItems;
 		const finalSumOfSeenStats = getNextSeenStats(
 			sumOfSeenStats,
 			armorSlotItem,
 			masterworkAssumption
 		);
 
-		const [shortCircuit, requiredStatMods, requiredStatModArmorStatMapping] =
-			shouldShortCircuit({
-				sumOfSeenStats: finalSumOfSeenStats,
-				desiredArmorStats: desiredArmorStats,
-				numRemainingArmorPieces: 0,
-				validCombatStyleModArmorSlotPlacements,
-				armorSlotMods,
-				destinyClassId,
-			});
+		const [
+			shortCircuit,
+			requiredStatMods,
+			requiredArtificeModArmorStatIdList,
+			requiredStatModArmorStatMapping,
+		] = shouldShortCircuit({
+			sumOfSeenStats: finalSumOfSeenStats,
+			desiredArmorStats,
+			numRemainingArmorPieces: 0,
+			validCombatStyleModArmorSlotPlacements,
+			armorSlotMods,
+			destinyClassId,
+			numSeenArtificeArmorItems: finalNumSeenArtificeArmorItems,
+		});
 		if (shortCircuit) {
 			console.log(`short circuiting base case.`);
 			return;
 		}
 
 		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
-		const totalArmorStatMapping = sumArmorStatMappings([
+		let totalArmorStatMapping = sumArmorStatMappings([
 			getArmorStatMappingFromStatList(finalSumOfSeenStats),
 			requiredStatModArmorStatMapping,
 		]);
+
+		totalArmorStatMapping = sumArmorStatMappings([
+			getArmorStatMappingFromArtificeModArmorStatIdList(
+				requiredArtificeModArmorStatIdList
+			),
+			totalArmorStatMapping,
+		]);
+
 		output.push({
 			armorIdList,
 			armorStatModIdList: requiredStatMods,
+			artificeModArmorStatIdList: requiredArtificeModArmorStatIdList,
 			metadata: {
-				requiredStatModIdList: requiredStatMods, // TODO: Why is this necessary when it's returned right above here?
+				// requiredStatModIdList: requiredStatMods, // TODO: Why is this necessary when it's returned right above here?
 				totalModCost: getTotalModCost(requiredStatMods),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
 				wastedStats: getWastedStats(totalArmorStatMapping),
 				totalArmorStatMapping,
+				// requiredArtificeModArmorStatIdList,
 			},
 		});
 	});
@@ -349,10 +643,14 @@ const _processArmorRecursiveCase = ({
 	validCombatStyleModArmorSlotPlacements,
 	armorSlotMods,
 	destinyClassId,
+	numSeenArtificeArmorItems,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
 	const output: ProcessArmorOutput[] = [];
 	armorSlotItems.forEach((armorSlotItem) => {
+		const nextNumSeenArtificeArmorItems = armorSlotItem.isArtifice
+			? numSeenArtificeArmorItems + 1
+			: numSeenArtificeArmorItems;
 		const nextSumOfSeenStats = getNextSeenStats(
 			sumOfSeenStats,
 			armorSlotItem,
@@ -366,6 +664,7 @@ const _processArmorRecursiveCase = ({
 			validCombatStyleModArmorSlotPlacements,
 			armorSlotMods,
 			destinyClassId,
+			numSeenArtificeArmorItems: nextNumSeenArtificeArmorItems,
 		});
 		if (shortCircuit) {
 			console.log(`short circuiting recursive case. ${rest.length} slots`);
@@ -382,6 +681,7 @@ const _processArmorRecursiveCase = ({
 				validCombatStyleModArmorSlotPlacements,
 				armorSlotMods,
 				destinyClassId,
+				numSeenArtificeArmorItems: nextNumSeenArtificeArmorItems,
 			})
 		);
 	});
@@ -394,12 +694,14 @@ export type ProcessedArmorItemMetadata = {
 	totalStatTiers: number;
 	wastedStats: number;
 	totalArmorStatMapping: ArmorStatMapping;
-	requiredStatModIdList: EModId[];
+	// requiredStatModIdList: EModId[];
+	// requiredArtificeModArmorStatIdList: EArmorStatId[];
 };
 
 type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
+	artificeModArmorStatIdList: EArmorStatId[];
 	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: ProcessedArmorItemMetadata;
 };
@@ -414,6 +716,7 @@ type ProcessArmorParams = {
 	validCombatStyleModArmorSlotPlacements: ValidCombatStyleModPlacements;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	destinyClassId: EDestinyClassId;
+	numSeenArtificeArmorItems: number;
 };
 
 const processArmor = ({
@@ -425,6 +728,7 @@ const processArmor = ({
 	validCombatStyleModArmorSlotPlacements,
 	armorSlotMods,
 	destinyClassId,
+	numSeenArtificeArmorItems,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	if (armorItems.length === 1) {
 		return _processArmorBaseCase({
@@ -436,6 +740,7 @@ const processArmor = ({
 			validCombatStyleModArmorSlotPlacements,
 			armorSlotMods,
 			destinyClassId,
+			numSeenArtificeArmorItems,
 		});
 	}
 
@@ -448,6 +753,7 @@ const processArmor = ({
 		validCombatStyleModArmorSlotPlacements,
 		armorSlotMods,
 		destinyClassId,
+		numSeenArtificeArmorItems,
 	});
 };
 
@@ -458,7 +764,9 @@ export const preProcessArmor = (
 	selectedExoticArmor: ISelectedExoticArmor,
 	dimLoadouts: Loadout[],
 	dimLoadoutsFilterId: EDimLoadoutsFilterId,
-	minimumGearTier: EGearTierId
+	minimumGearTier: EGearTierId,
+	minimumArtificeExtrapolationStatTier: number,
+	desiredArmorStats: ArmorStatMapping
 ): StrictArmorItems => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
@@ -468,6 +776,10 @@ export const preProcessArmor = (
 			})
 		);
 	}
+	const artificeExtrapolationStats = getArtificeArmorStatsToExtrapolate(
+		minimumArtificeExtrapolationStatTier,
+		desiredArmorStats
+	);
 	const strictArmorItems: StrictArmorItems = [[], [], [], []];
 	ArmorSlotIdList.forEach((armorSlot, i) => {
 		if (armorSlot === selectedExoticArmor.armorSlot) {
@@ -479,6 +791,15 @@ export const preProcessArmor = (
 		}
 		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic).filter(
 			(item) => {
+				// Filter out artifice armor with boosted stats that do not meet
+				// the extrapolation threshold
+				if (
+					item.isArtifice &&
+					item.artificeBoostedStat &&
+					!artificeExtrapolationStats[item.artificeBoostedStat]
+				) {
+					return false;
+				}
 				// TODO: Write a better comparator for gear tiers
 				if (
 					item.gearTierId === EGearTierId.Uncommon ||

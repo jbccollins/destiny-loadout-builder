@@ -27,6 +27,14 @@ export const StatModIdList = ModIdList.filter(
 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.Stat
 );
 
+export const MajorStatModIdList = StatModIdList.filter(
+	(id) => !getMod(id)?.name.includes('Minor')
+);
+
+export const MinorStatModIdList = StatModIdList.filter((id) =>
+	getMod(id)?.name.includes('Minor')
+);
+
 // TODO: Pre-generate this with a generation script.
 const generateArmorSlotIdToArmorSlotModIdListMapping = (): EnumDictionary<
 	EArmorSlotId,
@@ -82,13 +90,20 @@ export type ArmorSlotIdToModIdListMapping = {
 	[key in EArmorSlotId]: EModId[];
 };
 
+export const getDefaultArmorSlotIdToModIdListMapping =
+	(): ArmorSlotIdToModIdListMapping =>
+		ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
+			accumulator[currentValue] = [null, null, null];
+			return accumulator;
+		}, {}) as ArmorSlotIdToModIdListMapping;
+
 type ArmorSlotCapacity = {
 	armorSlotId: EArmorSlotId;
 	elementId: EElementId;
 	capacity: number;
 };
 
-const defaultValidPlacement: Record<EArmorSlotId, EModId> = {
+export const DefaultValidPlacement: Record<EArmorSlotId, EModId> = {
 	[EArmorSlotId.Head]: null,
 	[EArmorSlotId.Arm]: null,
 	[EArmorSlotId.Chest]: null,
@@ -138,7 +153,7 @@ export const getValidCombatStyleModArmorSlotPlacements = (
 	combatStyleModIdList: EModId[]
 ): ValidCombatStyleModPlacements => {
 	if (combatStyleModIdList.filter((modId) => modId !== null).length === 0) {
-		return [{ ...defaultValidPlacement }];
+		return [{ ...DefaultValidPlacement }];
 	}
 	const validPlacements: Record<EArmorSlotId, EModId>[] = [];
 	// const armorSlotElementMapping: Record<EArmorSlotId, EElementId> = {};
@@ -190,7 +205,7 @@ export const getValidCombatStyleModArmorSlotPlacements = (
 	console.log('>>>>>>>>+ valid placements:', validPlacements);
 	return validPlacements.length > 0
 		? validPlacements
-		: [{ ...defaultValidPlacement }];
+		: [{ ...DefaultValidPlacement }];
 };
 
 /*

@@ -51,16 +51,15 @@ const updateMaxStatsMetadata = (
 };
 
 const extrapolateArtificeArmor = (armorItem: ArmorItem): ArmorItem[] => {
-	// TODO: This splits an artifice piece of armor into 7 pieces. But this
+	// TODO: This splits an artifice piece of armor into 7 pieces. But the
 	// unboosted base piece is only useful from a calculation perspective when
 	// considering wasted stats. It may make sense to reduce the overhead here
 	// and just consider the six boosted pieces.
-	let result: ArmorItem[] = [armorItem];
+	const result: ArmorItem[] = [armorItem];
 	if (!armorItem.isArtifice) {
 		return result;
 	}
 
-	result = [];
 	ArmorStatIdList.forEach((armorStatId, i) => {
 		const newStats: StatList = [...armorItem.stats];
 		newStats[i] += 3;
@@ -177,6 +176,27 @@ export const extractArmor = (
 					armorMetadata[destinyClassName].nonExotic[nonExoticTier].items[
 						armorItem.armorSlot
 					].count++;
+					// Set the class item metadata. Class items are all interchangeable
+					if (armorItem.armorSlot === EArmorSlotId.ClassItem) {
+						if (armorItem.gearTierId === EGearTierId.Legendary) {
+							armorMetadata[destinyClassName].classItem.hasLegendaryClassItem =
+								true;
+						}
+						if (armorItem.isMasterworked) {
+							armorMetadata[
+								destinyClassName
+							].classItem.hasMasterworkedLegendaryClassItem = true;
+						}
+						if (armorItem.isArtifice) {
+							armorMetadata[destinyClassName].classItem.hasArtificeClassItem =
+								true;
+							if (armorItem.isMasterworked) {
+								armorMetadata[
+									destinyClassName
+								].classItem.hasMasterworkedArtificeClassItem = true;
+							}
+						}
+					}
 					if (armorItem.isArtifice) {
 						updateMaxStatsMetadata(
 							armorItem,
@@ -188,17 +208,20 @@ export const extractArmor = (
 						armorMetadata[destinyClassName].artifice.items[armorItem.armorSlot]
 							.count++;
 					}
-					const extrapolatedArmorItems = extrapolateArtificeArmor(armorItem);
-					extrapolatedArmorItems.forEach((extrapolatedArmorItem) => {
-						armor[destinyClassName][armorSlot].nonExotic[
-							extrapolatedArmorItem.id
-						] = extrapolatedArmorItem;
-					});
+					// const extrapolatedArmorItems = extrapolateArtificeArmor(armorItem);
+					// extrapolatedArmorItems.forEach((extrapolatedArmorItem) => {
+					// 	armor[destinyClassName][armorSlot].nonExotic[
+					// 		extrapolatedArmorItem.id
+					// 	] = extrapolatedArmorItem;
+					// });
+					armor[destinyClassName][armorSlot].nonExotic[armorItem.id] =
+						armorItem;
 				}
 			}
 		});
 	});
 
+	console.log('>>>>>>>>>>> [Armor] <<<<<<<<<<<', armor);
 	console.log('>>>>>>>>>>> [ArmorMetadata] <<<<<<<<<<<', armorMetadata);
 
 	Object.values(seenExotics)

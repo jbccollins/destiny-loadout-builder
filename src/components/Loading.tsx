@@ -66,6 +66,11 @@ import selectedRaidModsSlice, {
 	selectSelectedRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
+import selectedMinimumArtificeExtrapolationStatTierSlice, {
+	selectSelectedMinimumArtificeExtrapolationStatTier,
+	setSelectedMinimumArtificeExtrapolationStatTier,
+} from '@dlb/redux/features/selectedMinimumArtificeExtrapolationStatTier/selectedMinimumArtificeExtrapolationStatTierSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -118,6 +123,9 @@ function Loading() {
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
+	const selectedMinimumArtificeExtrapolationStatTier = useAppSelector(
+		selectSelectedMinimumArtificeExtrapolationStatTier
+	);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
@@ -173,9 +181,11 @@ function Loading() {
 				const stores = await loadStoresData(mostRecentPlatform);
 				console.log('>>>>>>>>>>> [LOAD] stores <<<<<<<<<<<', stores);
 				setHasStores(true);
-				const [armor, availableExoticArmor] = extractArmor(stores);
+				const [armor, availableExoticArmor, armorMetadata] =
+					extractArmor(stores);
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
+				dispatch(setArmorMetadata({ ...armorMetadata }));
 				console.log('>>>>>>>>>>> [LOAD] armor <<<<<<<<<<<', armor);
 				console.log(
 					'>>>>>>>>>>> [LOAD] availableExoticArmor <<<<<<<<<<<',
@@ -251,10 +261,16 @@ function Loading() {
 				// 		dimLoadouts,
 				// 		dimLoadoutsFilter,
 				// 		selectedMinimumGearTier,
+				// 		selectedMinimumArtificeExtrapolationStatTier,
 				// 		selectedRaidMods
 				// 	]
 				// we can "dirty" the store so it knows it needs to recalculate the
 				// processedArmorItems
+				dispatch(
+					setSelectedMinimumArtificeExtrapolationStatTier(
+						selectedMinimumArtificeExtrapolationStatTier
+					)
+				);
 				dispatch(setSelectedRaidMods(selectedRaidMods));
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));

@@ -28,6 +28,9 @@ import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidMod
 import resultsPaginationReducer, {
 	setResultsPagination,
 } from './features/resultsPagination/resultsPaginationSlice';
+import armorMetadataReducer from './features/armorMetadata/armorMetadataSlice';
+import selectedMinimumArtificeExtrapolationStatTierReducer from './features/selectedMinimumArtificeExtrapolationStatTier/selectedMinimumArtificeExtrapolationStatTierSlice';
+
 import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
 import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import disabledCombatStyleModsReducer, {
@@ -75,37 +78,40 @@ import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 export function makeStore() {
 	return configureStore({
 		reducer: {
+			allDataLoaded: allDataLoadedReducer,
+			armor: armorReducer,
+			armorMetadata: armorMetadataReducer,
+			armorSlotModViolations: armorSlotModViolationsReducer,
+			availableExoticArmor: availableExoticArmorReducer,
+			characters: charactersReducer,
 			counter: counterReducer,
 			desiredArmorStats: desiredArmorStatsReducer,
-			armor: armorReducer,
-			characters: charactersReducer,
-			selectedDestinyClass: selectedDestinyClassReducer,
-			availableExoticArmor: availableExoticArmorReducer,
-			selectedExoticArmor: selectedExoticArmorReducer,
-			allDataLoaded: allDataLoadedReducer,
-			processedArmor: processedArmorReducer,
-			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
-			selectedFragments: selectedFragmentsReducer,
-			selectedAspects: selectedAspectsReducer,
-			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
-			selectedCombatStyleMods: selectedCombatStyleModsReducer,
-			selectedMelee: selectedMeleeReducer,
-			selectedGrenade: selectedGrenadeReducer,
-			selectedClassAbility: selectedClassAbilityReducer,
-			selectedDestinySubclass: selectedDestinySubclassReducer,
-			selectedSuperAbility: selectedSuperAbilityReducer,
-			selectedJump: selectedJumpReducer,
-			selectedArmorSlotMods: selectedArmorSlotModsReducer,
-			selectedMinimumGearTier: selectedMinimumGearTierReducer,
-			selectedRaidMods: selectedRaidModsReducer,
-			maxPossibleStats: maxPossibleStatsReducer,
-			disabledCombatStyleMods: disabledCombatStyleModsReducer,
-			disabledRaidMods: disabledRaidModsReducer,
-			disabledArmorSlotMods: disabledArmorSlotModsReducer,
-			armorSlotModViolations: armorSlotModViolationsReducer,
 			dimLoadouts: dimLoadoutsReducer,
 			dimLoadoutsFilter: dimLoadoutsFilterReducer,
+			disabledArmorSlotMods: disabledArmorSlotModsReducer,
+			disabledCombatStyleMods: disabledCombatStyleModsReducer,
+			disabledRaidMods: disabledRaidModsReducer,
+			maxPossibleStats: maxPossibleStatsReducer,
+			processedArmor: processedArmorReducer,
 			resultsPagination: resultsPaginationReducer,
+			selectedArmorSlotMods: selectedArmorSlotModsReducer,
+			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
+			selectedAspects: selectedAspectsReducer,
+			selectedClassAbility: selectedClassAbilityReducer,
+			selectedCombatStyleMods: selectedCombatStyleModsReducer,
+			selectedDestinyClass: selectedDestinyClassReducer,
+			selectedDestinySubclass: selectedDestinySubclassReducer,
+			selectedExoticArmor: selectedExoticArmorReducer,
+			selectedFragments: selectedFragmentsReducer,
+			selectedGrenade: selectedGrenadeReducer,
+			selectedJump: selectedJumpReducer,
+			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
+			selectedMelee: selectedMeleeReducer,
+			selectedMinimumArtificeExtrapolationStatTier:
+				selectedMinimumArtificeExtrapolationStatTierReducer,
+			selectedMinimumGearTier: selectedMinimumGearTierReducer,
+			selectedRaidMods: selectedRaidModsReducer,
+			selectedSuperAbility: selectedSuperAbilityReducer,
 		},
 	});
 }
@@ -125,6 +131,7 @@ let selectedArmorSlotModsUuid = NIL;
 let selectedMinimumGearTierUuid = NIL;
 let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
+let selectedMinimumArtificeExtrapolationStatTierUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
@@ -142,6 +149,9 @@ function handleChange() {
 		selectedMinimumGearTier: { uuid: nextSelectedMinimumGearTierUuid },
 		dimLoadouts: { uuid: nextDimLoadoutsUuid },
 		dimLoadoutsFilter: { uuid: nextDimLoadoutsFilterUuid },
+		selectedMinimumArtificeExtrapolationStatTier: {
+			uuid: nextSelectedMinimumArtificeExtrapolationStatTierUuid,
+		},
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -158,6 +168,8 @@ function handleChange() {
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
 		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
+		selectedMinimumArtificeExtrapolationStatTierUuid !==
+			nextSelectedMinimumArtificeExtrapolationStatTierUuid ||
 		dimLoadoutsUuid !== nextDimLoadoutsUuid ||
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid;
 	const hasNonDefaultUuids =
@@ -172,7 +184,8 @@ function handleChange() {
 		nextSelectedArmorSlotModsUuid !== NIL &&
 		nextSelectedMinimumGearTierUuid !== NIL &&
 		nextDimLoadoutsUuid !== NIL &&
-		nextDimLoadoutsFilterUuid !== NIL;
+		nextDimLoadoutsFilterUuid !== NIL &&
+		nextSelectedMinimumArtificeExtrapolationStatTierUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> [STORE] store is dirty <<<<<<<<<<<');
@@ -188,10 +201,13 @@ function handleChange() {
 		selectedMinimumGearTierUuid = nextSelectedMinimumGearTierUuid;
 		dimLoadoutsUuid = nextDimLoadoutsUuid;
 		dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
+		selectedMinimumArtificeExtrapolationStatTierUuid =
+			nextSelectedMinimumArtificeExtrapolationStatTierUuid;
 
 		// TODO: Move this out of the store file
 		const {
 			armor: { value: armor },
+			armorMetadata: { value: armorMetadata },
 			selectedExoticArmor: { value: selectedExoticArmor },
 			selectedDestinyClass: { value: selectedDestinyClass },
 			desiredArmorStats: { value: desiredArmorStats },
@@ -204,6 +220,9 @@ function handleChange() {
 			selectedMinimumGearTier: { value: selectedMinimumGearTier },
 			dimLoadouts: { value: dimLoadouts },
 			dimLoadoutsFilter: { value: dimLoadoutsFilter },
+			selectedMinimumArtificeExtrapolationStatTier: {
+				value: selectedMinimumArtificeExtrapolationStatTier,
+			},
 		} = store.getState();
 
 		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -281,7 +300,9 @@ function handleChange() {
 					DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
 			),
 			dimLoadoutsFilter,
-			selectedMinimumGearTier
+			selectedMinimumGearTier,
+			selectedMinimumArtificeExtrapolationStatTier,
+			desiredArmorStats
 		);
 		console.log(
 			'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',
@@ -296,6 +317,7 @@ function handleChange() {
 			validCombatStyleModArmorSlotPlacements,
 			armorSlotMods: selectedArmorSlotMods,
 			destinyClassId: selectedDestinyClass,
+			armorMetadataItem: armorMetadata[selectedDestinyClass],
 		});
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };

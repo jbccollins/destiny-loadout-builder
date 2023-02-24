@@ -3,23 +3,18 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '@dlb/redux/store';
 
 import { v4 as uuid, NIL } from 'uuid';
-import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
-import { ArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import {
+	ArmorSlotIdToModIdListMapping,
+	getDefaultArmorSlotIdToModIdListMapping,
+} from '@dlb/types/Mod';
 
 export interface SelectedArmorSlotModsState {
 	value: ArmorSlotIdToModIdListMapping;
 	uuid: string;
 }
 
-const generateIntitalState = (): ArmorSlotIdToModIdListMapping => {
-	return ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
-		accumulator[currentValue] = [null, null, null];
-		return accumulator;
-	}, {}) as ArmorSlotIdToModIdListMapping;
-};
-
 const initialState: SelectedArmorSlotModsState = {
-	value: generateIntitalState(),
+	value: getDefaultArmorSlotIdToModIdListMapping(),
 	uuid: NIL,
 };
 

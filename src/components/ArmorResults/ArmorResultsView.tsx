@@ -17,7 +17,7 @@ import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArm
 import { useCallback, useMemo, useState } from 'react';
 import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
-import { ArmorItem } from '@dlb/types/Armor';
+import { ArmorItem, StatList } from '@dlb/types/Armor';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import { EModId } from '@dlb/generated/mod/EModId';
 import ArmorResultsList from './ArmorResultsList';
@@ -171,6 +171,7 @@ export type ResultsTableLoadout = {
 	sortableFields: SortableFields;
 	armorItems: ArmorItem[];
 	requiredStatModIdList: EModId[];
+	requiredArtificeStatModsIdList: EArmorStatId[];
 };
 
 export type Order = 'asc' | 'desc';
@@ -366,46 +367,62 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		);
 		const res: ResultsTableLoadout[] = [];
 
-		processedArmor.forEach(({ armorIdList, metadata }) => {
-			const resultLoadout: ResultsTableLoadout = {
-				id: '',
-				armorItems: [],
-				requiredStatModIdList: [],
-				sortableFields: {
-					[EArmorStatId.Mobility]: 0,
-					[EArmorStatId.Resilience]: 0,
-					[EArmorStatId.Recovery]: 0,
-					[EArmorStatId.Discipline]: 0,
-					[EArmorStatId.Intellect]: 0,
-					[EArmorStatId.Strength]: 0,
-					totalModCost: 0,
-					totalStatTiers: 0,
-					wastedStats: 0,
-				},
-			};
-			ArmorSlotIdList.forEach((armorSlot, i) => {
-				const armorItem = getArmorItem(armorIdList[i], armorSlot);
-				resultLoadout.id += `[${armorItem.id}]`;
-				resultLoadout.armorItems.push(armorItem);
-				resultLoadout.requiredStatModIdList = metadata.requiredStatModIdList;
-				resultLoadout.sortableFields.totalModCost = metadata.totalModCost;
-				resultLoadout.sortableFields.totalStatTiers = metadata.totalStatTiers;
-				resultLoadout.sortableFields.wastedStats = metadata.wastedStats;
-				resultLoadout.sortableFields.Mobility =
-					metadata.totalArmorStatMapping.Mobility;
-				resultLoadout.sortableFields.Resilience =
-					metadata.totalArmorStatMapping.Resilience;
-				resultLoadout.sortableFields.Recovery =
-					metadata.totalArmorStatMapping.Recovery;
-				resultLoadout.sortableFields.Discipline =
-					metadata.totalArmorStatMapping.Discipline;
-				resultLoadout.sortableFields.Intellect =
-					metadata.totalArmorStatMapping.Intellect;
-				resultLoadout.sortableFields.Strength =
-					metadata.totalArmorStatMapping.Strength;
-			});
-			res.push(resultLoadout);
-		});
+		processedArmor.forEach(
+			({
+				armorIdList,
+				armorStatModIdList,
+				artificeModArmorStatIdList,
+				metadata,
+			}) => {
+				const resultLoadout: ResultsTableLoadout = {
+					id: '',
+					armorItems: [],
+					requiredStatModIdList: armorStatModIdList,
+					requiredArtificeStatModsIdList: artificeModArmorStatIdList,
+					sortableFields: {
+						[EArmorStatId.Mobility]: 0,
+						[EArmorStatId.Resilience]: 0,
+						[EArmorStatId.Recovery]: 0,
+						[EArmorStatId.Discipline]: 0,
+						[EArmorStatId.Intellect]: 0,
+						[EArmorStatId.Strength]: 0,
+						totalModCost: 0,
+						totalStatTiers: 0,
+						wastedStats: 0,
+					},
+				};
+				ArmorSlotIdList.forEach((armorSlot, i) => {
+					const armorItem = getArmorItem(armorIdList[i], armorSlot);
+					resultLoadout.id += `[${armorItem.id}]`;
+					resultLoadout.armorItems.push(armorItem);
+					resultLoadout.sortableFields.totalModCost = metadata.totalModCost;
+					resultLoadout.sortableFields.totalStatTiers = metadata.totalStatTiers;
+					resultLoadout.sortableFields.wastedStats = metadata.wastedStats;
+					resultLoadout.sortableFields.Mobility =
+						metadata.totalArmorStatMapping.Mobility;
+					resultLoadout.sortableFields.Resilience =
+						metadata.totalArmorStatMapping.Resilience;
+					resultLoadout.sortableFields.Recovery =
+						metadata.totalArmorStatMapping.Recovery;
+					resultLoadout.sortableFields.Discipline =
+						metadata.totalArmorStatMapping.Discipline;
+					resultLoadout.sortableFields.Intellect =
+						metadata.totalArmorStatMapping.Intellect;
+					resultLoadout.sortableFields.Strength =
+						metadata.totalArmorStatMapping.Strength;
+				});
+				// if (metadata.artificeClassItemArmorStatId) {
+				// 	resultLoadout.id += `[ArtificeClassItem-${metadata.artificeClassItemArmorStatId}]`;
+				// 	resultLoadout.requiredArtificeStatModsIdList.push(
+				// 		metadata.artificeClassItemArmorStatId
+				// 	);
+				// }
+				artificeModArmorStatIdList.forEach((armorStatId) => {
+					resultLoadout.id += `[artifice-${armorStatId}]`;
+				});
+				res.push(resultLoadout);
+			}
+		);
 
 		return res;
 	}, [processedArmor, getArmorItem]);

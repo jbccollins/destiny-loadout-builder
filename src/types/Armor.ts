@@ -147,6 +147,12 @@ export type ArmorMetadataItem = {
 		count: number;
 		items: Partial<Record<EModCategoryId, ArmorSlotMetadata>>;
 	};
+	classItem: {
+		hasLegendaryClassItem: boolean;
+		hasMasterworkedLegendaryClassItem: boolean;
+		hasArtificeClassItem: boolean;
+		hasMasterworkedArtificeClassItem: boolean;
+	};
 };
 
 const defaultArmorMaxStatsMetadata: ArmorMaxStatsMetadata = {
@@ -222,6 +228,12 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 			[EModCategoryId.VowOfTheDisciple]: getDefaultArmorSlotMetadata(),
 			[EModCategoryId.KingsFall]: getDefaultArmorSlotMetadata(),
 		},
+	},
+	classItem: {
+		hasLegendaryClassItem: false,
+		hasMasterworkedLegendaryClassItem: false,
+		hasArtificeClassItem: false,
+		hasMasterworkedArtificeClassItem: false,
 	},
 };
 

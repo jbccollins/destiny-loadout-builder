@@ -31,6 +31,7 @@ import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
 import RaidModSelector from '@dlb/components/RaidModsSelector';
+import MinimumArtificeExtrapolationStatTierSelector from '@dlb/components/MinimumArtificeExtrapolationStatTier';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -95,11 +96,6 @@ const LeftSectionComponent = () => (
 							<SelectionControlGroup title="Desired Stat Tiers">
 								<StatSelection />
 							</SelectionControlGroup>
-							<SelectionControlGroup title="Mods">
-								<ArmorSlotModSelector />
-								{/* <RaidModSelector />
-								<CombatStyleModSelector /> */}
-							</SelectionControlGroup>
 							<SelectionControlGroup title="Subclass Options">
 								<DestinySubclassSelector />
 								<SuperAbilitySelector />
@@ -109,6 +105,11 @@ const LeftSectionComponent = () => (
 								<MeleeSelector />
 								<ClassAbilitySelector />
 								<JumpSelector />
+							</SelectionControlGroup>
+							<SelectionControlGroup title="Mods">
+								<ArmorSlotModSelector />
+								{/* <RaidModSelector />
+								<CombatStyleModSelector /> */}
 							</SelectionControlGroup>
 						</>
 					),
@@ -120,6 +121,7 @@ const LeftSectionComponent = () => (
 						<>
 							<MasterworkAssumptionSelector />
 							<MinimumGearTierSelector />
+							<MinimumArtificeExtrapolationStatTierSelector />
 							<DimLoadoutsFilterSelector />
 						</>
 					),

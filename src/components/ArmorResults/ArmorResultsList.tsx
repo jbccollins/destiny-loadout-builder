@@ -195,6 +195,32 @@ function ResultsItem({
 		}
 	});
 
+	// 	const artificeArmorStatModArmorStatMappings: Partial<
+	// 	Record<EArmorStatId, { armorStatMapping: ArmorStatMapping; count: number }>
+	// > = {};
+	const artificeModCounts: Partial<Record<EArmorStatId, number>> = {};
+	item.requiredArtificeStatModsIdList.forEach((id) => {
+		if (!artificeModCounts[id]) {
+			artificeModCounts[id] = 1;
+		} else {
+			artificeModCounts[id] += 1;
+		}
+	});
+	// Object.keys(artificeModCounts).forEach((armorStatId: EArmorStatId) => {
+	// 	const artificeStatModIds: EArmorStatId[] = [];
+	// 	const count = artificeModCounts[armorStatId];
+	// 	for (let i = 0; i < count; i++) {
+	// 		artificeStatModIds.push(armorStatId);
+	// 		artificeArmorStatModArmorStatMappings[armorStatId] = {
+	// 			count,
+	// 			armorStatMapping: getArmorStatMappingFromMods(
+	// 				artificeStatModIds,
+	// 				destinyClassId
+	// 			),
+	// 		};
+	// 	}
+	// });
+
 	const getExtraMasterworkedStatsBreakdown = () => {
 		const extraMasterworkedStats = calculateExtraMasterworkedStats(
 			item.armorItems,
@@ -243,7 +269,10 @@ function ResultsItem({
 						height={'40px'}
 						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 					/>
-					<IconText>Any Masterworked Class Item</IconText>
+					{/* TODO: Pull this out into a function */}
+					<IconText>{`Any Masterworked${
+						item.requiredArtificeStatModsIdList.length === 4 ? ' Artifice' : ''
+					} Class Item`}</IconText>
 				</IconTextContainer>
 			</ResultsSection>
 			<ResultsSection>
@@ -272,6 +301,26 @@ function ResultsItem({
 								<IconText>
 									{mod.name}
 									{modCounts[modId] > 1 ? ` (x${modCounts[modId]})` : ''}
+								</IconText>
+							</IconTextContainer>
+						);
+					})}
+				</ResultsSection>
+			)}
+			{item.requiredArtificeStatModsIdList.length > 0 && (
+				<ResultsSection>
+					<Title>Required Artifice Mods</Title>
+					{Object.keys(artificeModCounts).map((armorStatId) => {
+						const armorStat = getArmorStat(armorStatId as EArmorStatId);
+						return (
+							// Extra margin to account for masterworkedbungieImage border
+							<IconTextContainer key={armorStatId} sx={{ margin: '1px' }}>
+								<BungieImage width={40} height={40} src={armorStat.icon} />
+								<IconText>
+									{armorStat.name}
+									{artificeModCounts[armorStatId] > 1
+										? ` (x${artificeModCounts[armorStatId]})`
+										: ''}
 								</IconText>
 							</IconTextContainer>
 						);
@@ -382,7 +431,11 @@ function ResultsItem({
 									</StatsBreakdownItem>
 								))}
 								<StatsBreakdownItem>
-									<Description>Any Masterworked Class Item</Description>
+									<Description>{`Any Masterworked${
+										item.requiredArtificeStatModsIdList.length === 4
+											? ' Artifice'
+											: ''
+									} Class Item`}</Description>
 								</StatsBreakdownItem>
 							</StatsBreakdown>
 						)}
@@ -469,6 +522,40 @@ function ResultsItem({
 								</StatsBreakdown>
 							);
 						})}
+
+						{Object.keys(artificeModCounts).map((artificeArmorStatId) => {
+							const { name, icon } = getArmorStat(
+								artificeArmorStatId as EArmorStatId
+							);
+							const artificeModCount = artificeModCounts[artificeArmorStatId];
+							return (
+								<StatsBreakdown
+									key={`artifice-${artificeArmorStatId}`}
+									className="stats-breakdown"
+								>
+									<StatsBreakdownItem>
+										<BungieImage width={20} height={20} src={icon} />
+									</StatsBreakdownItem>
+									{ArmorStatIdList.map((armorStatId) => (
+										<StatsBreakdownItem
+											key={armorStatId}
+											className="stats-breakdown"
+										>
+											{armorStatId === artificeArmorStatId
+												? artificeModCount * 3
+												: 0}
+										</StatsBreakdownItem>
+									))}
+									<StatsBreakdownItem>
+										<Description>
+											Artifice {name} Mod
+											{artificeModCount > 1 ? ` (x${artificeModCount})` : ''}
+										</Description>
+									</StatsBreakdownItem>
+								</StatsBreakdown>
+							);
+						})}
+
 						{/* {Object.keys(combatStyleModArmorStatMapping).map((modId) => {
 						return (
 							<StatsBreakdown key={modId} className="stats-breakdown">

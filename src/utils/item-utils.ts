@@ -10,3 +10,5 @@ export function bungieNetPath(src: string): string {
 	}
 	return `https://www.bungie.net${src}`;
 }
+
+export const ARTIFICE_BONUS_VALUE = 3;

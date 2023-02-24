@@ -25,6 +25,7 @@ export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 
 export interface IArmorStat extends IIdentifiableName, IIcon, IHash {
 	id: EArmorStatId;
+	index: number;
 }
 
 const ArmorStatIdToArmorStatMapping: EnumDictionary<EArmorStatId, IArmorStat> =
@@ -34,36 +35,42 @@ const ArmorStatIdToArmorStatMapping: EnumDictionary<EArmorStatId, IArmorStat> =
 			name: 'Mobility',
 			icon: 'https://www.bungie.net/common/destiny2_content/icons/e26e0e93a9daf4fdd21bf64eb9246340.png',
 			hash: 2996146975,
+			index: 0,
 		},
 		[EArmorStatId.Resilience]: {
 			id: EArmorStatId.Resilience,
 			name: 'Resilience',
 			icon: 'https://www.bungie.net/common/destiny2_content/icons/202ecc1c6febeb6b97dafc856e863140.png',
 			hash: 392767087,
+			index: 1,
 		},
 		[EArmorStatId.Recovery]: {
 			id: EArmorStatId.Recovery,
 			name: 'Recovery',
 			icon: 'https://www.bungie.net/common/destiny2_content/icons/128eee4ee7fc127851ab32eac6ca91cf.png',
 			hash: 1943323491,
+			index: 2,
 		},
 		[EArmorStatId.Discipline]: {
 			id: EArmorStatId.Discipline,
 			name: 'Discipline',
 			icon: 'https://www.bungie.net/common/destiny2_content/icons/ca62128071dc254fe75891211b98b237.png',
 			hash: 1735777505,
+			index: 3,
 		},
 		[EArmorStatId.Intellect]: {
 			id: EArmorStatId.Intellect,
 			name: 'Intellect',
 			icon: 'https://www.bungie.net/common/destiny2_content/icons/59732534ce7060dba681d1ba84c055a6.png',
 			hash: 144602215,
+			index: 4,
 		},
 		[EArmorStatId.Strength]: {
 			id: EArmorStatId.Strength,
 			name: 'Strength',
 			icon: 'https://www.bungie.net/common/destiny2_content/icons/c7eefc8abbaa586eeab79e962a79d6ad.png',
 			hash: 4244567218,
+			index: 5,
 		},
 	};
 
@@ -213,4 +220,27 @@ export const getArmorStatIdFromBungieHash = (hash: number): EArmorStatId => {
 		(id) => getArmorStat(id).hash === hash
 	);
 	return armorStatId ?? null;
+};
+
+export const getArtificeArmorStatsToExtrapolate = (
+	minimumArtificeExtrapolationStatTier: number,
+	desiredArmorStats: ArmorStatMapping
+): Record<EArmorStatId, boolean> => {
+	const artificeExtrapolationStats: Record<EArmorStatId, boolean> = {
+		[EArmorStatId.Mobility]: false,
+		[EArmorStatId.Resilience]: false,
+		[EArmorStatId.Recovery]: false,
+		[EArmorStatId.Discipline]: false,
+		[EArmorStatId.Intellect]: false,
+		[EArmorStatId.Strength]: false,
+	};
+	ArmorStatIdList.forEach((armorStatId) => {
+		if (
+			desiredArmorStats[armorStatId] / 10 >=
+			minimumArtificeExtrapolationStatTier
+		) {
+			artificeExtrapolationStats[armorStatId] = true;
+		}
+	});
+	return artificeExtrapolationStats;
 };

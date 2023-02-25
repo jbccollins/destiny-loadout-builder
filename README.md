@@ -2,15 +2,36 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-#### Create a your own app on Bungie.net
-TODO: Fill in instructions on how to do this and what to put
-in the .env.local file
+#### Create a your own Bungie third-party developer app
+You will need to create your own app at https://www.bungie.net/en/Application.
+![Create Bungie App Screenshot](readme-images/create-new-app.png)
 
-#### Get a DIM API key
-TODO: Fill in instructions on how to do this. This probably is optional for most people
+We will add the credentials from this app into your local environment file in the next step
+
+Configure the fields in your app to be just like this screenshot.
+> Make sure you have set the `OAuth Client Type` dropdown, `Scope` checkboxs and `Origin Header` text field to match exactly with what is in the screenshot.
+
+The `Website` text field can just point to your fork of the repo. It doesn't really matter.
+![Bungie App Setup Screenshot](readme-images/redacted-bungie-app-setup.png)
+
+#### Create your local environment file
+Create a file named `.env.local` in the root directory and add these keys. Check the screenshot above to see where these keys come from.
+```bash
+NEXT_PUBLIC_BNET_API_KEY=whatever
+NEXT_PUBLIC_BNET_OAUTH_CLIENT_ID=whatever
+BNET_OAUTH_CLIENT_SECRET=whatever
+```
+
+#### Get a DIM API Key (Optional)
+If you want to locally develop any feature that touches the DIM loadouts integration you will need a DIM API Key. You can get a DIM API Key that will work for `localhost` by following [these instructions](https://github.com/DestinyItemManager/dim-api#get-an-api-key).
+
+Add that key to `.env.local` like so:
+```bash
+NEXT_PUBLIC_DIM_API_KEY=whatever
+```
 
 #### Installation
-Install the required packages using
+Install the required npm packages. From the root directory run:
 
 ```bash
 npm i
@@ -20,25 +41,24 @@ npm i
 
 The Bungie API requires that your app run using https due to some OAuth stuff. To make https work locally we hack up a local ssl certificate.
 
-The local dev server will run on [http://localhost:40001](http://localhost:4001)
+##### Mac Instructions
+Run these commands from the root directory ([source](https://github.com/vercel/next.js/discussions/10935#discussioncomment-2855809)):
 
-Before doing anything else run these commands ([source](https://github.com/vercel/next.js/discussions/10935#discussioncomment-2855809)):
-     
-> brew install mkcert
-> mkcert -install
-> mkcert localhost
-> npm install -g local-ssl-proxy // This actually is done with npx in the script so it's not necessary atm
-TODO: Can local-ssl-proxy be installed as a dev dependency instead??
-
+```bash     
+brew install mkcert
+mkcert -install
+mkcert localhost
+```
+##### Windows Instructions (TODO)
 
 #### Run the app!
-Run the development server:
+From the root directory run
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:40001](http://localhost:4001) with your browser to see the result.
+Open [http://localhost:4001](http://localhost:4001) in your browser to see the result.
 
 You can start editing any file and see your changes automatically propagate to the browser.
 
@@ -47,11 +67,8 @@ You can start editing any file and see your changes automatically propagate to t
 Just push to master. It will deploy automatically [here](https://vercel.com/jbccollins/destiny-loadout-builder).
 
 ### Attribution
-#### Many thanks to the folks behind these projects:
-- DIM
-- D2ArmorPicker
-- [Destiny Sets](https://discord.com/channels/296008008956248066/296008136785920001/899068290138275921)
-- Destiny Data Explorer
-
-### TODOS
-- Turn strict mode back on in tsconfig.json
+##### Many thanks to the folks behind these projects:
+- [Destiny Item Manager](https://destinyitemmanager.com/)
+- [D2ArmorPicker](https://d2armorpicker.com/#/)
+- [Destiny Sets](https://data.destinysets.com/)
+- [Destiny Api Discussion Discord](https://discord.com/channels/296008008956248066)

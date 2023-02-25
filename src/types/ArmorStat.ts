@@ -221,26 +221,3 @@ export const getArmorStatIdFromBungieHash = (hash: number): EArmorStatId => {
 	);
 	return armorStatId ?? null;
 };
-
-export const getArtificeArmorStatsToExtrapolate = (
-	minimumArtificeExtrapolationStatTier: number,
-	desiredArmorStats: ArmorStatMapping
-): Record<EArmorStatId, boolean> => {
-	const artificeExtrapolationStats: Record<EArmorStatId, boolean> = {
-		[EArmorStatId.Mobility]: false,
-		[EArmorStatId.Resilience]: false,
-		[EArmorStatId.Recovery]: false,
-		[EArmorStatId.Discipline]: false,
-		[EArmorStatId.Intellect]: false,
-		[EArmorStatId.Strength]: false,
-	};
-	ArmorStatIdList.forEach((armorStatId) => {
-		if (
-			desiredArmorStats[armorStatId] / 10 >=
-			minimumArtificeExtrapolationStatTier
-		) {
-			artificeExtrapolationStats[armorStatId] = true;
-		}
-	});
-	return artificeExtrapolationStats;
-};

@@ -51,6 +51,7 @@ import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJum
 import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import { MISSING_ICON } from '@dlb/types/globals';
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];
@@ -61,7 +62,9 @@ type ResultsItemProps = {
 	destinyClassId: EDestinyClassId;
 	masterworkAssumption: EMasterworkAssumption;
 	fragmentArmorStatMappings: Partial<Record<EFragmentId, ArmorStatMapping>>;
-	armorSlotModArmorStatMappping: Partial<Record<EModId, ArmorStatMapping>>;
+	armorSlotModArmorStatMappings: Partial<
+		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
+	>;
 	dimLink: string;
 };
 
@@ -120,14 +123,17 @@ const StatsBreakdown = styled(Box)(({ theme }) => ({
 }));
 
 const StatsBreakdownItem = styled(Box, {
-	shouldForwardProp: (prop) => prop !== 'first',
-})<{ first?: boolean }>(({ theme, color, first }) => ({
-	width: first ? '75px' : '40px',
-	height: '22px',
-	paddingLeft: theme.spacing(1),
-	display: 'flex',
-	lineHeight: '22px',
-}));
+	shouldForwardProp: (prop) => !['first', 'isZero'].includes(prop as string),
+})<{ first?: boolean; isZero?: boolean }>(
+	({ theme, color, first, isZero }) => ({
+		width: first ? '75px' : '40px',
+		height: '22px',
+		paddingLeft: theme.spacing(1),
+		display: 'flex',
+		lineHeight: '22px',
+		opacity: isZero ? '0.5' : 1,
+	})
+);
 
 const LoadoutDetails = styled(Box)(({ theme }) => ({
 	display: 'flex',
@@ -170,7 +176,7 @@ function ResultsItem({
 	destinyClassId,
 	masterworkAssumption,
 	fragmentArmorStatMappings,
-	armorSlotModArmorStatMappping,
+	armorSlotModArmorStatMappings,
 	dimLink,
 }: ResultsItemProps) {
 	const [open, setOpen] = React.useState(false);
@@ -222,7 +228,14 @@ function ResultsItem({
 		return (
 			extraMasterworkedStats > 0 && (
 				<StatsBreakdown className="stats-breakdown">
-					<StatsBreakdownItem></StatsBreakdownItem>
+					<StatsBreakdownItem>
+						<MasterworkedBungieImage
+							isMasterworked={true}
+							width={'20px'}
+							height={'20px'}
+							src={MISSING_ICON}
+						/>
+					</StatsBreakdownItem>
 					{ArmorStatIdList.map((armorStatId) => (
 						<StatsBreakdownItem key={armorStatId} className="stats-breakdown">
 							{extraMasterworkedStats}
@@ -427,6 +440,10 @@ function ResultsItem({
 										</StatsBreakdownItem>
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
+												isZero={
+													fragmentArmorStatMappings[fragmentId][armorStatId] ===
+													0
+												}
 												key={armorStatId}
 												className="stats-breakdown"
 											>
@@ -456,6 +473,10 @@ function ResultsItem({
 										</StatsBreakdownItem>
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
+												isZero={
+													armorStatModArmorStatMappings[armorStatModId]
+														.armorStatMapping[armorStatId] === 0
+												}
 												key={armorStatId}
 												className="stats-breakdown"
 											>
@@ -477,7 +498,7 @@ function ResultsItem({
 								);
 							}
 						)}
-						{Object.keys(armorSlotModArmorStatMappping).map((modId) => {
+						{Object.keys(armorSlotModArmorStatMappings).map((modId) => {
 							const { name, icon } = getMod(modId as EModId);
 							return (
 								<StatsBreakdown key={modId} className="stats-breakdown">
@@ -486,15 +507,29 @@ function ResultsItem({
 									</StatsBreakdownItem>
 									{ArmorStatIdList.map((armorStatId) => (
 										<StatsBreakdownItem
+											isZero={
+												armorSlotModArmorStatMappings[modId].armorStatMapping[
+													armorStatId
+												] === 0
+											}
 											key={armorStatId}
 											className="stats-breakdown"
 										>
-											{armorSlotModArmorStatMappping[modId][armorStatId]}
+											{
+												armorSlotModArmorStatMappings[modId].armorStatMapping[
+													armorStatId
+												]
+											}
 										</StatsBreakdownItem>
 									))}
 									<StatsBreakdownItem>
 										{/* TODO: This doesnt have the counts! */}
-										<Description>{name}</Description>
+										<Description>
+											{name}{' '}
+											{armorSlotModArmorStatMappings[modId].count > 1
+												? ` (x${armorSlotModArmorStatMappings[modId].count})`
+												: ''}
+										</Description>
 									</StatsBreakdownItem>
 								</StatsBreakdown>
 							);
@@ -516,6 +551,7 @@ function ResultsItem({
 										<StatsBreakdownItem
 											key={armorStatId}
 											className="stats-breakdown"
+											isZero={armorStatId !== artificeArmorStatId}
 										>
 											{armorStatId === artificeArmorStatId
 												? artificeModCount * 3
@@ -599,23 +635,29 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 		}
 	});
 
-	const armorSlotModArmorStatMappping: Partial<
-		Record<EModId, ArmorStatMapping>
+	const armorSlotModArmorStatMapppings: Partial<
+		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	> = {};
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 		selectedArmorSlotMods[armorSlotId].forEach((id: EModId) => {
 			const { bonuses } = getMod(id) ?? { bonuses: [] };
 			if (bonuses && bonuses.length > 0) {
-				if (armorSlotModArmorStatMappping[id]) {
-					armorSlotModArmorStatMappping[id] = sumArmorStatMappings([
-						armorSlotModArmorStatMappping[id],
-						getArmorStatMappingFromMods([id], selectedDestinyClass),
-					]);
+				if (armorSlotModArmorStatMapppings[id]) {
+					armorSlotModArmorStatMapppings[id] = {
+						count: armorSlotModArmorStatMapppings[id].count + 1,
+						armorStatMapping: sumArmorStatMappings([
+							armorSlotModArmorStatMapppings[id].armorStatMapping,
+							getArmorStatMappingFromMods([id], selectedDestinyClass),
+						]),
+					};
 				} else {
-					armorSlotModArmorStatMappping[id] = getArmorStatMappingFromMods(
-						[id],
-						selectedDestinyClass
-					);
+					armorSlotModArmorStatMapppings[id] = {
+						count: 1,
+						armorStatMapping: getArmorStatMappingFromMods(
+							[id],
+							selectedDestinyClass
+						),
+					};
 				}
 			}
 		});
@@ -633,7 +675,7 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							destinyClassId={selectedDestinyClass}
 							masterworkAssumption={selectedMasterworkAssumption}
 							fragmentArmorStatMappings={fragmentArmorStatMappings}
-							armorSlotModArmorStatMappping={armorSlotModArmorStatMappping}
+							armorSlotModArmorStatMappings={armorSlotModArmorStatMapppings}
 							dimLink={`${generateDimLink({
 								combatStyleModIdList: selectedCombatStyleMods,
 								armorStatModIdList: item.requiredStatModIdList,

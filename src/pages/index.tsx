@@ -10,7 +10,7 @@ import StatSelection from '@dlb/components/StatSelection/StatSelection';
 import WebWorkerTest from '@dlb/components/WebWorkerTest/WebWorkerTest';
 
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
-import { useAppSelector } from '@dlb/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
 import React from 'react';
@@ -31,7 +31,10 @@ import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
 import RaidModSelector from '@dlb/components/RaidModsSelector';
-import MinimumArtificeExtrapolationStatTierSelector from '@dlb/components/MinimumArtificeExtrapolationStatTier';
+import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import { DefaultArmorStatMapping } from '@dlb/types/ArmorStat';
+import { setSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -83,57 +86,75 @@ const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
 	transform: 'translate(-50%, -50%)',
 }));
 
-const LeftSectionComponent = () => (
-	<LeftSection className="left-section">
-		<TabContainer
-			tabs={[
-				{
-					content: (
-						<>
-							<SelectionControlGroup title="Class and Exotic">
-								<ExoticAndDestinyClassSelectorWrapper />
-							</SelectionControlGroup>
-							<SelectionControlGroup title="Desired Stat Tiers">
-								<StatSelection />
-							</SelectionControlGroup>
-							<SelectionControlGroup title="Subclass Options">
-								<DestinySubclassSelector />
-								<SuperAbilitySelector />
-								<AspectSelector />
-								<FragmentSelector />
-								<GrenadeSelector />
-								<MeleeSelector />
-								<ClassAbilitySelector />
-								<JumpSelector />
-							</SelectionControlGroup>
-							<SelectionControlGroup title="Mods">
-								<ArmorSlotModSelector />
-								{/* <RaidModSelector />
-								<CombatStyleModSelector /> */}
-							</SelectionControlGroup>
-						</>
-					),
-					index: 0,
-					title: 'Loadout',
-				},
-				{
-					content: (
-						<>
-							<MasterworkAssumptionSelector />
-							<MinimumGearTierSelector />
-							{/* <MinimumArtificeExtrapolationStatTierSelector /> */}
-							<DimLoadoutsFilterSelector />
-						</>
-					),
-					index: 1,
-					title: 'Settings',
-				},
-			]}
-		/>
+const LeftSectionComponent = () => {
+	const dispatch = useAppDispatch();
+	const clearDesiredStatTiers = () => {
+		dispatch(setDesiredArmorStats({ ...DefaultArmorStatMapping }));
+	};
 
-		{/* <ArmorSlotRestrictions /> */}
-	</LeftSection>
-);
+	const clearArmorSlotMods = () => {
+		dispatch(
+			setSelectedArmorSlotMods(getDefaultArmorSlotIdToModIdListMapping())
+		);
+	};
+
+	return (
+		<LeftSection className="left-section">
+			<TabContainer
+				tabs={[
+					{
+						content: (
+							<>
+								<SelectionControlGroup title="Class and Exotic">
+									<ExoticAndDestinyClassSelectorWrapper />
+								</SelectionControlGroup>
+								<SelectionControlGroup
+									title="Desired Stat Tiers"
+									clearHandler={clearDesiredStatTiers}
+								>
+									<StatSelection />
+								</SelectionControlGroup>
+								<SelectionControlGroup title="Subclass Options">
+									<DestinySubclassSelector />
+									<SuperAbilitySelector />
+									<AspectSelector />
+									<FragmentSelector />
+									<GrenadeSelector />
+									<MeleeSelector />
+									<ClassAbilitySelector />
+									<JumpSelector />
+								</SelectionControlGroup>
+								<SelectionControlGroup
+									title="Mods"
+									clearHandler={clearArmorSlotMods}
+								>
+									<ArmorSlotModSelector />
+									{/* <RaidModSelector />
+								<CombatStyleModSelector /> */}
+								</SelectionControlGroup>
+							</>
+						),
+						index: 0,
+						title: 'Loadout',
+					},
+					{
+						content: (
+							<>
+								<MasterworkAssumptionSelector />
+								<MinimumGearTierSelector />
+								<DimLoadoutsFilterSelector />
+							</>
+						),
+						index: 1,
+						title: 'Settings',
+					},
+				]}
+			/>
+
+			{/* <ArmorSlotRestrictions /> */}
+		</LeftSection>
+	);
+};
 
 export type SmallScreenData = {
 	isSmallScreen: boolean;

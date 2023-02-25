@@ -29,7 +29,6 @@ import resultsPaginationReducer, {
 	setResultsPagination,
 } from './features/resultsPagination/resultsPaginationSlice';
 import armorMetadataReducer from './features/armorMetadata/armorMetadataSlice';
-import selectedMinimumArtificeExtrapolationStatTierReducer from './features/selectedMinimumArtificeExtrapolationStatTier/selectedMinimumArtificeExtrapolationStatTierSlice';
 
 import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
 import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
@@ -107,8 +106,6 @@ export function makeStore() {
 			selectedJump: selectedJumpReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
 			selectedMelee: selectedMeleeReducer,
-			selectedMinimumArtificeExtrapolationStatTier:
-				selectedMinimumArtificeExtrapolationStatTierReducer,
 			selectedMinimumGearTier: selectedMinimumGearTierReducer,
 			selectedRaidMods: selectedRaidModsReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
@@ -131,7 +128,6 @@ let selectedArmorSlotModsUuid = NIL;
 let selectedMinimumGearTierUuid = NIL;
 let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
-let selectedMinimumArtificeExtrapolationStatTierUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
@@ -149,9 +145,6 @@ function handleChange() {
 		selectedMinimumGearTier: { uuid: nextSelectedMinimumGearTierUuid },
 		dimLoadouts: { uuid: nextDimLoadoutsUuid },
 		dimLoadoutsFilter: { uuid: nextDimLoadoutsFilterUuid },
-		selectedMinimumArtificeExtrapolationStatTier: {
-			uuid: nextSelectedMinimumArtificeExtrapolationStatTierUuid,
-		},
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -168,8 +161,6 @@ function handleChange() {
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
 		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
-		selectedMinimumArtificeExtrapolationStatTierUuid !==
-			nextSelectedMinimumArtificeExtrapolationStatTierUuid ||
 		dimLoadoutsUuid !== nextDimLoadoutsUuid ||
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid;
 	const hasNonDefaultUuids =
@@ -184,8 +175,7 @@ function handleChange() {
 		nextSelectedArmorSlotModsUuid !== NIL &&
 		nextSelectedMinimumGearTierUuid !== NIL &&
 		nextDimLoadoutsUuid !== NIL &&
-		nextDimLoadoutsFilterUuid !== NIL &&
-		nextSelectedMinimumArtificeExtrapolationStatTierUuid !== NIL;
+		nextDimLoadoutsFilterUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> [STORE] store is dirty <<<<<<<<<<<');
@@ -201,8 +191,6 @@ function handleChange() {
 		selectedMinimumGearTierUuid = nextSelectedMinimumGearTierUuid;
 		dimLoadoutsUuid = nextDimLoadoutsUuid;
 		dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
-		selectedMinimumArtificeExtrapolationStatTierUuid =
-			nextSelectedMinimumArtificeExtrapolationStatTierUuid;
 
 		// TODO: Move this out of the store file
 		const {
@@ -220,9 +208,6 @@ function handleChange() {
 			selectedMinimumGearTier: { value: selectedMinimumGearTier },
 			dimLoadouts: { value: dimLoadouts },
 			dimLoadoutsFilter: { value: dimLoadoutsFilter },
-			selectedMinimumArtificeExtrapolationStatTier: {
-				value: selectedMinimumArtificeExtrapolationStatTier,
-			},
 		} = store.getState();
 
 		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -300,9 +285,7 @@ function handleChange() {
 					DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
 			),
 			dimLoadoutsFilter,
-			selectedMinimumGearTier,
-			selectedMinimumArtificeExtrapolationStatTier,
-			desiredArmorStats
+			selectedMinimumGearTier
 		);
 		console.log(
 			'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',

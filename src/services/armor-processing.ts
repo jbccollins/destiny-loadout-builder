@@ -23,7 +23,6 @@ import {
 	getArmorStatModSpitFromArmorStatId,
 	getArmorStatMappingFromMods,
 	sumArmorStatMappings,
-	getArtificeArmorStatsToExtrapolate,
 	DefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import {
@@ -500,11 +499,6 @@ export const doProcessArmor = ({
 		sumOfSeenStats = sumOfSeenStats.map((x) => x + 2);
 	}
 
-	// const artificeExtrapolationStats = getArtificeArmorStatsToExtrapolate(
-	// 	minimumArtificeExtrapolationStatTier,
-	// 	desiredArmorStats
-	// );
-
 	const processArmorParams: ProcessArmorParams = {
 		masterworkAssumption,
 		desiredArmorStats,
@@ -520,32 +514,6 @@ export const doProcessArmor = ({
 	};
 
 	const processedArmor: ProcessArmorOutput = processArmor(processArmorParams);
-
-	// // Make sure we include the artifice class items bonus stats
-	// if (armorMetadata[destinyClassId].classItem.hasArtificeClassItem) {
-	// 	sumOfSeenStats = [...extraSumOfSeenStats];
-	// 	if (
-	// 		armorMetadata[destinyClassId].classItem
-	// 			.hasMasterworkedArtificeClassItem ||
-	// 		masterworkAssumption !== EMasterworkAssumption.None
-	// 	) {
-	// 		sumOfSeenStats = sumOfSeenStats.map((x) => x + 2);
-	// 	}
-
-	// 	// ArmorStatIdList.forEach((armorStatId, i) => {
-	// 	// 	if (artificeExtrapolationStats[armorStatId]) {
-	// 	// 		const _sumOfSeenStats = [...sumOfSeenStats];
-	// 	// 		_sumOfSeenStats[i] += 3;
-	// 	// 		processedArmor = processedArmor.concat(
-	// 	// 			processArmor({
-	// 	// 				...processArmorParams,
-	// 	// 				sumOfSeenStats: _sumOfSeenStats as StatList,
-	// 	// 				hasArtificeClassItem: armorStatId,
-	// 	// 			})
-	// 	// 		);
-	// 	// 	}
-	// 	// });
-	// }
 	return processedArmor;
 };
 
@@ -764,9 +732,7 @@ export const preProcessArmor = (
 	selectedExoticArmor: ISelectedExoticArmor,
 	dimLoadouts: Loadout[],
 	dimLoadoutsFilterId: EDimLoadoutsFilterId,
-	minimumGearTier: EGearTierId,
-	minimumArtificeExtrapolationStatTier: number,
-	desiredArmorStats: ArmorStatMapping
+	minimumGearTier: EGearTierId
 ): StrictArmorItems => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
@@ -776,10 +742,7 @@ export const preProcessArmor = (
 			})
 		);
 	}
-	const artificeExtrapolationStats = getArtificeArmorStatsToExtrapolate(
-		minimumArtificeExtrapolationStatTier,
-		desiredArmorStats
-	);
+
 	const strictArmorItems: StrictArmorItems = [[], [], [], []];
 	ArmorSlotIdList.forEach((armorSlot, i) => {
 		if (armorSlot === selectedExoticArmor.armorSlot) {

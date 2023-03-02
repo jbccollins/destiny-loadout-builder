@@ -15,6 +15,7 @@ export const ElementIdList = ValidateEnumList(Object.values(EElementId), [
 	EElementId.Solar,
 	EElementId.Void,
 	EElementId.Stasis,
+	EElementId.Strand,
 ]);
 
 export interface IElement extends IIdentifiableName, IIcon, IHash {}
@@ -47,6 +48,12 @@ const ElementIdToElementMapping: EnumDictionary<EElementId, IElement> = {
 	[EElementId.Stasis]: {
 		id: EElementId.Stasis,
 		name: 'Stasis',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyEnergyTypeDefinition_530c4c3e7981dc2aefd24fd3293482bf.png',
+		hash: 1819698290,
+	},
+	[EElementId.Strand]: {
+		id: EElementId.Strand,
+		name: 'Strand',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyEnergyTypeDefinition_530c4c3e7981dc2aefd24fd3293482bf.png',
 		hash: 1819698290,
 	},

@@ -108,6 +108,11 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 		name: 'Armor Stat',
 		description: '',
 	},
+	[EModCategoryId.ArtificeArmorStat]: {
+		id: EModCategoryId.ArtificeArmorStat,
+		name: 'Artifice Armor Stat',
+		description: '',
+	},
 	[EModCategoryId.General]: {
 		id: EModCategoryId.General,
 		name: 'General',
@@ -129,14 +134,8 @@ export const getModCategoryIdByModName = (
 	displayNameId: EModDisplayNameId,
 	name: string
 ): EModCategoryId => {
-	if (displayNameId === EModDisplayNameId.ChargedWithLightMod) {
-		return EModCategoryId.ChargedWithLight;
-	}
-	if (displayNameId === EModDisplayNameId.ElementalWellMod) {
-		return EModCategoryId.ElementalWell;
-	}
-	if (displayNameId === EModDisplayNameId.WarmindCellMod) {
-		return EModCategoryId.WarmindCell;
+	if (displayNameId === EModDisplayNameId.ArtificeArmorMod) {
+		return EModCategoryId.ArtificeArmorStat;
 	}
 	if (displayNameId === EModDisplayNameId.GeneralArmorMod) {
 		return EModCategoryId.ArmorStat;

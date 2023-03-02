@@ -15,11 +15,7 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { Button, styled, TablePagination, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { ResultsTableLoadout } from './ArmorResultsView';
-import {
-	EArmorStatId,
-	EFragmentId,
-	EMasterworkAssumption,
-} from '@dlb/types/IdEnums';
+import { EArmorStatId, EMasterworkAssumption } from '@dlb/types/IdEnums';
 import {
 	ArmorStatIdList,
 	ArmorStatMapping,
@@ -51,6 +47,7 @@ import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSl
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getMod } from '@dlb/types/Mod';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 
 const calculateExtraMasterworkedStats = (
 	armorItems: ArmorItem[],

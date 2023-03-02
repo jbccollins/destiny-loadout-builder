@@ -87,6 +87,16 @@ export const MeleeIdToMeleeMapping: EnumDictionary<EMeleeId, IMelee> = {
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Dawnblade,
   },
+  [EMeleeId.ThreadedSpike]: {
+    name: "Threaded Spike",
+    id: EMeleeId.ThreadedSpike,
+    description:
+      "Throw a rope dart that bounces between targets, damaging and severing them. The dart will return to you once it's done, returning melee energy to you for each target hit. Press [Melee] just as the dart gets back to you to catch it and increase the amount of energy returned.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/66604525966910950ac8efc8f2b4d2c4.png",
+    hash: 1680616210,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Threadrunner,
+  },
   [EMeleeId.ShiverStrike]: {
     name: "Shiver Strike",
     id: EMeleeId.ShiverStrike,
@@ -106,6 +116,16 @@ export const MeleeIdToMeleeMapping: EnumDictionary<EMeleeId, IMelee> = {
     hash: 2299867342,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Voidwalker,
+  },
+  [EMeleeId.ArcaneNeedle]: {
+    name: "Arcane Needle",
+    id: EMeleeId.ArcaneNeedle,
+    description:
+      "Sling a woven needle that will embed in your target, unraveling them. Activate your melee ability again to chain up to two additional attacks.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/f8ef7754890fabd071d2bcd7297d335c.png",
+    hash: 2307689415,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Broodweaver,
   },
   [EMeleeId.PenumbralBlast]: {
     name: "Penumbral Blast",
@@ -205,6 +225,16 @@ export const MeleeIdToMeleeMapping: EnumDictionary<EMeleeId, IMelee> = {
     hash: 4016776975,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Gunslinger,
+  },
+  [EMeleeId.FrenziedBlade]: {
+    name: "Frenzied Blade",
+    id: EMeleeId.FrenziedBlade,
+    description:
+      "Activate your charged melee ability to dash forward, slashing at targets in front of you and severing them.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/4539597cafcd96218d1bcf6464e5c002.png",
+    hash: 4094417246,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Berserker,
   },
   [EMeleeId.ShieldThrow]: {
     name: "Shield Throw",

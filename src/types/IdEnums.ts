@@ -9,7 +9,7 @@ export enum EElementId {
 	Solar = 'Solar',
 	Void = 'Void',
 	Stasis = 'Stasis',
-	// Strand = 'strand',
+	Strand = 'Strand',
 	Any = 'Any',
 }
 
@@ -25,16 +25,19 @@ export enum EDestinySubclassId {
 	Dawnblade = 'Dawnblade',
 	Voidwalker = 'Voidwalker',
 	Shadebinder = 'Shadebinder',
+	Broodweaver = 'Broodweaver',
 	// Titan
 	Striker = 'Striker',
 	Sentinel = 'Sentinel',
 	Sunbreaker = 'Sunbreaker',
 	Behemoth = 'Behemoth',
+	Berserker = 'Berserker',
 	// Hunter
 	Gunslinger = 'Gunslinger',
 	Nightstalker = 'Nightstalker',
 	Arcstrider = 'Arcstrider',
 	Revenant = 'Revenant',
+	Threadrunner = 'Threadrunner',
 }
 
 export enum EArmorSlotId {
@@ -70,128 +73,6 @@ export enum EArmorExtraModSlotId {
 	Any = 'any',
 }
 
-export enum EAspectId {
-	/*** Warlock ***/
-	// Stasis
-	BleakWatcher = 'BleakWatcher',
-	Frostpulse = 'Frostpulse',
-	GlacialHarvest = 'GlacialHarvest',
-	IceflareBolts = 'IceflareBolts',
-	// Void
-	ChaosAccelerant = 'ChaosAccelerant',
-	FeedTheVoid = 'FeedTheVoid',
-	ChildOfTheOldGods = 'ChildOfTheOldGods',
-	// Solar
-	IcarusDash = 'IcarusDash',
-	HeatRises = 'HeatRises',
-	TouchOfFlame = 'TouchOfFlame',
-	// Arc
-	ArcSoul = 'ArcSoul',
-	ElectrostaticMind = 'ElectrostaticMind',
-	LightningSurge = 'LightningSurge',
-
-	/*** Titan ***/
-	// Stasis
-	Cryoclasm = 'Cryoclasm',
-	DiamondLance = 'DiamondLance',
-	TectonicHarvest = 'TectonicHarvest',
-	HowlOfTheStorm = 'HowlOfTheStorm',
-	// Void
-	ControlledDemolition = 'ControlledDemolition',
-	Bastion = 'Bastion',
-	OffensiveBulwark = 'OffensiveBulwark',
-	// Solar
-	RoaringFlames = 'RoaringFlames',
-	SolInvictus = 'SolInvictus',
-	Consecration = 'Consecration',
-	// Arc
-	Juggernaut = 'Juggernaut',
-	Knockout = 'Knockout',
-	TouchOfThunder = 'TouchOfThunder',
-
-	/*** Hunter ***/
-	// Stasis
-	GrimHarvest = 'GrimHarvest',
-	Shatterdive = 'Shatterdive',
-	TouchOfWinter = 'TouchOfWinter',
-	WintersShroud = 'WintersShroud',
-	// Void
-	TrappersAmbush = 'TrappersAmbush',
-	VanishingStep = 'VanishingStep',
-	StylishExecutioner = 'StylishExecutioner',
-	// Solar
-	OnYourMark = 'OnYourMark',
-	KnockEmDown = 'KnockEmDown',
-	GunpowderGamble = 'GunpowderGamble',
-	// Arc
-	FlowState = 'FlowState',
-	LethalCurrent = 'LethalCurrent',
-	TempestStrike = 'TempestStrike',
-}
-
-export enum EFragmentId {
-	// Arc
-	SparkOfAmplitude = 'SparkOfAmplitude',
-	SparkOfBeacons = 'SparkOfBeacons',
-	SparkOfBrilliance = 'SparkOfBrilliance',
-	SparkOfDischarge = 'SparkOfDischarge',
-	SparkOfFeedback = 'SparkOfFeedback',
-	SparkOfFocus = 'SparkOfFocus',
-	SparkOfFrequency = 'SparkOfFrequency',
-	SparkOfIons = 'SparkOfIons',
-	SparkOfMagnitude = 'SparkOfMagnitude',
-	SparkOfMomentum = 'SparkOfMomentum',
-	SparkOfRecharge = 'SparkOfRecharge',
-	SparkOfResistance = 'SparkOfResistance',
-	SparkOfShock = 'SparkOfShock',
-	SparkOfVolts = 'SparkOfVolts',
-	// Solar
-	EmberOfAshes = 'EmberOfAshes',
-	EmberOfBeams = 'EmberOfBeams',
-	EmberOfBenevolence = 'EmberOfBenevolence',
-	EmberOfBlistering = 'EmberOfBlistering',
-	EmberOfChar = 'EmberOfChar',
-	EmberOfCombustion = 'EmberOfCombustion',
-	EmberOfEmpyrean = 'EmberOfEmpyrean',
-	EmberOfEruption = 'EmberOfEruption',
-	EmberOfSearing = 'EmberOfSearing',
-	EmberOfSingeing = 'EmberOfSingeing',
-	EmberOfSolace = 'EmberOfSolace',
-	EmberOfTempering = 'EmberOfTempering',
-	EmberOfTorches = 'EmberOfTorches',
-	EmberOfWonder = 'EmberOfWonder',
-	// Void
-	EchoOfDilation = 'EchoOfDilation',
-	EchoOfDomineering = 'EchoOfDomineering',
-	EchoOfExchange = 'EchoOfExchange',
-	EchoOfExpulsion = 'EchoOfExpulsion',
-	EchoOfHarvest = 'EchoOfHarvest',
-	EchoOfInstability = 'EchoOfInstability',
-	EchoOfLeeching = 'EchoOfLeeching',
-	EchoOfObscurity = 'EchoOfObscurity',
-	EchoOfProvision = 'EchoOfProvision',
-	EchoOfRemnants = 'EchoOfRemnants',
-	EchoOfReprisal = 'EchoOfReprisal',
-	EchoOfPersistence = 'EchoOfPersistence',
-	EchoOfStarvation = 'EchoOfStarvation',
-	EchoOfUndermining = 'EchoOfUndermining',
-	// Stasis
-	WhisperOfBonds = 'WhisperOfBonds',
-	WhisperOfChains = 'WhisperOfChains',
-	WhisperOfConduction = 'WhisperOfConduction',
-	WhisperOfDurance = 'WhisperOfDurance',
-	WhisperOfFissures = 'WhisperOfFissures',
-	WhisperOfFractures = 'WhisperOfFractures',
-	WhisperOfHedrons = 'WhisperOfHedrons',
-	WhisperOfHunger = 'WhisperOfHunger',
-	WhisperOfImpetus = 'WhisperOfImpetus',
-	WhisperOfRefraction = 'WhisperOfRefraction',
-	WhisperOfRending = 'WhisperOfRending',
-	WhisperOfRime = 'WhisperOfRime',
-	WhisperOfShards = 'WhisperOfShards',
-	WhisperOfTorment = 'WhisperOfTorment',
-}
-
 // TODO: Name this like
 // All Armor Is Masterworked, Legendary Armor is Masterworked
 // No assumption is made
@@ -203,6 +84,7 @@ export enum EMasterworkAssumption {
 
 export enum EModSocketCategoryId {
 	Stat = 'Stat', // e.g. major/minor resilience
+	ArtificeStat = 'ArtificeStat', // e.g. resilience-forged
 	ArmorSlot = 'ArmorSlot', // e.g. bomber
 	CombatStyle = 'CombatStyle', // e.g. powerful friends
 	Raid = 'Raid',
@@ -257,6 +139,7 @@ export enum EModCategoryId {
 	KingsFall = 'KingsFall',
 	Nightmare = 'Nightmare',
 	ArmorStat = 'ArmorStat',
+	ArtificeArmorStat = 'ArtificeArmorStat',
 	General = 'General',
 	// SeasonalArtifact = 'SeasonalArtifact',
 }

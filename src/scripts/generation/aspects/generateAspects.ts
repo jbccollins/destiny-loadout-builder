@@ -8,7 +8,11 @@ import {
 	DestinySandboxPerkDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
-import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
+import {
+	generateId,
+	getDefinitions,
+	getDescription,
+} from '@dlb/scripts/generation/utils';
 import { IAspect } from '@dlb/types/generation';
 import { generateAspectIdEnumFileString } from './generateAspectIdEnum';
 import { generateAspectMapping } from './generateAspectMapping';
@@ -21,9 +25,7 @@ const buildAspectData = (
 	return {
 		name: aspect.displayProperties.name,
 		id: generateId(aspect.displayProperties.name),
-		description:
-			sandboxPerkDefinitions[aspect.perks[0].perkHash].displayProperties
-				.description,
+		description: getDescription(aspect, sandboxPerkDefinitions),
 		icon: bungieNetPath(aspect.displayProperties.icon),
 		hash: aspect.hash,
 		fragementSlots: aspect.plug.energyCapacity.capacityValue,

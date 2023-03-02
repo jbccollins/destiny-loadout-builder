@@ -19,6 +19,7 @@ import {
 	generateId,
 	getBonuses,
 	getDefinitions,
+	getDescription,
 } from '@dlb/scripts/generation/utils';
 import { generateModIdEnumFileString } from './generateModIdEnum';
 import { generateModMapping } from './generateModMapping';
@@ -28,6 +29,24 @@ import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getModCategoryIdByModName } from '@dlb/types/ModCategory';
+
+// TODO: The bungie manifest currently is not including the
+// 'itemTypeDisplayName' field for these mods that come from the
+// artifact. When that is fixed we can delete this.
+const specialArtifactStatModNames = [
+	'Minor Mobility Mod',
+	'Minor Resilience Mod',
+	'Minor Recovery Mod',
+	'Minor Discipline Mod',
+	'Minor Intellect Mod',
+	'Minor Strength Mod',
+	'Mobility Mod',
+	'Resilience Mod',
+	'Recovery Mod',
+	'Discipline Mod',
+	'Intellect Mod',
+	'Intellect Mod',
+];
 
 // TODO: What about the Aeon Mods? Sect of Force, Insight and Vigor
 const excludedModHashes = [
@@ -60,6 +79,9 @@ const buildModData = (
 ): IMod => {
 	let armorSlotId: EArmorSlotId = null;
 	mod.itemCategoryHashes.forEach((hash) => {
+		if (mod.itemTypeDisplayName === 'Minor Recovery Mod') {
+			console.log('TODO: Fix armorSlot for artiface stat mods');
+		}
 		const _armorSlotId = getArmorSlotIdByHash(hash);
 		if (_armorSlotId) {
 			armorSlotId = _armorSlotId;
@@ -82,23 +104,27 @@ const buildModData = (
 		}`
 	) as EModId;
 
-	const displayNameId = generateId(
-		mod.itemTypeDisplayName
-	) as EModDisplayNameId;
+	let displayNameId = generateId(mod.itemTypeDisplayName) as EModDisplayNameId;
+
+	//TODO: Get rid of this when the manifest returns proper 'itemTypeDisplayNames' for these mods
+	if (
+		displayNameId === EModDisplayNameId.Unknown &&
+		specialArtifactStatModNames.includes(mod.displayProperties.name)
+	) {
+		displayNameId = EModDisplayNameId.GeneralArmorMod;
+	}
+
 	return {
 		name: mod.displayProperties.name,
 		id: modId,
-		description:
-			sandboxPerkDefinitions[mod.perks[0].perkHash].displayProperties
-				.description,
+		description: getDescription(mod, sandboxPerkDefinitions),
 		icon: bungieNetPath(mod.displayProperties.icon),
 		hash: mod.hash,
 		modSocketCategoryId:
 			getModSocketCategoryIdByModDisplayNameId(displayNameId),
 		armorSocketIndex: 0,
 		armorSlotId: armorSlotId,
-		elementId: getElementIdByHash(mod.plug.energyCost.energyTypeHash),
-		cost: mod.plug.energyCost.energyCost,
+		cost: mod.plug.energyCost?.energyCost ?? 0,
 		isArtifactMod: isArtifactMod,
 		modCategoryId: getModCategoryIdByModName(
 			displayNameId,
@@ -141,20 +167,46 @@ export async function run() {
 
 	const modDisplayNames: Set<string> = new Set<string>();
 
-	const artifactMods = collectRewardsFromArtifacts(destinyArtifactDefinitions);
+	// TODO: The artifact now needs to be ripped out into it's own generation
+	// since artifact mods are no longer equippable
+	// const artifactItems = collectRewardsFromArtifacts(destinyArtifactDefinitions);
 
 	const allMods = lodash(destinyInventoryItemDefinitions)
 		.values()
 		.filter((v) => v.itemCategoryHashes)
 		.filter((v) => v.displayProperties)
 		.filter((v) => !v.displayProperties.description.includes('deprecated'))
-		.filter((v) => v.itemCategoryHashes.includes(4104513227)) // armour mods
-		.filter((v) => v.plug && v.plug.energyCost) // exclude ornaments
+		.filter((v) => v.itemCategoryHashes.includes(4104513227)) // armor mods
+		// exclude ornaments while still including the no-cost artifce 'forged' mods
+		.filter(
+			(v) =>
+				v.plug &&
+				(v.plug.energyCost ||
+					v.plug.plugCategoryIdentifier === 'enhancements.artifice')
+		)
 		.value() as DestinyInventoryItemDefinition[];
+
+	const artifactMods = allMods
+		.filter(
+			(mod) =>
+				mod.plug?.enabledRules &&
+				mod.plug?.enabledRules.length > 0 &&
+				mod.plug?.enabledRules.find(
+					(rule) =>
+						rule.failureMessage === 'Must Be Selected in the Seasonal Artifact'
+				)
+		)
+		.map((mod) => mod.hash);
 
 	allMods
 		.filter((mod) => !excludedModHashes.includes(mod.hash))
 		.forEach((mod) => {
+			if (mod.displayProperties.name === 'Recovery-Forged') {
+				console.log('recovery forged');
+			}
+			if (mod.itemTypeDisplayName === '') {
+				console.log('bad', mod.displayProperties.name);
+			}
 			modDisplayNames.add(generateId(mod.itemTypeDisplayName));
 			mods.push(
 				buildModData(

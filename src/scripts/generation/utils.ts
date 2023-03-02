@@ -6,7 +6,12 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import { IBonuses, StatBonus } from '@dlb/types/globals';
 import { EArmorStatId } from '@dlb/types/IdEnums';
-import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
+import {
+	DestinyArtifactDefinition,
+	DestinyArtifactTierDefinition,
+	DestinyInventoryItemDefinition,
+	DestinySandboxPerkDefinition,
+} from 'bungie-api-ts-no-const-enum/destiny2';
 import { getArmorStatIdFromBungieHash } from '@dlb/types/ArmorStat';
 
 const API_KEY = process.env.NEXT_PUBLIC_BNET_API_KEY;
@@ -92,14 +97,19 @@ export async function getDefinitions() {
 	return definitions;
 }
 
-// TODO: Type this
-export const collectRewardsFromArtifacts = (DestinyArtifactDefinition) => {
-	return lodash(DestinyArtifactDefinition)
+export const collectRewardsFromArtifacts = (
+	destinyArtifactDefinitions: Record<number, DestinyArtifactDefinition>
+) => {
+	return lodash(destinyArtifactDefinitions)
 		.values()
 		.flatMap((artifact) => artifact.tiers)
 		.flatMap((tier) => tier.items)
 		.map((item) => item.itemHash)
 		.value();
+	// return lodash(destinyArtifactDefinitions.tiers)
+	// 	.flatMap((tier) => tier.items)
+	// 	.map((item) => item.itemHash)
+	// 	.value();
 };
 
 // King's Fall => KingsFall
@@ -108,6 +118,9 @@ export const generateId = (name: string): string => {
 	const words = name.split(' ');
 	return words
 		.map((word) => {
+			if (word === '') {
+				return 'Unknown';
+			}
 			return (word[0].toUpperCase() + word.substring(1)).replace(
 				// Replace all non-alphanumeric characters
 				/[^a-zA-Z0-9]/g,
@@ -211,4 +224,21 @@ export const getSerializedBonusStats = (
 		bonuses[i] = serializedBonusStat;
 	});
 	return bonuses;
+};
+
+// TODO: The description ordering of 'Into the Fray' is different than every other
+// description. So we can't just dopp perks[0]. We have to check all perks :(
+export const getDescription = (
+	item: DestinyInventoryItemDefinition,
+	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>
+) => {
+	let description = 'No description found';
+	item.perks.forEach((perk) => {
+		const desc =
+			sandboxPerkDefinitions[perk.perkHash].displayProperties.description;
+		if (desc) {
+			description = desc;
+		}
+	});
+	return description;
 };

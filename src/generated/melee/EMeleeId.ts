@@ -10,8 +10,10 @@ export enum EMeleeId {
   WitheringBlade = "WitheringBlade",
   IncineratorSnap = "IncineratorSnap",
   CelestialFire = "CelestialFire",
+  ThreadedSpike = "ThreadedSpike",
   ShiverStrike = "ShiverStrike",
   PocketSingularity = "PocketSingularity",
+  ArcaneNeedle = "ArcaneNeedle",
   PenumbralBlast = "PenumbralBlast",
   BallisticSlam = "BallisticSlam",
   SeismicStrike = "SeismicStrike",
@@ -22,6 +24,7 @@ export enum EMeleeId {
   ProximityExplosiveKnife = "ProximityExplosiveKnife",
   LightweightKnife = "LightweightKnife",
   WeightedThrowingKnife = "WeightedThrowingKnife",
+  FrenziedBlade = "FrenziedBlade",
   ShieldThrow = "ShieldThrow",
   ShieldBash = "ShieldBash",
 }

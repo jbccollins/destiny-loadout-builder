@@ -2,7 +2,6 @@ import { Box, styled } from '@mui/material';
 import IconMultiSelectDropdown from '@dlb/components/IconMultiSelectDropdown';
 import { getFragment, getFragmentIdsByElementId } from '@dlb/types/Fragment';
 import React from 'react';
-import { EFragmentId } from '@dlb/types/IdEnums';
 import {
 	selectSelectedFragments,
 	setSelectedFragments,
@@ -13,6 +12,7 @@ import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getStat } from '@dlb/types/ArmorStat';
 import { StatBonusStat } from '@dlb/types/globals';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 
 const Container = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(1),

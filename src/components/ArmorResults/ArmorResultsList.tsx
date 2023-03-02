@@ -14,7 +14,6 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
-	EFragmentId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import generateDimLink from '@dlb/services/dim/generateDimLoadoutLink';
@@ -52,6 +51,7 @@ import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedM
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { MISSING_ICON } from '@dlb/types/globals';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];

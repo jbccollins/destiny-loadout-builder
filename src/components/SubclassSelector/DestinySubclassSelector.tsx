@@ -2,21 +2,13 @@ import { EDestinySubclassId } from '@dlb/types/IdEnums';
 import { styled } from '@mui/material';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import {
-	DestinyClassIdList,
-	DestinyClassIdToDestinyClass,
-	getDestinySubclassIdListByDestinyClassId,
-} from '@dlb/types/DestinyClass';
+import { getDestinySubclassIdListByDestinyClassId } from '@dlb/types/DestinyClass';
 import IconDropdown from '@dlb/components/IconDropdown';
 import {
 	selectSelectedDestinySubclass,
 	setSelectedDestinySubclass,
 } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import {
-	DestinySubclassIdList,
-	getDestinySubclass,
-} from '@dlb/types/DestinySubclass';
-import { getElement } from '@dlb/types/Element';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0

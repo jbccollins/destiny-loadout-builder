@@ -7,8 +7,9 @@ import { AppState } from '@dlb/redux/store';
 // To use a single reducer with one uuid. Or....... keep it as is and just
 // Keep track of a single uuid in the store? idk... that might be harder to code around...
 import { v4 as uuid, NIL } from 'uuid';
-import { EArmorStatId, EElementId, EFragmentId } from '@dlb/types/IdEnums';
+import { EArmorStatId, EElementId } from '@dlb/types/IdEnums';
 import { ArmorStatMapping } from '@dlb/types/ArmorStat';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 
 // TODO: There is probably a cleaner way to say
 // "This type has all the elements as keys"
@@ -19,6 +20,7 @@ type SelectedFragments = {
 	[EElementId.Void]: EFragmentId[];
 	[EElementId.Solar]: EFragmentId[];
 	[EElementId.Arc]: EFragmentId[];
+	[EElementId.Strand]: EFragmentId[];
 };
 
 export interface SelectedFragmentsState {
@@ -32,6 +34,7 @@ const initialState: SelectedFragmentsState = {
 		[EElementId.Void]: [],
 		[EElementId.Solar]: [],
 		[EElementId.Arc]: [],
+		[EElementId.Strand]: [],
 	},
 	uuid: NIL,
 };

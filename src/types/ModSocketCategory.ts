@@ -1,7 +1,7 @@
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
 import { EnumDictionary } from './globals';
-import { EModSocketCategoryId } from './IdEnums';
+import { EModCategoryId, EModSocketCategoryId } from './IdEnums';
 
 const EModDisplayNameIdToModSocketCategoryIdMapping: EnumDictionary<
 	EModDisplayNameId,
@@ -12,11 +12,6 @@ const EModDisplayNameIdToModSocketCategoryIdMapping: EnumDictionary<
 	[EModDisplayNameId.ChestArmorMod]: EModSocketCategoryId.ArmorSlot,
 	[EModDisplayNameId.LegArmorMod]: EModSocketCategoryId.ArmorSlot,
 	[EModDisplayNameId.ClassItemArmorMod]: EModSocketCategoryId.ArmorSlot,
-	[EModDisplayNameId.ClassItemMod]: EModSocketCategoryId.ArmorSlot,
-
-	[EModDisplayNameId.ChargedWithLightMod]: EModSocketCategoryId.CombatStyle,
-	[EModDisplayNameId.WarmindCellMod]: EModSocketCategoryId.CombatStyle,
-	[EModDisplayNameId.ElementalWellMod]: EModSocketCategoryId.CombatStyle,
 
 	[EModDisplayNameId.LastWishRaidMod]: EModSocketCategoryId.Raid,
 	[EModDisplayNameId.GardenOfSalvationRaidMod]: EModSocketCategoryId.Raid,
@@ -25,7 +20,9 @@ const EModDisplayNameIdToModSocketCategoryIdMapping: EnumDictionary<
 	[EModDisplayNameId.VowOfTheDiscipleRaidMod]: EModSocketCategoryId.Raid,
 	[EModDisplayNameId.KingsFallMod]: EModSocketCategoryId.Raid,
 
+	[EModDisplayNameId.ArtificeArmorMod]: EModSocketCategoryId.ArtificeStat,
 	[EModDisplayNameId.GeneralArmorMod]: EModSocketCategoryId.Stat,
+	[EModDisplayNameId.Unknown]: EModSocketCategoryId.ArmorSlot, // TODO Fix this
 	// TODO: Nightmare mods aren't raid mods. This is wack yo
 	[EModDisplayNameId.NightmareMod]: EModSocketCategoryId.Raid,
 };

@@ -27,6 +27,7 @@ import {
 	selectResultsPagination,
 	setResultsPagination,
 } from '@dlb/redux/features/resultsPagination/resultsPaginationSlice';
+import NoResults from './NoResults';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
 	position: 'relative',
@@ -443,13 +444,20 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 							handleChangeOrderBy={handleChangeOrderBy}
 						/>
 						{/* <ArmorResultsTable items={resultsTableArmorItems} /> */}
-						<ArmorResultsListContainer className="ArmorResultsListContainer">
-							<ArmorResultsList
-								items={resultsTableArmorItems
-									.sort(getComparator(order, orderBy))
-									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
-							/>
-						</ArmorResultsListContainer>
+						{resultsTableArmorItems.length > 0 && (
+							<ArmorResultsListContainer className="ArmorResultsListContainer">
+								<ArmorResultsList
+									items={resultsTableArmorItems
+										.sort(getComparator(order, orderBy))
+										.slice(
+											page * rowsPerPage,
+											page * rowsPerPage + rowsPerPage
+										)}
+								/>
+							</ArmorResultsListContainer>
+						)}
+						{resultsTableArmorItems.length === 0 && <NoResults />}
+
 						<Footer
 							smallScreenData={smallScreenData}
 							count={resultsTableArmorItems.length}

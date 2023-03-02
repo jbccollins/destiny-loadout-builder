@@ -1,10 +1,8 @@
 import { Loadout, LoadoutParameters } from '@destinyitemmanager/dim-api-types';
 import {
 	EArmorStatId,
-	EAspectId,
 	EDestinyClassId,
 	EDestinySubclassId,
-	EFragmentId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { getFragment } from '@dlb/types/Fragment';
@@ -26,6 +24,8 @@ import { getGrenade } from '@dlb/types/Grenade';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 
 export type DimLoadoutConfiguration = {
 	combatStyleModIdList: EModId[];

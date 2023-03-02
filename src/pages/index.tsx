@@ -35,6 +35,7 @@ import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desi
 import { DefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { setSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -147,6 +148,15 @@ const LeftSectionComponent = () => {
 						),
 						index: 1,
 						title: 'Settings',
+					},
+					{
+						content: (
+							<>
+								<PatchNotes />
+							</>
+						),
+						index: 2,
+						title: 'Patch Notes',
 					},
 				]}
 			/>

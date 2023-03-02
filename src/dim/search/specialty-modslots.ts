@@ -26,7 +26,7 @@ const legacyCompatibleTags = [
 	'chargedwithlight',
 	'nightmare',
 	'gardenofsalvation',
-	'lastwish'
+	'lastwish',
 ];
 
 /** The plug categories that will fit in "legacy" sockets */
@@ -34,20 +34,13 @@ export const legacyCompatiblePlugCategoryHashes = [
 	PlugCategoryHashes.EnhancementsSeasonMaverick, // nightmare
 	PlugCategoryHashes.EnhancementsSeasonOutlaw, // taken/lw
 	PlugCategoryHashes.EnhancementsRaidGarden,
-	PlugCategoryHashes.EnhancementsSeasonV470, // dawn cwl
 	PlugCategoryHashes.EnhancementsSeasonOpulence, // opulent
-	PlugCategoryHashes.EnhancementsSeasonV480, // warmind
-	PlugCategoryHashes.EnhancementsSeasonV490, // arrivals cwl
-	PlugCategoryHashes.EnhancementsSeasonForge // fallen
+	PlugCategoryHashes.EnhancementsSeasonForge, // fallen
 ];
 
 /** The plug categories that will fit in combat sockets */
 export const combatCompatiblePlugCategoryHashes = [
-	PlugCategoryHashes.EnhancementsSeasonV470, // dawn cwl
 	PlugCategoryHashes.EnhancementsSeasonV500, // elemental well, but technically any "combat" mods
-	PlugCategoryHashes.EnhancementsSeasonV480, // warmind cell
-	PlugCategoryHashes.EnhancementsSeasonV490, // s11 charged with light
-	PlugCategoryHashes.EnhancementsElemental // 5 deprecated weapon-specific super regen mods
 ];
 
 // EnhancementsSeasonV500 has a one-to-many relationship here,
@@ -56,20 +49,14 @@ export const modTypeTagByPlugCategoryHash = {
 	[PlugCategoryHashes.EnhancementsSeasonOutlaw]: 'lastwish',
 	[PlugCategoryHashes.EnhancementsSeasonMaverick]: 'nightmare',
 	[PlugCategoryHashes.EnhancementsRaidGarden]: 'gardenofsalvation',
-	[PlugCategoryHashes.EnhancementsSeasonV470]: 'chargedwithlight',
-	[PlugCategoryHashes.EnhancementsSeasonV480]: 'warmindcell',
-	[PlugCategoryHashes.EnhancementsSeasonV490]: 'chargedwithlight',
 	[PlugCategoryHashes.EnhancementsRaidDescent]: 'deepstonecrypt',
 	[PlugCategoryHashes.EnhancementsRaidV520]: 'vaultofglass',
 	[PlugCategoryHashes.EnhancementsRaidV600]: 'vowofthedisciple',
 	[PlugCategoryHashes.EnhancementsRaidV620]: 'kingsfall',
-	[PlugCategoryHashes.EnhancementsSeasonV500]: 'combat'
+	[PlugCategoryHashes.EnhancementsSeasonV500]: 'combat',
 };
 
-export const chargedWithLightPlugCategoryHashes = [
-	PlugCategoryHashes.EnhancementsSeasonV470,
-	PlugCategoryHashes.EnhancementsSeasonV490
-];
+export const chargedWithLightPlugCategoryHashes = [];
 
 const legacySocketTypeHashes = [
 	1540673283, // an outlaw-looking one, that's on S11 LW/Reverie,
@@ -79,7 +66,7 @@ const legacySocketTypeHashes = [
 	4127539203, // undying
 	2836765131, // worthy
 	1430586844, // opulent
-	3267328333 // arrivals
+	3267328333, // arrivals
 ];
 
 const legacyEmptyModSocketHashes = [
@@ -88,7 +75,7 @@ const legacyEmptyModSocketHashes = [
 	2620967748, // undying
 	2655746324, // worthy
 	4153634494, // arrivals
-	4106547009 // opulent
+	4106547009, // opulent
 ];
 
 const modSocketMetadata: ModSocketMetadata[] = [
@@ -98,7 +85,7 @@ const modSocketMetadata: ModSocketMetadata[] = [
 		socketTypeHashes: legacySocketTypeHashes,
 		compatiblePlugCategoryHashes: legacyCompatiblePlugCategoryHashes,
 		emptyModSocketHashes: legacyEmptyModSocketHashes,
-		emptyModSocketHash: 4153634494 // the arrivals icon. i don't know.
+		emptyModSocketHash: 4153634494, // the arrivals icon. i don't know.
 	},
 	{
 		slotTag: 'lastwish',
@@ -106,7 +93,7 @@ const modSocketMetadata: ModSocketMetadata[] = [
 		socketTypeHashes: [1444083081],
 		compatiblePlugCategoryHashes: [PlugCategoryHashes.EnhancementsSeasonOutlaw],
 		emptyModSocketHashes: [1679876242],
-		emptyModSocketHash: 1679876242 // ARGH, this is the wrong image in the game/manifest
+		emptyModSocketHash: 1679876242, // ARGH, this is the wrong image in the game/manifest
 	},
 	{
 		slotTag: 'gardenofsalvation',
@@ -114,7 +101,7 @@ const modSocketMetadata: ModSocketMetadata[] = [
 		socketTypeHashes: [1764679361],
 		compatiblePlugCategoryHashes: [PlugCategoryHashes.EnhancementsRaidGarden],
 		emptyModSocketHashes: [706611068],
-		emptyModSocketHash: 706611068
+		emptyModSocketHash: 706611068,
 	},
 	{
 		slotTag: 'deepstonecrypt',
@@ -122,7 +109,7 @@ const modSocketMetadata: ModSocketMetadata[] = [
 		socketTypeHashes: [1269555732],
 		compatiblePlugCategoryHashes: [PlugCategoryHashes.EnhancementsRaidDescent],
 		emptyModSocketHashes: [4055462131],
-		emptyModSocketHash: 4055462131
+		emptyModSocketHash: 4055462131,
 	},
 	{
 		slotTag: 'vaultofglass',
@@ -130,7 +117,7 @@ const modSocketMetadata: ModSocketMetadata[] = [
 		socketTypeHashes: [3372624220],
 		compatiblePlugCategoryHashes: [PlugCategoryHashes.EnhancementsRaidV520],
 		emptyModSocketHashes: [3738398030],
-		emptyModSocketHash: 3738398030
+		emptyModSocketHash: 3738398030,
 	},
 	{
 		slotTag: 'vowofthedisciple',
@@ -138,7 +125,7 @@ const modSocketMetadata: ModSocketMetadata[] = [
 		socketTypeHashes: [2381877427],
 		compatiblePlugCategoryHashes: [PlugCategoryHashes.EnhancementsRaidV600],
 		emptyModSocketHashes: [2447143568],
-		emptyModSocketHash: 2447143568
+		emptyModSocketHash: 2447143568,
 	},
 	{
 		slotTag: 'kingsfall',
@@ -146,7 +133,7 @@ const modSocketMetadata: ModSocketMetadata[] = [
 		socketTypeHashes: [3344538838],
 		compatiblePlugCategoryHashes: [PlugCategoryHashes.EnhancementsRaidV620],
 		emptyModSocketHashes: [1728096240],
-		emptyModSocketHash: 1728096240
+		emptyModSocketHash: 1728096240,
 	},
 	{
 		slotTag: 'combatstyle',
@@ -154,18 +141,18 @@ const modSocketMetadata: ModSocketMetadata[] = [
 		socketTypeHashes: [2955889001],
 		compatiblePlugCategoryHashes: combatCompatiblePlugCategoryHashes,
 		emptyModSocketHashes: [2493100093],
-		emptyModSocketHash: 2493100093
+		emptyModSocketHash: 2493100093,
 	},
 	{
 		slotTag: 'nightmare',
 		compatibleModTags: ['nightmare'],
 		socketTypeHashes: [2701840022],
 		compatiblePlugCategoryHashes: [
-			PlugCategoryHashes.EnhancementsSeasonMaverick
+			PlugCategoryHashes.EnhancementsSeasonMaverick,
 		],
 		emptyModSocketHashes: [1180997867],
-		emptyModSocketHash: 1180997867
-	}
+		emptyModSocketHash: 1180997867,
+	},
 ];
 
 export default modSocketMetadata;

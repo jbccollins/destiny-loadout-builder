@@ -26,6 +26,9 @@ export const DestinySubclassIdList = ValidateEnumList(
 		EDestinySubclassId.Sentinel,
 		EDestinySubclassId.Striker,
 		EDestinySubclassId.Sunbreaker,
+		EDestinySubclassId.Broodweaver,
+		EDestinySubclassId.Threadrunner,
+		EDestinySubclassId.Berserker,
 	]
 );
 
@@ -35,6 +38,7 @@ export interface IDestinySubclass extends IIdentifiableName, IIcon, IHash {
 	elementId: EElementId;
 }
 
+// TODO: Generate this
 const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	EDestinySubclassId,
 	IDestinySubclass
@@ -85,6 +89,15 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		elementId: EElementId.Stasis,
 		hash: 3291545503,
 	},
+	[EDestinySubclassId.Broodweaver]: {
+		id: EDestinySubclassId.Broodweaver,
+		name: 'Broodweaver',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png',
+		superAbilityIdList: [ESuperAbilityId.Needlestorm],
+		destinyClassId: EDestinyClassId.Warlock,
+		elementId: EElementId.Strand,
+		hash: 4204413574,
+	},
 	[EDestinySubclassId.Striker]: {
 		id: EDestinySubclassId.Striker,
 		name: 'Striker',
@@ -129,6 +142,15 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		destinyClassId: EDestinyClassId.Titan,
 		elementId: EElementId.Stasis,
 		hash: 613647804,
+	},
+	[EDestinySubclassId.Berserker]: {
+		id: EDestinySubclassId.Berserker,
+		name: 'Berserker',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png',
+		superAbilityIdList: [ESuperAbilityId.Bladefury],
+		destinyClassId: EDestinyClassId.Titan,
+		elementId: EElementId.Strand,
+		hash: 242419885,
 	},
 	[EDestinySubclassId.Gunslinger]: {
 		id: EDestinySubclassId.Gunslinger,
@@ -178,6 +200,15 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		elementId: EElementId.Stasis,
 		hash: 873720784,
 	},
+	[EDestinySubclassId.Threadrunner]: {
+		id: EDestinySubclassId.Threadrunner,
+		name: 'Threadrunner',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/41c0024ce809085ac16f4e0777ea0ac4.png',
+		superAbilityIdList: [ESuperAbilityId.Silkstrike],
+		destinyClassId: EDestinyClassId.Hunter,
+		elementId: EElementId.Strand,
+		hash: 3785442599,
+	},
 };
 
 export const getDestinySubclass = (id: EDestinySubclassId): IDestinySubclass =>
@@ -190,4 +221,5 @@ export const DestinySubclassElementIds = [
 	EElementId.Solar,
 	EElementId.Void,
 	EElementId.Stasis,
+	EElementId.Strand,
 ];

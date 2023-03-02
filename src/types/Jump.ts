@@ -9,6 +9,7 @@ export const JumpIdList = Object.values(EJumpId);
 export const getJump = (id: EJumpId): IJump => JumpIdToJumpMapping[id];
 
 /****** Extra *****/
+// TODO: Move this right on to the subclass object
 const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 	EDestinySubclassId,
 	EJumpId[]
@@ -35,6 +36,11 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.StrafeJumpArc,
 		EJumpId.BlinkArc,
 	],
+	[EDestinySubclassId.Threadrunner]: [
+		EJumpId.HighJumpStrand,
+		EJumpId.TripleJumpStrand,
+		EJumpId.StrafeJumpStrand,
+	],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [
@@ -58,6 +64,11 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.StrafeGlideArc,
 		EJumpId.BalancedGlideArc,
 	],
+	[EDestinySubclassId.Broodweaver]: [
+		EJumpId.BurstGlideStrand,
+		EJumpId.StrafeGlideStrand,
+		EJumpId.BalancedGlideStrand,
+	],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [
@@ -79,6 +90,11 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.HighLiftArc,
 		EJumpId.CatapultLiftArc,
 		EJumpId.StrafeLiftArc,
+	],
+	[EDestinySubclassId.Berserker]: [
+		EJumpId.HighLiftStrand,
+		EJumpId.CatapultLiftStrand,
+		EJumpId.StrafeLiftStrand,
 	],
 };
 

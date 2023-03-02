@@ -19,7 +19,7 @@ import { EModId } from '@dlb/generated/mod/EModId';
 const generateDefaultArmorSlotIdToModIDListMapping =
 	(): ArmorSlotIdToModIdListMapping => {
 		return ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
-			accumulator[currentValue] = [null, null];
+			accumulator[currentValue] = [null, null, null];
 			return accumulator;
 		}, {}) as ArmorSlotIdToModIdListMapping;
 	};
@@ -41,6 +41,7 @@ type ShouldShortCircuitTestCase = {
 };
 
 const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
+	// 0
 	{
 		name: 'It returns true when helmet, gauntlets, and chest mobility are all 2',
 		input: {
@@ -71,6 +72,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				EModId.MobilityMod,
 				EModId.MinorMobilityMod,
 			],
+			[],
 			{
 				[EArmorStatId.Mobility]: 65,
 				[EArmorStatId.Resilience]: 0,
@@ -83,6 +85,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			EArmorSlotId.Chest,
 		],
 	},
+	// 1
 	{
 		name: 'It returns false when helmet and gauntlets strength are both 2',
 		input: {
@@ -110,6 +113,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
 			],
+			[],
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
@@ -122,6 +126,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			null,
 		],
 	},
+	// 2
 	{
 		name: 'It returns true when helmet and gauntlets strength are both 2, helmet discipline is 2 and gauntlets discipline is 16',
 		input: {
@@ -151,6 +156,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
 			],
+			[],
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
@@ -163,6 +169,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			EArmorSlotId.Arm,
 		],
 	},
+	// 3
 	{
 		name: 'It returns true immediately when the stat requirements are impossibly high',
 		input: {
@@ -185,14 +192,15 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			true,
 			[
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
 				EModId.MinorDisciplineMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
 			],
+			[],
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
@@ -205,6 +213,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			EArmorSlotId.Head,
 		],
 	},
+	// 4
 	{
 		name: 'It returns false when gauntlets mobility is 46',
 		input: {
@@ -227,6 +236,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			false,
 			[],
+			[],
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
@@ -239,6 +249,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			null,
 		],
 	},
+	// 5
 	{
 		name: 'It returns false when helmet mobility is 40',
 		input: {
@@ -261,6 +272,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			false,
 			[],
+			[],
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
@@ -273,6 +285,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			null,
 		],
 	},
+	// 6
 	{
 		name: 'It returns true when there is nowhere to put the required armor stat mods due to the cost of combat style mods',
 		input: {
@@ -308,6 +321,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				EModId.IntellectMod,
 				EModId.IntellectMod,
 			],
+			[],
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
@@ -320,6 +334,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			null,
 		],
 	},
+	// 7
 	{
 		name: 'It returns true when there is nowhere to put the required armor stat mods due to the cost of armor slot mods',
 		input: {
@@ -349,12 +364,13 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			true,
 			[
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
 				EModId.RecoveryMod,
-				EModId.IntellectMod,
-				EModId.IntellectMod,
-				EModId.IntellectMod,
-				EModId.IntellectMod,
 			],
+			[],
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
@@ -367,6 +383,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			null,
 		],
 	},
+	// 8
 	{
 		name: 'It returns true when there is nowhere to put the required armor stat mods due to the combined cost of armor slot mods and combat style mods',
 		input: {
@@ -404,7 +421,8 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		},
 		output: [
 			true,
-			[EModId.MobilityMod, EModId.RecoveryMod, EModId.MinorIntellectMod],
+			[EModId.RecoveryMod, EModId.MobilityMod, EModId.MinorIntellectMod],
+			[],
 			{
 				[EArmorStatId.Mobility]: 10,
 				[EArmorStatId.Resilience]: 0,
@@ -417,6 +435,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			null,
 		],
 	},
+	// 9
 	{
 		name: 'It returns false when there is space to put the required armor stat mods even with the combined cost of armor slot mods and combat style mods',
 		input: {
@@ -454,7 +473,8 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		},
 		output: [
 			false,
-			[EModId.MobilityMod, EModId.RecoveryMod],
+			[EModId.RecoveryMod, EModId.MobilityMod],
+			[],
 			{
 				[EArmorStatId.Mobility]: 10,
 				[EArmorStatId.Resilience]: 0,

@@ -268,25 +268,3 @@ export function countEnhancedPerks(sockets: DimSockets) {
 		(s) => s.plugged && isEnhancedPerk(s.plugged.plugDef)
 	).length;
 }
-
-export function isModCostVisible(
-	defs: D2ManifestDefinitions,
-	plug: DestinyItemPlugDefinition
-): plug is WithRequiredProperty<DestinyItemPlugDefinition, 'energyCost'> {
-	// hide cost if it's less than 1
-	if ((plug.energyCost?.energyCost ?? 0) < 1) {
-		return false;
-	}
-
-	// hide cost for Subclass 3.0 fragments as these are currently always set to 1
-	const subclassPlugCategory = getSubclassPlugCategories(defs).get(
-		plug.plugCategoryHash
-	);
-	if (
-		subclassPlugCategory?.socketCategoryHash === SocketCategoryHashes.Fragments
-	) {
-		return false;
-	}
-
-	return true;
-}

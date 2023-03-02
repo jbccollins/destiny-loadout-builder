@@ -47,6 +47,11 @@ const ElementIdToGrenadeIdListMapping: EnumDictionary<
 		EGrenadeId.FluxGrenade,
 		EGrenadeId.ArcboltGrenade,
 	],
+	[EElementId.Strand]: [
+		EGrenadeId.Grapple,
+		EGrenadeId.ShackleGrenade,
+		EGrenadeId.ThreadlingGrenade,
+	],
 	// TODO: Refactor this type so that we don't need to include the "Any" id here. It makes
 	// no sense for grenades
 	[EElementId.Any]: [],

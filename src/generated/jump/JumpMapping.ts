@@ -292,6 +292,66 @@ export const JumpIdToJumpMapping: EnumDictionary<EJumpId, IJump> = {
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Sunbreaker,
   },
+  [EJumpId.StrafeGlideStrand]: {
+    name: "Strafe Glide",
+    id: EJumpId.StrafeGlideStrand,
+    description:
+      "Jump while airborne to activate Glide and start an airborne drift with strong directional control.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/be1d77ea4eebee140ae0cdc93493ec34.png",
+    hash: 2628485816,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Broodweaver,
+  },
+  [EJumpId.BurstGlideStrand]: {
+    name: "Burst Glide",
+    id: EJumpId.BurstGlideStrand,
+    description:
+      "Jump while airborne to activate Glide and start an airborne drift with a strong initial boost of speed.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/26af42f4af7025280741b4c4a18eaacc.png",
+    hash: 2628485817,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Broodweaver,
+  },
+  [EJumpId.BalancedGlideStrand]: {
+    name: "Balanced Glide",
+    id: EJumpId.BalancedGlideStrand,
+    description:
+      "Jump while airborne to activate Glide and start an airborne drift with both moderate speed and directional control.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3d0b1e371face8fe7cd9e2646e2ecdea.png",
+    hash: 2628485818,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Broodweaver,
+  },
+  [EJumpId.StrafeLiftStrand]: {
+    name: "Strafe Lift",
+    id: EJumpId.StrafeLiftStrand,
+    description:
+      "Jump while airborne to activate Lift and launch into the air with strong directional control.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/45a08dcdcdc4ebcc5690ab027027cb0a.png",
+    hash: 3350493948,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Berserker,
+  },
+  [EJumpId.HighLiftStrand]: {
+    name: "High Lift",
+    id: EJumpId.HighLiftStrand,
+    description:
+      "Jump while airborne to activate Lift and launch into the air to greater heights.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9844e49a2c2aeba27fdf11075317b3b2.png",
+    hash: 3350493949,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Berserker,
+  },
+  [EJumpId.CatapultLiftStrand]: {
+    name: "Catapult Lift",
+    id: EJumpId.CatapultLiftStrand,
+    description:
+      "Jump while airborne to activate Lift and launch into the air with a strong initial burst of momentum.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/6af35cff95ec2c86847bfedcfe7fc62d.png",
+    hash: 3350493951,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Berserker,
+  },
   [EJumpId.TripleJumpStasis]: {
     name: "Triple Jump",
     id: EJumpId.TripleJumpStasis,
@@ -350,6 +410,35 @@ export const JumpIdToJumpMapping: EnumDictionary<EJumpId, IJump> = {
     hash: 3686638443,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Dawnblade,
+  },
+  [EJumpId.TripleJumpStrand]: {
+    name: "Triple Jump",
+    id: EJumpId.TripleJumpStrand,
+    description:
+      "While airborne, sustain your air control with a second or third jump.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/78db4441ec50dc42411ac27a32d99d70.png",
+    hash: 3721022585,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Threadrunner,
+  },
+  [EJumpId.StrafeJumpStrand]: {
+    name: "Strafe Jump",
+    id: EJumpId.StrafeJumpStrand,
+    description:
+      "While airborne, jump a second time with strong directional control.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0249bf706815f930cbdf78bc25e1732d.png",
+    hash: 3721022586,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Threadrunner,
+  },
+  [EJumpId.HighJumpStrand]: {
+    name: "High Jump",
+    id: EJumpId.HighJumpStrand,
+    description: "While airborne, jump a second time to reach greater heights.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/16a4b21bcf60643a3305f8fe32908632.png",
+    hash: 3721022587,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Threadrunner,
   },
   [EJumpId.BurstGlideArc]: {
     name: "Burst Glide",

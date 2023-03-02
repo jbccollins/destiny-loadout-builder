@@ -28,7 +28,8 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
   [EFragmentId.EmberOfCombustion]: {
     name: "Ember of Combustion",
     id: EFragmentId.EmberOfCombustion,
-    description: "Final blows with your Solar Super cause targets to ignite.",
+    description:
+      "Final blows with a Solar Super causes targets to ignite and creates a Firesprite.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/45476d85d0e6aeded810f217a0627afb.jpg",
     hash: 362132289,
     bonuses: [
@@ -43,7 +44,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Ember of Tempering",
     id: EFragmentId.EmberOfTempering,
     description:
-      "Solar weapon final blows grant you and your allies increased recovery for a short duration. Stacks 3 times.\n\nWhile Ember of Tempering is active, your weapons have increased airborne effectiveness.",
+      "Solar weapon final blows grant you and your allies increased recovery for a short duration. Stacks 3 times.\n\nWhile Tempered Metal is active, your weapons have increased airborne effectiveness.\n\nWhile Ember of Tempering is active, Solar weapon final blows create a Firesprite.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/cddc93648f0917dc8bd6663d38d7c379.jpg",
     hash: 362132290,
     bonuses: [
@@ -233,7 +234,8 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
   [EFragmentId.EmberOfSearing]: {
     name: "Ember of Searing",
     id: EFragmentId.EmberOfSearing,
-    description: "Defeating scorched targets grants melee energy.",
+    description:
+      "Defeating scorched targets grants melee energy and creates a Firesprite.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/7312346d93dc0e84d46e539a10aebb52.jpg",
     hash: 1051276351,
     bonuses: [
@@ -385,7 +387,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Echo of Domineering",
     id: EFragmentId.EchoOfDomineering,
     description:
-      "After suppressing a target, you gain greatly increased mobility for a short duration and your equipped weapon is reloaded from reserves.",
+      "After suppressing a target, you gain greatly increased mobility for a short duration, and your equipped weapon is reloaded from reserves.\n\nDefeating suppressed targets creates a Void Breach.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/958ff340ae4ce16d7cf71c5268a13919.jpg",
     hash: 2272984657,
     bonuses: [
@@ -573,7 +575,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Echo of Harvest",
     id: EFragmentId.EchoOfHarvest,
     description:
-      "Defeating weakened targets with precision final blows will create an Orb of Power.",
+      "Defeating weakened targets with precision final blows creates an Orb of Power and a Void Breach.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/6bd23524f7129761043724acbe90c7b5.jpg",
     hash: 2661180601,
     bonuses: [
@@ -601,7 +603,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
   [EFragmentId.EchoOfStarvation]: {
     name: "Echo of Starvation",
     id: EFragmentId.EchoOfStarvation,
-    description: "Picking up an Orb of Power grants Devour.",
+    description: "Picking up a Void Breach or an Orb of Power grants Devour.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/19219ecd56fef82e9ead65aed8fea63a.jpg",
     hash: 2661180603,
     bonuses: [
@@ -611,6 +613,59 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
       },
     ],
     elementId: EElementId.Void,
+  },
+  [EFragmentId.ThreadOfBinding]: {
+    name: "Thread of Binding",
+    id: EFragmentId.ThreadOfBinding,
+    description: "Super final blows emit a suspending burst from the target.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/42f10e9d82c7c2f364856fbef56b6354.jpg",
+    hash: 3192552688,
+    bonuses: [
+      {
+        stat: EArmorStatId.Resilience,
+        value: 10,
+      },
+    ],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfIsolation]: {
+    name: "Thread of Isolation",
+    id: EFragmentId.ThreadOfIsolation,
+    description:
+      "Landing rapid precision hits emits a severing burst from the target.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/6d5c07db3f3b268d2cdcad206a8d4308.jpg",
+    hash: 3192552689,
+    bonuses: [],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfContinuity]: {
+    name: "Thread of Continuity",
+    id: EFragmentId.ThreadOfContinuity,
+    description:
+      "Suspend, unravel, and sever effects applied to targets have increased duration.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/2d629d0adbf1d1cab255f087caaafeae.jpg",
+    hash: 3192552690,
+    bonuses: [
+      {
+        stat: EArmorStatId.Strength,
+        value: 10,
+      },
+    ],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfGeneration]: {
+    name: "Thread of Generation",
+    id: EFragmentId.ThreadOfGeneration,
+    description: "Dealing damage generates grenade energy.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/f3d9e926cd9b18f7b68ecb49dcadefc4.jpg",
+    hash: 3192552691,
+    bonuses: [
+      {
+        stat: EArmorStatId.Discipline,
+        value: -10,
+      },
+    ],
+    elementId: EElementId.Strand,
   },
   [EFragmentId.SparkOfVolts]: {
     name: "Spark of Volts",
@@ -748,5 +803,199 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
       },
     ],
     elementId: EElementId.Stasis,
+  },
+  [EFragmentId.SparkOfInstinct]: {
+    name: "Spark of Instinct",
+    id: EFragmentId.SparkOfInstinct,
+    description:
+      "While critically wounded, taking damage emits a burst of damaging Arc energy that jolts targets.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9af61929fb9deed3ed6466efefcb966b.jpg",
+    hash: 3478354816,
+    bonuses: [],
+    elementId: EElementId.Arc,
+  },
+  [EFragmentId.SparkOfHaste]: {
+    name: "Spark of Haste",
+    id: EFragmentId.SparkOfHaste,
+    description:
+      "You have greatly increased resilience, recovery, and mobility while sprinting.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/e86d118a2d954e93e1e2f467df270c63.jpg",
+    hash: 3478354817,
+    bonuses: [],
+    elementId: EElementId.Arc,
+  },
+  [EFragmentId.EchoOfCessation]: {
+    name: "Echo of Cessation",
+    id: EFragmentId.EchoOfCessation,
+    description:
+      "Finisher final blows create a burst of Void damage that causes nearby combatants to become volatile.\n\nDefeating volatile targets creates a Void Breach.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/cff39459331dba47792c1866e843d18d.jpg",
+    hash: 3854948620,
+    bonuses: [],
+    elementId: EElementId.Void,
+  },
+  [EFragmentId.EchoOfVigilance]: {
+    name: "Echo of Vigilance",
+    id: EFragmentId.EchoOfVigilance,
+    description:
+      "Defeating a target while your shields are depleted grants you a temporary Void overshield.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9d2e72c44ba6649187b58f040a7f21f9.jpg",
+    hash: 3854948621,
+    bonuses: [
+      {
+        stat: EArmorStatId.Recovery,
+        value: -10,
+      },
+    ],
+    elementId: EElementId.Void,
+  },
+  [EFragmentId.EmberOfResolve]: {
+    name: "Ember of Resolve",
+    id: EFragmentId.EmberOfResolve,
+    description: "Solar grenade final blows cure you.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3a633440f21817801caadb6615e0961a.jpg",
+    hash: 4180586736,
+    bonuses: [],
+    elementId: EElementId.Solar,
+  },
+  [EFragmentId.EmberOfMercy]: {
+    name: "Ember of Mercy",
+    id: EFragmentId.EmberOfMercy,
+    description:
+      "When you revive an ally, you and other nearby allies gain restoration.\n\nPicking up a Firesprite grants restoration.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3a3bcf657be5a88bc051fcf10cd6d701.jpg",
+    hash: 4180586737,
+    bonuses: [
+      {
+        stat: EArmorStatId.Resilience,
+        value: 10,
+      },
+    ],
+    elementId: EElementId.Solar,
+  },
+  [EFragmentId.ThreadOfPropagation]: {
+    name: "Thread of Propagation",
+    id: EFragmentId.ThreadOfPropagation,
+    description:
+      "Powered melee final blows grant your  Strand weapons Unraveling Rounds.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/4b78910e8b8b684d7dfca716eaea4616.jpg",
+    hash: 4208512210,
+    bonuses: [],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfEvolution]: {
+    name: "Thread of Evolution",
+    id: EFragmentId.ThreadOfEvolution,
+    description: "Threadlings travel farther and deal additional damage.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/badf77b1f1eeede2739b75bb3a817be0.jpg",
+    hash: 4208512211,
+    bonuses: [
+      {
+        stat: EArmorStatId.Intellect,
+        value: 10,
+      },
+    ],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfAscent]: {
+    name: "Thread of Ascent",
+    id: EFragmentId.ThreadOfAscent,
+    description:
+      "Activating your grenade ability reloads your equipped weapon and grants bonus airborne effectiveness and handling for a short duration.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/17f17fe5573dfc1cce1ae688e9e8a873.jpg",
+    hash: 4208512216,
+    bonuses: [
+      {
+        stat: EArmorStatId.Mobility,
+        value: 10,
+      },
+    ],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfFinality]: {
+    name: "Thread of Finality",
+    id: EFragmentId.ThreadOfFinality,
+    description: "Finisher final blows create Threadlings.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5288badd31e7067d1af71a061aaff22b.jpg",
+    hash: 4208512217,
+    bonuses: [
+      {
+        stat: EArmorStatId.Recovery,
+        value: 10,
+      },
+    ],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfMind]: {
+    name: "Thread of Mind",
+    id: EFragmentId.ThreadOfMind,
+    description: "Defeating suspended targets grants class ability energy.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a5d4a60d922293ebdbea1c22cbd93986.jpg",
+    hash: 4208512218,
+    bonuses: [],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfFury]: {
+    name: "Thread of Fury",
+    id: EFragmentId.ThreadOfFury,
+    description: "Damaging targets with a Tangle grants melee energy.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5cc5657e9653cf793cde419236c3a499.jpg",
+    hash: 4208512219,
+    bonuses: [
+      {
+        stat: EArmorStatId.Strength,
+        value: -10,
+      },
+    ],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfRebirth]: {
+    name: "Thread of Rebirth",
+    id: EFragmentId.ThreadOfRebirth,
+    description:
+      " Strand weapon final blows have a chance to create a Threadling.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/00afc79d1bd165623c9e506bec1a0ff3.jpg",
+    hash: 4208512220,
+    bonuses: [],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfTransmutation]: {
+    name: "Thread of Transmutation",
+    id: EFragmentId.ThreadOfTransmutation,
+    description:
+      "While you have Woven Mail, weapon final blows create a Tangle.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/ac3a190922c806b770c4a84366476201.jpg",
+    hash: 4208512221,
+    bonuses: [
+      {
+        stat: EArmorStatId.Strength,
+        value: 10,
+      },
+    ],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfWarding]: {
+    name: "Thread of Warding",
+    id: EFragmentId.ThreadOfWarding,
+    description: "Picking up an Orb of Power grants Woven Mail.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/feffa1ea71e0317462b406807a9d8b45.jpg",
+    hash: 4208512222,
+    bonuses: [
+      {
+        stat: EArmorStatId.Resilience,
+        value: -10,
+      },
+    ],
+    elementId: EElementId.Strand,
+  },
+  [EFragmentId.ThreadOfWisdom]: {
+    name: "Thread of Wisdom",
+    id: EFragmentId.ThreadOfWisdom,
+    description:
+      "Defeating suspended targets with precision final blows creates an Orb of Power.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/6f5d43447ee7de28bb94ac949f3fac44.jpg",
+    hash: 4208512223,
+    bonuses: [],
+    elementId: EElementId.Strand,
   },
 };

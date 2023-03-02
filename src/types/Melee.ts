@@ -26,6 +26,7 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.CombinationBlow,
 		EMeleeId.DisorientingBlow,
 	],
+	[EDestinySubclassId.Threadrunner]: [EMeleeId.ArcaneNeedle],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [EMeleeId.PenumbralBlast],
@@ -38,6 +39,7 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.BallLightning,
 		EMeleeId.ChainLightning,
 	],
+	[EDestinySubclassId.Broodweaver]: [EMeleeId.ThreadedSpike],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [EMeleeId.ShiverStrike],
@@ -51,6 +53,7 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.SeismicStrike,
 		EMeleeId.BallisticSlam,
 	],
+	[EDestinySubclassId.Berserker]: [EMeleeId.FrenziedBlade],
 };
 
 export const getMeleeIdsByDestinySubclassId = (

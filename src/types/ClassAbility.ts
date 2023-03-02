@@ -10,6 +10,7 @@ export const getClassAbility = (id: EClassAbilityId): IClassAbility =>
 	ClassAbilityIdToClassAbilityMapping[id];
 
 /****** Extra *****/
+// TODO: Move this into the actual subclass defs like super is
 const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 	EDestinySubclassId,
 	EClassAbilityId[]
@@ -32,6 +33,10 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 		EClassAbilityId.MarksmansDodgeArc,
 		EClassAbilityId.GamblersDodgeArc,
 	],
+	[EDestinySubclassId.Threadrunner]: [
+		EClassAbilityId.MarksmansDodgeStrand,
+		EClassAbilityId.GamblersDodgeStrand,
+	],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [
@@ -51,6 +56,10 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 		EClassAbilityId.HealingRiftArc,
 		EClassAbilityId.EmpoweringRiftArc,
 	],
+	[EDestinySubclassId.Broodweaver]: [
+		EClassAbilityId.HealingRiftStrand,
+		EClassAbilityId.EmpoweringRiftStrand,
+	],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [
@@ -69,6 +78,10 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 		EClassAbilityId.ToweringBarricadeArc,
 		EClassAbilityId.RallyBarricadeArc,
 		EClassAbilityId.ThrusterArc,
+	],
+	[EDestinySubclassId.Berserker]: [
+		EClassAbilityId.ToweringBarricadeStrand,
+		EClassAbilityId.RallyBarricadeStrand,
 	],
 };
 

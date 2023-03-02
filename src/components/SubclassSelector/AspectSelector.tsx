@@ -1,4 +1,3 @@
-import { EAspectId } from '@dlb/types/IdEnums';
 import { styled } from '@mui/material';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
@@ -9,6 +8,7 @@ import {
 	setSelectedAspects,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));

@@ -17,9 +17,11 @@ export enum EGrenadeId {
   FireboltGrenade = "FireboltGrenade",
   SolarGrenade = "SolarGrenade",
   SuppressorGrenade = "SuppressorGrenade",
+  Grapple = "Grapple",
   StormGrenade = "StormGrenade",
   IncendiaryGrenade = "IncendiaryGrenade",
   VoidWall = "VoidWall",
+  ShackleGrenade = "ShackleGrenade",
   FlashbangGrenade = "FlashbangGrenade",
   TripmineGrenade = "TripmineGrenade",
   LightningGrenade = "LightningGrenade",
@@ -27,4 +29,5 @@ export enum EGrenadeId {
   AxionBolt = "AxionBolt",
   ThermiteGrenade = "ThermiteGrenade",
   FluxGrenade = "FluxGrenade",
+  ThreadlingGrenade = "ThreadlingGrenade",
 }

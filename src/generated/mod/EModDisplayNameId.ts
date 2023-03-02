@@ -2,21 +2,19 @@
 // Do not manually make changes to this file.
 
 export enum EModDisplayNameId {
-  ArmsArmorMod = "ArmsArmorMod",
-  LegArmorMod = "LegArmorMod",
-  ChestArmorMod = "ChestArmorMod",
-  WarmindCellMod = "WarmindCellMod",
-  GeneralArmorMod = "GeneralArmorMod",
   HelmetArmorMod = "HelmetArmorMod",
-  ElementalWellMod = "ElementalWellMod",
-  LastWishRaidMod = "LastWishRaidMod",
+  LegArmorMod = "LegArmorMod",
   ClassItemArmorMod = "ClassItemArmorMod",
+  ArmsArmorMod = "ArmsArmorMod",
+  ArtificeArmorMod = "ArtificeArmorMod",
+  ChestArmorMod = "ChestArmorMod",
+  GeneralArmorMod = "GeneralArmorMod",
+  LastWishRaidMod = "LastWishRaidMod",
   VaultOfGlassArmorMod = "VaultOfGlassArmorMod",
-  ClassItemMod = "ClassItemMod",
   DeepStoneCryptRaidMod = "DeepStoneCryptRaidMod",
   KingsFallMod = "KingsFallMod",
   GardenOfSalvationRaidMod = "GardenOfSalvationRaidMod",
   VowOfTheDiscipleRaidMod = "VowOfTheDiscipleRaidMod",
-  ChargedWithLightMod = "ChargedWithLightMod",
+  Unknown = "Unknown",
   NightmareMod = "NightmareMod",
 }

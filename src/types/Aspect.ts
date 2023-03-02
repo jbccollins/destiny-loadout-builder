@@ -1,7 +1,8 @@
 import { AspectIdToAspectMapping } from '@dlb/generated/aspect/AspectMapping';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 import { IAspect } from './generation';
 import { EnumDictionary } from './globals';
-import { EAspectId, EDestinySubclassId } from './IdEnums';
+import { EDestinySubclassId } from './IdEnums';
 
 export const AspectIdList = Object.values(EAspectId);
 
@@ -10,6 +11,7 @@ export const getAspect = (aspectId: EAspectId): IAspect =>
 
 /***** Extra *****/
 
+// TODO: Move this right into the subclass file
 const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 	EDestinySubclassId,
 	EAspectId[]
@@ -36,6 +38,10 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.LethalCurrent,
 		EAspectId.TempestStrike,
 	],
+	[EDestinySubclassId.Threadrunner]: [
+		EAspectId.EnsnaringSlam,
+		EAspectId.WidowsSilk,
+	],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [
@@ -59,6 +65,10 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.ElectrostaticMind,
 		EAspectId.LightningSurge,
 	],
+	[EDestinySubclassId.Broodweaver]: [
+		EAspectId.MindspunInvocation,
+		EAspectId.WeaversCall,
+	],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [
@@ -81,6 +91,10 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.TouchOfThunder,
 		EAspectId.Knockout,
 		EAspectId.Juggernaut,
+	],
+	[EDestinySubclassId.Berserker]: [
+		EAspectId.DrengrsLash,
+		EAspectId.IntoTheFray,
 	],
 };
 

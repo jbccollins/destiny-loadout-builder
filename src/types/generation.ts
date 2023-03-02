@@ -15,7 +15,7 @@ export interface IMod extends IIdentifiableName, IHash, IIcon, IBonuses {
 	description: string;
 	modSocketCategoryId: EModSocketCategoryId;
 	modCategoryId: EModCategoryId;
-	elementId: EElementId;
+	elementId?: EElementId; // TODO: Remove elementId
 	cost: number;
 	isArtifactMod: boolean;
 	armorSlotId: EArmorSlotId | null;

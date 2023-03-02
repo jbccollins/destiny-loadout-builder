@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { getFragment, getFragmentIdsByElementId } from '@dlb/types/Fragment';
-import { EElementId, EFragmentId } from '@dlb/types/IdEnums';
+import { EElementId } from '@dlb/types/IdEnums';
 import { getArmorStat, IArmorStat } from '@dlb/types/ArmorStat';
 import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
 import { getElement } from '@dlb/types/Element';

@@ -110,6 +110,16 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Voidwalker,
   },
+  [ESuperAbilityId.Needlestorm]: {
+    name: "Needlestorm",
+    id: ESuperAbilityId.Needlestorm,
+    description:
+      "[Super]  : Conjure a hail of deadly woven needles.\n\nAfter embedding themselves in the environment, the needles will re-weave into a host of Threadlings.\n\nThreadlings you create will return to you and perch if they can't find any nearby targets. Damaging targets with your weapons or melee will send out perched Threadlings to attack.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/6fdb9a0d36cf076f17cb22eeaafeaed8.png",
+    hash: 1885339915,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Broodweaver,
+  },
   [ESuperAbilityId.GlacialQuake]: {
     name: "Glacial Quake",
     id: ESuperAbilityId.GlacialQuake,
@@ -139,6 +149,16 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     hash: 2274196887,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Dawnblade,
+  },
+  [ESuperAbilityId.Silkstrike]: {
+    name: "Silkstrike",
+    id: ESuperAbilityId.Silkstrike,
+    description:
+      "Weave a vicious rope dart and tear through your targets.\n\n[Light Attack]  : Swing the rope dart in front of you to deal damage. The tip of the dart deals bonus damage, and defeating targets with the tip causes them to explode.\n\n[Heavy Attack]  : Swing the rope dart in a circular motion to deal heavy damage all around you.\n\n[Grenade]  : Use the grapple to move forward quickly.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3ac39f9698612951757a3edbd52a006b.png",
+    hash: 2463983862,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Threadrunner,
   },
   [ESuperAbilityId.SilenceAndSquall]: {
     name: "Silence and Squall",
@@ -199,6 +219,16 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     hash: 2747500761,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Sunbreaker,
+  },
+  [ESuperAbilityId.Bladefury]: {
+    name: "Bladefury",
+    id: ESuperAbilityId.Bladefury,
+    description:
+      "[Super]  : Create two woven blades and roam the battlefield. While active:\n\n[Light Attack]  : Perform a leaping slash towards nearby targets, severing them on hit and dealing bonus damage to suspended targets. Each successful hit briefly increases your attack speed and grants energy for your heavy attack.\n\n[Heavy Attack]  : Unleash a heavy upward slash, creating two suspending projectiles that seek out targets.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9c3cbd31113be1f463a41b27b81bec19.png",
+    hash: 3574662354,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Berserker,
   },
   [ESuperAbilityId.WintersWrath]: {
     name: "Winter's Wrath",

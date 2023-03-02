@@ -29,6 +29,9 @@ export const generateModMapping = (mods: IMod[]): string => {
 
 	const serializeMods: Record<string, unknown>[] = [];
 	mods.forEach((mod) => {
+		if (mod.name === 'Strand Reserves') {
+			console.log('sr');
+		}
 		const serializedMod = { ...mod } as Record<string, unknown>;
 		Object.keys(enumsToSerialize).forEach((key) => {
 			const serializedResult = getSerializableValue(

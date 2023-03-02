@@ -103,7 +103,6 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				],
 			],
 		},
-
 		output: [
 			{
 				armorIdList: ['0', '1', '2', '3'],
@@ -324,28 +323,16 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 // test case that way :(
 
 describe('processArmor', () => {
-	// test(processArmorTestCases[0].name, () => {
-	// 	const { input, output } = processArmorTestCases[0];
-	// 	expect(doProcessArmor(input)).toEqual(output);
-	// });
+	test(processArmorTestCases[0].name, () => {
+		const { input, output } = processArmorTestCases[0];
+		expect(doProcessArmor(input)).toEqual(output);
+	});
 	test(processArmorTestCases[1].name, () => {
 		const { input, output } = processArmorTestCases[1];
 		expect(doProcessArmor(input)).toEqual(output);
 	});
-	// test(processArmorTestCases[2].name, () => {
-	// 	const { input, output } = processArmorTestCases[2];
-	// 	expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
-	// });
-	// test(processArmorTestCases[3].name, () => {
-	// 	const { input, output } = processArmorTestCases[3];
-	// 	expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
-	// });
-	// test(processArmorTestCases[4].name, () => {
-	// 	const { input, output } = processArmorTestCases[4];
-	// 	expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
-	// });
-	// test(processArmorTestCases[5].name, () => {
-	// 	const { input, output } = processArmorTestCases[5];
-	// 	expect(doProcessArmor(input) as string[][]).toEqual(output as string[][]);
-	// });
+	test(processArmorTestCases[2].name, () => {
+		const { input, output } = processArmorTestCases[2];
+		expect(doProcessArmor(input)).toEqual(output);
+	});
 });

@@ -140,6 +140,15 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     hash: 2265076177,
     elementId: EElementId.Void,
   },
+  [EGrenadeId.Grapple]: {
+    name: "Grapple",
+    id: EGrenadeId.Grapple,
+    description:
+      "Weave a grappling hook, and quickly pull yourself forward. Grappling to a Tangle immediately recharges your grenade energy.\n\nDuring and shortly after grappling, your melee attack deals area damage and unravels targets.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0cab0abc819d270a92f9e2027e46816d.jpg",
+    hash: 2470512752,
+    elementId: EElementId.Strand,
+  },
   [EGrenadeId.StormGrenade]: {
     name: "Storm Grenade",
     id: EGrenadeId.StormGrenade,
@@ -165,6 +174,15 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     icon: "https://www.bungie.net/common/destiny2_content/icons/e1fe72608ed560d20f81ff41c8997fb7.jpg",
     hash: 2809141585,
     elementId: EElementId.Void,
+  },
+  [EGrenadeId.ShackleGrenade]: {
+    name: "Shackle Grenade",
+    id: EGrenadeId.ShackleGrenade,
+    description:
+      "A thrown weapon of weighted Strand matter that detonates on impact, suspending targets and creating additional suspending subprojectiles.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/03fe35299cf2c09185d08986585da50d.jpg",
+    hash: 2809342386,
+    elementId: EElementId.Strand,
   },
   [EGrenadeId.FlashbangGrenade]: {
     name: "Flashbang Grenade",
@@ -226,5 +244,14 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     icon: "https://www.bungie.net/common/destiny2_content/icons/9a30af5e62d440a3f201b307e19e54e0.jpg",
     hash: 4198689901,
     elementId: EElementId.Arc,
+  },
+  [EGrenadeId.ThreadlingGrenade]: {
+    name: "Threadling Grenade",
+    id: EGrenadeId.ThreadlingGrenade,
+    description:
+      "A woven projectile that reweaves itself into Threadlings while in flight.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a9a0a8785006eb5ba4f069fd5657defd.jpg",
+    hash: 4228170798,
+    elementId: EElementId.Strand,
   },
 };

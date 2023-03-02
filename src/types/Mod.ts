@@ -11,9 +11,17 @@ export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 
 export const ModIdList = Object.values(EModId);
 
-export const ArmorSlotModIdList = ModIdList.filter(
-	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot
-);
+// export const ArmorSlotModIdList = ModIdList.filter(
+// 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot
+// );
+// TODO: Figure out a way to properly show/hide the artifact variations of mods
+export const ArmorSlotModIdList = ModIdList.filter((id) => {
+	const mod = getMod(id);
+	return (
+		mod?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot &&
+		!mod?.isArtifactMod
+	);
+});
 
 export const CombatStyleModIdList = ModIdList.filter(
 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.CombatStyle
@@ -23,15 +31,46 @@ export const RaidModIdList = ModIdList.filter(
 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.Raid
 );
 
-export const StatModIdList = ModIdList.filter(
-	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.Stat
-);
+export const StatModIdList = ModIdList.filter((id) => {
+	const mod = getMod(id);
+	return (
+		mod?.modSocketCategoryId === EModSocketCategoryId.Stat &&
+		!mod?.isArtifactMod
+	);
+});
 
 export const MajorStatModIdList = StatModIdList.filter(
 	(id) => !getMod(id)?.name.includes('Minor')
 );
 
 export const MinorStatModIdList = StatModIdList.filter((id) =>
+	getMod(id)?.name.includes('Minor')
+);
+
+export const ArtifactStatModIdList = ModIdList.filter((id) => {
+	const mod = getMod(id);
+	return (
+		mod?.modSocketCategoryId === EModSocketCategoryId.Stat && mod?.isArtifactMod
+	);
+});
+
+export const ArtifactMajorStatModIdList = ArtifactStatModIdList.filter(
+	(id) => !getMod(id)?.name.includes('Minor')
+);
+
+export const ArtifactMinorStatModIdList = ArtifactStatModIdList.filter((id) =>
+	getMod(id)?.name.includes('Minor')
+);
+
+export const ArtificeStatModIdList = ModIdList.filter(
+	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.ArtificeStat
+);
+
+export const ArtificeMajorStatModIdList = ArtificeStatModIdList.filter(
+	(id) => !getMod(id)?.name.includes('Minor')
+);
+
+export const ArtificeMinorStatModIdList = ArtificeStatModIdList.filter((id) =>
 	getMod(id)?.name.includes('Minor')
 );
 
@@ -47,8 +86,13 @@ const generateArmorSlotIdToArmorSlotModIdListMapping = (): EnumDictionary<
 		[EArmorSlotId.Leg]: [],
 		[EArmorSlotId.ClassItem]: [],
 	};
+
 	ArmorSlotModIdList.forEach((id) => {
-		mapping[getMod(id).armorSlotId].push(id);
+		try {
+			mapping[getMod(id).armorSlotId].push(id);
+		} catch (e) {
+			console.log('fix this error');
+		}
 	});
 	return mapping;
 };
@@ -68,6 +112,7 @@ const generateModSocketCategoryIdToModIdListMapping = (): EnumDictionary<
 		[EModSocketCategoryId.CombatStyle]: [],
 		[EModSocketCategoryId.Raid]: [],
 		[EModSocketCategoryId.Stat]: [],
+		[EModSocketCategoryId.ArtificeStat]: [],
 	};
 	ModIdList.forEach((id) => {
 		const mod = getMod(id);

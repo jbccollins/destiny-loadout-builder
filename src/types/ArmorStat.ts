@@ -1,3 +1,4 @@
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDestinyClassAbilityStat } from './DestinyClass';
 import { getFragment } from './Fragment';
@@ -6,12 +7,10 @@ import {
 	IIcon,
 	IIdentifiableName,
 	ValidateEnumList,
-	Mapping,
 	StatBonusStat,
 	IHash,
-	ClassAbilityStat,
 } from './globals';
-import { EArmorStatId, EDestinyClassId, EFragmentId } from './IdEnums';
+import { EArmorStatId, EDestinyClassId } from './IdEnums';
 import { getMod } from './Mod';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [

@@ -30,6 +30,26 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Stormcaller,
   },
+  [EClassAbilityId.HealingRiftStrand]: {
+    name: "Healing Rift",
+    id: EClassAbilityId.HealingRiftStrand,
+    description:
+      "Conjure a well of power that continuously heals those inside it.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/feefb41e76f8d550b201c93e8d050cb1.png",
+    hash: 383852320,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Broodweaver,
+  },
+  [EClassAbilityId.EmpoweringRiftStrand]: {
+    name: "Empowering Rift",
+    id: EClassAbilityId.EmpoweringRiftStrand,
+    description:
+      "Conjure a well of power that increases weapon damage for those inside it.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5d874462f91e55c074d41c64ad475ade.png",
+    hash: 383852321,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Broodweaver,
+  },
   [EClassAbilityId.MarksmansDodgeArc]: {
     name: "Marksman's Dodge",
     id: EClassAbilityId.MarksmansDodgeArc,
@@ -78,6 +98,46 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     hash: 489583098,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Striker,
+  },
+  [EClassAbilityId.GamblersDodgeStrand]: {
+    name: "Gambler's Dodge",
+    id: EClassAbilityId.GamblersDodgeStrand,
+    description:
+      "Dodge to perform a deft tumble, avoiding enemy attacks. Dodging near enemies fully recharges your Melee Ability.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3b3b077b3d01d0f1782982451815f770.png",
+    hash: 1282157890,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Threadrunner,
+  },
+  [EClassAbilityId.MarksmansDodgeStrand]: {
+    name: "Marksman's Dodge",
+    id: EClassAbilityId.MarksmansDodgeStrand,
+    description:
+      "Dodge to perform an evasive maneuver with a steady hand. Dodging automatically reloads your weapon.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3ab0fd209b6bd5fe15b3c6d9d58ccb9b.png",
+    hash: 1282157891,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Threadrunner,
+  },
+  [EClassAbilityId.RallyBarricadeStrand]: {
+    name: "Rally Barricade",
+    id: EClassAbilityId.RallyBarricadeStrand,
+    description:
+      "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/ced8899f7ff33bf58c0e0ec5c5da5666.png",
+    hash: 2087010644,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Berserker,
+  },
+  [EClassAbilityId.ToweringBarricadeStrand]: {
+    name: "Towering Barricade",
+    id: EClassAbilityId.ToweringBarricadeStrand,
+    description:
+      "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/ac96e6784aee2e7011c720eca39fd531.png",
+    hash: 2087010645,
+    elementId: EElementId.Strand,
+    destinySubclassId: EDestinySubclassId.Berserker,
   },
   [EClassAbilityId.EmpoweringRiftVoid]: {
     name: "Empowering Rift",

@@ -4,14 +4,12 @@ import {
 	setSelectedSuperAbility,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import {
-	getSuperAbility,
-	getSuperAbilityIdsByDestinySubclassId,
-} from '@dlb/types/SuperAbility';
+import { getSuperAbility } from '@dlb/types/SuperAbility';
 import IconDropdown from '@dlb/components/IconDropdown';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0
@@ -52,9 +50,9 @@ function SuperAbilitySelector() {
 	};
 
 	// TODO: Memoize these options
-	const options: Option[] = getSuperAbilityIdsByDestinySubclassId(
+	const options: Option[] = getDestinySubclass(
 		selectedDestinySubclassId
-	).map((superAbilityId) => {
+	).superAbilityIdList.map((superAbilityId) => {
 		const { name, id, icon, description } = getSuperAbility(superAbilityId);
 		return {
 			label: name,

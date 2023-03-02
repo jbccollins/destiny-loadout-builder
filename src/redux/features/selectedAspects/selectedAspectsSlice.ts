@@ -3,9 +3,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '@dlb/redux/store';
 
 import { v4 as uuid, NIL } from 'uuid';
-import { EAspectId, EDestinySubclassId } from '@dlb/types/IdEnums';
+import { EDestinySubclassId } from '@dlb/types/IdEnums';
 import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
 import { getAspectIdsByDestinySubclassId } from '@dlb/types/Aspect';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 
 type SelectedAspects = {
 	[key in EDestinySubclassId]: EAspectId[];

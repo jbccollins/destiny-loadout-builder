@@ -1,7 +1,8 @@
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { FragmentIdToFragmentMapping } from '@dlb/generated/fragment/FragmentMapping';
 import { IFragment } from './generation';
 import { EnumDictionary } from './globals';
-import { EArmorStatId, EFragmentId, EElementId } from './IdEnums';
+import { EElementId } from './IdEnums';
 
 export const FragmentIdList = Object.values(EFragmentId);
 
@@ -28,6 +29,7 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 			EFragmentId.WhisperOfTorment,
 		],
 		[EElementId.Void]: [
+			EFragmentId.EchoOfCessation,
 			EFragmentId.EchoOfDilation,
 			EFragmentId.EchoOfDomineering,
 			EFragmentId.EchoOfExchange,
@@ -42,6 +44,7 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 			EFragmentId.EchoOfPersistence,
 			EFragmentId.EchoOfStarvation,
 			EFragmentId.EchoOfUndermining,
+			EFragmentId.EchoOfVigilance,
 		],
 		[EElementId.Solar]: [
 			EFragmentId.EmberOfAshes,
@@ -52,6 +55,8 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 			EFragmentId.EmberOfCombustion,
 			EFragmentId.EmberOfEmpyrean,
 			EFragmentId.EmberOfEruption,
+			EFragmentId.EmberOfMercy,
+			EFragmentId.EmberOfResolve,
 			EFragmentId.EmberOfSearing,
 			EFragmentId.EmberOfSingeing,
 			EFragmentId.EmberOfSolace,
@@ -67,6 +72,8 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 			EFragmentId.SparkOfFeedback,
 			EFragmentId.SparkOfFocus,
 			EFragmentId.SparkOfFrequency,
+			EFragmentId.SparkOfHaste,
+			EFragmentId.SparkOfInstinct,
 			EFragmentId.SparkOfIons,
 			EFragmentId.SparkOfMagnitude,
 			EFragmentId.SparkOfMomentum,
@@ -75,6 +82,22 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 			EFragmentId.SparkOfShock,
 			EFragmentId.SparkOfVolts,
 		],
+		[EElementId.Strand]: [
+			EFragmentId.ThreadOfAscent,
+			EFragmentId.ThreadOfBinding,
+			EFragmentId.ThreadOfContinuity,
+			EFragmentId.ThreadOfEvolution,
+			EFragmentId.ThreadOfFinality,
+			EFragmentId.ThreadOfFury,
+			EFragmentId.ThreadOfGeneration,
+			EFragmentId.ThreadOfIsolation,
+			EFragmentId.ThreadOfMind,
+			EFragmentId.ThreadOfPropagation,
+			EFragmentId.ThreadOfRebirth,
+			EFragmentId.ThreadOfTransmutation,
+			EFragmentId.ThreadOfWarding,
+			EFragmentId.ThreadOfWisdom,
+		],
 		// TODO: Refactor this type so that we don't need to include the "Any" id here. It makes
 		// no sense for fragments
 		[EElementId.Any]: [],
@@ -82,24 +105,3 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 
 export const getFragmentIdsByElementId = (id: EElementId): EFragmentId[] =>
 	ElementIdToFragmentIdMapping[id];
-
-export const ElementIdToFragmentMapping: EnumDictionary<
-	EElementId,
-	IFragment[]
-> = {
-	[EElementId.Stasis]: getFragmentIdsByElementId(EElementId.Stasis).map((id) =>
-		getFragment(id)
-	),
-	[EElementId.Void]: getFragmentIdsByElementId(EElementId.Void).map((id) =>
-		getFragment(id)
-	),
-	[EElementId.Solar]: getFragmentIdsByElementId(EElementId.Solar).map((id) =>
-		getFragment(id)
-	),
-	[EElementId.Arc]: getFragmentIdsByElementId(EElementId.Any).map((id) =>
-		getFragment(id)
-	),
-	// TODO: Refactor this type so that we don't need to include the "Any" id here. It makes
-	// no sense for fragments
-	[EElementId.Any]: [],
-};

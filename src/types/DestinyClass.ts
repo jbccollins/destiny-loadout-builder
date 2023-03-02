@@ -53,18 +53,21 @@ const DestinyClassIdToDestinySubclassesMapping: EnumDictionary<
 		EDestinySubclassId.Gunslinger,
 		EDestinySubclassId.Nightstalker,
 		EDestinySubclassId.Revenant,
+		EDestinySubclassId.Threadrunner,
 	],
 	[EDestinyClassId.Warlock]: [
 		EDestinySubclassId.Dawnblade,
 		EDestinySubclassId.Shadebinder,
 		EDestinySubclassId.Stormcaller,
 		EDestinySubclassId.Voidwalker,
+		EDestinySubclassId.Broodweaver,
 	],
 	[EDestinyClassId.Titan]: [
 		EDestinySubclassId.Behemoth,
 		EDestinySubclassId.Sentinel,
 		EDestinySubclassId.Striker,
 		EDestinySubclassId.Sunbreaker,
+		EDestinySubclassId.Berserker,
 	],
 };
 

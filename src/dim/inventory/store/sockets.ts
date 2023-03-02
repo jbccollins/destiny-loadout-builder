@@ -13,13 +13,13 @@ import {
 	DestinyObjectiveProgress,
 	DestinySocketCategoryStyle,
 	DestinySocketTypeDefinition,
-	SocketPlugSources
+	SocketPlugSources,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { emptyPlugHashes } from '@dlb/dim/data/d2/empty-plug-hashes';
 import {
 	ItemCategoryHashes,
 	PlugCategoryHashes,
-	SocketCategoryHashes
+	SocketCategoryHashes,
 } from '@dlb/dim/data/d2/generated-enums';
 import _ from 'lodash';
 import {
@@ -28,7 +28,7 @@ import {
 	DimSocket,
 	DimSocketCategory,
 	DimSockets,
-	PluggableInventoryItemDefinition
+	PluggableInventoryItemDefinition,
 } from '@dlb/dim/inventory/item-types';
 
 //
@@ -137,13 +137,13 @@ function buildInstancedSockets(
 	for (const category of itemDef.sockets.socketCategories) {
 		categories.push({
 			category: defs.SocketCategory.get(category.socketCategoryHash, itemDef),
-			socketIndexes: category.socketIndexes
+			socketIndexes: category.socketIndexes,
 		});
 	}
 
 	return {
 		allSockets: createdSockets, // Flat list of sockets
-		categories: categories.sort(compareBy((c) => c.category?.index)) // Sockets organized by category
+		categories: categories.sort(compareBy((c) => c.category?.index)), // Sockets organized by category
 	};
 }
 
@@ -178,13 +178,13 @@ function buildDefinedSockets(
 	for (const category of itemDef.sockets!.socketCategories) {
 		categories.push({
 			category: defs.SocketCategory.get(category.socketCategoryHash),
-			socketIndexes: category.socketIndexes
+			socketIndexes: category.socketIndexes,
 		});
 	}
 
 	return {
 		allSockets: createdSockets, // Flat list of sockets
-		categories: categories.sort(compareBy((c) => c.category.index)) // Sockets organized by category
+		categories: categories.sort(compareBy((c) => c.category.index)), // Sockets organized by category
 	};
 }
 
@@ -266,7 +266,7 @@ function buildDefinedSocket(
 					if (built) {
 						reusablePlugs.push({
 							...built,
-							cannotCurrentlyRoll: !reusablePlug.currentlyCanRoll
+							cannotCurrentlyRoll: !reusablePlug.currentlyCanRoll,
 						});
 						addCraftingReqs(reusablePlug);
 					}
@@ -303,7 +303,7 @@ function buildDefinedSocket(
 					if (built?.plugDef.displayProperties.name) {
 						reusablePlugs.push({
 							...built,
-							cannotCurrentlyRoll: !randomPlug.currentlyCanRoll
+							cannotCurrentlyRoll: !randomPlug.currentlyCanRoll,
 						});
 						addCraftingReqs(randomPlug);
 					}
@@ -372,7 +372,7 @@ function buildDefinedSocket(
 		isPerk,
 		isReusable,
 		socketDefinition: socketDef,
-		craftingData: Object.keys(craftingData).length ? craftingData : undefined
+		craftingData: Object.keys(craftingData).length ? craftingData : undefined,
 	};
 }
 
@@ -432,7 +432,7 @@ function buildPlug(
 		perks: plugDef.perks
 			? plugDef.perks.map((perk) => defs.SandboxPerk.get(perk.perkHash))
 			: [],
-		stats: null
+		stats: null,
 	};
 }
 
@@ -453,7 +453,7 @@ export function buildDefinedPlug(
 		perks: (plugDef.perks || []).map((perk) =>
 			defs.SandboxPerk.get(perk.perkHash)
 		),
-		stats: null
+		stats: null,
 	};
 }
 
@@ -491,7 +491,7 @@ function isKnownEmptyPlugItemHash(plugItemHash: number) {
 // These socket categories never have any empty-able sockets.
 const noDefaultSocketCategoryHashes: SocketCategoryHashes[] = [
 	SocketCategoryHashes.Abilities_Abilities,
-	SocketCategoryHashes.Abilities_Abilities_LightSubclass,
+	// SocketCategoryHashes.Abilities_Abilities_LightSubclass,
 	SocketCategoryHashes.Super,
 	SocketCategoryHashes.WeaponPerks_Reusable,
 	SocketCategoryHashes.IntrinsicTraits,
@@ -500,7 +500,7 @@ const noDefaultSocketCategoryHashes: SocketCategoryHashes[] = [
 	SocketCategoryHashes.ArmorTier,
 	SocketCategoryHashes.ClanPerks_Unlockable_ClanBanner,
 	SocketCategoryHashes.GhostShellPerks,
-	SocketCategoryHashes.VehiclePerks
+	SocketCategoryHashes.VehiclePerks,
 ];
 
 // Because we conservatively fall back to `singleInitialItemHash`, we
@@ -510,7 +510,7 @@ const noDefaultSocketCategoryHashes: SocketCategoryHashes[] = [
 const noDefaultPlugIdentifiers: (string | number)[] = [
 	'enhancements.exotic', // Exotic Armor Perk sockets (Aeons, all options are equivalent)
 	...eventArmorRerollSocketIdentifiers, // Weird rerolling sockets
-	PlugCategoryHashes.ArmorSkinsSharedHead // FotL Helmet Ornaments
+	PlugCategoryHashes.ArmorSkinsSharedHead, // FotL Helmet Ornaments
 ];
 
 /**
@@ -707,7 +707,7 @@ function buildSocket(
 		reusablePlugItems: reusablePlugs,
 		isPerk,
 		isReusable,
-		socketDefinition: socketDef
+		socketDefinition: socketDef,
 	};
 }
 
@@ -748,7 +748,7 @@ function buildCachedDimPlugSet(
 		hash: plugSetHash,
 		precomputedEmptyPlugItemHash: defPlugSet.reusablePlugItems
 			.map((p) => p.plugItemHash)
-			.find(isKnownEmptyPlugItemHash)
+			.find(isKnownEmptyPlugItemHash),
 	};
 	reusablePlugSetCache[plugSetHash] = dimPlugSet;
 

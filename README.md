@@ -49,13 +49,28 @@ brew install mkcert
 mkcert -install
 mkcert localhost
 ```
-##### Windows Instructions (TODO)
+##### Windows Instructions
+Follow the instructions [here](https://github.com/FiloSottile/mkcert#windows) to install mkcert. After installing it, run the following commands in the project repo:
+
+```bash     
+mkcert -install
+mkcert localhost
+```
 
 #### Run the app!
 From the root directory run
 
 ```bash
 npm run dev
+```
+
+If on windows, open two powershell terminals and run each command in one terminal:
+```bash
+npx local-ssl-proxy --source 4001 --target 3001 --cert localhost.pem --key localhost-key.pem
+```
+
+```bash
+npx next dev -p 3001
 ```
 
 Open [http://localhost:4001](http://localhost:4001) in your browser to see the result.

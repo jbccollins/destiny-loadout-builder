@@ -1,5 +1,3 @@
-import { styled } from '@mui/material';
-
 import {
 	selectSelectedExoticArmor,
 	setSelectedExoticArmor,
@@ -13,19 +11,6 @@ import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { useMemo } from 'react';
-
-// const Container = styled('div')(({ theme }) => ({
-// 	color: theme.palette.secondary.main,
-// 	width: '100%',
-// 	// TODO: Fix this styling. Make it actually apply to the child. Does nothing rn.
-// 	['.exotic-selector-text-field fieldset']: {
-// 		borderTopLeftRadius: '0px',
-// 		borderBottomLeftRadius: '0px',
-// 		//borderLeftColor: 'transparent'
-// 		padding: theme.spacing(1),
-// 		paddingRight: 0,
-// 	},
-// }));
 
 function ExoticSelector() {
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);

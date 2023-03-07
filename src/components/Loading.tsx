@@ -33,7 +33,7 @@ import {
 	selectDesiredArmorStats,
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
-import selectedMasterworkAssumptionSlice, {
+import {
 	selectSelectedMasterworkAssumption,
 	setSelectedMasterworkAssumption,
 } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
@@ -41,10 +41,6 @@ import {
 	selectSelectedFragments,
 	setSelectedFragments,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
-import selectedCombatStyleModsSlice, {
-	selectSelectedCombatStyleMods,
-	setSelectedCombatStyleMods,
-} from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
 import {
 	selectSelectedArmorSlotMods,
 	setSelectedArmorSlotMods,
@@ -62,11 +58,12 @@ import {
 	selectSelectedMinimumGearTier,
 	setSelectedMinimumGearTier,
 } from '@dlb/redux/features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
-import selectedRaidModsSlice, {
+import {
 	selectSelectedRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
+import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -114,7 +111,6 @@ function Loading() {
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
-	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
@@ -269,7 +265,6 @@ function Loading() {
 						fragments: selectedFragments[EElementId.Stasis],
 					})
 				);
-				dispatch(setSelectedCombatStyleMods(selectedCombatStyleMods));
 				dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
 				if (hasDimLoadoutsError) {
 					dispatch(setDimLoadouts(dimLoadouts));
@@ -278,11 +273,24 @@ function Loading() {
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
-			} catch (e) {
+			} catch (error) {
 				// TODO redirect only on the right kind of error
 				// Test by deleting 'authorization' from localStorage
-				console.error(e);
-				router.push('/login');
+				localStorage.removeItem('authorization');
+				console.error(error);
+				const errorMessage = error.toString();
+				// TODO: The DIM code hides the real error but this is good enough for now...
+				if (
+					errorMessage.includes('BungieService.Difficulties') || // No token
+					errorMessage.includes('BungieService.NetworkError') // Bad token
+				) {
+					router.push('/login');
+				} else {
+					const err = error as Error;
+					const errMessage = `message: ${err.message}\nstack: ${err.stack}`;
+					dispatch(setLoadError(errMessage));
+					router.push('/error');
+				}
 			}
 		})();
 

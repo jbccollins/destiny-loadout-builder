@@ -6,7 +6,9 @@ import {
 	EArmorSlotId,
 	EDestinyClassId,
 	EElementId,
+	EExtraSocketModCategoryId,
 	EGearTierId,
+	EModCategoryId,
 } from '@dlb/types/IdEnums';
 import {
 	DestinyClassHashToDestinyClass,
@@ -27,7 +29,6 @@ import {
 	ArmorMetadata,
 	getDefaultArmorMetadata,
 	getDefaultArmorMaxStatsMetadata,
-	IArmorItem,
 	ArmorMaxStatsMetadata,
 	getDefaultArmorCountMaxStatsMetadata,
 } from '@dlb/types/Armor';
@@ -36,7 +37,7 @@ import { DestinyClassIdToDestinyClass } from '@dlb/types/DestinyClass';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
 
 const updateMaxStatsMetadata = (
-	armorItem: IArmorItem,
+	armorItem: ArmorItem,
 	maxStatsMetadata: ArmorMaxStatsMetadata
 ) => {
 	ArmorStatIdList.forEach((armorStatId, i) => {
@@ -116,14 +117,11 @@ export const extractArmor = (
 					destinyClassName:
 						DestinyClassStringToDestinyClassId[item.classTypeNameLocalized],
 					isMasterworked: item.masterwork,
-					elementId: item?.element?.enumValue
-						? ElementEnumToEElementId[item.element.enumValue]
-						: EElementId.Any,
 					gearTierId: item?.tier
 						? ItemTierNameToEGearTierId[item.tier]
 						: EGearTierId.Unknown,
 					isArtifice: isArtificeArmor(item),
-					artificeBoostedStat: null,
+					extraSocketModCategoryId: getExtraSocketModCategoryId(item),
 				};
 
 				if (armorItem.gearTierId === EGearTierId.Exotic) {
@@ -185,6 +183,22 @@ export const extractArmor = (
 						armorMetadata[destinyClassName].artifice.items[armorItem.armorSlot]
 							.count++;
 					}
+					if (armorItem.extraSocketModCategoryId !== null) {
+						updateMaxStatsMetadata(
+							armorItem,
+							armorMetadata[destinyClassName].extraSocket.items[
+								armorItem.extraSocketModCategoryId
+							].items[armorItem.armorSlot].maxStats
+						);
+						armorMetadata[destinyClassName].extraSocket.count++;
+						armorMetadata[destinyClassName].extraSocket.items[
+							armorItem.extraSocketModCategoryId
+						].count++;
+						armorMetadata[destinyClassName].extraSocket.items[
+							armorItem.extraSocketModCategoryId
+						].items[armorItem.armorSlot].count++;
+					}
+
 					armor[destinyClassName][armorSlot].nonExotic[armorItem.id] =
 						armorItem;
 				}
@@ -241,3 +255,49 @@ export const extractCharacters = (stores: DimStore<DimItem>[]): Characters => {
 // export const sumStatLists = (a: StatList, b: StatList): StatList => {
 // 	return a.map((x, i) => x + b[i]) as StatList;
 // };
+
+const KINGS_FALL_SOCKET_HASH = 1728096240;
+const LAST_WISH_SOCKET_HASH = 1679876242;
+const VAULT_OF_GLASS_SOCKET_HASH = 3738398030;
+const GARDEN_OF_SALVATION_SOCKET_HASH = 706611068;
+const DEEP_STONE_CRYPT_SOCKET_HASH = 4055462131;
+const VOW_OF_THE_DISCIPLE_SOCKET_HASH = 2447143568;
+const NIGHTMARE_SOCKET_HASH = 1180997867;
+
+const hasSocket = (item: DimItem, hash: number): boolean =>
+	(item.sockets?.allSockets.filter((d) => d.emptyPlugItemHash == hash) || [])
+		.length > 0;
+
+const getExtraSocketModCategoryId = (
+	item: DimItem
+): EExtraSocketModCategoryId => {
+	if (hasSocket(item, KINGS_FALL_SOCKET_HASH)) {
+		return EExtraSocketModCategoryId.KingsFall;
+	}
+	if (hasSocket(item, LAST_WISH_SOCKET_HASH)) {
+		return EExtraSocketModCategoryId.LastWish;
+	}
+	if (hasSocket(item, VAULT_OF_GLASS_SOCKET_HASH)) {
+		return EExtraSocketModCategoryId.VaultOfGlass;
+	}
+	if (hasSocket(item, GARDEN_OF_SALVATION_SOCKET_HASH)) {
+		return EExtraSocketModCategoryId.GardenOfSalvation;
+	}
+	if (hasSocket(item, DEEP_STONE_CRYPT_SOCKET_HASH)) {
+		return EExtraSocketModCategoryId.DeepStoneCrypt;
+	}
+	if (hasSocket(item, VOW_OF_THE_DISCIPLE_SOCKET_HASH)) {
+		return EExtraSocketModCategoryId.VowOfTheDisciple;
+	}
+	if (hasSocket(item, NIGHTMARE_SOCKET_HASH)) {
+		return EExtraSocketModCategoryId.Nightmare;
+	}
+	// if ((v.sockets?.socketEntries.filter(d => d.singleInitialItemHash == 2472875850) || []).length > 0)
+	// 	return ArmorPerkOrSlot.PerkIronBanner;
+	// if ((v.sockets?.socketEntries.filter(d => d.singleInitialItemHash == 2392155347) || []).length > 0)
+	// 	return ArmorPerkOrSlot.PerkUniformedOfficer;
+	// if ((v.sockets?.socketEntries.filter(d => d.singleInitialItemHash == 400659041) || []).length > 0)
+	// 	return ArmorPerkOrSlot.PerkPlunderersTrappings;
+
+	return null;
+};

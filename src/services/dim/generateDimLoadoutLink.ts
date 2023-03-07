@@ -8,7 +8,7 @@ import {
 import { getFragment } from '@dlb/types/Fragment';
 import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
 import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
-import { AvailableExoticArmorItem, IArmorItem } from '@dlb/types/Armor';
+import { ArmorItem, AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getAspect } from '@dlb/types/Aspect';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
@@ -28,7 +28,7 @@ import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 
 export type DimLoadoutConfiguration = {
-	combatStyleModIdList: EModId[];
+	raidModIdList: EModId[];
 	fragmentIdList: EFragmentId[];
 	aspectIdList: EAspectId[];
 	jumpId: EJumpId;
@@ -42,13 +42,13 @@ export type DimLoadoutConfiguration = {
 	masterworkAssumption: EMasterworkAssumption;
 	destinySubclassId: EDestinySubclassId;
 	destinyClassId: EDestinyClassId;
-	armorList: IArmorItem[];
+	armorList: ArmorItem[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 };
 
 const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	const {
-		combatStyleModIdList,
+		raidModIdList,
 		fragmentIdList,
 		aspectIdList,
 		armorStatModIdList,
@@ -68,7 +68,7 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	const fragmentHashes: number[] = fragmentIdList.map(
 		(fragmentId: EFragmentId) => getFragment(fragmentId).hash
 	);
-	const selectedModHashes: number[] = combatStyleModIdList
+	const selectedModHashes: number[] = raidModIdList
 		.filter((modId) => modId !== null)
 		.map((modId: EModId) => getMod(modId).hash);
 	const armorSlotModHashes: number[] = [];

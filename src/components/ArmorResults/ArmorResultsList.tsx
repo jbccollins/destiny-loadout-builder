@@ -43,7 +43,6 @@ import {
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import { selectSelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
-import { selectSelectedCombatStyleMods } from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { selectSelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
@@ -52,6 +51,7 @@ import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbi
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { MISSING_ICON } from '@dlb/types/globals';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];
@@ -567,28 +567,6 @@ function ResultsItem({
 								</StatsBreakdown>
 							);
 						})}
-
-						{/* {Object.keys(combatStyleModArmorStatMapping).map((modId) => {
-						return (
-							<StatsBreakdown key={modId} className="stats-breakdown">
-								<StatsBreakdownItem>
-									<BungieImage
-										width={20}
-										height={20}
-										src={getMod(modId as EModId).icon}
-									/>
-								</StatsBreakdownItem>
-								{ArmorStatIdList.map((armorStatId) => (
-									<StatsBreakdownItem
-										key={armorStatId}
-										className="stats-breakdown"
-									>
-										{combatStyleModArmorStatMapping[modId][armorStatId]}
-									</StatsBreakdownItem>
-								))}
-							</StatsBreakdown>
-						);
-					})} */}
 					</LoadoutDetails>
 				</Collapse>
 			</ResultsSection>
@@ -606,10 +584,10 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
+	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const exoticArmor = selectedExoticArmor[selectedDestinyClass];
-	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
 	const selectedJump = useAppSelector(selectSelectedJump);
 	const selectedMelee = useAppSelector(selectSelectedMelee);
 	const selectedGrenade = useAppSelector(selectSelectedGrenade);
@@ -677,7 +655,7 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							fragmentArmorStatMappings={fragmentArmorStatMappings}
 							armorSlotModArmorStatMappings={armorSlotModArmorStatMapppings}
 							dimLink={`${generateDimLink({
-								combatStyleModIdList: selectedCombatStyleMods,
+								raidModIdList: selectedRaidMods,
 								armorStatModIdList: item.requiredStatModIdList,
 								armorSlotMods: selectedArmorSlotMods,
 								armorList: item.armorItems,

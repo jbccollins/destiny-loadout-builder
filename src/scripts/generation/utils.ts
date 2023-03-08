@@ -236,7 +236,8 @@ export const getDescription = (
 	item.perks.forEach((perk) => {
 		const desc =
 			sandboxPerkDefinitions[perk.perkHash].displayProperties.description;
-		if (desc) {
+		const name = sandboxPerkDefinitions[perk.perkHash].displayProperties.name;
+		if (desc && name !== 'UNLOCKED BY QUEST') {
 			description = desc;
 		}
 	});

@@ -43,7 +43,6 @@ import {
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import { selectSelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
-import { selectSelectedCombatStyleMods } from '@dlb/redux/features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { selectSelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
@@ -52,6 +51,8 @@ import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbi
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { MISSING_ICON } from '@dlb/types/globals';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];
@@ -165,7 +166,7 @@ const calculateExtraMasterworkedStats = (
 // Does not have a masterworked class item
 const getClassItemText = (item: ResultsTableLoadout): string => {
 	const artificeArmorItems = item.armorItems.filter((x) => x.isArtifice);
-	if (artificeArmorItems.length < item.requiredArtificeStatModsIdList.length) {
+	if (artificeArmorItems.length < item.requiredArtificeModIdList.length) {
 		return 'Any Masterworked Artifice Class Item';
 	}
 	return 'Any Masterworked Class Item';
@@ -211,8 +212,8 @@ function ResultsItem({
 		}
 	});
 
-	const artificeModCounts: Partial<Record<EArmorStatId, number>> = {};
-	item.requiredArtificeStatModsIdList.forEach((id) => {
+	const artificeModCounts: Partial<Record<EModId, number>> = {};
+	item.requiredArtificeModIdList.forEach((id) => {
 		if (!artificeModCounts[id]) {
 			artificeModCounts[id] = 1;
 		} else {
@@ -311,19 +312,19 @@ function ResultsItem({
 					})}
 				</ResultsSection>
 			)}
-			{item.requiredArtificeStatModsIdList.length > 0 && (
+			{item.requiredArtificeModIdList.length > 0 && (
 				<ResultsSection>
 					<Title>Required Artifice Mods</Title>
-					{Object.keys(artificeModCounts).map((armorStatId) => {
-						const armorStat = getArmorStat(armorStatId as EArmorStatId);
+					{Object.keys(artificeModCounts).map((artificeModId) => {
+						const armorStat = getMod(artificeModId as EModId);
 						return (
 							// Extra margin to account for masterworkedbungieImage border
-							<IconTextContainer key={armorStatId} sx={{ margin: '1px' }}>
+							<IconTextContainer key={artificeModId} sx={{ margin: '1px' }}>
 								<BungieImage width={40} height={40} src={armorStat.icon} />
 								<IconText>
-									{armorStat.name}
-									{artificeModCounts[armorStatId] > 1
-										? ` (x${artificeModCounts[armorStatId]})`
+									{armorStat.name} Mod
+									{artificeModCounts[artificeModId] > 1
+										? ` (x${artificeModCounts[artificeModId]})`
 										: ''}
 								</IconText>
 							</IconTextContainer>
@@ -534,14 +535,13 @@ function ResultsItem({
 								</StatsBreakdown>
 							);
 						})}
-						{Object.keys(artificeModCounts).map((artificeArmorStatId) => {
-							const { name, icon } = getArmorStat(
-								artificeArmorStatId as EArmorStatId
-							);
-							const artificeModCount = artificeModCounts[artificeArmorStatId];
+						{Object.keys(artificeModCounts).map((artificeModId) => {
+							const { name, icon, bonuses } = getMod(artificeModId as EModId);
+							const { stat, value } = bonuses[0];
+							const artificeModCount = artificeModCounts[artificeModId];
 							return (
 								<StatsBreakdown
-									key={`artifice-${artificeArmorStatId}`}
+									key={`artifice-${artificeModId}`}
 									className="stats-breakdown"
 								>
 									<StatsBreakdownItem>
@@ -551,44 +551,20 @@ function ResultsItem({
 										<StatsBreakdownItem
 											key={armorStatId}
 											className="stats-breakdown"
-											isZero={armorStatId !== artificeArmorStatId}
+											isZero={armorStatId !== stat}
 										>
-											{armorStatId === artificeArmorStatId
-												? artificeModCount * 3
-												: 0}
+											{armorStatId === stat ? artificeModCount * value : 0}
 										</StatsBreakdownItem>
 									))}
 									<StatsBreakdownItem>
 										<Description>
-											Artifice {name} Mod
+											{name} Mod
 											{artificeModCount > 1 ? ` (x${artificeModCount})` : ''}
 										</Description>
 									</StatsBreakdownItem>
 								</StatsBreakdown>
 							);
 						})}
-
-						{/* {Object.keys(combatStyleModArmorStatMapping).map((modId) => {
-						return (
-							<StatsBreakdown key={modId} className="stats-breakdown">
-								<StatsBreakdownItem>
-									<BungieImage
-										width={20}
-										height={20}
-										src={getMod(modId as EModId).icon}
-									/>
-								</StatsBreakdownItem>
-								{ArmorStatIdList.map((armorStatId) => (
-									<StatsBreakdownItem
-										key={armorStatId}
-										className="stats-breakdown"
-									>
-										{combatStyleModArmorStatMapping[modId][armorStatId]}
-									</StatsBreakdownItem>
-								))}
-							</StatsBreakdown>
-						);
-					})} */}
 					</LoadoutDetails>
 				</Collapse>
 			</ResultsSection>
@@ -606,10 +582,10 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
+	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const exoticArmor = selectedExoticArmor[selectedDestinyClass];
-	const selectedCombatStyleMods = useAppSelector(selectSelectedCombatStyleMods);
 	const selectedJump = useAppSelector(selectSelectedJump);
 	const selectedMelee = useAppSelector(selectSelectedMelee);
 	const selectedGrenade = useAppSelector(selectSelectedGrenade);
@@ -677,8 +653,9 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							fragmentArmorStatMappings={fragmentArmorStatMappings}
 							armorSlotModArmorStatMappings={armorSlotModArmorStatMapppings}
 							dimLink={`${generateDimLink({
-								combatStyleModIdList: selectedCombatStyleMods,
+								raidModIdList: selectedRaidMods,
 								armorStatModIdList: item.requiredStatModIdList,
+								artificeModIdList: item.requiredArtificeModIdList,
 								armorSlotMods: selectedArmorSlotMods,
 								armorList: item.armorItems,
 								fragmentIdList: fragmentIds,

@@ -3,11 +3,13 @@ import {
 	EArmorStatId,
 	EDestinyClassId,
 	EElementId,
+	EExtraSocketModCategoryId,
 	EGearTierId,
 	EMasterworkAssumption,
 	EModCategoryId,
 } from './IdEnums';
 import { cloneDeep } from 'lodash';
+import { ArmorSlotIdList, ArmorSlotWithClassItemIdList } from './ArmorSlot';
 
 /***** Extra *****/
 export const ArmorElementIdList = [
@@ -65,12 +67,10 @@ export type ArmorItem = {
 	// exoticDescription: string TODO: Figure out how to add this
 	// Is this armor masterworked
 	isMasterworked: boolean;
-	// Elemental Affinity
-	elementId: EElementId;
 	// Exotic, Legendary, Rare, etc...
 	gearTierId: EGearTierId;
 	isArtifice: boolean;
-	artificeBoostedStat: EArmorStatId | null;
+	extraSocketModCategoryId?: EExtraSocketModCategoryId;
 };
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/
@@ -105,6 +105,18 @@ export type AvailableExoticArmorItem = {
 	// there is no masterworked instance of that exotic?
 	// hasMasterworkedVariant: boolean
 };
+
+const defaultAvailableExoticArmorItem: AvailableExoticArmorItem = {
+	hash: 0,
+	name: '',
+	count: 1,
+	icon: '',
+	armorSlot: EArmorSlotId.Head,
+	destinyClassName: EDestinyClassId.Warlock,
+};
+
+export const getDefaultAvailableExoticArmorItem = () =>
+	cloneDeep(defaultAvailableExoticArmorItem);
 
 /********* Utility functions for generating empty bases to work with **********/
 export const generateAvailableExoticArmorGroup =
@@ -143,7 +155,7 @@ export type ArmorMetadataItem = {
 		items: Record<EArmorSlotId, Record<string, ArmorCountMaxStatsMetadata>>;
 	};
 	artifice: ArmorSlotMetadata;
-	raid: {
+	extraSocket: {
 		count: number;
 		items: Partial<Record<EModCategoryId, ArmorSlotMetadata>>;
 	};
@@ -218,15 +230,18 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 		},
 	},
 	artifice: getDefaultArmorSlotMetadata(),
-	raid: {
+	extraSocket: {
 		count: 0,
 		items: {
-			[EModCategoryId.LastWish]: getDefaultArmorSlotMetadata(),
-			[EModCategoryId.GardenOfSalvation]: getDefaultArmorSlotMetadata(),
-			[EModCategoryId.DeepStoneCrypt]: getDefaultArmorSlotMetadata(),
-			[EModCategoryId.VaultOfGlass]: getDefaultArmorSlotMetadata(),
-			[EModCategoryId.VowOfTheDisciple]: getDefaultArmorSlotMetadata(),
-			[EModCategoryId.KingsFall]: getDefaultArmorSlotMetadata(),
+			[EExtraSocketModCategoryId.LastWish]: getDefaultArmorSlotMetadata(),
+			[EExtraSocketModCategoryId.GardenOfSalvation]:
+				getDefaultArmorSlotMetadata(),
+			[EExtraSocketModCategoryId.DeepStoneCrypt]: getDefaultArmorSlotMetadata(),
+			[EExtraSocketModCategoryId.VaultOfGlass]: getDefaultArmorSlotMetadata(),
+			[EExtraSocketModCategoryId.VowOfTheDisciple]:
+				getDefaultArmorSlotMetadata(),
+			[EExtraSocketModCategoryId.KingsFall]: getDefaultArmorSlotMetadata(),
+			[EExtraSocketModCategoryId.Nightmare]: getDefaultArmorSlotMetadata(),
 		},
 	},
 	classItem: {
@@ -249,6 +264,24 @@ const defaultArmorMetadata: ArmorMetadata = {
 
 export const getDefaultArmorMetadata = () => cloneDeep(defaultArmorMetadata);
 
+export type ItemCounts = Partial<Record<EExtraSocketModCategoryId, number>> & {
+	artifice: number;
+};
+
+const defaultItemCounts: ItemCounts = {
+	[EExtraSocketModCategoryId.LastWish]: 0,
+	[EExtraSocketModCategoryId.GardenOfSalvation]: 0,
+	[EExtraSocketModCategoryId.DeepStoneCrypt]: 0,
+	[EExtraSocketModCategoryId.VaultOfGlass]: 0,
+	[EExtraSocketModCategoryId.VowOfTheDisciple]: 0,
+	[EExtraSocketModCategoryId.KingsFall]: 0,
+	[EExtraSocketModCategoryId.Nightmare]: 0,
+	artifice: 0,
+};
+
+export const getDefaultItemCounts = (): ItemCounts =>
+	cloneDeep(defaultItemCounts);
+
 // TODO: Maybe do this on a loop over EArmorSlot?
 export const generateArmorGroup = (): ArmorGroup => {
 	return {
@@ -270,31 +303,31 @@ export interface IDestinyItem {
 	hash: number;
 }
 
-// "extend" the DestinyItem type
-export interface IArmorItem extends IDestinyItem {
-	// Mobility, Resilience, Recovery, Discipline, Intellect, Strength
-	stats: StatList;
-	// Is this piece of armor Exotic, Legendary, etc...
-	gearTierId: EGearTierId;
-	// Is this piece of armor masterworked
-	isMasterworked: boolean;
-	// Is this a piece of artifice armor
-	isArtifice: boolean;
-}
+// // "extend" the DestinyItem type
+// export interface IArmorItem extends IDestinyItem {
+// 	// Mobility, Resilience, Recovery, Discipline, Intellect, Strength
+// 	stats: StatList;
+// 	// Is this piece of armor Exotic, Legendary, etc...
+// 	gearTierId: EGearTierId;
+// 	// Is this piece of armor masterworked
+// 	isMasterworked: boolean;
+// 	// Is this a piece of artifice armor
+// 	isArtifice: boolean;
+// }
 
 export type StatList = [number, number, number, number, number, number];
 
 // Strictly enforce the length of this array [Heads, Arms, Chests, Legs]
 export type StrictArmorItems = [
-	IArmorItem[],
-	IArmorItem[],
-	IArmorItem[],
-	IArmorItem[]
+	ArmorItem[],
+	ArmorItem[],
+	ArmorItem[],
+	ArmorItem[]
 ];
 
 // We don't export this type... only in this file should we be able to use non-strict armor items
 // Otherwise we MUST pass in an array of length 4 for each [Heads, Arms, Chests, Legs]
-export type ArmorItems = IArmorItem[];
+export type ArmorItems = ArmorItem[];
 
 // Four armor ids [Heads, Arms, Chests, Legs]
 export type ArmorIdList = [string, string, string, string];
@@ -306,7 +339,7 @@ export interface ISelectedExoticArmor {
 
 // Masterworking adds +2 to each stat
 export const getExtraMasterworkedStats = (
-	{ isMasterworked, gearTierId }: IArmorItem,
+	{ isMasterworked, gearTierId }: ArmorItem,
 	masterworkAssumption: EMasterworkAssumption
 ) =>
 	isMasterworked ||

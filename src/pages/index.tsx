@@ -19,7 +19,6 @@ import FragmentSelector from '@dlb/components/SubclassSelector/FragmentSelector'
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
-import CombatStyleModSelector from '@dlb/components/CombatStyleModSelector';
 import GrenadeSelector from '@dlb/components/SubclassSelector/GrenadeSelector';
 import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
 import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
@@ -130,8 +129,7 @@ const LeftSectionComponent = () => {
 									clearHandler={clearArmorSlotMods}
 								>
 									<ArmorSlotModSelector />
-									{/* <RaidModSelector />
-								<CombatStyleModSelector /> */}
+									{/* <RaidModSelector /> */}
 								</SelectionControlGroup>
 							</>
 						),

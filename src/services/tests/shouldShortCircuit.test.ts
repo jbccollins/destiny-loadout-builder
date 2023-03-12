@@ -1,4 +1,5 @@
 import {
+	getDefaultSeenArmorSlotItems,
 	shouldShortCircuit,
 	ShouldShortCircuitOutput,
 	ShouldShortCircuitParams,
@@ -12,9 +13,15 @@ import {
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorSlotIdToModIdListMapping,
-	ValidCombatStyleModPlacements,
+	ValidRaidModArmorSlotPlacements,
 } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
+import {
+	getDefaultArmorMetadata,
+	getDefaultAvailableExoticArmorItem,
+} from '@dlb/types/Armor';
+
+const defaultArmorMetadata = getDefaultArmorMetadata();
 
 const generateDefaultArmorSlotIdToModIDListMapping =
 	(): ArmorSlotIdToModIdListMapping => {
@@ -24,14 +31,14 @@ const generateDefaultArmorSlotIdToModIDListMapping =
 		}, {}) as ArmorSlotIdToModIdListMapping;
 	};
 
-const generateDefaultValidCombatStyleModPlacements =
-	(): ValidCombatStyleModPlacements => {
+const generateDefaultValidRaidModArmorSlotPlacements =
+	(): ValidRaidModArmorSlotPlacements => {
 		return [
 			ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
 				accumulator[currentValue] = null;
 				return accumulator;
 			}, {}),
-		] as ValidCombatStyleModPlacements;
+		] as ValidRaidModArmorSlotPlacements;
 	};
 
 type ShouldShortCircuitTestCase = {
@@ -55,22 +62,24 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 1,
-			validCombatStyleModArmorSlotPlacements:
-				generateDefaultValidCombatStyleModPlacements(),
+			validRaidModArmorSlotPlacements:
+				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			true,
 			[
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
 				EModId.MinorMobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
 			],
 			[],
 			{
@@ -99,11 +108,13 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 100,
 			},
 			numRemainingArmorPieces: 2,
-			validCombatStyleModArmorSlotPlacements:
-				generateDefaultValidCombatStyleModPlacements(),
+			validRaidModArmorSlotPlacements:
+				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			false,
@@ -140,21 +151,23 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 100,
 			},
 			numRemainingArmorPieces: 2,
-			validCombatStyleModArmorSlotPlacements:
-				generateDefaultValidCombatStyleModPlacements(),
+			validRaidModArmorSlotPlacements:
+				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			true,
 			[
-				EModId.DisciplineMod,
-				EModId.DisciplineMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.DisciplineMod,
+				EModId.DisciplineMod,
 			],
 			[],
 			{
@@ -183,22 +196,24 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 150,
 			},
 			numRemainingArmorPieces: 3,
-			validCombatStyleModArmorSlotPlacements:
-				generateDefaultValidCombatStyleModPlacements(),
+			validRaidModArmorSlotPlacements:
+				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			true,
 			[
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
 				EModId.MinorDisciplineMod,
 				EModId.MinorStrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
 			],
 			[],
 			{
@@ -227,11 +242,13 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 2,
-			validCombatStyleModArmorSlotPlacements:
-				generateDefaultValidCombatStyleModPlacements(),
+			validRaidModArmorSlotPlacements:
+				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			false,
@@ -263,11 +280,13 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 2,
-			validCombatStyleModArmorSlotPlacements:
-				generateDefaultValidCombatStyleModPlacements(),
+			validRaidModArmorSlotPlacements:
+				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			false,
@@ -287,7 +306,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 	},
 	// 6
 	{
-		name: 'It returns true when there is nowhere to put the required armor stat mods due to the cost of combat style mods',
+		name: 'It returns true when there is nowhere to put the required armor stat mods due to the cost of raid mods',
 		input: {
 			sumOfSeenStats: [0, 0, 0, 0, 50, 0],
 			desiredArmorStats: {
@@ -299,18 +318,27 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 0,
-			validCombatStyleModArmorSlotPlacements: [
+			validRaidModArmorSlotPlacements: [
 				{
-					[EArmorSlotId.Head]: EModId.HeavyHanded,
+					[EArmorSlotId.Head]: EModId.EnhancedRelayDefender,
 					[EArmorSlotId.Arm]: null,
 					[EArmorSlotId.Chest]: null,
 					[EArmorSlotId.Leg]: null,
 					[EArmorSlotId.ClassItem]: null,
 				},
 			],
-			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			armorSlotMods: {
+				...generateDefaultArmorSlotIdToModIDListMapping(),
+				[EArmorSlotId.Head]: [
+					EModId.HeavyAmmoFinder,
+					EModId.SpecialAmmoFinder,
+					EModId.ArcSiphon,
+				],
+			},
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			true,
@@ -348,27 +376,34 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 0,
-			validCombatStyleModArmorSlotPlacements:
-				generateDefaultValidCombatStyleModPlacements(),
+			validRaidModArmorSlotPlacements:
+				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: {
 				...generateDefaultArmorSlotIdToModIDListMapping(),
 				[EArmorSlotId.Chest]: [
-					EModId.UnflinchingSniperAim,
-					EModId.UnflinchingAutoRifleAim,
+					EModId.ShieldBreakCharge,
+					EModId.ConcussiveDampener,
+					EModId.SniperDamageResistance,
 				],
-				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber],
+				[EArmorSlotId.ClassItem]: [
+					EModId.EmpoweredFinish,
+					EModId.Distribution,
+					EModId.FontOfRestoration,
+				],
 			},
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			true,
 			[
-				EModId.IntellectMod,
-				EModId.IntellectMod,
-				EModId.IntellectMod,
-				EModId.IntellectMod,
 				EModId.RecoveryMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
+				EModId.IntellectMod,
 			],
 			[],
 			{
@@ -397,31 +432,42 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 0,
-			validCombatStyleModArmorSlotPlacements: [
+			validRaidModArmorSlotPlacements: [
 				{
-					[EArmorSlotId.Head]: EModId.HeavyHanded,
-					[EArmorSlotId.Arm]: EModId.BountifulWells,
-					[EArmorSlotId.Chest]: EModId.TakingCharge,
-					[EArmorSlotId.Leg]: EModId.PowerfulFriends,
-					[EArmorSlotId.ClassItem]: EModId.ArgentOrdnance,
+					[EArmorSlotId.Head]: EModId.EnhancedRelayDefender, // Cost 3
+					[EArmorSlotId.Arm]: EModId.EnhancedRelayDefender, // Cost 3
+					[EArmorSlotId.Chest]: EModId.EnhancedRelayDefender, // Cost 3
+					[EArmorSlotId.Leg]: EModId.EnhancedRelayDefender, // Cost 3
+					[EArmorSlotId.ClassItem]: EModId.ResistantTether, // Cost 1
 				},
 			],
 			armorSlotMods: {
-				[EArmorSlotId.Head]: [null, EModId.BowAmmoFinder], // Capacity: Full
-				[EArmorSlotId.Arm]: [EModId.HandCannonLoader, null], // Capacity: 4
+				[EArmorSlotId.Head]: [
+					EModId.SpecialAmmoFinder,
+					EModId.HeavyAmmoFinder,
+					EModId.HarmonicSiphon,
+				], // 3 + [3, 3, 1] = Capacity: 0
+				[EArmorSlotId.Arm]: [EModId.GrenadeKickstart, null, null], // 3 + [3, 0, 0] = Capacity: 4
 				[EArmorSlotId.Chest]: [
-					EModId.UnflinchingSniperAim,
-					EModId.UnflinchingAutoRifleAim,
-				], // Capacity: Full
-				[EArmorSlotId.Leg]: [null, EModId.Absolution], // Capacity: 3
-				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber], // Capacity: 1
+					EModId.ChargedUp,
+					EModId.ConcussiveDampener,
+					EModId.HarmonicResistance,
+				], // 3 + [3, 3, 1] = Capacity: 0
+				[EArmorSlotId.Leg]: [null, EModId.StacksOnStacks, null], // 3 + [0, 4, 0] = Capacity: 3
+				[EArmorSlotId.ClassItem]: [
+					EModId.Distribution,
+					EModId.EmpoweredFinish,
+					EModId.FontOfRestoration,
+				], // 1 + [3, 3, 3] = Capacity: 0
 			},
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			true,
-			[EModId.RecoveryMod, EModId.MobilityMod, EModId.MinorIntellectMod],
+			[EModId.MobilityMod, EModId.RecoveryMod, EModId.MinorIntellectMod],
 			[],
 			{
 				[EArmorStatId.Mobility]: 10,
@@ -437,7 +483,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 	},
 	// 9
 	{
-		name: 'It returns false when there is space to put the required armor stat mods even with the combined cost of armor slot mods and combat style mods',
+		name: 'It returns false when there is space to put the required armor stat mods even with the combined cost of armor slot mods and raid mods',
 		input: {
 			sumOfSeenStats: [0, 0, 0, 0, 100, 0],
 			desiredArmorStats: {
@@ -449,31 +495,42 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numRemainingArmorPieces: 0,
-			validCombatStyleModArmorSlotPlacements: [
+			validRaidModArmorSlotPlacements: [
 				{
-					[EArmorSlotId.Head]: EModId.HeavyHanded,
-					[EArmorSlotId.Arm]: EModId.BountifulWells,
-					[EArmorSlotId.Chest]: EModId.TakingCharge,
-					[EArmorSlotId.Leg]: EModId.PowerfulFriends,
-					[EArmorSlotId.ClassItem]: EModId.ArgentOrdnance,
+					[EArmorSlotId.Head]: EModId.EnhancedRelayDefender, // Cost 3
+					[EArmorSlotId.Arm]: EModId.EnhancedRelayDefender, // Cost 3
+					[EArmorSlotId.Chest]: EModId.EnhancedRelayDefender, // Cost 3
+					[EArmorSlotId.Leg]: EModId.EnhancedRelayDefender, // Cost 3
+					[EArmorSlotId.ClassItem]: EModId.ResistantTether, // Cost 1
 				},
 			],
 			armorSlotMods: {
-				[EArmorSlotId.Head]: [null, EModId.BowAmmoFinder], // Capacity: Full
-				[EArmorSlotId.Arm]: [EModId.HandCannonLoader, null], // Capacity: 4
+				[EArmorSlotId.Head]: [
+					EModId.SpecialAmmoFinder,
+					EModId.HeavyAmmoFinder,
+					EModId.HarmonicSiphon,
+				], // 3 + [3, 3, 1] = Capacity: 0
+				[EArmorSlotId.Arm]: [EModId.GrenadeKickstart, null, null], // 3 + [3, 0, 0] = Capacity: 4
 				[EArmorSlotId.Chest]: [
-					EModId.UnflinchingSniperAim,
-					EModId.UnflinchingAutoRifleAim,
-				], // Capacity: Full
-				[EArmorSlotId.Leg]: [null, EModId.Absolution], // Capacity: 3
-				[EArmorSlotId.ClassItem]: [EModId.Bomber, EModId.Bomber], // Capacity: 1
+					EModId.ChargedUp,
+					EModId.ConcussiveDampener,
+					EModId.HarmonicResistance,
+				], // 3 + [3, 3, 1] = Capacity: 0
+				[EArmorSlotId.Leg]: [null, EModId.StacksOnStacks, null], // 3 + [0, 4, 0] = Capacity: 3
+				[EArmorSlotId.ClassItem]: [
+					EModId.Distribution,
+					EModId.EmpoweredFinish,
+					EModId.FontOfRestoration,
+				], // 1 + [3, 3, 3] = Capacity: 0
 			},
-			destinyClassId: EDestinyClassId.Hunter,
-			numSeenArtificeArmorItems: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			armorMetadataItem: defaultArmorMetadata.Warlock,
+			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
 		output: [
 			false,
-			[EModId.RecoveryMod, EModId.MobilityMod],
+			[EModId.MobilityMod, EModId.RecoveryMod],
 			[],
 			{
 				[EArmorStatId.Mobility]: 10,

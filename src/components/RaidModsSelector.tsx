@@ -56,7 +56,7 @@ function RaidModSelector() {
 					key={index}
 					selectedDestinyClass={selectedDestinyClass}
 					availableMods={RaidModIdList}
-					getTitle={index === 0 ? () => 'Raid Mods' : null}
+					getTitle={index === 0 ? () => 'Raid and Nightmare Mods' : null}
 					selectedMods={selectedRaidMods}
 					handleChange={handleChange}
 					getLabel={getLabel}

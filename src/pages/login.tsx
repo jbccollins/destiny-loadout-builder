@@ -1,7 +1,5 @@
-import Link from 'next/link';
-import { oauthClientId } from '@dlb/dim/bungie-api/bungie-api-utils';
-import { Button, styled, Box } from '@mui/material';
-import Image from 'next/image';
+import { styled, Box } from '@mui/material';
+import LoginButton from '@dlb/components/LoginButton';
 
 const Container = styled(Box)(({ theme }) => ({
 	position: 'fixed',
@@ -11,18 +9,9 @@ const Container = styled(Box)(({ theme }) => ({
 }));
 
 function Login() {
-	const queryParams = new URLSearchParams({
-		client_id: oauthClientId(),
-		response_type: 'code',
-	});
-
 	return (
 		<Container>
-			<Link href={`https://www.bungie.net/en/OAuth/Authorize?${queryParams}`}>
-				<Button variant="contained" color="secondary">
-					Authorize With BNet
-				</Button>
-			</Link>
+			<LoginButton />
 		</Container>
 	);
 }

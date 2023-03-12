@@ -11,7 +11,9 @@ export interface SelectedRaidModsState {
 }
 
 const initialState: SelectedRaidModsState = {
-	value: [null, null, null, null, null],
+	// TODO: If we ever let the user have a build with all
+	// Legendary items this will need to have 5 mod slots
+	value: [null, null, null, null],
 	uuid: NIL,
 };
 

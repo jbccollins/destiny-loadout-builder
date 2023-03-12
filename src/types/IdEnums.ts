@@ -86,7 +86,6 @@ export enum EModSocketCategoryId {
 	Stat = 'Stat', // e.g. major/minor resilience
 	ArtificeStat = 'ArtificeStat', // e.g. resilience-forged
 	ArmorSlot = 'ArmorSlot', // e.g. bomber
-	CombatStyle = 'CombatStyle', // e.g. powerful friends
 	Raid = 'Raid',
 	// Artifice = 'Artifice',
 	// LastWish = 'LastWish',
@@ -141,8 +140,23 @@ export enum EModCategoryId {
 	ArmorStat = 'ArmorStat',
 	ArtificeArmorStat = 'ArtificeArmorStat',
 	General = 'General',
-	// SeasonalArtifact = 'SeasonalArtifact',
 }
+
+// TODO: Is there a better way to subset the EModCategoryId here?
+// Maybe just split that enum in two?
+export enum EExtraSocketModCategoryId {
+	LastWish = EModCategoryId.LastWish,
+	GardenOfSalvation = EModCategoryId.GardenOfSalvation,
+	DeepStoneCrypt = EModCategoryId.DeepStoneCrypt,
+	VaultOfGlass = EModCategoryId.VaultOfGlass,
+	VowOfTheDisciple = EModCategoryId.VowOfTheDisciple,
+	KingsFall = EModCategoryId.KingsFall,
+	Nightmare = EModCategoryId.Nightmare,
+}
+
+export const EExtraSocketModCategoryIdList = Object.values(
+	EExtraSocketModCategoryId
+);
 
 export enum EGearTierId {
 	Exotic = 'Exotic',

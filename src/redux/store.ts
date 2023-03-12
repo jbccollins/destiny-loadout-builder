@@ -15,7 +15,6 @@ import selectedArmorSlotRestrictionsReducer from './features/selectedArmorSlotRe
 import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
 import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
 import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
-import selectedCombatStyleModsReducer from './features/selectedCombatStyleMods/selectedCombatStyleModsSlice';
 import selectedMeleeReducer from './features/selectedMelee/selectedMeleeSlice';
 import selectedGrenadeReducer from './features/selectedGrenade/selectedGrenadeSlice';
 import selectedClassAbilityReducer from './features/selectedClassAbility/selectedClassAbilitySlice';
@@ -24,7 +23,7 @@ import selectedDestinySubclassReducer from './features/selectedDestinySubclass/s
 import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
 import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
-
+import loadErrorReducer from './features/loadError/loadErrorSlice';
 import resultsPaginationReducer, {
 	setResultsPagination,
 } from './features/resultsPagination/resultsPaginationSlice';
@@ -32,9 +31,6 @@ import armorMetadataReducer from './features/armorMetadata/armorMetadataSlice';
 
 import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
 import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
-import disabledCombatStyleModsReducer, {
-	setDisabledCombatStyleMods,
-} from './features/disabledCombatStyleMods/disabledCombatStyleModsSlice';
 import disabledRaidModsReducer, {
 	setDisabledRaidMods,
 } from './features/disabledRaidMods/disabledRaidModsSlice';
@@ -65,9 +61,8 @@ import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorSlotIdToArmorSlotModIdListMapping,
 	ArmorSlotIdToModIdListMapping,
-	CombatStyleModIdList,
-	getValidCombatStyleModArmorSlotPlacements,
-	hasValidCombatStyleModPermutation,
+	getValidRaidModArmorSlotPlacements,
+	hasValidRaidModPermutation,
 	RaidModIdList,
 } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
@@ -88,8 +83,8 @@ export function makeStore() {
 			dimLoadouts: dimLoadoutsReducer,
 			dimLoadoutsFilter: dimLoadoutsFilterReducer,
 			disabledArmorSlotMods: disabledArmorSlotModsReducer,
-			disabledCombatStyleMods: disabledCombatStyleModsReducer,
 			disabledRaidMods: disabledRaidModsReducer,
+			loadError: loadErrorReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
 			processedArmor: processedArmorReducer,
 			resultsPagination: resultsPaginationReducer,
@@ -97,7 +92,6 @@ export function makeStore() {
 			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
 			selectedAspects: selectedAspectsReducer,
 			selectedClassAbility: selectedClassAbilityReducer,
-			selectedCombatStyleMods: selectedCombatStyleModsReducer,
 			selectedDestinyClass: selectedDestinyClassReducer,
 			selectedDestinySubclass: selectedDestinySubclassReducer,
 			selectedExoticArmor: selectedExoticArmorReducer,
@@ -122,7 +116,6 @@ let selectedExoticArmorUuid = NIL;
 let selectedDestinySubclassUuid = NIL;
 let selectedMasterworkAssumptionUuid = NIL;
 let selectedFragmentsUuid = NIL;
-let selectedCombatStyleModsUuid = NIL;
 let selectedRaidModsUuid = NIL;
 let selectedArmorSlotModsUuid = NIL;
 let selectedMinimumGearTierUuid = NIL;
@@ -136,7 +129,6 @@ function handleChange() {
 		selectedExoticArmor: { uuid: nextSelectedExoticArmorUuid },
 		selectedDestinySubclass: { uuid: nextSelectedDestinySubclassUuid },
 		selectedFragments: { uuid: nextSelectedFragmentsUuid },
-		selectedCombatStyleMods: { uuid: nextSelectedCombatStyleModsUuid },
 		selectedRaidMods: { uuid: nextSelectedRaidModsUuid },
 		selectedArmorSlotMods: { uuid: nextSelectedArmorSlotModsUuid },
 		selectedMasterworkAssumption: {
@@ -157,7 +149,6 @@ function handleChange() {
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
 		selectedDestinySubclassUuid !== nextSelectedDestinySubclassUuid ||
-		selectedCombatStyleModsUuid !== nextSelectedCombatStyleModsUuid ||
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
 		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
@@ -169,7 +160,6 @@ function handleChange() {
 		nextSelectedExoticArmorUuid !== NIL &&
 		nextSelectedDestinySubclassUuid !== NIL &&
 		nextSelectedMasterworkAssumptionUuid !== NIL &&
-		nextSelectedCombatStyleModsUuid !== NIL &&
 		nextSelectedFragmentsUuid !== NIL &&
 		nextSelectedRaidModsUuid !== NIL &&
 		nextSelectedArmorSlotModsUuid !== NIL &&
@@ -185,7 +175,6 @@ function handleChange() {
 		selectedDestinySubclassUuid = nextSelectedDestinySubclassUuid;
 		selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
 		selectedFragmentsUuid = nextSelectedFragmentsUuid;
-		selectedCombatStyleModsUuid = nextSelectedCombatStyleModsUuid;
 		selectedRaidModsUuid = nextSelectedRaidModsUuid;
 		selectedArmorSlotModsUuid = nextSelectedArmorSlotModsUuid;
 		selectedMinimumGearTierUuid = nextSelectedMinimumGearTierUuid;
@@ -201,7 +190,6 @@ function handleChange() {
 			desiredArmorStats: { value: desiredArmorStats },
 			selectedMasterworkAssumption: { value: masterworkAssumption },
 			selectedFragments: { value: selectedFragments },
-			selectedCombatStyleMods: { value: selectedCombatStyleMods },
 			selectedDestinySubclass: { value: selectedDestinySubclass },
 			selectedRaidMods: { value: selectedRaidMods },
 			selectedArmorSlotMods: { value: selectedArmorSlotMods },
@@ -216,7 +204,7 @@ function handleChange() {
 			selectedFragments[elementId],
 			selectedDestinyClass
 		);
-		let mods = [...selectedCombatStyleMods, ...selectedRaidMods];
+		let mods = [...selectedRaidMods];
 		ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 			mods = [...mods, ...selectedArmorSlotMods[armorSlotId]];
 		});
@@ -225,39 +213,24 @@ function handleChange() {
 			selectedDestinyClass
 		);
 
-		const validCombatStyleModArmorSlotPlacements =
-			getValidCombatStyleModArmorSlotPlacements(
-				selectedArmorSlotMods,
-				selectedCombatStyleMods
-			);
+		const validRaidModArmorSlotPlacements = getValidRaidModArmorSlotPlacements(
+			selectedArmorSlotMods,
+			selectedRaidMods
+		);
 		console.log(
-			'>>>>>>>>>>> [STORE] validCombatStyleModArmorSlotPlacements <<<<<<<<<<<',
-			validCombatStyleModArmorSlotPlacements
+			'>>>>>>>>>>> [STORE] validRaidModArmorSlotPlacements <<<<<<<<<<<',
+			validRaidModArmorSlotPlacements
 		);
 
-		hasValidCombatStyleModPermutation(
-			selectedArmorSlotMods,
-			selectedCombatStyleMods
-		);
 		const disabledArmorSlotMods = getDisabledArmorSlotMods(
 			selectedArmorSlotMods,
-			selectedCombatStyleMods
+			selectedRaidMods
 		);
 		console.log(
 			'>>>>>>>>>>> [STORE] disabledArmorSlotMods <<<<<<<<<<<',
 			disabledArmorSlotMods
 		);
 		store.dispatch(setDisabledArmorSlotMods(disabledArmorSlotMods));
-
-		const disabledCombatStyleMods = getDisabledCombatStyleMods(
-			selectedArmorSlotMods,
-			selectedCombatStyleMods
-		);
-		console.log(
-			'>>>>>>>>>>> [STORE] disabledCombatStyleMods <<<<<<<<<<<',
-			disabledCombatStyleMods
-		);
-		store.dispatch(setDisabledCombatStyleMods(disabledCombatStyleMods));
 
 		const disabledRaidMods = getDisabledRaidMods(
 			selectedArmorSlotMods,
@@ -297,10 +270,11 @@ function handleChange() {
 			armorItems: preProcessedArmor,
 			fragmentArmorStatMapping,
 			modArmorStatMapping: modsArmorStatMapping,
-			validCombatStyleModArmorSlotPlacements,
+			validRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
 			armorSlotMods: selectedArmorSlotMods,
 			destinyClassId: selectedDestinyClass,
 			armorMetadataItem: armorMetadata[selectedDestinyClass],
+			selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		});
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };
@@ -338,7 +312,7 @@ const unsubscribe = store.subscribe(handleChange);
 // and cost. Those could be big optimizations if this ends up being very slow.
 const getDisabledArmorSlotMods = (
 	selectedArmorSlotMods: ArmorSlotIdToModIdListMapping,
-	selectedCombatStyleMods: EModId[]
+	selectedRaidMods: EModId[]
 ): Partial<Record<EModId, Record<number, boolean>>> => {
 	const disabledMods: Partial<Record<EModId, Record<number, boolean>>> = {};
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
@@ -349,9 +323,9 @@ const getDisabledArmorSlotMods = (
 					...selectedArmorSlotMods[armorSlotId],
 				];
 				potentialSelectedArmorSlotMods[armorSlotId][i] = modId;
-				const isValid = hasValidCombatStyleModPermutation(
+				const isValid = hasValidRaidModPermutation(
 					potentialSelectedArmorSlotMods,
-					selectedCombatStyleMods
+					selectedRaidMods
 				);
 				if (!isValid) {
 					if (!disabledMods[modId]) {
@@ -360,27 +334,6 @@ const getDisabledArmorSlotMods = (
 					disabledMods[modId][i] = true;
 				}
 			});
-		});
-	});
-	return disabledMods;
-};
-
-const getDisabledCombatStyleMods = (
-	selectedArmorSlotMods: ArmorSlotIdToModIdListMapping,
-	selectedCombatStyleMods: EModId[]
-): Partial<Record<EModId, boolean>> => {
-	const disabledMods: Partial<Record<EModId, boolean>> = {};
-	selectedCombatStyleMods.forEach((_, i) => {
-		CombatStyleModIdList.forEach((modId) => {
-			const potentialSelectedCombatStyleMods = [...selectedCombatStyleMods];
-			potentialSelectedCombatStyleMods[i] = modId;
-			const isValid = hasValidCombatStyleModPermutation(
-				selectedArmorSlotMods,
-				potentialSelectedCombatStyleMods
-			);
-			if (!isValid) {
-				disabledMods[modId] = true;
-			}
 		});
 	});
 	return disabledMods;
@@ -395,7 +348,7 @@ const getDisabledRaidMods = (
 		RaidModIdList.forEach((modId) => {
 			const potentialSelectedRaidMods = [...selectedRaidMods];
 			potentialSelectedRaidMods[i] = modId;
-			const isValid = hasValidCombatStyleModPermutation(
+			const isValid = hasValidRaidModPermutation(
 				selectedArmorSlotMods,
 				potentialSelectedRaidMods
 			);

@@ -1,19 +1,13 @@
-import options from '@dlb/constants/DestinySubclassAndSuperAbilityOptions';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { selectDisabledCombatStyleMods } from '@dlb/redux/features/disabledCombatStyleMods/disabledCombatStyleModsSlice';
-import { getArmorSlot } from '@dlb/types/ArmorSlot';
 import { getStat } from '@dlb/types/ArmorStat';
 import { IMod } from '@dlb/types/generation';
 import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
-import { EArmorSlotId, EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
-import { getMod, ArmorSlotIdToArmorSlotModIdListMapping } from '@dlb/types/Mod';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
+import { getMod } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
-import { Avatar, Box, Chip, Typography } from '@mui/material';
-import { first, last } from 'lodash';
-import { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
-import CompactIconAutocompleteDropdown from '../CompactIconAutocompleteDropdown';
-import IconAutocompleteDropdown from '../IconAutocompleteDropdown';
+import { Avatar, Box, Chip } from '@mui/material';
+import CompactIconAutocompleteDropdown from '@dlb/components/CompactIconAutocompleteDropdown';
+import IconAutocompleteDropdown from '@dlb/components/IconAutocompleteDropdown';
 
 type Option = {
 	name: string;

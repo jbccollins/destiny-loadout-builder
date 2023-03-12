@@ -6,7 +6,7 @@ import {
 	hasTokenExpired,
 	removeAccessToken,
 	removeToken,
-	Tokens
+	Tokens,
 } from './oauth-tokens';
 
 /**

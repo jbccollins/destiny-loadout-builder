@@ -57,6 +57,7 @@ import { createItemIndex } from '@dlb/dim/inventory/store/item-index';
 import { buildMasterwork } from './masterwork';
 import { buildSockets } from './sockets';
 import { buildStats } from './stats';
+import { EModCategoryId } from '@dlb/types/IdEnums';
 
 const collectiblesByItemHash = memoizeOne(
 	(Collectible: ReturnType<D2ManifestDefinitions['Collectible']['getAll']>) =>
@@ -949,3 +950,55 @@ function buildPursuitInfo(
 		};
 	}
 }
+
+// const KINGS_FALL_SOCKET_HASH = 1728096240;
+// const LAST_WISH_SOCKET_HASH = 1679876242;
+// const VAULT_OF_GLASS_SOCKET_HASH = 3738398030;
+// const GARDEN_OF_SALVATION_SOCKET_HASH = 706611068;
+// const DEEP_STONE_CRYPT_SOCKET_HASH = 4055462131;
+// const VOW_OF_THE_DISCIPLE_SOCKET_HASH = 2447143568;
+// const NIGHTMARE_SOCKET_HASH = 1180997867;
+
+// const hasSocket = (
+// 	item: DestinyInventoryItemDefinition,
+// 	hash: number
+// ): boolean =>
+// 	(
+// 		item.sockets?.socketEntries.filter(
+// 			(d) => d.singleInitialItemHash == hash
+// 		) || []
+// 	).length > 0;
+
+// const getExtraModSlotCategoryId = (
+// 	item: DestinyInventoryItemDefinition
+// ): EModCategoryId => {
+// 	if (hasSocket(item, KINGS_FALL_SOCKET_HASH)) {
+// 		return EModCategoryId.KingsFall;
+// 	}
+// 	if (hasSocket(item, LAST_WISH_SOCKET_HASH)) {
+// 		return EModCategoryId.LastWish;
+// 	}
+// 	if (hasSocket(item, VAULT_OF_GLASS_SOCKET_HASH)) {
+// 		return EModCategoryId.VaultOfGlass;
+// 	}
+// 	if (hasSocket(item, GARDEN_OF_SALVATION_SOCKET_HASH)) {
+// 		return EModCategoryId.GardenOfSalvation;
+// 	}
+// 	if (hasSocket(item, DEEP_STONE_CRYPT_SOCKET_HASH)) {
+// 		return EModCategoryId.DeepStoneCrypt;
+// 	}
+// 	if (hasSocket(item, VOW_OF_THE_DISCIPLE_SOCKET_HASH)) {
+// 		return EModCategoryId.VowOfTheDisciple;
+// 	}
+// 	if (hasSocket(item, NIGHTMARE_SOCKET_HASH)) {
+// 		return EModCategoryId.Nightmare;
+// 	}
+// 	// if ((v.sockets?.socketEntries.filter(d => d.singleInitialItemHash == 2472875850) || []).length > 0)
+// 	// 	return ArmorPerkOrSlot.PerkIronBanner;
+// 	// if ((v.sockets?.socketEntries.filter(d => d.singleInitialItemHash == 2392155347) || []).length > 0)
+// 	// 	return ArmorPerkOrSlot.PerkUniformedOfficer;
+// 	// if ((v.sockets?.socketEntries.filter(d => d.singleInitialItemHash == 400659041) || []).length > 0)
+// 	// 	return ArmorPerkOrSlot.PerkPlunderersTrappings;
+
+// 	return null;
+// };

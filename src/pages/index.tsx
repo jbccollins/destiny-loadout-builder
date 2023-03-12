@@ -129,7 +129,7 @@ const LeftSectionComponent = () => {
 									clearHandler={clearArmorSlotMods}
 								>
 									<ArmorSlotModSelector />
-									<RaidModSelector />
+									{/* <RaidModSelector /> */}
 								</SelectionControlGroup>
 							</>
 						),

@@ -1,7 +1,7 @@
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
 import { EnumDictionary } from './globals';
-import { EModCategoryId, EModSocketCategoryId } from './IdEnums';
+import { EModSocketCategoryId } from './IdEnums';
 
 const EModDisplayNameIdToModSocketCategoryIdMapping: EnumDictionary<
 	EModDisplayNameId,

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev-open-browser": "npm run open-browser && npx local-ssl-proxy --source 4001 --target 3001 --cert localhost.pem --key localhost-key.pem & next dev -p 3001",
-    "dev": "npx local-ssl-proxy --source 4001 --target 3001 --cert localhost.pem --key localhost-key.pem & next dev -p 3001",
+    "dev": "NODE_ENV=development npx local-ssl-proxy --source 4001 --target 3001 --cert localhost.pem --key localhost-key.pem & next dev -p 3001",
     "open-browser": "open https://localhost:4001",
     "build": "next build",
     "start": "next start",

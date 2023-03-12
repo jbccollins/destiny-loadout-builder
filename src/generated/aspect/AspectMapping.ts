@@ -81,7 +81,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Iceflare Bolts",
     id: EAspectId.IceflareBolts,
     description:
-      'ASPECT OF CONTROL\nUnlock this Stasis Aspect by completing the quests "Born in Darkness Part 1" and "Aspect of Control," acquired from the Exo Stranger on Europa.',
+      "Shattering a frozen target spawns seekers that track and freeze other nearby targets.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/2769eba2b5d550fc833c316129dbc145.png",
     hash: 668903196,
     fragementSlots: 2,
@@ -90,7 +90,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Frostpulse",
     id: EAspectId.Frostpulse,
     description:
-      'ASPECT OF DESTRUCTION\nUnlock this Stasis Aspect by completing the quests "Born in Darkness Part 4" and "Aspect of Destruction," acquired from the Exo Stranger on Europa.',
+      "Casting your Rift generates a shockwave that freezes nearby combatants.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/f51d178f793e3f5071537c0d1f4556c8.png",
     hash: 668903197,
     fragementSlots: 2,
@@ -144,7 +144,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Howl of the Storm",
     id: EAspectId.HowlOfTheStorm,
     description:
-      'ASPECT OF INFLUENCE\nUnlock this Stasis Aspect by completing the quests "Aspect of Destruction" and "Aspect of Influence," acquired from the Exo Stranger on Europa.',
+      "While sliding, activate your charged melee ability to launch a wave of [Stasis] Stasis energy forward that freezes targets and creates [Stasis] Stasis crystals.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/c72c2546a93ea9bdbcea853d50911321.png",
     hash: 1563930741,
     fragementSlots: 2,
@@ -207,7 +207,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Grim Harvest",
     id: EAspectId.GrimHarvest,
     description:
-      'ASPECT OF INFLUENCE\nUnlock this Stasis Aspect by completing the quests "Aspect of Destruction" and "Aspect of Influence," acquired from the Exo Stranger on Europa.',
+      "Defeating slowed or frozen combatants creates [Stasis] Stasis shards. These shards grant melee energy when picked up by you or your allies.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/9361099c677eea4b7cd1205725419218.png",
     hash: 1920417385,
     fragementSlots: 3,
@@ -216,7 +216,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Tectonic Harvest",
     id: EAspectId.TectonicHarvest,
     description:
-      'ASPECT OF DESTRUCTION\nUnlock this Stasis Aspect by completing the quests "Born in Darkness Part 4" and "Aspect of Destruction," acquired from the Exo Stranger on Europa.',
+      "Shattering a [Stasis] Stasis crystal creates a [Stasis] Stasis shard. This shard grants melee energy when picked up by you or your allies.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/f48fabf889c7b342a73a25f76e80d1d7.png",
     hash: 2031919264,
     fragementSlots: 2,
@@ -225,7 +225,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Cryoclasm",
     id: EAspectId.Cryoclasm,
     description:
-      'ASPECT OF CONTROL\nUnlock this Stasis Aspect by completing the quests "Born in Darkness Part 1" and "Aspect of Control," acquired from the Exo Stranger on Europa.',
+      "After sprinting for a short while, enables a longer and more powerful slide. Sliding into [Stasis] Stasis crystals or frozen targets shatters them and any nearby frozen targets.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/8d72a8ff10f0078a6c9f9ff898ada54f.png",
     hash: 2031919265,
     fragementSlots: 2,
@@ -261,7 +261,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Bleak Watcher",
     id: EAspectId.BleakWatcher,
     description:
-      'ASPECT OF INFLUENCE\nUnlock this Stasis Aspect by completing the quests "Aspect of Destruction" and "Aspect of Influence," acquired from the Exo Stranger on Europa.',
+      "Press and hold the grenade button to convert your grenade into a [Stasis] Stasis turret that fires slowing projectiles at nearby targets.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/97527ee6f5a41dc47c70766555766de2.png",
     hash: 2642597904,
     fragementSlots: 2,
@@ -270,7 +270,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Glacial Harvest",
     id: EAspectId.GlacialHarvest,
     description:
-      'ASPECT OF INTERFERENCE\nUnlock this Stasis Aspect by completing the quests "Aspect of Influence" and "Aspect of Interference," acquired from the Exo Stranger on Europa.',
+      "Freezing targets creates [Stasis] Stasis shards around the frozen targets. Higher tier combatants create more shards.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/9a6e0c2839ad21856db0f41daecc6d1a.png",
     hash: 2651551055,
     fragementSlots: 2,
@@ -279,7 +279,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Shatterdive",
     id: EAspectId.Shatterdive,
     description:
-      'ASPECT OF DESTRUCTION\nUnlock this Stasis Aspect by completing the quests "Born in Darkness Part 4" and "Aspect of Destruction," acquired from the Exo Stranger on Europa.',
+      "Activate while midair to quickly descend and shatter nearby targets on impact.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/94578639cfb331ae92137f6fdf9a0e81.png",
     hash: 2934767476,
     fragementSlots: 1,
@@ -287,8 +287,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
   [EAspectId.WintersShroud]: {
     name: "Winter's Shroud",
     id: EAspectId.WintersShroud,
-    description:
-      'ASPECT OF CONTROL\nUnlock this Stasis Aspect by completing the quests "Born in Darkness Part 1" and "Aspect of Control," acquired from the Exo Stranger on Europa.',
+    description: "Dodging slows nearby targets.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/6422d9f6d4a0a4fb679890eae17bd130.png",
     hash: 2934767477,
     fragementSlots: 2,
@@ -351,7 +350,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Diamond Lance",
     id: EAspectId.DiamondLance,
     description:
-      'ASPECT OF INTERFERENCE\nUnlock this Stasis Aspect by completing the quests "Aspect of Influence" and "Aspect of Interference," acquired from the Exo Stranger on Europa.',
+      "Shatter or defeat targets with [Stasis] Stasis abilities or weapons to create a Stasis lance.\n\n[Shoot]  : Throw the lance to freeze targets on impact.\n\n[Melee]  : Slam the lance to the ground to freeze targets in a small area.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/a5c545da23fa52d1aee3807f39c91d42.png",
     hash: 3866705246,
     fragementSlots: 3,
@@ -360,7 +359,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Touch of Winter",
     id: EAspectId.TouchOfWinter,
     description:
-      'ASPECT OF INTERFERENCE\nUnlock this Stasis Aspect by completing the quests "Aspect of Influence" and "Aspect of Interference," acquired from the Exo Stranger on Europa.',
+      "Your Glacier, Duskfield, and Coldsnap grenades have enhanced functionality.\n\nGlacier Grenade: Adds a [Stasis] Stasis crystal and changes the formation.\n\nDuskfield Grenade: Increases slow-field size and creates a small [Stasis] Stasis crystal on impact.\n\nColdsnap Grenade: Seeker creates a [Stasis] Stasis crystal on detonation and chains one additional time.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/b782f03e26e41a50d08aff335c86feb3.png",
     hash: 4184589900,
     fragementSlots: 2,

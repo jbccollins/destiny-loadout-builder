@@ -176,7 +176,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.ArtifactVoidStrandDualSiphon]: {
     name: "Void/Strand Dual Siphon",
     id: EModId.ArtifactVoidStrandDualSiphon,
-    description: "Rapid Strand weapon final blows create Orbs of Power.",
+    description: "Rapid Void weapon final blows create an Orb of Power.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/2194bba5dd511569c0da5049b78d03b4.png",
     hash: 110793779,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -233,7 +233,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     name: "Unflinching Harmonic Aim",
     id: EModId.ArtifactUnflinchingHarmonicAim,
     description:
-      "Reduces flinching from incoming fire while aiming a Void weapon.",
+      "Reduces flinching from incoming fire while aiming an Arc weapon.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/07000dd3ede3158c2e3075207819c713.png",
     hash: 293178904,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -813,7 +813,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     name: "Enhanced Operator Augment",
     id: EModId.EnhancedOperatorAugment,
     description:
-      "With no augment, collecting Orbs of Power causes you to periodically spawn Heavy ammo.",
+      "With the Operator Augment, you gain periodic bursts of healing when your health is depleted.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/24a82ebb135726111e3c99073871cdaa.png",
     hash: 817361141,
     modSocketCategoryId: EModSocketCategoryId.Raid,
@@ -919,7 +919,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     name: "Harmonic Scavenger",
     id: EModId.ArtifactHarmonicScavenger,
     description:
-      "Void weapons get bonus reserves when picking up ammo used by that weapon.",
+      "Arc weapons get bonus reserves when picking up ammo used by that weapon.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/142861e2d894895eed99be20c70f14c5.png",
     hash: 877723168,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -1234,7 +1234,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.ArtifactHarmonicReserves]: {
     name: "Harmonic Reserves",
     id: EModId.ArtifactHarmonicReserves,
-    description: "Increases the amount of ammo you can carry for Void weapons.",
+    description: "Increases the amount of ammo you can carry for Arc weapons.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/4813bade82bda37bc4eaddb248cee6a3.png",
     hash: 1103878128,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -1615,7 +1615,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.HarmonicResistance]: {
     name: "Harmonic Resistance",
     id: EModId.HarmonicResistance,
-    description: "Reduces incoming Void damage from combatants.",
+    description: "Reduces incoming Arc damage from combatants.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/31a6ca7120c21afb4f3e1ee1bf4b84d3.png",
     hash: 1293710444,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -1633,7 +1633,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     name: "Harmonic Scavenger",
     id: EModId.HarmonicScavenger,
     description:
-      "Void weapons get bonus reserves when picking up ammo used by that weapon.",
+      "Arc weapons get bonus reserves when picking up ammo used by that weapon.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/142861e2d894895eed99be20c70f14c5.png",
     hash: 1301391064,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -1651,7 +1651,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     name: "Harmonic Targeting",
     id: EModId.HarmonicTargeting,
     description:
-      "Improved target acquisition, accuracy, and aim-down-sights speed for Void weapons.",
+      "Improved target acquisition, accuracy, and aim-down-sights speed for Arc weapons.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/9b061012887950db391f6ea3ef24a89b.png",
     hash: 1305536863,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -1686,7 +1686,8 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.EnhancedSuppressorAugment]: {
     name: "Enhanced Suppressor Augment",
     id: EModId.EnhancedSuppressorAugment,
-    description: "With no augment, grenades temporarily stun your targets.",
+    description:
+      "With the Suppressor Augment, you take decreased damage from powerful foes.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/3da4be3a2c3609aafbee3655e902c0b2.png",
     hash: 1362793604,
     modSocketCategoryId: EModSocketCategoryId.Raid,
@@ -1886,7 +1887,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     name: "Enhanced Scanner Augment",
     id: EModId.EnhancedScannerAugment,
     description:
-      "With no augment, you gain a bonus to Resilience and Recovery, and your class ability recharges faster.",
+      "With the scanner augment, powerful targets are marked by precision shots and take increased damage for a short period.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/e01f849d196fa1d63cfc95dede616038.png",
     hash: 1578165808,
     modSocketCategoryId: EModSocketCategoryId.Raid,
@@ -1992,7 +1993,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.HarmonicDexterity]: {
     name: "Harmonic Dexterity",
     id: EModId.HarmonicDexterity,
-    description: "Faster ready and stow speed for Void weapons.",
+    description: "Faster ready and stow speed for Arc weapons.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/508f9da8fdffe3418a81449452bd5219.png",
     hash: 1677180919,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -2009,7 +2010,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.ArtifactHarmonicLoader]: {
     name: "Harmonic Loader",
     id: EModId.ArtifactHarmonicLoader,
-    description: "Increases reload speed of Void weapons.",
+    description: "Increases reload speed of Arc weapons.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/005c02927469fd10e23b659fd85ec7eb.png",
     hash: 1702273159,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -2260,7 +2261,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     name: "Harmonic Targeting",
     id: EModId.ArtifactHarmonicTargeting,
     description:
-      "Improved target acquisition, accuracy, and aim-down-sights speed for Void weapons.",
+      "Improved target acquisition, accuracy, and aim-down-sights speed for Arc weapons.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/9b061012887950db391f6ea3ef24a89b.png",
     hash: 1891463783,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -2331,7 +2332,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.HarmonicReserves]: {
     name: "Harmonic Reserves",
     id: EModId.HarmonicReserves,
-    description: "Increases the amount of ammo you can carry for Void weapons.",
+    description: "Increases the amount of ammo you can carry for Arc weapons.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/4813bade82bda37bc4eaddb248cee6a3.png",
     hash: 1971149752,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -2953,7 +2954,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.ArtifactHarmonicDexterity]: {
     name: "Harmonic Dexterity",
     id: EModId.ArtifactHarmonicDexterity,
-    description: "Faster ready and stow speed for Void weapons.",
+    description: "Faster ready and stow speed for Arc weapons.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/508f9da8fdffe3418a81449452bd5219.png",
     hash: 2479297167,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -3261,7 +3262,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.HarmonicLoader]: {
     name: "Harmonic Loader",
     id: EModId.HarmonicLoader,
-    description: "Increases reload speed of Void weapons.",
+    description: "Increases reload speed of Arc weapons.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/005c02927469fd10e23b659fd85ec7eb.png",
     hash: 2657604783,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -3579,7 +3580,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.ArtifactSolarStrandDualSiphon]: {
     name: "Solar/Strand Dual Siphon",
     id: EModId.ArtifactSolarStrandDualSiphon,
-    description: "Rapid Strand weapon final blows create Orbs of Power.",
+    description: "Rapid Solar weapon final blows create an Orb of Power.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/6b8b7c4212068b6605440665dae29a0f.png",
     hash: 2831374162,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -3865,7 +3866,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
     name: "Unflinching Harmonic Aim",
     id: EModId.UnflinchingHarmonicAim,
     description:
-      "Reduces flinching from incoming fire while aiming a Void weapon.",
+      "Reduces flinching from incoming fire while aiming an Arc weapon.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/07000dd3ede3158c2e3075207819c713.png",
     hash: 3094620656,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -4678,7 +4679,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.HarmonicSiphon]: {
     name: "Harmonic Siphon",
     id: EModId.HarmonicSiphon,
-    description: "Rapid Strand weapon final blows create Orbs of Power.",
+    description: "Rapid Arc weapon final blows create an Orb of Power.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/978427ff6f34ab61a24b498a36803019.png",
     hash: 3832366019,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,
@@ -4852,7 +4853,7 @@ export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {
   [EModId.HarmonicHolster]: {
     name: "Harmonic Holster",
     id: EModId.HarmonicHolster,
-    description: "Gradually reloads your stowed Void weapons over time.",
+    description: "Gradually reloads your stowed Arc weapons over time.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/26b14ad779bc63934dc34459d3ea8bfc.png",
     hash: 3969361392,
     modSocketCategoryId: EModSocketCategoryId.ArmorSlot,

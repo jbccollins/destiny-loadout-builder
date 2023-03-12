@@ -233,12 +233,13 @@ export const getDescription = (
 	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>
 ) => {
 	let description = 'No description found';
-	item.perks.forEach((perk) => {
+	for (const perk of item.perks) {
 		const desc =
 			sandboxPerkDefinitions[perk.perkHash].displayProperties.description;
 		if (desc) {
 			description = desc;
+			break;
 		}
-	});
+	}
 	return description;
 };

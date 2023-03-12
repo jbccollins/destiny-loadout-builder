@@ -73,13 +73,13 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			true,
 			[
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
 				EModId.MinorMobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
 			],
 			[],
 			{
@@ -162,12 +162,12 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			true,
 			[
-				EModId.DisciplineMod,
-				EModId.DisciplineMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.DisciplineMod,
+				EModId.DisciplineMod,
 			],
 			[],
 			{
@@ -207,13 +207,13 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			true,
 			[
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
 				EModId.MinorDisciplineMod,
 				EModId.MinorStrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
 			],
 			[],
 			{
@@ -467,7 +467,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		},
 		output: [
 			true,
-			[EModId.RecoveryMod, EModId.MobilityMod, EModId.MinorIntellectMod],
+			[EModId.MobilityMod, EModId.RecoveryMod, EModId.MinorIntellectMod],
 			[],
 			{
 				[EArmorStatId.Mobility]: 10,
@@ -530,7 +530,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		},
 		output: [
 			false,
-			[EModId.RecoveryMod, EModId.MobilityMod],
+			[EModId.MobilityMod, EModId.RecoveryMod],
 			[],
 			{
 				[EArmorStatId.Mobility]: 10,

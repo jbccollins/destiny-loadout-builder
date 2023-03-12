@@ -279,13 +279,6 @@ function handleChange() {
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };
 		results.forEach((result) => {
-			// if (
-			// 	result.metadata.totalArmorStatMapping.Resilience === 98 &&
-			// 	result.metadata.totalArmorStatMapping.Recovery === 98 &&
-			// 	result.metadata.totalArmorStatMapping.Discipline === 100
-			// ) {
-			// 	console.log('>> WACK');
-			// }
 			const availableMods = 5 - result.armorStatModIdList.length;
 			ArmorStatIdList.forEach((armorStatId) => {
 				// TODO: this "* 10" is a bug that assumes you can always fit major mods.

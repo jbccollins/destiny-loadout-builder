@@ -37,6 +37,7 @@ export type DimLoadoutConfiguration = {
 	classAbilityId: EClassAbilityId;
 	superAbilityId: ESuperAbilityId;
 	armorStatModIdList: EModId[];
+	artificeModIdList: EModId[];
 	exoticArmor: AvailableExoticArmorItem;
 	stats: ArmorStatMapping;
 	masterworkAssumption: EMasterworkAssumption;
@@ -52,6 +53,7 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 		fragmentIdList,
 		aspectIdList,
 		armorStatModIdList,
+		artificeModIdList,
 		exoticArmor,
 		stats,
 		masterworkAssumption,
@@ -85,6 +87,9 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	);
 	armorStatModIdList.forEach((armorStatModId: EModId) => {
 		modHashes.push(getMod(armorStatModId).hash);
+	});
+	artificeModIdList.forEach((artificeModId: EModId) => {
+		modHashes.push(getMod(artificeModId).hash);
 	});
 
 	const data: LoadoutParameters = {

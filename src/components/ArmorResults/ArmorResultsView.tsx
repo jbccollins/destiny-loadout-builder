@@ -172,7 +172,7 @@ export type ResultsTableLoadout = {
 	sortableFields: SortableFields;
 	armorItems: ArmorItem[];
 	requiredStatModIdList: EModId[];
-	requiredArtificeStatModsIdList: EArmorStatId[];
+	requiredArtificeModIdList: EModId[];
 };
 
 export type Order = 'asc' | 'desc';
@@ -369,17 +369,12 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		const res: ResultsTableLoadout[] = [];
 
 		processedArmor.forEach(
-			({
-				armorIdList,
-				armorStatModIdList,
-				artificeModArmorStatIdList,
-				metadata,
-			}) => {
+			({ armorIdList, armorStatModIdList, artificeModIdList, metadata }) => {
 				const resultLoadout: ResultsTableLoadout = {
 					id: '',
 					armorItems: [],
 					requiredStatModIdList: armorStatModIdList,
-					requiredArtificeStatModsIdList: artificeModArmorStatIdList,
+					requiredArtificeModIdList: artificeModIdList,
 					sortableFields: {
 						[EArmorStatId.Mobility]: 0,
 						[EArmorStatId.Resilience]: 0,
@@ -414,11 +409,11 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 				});
 				// if (metadata.artificeClassItemArmorStatId) {
 				// 	resultLoadout.id += `[ArtificeClassItem-${metadata.artificeClassItemArmorStatId}]`;
-				// 	resultLoadout.requiredArtificeStatModsIdList.push(
+				// 	resultLoadout.requiredArtificeModIdList.push(
 				// 		metadata.artificeClassItemArmorStatId
 				// 	);
 				// }
-				artificeModArmorStatIdList.forEach((armorStatId) => {
+				artificeModIdList.forEach((armorStatId) => {
 					resultLoadout.id += `[artifice-${armorStatId}]`;
 				});
 				res.push(resultLoadout);

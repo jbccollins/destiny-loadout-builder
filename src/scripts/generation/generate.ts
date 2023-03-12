@@ -9,11 +9,11 @@ import { run as generateFragments } from './fragments/generateFragments';
 
 (async function run() {
 	await generateMods();
-	// await generateFragments();
-	// await generateAspects();
-	// await generateGrenades();
-	// await generateMelees();
-	// await generateClassAbilities();
-	// await generateJumps();
-	// await generateSuperAbilities();
+	await generateFragments();
+	await generateAspects();
+	await generateGrenades();
+	await generateMelees();
+	await generateClassAbilities();
+	await generateJumps();
+	await generateSuperAbilities();
 })();

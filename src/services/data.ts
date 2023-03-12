@@ -28,7 +28,6 @@ import {
 	StatList,
 	ArmorMetadata,
 	getDefaultArmorMetadata,
-	getDefaultArmorMaxStatsMetadata,
 	ArmorMaxStatsMetadata,
 	getDefaultArmorCountMaxStatsMetadata,
 } from '@dlb/types/Armor';
@@ -74,7 +73,12 @@ export const extractArmor = (
 	stores.forEach(({ items }) => {
 		items.forEach((item) => {
 			// Filter out all items that don't have an element. These are really old armor
-			if (item.location.inArmor && item.element?.enumValue) {
+			// TODO: Is this element filter really safe now that armor affinity is gone?
+			if (
+				item.location.inArmor &&
+				item.element?.enumValue &&
+				!item.classified // Classified armor has no stats
+			) {
 				const destinyClassName = DestinyClassHashToDestinyClass[
 					item.classType
 				] as EDestinyClassId;

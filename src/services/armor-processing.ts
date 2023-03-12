@@ -39,6 +39,7 @@ import {
 } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToModIdListMapping,
+	getArtificeStatModIdFromArmorStatId,
 	getMod,
 	hasValidArmorStatModPermutation,
 	MinorStatModIdList,
@@ -97,29 +98,60 @@ function canUseMinorStatMod(x: number) {
 	return roundUp5(x) % 10 === 5;
 }
 
-type GetRequiredArtificeModArmorStatIdListParams = {
+type GetrequiredArtificeModIdListParams = {
 	desiredArmorStats: ArmorStatMapping;
 	totalArmorStatMapping: ArmorStatMapping;
 };
 
-const getRequiredArtificeModArmorStatIdList = ({
+const getRequiredArtificeModIdList = ({
 	desiredArmorStats,
 	totalArmorStatMapping,
-}: GetRequiredArtificeModArmorStatIdListParams): EArmorStatId[] => {
-	const requiredArtificeModArmorStatIdList: EArmorStatId[] = [];
+}: GetrequiredArtificeModIdListParams): EModId[] => {
+	const requiredArtificeModIdList: EModId[] = [];
 	ArmorStatIdList.forEach((armorStatId) => {
 		const desiredArmorStat = desiredArmorStats[armorStatId];
 		const achievedArmorStat = totalArmorStatMapping[armorStatId];
 		const diff = desiredArmorStat - achievedArmorStat;
 		let numRequiredArtificeMods = 0;
 		if (diff > 0) {
-			numRequiredArtificeMods += Math.ceil(diff / 3);
+			numRequiredArtificeMods += Math.ceil(diff / ARTIFICE_BONUS_VALUE);
 			for (let i = 0; i < numRequiredArtificeMods; i++) {
-				requiredArtificeModArmorStatIdList.push(armorStatId);
+				requiredArtificeModIdList.push(
+					getArtificeStatModIdFromArmorStatId(armorStatId)
+				);
 			}
 		}
 	});
-	return requiredArtificeModArmorStatIdList;
+	return requiredArtificeModIdList;
+};
+
+const getModReplaceabilityScore = (
+	modId: EModId,
+	baseArmorStatMapping: ArmorStatMapping
+): number => {
+	if (modId === EModId.IntellectMod) {
+		console.log('intellect');
+	}
+	const mod = getMod(modId);
+	const { stat, value: bonus } = mod.bonuses[0]; // TODO: This is a fragile check
+	const diff = Math.abs(baseArmorStatMapping[stat] - bonus);
+	const remainder = diff % 10 || 10; // If the remainder is 0 then we set it to 10
+	const score = Math.ceil(remainder / ARTIFICE_BONUS_VALUE);
+	return score;
+};
+// Find the armor stat mods that are the "easiest" to replace with
+// artifice mods.
+const sortRequiredArmorStatModsByReplaceability = (
+	armorStatModsIdList: EModId[],
+	baseArmorStatMapping: ArmorStatMapping
+): EModId[] => {
+	const sortedMods = [...armorStatModsIdList].sort((a, b) => {
+		return (
+			getModReplaceabilityScore(a, baseArmorStatMapping) -
+			getModReplaceabilityScore(b, baseArmorStatMapping)
+		);
+	});
+	return sortedMods;
 };
 
 export type GetRequiredArmorStatModsParams = {
@@ -143,14 +175,7 @@ export const getRequiredArmorStatMods = ({
 	numSeenArtificeArmorItems,
 	selectedExotic,
 	armorMetadataItem,
-}: GetRequiredArmorStatModsParams): [
-	EModId[],
-	EArmorStatId[],
-	ArmorStatMapping
-] => {
-	if (isEqual(stats, [18, 78, 68, 100, 24, 33])) {
-		console.log('>> WACK 5');
-	}
+}: GetRequiredArmorStatModsParams): [EModId[], EModId[], ArmorStatMapping] => {
 	const requiredArmorStatMods: EModId[] = [];
 	stats.forEach((stat, i) => {
 		const armorStat = ArmorStatIdList[i];
@@ -184,7 +209,7 @@ export const getRequiredArmorStatMods = ({
 			requiredArmorStatMods.push(minor);
 		}
 	});
-	let requiredArtificeModArmorStatIdList: EArmorStatId[] = [];
+	let requiredArtificeModIdList: EModId[] = [];
 	let adjustedArmorStatMods: EModId[] = [...requiredArmorStatMods];
 
 	// TODO: This is an upper bound for the number of artifice items left.
@@ -199,9 +224,19 @@ export const getRequiredArmorStatMods = ({
 		numPotentialArtificeItems > 0
 	) {
 		const baseArmorStatMapping = getArmorStatMappingFromStatList(stats);
-		const sortedRequiredArmorStatMods = [...requiredArmorStatMods].sort(
-			(a, b) => getMod(b).cost - getMod(a).cost
-		);
+
+		// The here is that we test taking out required mods and replacing them with
+		// artifice mods. We sort the mods in order of how many artifice mods it would
+		// take to replace them. I believe this will always find a solution if one
+		// exists but it's not guaranteed to find the most "optimal" mods to replace.
+		// Like with 4 artifice mods and 7 required armor stat mods, it may be possible to
+		// replace two major mods instead of two minor mods. But this will replace the two
+		// minor mods.
+		const sortedRequiredArmorStatMods =
+			sortRequiredArmorStatModsByReplaceability(
+				requiredArmorStatMods,
+				baseArmorStatMapping
+			);
 		adjustedArmorStatMods = [...sortedRequiredArmorStatMods];
 		const removedIndices: number[] = [];
 		for (let i = 0; i < sortedRequiredArmorStatMods.length; i++) {
@@ -217,31 +252,28 @@ export const getRequiredArmorStatMods = ({
 				_adjustedArmorStatMods,
 				destinyClassId
 			);
-			const _requiredArtificeModArmorStatIdList =
-				getRequiredArtificeModArmorStatIdList({
-					desiredArmorStats,
-					totalArmorStatMapping: sumArmorStatMappings([
-						adjustedArmorStatMapping,
-						baseArmorStatMapping,
-					]),
-				});
-			if (
-				_requiredArtificeModArmorStatIdList.length > numPotentialArtificeItems
-			) {
+			const _requiredArtificeModIdList = getRequiredArtificeModIdList({
+				desiredArmorStats,
+				totalArmorStatMapping: sumArmorStatMappings([
+					adjustedArmorStatMapping,
+					baseArmorStatMapping,
+				]),
+			});
+			if (_requiredArtificeModIdList.length > numPotentialArtificeItems) {
 				continue;
 			} else {
 				removedIndices.push(i);
 				adjustedArmorStatMods = _adjustedArmorStatMods;
-				requiredArtificeModArmorStatIdList =
-					_requiredArtificeModArmorStatIdList;
+				requiredArtificeModIdList = _requiredArtificeModIdList;
 			}
 		}
 	}
+
 	// Try to optimize a bit further by swapping out major mods with minor mods and padding with artifice mods
 	if (
 		numRemainingArmorPieces === 0 &&
 		numSeenArtificeArmorItems > 0 &&
-		requiredArtificeModArmorStatIdList.length <= numSeenArtificeArmorItems
+		requiredArtificeModIdList.length <= numSeenArtificeArmorItems
 	) {
 		let optimizedArmorStatMods = [...adjustedArmorStatMods];
 		for (let i = 0; i < adjustedArmorStatMods.length; i++) {
@@ -275,26 +307,35 @@ export const getRequiredArmorStatMods = ({
 				optimizedArmorStatMapping,
 				baseArmorStatMapping,
 			]);
-			const _requiredArtificeModArmorStatIdList =
-				getRequiredArtificeModArmorStatIdList({
-					desiredArmorStats,
-					totalArmorStatMapping,
-				});
-			if (
-				_requiredArtificeModArmorStatIdList.length > numSeenArtificeArmorItems
-			) {
+			const _requiredArtificeModIdList = getRequiredArtificeModIdList({
+				desiredArmorStats,
+				totalArmorStatMapping,
+			});
+			if (_requiredArtificeModIdList.length > numSeenArtificeArmorItems) {
 				continue;
 			} else {
 				optimizedArmorStatMods = _optimizedArmorStatMods;
-				requiredArtificeModArmorStatIdList =
-					_requiredArtificeModArmorStatIdList;
+				requiredArtificeModIdList = _requiredArtificeModIdList;
 			}
 		}
 		adjustedArmorStatMods = optimizedArmorStatMods;
 	}
+
+	// TODO: If we have extra artifice mods available then try adding those to fill in the gaps.
+	// This is a future optimization. We currently only add artifice mods if they are required to
+	// hit the stats you want. Ideally we would prefer artifice mods over armor stat mods since
+	// artifice mods have no cost.
+	// if (
+	// 	numRemainingArmorPieces === 0 &&
+	// 	numSeenArtificeArmorItems > 0 &&
+	// 	requiredArtificeModIdList.length < numSeenArtificeArmorItems
+	// ) {
+	// 	let numExtraArtificeMods = numSeenArtificeArmorItems - requiredArtificeModIdList.length
+	//	// Figure out how to add more stat tiers with artifice mods here!
+	// }
 	return [
 		adjustedArmorStatMods,
-		requiredArtificeModArmorStatIdList,
+		requiredArtificeModIdList,
 		getArmorStatMappingFromMods(adjustedArmorStatMods, destinyClassId),
 	];
 };
@@ -314,7 +355,7 @@ export type ShouldShortCircuitParams = {
 export type ShouldShortCircuitOutput = [
 	boolean,
 	EModId[],
-	EArmorStatId[],
+	EModId[],
 	ArmorStatMapping,
 	EArmorStatId | null, // null means that there were to many required mods
 	EArmorSlotId
@@ -338,7 +379,9 @@ const getMaxPossibleRemainingStatValue = (
 	const armorSlotId = getArmorSlotFromNumRemainingArmorPieces(
 		numRemainingArmorPieces
 	);
-	const index = ArmorSlotIdList.findIndex((x) => x === armorSlotId);
+	// Check if any of the next armor slots can be artifice
+	// If so then add the artifice bonus for each slot that can be artifice
+	const index = 1 + ArmorSlotIdList.findIndex((x) => x === armorSlotId);
 	// Get the max possible remaining artifice bonuses
 	for (let i = index; i < ArmorSlotIdList.length; i++) {
 		const armorSlotId = ArmorSlotIdList[i];
@@ -350,9 +393,6 @@ const getMaxPossibleRemainingStatValue = (
 		}
 	}
 	return maxPossibleRemainingStatValue;
-	// return MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces + // Assume the best possible stats for each remaining piece
-	// numRemainingArmorPieces * 3 + // Assume all remaining pieces are artifice pieces
-	// numSeenArtificeArmorItems * 3;
 };
 
 const getItemCountsFromSeenArmorSlotItems = (
@@ -408,19 +448,16 @@ export const shouldShortCircuit = (
 		selectedExotic
 	);
 
-	const [
-		requiredArmorStatMods,
-		requiredArtificeModArmorStatIdList,
-		armorStatMapping,
-	] = getRequiredArmorStatMods({
-		desiredArmorStats,
-		stats: sumOfSeenStats,
-		numRemainingArmorPieces,
-		destinyClassId,
-		numSeenArtificeArmorItems: seenItemCounts.artifice,
-		armorMetadataItem,
-		selectedExotic,
-	});
+	const [requiredArmorStatMods, requiredArtificeModIdList, armorStatMapping] =
+		getRequiredArmorStatMods({
+			desiredArmorStats,
+			stats: sumOfSeenStats,
+			numRemainingArmorPieces,
+			destinyClassId,
+			numSeenArtificeArmorItems: seenItemCounts.artifice,
+			armorMetadataItem,
+			selectedExotic,
+		});
 
 	const slot = getArmorSlotFromNumRemainingArmorPieces(numRemainingArmorPieces);
 
@@ -433,7 +470,7 @@ export const shouldShortCircuit = (
 		return [
 			true,
 			requiredArmorStatMods,
-			requiredArtificeModArmorStatIdList,
+			requiredArtificeModIdList,
 			armorStatMapping,
 			null,
 			slot,
@@ -443,13 +480,11 @@ export const shouldShortCircuit = (
 	// TODO: This is an upper bound. We can constrain this further
 	const maxNumPotentialArtificeItems =
 		seenItemCounts.artifice + numRemainingArmorPieces;
-	if (
-		requiredArtificeModArmorStatIdList.length > maxNumPotentialArtificeItems
-	) {
+	if (requiredArtificeModIdList.length > maxNumPotentialArtificeItems) {
 		return [
 			true,
 			requiredArmorStatMods,
-			requiredArtificeModArmorStatIdList,
+			requiredArtificeModIdList,
 			armorStatMapping,
 			null,
 			slot,
@@ -466,7 +501,7 @@ export const shouldShortCircuit = (
 		return [
 			true,
 			requiredArmorStatMods,
-			requiredArtificeModArmorStatIdList,
+			requiredArtificeModIdList,
 			armorStatMapping,
 			null,
 			null,
@@ -490,7 +525,7 @@ export const shouldShortCircuit = (
 			return [
 				true,
 				requiredArmorStatMods,
-				requiredArtificeModArmorStatIdList,
+				requiredArtificeModIdList,
 				armorStatMapping,
 				armorStat,
 				slot,
@@ -501,7 +536,7 @@ export const shouldShortCircuit = (
 	return [
 		false,
 		requiredArmorStatMods,
-		requiredArtificeModArmorStatIdList,
+		requiredArtificeModIdList,
 		armorStatMapping,
 		null,
 		null,
@@ -535,12 +570,13 @@ const getExtraSumOfSeenStats = (
 	return sumOfSeenStats;
 };
 
-const getArmorStatMappingFromArtificeModArmorStatIdList = (
-	artificeModArmorStatIdList: EArmorStatId[]
+const getArmorStatMappingFromArtificeModIdList = (
+	artificeModIdList: EModId[]
 ): ArmorStatMapping => {
 	const armorStatMapping: ArmorStatMapping = { ...DefaultArmorStatMapping };
-	artificeModArmorStatIdList.forEach((armorStatId) => {
-		armorStatMapping[armorStatId] += ARTIFICE_BONUS_VALUE;
+	artificeModIdList.forEach((artificeModId) => {
+		armorStatMapping[getMod(artificeModId).bonuses[0].stat] +=
+			ARTIFICE_BONUS_VALUE;
 	});
 	return armorStatMapping;
 };
@@ -658,19 +694,10 @@ const _processArmorBaseCase = ({
 		});
 		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
 
-		if (
-			armorIdList[0] === '6917529863666127626' &&
-			armorIdList[1] === '6917529815941528051' &&
-			armorIdList[2] === '6917529501994676461' &&
-			armorIdList[3] === '6917529868119754718'
-		) {
-			console.log('>> WACK 3');
-		}
-
 		const [
 			shortCircuit,
 			requiredStatMods,
-			requiredArtificeModArmorStatIdList,
+			requiredArtificeModIdList,
 			requiredStatModArmorStatMapping,
 		] = shouldShortCircuit({
 			sumOfSeenStats: finalSumOfSeenStats,
@@ -687,42 +714,22 @@ const _processArmorBaseCase = ({
 			console.log(`short circuiting base case.`);
 			return;
 		}
-
-		if (
-			armorIdList[0] === '6917529863666127626' &&
-			armorIdList[1] === '6917529815941528051' &&
-			armorIdList[2] === '6917529501994676461' &&
-			armorIdList[3] === '6917529868119754718'
-		) {
-			console.log('>> WACK 1');
-		}
 		const totalArmorStatMapping = sumArmorStatMappings([
 			getArmorStatMappingFromStatList(finalSumOfSeenStats),
 			requiredStatModArmorStatMapping,
-			getArmorStatMappingFromArtificeModArmorStatIdList(
-				requiredArtificeModArmorStatIdList
-			),
+			getArmorStatMappingFromArtificeModIdList(requiredArtificeModIdList),
 		]);
-
-		if (
-			totalArmorStatMapping.Resilience === 98 &&
-			totalArmorStatMapping.Recovery === 98 &&
-			totalArmorStatMapping.Discipline === 100
-		) {
-			console.log('>> WACK 2');
-		}
-
 		output.push({
 			armorIdList,
 			armorStatModIdList: requiredStatMods,
-			artificeModArmorStatIdList: requiredArtificeModArmorStatIdList,
+			artificeModIdList: requiredArtificeModIdList,
 			metadata: {
 				// requiredStatModIdList: requiredStatMods, // TODO: Why is this necessary when it's returned right above here?
 				totalModCost: getTotalModCost(requiredStatMods),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
 				wastedStats: getWastedStats(totalArmorStatMapping),
 				totalArmorStatMapping,
-				// requiredArtificeModArmorStatIdList,
+				// requiredArtificeModIdList,
 			},
 		});
 	});
@@ -833,13 +840,13 @@ export type ProcessedArmorItemMetadata = {
 	wastedStats: number;
 	totalArmorStatMapping: ArmorStatMapping;
 	// requiredStatModIdList: EModId[];
-	// requiredArtificeModArmorStatIdList: EArmorStatId[];
+	// requiredArtificeModIdList: EArmorStatId[];
 };
 
 type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
-	artificeModArmorStatIdList: EArmorStatId[];
+	artificeModIdList: EModId[];
 	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: ProcessedArmorItemMetadata;
 };

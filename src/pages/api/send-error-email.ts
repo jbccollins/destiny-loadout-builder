@@ -26,6 +26,11 @@ export default function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<ResData>
 ) {
+	if (process.env.NODE_ENV === 'development') {
+		res
+			.status(200)
+			.json({ error: null, message: 'Skipping error email in dev' });
+	}
 	const { error } = req.body as ReqData;
 	const message = `
     <div style="white-space: pre-line;">${error}</div>

@@ -155,7 +155,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			{
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [],
-				artificeModArmorStatIdList: [],
+				artificeModIdList: [],
 				metadata: {
 					totalModCost: 0,
 					totalStatTiers: 24,
@@ -252,16 +252,16 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			{
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
 					EModId.MinorResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
 				],
-				artificeModArmorStatIdList: [
-					EArmorStatId.Resilience,
-					EArmorStatId.Resilience,
-					EArmorStatId.Resilience,
+				artificeModIdList: [
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
 				],
 				metadata: {
 					totalModCost: 18,
@@ -362,16 +362,16 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			{
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
 					EModId.MinorResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
 				],
-				artificeModArmorStatIdList: [
-					EArmorStatId.Resilience,
-					EArmorStatId.Resilience,
-					EArmorStatId.Resilience,
+				artificeModIdList: [
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
 				],
 				metadata: {
 					totalModCost: 18,
@@ -469,7 +469,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.MobilityMod,
 					EModId.MobilityMod,
 				],
-				artificeModArmorStatIdList: [],
+				artificeModIdList: [],
 				metadata: {
 					totalModCost: 15,
 					totalStatTiers: 30,
@@ -573,10 +573,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.RecoveryMod,
 					EModId.RecoveryMod,
 				],
-				artificeModArmorStatIdList: [
-					EArmorStatId.Resilience,
-					EArmorStatId.Recovery,
-				],
+				artificeModIdList: [EModId.ResilienceForged, EModId.RecoveryForged],
 				metadata: {
 					totalModCost: 20,
 					totalStatTiers: 36,
@@ -600,22 +597,22 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 // test case that way :(
 
 describe('processArmor', () => {
-	// test(processArmorTestCases[0].name, () => {
-	// 	const { input, output } = processArmorTestCases[0];
-	// 	expect(doProcessArmor(input)).toEqual(output);
-	// });
-	// test(processArmorTestCases[1].name, () => {
-	// 	const { input, output } = processArmorTestCases[1];
-	// 	expect(doProcessArmor(input)).toEqual(output);
-	// });
-	// test(processArmorTestCases[2].name, () => {
-	// 	const { input, output } = processArmorTestCases[2];
-	// 	expect(doProcessArmor(input)).toEqual(output);
-	// });
-	// test(processArmorTestCases[3].name, () => {
-	// 	const { input, output } = processArmorTestCases[3];
-	// 	expect(doProcessArmor(input)).toEqual(output);
-	// });
+	test(processArmorTestCases[0].name, () => {
+		const { input, output } = processArmorTestCases[0];
+		expect(doProcessArmor(input)).toEqual(output);
+	});
+	test(processArmorTestCases[1].name, () => {
+		const { input, output } = processArmorTestCases[1];
+		expect(doProcessArmor(input)).toEqual(output);
+	});
+	test(processArmorTestCases[2].name, () => {
+		const { input, output } = processArmorTestCases[2];
+		expect(doProcessArmor(input)).toEqual(output);
+	});
+	test(processArmorTestCases[3].name, () => {
+		const { input, output } = processArmorTestCases[3];
+		expect(doProcessArmor(input)).toEqual(output);
+	});
 	test(processArmorTestCases[4].name, () => {
 		const { input, output } = processArmorTestCases[4];
 		expect(doProcessArmor(input)).toEqual(output);

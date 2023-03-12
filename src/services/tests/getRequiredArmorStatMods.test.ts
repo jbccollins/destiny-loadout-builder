@@ -33,7 +33,7 @@ artificeWarlockMetadatItem.artifice.items.Leg.count = 1;
 type GetRequiredArmorStatModsTestCase = {
 	name: string;
 	input: GetRequiredArmorStatModsParams;
-	output: [EModId[], EArmorStatId[], ArmorStatMapping];
+	output: [EModId[], EModId[], ArmorStatMapping];
 };
 
 const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
@@ -279,7 +279,7 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				EModId.RecoveryMod,
 				EModId.RecoveryMod,
 			],
-			[EArmorStatId.Resilience, EArmorStatId.Recovery],
+			[EModId.ResilienceForged, EModId.RecoveryForged],
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 20,
@@ -290,35 +290,136 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 			},
 		],
 	},
+	{
+		name: 'It properly chooses to replace two minor mods with artifice mods instead of one major mod',
+		input: {
+			stats: [1, 2, 2, 0, 0, 0],
+			desiredArmorStats: {
+				[EArmorStatId.Mobility]: 15,
+				[EArmorStatId.Resilience]: 5,
+				[EArmorStatId.Recovery]: 5,
+				[EArmorStatId.Discipline]: 5,
+				[EArmorStatId.Intellect]: 5,
+				[EArmorStatId.Strength]: 5,
+			},
+			numRemainingArmorPieces: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			armorMetadataItem: artificeWarlockMetadatItem,
+			numSeenArtificeArmorItems: 3,
+			selectedExotic: {
+				armorSlot: EArmorSlotId.Chest,
+				name: 'Starfire Protocol',
+				count: 1,
+				destinyClassName: EDestinyClassId.Warlock,
+				hash: 2082483156,
+				icon: '',
+			},
+		},
+		output: [
+			[
+				EModId.MinorMobilityMod,
+				EModId.MinorDisciplineMod,
+				EModId.MinorIntellectMod,
+				EModId.MinorStrengthMod,
+				EModId.MobilityMod,
+			],
+			[EModId.ResilienceForged, EModId.RecoveryForged],
+			{
+				[EArmorStatId.Mobility]: 15,
+				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Recovery]: 0,
+				[EArmorStatId.Discipline]: 5,
+				[EArmorStatId.Intellect]: 5,
+				[EArmorStatId.Strength]: 5,
+			},
+		],
+	},
+	{
+		name: 'With nine mods needed it properly replaces the 4 minor mods with artifice mods',
+		input: {
+			stats: [2, 2, 2, 2, 50, 0],
+			desiredArmorStats: {
+				[EArmorStatId.Mobility]: 15,
+				[EArmorStatId.Resilience]: 15,
+				[EArmorStatId.Recovery]: 15,
+				[EArmorStatId.Discipline]: 15,
+				[EArmorStatId.Intellect]: 60,
+				[EArmorStatId.Strength]: 0,
+			},
+			numRemainingArmorPieces: 0,
+			destinyClassId: EDestinyClassId.Warlock,
+			armorMetadataItem: artificeWarlockMetadatItem,
+			numSeenArtificeArmorItems: 4,
+			selectedExotic: {
+				armorSlot: EArmorSlotId.Chest,
+				name: 'Starfire Protocol',
+				count: 1,
+				destinyClassName: EDestinyClassId.Warlock,
+				hash: 2082483156,
+				icon: '',
+			},
+		},
+		output: [
+			[
+				EModId.MobilityMod,
+				EModId.ResilienceMod,
+				EModId.RecoveryMod,
+				EModId.DisciplineMod,
+				EModId.IntellectMod,
+			],
+			[
+				EModId.MobilityForged,
+				EModId.ResilienceForged,
+				EModId.RecoveryForged,
+				EModId.DisciplineForged,
+			],
+			{
+				[EArmorStatId.Mobility]: 10,
+				[EArmorStatId.Resilience]: 10,
+				[EArmorStatId.Recovery]: 10,
+				[EArmorStatId.Discipline]: 10,
+				[EArmorStatId.Intellect]: 10,
+				[EArmorStatId.Strength]: 0,
+			},
+		],
+	},
 ];
 
 describe('getRequiredArmorStatMods', () => {
-	// test(getRequiredArmorStatModsTestCases[0].name, () => {
-	// 	const { input, output } = getRequiredArmorStatModsTestCases[0];
-	// 	expect(getRequiredArmorStatMods(input)).toEqual(output);
-	// });
-	// test(getRequiredArmorStatModsTestCases[1].name, () => {
-	// 	const { input, output } = getRequiredArmorStatModsTestCases[1];
-	// 	expect(getRequiredArmorStatMods(input)).toEqual(output);
-	// });
-	// test(getRequiredArmorStatModsTestCases[2].name, () => {
-	// 	const { input, output } = getRequiredArmorStatModsTestCases[2];
-	// 	expect(getRequiredArmorStatMods(input)).toEqual(output);
-	// });
-	// test(getRequiredArmorStatModsTestCases[3].name, () => {
-	// 	const { input, output } = getRequiredArmorStatModsTestCases[3];
-	// 	expect(getRequiredArmorStatMods(input)).toEqual(output);
-	// });
-	// test(getRequiredArmorStatModsTestCases[4].name, () => {
-	// 	const { input, output } = getRequiredArmorStatModsTestCases[4];
-	// 	expect(getRequiredArmorStatMods(input)).toEqual(output);
-	// });
-	// test(getRequiredArmorStatModsTestCases[5].name, () => {
-	// 	const { input, output } = getRequiredArmorStatModsTestCases[5];
-	// 	expect(getRequiredArmorStatMods(input)).toEqual(output);
-	// });
+	test(getRequiredArmorStatModsTestCases[0].name, () => {
+		const { input, output } = getRequiredArmorStatModsTestCases[0];
+		expect(getRequiredArmorStatMods(input)).toEqual(output);
+	});
+	test(getRequiredArmorStatModsTestCases[1].name, () => {
+		const { input, output } = getRequiredArmorStatModsTestCases[1];
+		expect(getRequiredArmorStatMods(input)).toEqual(output);
+	});
+	test(getRequiredArmorStatModsTestCases[2].name, () => {
+		const { input, output } = getRequiredArmorStatModsTestCases[2];
+		expect(getRequiredArmorStatMods(input)).toEqual(output);
+	});
+	test(getRequiredArmorStatModsTestCases[3].name, () => {
+		const { input, output } = getRequiredArmorStatModsTestCases[3];
+		expect(getRequiredArmorStatMods(input)).toEqual(output);
+	});
+	test(getRequiredArmorStatModsTestCases[4].name, () => {
+		const { input, output } = getRequiredArmorStatModsTestCases[4];
+		expect(getRequiredArmorStatMods(input)).toEqual(output);
+	});
+	test(getRequiredArmorStatModsTestCases[5].name, () => {
+		const { input, output } = getRequiredArmorStatModsTestCases[5];
+		expect(getRequiredArmorStatMods(input)).toEqual(output);
+	});
 	test(getRequiredArmorStatModsTestCases[6].name, () => {
 		const { input, output } = getRequiredArmorStatModsTestCases[6];
+		expect(getRequiredArmorStatMods(input)).toEqual(output);
+	});
+	test(getRequiredArmorStatModsTestCases[7].name, () => {
+		const { input, output } = getRequiredArmorStatModsTestCases[7];
+		expect(getRequiredArmorStatMods(input)).toEqual(output);
+	});
+	test(getRequiredArmorStatModsTestCases[8].name, () => {
+		const { input, output } = getRequiredArmorStatModsTestCases[8];
 		expect(getRequiredArmorStatMods(input)).toEqual(output);
 	});
 });

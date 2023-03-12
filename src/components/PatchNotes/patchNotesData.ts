@@ -11,6 +11,23 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-03-12',
+		version: '1.2.0',
+		title: 'Find more armor combinations',
+		sections: [
+			{
+				items: [
+					'Fixed a bug that would sometimes prevent certain armor combinations from appearing in the results',
+					'Fixed a bug that caused a crash when the user had "classified" armor (Thanks Root of Nightmares)',
+					'Artifice "forged" armor mods are now properly applied when opening the loadout in DIM',
+					'Fixed stasis aspect descriptions',
+					'Added a more helpful error message for crashes instead of just redirecting to the login screen',
+					'Added error logging for help with debugging production crashes',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-02-01',
 		version: '1.1.0',
 		title: 'Add Strand and new armor mods',

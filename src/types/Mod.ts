@@ -1,11 +1,15 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
 import { IMod } from './generation';
-import { EArmorSlotId, EElementId, EModSocketCategoryId } from './IdEnums';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EElementId,
+	EModSocketCategoryId,
+} from './IdEnums';
 import { EnumDictionary } from './globals';
 import { permute } from '@dlb/utils/permutations';
 import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
-import { ElementIdList } from './Element';
 
 export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 
@@ -62,13 +66,21 @@ export const ArtificeStatModIdList = ModIdList.filter(
 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.ArtificeStat
 );
 
-export const ArtificeMajorStatModIdList = ArtificeStatModIdList.filter(
-	(id) => !getMod(id)?.name.includes('Minor')
-);
+const ArmorStatIdToArtificeStatModIdMapping: EnumDictionary<
+	EArmorStatId,
+	EModId
+> = {
+	[EArmorStatId.Mobility]: EModId.MobilityForged,
+	[EArmorStatId.Resilience]: EModId.ResilienceForged,
+	[EArmorStatId.Recovery]: EModId.RecoveryForged,
+	[EArmorStatId.Discipline]: EModId.DisciplineForged,
+	[EArmorStatId.Intellect]: EModId.IntellectForged,
+	[EArmorStatId.Strength]: EModId.StrengthForged,
+};
 
-export const ArtificeMinorStatModIdList = ArtificeStatModIdList.filter((id) =>
-	getMod(id)?.name.includes('Minor')
-);
+export const getArtificeStatModIdFromArmorStatId = (
+	armorStatId: EArmorStatId
+): EModId => ArmorStatIdToArtificeStatModIdMapping[armorStatId];
 
 // TODO: Pre-generate this with a generation script.
 const generateArmorSlotIdToArmorSlotModIdListMapping = (): EnumDictionary<

@@ -12,6 +12,16 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-03-15',
+		version: '1.2.2',
+		title: 'Add analytics',
+		sections: [
+			{
+				items: ['Add the base Vercel analytics package'],
+			},
+		],
+	},
+	{
+		date: '2023-03-15',
 		version: '1.2.1',
 		title: 'Find even more armor combinations',
 		sections: [

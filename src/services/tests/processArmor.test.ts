@@ -252,11 +252,11 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			{
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
 					EModId.MinorResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
 				],
 				artificeModIdList: [
 					EModId.ResilienceForged,
@@ -362,11 +362,11 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			{
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
+					EModId.ResilienceMod,
 					EModId.MinorResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
-					EModId.ResilienceMod,
 				],
 				artificeModIdList: [
 					EModId.ResilienceForged,
@@ -590,6 +590,115 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			},
 		],
 	},
+	// 5
+	{
+		name: 'I have no fucking clue',
+		input: {
+			masterworkAssumption: EMasterworkAssumption.All,
+			desiredArmorStats: {
+				[EArmorStatId.Mobility]: 0,
+				[EArmorStatId.Resilience]: 100,
+				[EArmorStatId.Recovery]: 100,
+				[EArmorStatId.Discipline]: 100,
+				[EArmorStatId.Intellect]: 0,
+				[EArmorStatId.Strength]: 0,
+			},
+			fragmentArmorStatMapping: getArmorStatMappingFromFragments(
+				[],
+				EDestinyClassId.Warlock
+			),
+			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			destinyClassId: EDestinyClassId.Warlock,
+			armorMetadataItem: defaultArmorMetadataWithArtificeClassItem.Warlock,
+			selectedExotic: {
+				...getDefaultAvailableExoticArmorItem(),
+				armorSlot: EArmorSlotId.Chest,
+			},
+			armorItems: [
+				[
+					{
+						// Deep Explorer Hood
+						...getDefaultArmorItem(),
+						id: '0',
+						stats: es([2, 14, 16, 26, 2, 2]),
+						hash: -1,
+						gearTierId: EGearTierId.Legendary,
+						isMasterworked: true,
+						isArtifice: true,
+					},
+				],
+				[
+					{
+						// Deep Explorer Gloves
+						...getDefaultArmorItem(),
+						id: '1',
+						stats: es([2, 26, 6, 22, 2, 9]),
+						hash: -1,
+						gearTierId: EGearTierId.Legendary,
+						isMasterworked: false,
+						isArtifice: true,
+					},
+				],
+				[
+					{
+						// Starfire Protocol
+						...getDefaultArmorItem(),
+						id: '2',
+						stats: [2, 13, 20, 14, 8, 9], // no es() since starfire has extra res and rec
+						hash: -1,
+						gearTierId: EGearTierId.Exotic,
+						isMasterworked: true,
+						isArtifice: false,
+					},
+				],
+				[
+					{
+						// Deep Explorer Boots
+						...getDefaultArmorItem(),
+						id: '3',
+						stats: es([2, 21, 10, 22, 9, 2]),
+						hash: -1,
+						gearTierId: EGearTierId.Legendary,
+						isMasterworked: false,
+						isArtifice: true,
+					},
+				],
+			],
+		},
+		output: [
+			{
+				armorIdList: ['0', '1', '2', '3'],
+				armorStatModIdList: [
+					EModId.ResilienceMod,
+					EModId.RecoveryMod,
+					EModId.RecoveryMod,
+					EModId.RecoveryMod,
+					EModId.RecoveryMod,
+				],
+				artificeModIdList: [
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
+					EModId.DisciplineForged,
+					EModId.DisciplineForged,
+				],
+				metadata: {
+					totalModCost: 20,
+					totalStatTiers: 37,
+					wastedStats: 13,
+					totalArmorStatMapping: {
+						[EArmorStatId.Mobility]: 18,
+						[EArmorStatId.Resilience]: 100,
+						[EArmorStatId.Recovery]: 102,
+						[EArmorStatId.Discipline]: 100,
+						[EArmorStatId.Intellect]: 31,
+						[EArmorStatId.Strength]: 32,
+					},
+				},
+			},
+		],
+	},
 ];
 
 // TODO: It would be nice to just loop over all these without the verbose
@@ -615,6 +724,10 @@ describe('processArmor', () => {
 	});
 	test(processArmorTestCases[4].name, () => {
 		const { input, output } = processArmorTestCases[4];
+		expect(doProcessArmor(input)).toEqual(output);
+	});
+	test(processArmorTestCases[5].name, () => {
+		const { input, output } = processArmorTestCases[5];
 		expect(doProcessArmor(input)).toEqual(output);
 	});
 });

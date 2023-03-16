@@ -42,9 +42,11 @@ import {
 	getArtificeStatModIdFromArmorStatId,
 	getMod,
 	hasValidArmorStatModPermutation,
+	MajorStatModIdList,
 	MinorStatModIdList,
 	ValidRaidModArmorSlotPlacements,
 } from '@dlb/types/Mod';
+import combinations from '@dlb/utils/combinations';
 import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
 import { cloneDeep, isEqual } from 'lodash';
 
@@ -125,33 +127,65 @@ const getRequiredArtificeModIdList = ({
 	return requiredArtificeModIdList;
 };
 
-const getModReplaceabilityScore = (
-	modId: EModId,
-	baseArmorStatMapping: ArmorStatMapping
-): number => {
-	if (modId === EModId.IntellectMod) {
-		console.log('intellect');
-	}
-	const mod = getMod(modId);
-	const { stat, value: bonus } = mod.bonuses[0]; // TODO: This is a fragile check
-	const diff = Math.abs(baseArmorStatMapping[stat] - bonus);
-	const remainder = diff % 10 || 10; // If the remainder is 0 then we set it to 10
-	const score = Math.ceil(remainder / ARTIFICE_BONUS_VALUE);
-	return score;
+const sumModCosts = (modIdList: EModId[]): number => {
+	let cost = 0;
+	modIdList.forEach((modId) => (cost += getMod(modId).cost));
+	return cost;
 };
-// Find the armor stat mods that are the "easiest" to replace with
-// artifice mods.
-const sortRequiredArmorStatModsByReplaceability = (
-	armorStatModsIdList: EModId[],
-	baseArmorStatMapping: ArmorStatMapping
-): EModId[] => {
-	const sortedMods = [...armorStatModsIdList].sort((a, b) => {
-		return (
-			getModReplaceabilityScore(a, baseArmorStatMapping) -
-			getModReplaceabilityScore(b, baseArmorStatMapping)
+
+const getArtificeAdjustedRequiredMods = (
+	armorStatModIdList: EModId[],
+	destinyClassId: EDestinyClassId,
+	desiredArmorStats: ArmorStatMapping,
+	baseArmorStatMapping: ArmorStatMapping,
+	numArtificeItems: number
+): [EModId[], EModId[]] => {
+	if (numArtificeItems === 0) {
+		return [armorStatModIdList, []];
+	}
+	// TODO: This is an upper bound. With 5 major and 4 minor and 4 artifice pieces
+	// it's possible to potentially be able to replace all four minor mods with artifice mods.
+	// Constrain this further.
+	if (armorStatModIdList.length > 9) {
+		return [armorStatModIdList, []];
+	}
+
+	// We know that at least 2 artifice mods are required to replace 1 major mod
+	const numPotentiallyReplaceableMajorMods = Math.floor(numArtificeItems / 2);
+	const majorMods = armorStatModIdList.filter((modId) =>
+		MajorStatModIdList.includes(modId)
+	);
+	// We can use 5 mod slots for major mods if needed
+	if (majorMods.length - 5 > numPotentiallyReplaceableMajorMods) {
+		return [armorStatModIdList, []];
+	}
+
+	// TODO: This is super inefficient and slow :(
+	// Find the biggest size combinations we can make given
+	// that we have a maximum of 5 armor pieces
+	const combinationSize = Math.min(armorStatModIdList.length, 5);
+	let combos = combinations(armorStatModIdList, combinationSize);
+	// Sort combinations by cost, lowest to highest
+	combos = combos.sort((a, b) => sumModCosts(a) - sumModCosts(b));
+	for (let i = 0; i < combos.length; i++) {
+		const combo = combos[i];
+		const combotStatMapping = getArmorStatMappingFromMods(
+			combo,
+			destinyClassId
 		);
-	});
-	return sortedMods;
+		const requiredArtificeModIdList = getRequiredArtificeModIdList({
+			desiredArmorStats,
+			totalArmorStatMapping: sumArmorStatMappings([
+				combotStatMapping,
+				baseArmorStatMapping,
+			]),
+		});
+		if (requiredArtificeModIdList.length <= numArtificeItems) {
+			return [combo, requiredArtificeModIdList];
+		}
+	}
+	// If we fail to find a combo that works then return an empty list of artifice mods
+	return [armorStatModIdList, []];
 };
 
 export type GetRequiredArmorStatModsParams = {
@@ -224,49 +258,16 @@ export const getRequiredArmorStatMods = ({
 		numPotentialArtificeItems > 0
 	) {
 		const baseArmorStatMapping = getArmorStatMappingFromStatList(stats);
-
-		// The here is that we test taking out required mods and replacing them with
-		// artifice mods. We sort the mods in order of how many artifice mods it would
-		// take to replace them. I believe this will always find a solution if one
-		// exists but it's not guaranteed to find the most "optimal" mods to replace.
-		// Like with 4 artifice mods and 7 required armor stat mods, it may be possible to
-		// replace two major mods instead of two minor mods. But this will replace the two
-		// minor mods.
-		const sortedRequiredArmorStatMods =
-			sortRequiredArmorStatModsByReplaceability(
+		const [_adjustedArmorStatMods, _requiredArtificeModIdList] =
+			getArtificeAdjustedRequiredMods(
 				requiredArmorStatMods,
-				baseArmorStatMapping
-			);
-		adjustedArmorStatMods = [...sortedRequiredArmorStatMods];
-		const removedIndices: number[] = [];
-		for (let i = 0; i < sortedRequiredArmorStatMods.length; i++) {
-			const _adjustedArmorStatMods = [...sortedRequiredArmorStatMods];
-			// Rip out the currently considered mod
-			_adjustedArmorStatMods.splice(i, 1);
-			// Rip out the other mods that we are not considering
-			for (let j = removedIndices.length - 1; j >= 0; j--) {
-				_adjustedArmorStatMods.splice(removedIndices[j], 1);
-			}
-
-			const adjustedArmorStatMapping = getArmorStatMappingFromMods(
-				_adjustedArmorStatMods,
-				destinyClassId
-			);
-			const _requiredArtificeModIdList = getRequiredArtificeModIdList({
+				destinyClassId,
 				desiredArmorStats,
-				totalArmorStatMapping: sumArmorStatMappings([
-					adjustedArmorStatMapping,
-					baseArmorStatMapping,
-				]),
-			});
-			if (_requiredArtificeModIdList.length > numPotentialArtificeItems) {
-				continue;
-			} else {
-				removedIndices.push(i);
-				adjustedArmorStatMods = _adjustedArmorStatMods;
-				requiredArtificeModIdList = _requiredArtificeModIdList;
-			}
-		}
+				baseArmorStatMapping,
+				numPotentialArtificeItems
+			);
+		adjustedArmorStatMods = _adjustedArmorStatMods;
+		requiredArtificeModIdList = _requiredArtificeModIdList;
 	}
 
 	// Try to optimize a bit further by swapping out major mods with minor mods and padding with artifice mods
@@ -300,10 +301,7 @@ export const getRequiredArmorStatMods = ({
 			);
 
 			const baseArmorStatMapping = getArmorStatMappingFromStatList(stats);
-			//const temp_MasterworkClassItemAssumptionStatMapping =
-			// getArmorStatMappingFromStatList([2, 2, 2, 2, 2, 2]);
 			const totalArmorStatMapping = sumArmorStatMappings([
-				//temp_MasterworkClassItemAssumptionStatMapping,
 				optimizedArmorStatMapping,
 				baseArmorStatMapping,
 			]);
@@ -324,7 +322,7 @@ export const getRequiredArmorStatMods = ({
 	// TODO: If we have extra artifice mods available then try adding those to fill in the gaps.
 	// This is a future optimization. We currently only add artifice mods if they are required to
 	// hit the stats you want. Ideally we would prefer artifice mods over armor stat mods since
-	// artifice mods have no cost.
+	// artifice mods have no cost. Actually... this might already be happening
 	// if (
 	// 	numRemainingArmorPieces === 0 &&
 	// 	numSeenArtificeArmorItems > 0 &&

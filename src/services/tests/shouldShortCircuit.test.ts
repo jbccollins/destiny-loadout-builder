@@ -73,15 +73,19 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			true,
 			[
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
+				EModId.MobilityMod,
 				EModId.MinorMobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
-				EModId.MobilityMod,
 			],
 			[],
+			// [
+			// 	Array(21).fill(EModId.DisciplineForged),
+			// 	Array(21).fill(EModId.StrengthForged),
+			// ].flat(),
 			{
 				[EArmorStatId.Mobility]: 65,
 				[EArmorStatId.Resilience]: 0,
@@ -162,14 +166,18 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 		output: [
 			true,
 			[
+				EModId.DisciplineMod,
+				EModId.DisciplineMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.DisciplineMod,
-				EModId.DisciplineMod,
 			],
 			[],
+			// [
+			// 	Array(21).fill(EModId.DisciplineForged),
+			// 	Array(21).fill(EModId.StrengthForged),
+			// ].flat(),
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
@@ -208,14 +216,18 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			true,
 			[
 				EModId.MinorDisciplineMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
+				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
-				EModId.StrengthMod,
 			],
 			[],
+			// [
+			// 	Array(31).fill(EModId.DisciplineForged),
+			// 	Array(31).fill(EModId.StrengthForged),
+			// ].flat(),
 			{
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,

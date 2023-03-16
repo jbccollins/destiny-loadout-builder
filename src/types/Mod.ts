@@ -261,6 +261,10 @@ export const hasValidArmorStatModPermutation = (
 	make sure to do all of this by first processing the raid mods that require a specific element. do the any element
 	raid mods last.
 */
+/*
+TODO: This just checks if raid mods can fit based on their cost. It doesn't check if the armor
+in the combination actually has the appropriate raid mod sockets. Write a differnt function for that.
+*/
 export const hasValidRaidModPermutation = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping,
 	raidModIdList: EModId[]

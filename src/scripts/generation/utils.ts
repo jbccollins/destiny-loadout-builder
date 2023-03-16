@@ -227,7 +227,7 @@ export const getSerializedBonusStats = (
 };
 
 // TODO: The description ordering of 'Into the Fray' is different than every other
-// description. So we can't just dopp perks[0]. We have to check all perks :(
+// description. So we can't just check perks[0]. We have to check all perks :(
 export const getDescription = (
 	item: DestinyInventoryItemDefinition,
 	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>

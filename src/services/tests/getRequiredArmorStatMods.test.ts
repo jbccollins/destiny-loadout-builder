@@ -317,21 +317,39 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 		},
 		output: [
 			[
-				EModId.MinorMobilityMod,
-				EModId.MinorDisciplineMod,
-				EModId.MinorIntellectMod,
-				EModId.MinorStrengthMod,
 				EModId.MobilityMod,
+				EModId.MinorMobilityMod,
+				EModId.MinorResilienceMod,
+				EModId.MinorDisciplineMod,
+				EModId.MinorStrengthMod,
 			],
-			[EModId.ResilienceForged, EModId.RecoveryForged],
+			[EModId.RecoveryForged, EModId.IntellectForged, EModId.IntellectForged],
 			{
 				[EArmorStatId.Mobility]: 15,
-				[EArmorStatId.Resilience]: 0,
+				[EArmorStatId.Resilience]: 5,
 				[EArmorStatId.Recovery]: 0,
 				[EArmorStatId.Discipline]: 5,
-				[EArmorStatId.Intellect]: 5,
+				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 5,
 			},
+			// This would also work. The algorithm doesn't try to use fewer
+			// artifice mods if possible.
+			// [
+			// 	EModId.MinorMobilityMod,
+			// 	EModId.MinorDisciplineMod,
+			// 	EModId.MinorIntellectMod,
+			// 	EModId.MinorStrengthMod,
+			// 	EModId.MobilityMod,
+			// ],
+			// [EModId.ResilienceForged, EModId.RecoveryForged],
+			// {
+			// 	[EArmorStatId.Mobility]: 15,
+			// 	[EArmorStatId.Resilience]: 0,
+			// 	[EArmorStatId.Recovery]: 0,
+			// 	[EArmorStatId.Discipline]: 5,
+			// 	[EArmorStatId.Intellect]: 5,
+			// 	[EArmorStatId.Strength]: 5,
+			// },
 		],
 	},
 	{

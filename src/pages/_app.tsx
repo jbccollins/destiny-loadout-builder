@@ -4,26 +4,29 @@ import { Provider } from 'react-redux';
 import store from '@dlb/redux/store';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
+import { Analytics } from '@vercel/analytics/react';
 const darkTheme = createTheme({
 	palette: {
 		mode: 'dark',
 		primary: {
-			main: '#FFFFFF'
+			main: '#FFFFFF',
 		},
 		secondary: {
-			main: '#FFFFFF'
-		}
-	}
+			main: '#FFFFFF',
+		},
+	},
 });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<Provider store={store}>
-			<ThemeProvider theme={darkTheme}>
-				<CssBaseline />
-				<Component {...pageProps} />
-			</ThemeProvider>
-		</Provider>
+		<>
+			<Provider store={store}>
+				<ThemeProvider theme={darkTheme}>
+					<CssBaseline />
+					<Component {...pageProps} />
+				</ThemeProvider>
+			</Provider>
+			<Analytics />
+		</>
 	);
 }

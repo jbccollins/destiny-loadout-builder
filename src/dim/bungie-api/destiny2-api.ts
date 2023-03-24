@@ -167,6 +167,7 @@ export async function getMembershipData() {
 				});
 			} catch (error) {
 				console.warn('Bad profile. Probably unlinked');
+				continue;
 			}
 			console.log(
 				'++++++ hasvalidDateLastPlayed',

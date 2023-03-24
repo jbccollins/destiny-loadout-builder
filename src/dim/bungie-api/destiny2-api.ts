@@ -158,11 +158,16 @@ export async function getMembershipData() {
 		for (const id in memberships) {
 			console.log('++++++ id', id);
 			const membership = memberships?.[id];
-			const profile = await getProfileApi(authenticatedHttpClient, {
-				components: [DestinyComponentType.Profiles],
-				membershipType: membership.membershipType,
-				destinyMembershipId: membership.membershipId,
-			});
+			let profile;
+			try {
+				profile = await getProfileApi(authenticatedHttpClient, {
+					components: [DestinyComponentType.Profiles],
+					membershipType: membership.membershipType,
+					destinyMembershipId: membership.membershipId,
+				});
+			} catch (error) {
+				console.warn('Bad profile. Probably unlinked');
+			}
 			console.log(
 				'++++++ hasvalidDateLastPlayed',
 				!!profile && profile.Response?.profile.data?.dateLastPlayed

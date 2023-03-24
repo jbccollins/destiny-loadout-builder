@@ -82,9 +82,9 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 		});
 	});
 	const modHashes: number[] = [...selectedModHashes, ...armorSlotModHashes];
-	const aspectHashes: number[] = aspectIdList.map(
-		(aspectId: EAspectId) => getAspect(aspectId).hash
-	);
+	const aspectHashes: number[] = aspectIdList
+		.map((aspectId: EAspectId) => (aspectId ? getAspect(aspectId).hash : null))
+		.filter((x) => x != null);
 	armorStatModIdList.forEach((armorStatModId: EModId) => {
 		modHashes.push(getMod(armorStatModId).hash);
 	});
@@ -132,9 +132,9 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 
 	const loadout: Loadout = {
 		id: 'dlb', // this doesn't matter and will be replaced
-		name: `${getDestinySubclass(destinySubclassId).name} ${
-			exoticArmor.name
-		} Loadout [DLB GENERATED]`,
+		name: `${
+			destinySubclassId ? getDestinySubclass(destinySubclassId).name + ' ' : ''
+		}${exoticArmor.name} Loadout [DLB GENERATED]`,
 		classType: DestinyClassIdToDestinyClassHash[destinyClassId],
 		parameters: data,
 		equipped: (armorList || []).map(({ hash, id }) => ({
@@ -148,11 +148,21 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 	// Configure subclass
 	const socketOverrides: Record<number, number> = {};
 
-	socketOverrides[0] = getClassAbility(classAbilityId).hash;
-	socketOverrides[1] = getJump(jumpId).hash;
-	socketOverrides[2] = getSuperAbility(superAbilityId).hash;
-	socketOverrides[3] = getMelee(meleeId).hash;
-	socketOverrides[4] = getGrenade(grenadeId).hash;
+	if (classAbilityId) {
+		socketOverrides[0] = getClassAbility(classAbilityId).hash;
+	}
+	if (jumpId) {
+		socketOverrides[1] = getJump(jumpId).hash;
+	}
+	if (superAbilityId) {
+		socketOverrides[2] = getSuperAbility(superAbilityId).hash;
+	}
+	if (meleeId) {
+		socketOverrides[3] = getMelee(meleeId).hash;
+	}
+	if (grenadeId) {
+		socketOverrides[4] = getGrenade(grenadeId).hash;
+	}
 	aspectHashes.forEach((hash, i) => {
 		socketOverrides[i + 5] = hash;
 	});
@@ -161,11 +171,13 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 		socketOverrides[i + 7] = hash;
 	});
 
-	loadout.equipped.push({
-		id: '12345', // This doesn't matter and will be overriden but apparently it's required and must be numeric. Idfk.
-		hash: getDestinySubclass(destinySubclassId).hash,
-		socketOverrides,
-	});
+	if (destinySubclassId) {
+		loadout.equipped.push({
+			id: '12345', // This doesn't matter and will be overriden but apparently it's required and must be numeric. Idfk.
+			hash: getDestinySubclass(destinySubclassId).hash,
+			socketOverrides,
+		});
+	}
 
 	const url =
 		'https://beta.destinyitemmanager.com/loadouts?loadout=' +

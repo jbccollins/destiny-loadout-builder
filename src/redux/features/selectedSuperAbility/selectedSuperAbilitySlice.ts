@@ -21,7 +21,7 @@ export interface SelectedSuperAbilityState {
 const generateIntitalState = (): SelectedSuperAbility => {
 	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
 		const { superAbilityIdList } = getDestinySubclass(currentValue);
-		accumulator[currentValue] = superAbilityIdList[0];
+		accumulator[currentValue] = null; // superAbilityIdList[0];
 		return accumulator;
 	}, {}) as SelectedSuperAbility;
 };

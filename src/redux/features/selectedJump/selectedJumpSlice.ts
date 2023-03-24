@@ -19,7 +19,7 @@ export interface SelectedJumpState {
 
 const generateIntitalState = (): SelectedJump => {
 	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
-		accumulator[currentValue] = getJumpIdsByDestinySubclassId(currentValue)[0];
+		accumulator[currentValue] = null; // getJumpIdsByDestinySubclassId(currentValue)[0];
 		return accumulator;
 	}, {}) as SelectedJump;
 };

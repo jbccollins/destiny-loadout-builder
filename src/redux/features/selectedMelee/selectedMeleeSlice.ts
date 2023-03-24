@@ -19,7 +19,7 @@ export interface SelectedMeleeState {
 
 const generateIntitalState = (): SelectedMelee => {
 	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
-		accumulator[currentValue] = getMeleeIdsByDestinySubclassId(currentValue)[0];
+		accumulator[currentValue] = null; // getMeleeIdsByDestinySubclassId(currentValue)[0];
 		return accumulator;
 	}, {}) as SelectedMelee;
 };

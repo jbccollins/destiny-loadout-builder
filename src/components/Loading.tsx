@@ -123,6 +123,7 @@ function Loading() {
 	useEffect(() => {
 		(async () => {
 			try {
+				console.log('>>>>>>>>>>> [LOAD] begin <<<<<<<<<<<');
 				dispatch(setAllDataLoaded(false));
 				// TODO can any of these requests be paralellized? Like a Promise.All or whatever?
 				const membershipData = await getMembershipData();

@@ -71,6 +71,7 @@ function MeleeSelector() {
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						allowNoSelection
 						options={options}
 						getLabel={getLabel}
 						getDescription={getDescription}

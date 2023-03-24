@@ -70,6 +70,7 @@ function DestinySubclassSelector() {
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						// allowNoSelection
 						options={options}
 						getLabel={getLabel}
 						value={selectedDestinySubclass[selectedDestinyClass] || ''}

@@ -78,25 +78,24 @@ const IconDropdown = ({
 	return (
 		<Container hideSelectedOptionText={hideSelectedOptionText}>
 			<FormControl fullWidth>
-				<InputLabel id="icon-dropdown-select-label">{title || ''}</InputLabel>
+				<InputLabel shrink id="icon-dropdown-select-label">
+					{title || ''}
+				</InputLabel>
 				<Select
+					notched
+					displayEmpty={allowNoSelection}
 					{...selectComponentProps}
 					labelId="icon-dropdown-select-label"
 					id="icon-dropdown-select"
 					className="icon-dropdown-select"
-					value={
-						allowNoSelection ? (value ? value : PLACEHOLDER_OPTION) : value
-					}
+					value={allowNoSelection ? (value ? value : null) : value}
 					label={title || ''}
 					onChange={(e) => {
 						handleChange(e.target.value as string);
 					}}
 				>
 					{allowNoSelection && (
-						<MenuItem
-							className="icon-dropdown-menu-item"
-							value={PLACEHOLDER_OPTION}
-						>
+						<MenuItem className="icon-dropdown-menu-item" value={null}>
 							<MenuItemContent className="icon-dropdown-menu-item-content">
 								<BungieImage width={40} height={40} src={MISSING_ICON} />
 								<MenuItemText className="icon-dropdown-menu-item-text">

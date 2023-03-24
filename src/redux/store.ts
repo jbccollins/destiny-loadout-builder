@@ -278,6 +278,12 @@ function handleChange() {
 		});
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };
+		// TODO: This is probably just a bad assumption. I don't
+		// think that the other stats will display as achievable since the loadout builder
+		// won't attempt to get them that high. Meaning that if we just
+		// iterate over results we are probably erroneously missing potential stats
+		// that aren't in the results because they weren't asked for. This may be
+		// exacerbated by artifice mods.
 		results.forEach((result) => {
 			const availableMods = 5 - result.armorStatModIdList.length;
 			ArmorStatIdList.forEach((armorStatId) => {

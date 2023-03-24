@@ -122,6 +122,7 @@ export default function IconMultiSelectDropdown({
 		<FormControl fullWidth>
 			<InputLabel id={title}>{title}</InputLabel>
 			<Select
+				SelectDisplayProps={{ style: { paddingLeft: 6 } }}
 				MenuProps={MenuProps}
 				multiple
 				value={value.length > 0 ? value : [PLACEHOLDER_OPTION]}

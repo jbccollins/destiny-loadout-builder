@@ -593,6 +593,19 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
+
+	// let elementId: EElementId = EElementId.Any;
+	// if (destinySubclassId) {
+	// 	elementId = getDestinySubclass(destinySubclassId).elementId;
+	// }
+	// const aspectIds = destinySubclassId ? selectedAspects[destinySubclassId] : [];
+
+	// // TODO: Having to do this cast sucks
+	// const fragmentIds =
+	// 	elementId !== EElementId.Any
+	// 		? (selectedFragments[elementId] as EFragmentId[])
+	// 		: [];
+
 	const { elementId } = getDestinySubclass(destinySubclassId);
 	const aspectIds = selectedAspects[destinySubclassId];
 

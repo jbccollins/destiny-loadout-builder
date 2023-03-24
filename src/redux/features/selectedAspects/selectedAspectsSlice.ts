@@ -19,9 +19,9 @@ export interface SelectedAspectsState {
 
 const generateIntitalState = (): SelectedAspects => {
 	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
-		accumulator[currentValue] = getAspectIdsByDestinySubclassId(
-			currentValue
-		).slice(0, 2);
+		accumulator[currentValue] = [null, null]; // getAspectIdsByDestinySubclassId(
+		// 	currentValue
+		// ).slice(0, 2);
 		return accumulator;
 	}, {}) as SelectedAspects;
 };

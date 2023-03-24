@@ -19,7 +19,7 @@ export interface SelectedGrenadeState {
 
 const generateIntitalState = (): SelectedGrenade => {
 	return ElementIdList.reduce((accumulator, currentValue) => {
-		accumulator[currentValue] = getGrenadeIdsByElementId(currentValue)[0];
+		accumulator[currentValue] = null; // getGrenadeIdsByElementId(currentValue)[0];
 		return accumulator;
 	}, {}) as SelectedGrenade;
 };

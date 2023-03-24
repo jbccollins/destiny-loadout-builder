@@ -19,8 +19,8 @@ export interface SelectedClassAbilityState {
 
 const generateIntitalState = (): SelectedClassAbility => {
 	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
-		accumulator[currentValue] =
-			getClassAbilityIdsByDestinySubclassId(currentValue)[0];
+		accumulator[currentValue] = null;
+		// getClassAbilityIdsByDestinySubclassId(currentValue)[0];
 		return accumulator;
 	}, {}) as SelectedClassAbility;
 };

@@ -53,6 +53,7 @@ function AspectSelector() {
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						allowNoSelection
 						selectComponentProps={{
 							sx: {
 								// maxWidth: 100,
@@ -75,6 +76,7 @@ function AspectSelector() {
 						title="Aspects"
 					/>
 					<IconDropdown
+						allowNoSelection
 						selectComponentProps={{
 							sx: {
 								// maxWidth: 100,

@@ -10,6 +10,7 @@ import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyC
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { MISSING_ICON } from '@dlb/types/globals';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0
@@ -41,6 +42,7 @@ function SuperAbilitySelector() {
 		selectedDestinySubclass[selectedDestinyClass];
 
 	const handleChange = (superAbilityId: ESuperAbilityId) => {
+		console.log('>>>>> HANDLE CHANGE', superAbilityId);
 		dispatch(
 			setSelectedSuperAbility({
 				...selectedSuperAbility,
@@ -50,23 +52,32 @@ function SuperAbilitySelector() {
 	};
 
 	// TODO: Memoize these options
-	const options: Option[] = getDestinySubclass(
-		selectedDestinySubclassId
-	).superAbilityIdList.map((superAbilityId) => {
-		const { name, id, icon, description } = getSuperAbility(superAbilityId);
-		return {
-			label: name,
-			icon: icon,
-			id: id,
-			description: description,
-		};
-	});
+	const options: Option[] = [
+		// {
+		// 	label: 'None Selected...',
+		// 	icon: MISSING_ICON,
+		// 	id: null,
+		// 	description: '',
+		// },
+		...getDestinySubclass(selectedDestinySubclassId).superAbilityIdList.map(
+			(superAbilityId) => {
+				const { name, id, icon, description } = getSuperAbility(superAbilityId);
+				return {
+					label: name,
+					icon: icon,
+					id: id,
+					description: description,
+				};
+			}
+		),
+	];
 
 	return (
 		<>
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						allowNoSelection
 						options={options}
 						getLabel={getLabel}
 						getDescription={getDescription}

@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-03-25',
+		version: '1.2.3',
+		title: 'Fix Crashes',
+		sections: [
+			{
+				items: [
+					'Fix a crash when the user had a linked profile with no characters',
+					'Fix a crash related to the Super Ability Selector',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-03-15',
 		version: '1.2.2',
 		title: 'Add analytics',

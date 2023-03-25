@@ -73,7 +73,11 @@ const IconDropdown = ({
 	allowNoSelection,
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
-		onChange(value);
+		let v = null;
+		if (value !== '') {
+			v = value;
+		}
+		onChange(v);
 	};
 	return (
 		<Container hideSelectedOptionText={hideSelectedOptionText}>
@@ -88,14 +92,14 @@ const IconDropdown = ({
 					labelId="icon-dropdown-select-label"
 					id="icon-dropdown-select"
 					className="icon-dropdown-select"
-					value={allowNoSelection ? (value ? value : null) : value}
+					value={allowNoSelection ? (value ? value : '') : value}
 					label={title || ''}
 					onChange={(e) => {
 						handleChange(e.target.value as string);
 					}}
 				>
 					{allowNoSelection && (
-						<MenuItem className="icon-dropdown-menu-item" value={null}>
+						<MenuItem className="icon-dropdown-menu-item" value={''}>
 							<MenuItemContent className="icon-dropdown-menu-item-content">
 								<BungieImage width={40} height={40} src={MISSING_ICON} />
 								<MenuItemText className="icon-dropdown-menu-item-text">

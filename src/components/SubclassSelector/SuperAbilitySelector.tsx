@@ -34,7 +34,7 @@ function SuperAbilitySelector() {
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const dispatch = useAppDispatch();
 
-	const getLabel = (option: Option) => option.label;
+	const getLabel = (option: Option) => option?.label;
 
 	const getDescription = (option: Option) => option.description;
 

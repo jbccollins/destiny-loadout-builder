@@ -18,6 +18,7 @@ import {
 	BungieMembershipType,
 	DestinyProfileUserInfoCard,
 	PlatformErrorCodes,
+	ServerResponse,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { DestinyAccount } from '@dlb/dim/accounts/destiny-account';
 import {
@@ -136,29 +137,24 @@ export async function getMembershipData() {
 	const response = await getMembershipDataForCurrentUser(
 		authenticatedHttpClient
 	);
-	console.log('++++++ response', response);
 	const res = response?.Response.destinyMemberships;
-	console.log('++++++ res', res);
 
 	const memberships = res.filter(
 		(m) => m.crossSaveOverride == 0 || m.crossSaveOverride == m.membershipType
 	);
-	console.log('++++++ memberships', response);
 
 	let result: UserInfoCard = null;
 	if (memberships?.length == 1) {
 		// This guardian only has one account linked, so we can proceed as normal
 		result = memberships?.[0];
-		console.log('++++++ 1 result', result);
 	} else {
 		// This guardian has multiple accounts linked.
 		// Fetch the last login time for each account, and use the one that was most recently used.
 		let lastLoggedInProfileIndex: any = 0;
 		let lastPlayed = 0;
 		for (const id in memberships) {
-			console.log('++++++ id', id);
 			const membership = memberships?.[id];
-			let profile;
+			let profile: ServerResponse<DestinyProfileResponse> = null;
 			try {
 				profile = await getProfileApi(authenticatedHttpClient, {
 					components: [DestinyComponentType.Profiles],
@@ -166,30 +162,20 @@ export async function getMembershipData() {
 					destinyMembershipId: membership.membershipId,
 				});
 			} catch (error) {
-				console.warn('Bad profile. Probably unlinked');
+				console.warn(
+					'Failed to load profile. This could be an issue where the profile is linked but has no characters.'
+				);
 				continue;
 			}
-			console.log(
-				'++++++ hasvalidDateLastPlayed',
-				!!profile && profile.Response?.profile.data?.dateLastPlayed
-			);
 			if (!!profile && profile.Response?.profile.data?.dateLastPlayed) {
-				console.log(
-					'++++++ rawDate',
-					profile.Response?.profile.data?.dateLastPlayed
-				);
 				const date = Date.parse(profile.Response?.profile.data?.dateLastPlayed);
-				console.log('++++++ date', date);
-				console.log('++++++ date > lastPlayed', date > lastPlayed);
 				if (date > lastPlayed) {
 					lastPlayed = date;
 					lastLoggedInProfileIndex = id;
 				}
 			}
 		}
-		console.log('++++++ lastLoggedInProfileIndex', lastLoggedInProfileIndex);
 		result = memberships?.[lastLoggedInProfileIndex];
-		console.log('++++++ result', result);
 	}
 
 	// If you write abusive chat messages, i do not allow you to use my tool.

@@ -172,7 +172,6 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		superAbilityIdList: [
 			ESuperAbilityId.ShadowshotDeadfall,
 			ESuperAbilityId.ShadowshotMoebiusQuiver,
-			,
 			ESuperAbilityId.SpectralBlades,
 		],
 		destinyClassId: EDestinyClassId.Hunter,

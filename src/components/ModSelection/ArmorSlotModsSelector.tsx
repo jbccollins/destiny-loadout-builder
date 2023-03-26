@@ -25,6 +25,10 @@ const IconDropdownContainer = styled('div')(({ theme }) => ({
 	paddingBottom: theme.spacing(1),
 	display: 'flex',
 	position: 'relative',
+	// TODO: This padding works on desktop for the mod dropdowns but not on mobile
+	// '.MuiInputBase-root': {
+	// 	paddingRight: '45.5px !important',
+	// },
 }));
 
 type Option = {

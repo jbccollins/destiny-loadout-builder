@@ -14,6 +14,7 @@ import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyC
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
+import { EElementId } from '@dlb/types/IdEnums';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0
@@ -35,9 +36,11 @@ function GrenadeSelector() {
 	const selectedGrenade = useAppSelector(selectSelectedGrenade);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
-	const { elementId } = getDestinySubclass(
-		selectedDestinySubclass[selectedDestinyClass]
-	);
+	let elementId: EElementId = EElementId.Any;
+	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
+	if (destinySubclassId) {
+		elementId = getDestinySubclass(destinySubclassId).elementId;
+	}
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.label;
@@ -70,6 +73,7 @@ function GrenadeSelector() {
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						disabled={!destinySubclassId}
 						allowNoSelection
 						options={options}
 						getLabel={getLabel}

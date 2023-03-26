@@ -105,6 +105,8 @@ export const getAspectIdsByDestinySubclassId = (
 export const getAspectsByDestinySubclassId = (
 	destinySubclassId: EDestinySubclassId
 ): IAspect[] => {
-	const aspectIds = getAspectIdsByDestinySubclassId(destinySubclassId);
+	const aspectIds = destinySubclassId
+		? getAspectIdsByDestinySubclassId(destinySubclassId)
+		: [];
 	return aspectIds.map((aspectId) => getAspect(aspectId));
 };

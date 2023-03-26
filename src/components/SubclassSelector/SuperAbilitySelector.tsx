@@ -34,7 +34,7 @@ function SuperAbilitySelector() {
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const dispatch = useAppDispatch();
 
-	const getLabel = (option: Option) => option?.label;
+	const getLabel = (option: Option) => option.label;
 
 	const getDescription = (option: Option) => option.description;
 
@@ -51,32 +51,30 @@ function SuperAbilitySelector() {
 		);
 	};
 
-	// TODO: Memoize these options
-	const options: Option[] = [
-		// {
-		// 	label: 'None Selected...',
-		// 	icon: MISSING_ICON,
-		// 	id: null,
-		// 	description: '',
-		// },
-		...getDestinySubclass(selectedDestinySubclassId).superAbilityIdList.map(
-			(superAbilityId) => {
-				const { name, id, icon, description } = getSuperAbility(superAbilityId);
-				return {
-					label: name,
-					icon: icon,
-					id: id,
-					description: description,
-				};
-			}
-		),
-	];
-
+	let options: Option[] = [];
+	if (selectedDestinySubclassId) {
+		// TODO: Memoize these options
+		options = [
+			...getDestinySubclass(selectedDestinySubclassId).superAbilityIdList.map(
+				(superAbilityId) => {
+					const { name, id, icon, description } =
+						getSuperAbility(superAbilityId);
+					return {
+						label: name,
+						icon: icon,
+						id: id,
+						description: description,
+					};
+				}
+			),
+		];
+	}
 	return (
 		<>
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						disabled={!selectedDestinySubclassId}
 						allowNoSelection
 						options={options}
 						getLabel={getLabel}

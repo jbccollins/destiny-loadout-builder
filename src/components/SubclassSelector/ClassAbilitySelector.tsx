@@ -54,23 +54,27 @@ function ClassAbilitySelector() {
 	};
 
 	// TODO: Memoize these options
-	const options: Option[] = getClassAbilityIdsByDestinySubclassId(
-		selectedDestinySubclassId
-	).map((classAbilityId) => {
-		const { name, id, icon, description } = getClassAbility(classAbilityId);
-		return {
-			label: name,
-			icon: icon,
-			id: id,
-			description: description,
-		};
-	});
+	const options: Option[] = selectedDestinySubclassId
+		? getClassAbilityIdsByDestinySubclassId(selectedDestinySubclassId).map(
+				(classAbilityId) => {
+					const { name, id, icon, description } =
+						getClassAbility(classAbilityId);
+					return {
+						label: name,
+						icon: icon,
+						id: id,
+						description: description,
+					};
+				}
+		  )
+		: [];
 
 	return (
 		<>
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						disabled={!selectedDestinySubclassId}
 						allowNoSelection
 						options={options}
 						getLabel={getLabel}

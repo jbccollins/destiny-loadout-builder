@@ -68,6 +68,7 @@ import {
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
+import { EElementId } from '@dlb/types/IdEnums';
 
 export function makeStore() {
 	return configureStore({
@@ -199,11 +200,19 @@ function handleChange() {
 		} = store.getState();
 
 		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
-		const { elementId } = getDestinySubclass(destinySubclassId);
-		const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
-			selectedFragments[elementId],
-			selectedDestinyClass
-		);
+		// const { elementId } = getDestinySubclass(destinySubclassId);
+
+		let elementId: EElementId = EElementId.Any;
+		if (destinySubclassId) {
+			elementId = getDestinySubclass(destinySubclassId).elementId;
+		}
+
+		const fragmentArmorStatMapping = destinySubclassId
+			? getArmorStatMappingFromFragments(
+					selectedFragments[elementId],
+					selectedDestinyClass
+			  )
+			: { ...DefaultArmorStatMapping };
 		let mods = [...selectedRaidMods];
 		ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 			mods = [...mods, ...selectedArmorSlotMods[armorSlotId]];

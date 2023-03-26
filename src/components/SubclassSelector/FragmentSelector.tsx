@@ -13,6 +13,7 @@ import { getStat } from '@dlb/types/ArmorStat';
 import { StatBonusStat } from '@dlb/types/globals';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { EElementId } from '@dlb/types/IdEnums';
 
 const Container = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(1),
@@ -25,9 +26,9 @@ const FragmentSelector = () => {
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	let fragments: EFragmentId[] = [];
-	let elementId = null;
-	if (selectedDestinyClass && selectedFragments && selectedDestinySubclass) {
-		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
+	let elementId = EElementId.Any;
+	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
+	if (destinySubclassId) {
 		const { elementId: subclassElementId } =
 			getDestinySubclass(destinySubclassId);
 		elementId = subclassElementId;
@@ -49,6 +50,7 @@ const FragmentSelector = () => {
 	return (
 		<Container>
 			<IconMultiSelectDropdown
+				disabled={!destinySubclassId}
 				getOptionValue={getOptionValue}
 				getOptionStat={getOptionStat}
 				options={getFragmentIdsByElementId(elementId)}

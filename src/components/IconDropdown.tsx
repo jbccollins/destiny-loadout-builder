@@ -58,9 +58,11 @@ type IconDropdownProps = {
 	selectComponentProps?: SelectProps;
 	hideSelectedOptionText?: boolean;
 	allowNoSelection?: boolean;
+	disabled?: boolean;
 };
 
 const PLACEHOLDER_OPTION = 'None Selected...';
+const DISABLED_TEXT = 'Subclass Selection Required...';
 const IconDropdown = ({
 	options,
 	getLabel,
@@ -71,6 +73,7 @@ const IconDropdown = ({
 	getDescription,
 	hideSelectedOptionText,
 	allowNoSelection,
+	disabled,
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		let v = null;
@@ -86,6 +89,7 @@ const IconDropdown = ({
 					{title || ''}
 				</InputLabel>
 				<Select
+					disabled={disabled}
 					notched
 					displayEmpty={allowNoSelection}
 					{...selectComponentProps}
@@ -103,7 +107,7 @@ const IconDropdown = ({
 							<MenuItemContent className="icon-dropdown-menu-item-content">
 								<BungieImage width={40} height={40} src={MISSING_ICON} />
 								<MenuItemText className="icon-dropdown-menu-item-text">
-									{PLACEHOLDER_OPTION}
+									{disabled ? DISABLED_TEXT : PLACEHOLDER_OPTION}
 								</MenuItemText>
 							</MenuItemContent>
 						</MenuItem>

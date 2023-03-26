@@ -35,7 +35,9 @@ function AspectSelector() {
 	const getDescription = (option: Option) => option.description;
 
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
-	const aspectIds = [...selectedAspects[destinySubclassId]];
+	const aspectIds = destinySubclassId
+		? [...selectedAspects[destinySubclassId]]
+		: [];
 
 	const handleChange = (aspectId: EAspectId, index: number) => {
 		const aspectIds = [...selectedAspects[destinySubclassId]];
@@ -53,6 +55,7 @@ function AspectSelector() {
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						disabled={!destinySubclassId}
 						allowNoSelection
 						selectComponentProps={{
 							sx: {
@@ -76,6 +79,7 @@ function AspectSelector() {
 						title="Aspects"
 					/>
 					<IconDropdown
+						disabled={!destinySubclassId}
 						allowNoSelection
 						selectComponentProps={{
 							sx: {

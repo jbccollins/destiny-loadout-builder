@@ -95,6 +95,7 @@ type IIconMultiSelectDropdownProps = {
 	getOptionValue: (id: string) => IOption;
 	getOptionStat: (stat: StatBonusStat) => IArmorStat;
 	showElement?: boolean;
+	disabled?: boolean;
 };
 
 const PLACEHOLDER_OPTION = 'None Selected...';
@@ -108,6 +109,7 @@ export default function IconMultiSelectDropdown({
 	getOptionValue,
 	getOptionStat,
 	showElement,
+	disabled,
 }: IIconMultiSelectDropdownProps) {
 	const handleChange = (event: SelectChangeEvent<string[]>) => {
 		const {
@@ -122,6 +124,7 @@ export default function IconMultiSelectDropdown({
 		<FormControl fullWidth>
 			<InputLabel id={title}>{title}</InputLabel>
 			<Select
+				disabled={disabled}
 				SelectDisplayProps={{ style: { paddingLeft: 6 } }}
 				MenuProps={MenuProps}
 				multiple
@@ -136,7 +139,11 @@ export default function IconMultiSelectDropdown({
 						return (
 							<Tag>
 								<BungieImage src={MISSING_ICON} width={'40px'} />
-								<MenuItemText>None Selected...</MenuItemText>
+								<MenuItemText>
+									{disabled
+										? 'Subclass Selection Required...'
+										: 'None Selected...'}
+								</MenuItemText>
 							</Tag>
 						);
 					}

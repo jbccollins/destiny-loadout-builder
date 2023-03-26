@@ -54,23 +54,26 @@ function MeleeSelector() {
 	};
 
 	// TODO: Memoize these options
-	const options: Option[] = getMeleeIdsByDestinySubclassId(
-		selectedDestinySubclassId
-	).map((meleeId) => {
-		const { name, id, icon, description } = getMelee(meleeId);
-		return {
-			label: name,
-			icon: icon,
-			id: id,
-			description: description,
-		};
-	});
+	const options: Option[] = selectedDestinySubclassId
+		? getMeleeIdsByDestinySubclassId(selectedDestinySubclassId).map(
+				(meleeId) => {
+					const { name, id, icon, description } = getMelee(meleeId);
+					return {
+						label: name,
+						icon: icon,
+						id: id,
+						description: description,
+					};
+				}
+		  )
+		: [];
 
 	return (
 		<>
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						disabled={!selectedDestinySubclassId}
 						allowNoSelection
 						options={options}
 						getLabel={getLabel}

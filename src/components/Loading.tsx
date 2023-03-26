@@ -203,10 +203,10 @@ function Loading() {
 					[EDestinyClassId.Warlock]: null,
 				};
 				DestinyClassIdList.forEach((destinyClassId) => {
-					defaultSelectedDestinySubclass[destinyClassId] =
-						DestinySubclassAndSuperAbilityOptions[
-							destinyClassId
-						][0].destinySubclassId;
+					// defaultSelectedDestinySubclass[destinyClassId] =
+					// 	DestinySubclassAndSuperAbilityOptions[
+					// 		destinyClassId
+					// 	][0].destinySubclassId;
 					// {
 					// 	destinySubclassId:
 					// 		DestinySubclassAndSuperAbilityOptions[destinyClassId][0]

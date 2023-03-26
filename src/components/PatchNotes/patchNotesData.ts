@@ -13,12 +13,14 @@ export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-03-25',
 		version: '1.2.3',
-		title: 'Fix Crashes',
+		title: 'No subclass selection defaults',
 		sections: [
 			{
 				items: [
+					'Allow the user to create a loadout with no subclass selections',
+					'Add the abiltiy to clear the subclass section',
 					'Fix a crash when the user had a linked profile with no characters',
-					'Fix a crash related to the Super Ability Selector',
+					'Fix a crash when the user selected the Nightstalker subclass',
 				],
 			},
 		],

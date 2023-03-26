@@ -49,23 +49,24 @@ function JumpSelector() {
 	};
 
 	// TODO: Memoize these options
-	const options: Option[] = getJumpIdsByDestinySubclassId(
-		selectedDestinySubclassId
-	).map((jumpId) => {
-		const { name, id, icon, description } = getJump(jumpId);
-		return {
-			label: name,
-			icon: icon,
-			id: id,
-			description: description,
-		};
-	});
+	const options: Option[] = selectedDestinySubclassId
+		? getJumpIdsByDestinySubclassId(selectedDestinySubclassId).map((jumpId) => {
+				const { name, id, icon, description } = getJump(jumpId);
+				return {
+					label: name,
+					icon: icon,
+					id: id,
+					description: description,
+				};
+		  })
+		: [];
 
 	return (
 		<>
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
+						disabled={!selectedDestinySubclassId}
 						allowNoSelection
 						options={options}
 						getLabel={getLabel}

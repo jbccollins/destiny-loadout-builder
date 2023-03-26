@@ -35,6 +35,38 @@ import { DefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { setSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
+import {
+	selectSelectedDestinySubclass,
+	setSelectedDestinySubclass,
+} from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import {
+	selectSelectedAspects,
+	setSelectedAspects,
+} from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import {
+	selectSelectedSuperAbility,
+	setSelectedSuperAbility,
+} from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { setSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import {
+	selectSelectedGrenade,
+	setSelectedGrenade,
+} from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import {
+	selectSelectedMelee,
+	setSelectedMelee,
+} from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+import {
+	selectSelectedClassAbility,
+	setSelectedClassAbility,
+} from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
+import {
+	selectSelectedJump,
+	setSelectedJump,
+} from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -87,6 +119,16 @@ const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
 }));
 
 const LeftSectionComponent = () => {
+	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
+	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
+	const selectedAspects = useAppSelector(selectSelectedAspects);
+	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
+	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
+	const selectedGrenade = useAppSelector(selectSelectedGrenade);
+	const selectedMelee = useAppSelector(selectSelectedMelee);
+	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
+	const selectedJump = useAppSelector(selectSelectedJump);
+
 	const dispatch = useAppDispatch();
 	const clearDesiredStatTiers = () => {
 		dispatch(setDesiredArmorStats({ ...DefaultArmorStatMapping }));
@@ -96,6 +138,56 @@ const LeftSectionComponent = () => {
 		dispatch(
 			setSelectedArmorSlotMods(getDefaultArmorSlotIdToModIdListMapping())
 		);
+	};
+
+	const clearSubclassOptions = () => {
+		dispatch(
+			setSelectedDestinySubclass({
+				...selectedDestinySubclass,
+				[selectedDestinyClass]: null,
+			})
+		);
+		if (destinySubclassId) {
+			dispatch(
+				setSelectedAspects({
+					...selectedAspects,
+					[destinySubclassId]: [null, null],
+				})
+			);
+			dispatch(
+				setSelectedSuperAbility({
+					...selectedSuperAbility,
+					[destinySubclassId]: null,
+				})
+			);
+			// TODO: This will clear fragments for all classes. Is that desired?
+			const { elementId } = getDestinySubclass(destinySubclassId);
+			dispatch(setSelectedFragments({ elementId, fragments: [] }));
+			dispatch(
+				setSelectedGrenade({
+					...selectedGrenade,
+					[elementId]: null,
+				})
+			);
+			dispatch(
+				setSelectedMelee({
+					...selectedMelee,
+					[destinySubclassId]: null,
+				})
+			);
+			dispatch(
+				setSelectedClassAbility({
+					...selectedClassAbility,
+					[destinySubclassId]: null,
+				})
+			);
+			dispatch(
+				setSelectedJump({
+					...selectedJump,
+					[destinySubclassId]: null,
+				})
+			);
+		}
 	};
 
 	return (
@@ -114,7 +206,10 @@ const LeftSectionComponent = () => {
 								>
 									<StatSelection />
 								</SelectionControlGroup>
-								<SelectionControlGroup title="Subclass Options">
+								<SelectionControlGroup
+									title="Subclass Options"
+									clearHandler={clearSubclassOptions}
+								>
 									<DestinySubclassSelector />
 									<SuperAbilitySelector />
 									<AspectSelector />

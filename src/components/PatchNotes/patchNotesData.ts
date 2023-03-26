@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-03-26',
+		version: '1.3.0',
+		title: 'Handle users with less armor',
+		sections: [
+			{
+				items: [
+					'Gracefully handle the case where a user does not have exotic armor for each class',
+					'Add a logout button',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-03-25',
 		version: '1.2.3',
 		title: 'No subclass selection defaults',

@@ -24,8 +24,8 @@ function ExoticSelector() {
 		);
 		const res: AvailableExoticArmorItem[] = [];
 		if (availableExoticArmor && selectedDestinyClass) {
-			ArmorSlotIdList.forEach((armorSlot) => {
-				res.push(availableExoticArmor[selectedDestinyClass][armorSlot]);
+			ArmorSlotIdList.forEach((armorSlotId) => {
+				res.push(availableExoticArmor[selectedDestinyClass][armorSlotId]);
 			});
 			return res.flat();
 		}

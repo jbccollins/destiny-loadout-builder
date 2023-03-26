@@ -10,6 +10,9 @@ import {
 	DestinyClassIdList,
 	DestinyClassIdToDestinyClass,
 } from '@dlb/types/DestinyClass';
+import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import { useMemo } from 'react';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
 	// paddingRight: 0
@@ -26,16 +29,8 @@ type Option = {
 	icon: string;
 };
 
-const options = DestinyClassIdList.map((destinyClassId) => {
-	const { name, id, icon } = DestinyClassIdToDestinyClass.get(destinyClassId);
-	return {
-		label: name,
-		icon: icon,
-		id: id,
-	};
-});
-
 function DestinyClassSelector() {
+	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const dispatch = useAppDispatch();
 
@@ -48,6 +43,41 @@ function DestinyClassSelector() {
 		}
 		dispatch(setSelectedDestinyClass(destinyClass));
 	};
+
+	// This will be used to disable any classes that have no exotic armor.
+	// TOOD: Also disable classes that don't have enough legendary/rare armor
+	// to make a full loadout
+	const hasExoticArmor: Record<EDestinyClassId, boolean> = useMemo(() => {
+		console.log('>>>>>>>>>>> [Memo] hasExoticArmor calcuated <<<<<<<<<<<');
+		const res: Record<EDestinyClassId, boolean> = {
+			[EDestinyClassId.Hunter]: false,
+			[EDestinyClassId.Warlock]: false,
+			[EDestinyClassId.Titan]: false,
+		};
+		if (availableExoticArmor) {
+			DestinyClassIdList.forEach((destinyClassId) => {
+				ArmorSlotIdList.forEach((armorSlotId) => {
+					if (availableExoticArmor[destinyClassId][armorSlotId].length > 0) {
+						res[destinyClassId] = true;
+					}
+				});
+			});
+		}
+		return res;
+	}, [availableExoticArmor]);
+
+	const options = useMemo(() => {
+		return DestinyClassIdList.map((destinyClassId) => {
+			const { name, id, icon } =
+				DestinyClassIdToDestinyClass.get(destinyClassId);
+			return {
+				label: name,
+				icon: icon,
+				id: id,
+				disabled: !hasExoticArmor[destinyClassId],
+			};
+		});
+	}, [hasExoticArmor]);
 
 	return (
 		<>

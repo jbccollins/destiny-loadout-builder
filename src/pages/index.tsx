@@ -67,6 +67,7 @@ import {
 	selectSelectedJump,
 	setSelectedJump,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
+import Logout from '@dlb/components/LogOutButton';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -237,6 +238,7 @@ const LeftSectionComponent = () => {
 								<MasterworkAssumptionSelector />
 								<MinimumGearTierSelector />
 								<DimLoadoutsFilterSelector />
+								<Logout />
 							</>
 						),
 						index: 1,

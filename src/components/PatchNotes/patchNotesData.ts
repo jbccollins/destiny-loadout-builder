@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-03-28',
+		version: '1.3.1',
+		title: 'Add contributors file',
+		sections: [
+			{
+				items: [
+					'Add a markdown file containing all the contributors for this project',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-03-26',
 		version: '1.3.0',
 		title: 'Handle users with less armor',

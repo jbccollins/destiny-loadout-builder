@@ -82,6 +82,8 @@ You can start editing any file and see your changes automatically propagate to t
 Just push to master. It will deploy automatically [here](https://vercel.com/jbccollins/destiny-loadout-builder).
 
 ### Attribution
+##### Contributions
+[View the list of contributors to this project here](https://github.com/jbccollins/destiny-loadout-builder/blob/main/AUTHORS.md)
 ##### Many thanks to the folks behind these projects:
 - [Destiny Item Manager](https://destinyitemmanager.com/)
 - [D2ArmorPicker](https://d2armorpicker.com/#/)

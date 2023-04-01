@@ -26,7 +26,7 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.CombinationBlow,
 		EMeleeId.DisorientingBlow,
 	],
-	[EDestinySubclassId.Threadrunner]: [EMeleeId.ArcaneNeedle],
+	[EDestinySubclassId.Threadrunner]: [EMeleeId.ThreadedSpike],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [EMeleeId.PenumbralBlast],
@@ -39,7 +39,7 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.BallLightning,
 		EMeleeId.ChainLightning,
 	],
-	[EDestinySubclassId.Broodweaver]: [EMeleeId.ThreadedSpike],
+	[EDestinySubclassId.Broodweaver]: [EMeleeId.ArcaneNeedle],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [EMeleeId.ShiverStrike],

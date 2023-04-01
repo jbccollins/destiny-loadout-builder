@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-03-31',
+		version: '1.3.2',
+		title: 'Fix melee ability bug',
+		sections: [
+			{
+				items: [
+					'Fixed an issue where strand hunters and warlocks had their melee abilities swapped',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-03-28',
 		version: '1.3.1',
 		title: 'Add contributors file',

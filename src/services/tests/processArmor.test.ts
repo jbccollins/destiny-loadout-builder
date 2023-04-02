@@ -156,6 +156,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				armorIdList: ['0', '1', '2', '3'],
 				armorStatModIdList: [],
 				artificeModIdList: [],
+				numUnusedArtificeMods: 0,
 				metadata: {
 					totalModCost: 0,
 					totalStatTiers: 24,
@@ -263,6 +264,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.ResilienceForged,
 					EModId.ResilienceForged,
 				],
+				numUnusedArtificeMods: 2,
 				metadata: {
 					totalModCost: 18,
 					totalStatTiers: 35,
@@ -373,6 +375,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.ResilienceForged,
 					EModId.ResilienceForged,
 				],
+				numUnusedArtificeMods: 2,
 				metadata: {
 					totalModCost: 18,
 					totalStatTiers: 35,
@@ -470,6 +473,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.MobilityMod,
 				],
 				artificeModIdList: [],
+				numUnusedArtificeMods: 0,
 				metadata: {
 					totalModCost: 15,
 					totalStatTiers: 30,
@@ -574,6 +578,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.RecoveryMod,
 				],
 				artificeModIdList: [EModId.ResilienceForged, EModId.RecoveryForged],
+				numUnusedArtificeMods: 0,
 				metadata: {
 					totalModCost: 20,
 					totalStatTiers: 36,
@@ -683,6 +688,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.DisciplineForged,
 					EModId.DisciplineForged,
 				],
+				numUnusedArtificeMods: 0,
 				metadata: {
 					totalModCost: 20,
 					totalStatTiers: 37,

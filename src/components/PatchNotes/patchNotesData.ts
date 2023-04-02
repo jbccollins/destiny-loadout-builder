@@ -11,6 +11,21 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-04-03',
+		version: '1.3.3',
+		title: 'Fix desired stat preview',
+		sections: [
+			{
+				items: [
+					`Fixed an issue where the desired stat preview would show a tier as unachievable when in reality it was achievable.
+					Note that this was just a visual bug and that clicking on the "unachievable" tier would still work. This fix is a bit of a hack
+					and will still result in buggy desired stat preview behavior if the user selects expensive mods.
+					`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-03-31',
 		version: '1.3.2',
 		title: 'Fix melee ability bug',

@@ -70,9 +70,9 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			true,
-			[
+		output: {
+			shortCircuit: true,
+			requiredArmorStatModIdList: [
 				EModId.MobilityMod,
 				EModId.MobilityMod,
 				EModId.MobilityMod,
@@ -81,12 +81,12 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				EModId.MobilityMod,
 				EModId.MinorMobilityMod,
 			],
-			[],
+			requiredArtificeModIdList: [],
 			// [
 			// 	Array(21).fill(EModId.DisciplineForged),
 			// 	Array(21).fill(EModId.StrengthForged),
 			// ].flat(),
-			{
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 65,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -94,9 +94,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-			null,
-			EArmorSlotId.Chest,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: EArmorSlotId.Chest,
+		},
 	},
 	// 1
 	{
@@ -120,16 +121,16 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			false,
-			[
+		output: {
+			shortCircuit: false,
+			requiredArmorStatModIdList: [
 				EModId.StrengthMod,
 				EModId.StrengthMod,
 				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
 			],
-			[],
-			{
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -137,9 +138,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 35,
 			},
-			null,
-			null,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: null,
+		},
 	},
 	// 2
 	{
@@ -163,9 +165,9 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			true,
-			[
+		output: {
+			shortCircuit: true,
+			requiredArmorStatModIdList: [
 				EModId.DisciplineMod,
 				EModId.DisciplineMod,
 				EModId.StrengthMod,
@@ -173,12 +175,12 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
 			],
-			[],
+			requiredArtificeModIdList: [],
 			// [
 			// 	Array(21).fill(EModId.DisciplineForged),
 			// 	Array(21).fill(EModId.StrengthForged),
 			// ].flat(),
-			{
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -186,9 +188,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 35,
 			},
-			null,
-			EArmorSlotId.Arm,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: EArmorSlotId.Arm,
+		},
 	},
 	// 3
 	{
@@ -212,9 +215,9 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			true,
-			[
+		output: {
+			shortCircuit: true,
+			requiredArmorStatModIdList: [
 				EModId.MinorDisciplineMod,
 				EModId.StrengthMod,
 				EModId.StrengthMod,
@@ -223,12 +226,12 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				EModId.StrengthMod,
 				EModId.MinorStrengthMod,
 			],
-			[],
+			requiredArtificeModIdList: [],
 			// [
 			// 	Array(31).fill(EModId.DisciplineForged),
 			// 	Array(31).fill(EModId.StrengthForged),
 			// ].flat(),
-			{
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -236,9 +239,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 55,
 			},
-			null,
-			EArmorSlotId.Head,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: EArmorSlotId.Head,
+		},
 	},
 	// 4
 	{
@@ -262,11 +266,11 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			false,
-			[],
-			[],
-			{
+		output: {
+			shortCircuit: false,
+			requiredArmorStatModIdList: [],
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -274,9 +278,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-			null,
-			null,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: null,
+		},
 	},
 	// 5
 	{
@@ -300,11 +305,11 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			false,
-			[],
-			[],
-			{
+		output: {
+			shortCircuit: false,
+			requiredArmorStatModIdList: [],
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -312,9 +317,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-			null,
-			null,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: null,
+		},
 	},
 	// 6
 	{
@@ -352,17 +358,17 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			true,
-			[
+		output: {
+			shortCircuit: true,
+			requiredArmorStatModIdList: [
 				EModId.IntellectMod,
 				EModId.IntellectMod,
 				EModId.IntellectMod,
 				EModId.IntellectMod,
 				EModId.IntellectMod,
 			],
-			[],
-			{
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -370,9 +376,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 50,
 				[EArmorStatId.Strength]: 0,
 			},
-			null,
-			null,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: null,
+		},
 	},
 	// 7
 	{
@@ -408,17 +415,17 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			true,
-			[
+		output: {
+			shortCircuit: true,
+			requiredArmorStatModIdList: [
 				EModId.RecoveryMod,
 				EModId.IntellectMod,
 				EModId.IntellectMod,
 				EModId.IntellectMod,
 				EModId.IntellectMod,
 			],
-			[],
-			{
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 10,
@@ -426,9 +433,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 40,
 				[EArmorStatId.Strength]: 0,
 			},
-			null,
-			null,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: null,
+		},
 	},
 	// 8
 	{
@@ -477,11 +485,15 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			true,
-			[EModId.MobilityMod, EModId.RecoveryMod, EModId.MinorIntellectMod],
-			[],
-			{
+		output: {
+			shortCircuit: true,
+			requiredArmorStatModIdList: [
+				EModId.MobilityMod,
+				EModId.RecoveryMod,
+				EModId.MinorIntellectMod,
+			],
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 10,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 10,
@@ -489,9 +501,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 5,
 				[EArmorStatId.Strength]: 0,
 			},
-			null,
-			null,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: null,
+		},
 	},
 	// 9
 	{
@@ -540,11 +553,11 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			armorMetadataItem: defaultArmorMetadata.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			false,
-			[EModId.MobilityMod, EModId.RecoveryMod],
-			[],
-			{
+		output: {
+			shortCircuit: false,
+			requiredArmorStatModIdList: [EModId.MobilityMod, EModId.RecoveryMod],
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 10,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 10,
@@ -552,9 +565,10 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-			null,
-			null,
-		],
+			numUnusedArtificeMods: 0,
+			armorStat: null,
+			slot: null,
+		},
 	},
 ];
 

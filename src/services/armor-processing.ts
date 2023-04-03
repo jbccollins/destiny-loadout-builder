@@ -133,21 +133,29 @@ const sumModCosts = (modIdList: EModId[]): number => {
 	return cost;
 };
 
+type ArtificeAdjustedRequiredModCombo = {
+	armorStatModIdList: EModId[];
+	artificeModIdList: EModId[];
+	numUnusedArtificeMods: number;
+};
 const getArtificeAdjustedRequiredMods = (
 	armorStatModIdList: EModId[],
 	destinyClassId: EDestinyClassId,
 	desiredArmorStats: ArmorStatMapping,
 	baseArmorStatMapping: ArmorStatMapping,
 	numArtificeItems: number
-): [EModId[], EModId[]] => {
+): ArtificeAdjustedRequiredModCombo[] => {
+	const defaultArtificeAdjustedRequiredModCombos = [
+		{ armorStatModIdList, artificeModIdList: [], numUnusedArtificeMods: 0 },
+	];
 	if (numArtificeItems === 0) {
-		return [armorStatModIdList, []];
+		return defaultArtificeAdjustedRequiredModCombos;
 	}
 	// TODO: This is an upper bound. With 5 major and 4 minor and 4 artifice pieces
 	// it's possible to potentially be able to replace all four minor mods with artifice mods.
 	// Constrain this further.
 	if (armorStatModIdList.length > 9) {
-		return [armorStatModIdList, []];
+		return defaultArtificeAdjustedRequiredModCombos;
 	}
 
 	// We know that at least 2 artifice mods are required to replace 1 major mod
@@ -157,7 +165,7 @@ const getArtificeAdjustedRequiredMods = (
 	);
 	// We can use 5 mod slots for major mods if needed
 	if (majorMods.length - 5 > numPotentiallyReplaceableMajorMods) {
-		return [armorStatModIdList, []];
+		return defaultArtificeAdjustedRequiredModCombos;
 	}
 
 	// TODO: This is super inefficient and slow :(
@@ -167,6 +175,7 @@ const getArtificeAdjustedRequiredMods = (
 	let combos = combinations(armorStatModIdList, combinationSize);
 	// Sort combinations by cost, lowest to highest
 	combos = combos.sort((a, b) => sumModCosts(a) - sumModCosts(b));
+	const result: ArtificeAdjustedRequiredModCombo[] = [];
 	for (let i = 0; i < combos.length; i++) {
 		const combo = combos[i];
 		const combotStatMapping = getArmorStatMappingFromMods(
@@ -181,11 +190,16 @@ const getArtificeAdjustedRequiredMods = (
 			]),
 		});
 		if (requiredArtificeModIdList.length <= numArtificeItems) {
-			return [combo, requiredArtificeModIdList];
+			result.push({
+				armorStatModIdList: combo,
+				artificeModIdList: requiredArtificeModIdList,
+				numUnusedArtificeMods:
+					numArtificeItems - requiredArtificeModIdList.length,
+			});
 		}
 	}
 	// If we fail to find a combo that works then return an empty list of artifice mods
-	return [armorStatModIdList, []];
+	return result.length > 0 ? result : defaultArtificeAdjustedRequiredModCombos;
 };
 
 export type GetRequiredArmorStatModsParams = {
@@ -198,6 +212,12 @@ export type GetRequiredArmorStatModsParams = {
 	selectedExotic: AvailableExoticArmorItem;
 };
 
+export type RequiredStatMods = {
+	requiredArmorStatModIdList: EModId[];
+	requiredArtificeModIdList: EModId[];
+	requiredArmorStatModsArmorStatMapping: ArmorStatMapping;
+	numUnusedArtificeMods: number;
+};
 // Get the required armor stat mods for a given combination.
 // If we don't have a full combination yet then assume that we have the
 // max possible stat value for each remaining stat.
@@ -209,7 +229,7 @@ export const getRequiredArmorStatMods = ({
 	numSeenArtificeArmorItems,
 	selectedExotic,
 	armorMetadataItem,
-}: GetRequiredArmorStatModsParams): [EModId[], EModId[], ArmorStatMapping] => {
+}: GetRequiredArmorStatModsParams): RequiredStatMods => {
 	const requiredArmorStatMods: EModId[] = [];
 	stats.forEach((stat, i) => {
 		const armorStat = ArmorStatIdList[i];
@@ -245,6 +265,7 @@ export const getRequiredArmorStatMods = ({
 	});
 	let requiredArtificeModIdList: EModId[] = [];
 	let adjustedArmorStatMods: EModId[] = [...requiredArmorStatMods];
+	let numUnusedArtificeMods = 0;
 
 	// TODO: This is an upper bound for the number of artifice items left.
 	// Constrain this further by checking which slot has an exotic and which
@@ -258,23 +279,33 @@ export const getRequiredArmorStatMods = ({
 		numPotentialArtificeItems > 0
 	) {
 		const baseArmorStatMapping = getArmorStatMappingFromStatList(stats);
-		const [_adjustedArmorStatMods, _requiredArtificeModIdList] =
-			getArtificeAdjustedRequiredMods(
-				requiredArmorStatMods,
-				destinyClassId,
-				desiredArmorStats,
-				baseArmorStatMapping,
-				numPotentialArtificeItems
-			);
+		const artificeAdjustedRequiredMods = getArtificeAdjustedRequiredMods(
+			requiredArmorStatMods,
+			destinyClassId,
+			desiredArmorStats,
+			baseArmorStatMapping,
+			numPotentialArtificeItems
+		);
+		const {
+			armorStatModIdList: _adjustedArmorStatMods,
+			artificeModIdList: _requiredArtificeModIdList,
+		} = artificeAdjustedRequiredMods[0];
 		adjustedArmorStatMods = _adjustedArmorStatMods;
 		requiredArtificeModIdList = _requiredArtificeModIdList;
+		// TODO: This isn't taking into consideration the cost of armor mods
+		// potentially preventing any of these combos from working
+		artificeAdjustedRequiredMods.forEach((combo) => {
+			if (combo.numUnusedArtificeMods > numUnusedArtificeMods) {
+				numUnusedArtificeMods = combo.numUnusedArtificeMods;
+			}
+		});
 	}
 
 	// Try to optimize a bit further by swapping out major mods with minor mods and padding with artifice mods
 	if (
 		numRemainingArmorPieces === 0 &&
 		numSeenArtificeArmorItems > 0 &&
-		requiredArtificeModIdList.length <= numSeenArtificeArmorItems
+		requiredArtificeModIdList.length <= numSeenArtificeArmorItems // TODO <= ??? Why not just <
 	) {
 		let optimizedArmorStatMods = [...adjustedArmorStatMods];
 		for (let i = 0; i < adjustedArmorStatMods.length; i++) {
@@ -331,11 +362,15 @@ export const getRequiredArmorStatMods = ({
 	// 	let numExtraArtificeMods = numSeenArtificeArmorItems - requiredArtificeModIdList.length
 	//	// Figure out how to add more stat tiers with artifice mods here!
 	// }
-	return [
-		adjustedArmorStatMods,
+	return {
+		requiredArmorStatModIdList: adjustedArmorStatMods,
 		requiredArtificeModIdList,
-		getArmorStatMappingFromMods(adjustedArmorStatMods, destinyClassId),
-	];
+		requiredArmorStatModsArmorStatMapping: getArmorStatMappingFromMods(
+			adjustedArmorStatMods,
+			destinyClassId
+		),
+		numUnusedArtificeMods,
+	};
 };
 
 export type ShouldShortCircuitParams = {
@@ -350,14 +385,15 @@ export type ShouldShortCircuitParams = {
 	selectedExotic: AvailableExoticArmorItem;
 };
 
-export type ShouldShortCircuitOutput = [
-	boolean,
-	EModId[],
-	EModId[],
-	ArmorStatMapping,
-	EArmorStatId | null, // null means that there were to many required mods
-	EArmorSlotId
-];
+export type ShouldShortCircuitOutput = {
+	shortCircuit: boolean;
+	requiredArmorStatModIdList: EModId[];
+	requiredArtificeModIdList: EModId[];
+	requiredArmorStatModsArmorStatMapping: ArmorStatMapping;
+	armorStat: EArmorStatId | null; // null means that there were to many required mods
+	slot: EArmorSlotId;
+	numUnusedArtificeMods: number;
+};
 
 // TODO: Clean up these assumptions by checking against armor metadata instead of the MAX_SINGLE_STAT_VALUE.
 // A wrench... The assumption that no armor piece can roll > 30 in a single stat is no longer
@@ -446,71 +482,78 @@ export const shouldShortCircuit = (
 		selectedExotic
 	);
 
-	const [requiredArmorStatMods, requiredArtificeModIdList, armorStatMapping] =
-		getRequiredArmorStatMods({
-			desiredArmorStats,
-			stats: sumOfSeenStats,
-			numRemainingArmorPieces,
-			destinyClassId,
-			numSeenArtificeArmorItems: seenItemCounts.artifice,
-			armorMetadataItem,
-			selectedExotic,
-		});
+	const {
+		requiredArmorStatModIdList,
+		requiredArtificeModIdList,
+		requiredArmorStatModsArmorStatMapping,
+		numUnusedArtificeMods,
+	} = getRequiredArmorStatMods({
+		desiredArmorStats,
+		stats: sumOfSeenStats,
+		numRemainingArmorPieces,
+		destinyClassId,
+		numSeenArtificeArmorItems: seenItemCounts.artifice,
+		armorMetadataItem,
+		selectedExotic,
+	});
 
 	const slot = getArmorSlotFromNumRemainingArmorPieces(numRemainingArmorPieces);
 
-	if (requiredArmorStatMods.length > 5) {
+	if (requiredArmorStatModIdList.length > 5) {
 		// console.log(`
 		// 		short-circuiting ${slot}:
 		// 			stat: none,
 		// 			requiredArmorStatMods: ${requiredArmorStatMods}
 		// 	`);
-		return [
-			true,
-			requiredArmorStatMods,
+		return {
+			shortCircuit: true,
+			requiredArmorStatModIdList,
 			requiredArtificeModIdList,
-			armorStatMapping,
-			null,
+			requiredArmorStatModsArmorStatMapping,
+			armorStat: null,
 			slot,
-		];
+			numUnusedArtificeMods,
+		};
 	}
 
 	// TODO: This is an upper bound. We can constrain this further
 	const maxNumPotentialArtificeItems =
 		seenItemCounts.artifice + numRemainingArmorPieces;
 	if (requiredArtificeModIdList.length > maxNumPotentialArtificeItems) {
-		return [
-			true,
-			requiredArmorStatMods,
+		return {
+			shortCircuit: true,
+			requiredArmorStatModIdList,
 			requiredArtificeModIdList,
-			armorStatMapping,
-			null,
+			requiredArmorStatModsArmorStatMapping,
+			armorStat: null,
 			slot,
-		];
+			numUnusedArtificeMods,
+		};
 	}
 
 	const hasValidArmorStatMods = hasValidArmorStatModPermutation(
 		armorSlotMods,
-		requiredArmorStatMods,
+		requiredArmorStatModIdList,
 		validRaidModArmorSlotPlacements
 	);
 
 	if (!hasValidArmorStatMods) {
-		return [
-			true,
-			requiredArmorStatMods,
+		return {
+			shortCircuit: true,
+			requiredArmorStatModIdList,
 			requiredArtificeModIdList,
-			armorStatMapping,
-			null,
-			null,
-		];
+			requiredArmorStatModsArmorStatMapping,
+			armorStat: null,
+			slot: null,
+			numUnusedArtificeMods,
+		};
 	}
 
 	for (let i = 0; i < ArmorStatIdList.length; i++) {
 		const armorStat = ArmorStatIdList[i];
 		if (
 			sumOfSeenStats[i] +
-				armorStatMapping[armorStat] +
+				requiredArmorStatModsArmorStatMapping[armorStat] +
 				maxRemaningPossibleStatValue <
 			desiredArmorStats[armorStat]
 		) {
@@ -520,25 +563,27 @@ export const shouldShortCircuit = (
 			// 		sum: ${sumOfSeenStats[i]},
 			// 		value: ${stat}
 			// `);
-			return [
-				true,
-				requiredArmorStatMods,
+			return {
+				shortCircuit: true,
+				requiredArmorStatModIdList,
 				requiredArtificeModIdList,
-				armorStatMapping,
+				requiredArmorStatModsArmorStatMapping,
 				armorStat,
 				slot,
-			];
+				numUnusedArtificeMods,
+			};
 		}
 	}
 
-	return [
-		false,
-		requiredArmorStatMods,
+	return {
+		shortCircuit: false,
+		requiredArmorStatModIdList,
 		requiredArtificeModIdList,
-		armorStatMapping,
-		null,
-		null,
-	];
+		requiredArmorStatModsArmorStatMapping,
+		armorStat: null,
+		slot: null,
+		numUnusedArtificeMods,
+	};
 };
 
 export type DoProcessArmorParams = {
@@ -692,12 +737,13 @@ const _processArmorBaseCase = ({
 		});
 		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
 
-		const [
+		const {
 			shortCircuit,
-			requiredStatMods,
+			requiredArmorStatModIdList,
 			requiredArtificeModIdList,
-			requiredStatModArmorStatMapping,
-		] = shouldShortCircuit({
+			requiredArmorStatModsArmorStatMapping,
+			numUnusedArtificeMods,
+		} = shouldShortCircuit({
 			sumOfSeenStats: finalSumOfSeenStats,
 			desiredArmorStats,
 			numRemainingArmorPieces: 0,
@@ -709,21 +755,22 @@ const _processArmorBaseCase = ({
 			selectedExotic,
 		});
 		if (shortCircuit) {
-			console.log(`short circuiting base case.`);
+			// console.log(`short circuiting base case.`);
 			return;
 		}
 		const totalArmorStatMapping = sumArmorStatMappings([
 			getArmorStatMappingFromStatList(finalSumOfSeenStats),
-			requiredStatModArmorStatMapping,
+			requiredArmorStatModsArmorStatMapping,
 			getArmorStatMappingFromArtificeModIdList(requiredArtificeModIdList),
 		]);
 		output.push({
 			armorIdList,
-			armorStatModIdList: requiredStatMods,
+			armorStatModIdList: requiredArmorStatModIdList,
 			artificeModIdList: requiredArtificeModIdList,
+			numUnusedArtificeMods,
 			metadata: {
 				// requiredStatModIdList: requiredStatMods, // TODO: Why is this necessary when it's returned right above here?
-				totalModCost: getTotalModCost(requiredStatMods),
+				totalModCost: getTotalModCost(requiredArmorStatModIdList),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
 				wastedStats: getWastedStats(totalArmorStatMapping),
 				totalArmorStatMapping,
@@ -796,7 +843,7 @@ const _processArmorRecursiveCase = ({
 			masterworkAssumption,
 		});
 
-		const [shortCircuit] = shouldShortCircuit({
+		const { shortCircuit } = shouldShortCircuit({
 			sumOfSeenStats: nextSumOfSeenStats,
 			desiredArmorStats: desiredArmorStats,
 			numRemainingArmorPieces: rest.length,
@@ -808,7 +855,7 @@ const _processArmorRecursiveCase = ({
 			selectedExotic,
 		});
 		if (shortCircuit) {
-			console.log(`short circuiting recursive case. ${rest.length} slots`);
+			// console.log(`short circuiting recursive case. ${rest.length} slots`);
 			return;
 		}
 
@@ -845,6 +892,7 @@ type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
+	numUnusedArtificeMods: number;
 	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: ProcessedArmorItemMetadata;
 };

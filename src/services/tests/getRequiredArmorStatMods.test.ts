@@ -2,6 +2,7 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	getRequiredArmorStatMods,
 	GetRequiredArmorStatModsParams,
+	RequiredStatMods,
 } from '@dlb/services/armor-processing';
 import {
 	getDefaultArmorMetadata,
@@ -15,7 +16,6 @@ import {
 } from '@dlb/types/IdEnums';
 
 import { describe, expect, test } from '@jest/globals';
-import { count } from 'console';
 
 const defaultArmorMetadataItem = getDefaultArmorMetadata().Warlock;
 
@@ -33,7 +33,7 @@ artificeWarlockMetadatItem.artifice.items.Leg.count = 1;
 type GetRequiredArmorStatModsTestCase = {
 	name: string;
 	input: GetRequiredArmorStatModsParams;
-	output: [EModId[], EModId[], ArmorStatMapping];
+	output: RequiredStatMods;
 };
 
 const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
@@ -55,10 +55,10 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 			numSeenArtificeArmorItems: 0,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			[EModId.MobilityMod],
-			[],
-			{
+		output: {
+			requiredArmorStatModIdList: [EModId.MobilityMod],
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 10,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -66,7 +66,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-		],
+			numUnusedArtificeMods: 0,
+		},
 	},
 	{
 		name: 'It returns one major and one minor mobility mod when the only required stat is mobility',
@@ -86,10 +87,10 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 			numSeenArtificeArmorItems: 0,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			[EModId.MobilityMod, EModId.MinorMobilityMod],
-			[],
-			{
+		output: {
+			requiredArmorStatModIdList: [EModId.MobilityMod, EModId.MinorMobilityMod],
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 15,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -97,7 +98,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-		],
+			numUnusedArtificeMods: 0,
+		},
 	},
 	{
 		name: 'It returns a ton of stats with a bunch of variations',
@@ -117,8 +119,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 			numSeenArtificeArmorItems: 0,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			[
+		output: {
+			requiredArmorStatModIdList: [
 				EModId.MobilityMod,
 				EModId.MinorMobilityMod,
 				EModId.ResilienceMod,
@@ -132,8 +134,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				EModId.StrengthMod,
 				EModId.StrengthMod,
 			],
-			[],
-			{
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 15,
 				[EArmorStatId.Resilience]: 10,
 				[EArmorStatId.Recovery]: 60,
@@ -141,7 +143,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 5,
 				[EArmorStatId.Strength]: 20,
 			},
-		],
+			numUnusedArtificeMods: 0,
+		},
 	},
 	{
 		name: 'With three remaining pieces, it returns one mod when the only required stat is 100 mobility',
@@ -161,10 +164,10 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 			numSeenArtificeArmorItems: 0,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			[EModId.MinorMobilityMod],
-			[],
-			{
+		output: {
+			requiredArmorStatModIdList: [EModId.MinorMobilityMod],
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 5,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 0,
@@ -172,7 +175,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-		],
+			numUnusedArtificeMods: 0,
+		},
 	},
 	{
 		name: 'With two remaining pieces',
@@ -192,15 +196,15 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 			numSeenArtificeArmorItems: 0,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			[
+		output: {
+			requiredArmorStatModIdList: [
 				EModId.MobilityMod,
 				EModId.MobilityMod,
 				EModId.MobilityMod,
 				EModId.MinorRecoveryMod,
 			],
-			[],
-			{
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 30,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 5,
@@ -208,7 +212,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-		],
+			numUnusedArtificeMods: 0,
+		},
 	},
 	{
 		name: 'With two remaining pieces',
@@ -228,15 +233,15 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 			numSeenArtificeArmorItems: 0,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
 		},
-		output: [
-			[
+		output: {
+			requiredArmorStatModIdList: [
 				EModId.MobilityMod,
 				EModId.MobilityMod,
 				EModId.MobilityMod,
 				EModId.MinorRecoveryMod,
 			],
-			[],
-			{
+			requiredArtificeModIdList: [],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 30,
 				[EArmorStatId.Resilience]: 0,
 				[EArmorStatId.Recovery]: 5,
@@ -244,7 +249,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-		],
+			numUnusedArtificeMods: 0,
+		},
 	},
 	{
 		name: 'With no remaining pieces, and a mix of artifice and non-artifice armor, it returns the corect combination of armor stat mods and artifice stat mods',
@@ -271,16 +277,19 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				icon: '',
 			},
 		},
-		output: [
-			[
+		output: {
+			requiredArmorStatModIdList: [
 				EModId.ResilienceMod,
 				EModId.ResilienceMod,
 				EModId.RecoveryMod,
 				EModId.RecoveryMod,
 				EModId.RecoveryMod,
 			],
-			[EModId.ResilienceForged, EModId.RecoveryForged],
-			{
+			requiredArtificeModIdList: [
+				EModId.ResilienceForged,
+				EModId.RecoveryForged,
+			],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 0,
 				[EArmorStatId.Resilience]: 20,
 				[EArmorStatId.Recovery]: 30,
@@ -288,7 +297,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 0,
 			},
-		],
+			numUnusedArtificeMods: 0,
+		},
 	},
 	{
 		name: 'It properly chooses to replace two minor mods with artifice mods instead of one major mod',
@@ -315,16 +325,20 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				icon: '',
 			},
 		},
-		output: [
-			[
+		output: {
+			requiredArmorStatModIdList: [
 				EModId.MobilityMod,
 				EModId.MinorMobilityMod,
 				EModId.MinorResilienceMod,
 				EModId.MinorDisciplineMod,
 				EModId.MinorStrengthMod,
 			],
-			[EModId.RecoveryForged, EModId.IntellectForged, EModId.IntellectForged],
-			{
+			requiredArtificeModIdList: [
+				EModId.RecoveryForged,
+				EModId.IntellectForged,
+				EModId.IntellectForged,
+			],
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 15,
 				[EArmorStatId.Resilience]: 5,
 				[EArmorStatId.Recovery]: 0,
@@ -332,6 +346,7 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 0,
 				[EArmorStatId.Strength]: 5,
 			},
+			numUnusedArtificeMods: 1,
 			// This would also work. The algorithm doesn't try to use fewer
 			// artifice mods if possible.
 			// [
@@ -350,7 +365,7 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 			// 	[EArmorStatId.Intellect]: 5,
 			// 	[EArmorStatId.Strength]: 5,
 			// },
-		],
+		},
 	},
 	{
 		name: 'With nine mods needed it properly replaces the 4 minor mods with artifice mods',
@@ -377,21 +392,21 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				icon: '',
 			},
 		},
-		output: [
-			[
+		output: {
+			requiredArmorStatModIdList: [
 				EModId.MobilityMod,
 				EModId.ResilienceMod,
 				EModId.RecoveryMod,
 				EModId.DisciplineMod,
 				EModId.IntellectMod,
 			],
-			[
+			requiredArtificeModIdList: [
 				EModId.MobilityForged,
 				EModId.ResilienceForged,
 				EModId.RecoveryForged,
 				EModId.DisciplineForged,
 			],
-			{
+			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 10,
 				[EArmorStatId.Resilience]: 10,
 				[EArmorStatId.Recovery]: 10,
@@ -399,7 +414,8 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				[EArmorStatId.Intellect]: 10,
 				[EArmorStatId.Strength]: 0,
 			},
-		],
+			numUnusedArtificeMods: 0,
+		},
 	},
 ];
 

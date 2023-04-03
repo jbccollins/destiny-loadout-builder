@@ -12,6 +12,20 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-04-03',
+		version: '1.3.4',
+		title: 'Allow the selection of reduced cost mods',
+		sections: [
+			{
+				items: [
+					`Add mods that have a reduced costs due to the artifact. Note that this will show some mods that are not available via the current artifact.
+					In a future update such mods will be removed from the mod dropdowns.
+					`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-04-03',
 		version: '1.3.3',
 		title: 'Fix desired stat preview',
 		sections: [

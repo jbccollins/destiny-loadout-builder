@@ -22,8 +22,8 @@ export const ModIdList = Object.values(EModId);
 export const ArmorSlotModIdList = ModIdList.filter((id) => {
 	const mod = getMod(id);
 	return (
-		mod?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot &&
-		!mod?.isArtifactMod
+		mod?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot // &&
+		// !mod?.isArtifactMod
 	);
 });
 

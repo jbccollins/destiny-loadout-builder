@@ -64,6 +64,7 @@ export enum EArmorExtraModSlotId {
 	DeepStoneCrypt = 'DSC',
 	GardenOfSalvation = 'GoS',
 	LastWish = 'LW',
+	RootOfNightmares = 'RoN',
 	Artificer = 'Artifice',
 	NightmareHunt = 'NH',
 	// TODO: These are intrinsic perks, not mod slots. Not sure what to do about these. D2armorpicker supports them tho

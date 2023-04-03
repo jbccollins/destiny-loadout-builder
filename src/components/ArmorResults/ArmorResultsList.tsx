@@ -11,6 +11,7 @@ import {
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import {
+	EArmorExtraModSlotId,
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
@@ -167,6 +168,13 @@ const calculateExtraMasterworkedStats = (
 // Does not have a masterworked class item
 const getClassItemText = (item: ResultsTableLoadout): string => {
 	const artificeArmorItems = item.armorItems.filter((x) => x.isArtifice);
+	if (item.requiredClassItemExtraModSocketCategoryId !== null) {
+		// TODO: This is a really unsafe cast lol. EArmorExtraModSlotId and EExtraSocketModCategoryId are not the same type
+		// We have a bunch of very similar types like this that really should be consolidated
+		return `Any Masterworked ${
+			EArmorExtraModSlotId[item.requiredClassItemExtraModSocketCategoryId]
+		} Class Item`;
+	}
 	if (artificeArmorItems.length < item.requiredArtificeModIdList.length) {
 		return 'Any Masterworked Artifice Class Item';
 	}

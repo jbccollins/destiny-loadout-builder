@@ -15,7 +15,11 @@ import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyC
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useCallback, useMemo, useState } from 'react';
-import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EExtraSocketModCategoryId,
+} from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorItem, StatList } from '@dlb/types/Armor';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
@@ -173,6 +177,7 @@ export type ResultsTableLoadout = {
 	armorItems: ArmorItem[];
 	requiredStatModIdList: EModId[];
 	requiredArtificeModIdList: EModId[];
+	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
 };
 
 export type Order = 'asc' | 'desc';
@@ -369,12 +374,19 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		const res: ResultsTableLoadout[] = [];
 
 		processedArmor.forEach(
-			({ armorIdList, armorStatModIdList, artificeModIdList, metadata }) => {
+			({
+				armorIdList,
+				armorStatModIdList,
+				artificeModIdList,
+				requiredClassItemExtraModSocketCategoryId,
+				metadata,
+			}) => {
 				const resultLoadout: ResultsTableLoadout = {
 					id: '',
 					armorItems: [],
 					requiredStatModIdList: armorStatModIdList,
 					requiredArtificeModIdList: artificeModIdList,
+					requiredClassItemExtraModSocketCategoryId,
 					sortableFields: {
 						[EArmorStatId.Mobility]: 0,
 						[EArmorStatId.Resilience]: 0,

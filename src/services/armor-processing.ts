@@ -394,6 +394,7 @@ export type ShouldShortCircuitOutput = {
 	armorStat: EArmorStatId | null; // null means that there were to many required mods
 	slot: EArmorSlotId;
 	numUnusedArtificeMods: number;
+	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
 };
 
 // TODO: Clean up these assumptions by checking against armor metadata instead of the MAX_SINGLE_STAT_VALUE.
@@ -431,7 +432,8 @@ const getMaxPossibleRemainingStatValue = (
 };
 
 const getItemCountsFromSeenArmorSlotItems = (
-	seenArmorSlotItems: SeenArmorSlotItems
+	seenArmorSlotItems: SeenArmorSlotItems,
+	withClassItems = true
 ): ItemCounts => {
 	const itemCounts = getDefaultItemCounts();
 	ArmorSlotIdList.forEach((armorSlotId) => {
@@ -444,11 +446,13 @@ const getItemCountsFromSeenArmorSlotItems = (
 			itemCounts[value]++;
 		}
 	});
-	Object.keys(getDefaultItemCounts()).forEach((key) => {
-		if (seenArmorSlotItems.ClassItems[key]) {
-			itemCounts[key]++;
-		}
-	});
+	if (withClassItems) {
+		Object.keys(getDefaultItemCounts()).forEach((key) => {
+			if (seenArmorSlotItems.ClassItems[key]) {
+				itemCounts[key]++;
+			}
+		});
+	}
 	return itemCounts;
 };
 
@@ -461,6 +465,7 @@ export const shouldShortCircuit = (
 		numRemainingArmorPieces,
 		validRaidModArmorSlotPlacements,
 		armorSlotMods,
+		raidMods,
 		destinyClassId,
 		specialSeenArmorSlotItems,
 		selectedExotic,
@@ -470,15 +475,62 @@ export const shouldShortCircuit = (
 	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
 		specialSeenArmorSlotItems
 	);
+
+	let requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId =
+		null;
+	let seenArtificeCount = seenItemCounts.artifice;
+	// Check to see if this combo even has enough raid pieces capable
+	// of slotting the required raid mods
+	if (numRemainingArmorPieces === 0 && raidMods.length > 0) {
+		const seenItemCountsWithoutClassItems = getItemCountsFromSeenArmorSlotItems(
+			specialSeenArmorSlotItems,
+			false
+		);
+		const raidModExtraSocketModCategoryIdCounts =
+			getExtraSocketModCategoryIdCountsFromRaidModIdList(raidMods);
+		const {
+			isValid,
+			requiredClassItemExtraModSocketCategoryId:
+				_requiredClassItemExtraModSocketCategoryId,
+		} = hasValidSeenItemCounts(
+			seenItemCountsWithoutClassItems,
+			raidModExtraSocketModCategoryIdCounts,
+			specialSeenArmorSlotItems.ClassItems
+		);
+		if (!isValid) {
+			return {
+				shortCircuit: true,
+				requiredArmorStatModIdList: [],
+				requiredArtificeModIdList: [],
+				requiredArmorStatModsArmorStatMapping: null,
+				armorStat: null,
+				slot: null,
+				numUnusedArtificeMods: 0,
+				requiredClassItemExtraModSocketCategoryId,
+			};
+		}
+
+		requiredClassItemExtraModSocketCategoryId =
+			_requiredClassItemExtraModSocketCategoryId;
+		// We can't use artifice class items now...
+		if (
+			requiredClassItemExtraModSocketCategoryId !== null &&
+			specialSeenArmorSlotItems.ClassItems.artifice
+		) {
+			seenArtificeCount--;
+		}
+	}
+
 	// TODO: Knowing the rules around stat clustering [mob, res, rec] and [dis, int, str]
 	// how each of those groups adds up to a max base total of 34 we can probably short circuit
 	// muuuuuch more often. If we know that we needed to have a 30 in both mob and res for a
 	// single armor piece in order for it to work in this combination we can tell that's an impossible
 	// piece of armor so we are done right then and there. Combine that logic
 	// with dynamic MAX_SINGLE_STAT_VALUE and we can have a really efficient check here.
+
 	const maxRemaningPossibleStatValue = getMaxPossibleRemainingStatValue(
 		numRemainingArmorPieces,
-		seenItemCounts.artifice,
+		seenArtificeCount,
 		armorMetadataItem,
 		selectedExotic
 	);
@@ -493,7 +545,7 @@ export const shouldShortCircuit = (
 		stats: sumOfSeenStats,
 		numRemainingArmorPieces,
 		destinyClassId,
-		numSeenArtificeArmorItems: seenItemCounts.artifice,
+		numSeenArtificeArmorItems: seenArtificeCount,
 		armorMetadataItem,
 		selectedExotic,
 	});
@@ -514,6 +566,7 @@ export const shouldShortCircuit = (
 			armorStat: null,
 			slot,
 			numUnusedArtificeMods,
+			requiredClassItemExtraModSocketCategoryId,
 		};
 	}
 
@@ -529,6 +582,7 @@ export const shouldShortCircuit = (
 			armorStat: null,
 			slot,
 			numUnusedArtificeMods,
+			requiredClassItemExtraModSocketCategoryId,
 		};
 	}
 
@@ -547,6 +601,7 @@ export const shouldShortCircuit = (
 			armorStat: null,
 			slot: null,
 			numUnusedArtificeMods,
+			requiredClassItemExtraModSocketCategoryId,
 		};
 	}
 
@@ -572,6 +627,7 @@ export const shouldShortCircuit = (
 				armorStat,
 				slot,
 				numUnusedArtificeMods,
+				requiredClassItemExtraModSocketCategoryId,
 			};
 		}
 	}
@@ -584,6 +640,7 @@ export const shouldShortCircuit = (
 		armorStat: null,
 		slot: null,
 		numUnusedArtificeMods,
+		requiredClassItemExtraModSocketCategoryId,
 	};
 };
 
@@ -748,6 +805,7 @@ const _processArmorBaseCase = ({
 			requiredArtificeModIdList,
 			requiredArmorStatModsArmorStatMapping,
 			numUnusedArtificeMods,
+			requiredClassItemExtraModSocketCategoryId,
 		} = shouldShortCircuit({
 			sumOfSeenStats: finalSumOfSeenStats,
 			desiredArmorStats,
@@ -774,6 +832,7 @@ const _processArmorBaseCase = ({
 			armorStatModIdList: requiredArmorStatModIdList,
 			artificeModIdList: requiredArtificeModIdList,
 			numUnusedArtificeMods,
+			requiredClassItemExtraModSocketCategoryId,
 			metadata: {
 				// requiredStatModIdList: requiredStatMods, // TODO: Why is this necessary when it's returned right above here?
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
@@ -902,6 +961,7 @@ type ProcessArmorOutputItem = {
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
 	numUnusedArtificeMods: number;
+	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
 	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: ProcessedArmorItemMetadata;
 };
@@ -1065,14 +1125,18 @@ const getWastedStats = (armorStatMapping: ArmorStatMapping): number => {
 
 const ARTIFICE = 'artifice';
 
+export type SeenArmorSlotClassItems = Record<
+	EExtraSocketModCategoryId,
+	boolean
+> & {
+	artifice: boolean;
+};
 export type SeenArmorSlotItems = {
 	[EArmorSlotId.Head]: EExtraSocketModCategoryId | 'artifice';
 	[EArmorSlotId.Arm]: EExtraSocketModCategoryId | 'artifice';
 	[EArmorSlotId.Chest]: EExtraSocketModCategoryId | 'artifice';
 	[EArmorSlotId.Leg]: EExtraSocketModCategoryId | 'artifice';
-	ClassItems: Record<EExtraSocketModCategoryId, boolean> & {
-		artifice: boolean;
-	};
+	ClassItems: SeenArmorSlotClassItems;
 };
 
 export const getDefaultSeenArmorSlotItems = (): SeenArmorSlotItems => {
@@ -1095,54 +1159,62 @@ export const getDefaultSeenArmorSlotItems = (): SeenArmorSlotItems => {
 	};
 };
 
-export const hasValidSeenArmorSlotItems = (
-	seenArmorSlotItems: SeenArmorSlotItems,
+export const getExtraSocketModCategoryIdCountsFromRaidModIdList = (
 	raidModIdList: EModId[]
-): boolean => {
-	let isValid = true;
+): Partial<Record<EExtraSocketModCategoryId, number>> => {
+	const counts: Partial<Record<EExtraSocketModCategoryId, number>> = {};
+	for (let i = 0; i < raidModIdList.length; i++) {
+		const mod = getMod(raidModIdList[i]);
+		if (!counts[mod.modCategoryId]) {
+			counts[mod.modCategoryId] = 0;
+		}
+		counts[mod.modCategoryId]++;
+	}
+	return counts;
+};
 
-	if (raidModIdList.length > 0) {
-		const seenExtraModSocketCategoryCounts: Partial<
-			Record<EExtraSocketModCategoryId, number>
-		> = {};
-		const requiredExtraModSocketCategoryCounts: Partial<
-			Record<EExtraSocketModCategoryId, number>
-		> = {};
-		// Get the seen counts for each piece of armor + class item
-		ArmorSlotIdList.forEach((armorSlotId) => {
-			if (seenArmorSlotItems[armorSlotId]) {
-				if (
-					!seenExtraModSocketCategoryCounts[seenArmorSlotItems[armorSlotId]]
-				) {
-					seenExtraModSocketCategoryCounts[seenArmorSlotItems[armorSlotId]] = 0;
-				}
-				seenExtraModSocketCategoryCounts[seenArmorSlotItems[armorSlotId]]++;
-			}
-		});
-		EExtraSocketModCategoryIdList.forEach((extraModSocketCategoryId) => {
-			if (seenArmorSlotItems.ClassItems[extraModSocketCategoryId]) {
-				if (!seenExtraModSocketCategoryCounts[extraModSocketCategoryId]) {
-					seenExtraModSocketCategoryCounts[extraModSocketCategoryId] = 0;
-				}
-				seenExtraModSocketCategoryCounts[extraModSocketCategoryId]++;
-			}
-		});
+export const hasValidSeenItemCounts = (
+	seenItemCountsWithoutClassItems: ItemCounts,
+	raidModExtraSocketModCategoryIdCounts: Partial<
+		Record<EExtraSocketModCategoryId, number>
+	>,
+	seenArmorSlotClassItems: SeenArmorSlotClassItems
+): {
+	isValid: boolean;
+	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+} => {
+	let isValid = true;
+	let requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId =
+		null;
+	const extraSocketModCategoryIdList = Object.keys(
+		raidModExtraSocketModCategoryIdCounts
+	) as unknown as EExtraSocketModCategoryId[];
+	if (extraSocketModCategoryIdList.length > 0) {
 		// Check to see if we have armor that can fit these mods
-		for (let i = 0; i < raidModIdList.length; i++) {
-			const mod = getMod(raidModIdList[i]);
-			if (!requiredExtraModSocketCategoryCounts[mod.modCategoryId]) {
-				requiredExtraModSocketCategoryCounts[mod.modCategoryId] = 0;
-			}
-			requiredExtraModSocketCategoryCounts[mod.modCategoryId]++;
+		for (let i = 0; i < extraSocketModCategoryIdList.length; i++) {
+			const extraSocketModCategoryId = extraSocketModCategoryIdList[i];
 			if (
-				!seenExtraModSocketCategoryCounts[mod.modCategoryId] ||
-				requiredExtraModSocketCategoryCounts[mod.modCategoryId] >
-					seenExtraModSocketCategoryCounts[mod.modCategoryId]
+				raidModExtraSocketModCategoryIdCounts[extraSocketModCategoryId] >
+				seenItemCountsWithoutClassItems[extraSocketModCategoryId]
 			) {
+				// Add in the class item if we have to
+				// TODO: This logic will need to change for combos where we have enough
+				// non-class item pieces but they don't have the mod space to fit the raid
+				// mods without using the class item for a raid mod
+				if (
+					requiredClassItemExtraModSocketCategoryId === null &&
+					seenArmorSlotClassItems[extraSocketModCategoryId] &&
+					raidModExtraSocketModCategoryIdCounts[extraSocketModCategoryId] ===
+						seenItemCountsWithoutClassItems[extraSocketModCategoryId] + 1
+				) {
+					requiredClassItemExtraModSocketCategoryId = extraSocketModCategoryId;
+					continue;
+				}
 				isValid = false;
+				requiredClassItemExtraModSocketCategoryId = null;
 				break;
 			}
 		}
 	}
-	return isValid;
+	return { isValid, requiredClassItemExtraModSocketCategoryId };
 };

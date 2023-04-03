@@ -19,6 +19,7 @@ const EModDisplayNameIdToModSocketCategoryIdMapping: EnumDictionary<
 	[EModDisplayNameId.VaultOfGlassArmorMod]: EModSocketCategoryId.Raid,
 	[EModDisplayNameId.VowOfTheDiscipleRaidMod]: EModSocketCategoryId.Raid,
 	[EModDisplayNameId.KingsFallMod]: EModSocketCategoryId.Raid,
+	[EModDisplayNameId.RootOfNightmaresArmorMod]: EModSocketCategoryId.Raid,
 
 	[EModDisplayNameId.ArtificeArmorMod]: EModSocketCategoryId.ArtificeStat,
 	[EModDisplayNameId.GeneralArmorMod]: EModSocketCategoryId.Stat,

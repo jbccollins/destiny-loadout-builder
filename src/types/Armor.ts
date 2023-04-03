@@ -241,6 +241,8 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 			[EExtraSocketModCategoryId.VowOfTheDisciple]:
 				getDefaultArmorSlotMetadata(),
 			[EExtraSocketModCategoryId.KingsFall]: getDefaultArmorSlotMetadata(),
+			[EExtraSocketModCategoryId.RootOfNightmares]:
+				getDefaultArmorSlotMetadata(),
 			[EExtraSocketModCategoryId.Nightmare]: getDefaultArmorSlotMetadata(),
 		},
 	},
@@ -275,6 +277,7 @@ const defaultItemCounts: ItemCounts = {
 	[EExtraSocketModCategoryId.VaultOfGlass]: 0,
 	[EExtraSocketModCategoryId.VowOfTheDisciple]: 0,
 	[EExtraSocketModCategoryId.KingsFall]: 0,
+	[EExtraSocketModCategoryId.RootOfNightmares]: 0,
 	[EExtraSocketModCategoryId.Nightmare]: 0,
 	artifice: 0,
 };

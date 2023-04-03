@@ -11,6 +11,7 @@ export enum EModDisplayNameId {
   GeneralArmorMod = "GeneralArmorMod",
   LastWishRaidMod = "LastWishRaidMod",
   VaultOfGlassArmorMod = "VaultOfGlassArmorMod",
+  RootOfNightmaresArmorMod = "RootOfNightmaresArmorMod",
   DeepStoneCryptRaidMod = "DeepStoneCryptRaidMod",
   KingsFallMod = "KingsFallMod",
   GardenOfSalvationRaidMod = "GardenOfSalvationRaidMod",

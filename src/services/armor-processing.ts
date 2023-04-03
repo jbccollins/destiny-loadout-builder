@@ -379,6 +379,7 @@ export type ShouldShortCircuitParams = {
 	numRemainingArmorPieces: number; // TODO: Can we enforce this to be one of 3 | 2 | 1
 	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacements;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 	armorMetadataItem: ArmorMetadataItem;
@@ -594,6 +595,7 @@ export type DoProcessArmorParams = {
 	modArmorStatMapping: ArmorStatMapping;
 	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacements;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
 	armorMetadataItem: ArmorMetadataItem;
 	selectedExotic: AvailableExoticArmorItem;
@@ -659,6 +661,7 @@ export const doProcessArmor = ({
 	modArmorStatMapping,
 	validRaidModArmorSlotPlacements,
 	armorSlotMods,
+	raidMods,
 	destinyClassId,
 	armorMetadataItem,
 	selectedExotic,
@@ -687,6 +690,7 @@ export const doProcessArmor = ({
 		seenArmorIds: [],
 		validRaidModArmorSlotPlacements,
 		armorSlotMods,
+		raidMods,
 		destinyClassId,
 		armorMetadataItem,
 		specialSeenArmorSlotItems: seenArmorSlotItems,
@@ -717,6 +721,7 @@ const _processArmorBaseCase = ({
 	masterworkAssumption,
 	validRaidModArmorSlotPlacements,
 	armorSlotMods,
+	raidMods,
 	destinyClassId,
 	armorMetadataItem,
 	specialSeenArmorSlotItems,
@@ -749,6 +754,7 @@ const _processArmorBaseCase = ({
 			numRemainingArmorPieces: 0,
 			validRaidModArmorSlotPlacements,
 			armorSlotMods,
+			raidMods,
 			destinyClassId,
 			specialSeenArmorSlotItems: finalSpecialSeenArmorSlotItems,
 			armorMetadataItem,
@@ -824,6 +830,7 @@ const _processArmorRecursiveCase = ({
 	masterworkAssumption,
 	validRaidModArmorSlotPlacements,
 	armorSlotMods,
+	raidMods,
 	destinyClassId,
 	armorMetadataItem,
 	specialSeenArmorSlotItems,
@@ -849,6 +856,7 @@ const _processArmorRecursiveCase = ({
 			numRemainingArmorPieces: rest.length,
 			validRaidModArmorSlotPlacements,
 			armorSlotMods,
+			raidMods,
 			destinyClassId,
 			specialSeenArmorSlotItems: nextSpecialSeenArmorSlotItems,
 			armorMetadataItem,
@@ -868,6 +876,7 @@ const _processArmorRecursiveCase = ({
 				masterworkAssumption,
 				validRaidModArmorSlotPlacements,
 				armorSlotMods,
+				raidMods,
 				destinyClassId,
 				armorMetadataItem,
 				specialSeenArmorSlotItems: nextSpecialSeenArmorSlotItems,
@@ -906,6 +915,7 @@ type ProcessArmorParams = {
 	masterworkAssumption: EMasterworkAssumption;
 	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacements;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
 	armorMetadataItem: ArmorMetadataItem;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
@@ -920,6 +930,7 @@ const processArmor = ({
 	masterworkAssumption,
 	validRaidModArmorSlotPlacements,
 	armorSlotMods,
+	raidMods,
 	destinyClassId,
 	armorMetadataItem,
 	specialSeenArmorSlotItems,
@@ -934,6 +945,7 @@ const processArmor = ({
 			masterworkAssumption,
 			validRaidModArmorSlotPlacements,
 			armorSlotMods,
+			raidMods,
 			destinyClassId,
 			armorMetadataItem,
 			specialSeenArmorSlotItems,
@@ -949,6 +961,7 @@ const processArmor = ({
 		masterworkAssumption,
 		validRaidModArmorSlotPlacements,
 		armorSlotMods,
+		raidMods,
 		destinyClassId,
 		armorMetadataItem,
 		specialSeenArmorSlotItems,
@@ -1077,6 +1090,59 @@ export const getDefaultSeenArmorSlotItems = (): SeenArmorSlotItems => {
 			[EExtraSocketModCategoryId.Nightmare]: false,
 			[EExtraSocketModCategoryId.VaultOfGlass]: false,
 			[EExtraSocketModCategoryId.VowOfTheDisciple]: false,
+			[EExtraSocketModCategoryId.RootOfNightmares]: false,
 		},
 	};
+};
+
+export const hasValidSeenArmorSlotItems = (
+	seenArmorSlotItems: SeenArmorSlotItems,
+	raidModIdList: EModId[]
+): boolean => {
+	let isValid = true;
+
+	if (raidModIdList.length > 0) {
+		const seenExtraModSocketCategoryCounts: Partial<
+			Record<EExtraSocketModCategoryId, number>
+		> = {};
+		const requiredExtraModSocketCategoryCounts: Partial<
+			Record<EExtraSocketModCategoryId, number>
+		> = {};
+		// Get the seen counts for each piece of armor + class item
+		ArmorSlotIdList.forEach((armorSlotId) => {
+			if (seenArmorSlotItems[armorSlotId]) {
+				if (
+					!seenExtraModSocketCategoryCounts[seenArmorSlotItems[armorSlotId]]
+				) {
+					seenExtraModSocketCategoryCounts[seenArmorSlotItems[armorSlotId]] = 0;
+				}
+				seenExtraModSocketCategoryCounts[seenArmorSlotItems[armorSlotId]]++;
+			}
+		});
+		EExtraSocketModCategoryIdList.forEach((extraModSocketCategoryId) => {
+			if (seenArmorSlotItems.ClassItems[extraModSocketCategoryId]) {
+				if (!seenExtraModSocketCategoryCounts[extraModSocketCategoryId]) {
+					seenExtraModSocketCategoryCounts[extraModSocketCategoryId] = 0;
+				}
+				seenExtraModSocketCategoryCounts[extraModSocketCategoryId]++;
+			}
+		});
+		// Check to see if we have armor that can fit these mods
+		for (let i = 0; i < raidModIdList.length; i++) {
+			const mod = getMod(raidModIdList[i]);
+			if (!requiredExtraModSocketCategoryCounts[mod.modCategoryId]) {
+				requiredExtraModSocketCategoryCounts[mod.modCategoryId] = 0;
+			}
+			requiredExtraModSocketCategoryCounts[mod.modCategoryId]++;
+			if (
+				!seenExtraModSocketCategoryCounts[mod.modCategoryId] ||
+				requiredExtraModSocketCategoryCounts[mod.modCategoryId] >
+					seenExtraModSocketCategoryCounts[mod.modCategoryId]
+			) {
+				isValid = false;
+				break;
+			}
+		}
+	}
+	return isValid;
 };

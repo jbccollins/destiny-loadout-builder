@@ -101,6 +101,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: getDefaultArmorMetadata().Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
@@ -193,6 +194,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: defaultArmorMetadataWithArtificeClassItem.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
@@ -303,6 +305,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem:
 				defaultArmorMetadataWithLastWishAndArtificeClassItem.Warlock,
@@ -412,6 +415,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: getDefaultArmorMetadata().Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
@@ -510,6 +514,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: defaultArmorMetadataWithArtificeClassItem.Warlock,
 			selectedExotic: {
@@ -615,6 +620,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: defaultArmorMetadataWithArtificeClassItem.Warlock,
 			selectedExotic: {

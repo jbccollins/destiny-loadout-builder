@@ -65,6 +65,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -116,6 +117,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -160,6 +162,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -210,6 +213,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -261,6 +265,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -300,6 +305,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -353,6 +359,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 					EModId.ArcSiphon,
 				],
 			},
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -410,6 +417,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 					EModId.FontOfRestoration,
 				],
 			},
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -440,7 +448,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 	},
 	// 8
 	{
-		name: 'It returns true when there is nowhere to put the required armor stat mods due to the combined cost of armor slot mods and combat style mods',
+		name: 'It returns true when there is nowhere to put the required armor stat mods due to the combined cost of armor slot mods and raid mods',
 		input: {
 			sumOfSeenStats: [0, 0, 0, 0, 95, 0],
 			desiredArmorStats: {
@@ -480,6 +488,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 					EModId.FontOfRestoration,
 				], // 1 + [3, 3, 3] = Capacity: 0
 			},
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -548,6 +557,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 					EModId.FontOfRestoration,
 				], // 1 + [3, 3, 3] = Capacity: 0
 			},
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,

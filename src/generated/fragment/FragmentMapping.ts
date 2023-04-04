@@ -877,7 +877,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Thread of Propagation",
     id: EFragmentId.ThreadOfPropagation,
     description:
-      "Powered melee final blows grant your  Strand weapons Unraveling Rounds.",
+      "Powered melee final blows grant your [Strand] Strand weapons Unraveling Rounds.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/4b78910e8b8b684d7dfca716eaea4616.jpg",
     hash: 4208512210,
     bonuses: [],
@@ -953,7 +953,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Thread of Rebirth",
     id: EFragmentId.ThreadOfRebirth,
     description:
-      " Strand weapon final blows have a chance to create a Threadling.",
+      "[Strand] Strand weapon final blows have a chance to create a Threadling.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/00afc79d1bd165623c9e506bec1a0ff3.jpg",
     hash: 4208512220,
     bonuses: [],

@@ -1,6 +1,6 @@
 import {
 	ArmorExtraModSlotIdList,
-	ArmorExtraMotSlotIdToArmorExtraMotSlot,
+	getExtraModSlot,
 } from '@dlb/types/ArmorExtraModSlot';
 import { styled } from '@mui/material';
 import IconDropdown from '@dlb/components/IconDropdown';
@@ -21,8 +21,7 @@ type Option = {
 };
 
 const options: Option[] = ArmorExtraModSlotIdList.map((armorExtraModSlotId) => {
-	const armorExtraModSlot =
-		ArmorExtraMotSlotIdToArmorExtraMotSlot.get(armorExtraModSlotId);
+	const armorExtraModSlot = getExtraModSlot(armorExtraModSlotId);
 	return {
 		label: armorExtraModSlot.name,
 		id: armorExtraModSlotId,

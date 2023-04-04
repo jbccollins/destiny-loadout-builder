@@ -101,6 +101,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: getDefaultArmorMetadata().Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
@@ -157,6 +158,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				armorStatModIdList: [],
 				artificeModIdList: [],
 				numUnusedArtificeMods: 0,
+				requiredClassItemExtraModSocketCategoryId: null,
 				metadata: {
 					totalModCost: 0,
 					totalStatTiers: 24,
@@ -193,6 +195,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: defaultArmorMetadataWithArtificeClassItem.Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
@@ -265,6 +268,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.ResilienceForged,
 				],
 				numUnusedArtificeMods: 2,
+				requiredClassItemExtraModSocketCategoryId: null,
 				metadata: {
 					totalModCost: 18,
 					totalStatTiers: 35,
@@ -303,6 +307,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem:
 				defaultArmorMetadataWithLastWishAndArtificeClassItem.Warlock,
@@ -376,6 +381,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.ResilienceForged,
 				],
 				numUnusedArtificeMods: 2,
+				requiredClassItemExtraModSocketCategoryId: null,
 				metadata: {
 					totalModCost: 18,
 					totalStatTiers: 35,
@@ -412,6 +418,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: getDefaultArmorMetadata().Warlock,
 			selectedExotic: getDefaultAvailableExoticArmorItem(),
@@ -474,6 +481,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				],
 				artificeModIdList: [],
 				numUnusedArtificeMods: 0,
+				requiredClassItemExtraModSocketCategoryId: null,
 				metadata: {
 					totalModCost: 15,
 					totalStatTiers: 30,
@@ -510,6 +518,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: defaultArmorMetadataWithArtificeClassItem.Warlock,
 			selectedExotic: {
@@ -579,6 +588,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				],
 				artificeModIdList: [EModId.ResilienceForged, EModId.RecoveryForged],
 				numUnusedArtificeMods: 0,
+				requiredClassItemExtraModSocketCategoryId: null,
 				metadata: {
 					totalModCost: 20,
 					totalStatTiers: 36,
@@ -615,6 +625,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 			modArmorStatMapping: { ...DefaultArmorStatMapping },
 			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			armorMetadataItem: defaultArmorMetadataWithArtificeClassItem.Warlock,
 			selectedExotic: {
@@ -689,6 +700,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 					EModId.DisciplineForged,
 				],
 				numUnusedArtificeMods: 0,
+				requiredClassItemExtraModSocketCategoryId: null,
 				metadata: {
 					totalModCost: 20,
 					totalStatTiers: 37,

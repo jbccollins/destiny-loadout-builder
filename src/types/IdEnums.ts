@@ -64,6 +64,7 @@ export enum EArmorExtraModSlotId {
 	DeepStoneCrypt = 'DSC',
 	GardenOfSalvation = 'GoS',
 	LastWish = 'LW',
+	RootOfNightmares = 'RoN',
 	Artificer = 'Artifice',
 	NightmareHunt = 'NH',
 	// TODO: These are intrinsic perks, not mod slots. Not sure what to do about these. D2armorpicker supports them tho
@@ -136,6 +137,7 @@ export enum EModCategoryId {
 	VaultOfGlass = 'VaultOfGlass',
 	VowOfTheDisciple = 'VowOfTheDisciple',
 	KingsFall = 'KingsFall',
+	RootOfNightmares = 'RootOfNightmares',
 	Nightmare = 'Nightmare',
 	ArmorStat = 'ArmorStat',
 	ArtificeArmorStat = 'ArtificeArmorStat',
@@ -151,6 +153,7 @@ export enum EExtraSocketModCategoryId {
 	VaultOfGlass = EModCategoryId.VaultOfGlass,
 	VowOfTheDisciple = EModCategoryId.VowOfTheDisciple,
 	KingsFall = EModCategoryId.KingsFall,
+	RootOfNightmares = EModCategoryId.RootOfNightmares,
 	Nightmare = EModCategoryId.Nightmare,
 }
 

@@ -19,6 +19,7 @@ export const ArmorExtraModSlotIdList = ValidateEnumList(
 		EArmorExtraModSlotId.DeepStoneCrypt,
 		EArmorExtraModSlotId.GardenOfSalvation,
 		EArmorExtraModSlotId.LastWish,
+		EArmorExtraModSlotId.RootOfNightmares,
 		EArmorExtraModSlotId.NightmareHunt,
 	]
 );
@@ -74,15 +75,15 @@ const ArmorExtraMotSlotIdToArmorExtraMotSlotMapping: EnumDictionary<
 		name: 'Vow of the Disciple',
 		icon: MISSING_ICON,
 	},
+	[EArmorExtraModSlotId.RootOfNightmares]: {
+		id: EArmorExtraModSlotId.Any,
+		name: 'Root of Nightmares',
+		icon: MISSING_ICON,
+	},
 };
 
-export const ArmorExtraMotSlotIdToArmorExtraMotSlot: Mapping<
-	EArmorExtraModSlotId,
-	IArmorExtraMotSlot
-> = {
-	get: (key: EArmorExtraModSlotId) =>
-		ArmorExtraMotSlotIdToArmorExtraMotSlotMapping[key],
-};
+export const getExtraModSlot = (id: EArmorExtraModSlotId): IArmorExtraMotSlot =>
+	ArmorExtraMotSlotIdToArmorExtraMotSlotMapping[id];
 
 // TODO copy this icons over to the new mapping
 // // TODO: Fix the images for a few of the newer sockets

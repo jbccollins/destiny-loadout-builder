@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, Icon, styled } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	selectSelectedRaidMods,
@@ -10,6 +10,7 @@ import { RaidModIdList } from '@dlb/types/Mod';
 import ModSelector from './ModSelection/ModSelector';
 import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';
 import { IMod } from '@dlb/types/generation';
+import { Warning } from '@mui/icons-material';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));
@@ -48,6 +49,12 @@ function RaidModSelector() {
 	const dropdownIndices = selectedRaidMods.map((_, i) => i);
 	return (
 		<Container>
+			<Box sx={{ color: 'orange', display: 'flex', marginBottom: '16px' }}>
+				<Warning />
+				<Box sx={{ paddingLeft: '8px' }}>
+					Raid Mods are in beta. Expect bugs.
+				</Box>
+			</Box>
 			{dropdownIndices.map((index) => (
 				<ModSelector
 					idPrefix={'raid-mod-selector'}

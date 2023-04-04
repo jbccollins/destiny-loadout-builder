@@ -266,6 +266,7 @@ const VAULT_OF_GLASS_SOCKET_HASH = 3738398030;
 const GARDEN_OF_SALVATION_SOCKET_HASH = 706611068;
 const DEEP_STONE_CRYPT_SOCKET_HASH = 4055462131;
 const VOW_OF_THE_DISCIPLE_SOCKET_HASH = 2447143568;
+const ROOT_OF_NIGHTMARES_SOCKET_HASH = 4144354978;
 const NIGHTMARE_SOCKET_HASH = 1180997867;
 
 const hasSocket = (item: DimItem, hash: number): boolean =>
@@ -292,6 +293,9 @@ const getExtraSocketModCategoryId = (
 	}
 	if (hasSocket(item, VOW_OF_THE_DISCIPLE_SOCKET_HASH)) {
 		return EExtraSocketModCategoryId.VowOfTheDisciple;
+	}
+	if (hasSocket(item, ROOT_OF_NIGHTMARES_SOCKET_HASH)) {
+		return EExtraSocketModCategoryId.RootOfNightmares;
 	}
 	if (hasSocket(item, NIGHTMARE_SOCKET_HASH)) {
 		return EExtraSocketModCategoryId.Nightmare;

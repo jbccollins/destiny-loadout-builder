@@ -65,6 +65,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -95,6 +96,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: EArmorSlotId.Chest,
 		},
@@ -116,6 +118,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -139,6 +142,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 35,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: null,
 		},
@@ -160,6 +164,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -189,6 +194,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 35,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: EArmorSlotId.Arm,
 		},
@@ -210,6 +216,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -240,6 +247,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 55,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: EArmorSlotId.Head,
 		},
@@ -261,6 +269,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -279,6 +288,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: null,
 		},
@@ -300,6 +310,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 			validRaidModArmorSlotPlacements:
 				generateDefaultValidRaidModArmorSlotPlacements(),
 			armorSlotMods: generateDefaultArmorSlotIdToModIDListMapping(),
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -318,6 +329,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: null,
 		},
@@ -353,6 +365,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 					EModId.ArcSiphon,
 				],
 			},
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -377,6 +390,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: null,
 		},
@@ -405,11 +419,12 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 					EModId.SniperDamageResistance,
 				],
 				[EArmorSlotId.ClassItem]: [
-					EModId.EmpoweredFinish,
+					EModId.Distribution,
 					EModId.Distribution,
 					EModId.FontOfRestoration,
 				],
 			},
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -434,13 +449,14 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: null,
 		},
 	},
 	// 8
 	{
-		name: 'It returns true when there is nowhere to put the required armor stat mods due to the combined cost of armor slot mods and combat style mods',
+		name: 'It returns true when there is nowhere to put the required armor stat mods due to the combined cost of armor slot mods and raid mods',
 		input: {
 			sumOfSeenStats: [0, 0, 0, 0, 95, 0],
 			desiredArmorStats: {
@@ -476,10 +492,11 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorSlotId.Leg]: [null, EModId.StacksOnStacks, null], // 3 + [0, 4, 0] = Capacity: 3
 				[EArmorSlotId.ClassItem]: [
 					EModId.Distribution,
-					EModId.EmpoweredFinish,
+					EModId.Distribution,
 					EModId.FontOfRestoration,
 				], // 1 + [3, 3, 3] = Capacity: 0
 			},
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -502,6 +519,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: null,
 		},
@@ -544,10 +562,11 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorSlotId.Leg]: [null, EModId.StacksOnStacks, null], // 3 + [0, 4, 0] = Capacity: 3
 				[EArmorSlotId.ClassItem]: [
 					EModId.Distribution,
-					EModId.EmpoweredFinish,
+					EModId.Distribution,
 					EModId.FontOfRestoration,
 				], // 1 + [3, 3, 3] = Capacity: 0
 			},
+			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
 			specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 			armorMetadataItem: defaultArmorMetadata.Warlock,
@@ -566,6 +585,7 @@ const shouldShortCircuitTestCases: ShouldShortCircuitTestCase[] = [
 				[EArmorStatId.Strength]: 0,
 			},
 			numUnusedArtificeMods: 0,
+			requiredClassItemExtraModSocketCategoryId: null,
 			armorStat: null,
 			slot: null,
 		},

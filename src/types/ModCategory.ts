@@ -98,6 +98,11 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 		name: "King's Fall",
 		description: '',
 	},
+	[EModCategoryId.RootOfNightmares]: {
+		id: EModCategoryId.RootOfNightmares,
+		name: 'Root of Nightmares',
+		description: '',
+	},
 	[EModCategoryId.Nightmare]: {
 		id: EModCategoryId.Nightmare,
 		name: 'Nightmare',
@@ -157,6 +162,9 @@ export const getModCategoryIdByModName = (
 	}
 	if (displayNameId === EModDisplayNameId.KingsFallMod) {
 		return EModCategoryId.KingsFall;
+	}
+	if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
+		return EModCategoryId.RootOfNightmares;
 	}
 	if (displayNameId === EModDisplayNameId.NightmareMod) {
 		return EModCategoryId.Nightmare;

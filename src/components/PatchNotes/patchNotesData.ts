@@ -12,6 +12,16 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-04-03',
+		version: '1.4.0',
+		title: 'Raid mods BETA',
+		sections: [
+			{
+				items: [`Add the ability to select raid mods. This feature is in BETA`],
+			},
+		],
+	},
+	{
+		date: '2023-04-03',
 		version: '1.3.4',
 		title: 'Allow the selection of reduced cost mods',
 		sections: [

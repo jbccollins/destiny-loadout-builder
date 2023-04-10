@@ -285,7 +285,6 @@ function ResultsItem({
 						height={'40px'}
 						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 					/>
-					{/* TODO: Pull this out into a function. Also this > 0 logic is just wrong. */}
 					<IconText>{getClassItemText(item)}</IconText>
 				</IconTextContainer>
 			</ResultsSection>

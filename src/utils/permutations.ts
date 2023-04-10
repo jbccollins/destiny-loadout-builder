@@ -3,7 +3,7 @@
 import { uniqWith, isEqual } from 'lodash';
 
 // Find all the permutations of an array
-export function permute<T>(permutation: T[]) {
+export function permute<T>(permutation: T[]): T[][] {
 	if (permutation.length > 5) {
 		throw 'Fuck you. No permutations longer than 5.';
 	}
@@ -11,7 +11,7 @@ export function permute<T>(permutation: T[]) {
 		return [];
 	}
 	const length = permutation.length;
-	const result = [permutation.slice()];
+	const result: T[][] = [permutation.slice()];
 	const c = new Array(length).fill(0);
 	let i = 1;
 	let k = 0;

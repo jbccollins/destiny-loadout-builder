@@ -1,6 +1,5 @@
 import { Loadout } from '@destinyitemmanager/dim-api-types/loadouts';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { SelectedExoticArmorState } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import {
 	ArmorGroup,
 	ArmorIdList,
@@ -26,7 +25,9 @@ import {
 	getArmorStatMappingFromMods,
 	sumArmorStatMappings,
 	DefaultArmorStatMapping,
+	getStat,
 } from '@dlb/types/ArmorStat';
+import { EModCategoryId } from '@dlb/types/IdEnums';
 import {
 	EArmorSlotId,
 	EArmorStatId,
@@ -44,11 +45,12 @@ import {
 	hasValidArmorStatModPermutation,
 	MajorStatModIdList,
 	MinorStatModIdList,
-	ValidRaidModArmorSlotPlacements,
+	ValidRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
 import combinations from '@dlb/utils/combinations';
 import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
-import { cloneDeep, isEqual } from 'lodash';
+import { permute } from '@dlb/utils/permutations';
+import { cloneDeep, isEqual, uniqWith } from 'lodash';
 
 // No masterworked legendary piece of armor has a single stat above 32
 // TODO: Can we dynamically set this per slot? Like not every user
@@ -136,7 +138,7 @@ const sumModCosts = (modIdList: EModId[]): number => {
 type ArtificeAdjustedRequiredModCombo = {
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
-	numUnusedArtificeMods: number;
+	numUnusedArtificeMods: number; // TODO: We can get rid of this once the refactor is done
 };
 const getArtificeAdjustedRequiredMods = (
 	armorStatModIdList: EModId[],
@@ -301,7 +303,8 @@ export const getRequiredArmorStatMods = ({
 		});
 	}
 
-	// Try to optimize a bit further by swapping out major mods with minor mods and padding with artifice mods
+	// Try to optimize a bit further by swapping out major mods with minor mods
+	// and padding with unused artifice mods
 	if (
 		numRemainingArmorPieces === 0 &&
 		numSeenArtificeArmorItems > 0 &&
@@ -373,11 +376,271 @@ export const getRequiredArmorStatMods = ({
 	};
 };
 
+function deleteFromArray<T>(arr: T[], item: T): void {
+	const index = arr.findIndex((x) => x === item);
+	if (index >= 0) {
+		arr.splice(index, 1);
+	}
+}
+
+const replaceMajorModsWithMinorMods = (
+	armorStatModIdList: EModId[],
+	modsToReplace: EModId[],
+	destinyClassId: EDestinyClassId
+): void => {
+	modsToReplace.forEach((modId) => {
+		const index = armorStatModIdList.findIndex((x) => x === modId);
+		armorStatModIdList.splice(index, 1);
+		deleteFromArray(armorStatModIdList, modId);
+		const { stat } = getMod(modId).bonuses[0];
+		const armorStatId = getStat(stat, destinyClassId).id;
+		const minorModId = getArmorStatModSpitFromArmorStatId(armorStatId).minor;
+		// Push the corresponding minor mod twice
+		armorStatModIdList.push(minorModId);
+		armorStatModIdList.push(minorModId);
+	});
+};
+
+const _extrapolateMajorModsIntoMinorMods = (
+	armorStatModIdList: EModId[],
+	destinyClassId: EDestinyClassId
+): EModId[][] => {
+	const result: EModId[][] = [];
+	const unusedModSlots = 5 - armorStatModIdList.length;
+	if (unusedModSlots === 0) {
+		// There is no space to turn a major mod into two minor mods
+		return;
+	}
+	// Since major mods can be swapped out for two minor mods we only have to care about
+	// two cases. The case where there is only one unusedModSlot and the case where there
+	// are more than one unusedModSlots. If there two - three unusedModSlots it's all the same
+	// logic since no matter what, we can convert three major mods into six minor mods.
+	/*
+	Logic: If there are x major mods => extrapolate to these combos
+	1 => two minor
+	2 => every unique major mod gets two minor mods + if there are two+ unused mod slots add on the four minor mods 
+	3 => every unique major mod gets a two minor mods + if there are two+ unused mod slots every unique combination of two major mods gets two minor mods each 
+	4 => every unique major mod gets a minor mod 
+	*/
+	const majorStatModIdList = armorStatModIdList.filter((x) =>
+		MajorStatModIdList.includes(x)
+	);
+	if (majorStatModIdList.length === 0) {
+		return;
+	}
+	const singleMajorStatModCombos = combinations(majorStatModIdList, 1);
+	singleMajorStatModCombos.forEach((combo) => {
+		const _armorStatModIdList = [...armorStatModIdList];
+		replaceMajorModsWithMinorMods(_armorStatModIdList, combo, destinyClassId);
+		result.push(_armorStatModIdList);
+	});
+	if (
+		unusedModSlots > 1 &&
+		majorStatModIdList.length > 1 &&
+		majorStatModIdList.length < 4
+	) {
+		const duoMajorStatModCombos = combinations(majorStatModIdList, 2);
+		duoMajorStatModCombos.forEach((combo) => {
+			const _armorStatModIdList = [...armorStatModIdList];
+			replaceMajorModsWithMinorMods(_armorStatModIdList, combo, destinyClassId);
+			result.push(_armorStatModIdList);
+		});
+	}
+	return result;
+	// return uniqWith(result, isEqual);
+};
+
+// TODO: the two extrapolate functions can be combined
+// Initially they were separate because I thought the _ variant
+// would be recursive
+const extrapolateMajorModsIntoMinorMods = (
+	statModComboList: StatModCombo[],
+	destinyClassId: EDestinyClassId
+): StatModCombo[] => {
+	// The existing combos are valid and must be considered
+	const results: StatModCombo[] = [...statModComboList];
+	// Any combo that has at least one open mod slot and at least
+	// one major mod can be extrapolated
+	statModComboList
+		.filter(
+			(statModCombo) =>
+				statModCombo.armorStatModIdList.length < 5 &&
+				statModCombo.armorStatModIdList.findIndex((x) =>
+					MajorStatModIdList.includes(x)
+				) >= 0
+		)
+		.forEach(({ armorStatModIdList, artificeModIdList }) => {
+			const extrapolatedArmorStatModIdLists =
+				_extrapolateMajorModsIntoMinorMods(armorStatModIdList, destinyClassId);
+			extrapolatedArmorStatModIdLists.forEach(
+				(extrapolatedArmorStatModIdList) => {
+					results.push({
+						armorStatModIdList: extrapolatedArmorStatModIdList,
+						artificeModIdList,
+					});
+				}
+			);
+		});
+	return results;
+};
+
+export type StatModCombo = {
+	armorStatModIdList: EModId[];
+	artificeModIdList: EModId[];
+};
+
+export type StatModComboWithMetadata = StatModCombo & {
+	metadata: {
+		totalArmorStatModCost: number;
+	};
+};
+
+export type GetAllStatModCombosParams = {
+	desiredArmorStats: ArmorStatMapping;
+	stats: StatList; // Includes masterworked / assume masterworked
+	destinyClassId: EDestinyClassId;
+	numSeenArtificeArmorItems: number;
+};
+
+// Only run this once a full set of armor is known
+export const getAllStatModCombos = ({
+	desiredArmorStats,
+	stats,
+	destinyClassId,
+	numSeenArtificeArmorItems,
+}: GetAllStatModCombosParams): StatModComboWithMetadata[] => {
+	let allStatModCombos: StatModCombo[] = [];
+
+	/*
+	Step 1:
+	Figure out which armor stat mods we would need to do hit the desiredArmorStats
+	*/
+	const requiredArmorStatMods: EModId[] = [];
+	stats.forEach((stat, i) => {
+		const armorStat = ArmorStatIdList[i];
+		const desiredStat = desiredArmorStats[armorStat];
+		const diff = desiredStat - stat;
+		// If the desired stat is less than or equal to the total possible stat
+		// then we don't need any stat mods or artifice stat mods to boost that stat
+		if (diff <= 0) {
+			return;
+		}
+		const withMinorStatMod = canUseMinorStatMod(diff);
+		// Note that this will only ever pick a single minor mod of the same type.
+		// So it will never pick two minor mobility mods even if that is cheaper
+		// than a single major mobility mod. In a future step will remidiate this.
+		// In short, this step prioritizes choosing fewer mods at a higher total cost
+		// if that saves an entire mod slot from being used. In some cases this can be useful.
+		// In other cases it could be a hindrance. So we'll calculate out all major/minor
+		// combos later on.
+		const numRequiredMajorMods =
+			roundUp10(diff) / 10 - (withMinorStatMod ? 1 : 0);
+		const { major, minor } = getArmorStatModSpitFromArmorStatId(armorStat);
+		for (let i = 0; i < numRequiredMajorMods; i++) {
+			requiredArmorStatMods.push(major);
+		}
+		if (withMinorStatMod) {
+			requiredArmorStatMods.push(minor);
+		}
+	});
+
+	/*
+	Step 2
+	If there is a combination of mods that works, set it's extrapolation as
+	the current result list. If there are any artifice armor pieces in this
+	armor combo we'll handle them in the next step.
+	*/
+	let _allStatModCombos: StatModCombo[] = [];
+	if (requiredArmorStatMods.length <= 5) {
+		const baseStatModCombo = {
+			armorStatModIdList: requiredArmorStatMods,
+			artificeModIdList: [],
+			armorStatModCost: getTotalModCost(requiredArmorStatMods),
+		};
+		_allStatModCombos = extrapolateMajorModsIntoMinorMods(
+			[baseStatModCombo],
+			destinyClassId
+		);
+	}
+
+	if (numSeenArtificeArmorItems > 0) {
+		/*
+		Step 2.1:
+		Add artifice mods to reduce cost if possible. This potentially create
+		a variety of mod combinations with different costs. These different costs
+		can affect where we can place raid mods and also inform the desired
+		stat tier preview. High cost combos that use fewer artifice mods might
+		allow an extra stat tier and the desired stat preview needs to be aware of that.
+		*/
+		// By default we'll check if we can use artifice mods to bring the
+		// requiredArmorStatMods down to the five or fewer. But...
+		let requiredArmorStatModLists: EModId[][] = [requiredArmorStatMods];
+		// ...if we have a valid combo already we try to improve it a bit with
+		// artifice mods
+		if (_allStatModCombos.length > 0) {
+			requiredArmorStatModLists = _allStatModCombos.map(
+				({ armorStatModIdList }) => armorStatModIdList
+			);
+		}
+
+		const baseArmorStatMapping = getArmorStatMappingFromStatList(stats);
+		requiredArmorStatModLists.forEach((requiredArmorStatModIdList) => {
+			let artificeAdjustedRequiredMods: ArtificeAdjustedRequiredModCombo[] = [];
+			// TODO: This is probably going to miss some stat combinations
+			// getArtificeAdjustedRequiredMods will never check a stat mod combo
+			// of four mods + artifice mods and such a combo could potentially be extrapolated
+			// into a cheaper combo of five mods + artifice mods
+			artificeAdjustedRequiredMods = getArtificeAdjustedRequiredMods(
+				requiredArmorStatModIdList,
+				destinyClassId,
+				desiredArmorStats,
+				baseArmorStatMapping,
+				numSeenArtificeArmorItems
+			);
+
+			artificeAdjustedRequiredMods.forEach((x) => {
+				const artificeStatModCombo: StatModCombo = {
+					armorStatModIdList: x.armorStatModIdList,
+					artificeModIdList: x.artificeModIdList,
+				};
+				allStatModCombos.push(artificeStatModCombo);
+
+				// TODO: Make getArtificeAdjustedRequiredMods return all combos of mods
+				// not just combos of 5. This will require extrapolating within that function
+			});
+		});
+	} else {
+		allStatModCombos = _allStatModCombos;
+	}
+
+	// Step 3: TODO: Optimize this further to add combos that don't NEED
+	// to use artifice mods to hit the desired stat tiers but CAN use artifice
+	// mods to reduce the combo cost
+
+	// Extract metadata
+	const allStatModCombosWithMetadata: StatModComboWithMetadata[] =
+		allStatModCombos.map(({ armorStatModIdList, artificeModIdList }) => ({
+			armorStatModIdList,
+			artificeModIdList,
+			metadata: {
+				totalArmorStatModCost: getTotalModCost(armorStatModIdList),
+			},
+		}));
+
+	// Return sorted results with the cheapest first and the tiebreaker being number
+	// of mods used where fewer is better.
+	return allStatModCombosWithMetadata.sort(
+		(a, b) =>
+			a.metadata.totalArmorStatModCost - b.metadata.totalArmorStatModCost ||
+			a.armorStatModIdList.length - b.armorStatModIdList.length
+	);
+};
+
 export type ShouldShortCircuitParams = {
 	sumOfSeenStats: StatList;
 	desiredArmorStats: ArmorStatMapping;
 	numRemainingArmorPieces: number; // TODO: Can we enforce this to be one of 3 | 2 | 1
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacements;
+	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
@@ -456,6 +719,215 @@ const getItemCountsFromSeenArmorSlotItems = (
 	return itemCounts;
 };
 
+/***********************/
+
+/*
+
+foreach armorCombination {
+	let requiredClassItemType = null
+	if (selectedRaidMods) {
+		// ensure that there is enough raid armor in this armorCombination
+		// to slot all the raid mods
+		// Set requiredClassItemType if needed
+	}
+
+	// TODO on this one...
+	if (selectedArmorConstraints) {
+		// ensure that there is enough iron banner/plunderer's trapping etc..
+		// armor to satisfy the constraints
+		// Set requiredClassItemType if needed
+	}
+
+	// Get all the combinations of armorStatMods and artificeMods that
+	// meet the desired stat tiers. Make sure to do this both with extra
+	// artificeMods used to replace armorStatMods and without that. This will
+	// be important for getting accurate desired stat tier previews.
+	const validStatModPlacements = getValidStatModPlacements()
+
+	// Find all the combinations of raid mods that fit with the valid stat mod placements
+	const modCombos = getModCombos(selectedRaidMods, validStatModPlacements)
+}
+*/
+
+type ArmorSlotModComboPlacementValue = {
+	armorStatModId: EModId;
+	artificeModId: EModId;
+	raidModId: EModId;
+};
+
+type ArmorSlotModComboPlacement = Record<
+	EArmorSlotId,
+	ArmorSlotModComboPlacementValue
+>;
+
+// TODO: This will need to be updated for iron banner, and seasonal perk armor etc...
+// A better way to would to check if it is of type vs "is not artifice"
+const stripNonRaidSeenArmorSlotItems = (
+	seenArmorSlotItems: SeenArmorSlotItems
+) => {
+	const items: Partial<Record<EArmorSlotId, EModCategoryId>> = {
+		[EArmorSlotId.Head]: null,
+		[EArmorSlotId.Arm]: null,
+		[EArmorSlotId.Chest]: null,
+		[EArmorSlotId.Leg]: null,
+	};
+	ArmorSlotIdList.forEach((armorSlotId) => {
+		if (seenArmorSlotItems[armorSlotId] !== 'artifice') {
+			// TODO: God I hate this casting shit
+			items[armorSlotId] = seenArmorSlotItems[armorSlotId] as EModCategoryId;
+		}
+	});
+	return items;
+};
+
+export type FilterValidRaidModArmorSlotPlacementsParams = {
+	seenArmorSlotItems: SeenArmorSlotItems;
+	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+};
+
+export const filterValidRaidModArmorSlotPlacements = ({
+	seenArmorSlotItems,
+	requiredClassItemExtraModSocketCategoryId,
+	validRaidModArmorSlotPlacements,
+}: FilterValidRaidModArmorSlotPlacementsParams): ValidRaidModArmorSlotPlacement[] => {
+	const raidSeenArmorSlotItems =
+		stripNonRaidSeenArmorSlotItems(seenArmorSlotItems);
+	const validPlacements: ValidRaidModArmorSlotPlacement[] = [];
+	const armorItemsExtraModSocketCategories = {
+		[EArmorSlotId.Head]: raidSeenArmorSlotItems.Head,
+		[EArmorSlotId.Arm]: raidSeenArmorSlotItems.Arm,
+		[EArmorSlotId.Chest]: raidSeenArmorSlotItems.Chest,
+		[EArmorSlotId.Leg]: raidSeenArmorSlotItems.Leg,
+		[EArmorSlotId.ClassItem]:
+			requiredClassItemExtraModSocketCategoryId as unknown as EModCategoryId, // TODO: Fuck this cast
+	};
+
+	// Filter out the placements that put a raid mod on a non-raid armor piece
+	for (let i = 0; i < validRaidModArmorSlotPlacements.length; i++) {
+		const placement = validRaidModArmorSlotPlacements[i];
+		let isValid = true;
+		for (let j = 0; j < ArmorSlotWithClassItemIdList.length; j++) {
+			const armorSlotId = ArmorSlotWithClassItemIdList[j];
+			if (placement[armorSlotId]) {
+				const mod = getMod(placement[armorSlotId]);
+				if (
+					mod.modCategoryId !== armorItemsExtraModSocketCategories[armorSlotId]
+				) {
+					isValid = false;
+					break;
+				}
+			}
+		}
+		if (isValid) {
+			validPlacements.push(placement);
+		}
+	}
+	return validPlacements;
+};
+
+type ModCombos = {
+	metadata: {
+		minTotalArmorStatModCost: number;
+		maxTotalArmorStatModCost: number;
+		minUsedArtificeMods: number;
+		maxUsedArtificeMods: number;
+		minUnusedArmorEnergy: number;
+		maxUnusedArmorEnergy: number;
+	};
+	sortedArmorSlotModComboPlacementList: ArmorSlotModComboPlacement[];
+};
+
+const getModCombos = (params: ShouldShortCircuitParams): ModCombos => {
+	const {
+		sumOfSeenStats,
+		desiredArmorStats,
+		numRemainingArmorPieces,
+		validRaidModArmorSlotPlacements,
+		armorSlotMods,
+		raidMods,
+		destinyClassId,
+		specialSeenArmorSlotItems,
+		selectedExotic,
+		armorMetadataItem,
+	} = params;
+
+	const modCombos: ModCombos = {
+		metadata: {
+			minTotalArmorStatModCost: 0,
+			maxTotalArmorStatModCost: 0,
+			minUsedArtificeMods: 0,
+			maxUsedArtificeMods: 0,
+			minUnusedArmorEnergy: 0,
+			maxUnusedArmorEnergy: 0,
+		},
+		sortedArmorSlotModComboPlacementList: [],
+	};
+
+	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
+		specialSeenArmorSlotItems
+	);
+	let seenArtificeCount = seenItemCounts.artifice;
+
+	let requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId =
+		null;
+
+	let filteredValidRaidModArmorSlotPlacements = null;
+	// Check to see if this combo even has enough raid pieces capable
+	// of slotting the required raid mods. To do this we need to consider
+	// various raid class items which is the main reason why this logic
+	// is fairly lengthy/complex
+	if (raidMods.length > 0) {
+		// Get the counts of each raid type for this armor combo
+		const seenItemCountsWithoutClassItems = getItemCountsFromSeenArmorSlotItems(
+			specialSeenArmorSlotItems,
+			false
+		);
+		// Get the counts of each raid type for our raid mods
+		const raidModExtraSocketModCategoryIdCounts =
+			getExtraSocketModCategoryIdCountsFromRaidModIdList(raidMods);
+		// Given that class item stats are interchangeable, we need to check if we need
+		// any specific raid class item to socket the required raid mods. This is
+		// very common to need to do
+		const {
+			isValid,
+			requiredClassItemExtraModSocketCategoryId:
+				_requiredClassItemExtraModSocketCategoryId,
+		} = hasValidSeenItemCounts(
+			seenItemCountsWithoutClassItems,
+			raidModExtraSocketModCategoryIdCounts,
+			specialSeenArmorSlotItems.ClassItems
+		);
+		if (!isValid) {
+			return modCombos;
+		}
+
+		requiredClassItemExtraModSocketCategoryId =
+			_requiredClassItemExtraModSocketCategoryId;
+		// We can't use artifice class items now...
+		if (
+			requiredClassItemExtraModSocketCategoryId !== null &&
+			specialSeenArmorSlotItems.ClassItems.artifice
+		) {
+			seenArtificeCount--;
+		}
+		filteredValidRaidModArmorSlotPlacements =
+			filterValidRaidModArmorSlotPlacements({
+				seenArmorSlotItems: specialSeenArmorSlotItems,
+				validRaidModArmorSlotPlacements,
+				requiredClassItemExtraModSocketCategoryId,
+			});
+
+		if (filterValidRaidModArmorSlotPlacements.length === 0) {
+			return modCombos;
+		}
+	}
+
+	return modCombos;
+};
+
+/********************************/
+
 export const shouldShortCircuit = (
 	params: ShouldShortCircuitParams
 ): ShouldShortCircuitOutput => {
@@ -471,6 +943,13 @@ export const shouldShortCircuit = (
 		selectedExotic,
 		armorMetadataItem,
 	} = params;
+
+	/******** EXPERIMENTAL *********/
+
+	if (numRemainingArmorPieces === 0) {
+		const modCombos = getModCombos(params);
+	}
+	/*******************************/
 
 	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
 		specialSeenArmorSlotItems
@@ -650,7 +1129,7 @@ export type DoProcessArmorParams = {
 	masterworkAssumption: EMasterworkAssumption;
 	fragmentArmorStatMapping: ArmorStatMapping;
 	modArmorStatMapping: ArmorStatMapping;
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacements;
+	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
@@ -973,7 +1452,7 @@ type ProcessArmorParams = {
 	sumOfSeenStats: StatList;
 	seenArmorIds: string[];
 	masterworkAssumption: EMasterworkAssumption;
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacements;
+	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;

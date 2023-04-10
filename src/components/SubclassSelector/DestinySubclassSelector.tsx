@@ -55,9 +55,6 @@ function DestinySubclassSelector() {
 		getDestinySubclassIdListByDestinyClassId(selectedDestinyClass);
 	const options = destinySubclassIdList.map((destinySubclassId) => {
 		const { name, id, icon } = getDestinySubclass(destinySubclassId);
-
-		// TODO: Use the correct icon, not the element icon. Like what DIM does.
-		// const { icon } = getElement(elementId);
 		return {
 			label: name,
 			icon: icon,

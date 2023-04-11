@@ -40,7 +40,7 @@ import { isEqual, uniqWith } from 'lodash';
  *   combinations([], 0)
  *   -> []
  */
-function combinations<T>(set: T[], k: number) {
+function combinations<T>(set: T[], k: number): T[][] {
 	// var i, j, combs, head, tailcombs;
 	let combs: T[][];
 	let i: number;
@@ -65,7 +65,7 @@ function combinations<T>(set: T[], k: number) {
 		for (i = 0; i < set.length; i++) {
 			combs.push([set[i]]);
 		}
-		return combs;
+		return uniqWith(combs, isEqual);
 	}
 
 	// Assert {1 < k < set.length}

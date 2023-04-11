@@ -204,6 +204,117 @@ const getArtificeAdjustedRequiredMods = (
 	return result.length > 0 ? result : defaultArtificeAdjustedRequiredModCombos;
 };
 
+const getArtificeAdjustedRequiredModsV2 = (
+	armorStatModIdList: EModId[],
+	destinyClassId: EDestinyClassId,
+	desiredArmorStats: ArmorStatMapping,
+	baseArmorStatMapping: ArmorStatMapping,
+	numArtificeItems: number
+): StatModCombo[] => {
+	const results: StatModCombo[] = [];
+	if (numArtificeItems === 0) {
+		return results;
+	}
+	// TODO: This is an upper bound. With 5 major and 4 minor and 4 artifice pieces
+	// it's possible to potentially be able to replace all four minor mods with artifice mods.
+	// Constrain this further.
+	if (armorStatModIdList.length > 9) {
+		return results;
+	}
+
+	// We know that at least 2 artifice mods are required to replace 1 major mod
+	const numPotentiallyReplaceableMajorMods = Math.floor(numArtificeItems / 2);
+	const majorMods = armorStatModIdList.filter((modId) =>
+		MajorStatModIdList.includes(modId)
+	);
+	// We can use 5 mod slots for major mods if needed
+	// If we need more than 5 major mods then this is impossible
+	if (majorMods.length - 5 > numPotentiallyReplaceableMajorMods) {
+		return results;
+	}
+
+	// TODO: This is super inefficient and slow :(
+	// Find the biggest size combinations we can make given
+	// that we have a maximum of 5 armor pieces
+	const combinationSize = Math.min(armorStatModIdList.length, 5);
+	const combos = combinations(armorStatModIdList, combinationSize);
+	// Make sure we check the case where we can achieve the desired stats
+	// with only artifice mods.
+	if (combos.length === 0) {
+		combos.push([]);
+	}
+	for (let i = 0; i < combos.length; i++) {
+		const combo = combos[i];
+		const combotStatMapping = getArmorStatMappingFromMods(
+			combo,
+			destinyClassId
+		);
+		const requiredArtificeModIdList = getRequiredArtificeModIdList({
+			desiredArmorStats,
+			totalArmorStatMapping: sumArmorStatMappings([
+				combotStatMapping,
+				baseArmorStatMapping,
+			]),
+		});
+		const numUnusedArtificeMods =
+			numArtificeItems - requiredArtificeModIdList.length;
+
+		// If we need more artifice mods than we have then this is impossible
+		if (numUnusedArtificeMods < 0) {
+			continue;
+		}
+
+		const result: StatModCombo = {
+			armorStatModIdList: combo,
+			artificeModIdList: requiredArtificeModIdList,
+		};
+
+		// Check if we can replace any major mods with two minor mods
+		const extrapolatedResults = extrapolateMajorModsIntoMinorMods(
+			[result],
+			destinyClassId
+		);
+
+		extrapolatedResults.forEach((extrapolatedResult) => {
+			results.push(extrapolatedResult);
+		});
+
+		// We now need to check if it's possible to achieve the desired stats with
+		// fewer armor stat mods, but more artifice mods, for each extrapolated combo
+		if (numUnusedArtificeMods > 0) {
+			// TODO: I think this recursiveCombinationSize thing will create duplicate results.
+			// These will be removed by the uniqWith but it's still not ideal.
+			extrapolatedResults.forEach((extrapolatedResult) => {
+				const recursiveCombinationSize =
+					extrapolatedResult.armorStatModIdList.length - 1;
+				const recursiveCombos = combinations(
+					extrapolatedResult.armorStatModIdList,
+					recursiveCombinationSize
+				);
+				// Check the case where we can achieve the desired stats
+				// with only artifice mods.
+				if (recursiveCombos.length === 0 && armorStatModIdList.length > 0) {
+					recursiveCombos.push([]);
+				}
+				recursiveCombos.forEach((recursiveCombo) => {
+					const recursiveResults = getArtificeAdjustedRequiredModsV2(
+						recursiveCombo,
+						destinyClassId,
+						desiredArmorStats,
+						baseArmorStatMapping,
+						numArtificeItems
+					);
+					recursiveResults.forEach((result) => results.push(result));
+				});
+			});
+		}
+	}
+	// This uniqWith is necessary because we may have created duplicate results
+	// If it's possible to replace a major mod with two artifice mods then it will
+	// also be possible to replace the extrapolated major mod with two artifice mods
+	return uniqWith(results, isEqual);
+};
+
 export type GetRequiredArmorStatModsParams = {
 	desiredArmorStats: ArmorStatMapping;
 	stats: StatList; // Includes masterworked / assume masterworked
@@ -550,20 +661,17 @@ export const getAllStatModCombos = ({
 	the current result list. If there are any artifice armor pieces in this
 	armor combo we'll handle them in the next step.
 	*/
-	let _allStatModCombos: StatModCombo[] = [];
-	if (requiredArmorStatMods.length <= 5) {
+	if (numSeenArtificeArmorItems === 0 && requiredArmorStatMods.length <= 5) {
 		const baseStatModCombo = {
 			armorStatModIdList: requiredArmorStatMods,
 			artificeModIdList: [],
 			armorStatModCost: getTotalModCost(requiredArmorStatMods),
 		};
-		_allStatModCombos = extrapolateMajorModsIntoMinorMods(
+		allStatModCombos = extrapolateMajorModsIntoMinorMods(
 			[baseStatModCombo],
 			destinyClassId
 		);
-	}
-
-	if (numSeenArtificeArmorItems > 0) {
+	} else if (numSeenArtificeArmorItems > 0) {
 		/*
 		Step 2.1:
 		Add artifice mods to reduce cost if possible. This potentially create
@@ -572,45 +680,26 @@ export const getAllStatModCombos = ({
 		stat tier preview. High cost combos that use fewer artifice mods might
 		allow an extra stat tier and the desired stat preview needs to be aware of that.
 		*/
-		// By default we'll check if we can use artifice mods to bring the
-		// requiredArmorStatMods down to the five or fewer. But...
-		let requiredArmorStatModLists: EModId[][] = [requiredArmorStatMods];
-		// ...if we have a valid combo already we try to improve it a bit with
-		// artifice mods
-		if (_allStatModCombos.length > 0) {
-			requiredArmorStatModLists = _allStatModCombos.map(
-				({ armorStatModIdList }) => armorStatModIdList
-			);
-		}
-
 		const baseArmorStatMapping = getArmorStatMappingFromStatList(stats);
-		requiredArmorStatModLists.forEach((requiredArmorStatModIdList) => {
-			let artificeAdjustedRequiredMods: ArtificeAdjustedRequiredModCombo[] = [];
-			// TODO: This is probably going to miss some stat combinations
-			// getArtificeAdjustedRequiredMods will never check a stat mod combo
-			// of four mods + artifice mods and such a combo could potentially be extrapolated
-			// into a cheaper combo of five mods + artifice mods
-			artificeAdjustedRequiredMods = getArtificeAdjustedRequiredMods(
-				requiredArmorStatModIdList,
-				destinyClassId,
-				desiredArmorStats,
-				baseArmorStatMapping,
-				numSeenArtificeArmorItems
-			);
+		const artificeAdjustedRequiredMods = getArtificeAdjustedRequiredModsV2(
+			requiredArmorStatMods,
+			destinyClassId,
+			desiredArmorStats,
+			baseArmorStatMapping,
+			numSeenArtificeArmorItems
+		);
 
-			artificeAdjustedRequiredMods.forEach((x) => {
-				const artificeStatModCombo: StatModCombo = {
-					armorStatModIdList: x.armorStatModIdList,
-					artificeModIdList: x.artificeModIdList,
-				};
-				allStatModCombos.push(artificeStatModCombo);
+		artificeAdjustedRequiredMods.forEach((x) => {
+			const artificeStatModCombo: StatModCombo = {
+				armorStatModIdList: x.armorStatModIdList,
+				artificeModIdList: x.artificeModIdList,
+			};
+			allStatModCombos.push(artificeStatModCombo);
 
-				// TODO: Make getArtificeAdjustedRequiredMods return all combos of mods
-				// not just combos of 5. This will require extrapolating within that function
-			});
+			// TODO: Make getArtificeAdjustedRequiredMods return all combos of mods
+			// not just combos of 5. This will require extrapolating within that function
 		});
-	} else {
-		allStatModCombos = _allStatModCombos;
+		//});
 	}
 
 	// Step 3: TODO: Optimize this further to add combos that don't NEED
@@ -921,6 +1010,13 @@ const getModCombos = (params: ShouldShortCircuitParams): ModCombos => {
 		if (filterValidRaidModArmorSlotPlacements.length === 0) {
 			return modCombos;
 		}
+
+		const allStatModCombos = getAllStatModCombos({
+			desiredArmorStats,
+			stats: sumOfSeenStats,
+			destinyClassId,
+			numSeenArtificeArmorItems: seenArtificeCount,
+		});
 	}
 
 	return modCombos;

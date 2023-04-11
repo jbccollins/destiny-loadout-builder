@@ -199,9 +199,440 @@ const testCases: TestCase[] = [
 			},
 		],
 	],
+	[
+		'Two major mods, one minor mod, and four artifice pieces',
+		[
+			{
+				desiredArmorStats: {
+					...getDefaultDesiredArmorStats(),
+					[EArmorStatId.Mobility]: 6,
+					[EArmorStatId.Resilience]: 6,
+					[EArmorStatId.Recovery]: 3,
+				},
+				stats: getDefaultStatList(),
+				destinyClassId: getDefaultDestinyClassId(),
+				numSeenArtificeArmorItems: 4,
+			},
+		],
+		[
+			{
+				armorStatModIdList: [EModId.MinorMobilityMod],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
+					EModId.RecoveryForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 1,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MinorResilienceMod],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.MobilityForged,
+					EModId.ResilienceForged,
+					EModId.RecoveryForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 2,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MinorRecoveryMod],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.MobilityForged,
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 2,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MinorMobilityMod, EModId.MinorMobilityMod],
+				artificeModIdList: [
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
+					EModId.RecoveryForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 2,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MobilityMod],
+				artificeModIdList: [
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
+					EModId.RecoveryForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 3,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.ResilienceForged,
+					EModId.RecoveryForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 3,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.ResilienceForged,
+					EModId.RecoveryForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 3,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MinorMobilityMod, EModId.MinorRecoveryMod],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.ResilienceForged,
+					EModId.ResilienceForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 3,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.ResilienceMod],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.MobilityForged,
+					EModId.RecoveryForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 4,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.MobilityForged,
+					EModId.RecoveryForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 4,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.MobilityForged,
+					EModId.ResilienceForged,
+				],
+				metadata: {
+					totalArmorStatModCost: 4,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.ResilienceForged, EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 4,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.ResilienceForged, EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 4,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+				],
+				artificeModIdList: [EModId.ResilienceForged, EModId.ResilienceForged],
+				metadata: {
+					totalArmorStatModCost: 4,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MinorMobilityMod, EModId.ResilienceMod],
+				artificeModIdList: [EModId.MobilityForged, EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 5,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MinorResilienceMod, EModId.MobilityMod],
+				artificeModIdList: [EModId.ResilienceForged, EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 5,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MinorRecoveryMod, EModId.MobilityMod],
+				artificeModIdList: [EModId.ResilienceForged, EModId.ResilienceForged],
+				metadata: {
+					totalArmorStatModCost: 5,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.MobilityForged, EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 5,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.MobilityForged, EModId.ResilienceForged],
+				metadata: {
+					totalArmorStatModCost: 5,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.MobilityForged, EModId.ResilienceForged],
+				metadata: {
+					totalArmorStatModCost: 5,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.MobilityForged, EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 5,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MinorRecoveryMod, EModId.ResilienceMod],
+				artificeModIdList: [EModId.MobilityForged, EModId.MobilityForged],
+				metadata: {
+					totalArmorStatModCost: 6,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.ResilienceMod,
+				],
+				artificeModIdList: [EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 6,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.MobilityForged, EModId.MobilityForged],
+				metadata: {
+					totalArmorStatModCost: 6,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 6,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.ResilienceForged],
+				metadata: {
+					totalArmorStatModCost: 6,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 6,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.ResilienceForged],
+				metadata: {
+					totalArmorStatModCost: 6,
+				},
+			},
+			{
+				armorStatModIdList: [EModId.MobilityMod, EModId.ResilienceMod],
+				artificeModIdList: [EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 7,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+					EModId.MobilityMod,
+				],
+				artificeModIdList: [EModId.RecoveryForged],
+				metadata: {
+					totalArmorStatModCost: 7,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+					EModId.ResilienceMod,
+				],
+				artificeModIdList: [EModId.MobilityForged],
+				metadata: {
+					totalArmorStatModCost: 7,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+					EModId.MobilityMod,
+				],
+				artificeModIdList: [EModId.ResilienceForged],
+				metadata: {
+					totalArmorStatModCost: 7,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [EModId.MobilityForged],
+				metadata: {
+					totalArmorStatModCost: 7,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+					EModId.ResilienceMod,
+				],
+				artificeModIdList: [],
+				metadata: {
+					totalArmorStatModCost: 8,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [],
+				metadata: {
+					totalArmorStatModCost: 8,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorRecoveryMod,
+					EModId.MobilityMod,
+					EModId.ResilienceMod,
+				],
+				artificeModIdList: [],
+				metadata: {
+					totalArmorStatModCost: 9,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorRecoveryMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+					EModId.MobilityMod,
+				],
+				artificeModIdList: [],
+				metadata: {
+					totalArmorStatModCost: 9,
+				},
+			},
+		],
+	],
 ];
 
-const nameOfTestToDebug = null; // 'Two major mods';
+const nameOfTestToDebug =
+	'Two major mods, one minor mod, and four artifice pieces';
+// const nameOfTestToDebug = null;
 describe('getAllStatModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

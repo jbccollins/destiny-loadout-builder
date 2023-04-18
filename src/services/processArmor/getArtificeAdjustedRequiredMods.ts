@@ -10,7 +10,7 @@ import combinations from '@dlb/utils/combinations';
 import { isEqual, uniqWith } from 'lodash';
 import { getRequiredArtificeModIdList } from './getRequiredArtificeModIdList';
 import { StatModCombo } from './getAllStatModCombos';
-import { extrapolateMajorModsIntoMinorMods } from './extrapolateMajorModsIntoMinorMods';
+import { getExtrapolatedStatModCombos } from './getExtrapolatedStatModCombos';
 
 export const getArtificeAdjustedRequiredMods = (
 	armorStatModIdList: EModId[],
@@ -78,7 +78,7 @@ export const getArtificeAdjustedRequiredMods = (
 		};
 
 		// Check if we can replace any major mods with two minor mods
-		const extrapolatedResults = extrapolateMajorModsIntoMinorMods(
+		const extrapolatedResults = getExtrapolatedStatModCombos(
 			[result],
 			destinyClassId
 		);

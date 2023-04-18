@@ -1,5 +1,3 @@
-// TODO: Rename this file to something like "getExtrapolatedArmorStatMods" or something
-
 import { EModId } from '@dlb/generated/mod/EModId';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { MajorStatModIdList } from '@dlb/types/Mod';
@@ -56,10 +54,10 @@ const _extrapolateMajorModsIntoMinorMods = (
 	// return uniqWith(result, isEqual);
 };
 
-// TODO: the two extrapolate functions can be combined
-// Initially they were separate because I thought the _ variant
+// TODO: _extrapolateMajorModsIntoMinorMods can be combined into this function.
+// Initially they were separate because I thought _extrapolateMajorModsIntoMinorMods
 // would be recursive
-export const extrapolateMajorModsIntoMinorMods = (
+export const getExtrapolatedStatModCombos = (
 	statModComboList: StatModCombo[],
 	destinyClassId: EDestinyClassId
 ): StatModCombo[] => {

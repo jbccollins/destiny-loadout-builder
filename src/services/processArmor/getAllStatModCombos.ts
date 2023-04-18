@@ -13,7 +13,7 @@ import {
 	getArmorStatMappingFromStatList,
 } from './utils';
 import { getArtificeAdjustedRequiredMods } from './getArtificeAdjustedRequiredMods';
-import { extrapolateMajorModsIntoMinorMods } from './extrapolateMajorModsIntoMinorMods';
+import { getExtrapolatedStatModCombos } from './getExtrapolatedStatModCombos';
 
 export type StatModCombo = {
 	armorStatModIdList: EModId[];
@@ -87,7 +87,7 @@ export const getAllStatModCombos = ({
 			artificeModIdList: [],
 			armorStatModCost: getTotalModCost(requiredArmorStatMods),
 		};
-		allStatModCombos = extrapolateMajorModsIntoMinorMods(
+		allStatModCombos = getExtrapolatedStatModCombos(
 			[baseStatModCombo],
 			destinyClassId
 		);

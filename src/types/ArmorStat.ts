@@ -138,6 +138,15 @@ export const DefaultArmorStatMapping: ArmorStatMapping = {
 	[EArmorStatId.Strength]: 0,
 };
 
+export const getDefaultArmorStatMapping = (): ArmorStatMapping => ({
+	[EArmorStatId.Mobility]: 0,
+	[EArmorStatId.Resilience]: 0,
+	[EArmorStatId.Recovery]: 0,
+	[EArmorStatId.Discipline]: 0,
+	[EArmorStatId.Intellect]: 0,
+	[EArmorStatId.Strength]: 0,
+});
+
 // export const getStat = (
 // 	stat: StatBonusStat,
 // 	destinyClassId: EDestinyClassId
@@ -167,7 +176,7 @@ export const getArmorStatMappingFromFragments = (
 	fragmentIds: EFragmentId[],
 	destinyClassId: EDestinyClassId
 ): ArmorStatMapping => {
-	const armorStatMapping = { ...DefaultArmorStatMapping };
+	const armorStatMapping = getDefaultArmorStatMapping();
 	fragmentIds.forEach((id) => {
 		const { bonuses } = getFragment(id);
 		bonuses.map((bonus) => {
@@ -182,7 +191,7 @@ export const getArmorStatMappingFromMods = (
 	modIds: EModId[],
 	destinyClassId: EDestinyClassId
 ): ArmorStatMapping => {
-	const armorStatMapping = { ...DefaultArmorStatMapping };
+	const armorStatMapping = getDefaultArmorStatMapping();
 	modIds
 		.filter((modId) => modId !== null)
 		.forEach((id) => {

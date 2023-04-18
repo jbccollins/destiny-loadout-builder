@@ -8,6 +8,7 @@ import {
 	getArmorStat,
 	getArmorStatMappingFromFragments,
 	getArmorStatMappingFromMods,
+	getDefaultArmorStatMapping,
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import {
@@ -190,7 +191,7 @@ function ResultsItem({
 	dimLink,
 }: ResultsItemProps) {
 	const [open, setOpen] = React.useState(false);
-	const totalStatMapping = { ...DefaultArmorStatMapping };
+	const totalStatMapping = getDefaultArmorStatMapping();
 	ArmorStatIdList.forEach((armorStatId) => {
 		totalStatMapping[armorStatId] += item.sortableFields[armorStatId];
 	});

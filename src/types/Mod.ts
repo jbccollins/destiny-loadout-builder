@@ -165,7 +165,7 @@ export const getDefaultValidRaidModArmorSlotPlacement =
 		};
 	};
 
-const getArmorSlotEnergyCapacity = (
+export const getArmorSlotEnergyCapacity = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping
 ): Record<EArmorSlotId, ArmorSlotCapacity> => {
 	const armorSlotCapacities: Partial<Record<EArmorSlotId, ArmorSlotCapacity>> =

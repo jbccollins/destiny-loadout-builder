@@ -57,6 +57,7 @@ import {
 	DefaultArmorStatMapping,
 	getArmorStatMappingFromMods,
 	getArmorStatMappingFromFragments,
+	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
@@ -216,7 +217,7 @@ function handleChange() {
 					selectedFragments[elementId],
 					selectedDestinyClass
 			  )
-			: { ...DefaultArmorStatMapping };
+			: getDefaultArmorStatMapping();
 		let mods = [...selectedRaidMods];
 		ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 			mods = [...mods, ...selectedArmorSlotMods[armorSlotId]];
@@ -291,7 +292,7 @@ function handleChange() {
 			selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		});
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
-		const maxPossibleStats: ArmorStatMapping = { ...DefaultArmorStatMapping };
+		const maxPossibleStats: ArmorStatMapping = getDefaultArmorStatMapping();
 		results.forEach((result) => {
 			const availableMods = 5 - result.armorStatModIdList.length;
 			ArmorStatIdList.forEach((armorStatId) => {

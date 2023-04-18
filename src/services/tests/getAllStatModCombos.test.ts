@@ -155,6 +155,72 @@ const testCases: TestCase[] = [
 			},
 		],
 	],
+
+	[
+		'Two major mods and one minor mod',
+		[
+			{
+				desiredArmorStats: {
+					...getDefaultDesiredArmorStats(),
+					[EArmorStatId.Mobility]: 10,
+					[EArmorStatId.Resilience]: 15,
+				},
+				stats: getDefaultStatList(),
+				destinyClassId: getDefaultDestinyClassId(),
+				numSeenArtificeArmorItems: 0,
+			},
+		],
+		[
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+					EModId.ResilienceMod,
+				],
+				artificeModIdList: [],
+				metadata: {
+					totalArmorStatModCost: 8,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorMobilityMod,
+					EModId.MinorMobilityMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+				],
+				artificeModIdList: [],
+				metadata: {
+					totalArmorStatModCost: 8,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorResilienceMod,
+					EModId.MobilityMod,
+					EModId.ResilienceMod,
+				],
+				artificeModIdList: [],
+				metadata: {
+					totalArmorStatModCost: 9,
+				},
+			},
+			{
+				armorStatModIdList: [
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+					EModId.MinorResilienceMod,
+					EModId.MobilityMod,
+				],
+				artificeModIdList: [],
+				metadata: {
+					totalArmorStatModCost: 9,
+				},
+			},
+		],
+	],
 	[
 		'One major mod with two artifice pieces',
 		[
@@ -630,9 +696,9 @@ const testCases: TestCase[] = [
 	],
 ];
 
-const nameOfTestToDebug =
-	'Two major mods, one minor mod, and four artifice pieces';
-// const nameOfTestToDebug = null;
+// const nameOfTestToDebug =
+//	'Two major mods, one minor mod, and four artifice pieces';
+const nameOfTestToDebug = null;
 describe('getAllStatModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

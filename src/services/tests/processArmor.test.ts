@@ -16,6 +16,7 @@ import {
 import {
 	DefaultArmorStatMapping,
 	getArmorStatMappingFromFragments,
+	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
@@ -98,7 +99,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			modArmorStatMapping: getDefaultArmorStatMapping(),
 			validRaidModArmorSlotPlacements: [
 				getDefaultValidRaidModArmorSlotPlacement(),
 			],
@@ -194,7 +195,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			modArmorStatMapping: getDefaultArmorStatMapping(),
 			validRaidModArmorSlotPlacements: [
 				getDefaultValidRaidModArmorSlotPlacement(),
 			],
@@ -308,7 +309,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			modArmorStatMapping: getDefaultArmorStatMapping(),
 			validRaidModArmorSlotPlacements: [
 				getDefaultValidRaidModArmorSlotPlacement(),
 			],
@@ -421,7 +422,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			modArmorStatMapping: getDefaultArmorStatMapping(),
 			validRaidModArmorSlotPlacements: [
 				getDefaultValidRaidModArmorSlotPlacement(),
 			],
@@ -523,7 +524,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			modArmorStatMapping: getDefaultArmorStatMapping(),
 			validRaidModArmorSlotPlacements: [
 				getDefaultValidRaidModArmorSlotPlacement(),
 			],
@@ -632,7 +633,7 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
+			modArmorStatMapping: getDefaultArmorStatMapping(),
 			validRaidModArmorSlotPlacements: [
 				getDefaultValidRaidModArmorSlotPlacement(),
 			],

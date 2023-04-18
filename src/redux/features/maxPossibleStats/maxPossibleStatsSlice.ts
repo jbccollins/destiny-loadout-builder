@@ -19,7 +19,7 @@ export interface MaxPossibleStatsState {
 }
 
 const initialState: MaxPossibleStatsState = {
-	value: { ...DefaultArmorStatMapping },
+	value: getDefaultArmorStatMapping(),
 	uuid: NIL,
 };
 

@@ -801,7 +801,7 @@ const getItemCountsFromSeenArmorSlotItems = (
 	ArmorSlotIdList.forEach((armorSlotId) => {
 		const value = seenArmorSlotItems[armorSlotId] as
 			| EExtraSocketModCategoryId
-			| 'artifice';
+			| 'artifice'; // TODO: Perhaps we can pull this out and use the satisfies operator? https://www.youtube.com/shorts/d9dgzEA5Zw4
 		if (value === ARTIFICE) {
 			itemCounts.artifice++;
 		} else if (value !== null) {

@@ -147,20 +147,6 @@ export const getDefaultArmorStatMapping = (): ArmorStatMapping => ({
 	[EArmorStatId.Strength]: 0,
 });
 
-// export const getStat = (
-// 	stat: StatBonusStat,
-// 	destinyClassId: EDestinyClassId
-// ) => {
-// 	if (typeof stat === 'string') {
-// 		return getArmorStat(stat);
-// 	}
-// 	return getArmorStat(stat(destinyClassId));
-// };
-
-// TODO: Is destinyClassId really needed anymore?
-// This used to be needed for combat style mods that
-// gave a different bonus for each class. But I don't think
-// such mods exist anymore with the new mod system...
 export const getStat = (
 	stat: StatBonusStat,
 	destinyClassId: EDestinyClassId

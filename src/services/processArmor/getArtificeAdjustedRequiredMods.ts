@@ -104,6 +104,8 @@ export const getArtificeAdjustedRequiredMods = (
 				if (recursiveCombos.length === 0 && armorStatModIdList.length > 0) {
 					recursiveCombos.push([]);
 				}
+				// TODO: This used to recursively reference the old getArtificeAdjustedRequiredMods
+				// function. Not sure if this is gonnna work as is with the new one.
 				recursiveCombos.forEach((recursiveCombo) => {
 					const recursiveResults = getArtificeAdjustedRequiredMods(
 						recursiveCombo,

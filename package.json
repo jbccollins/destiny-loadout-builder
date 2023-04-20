@@ -18,9 +18,9 @@
     "test:ci": "jest --ci",
     "test-test": "jest --env=node --colors --coverage test",
     "find-circular-dependencies": "npx madge --circular --extensions ts ./",
-    "generate:old": "npx ts-node -O '{\"module\":\"commonjs\"}' src/scripts/generateMods2.ts",
     "generate": "npx ts-node src/scripts/generation/generate.ts",
-    "dummy": "npx ts-node src/utils/dummy"
+    "dummy": "npx ts-node src/utils/dummy",
+    "generateModCombinations": "npx ts-node src/scripts/generation/modCombinations/generateModCombinations.ts"
   },
   "dependencies": {
     "@destinyitemmanager/dim-api-types": "^1.23.0",

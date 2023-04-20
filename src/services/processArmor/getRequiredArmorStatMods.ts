@@ -119,13 +119,15 @@ export const getRequiredArmorStatMods = ({
 		} = artificeAdjustedRequiredMods[0];
 		adjustedArmorStatMods = _adjustedArmorStatMods;
 		requiredArtificeModIdList = _requiredArtificeModIdList;
+		let numUsedArtificeMods = requiredArtificeModIdList.length;
 		// TODO: This isn't taking into consideration the cost of armor mods
 		// potentially preventing any of these combos from working
 		artificeAdjustedRequiredMods.forEach((combo) => {
-			if (numUnusedArtificeMods - combo.artificeModIdList.length >= 0) {
-				numUnusedArtificeMods = combo.artificeModIdList.length;
+			if (combo.artificeModIdList.length < numUsedArtificeMods) {
+				numUsedArtificeMods = combo.artificeModIdList.length;
 			}
 		});
+		numUnusedArtificeMods = numPotentialArtificeItems - numUsedArtificeMods;
 	}
 
 	// Try to optimize a bit further by swapping out major mods with minor mods

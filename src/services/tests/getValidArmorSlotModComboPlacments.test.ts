@@ -1,10 +1,8 @@
-import {
-	getDefaultArmorSlotModComboPlacementWithArtificeMods,
-	getValidArmorSlotModComboPlacements,
-} from '@dlb/services/armor-processing';
+import { getValidArmorSlotModComboPlacements } from '@dlb/services/processArmor/getValidArmorSlotModComboPlacements';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
+import { getDefaultArmorSlotModComboPlacementWithArtificeMods } from '@dlb/services/processArmor/getModCombos';
 
 export const sortModsIdsAlphabetically = (arr: EModId[]) =>
 	arr.sort((a, b) => a.localeCompare(b));

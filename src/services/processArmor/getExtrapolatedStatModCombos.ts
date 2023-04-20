@@ -18,12 +18,12 @@ const _extrapolateMajorModsIntoMinorMods = (
 	// Since major mods can be swapped out for two minor mods we only have to care about
 	// two cases. The case where there is only one unusedModSlot and the case where there
 	// are more than one unusedModSlots. If there two - three unusedModSlots it's all the same
-	// logic since no matter what, we can convert three major mods into six minor mods.
+	// logic since no matter what, we can't convert three major mods into six minor mods.
 	/*
 	Logic: If there are x major mods => extrapolate to these combos
 	1 => two minor
-	2 => every unique major mod gets two minor mods + if there are two+ unused mod slots add on the four minor mods 
-	3 => every unique major mod gets a two minor mods + if there are two+ unused mod slots every unique combination of two major mods gets two minor mods each 
+	2 => every unique major mod gets two minor mods; and if there are two+ unused mod slots add on the four minor mods 
+	3 => every unique major mod gets a two minor mods; and if there are two+ unused mod slots every unique combination of two major mods gets two minor mods each 
 	4 => every unique major mod gets a minor mod 
 	*/
 	const majorStatModIdList = armorStatModIdList.filter((x) =>

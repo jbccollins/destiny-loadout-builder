@@ -1,4 +1,8 @@
-import { EArmorStatId, EDestinyClassId } from '@dlb/types/IdEnums';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EDestinyClassId,
+} from '@dlb/types/IdEnums';
 import { getDefaultStatList } from './utils';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
@@ -54,9 +58,41 @@ const testCases: TestCase[] = [
 		],
 		getDefaultModCombos(),
 	],
+	[
+		'Lots of stats',
+		[
+			{
+				sumOfSeenStats: [12, 45, 18, 60, 23, 41],
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Mobility]: 30,
+					[EArmorStatId.Resilience]: 30,
+					[EArmorStatId.Recovery]: 20,
+					[EArmorStatId.Discipline]: 80,
+					[EArmorStatId.Intellect]: 10,
+					[EArmorStatId.Strength]: 60,
+				},
+				potentialRaidModArmorSlotPlacements: [],
+				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+				raidMods: [],
+				destinyClassId: EDestinyClassId.Warlock,
+				specialSeenArmorSlotItems: {
+					...getDefaultSeenArmorSlotItems(),
+					[EArmorSlotId.Head]: 'artifice',
+					[EArmorSlotId.Arm]: 'artifice',
+					[EArmorSlotId.Chest]: 'artifice',
+					ClassItems: {
+						...getDefaultSeenArmorSlotItems().ClassItems,
+						artifice: true,
+					},
+				},
+			},
+		],
+		getDefaultModCombos(),
+	],
 ];
 
-const nameOfTestToDebug = 'Two stats';
+const nameOfTestToDebug = 'Lots of stats';
 // const nameOfTestToDebug = null;
 describe('getModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug

@@ -1,17 +1,13 @@
-import {
-	getDefaultModCombos,
-	getDefaultSeenArmorSlotItems,
-	getModCombos,
-} from '@dlb/services/armor-processing';
 import { EArmorStatId, EDestinyClassId } from '@dlb/types/IdEnums';
-import {
-	getDefaultDesiredArmorStats,
-	getDefaultDestinyClassId,
-	getDefaultStatList,
-} from './utils';
+import { getDefaultStatList } from './utils';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import {
+	getDefaultModCombos,
+	getModCombos,
+} from '@dlb/services/processArmor/getModCombos';
+import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArmorSlotItems';
 
 export const sortModsIdsAlphabetically = (arr: EModId[]) =>
 	arr.sort((a, b) => a.localeCompare(b));
@@ -30,7 +26,26 @@ const testCases: TestCase[] = [
 			{
 				sumOfSeenStats: getDefaultStatList(),
 				desiredArmorStats: getDefaultArmorStatMapping(),
-				validRaidModArmorSlotPlacements: [],
+				potentialRaidModArmorSlotPlacements: [],
+				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+				raidMods: [],
+				destinyClassId: EDestinyClassId.Warlock,
+				specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+			},
+		],
+		getDefaultModCombos(),
+	],
+	[
+		'Two stats',
+		[
+			{
+				sumOfSeenStats: getDefaultStatList(),
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Intellect]: 10,
+					[EArmorStatId.Resilience]: 30,
+				},
+				potentialRaidModArmorSlotPlacements: [],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
 				destinyClassId: EDestinyClassId.Warlock,
@@ -41,9 +56,8 @@ const testCases: TestCase[] = [
 	],
 ];
 
-// const nameOfTestToDebug =
-//	'Two major mods, one minor mod, and four artifice pieces';
-const nameOfTestToDebug = null;
+const nameOfTestToDebug = 'Two stats';
+// const nameOfTestToDebug = null;
 describe('getModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

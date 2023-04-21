@@ -28,8 +28,8 @@ import {
 	EMasterworkAssumption,
 	EModCategoryId,
 } from '@dlb/types/IdEnums';
-import { ValidRaidModArmorSlotPlacement, getMod } from '@dlb/types/Mod';
-import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
+import { PotentialRaidModArmorSlotPlacement, getMod } from '@dlb/types/Mod';
+import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 import { ARTIFICE, MAX_SINGLE_STAT_VALUE } from './constants';
 import {
 	SeenArmorSlotClassItems,
@@ -132,7 +132,7 @@ export const getMaxPossibleRemainingStatValue = (
 ): number => {
 	let maxPossibleRemainingStatValue =
 		MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces +
-		numSeenArtificeArmorItems * ARTIFICE_BONUS_VALUE;
+		numSeenArtificeArmorItems * ARTIFICE_MOD_BONUS_VALUE;
 	const armorSlotId = getArmorSlotFromNumRemainingArmorPieces(
 		numRemainingArmorPieces
 	);
@@ -146,7 +146,7 @@ export const getMaxPossibleRemainingStatValue = (
 			armorSlotId !== selectedExotic.armorSlot && // Exotic items cannot be artifice
 			armorMetadataItem.artifice.items[armorSlotId].count > 0
 		) {
-			maxPossibleRemainingStatValue += ARTIFICE_BONUS_VALUE;
+			maxPossibleRemainingStatValue += ARTIFICE_MOD_BONUS_VALUE;
 		}
 	}
 	return maxPossibleRemainingStatValue;
@@ -236,17 +236,17 @@ export const stripNonRaidSeenArmorSlotItems = (
 export type FilterValidRaidModArmorSlotPlacementsParams = {
 	seenArmorSlotItems: SeenArmorSlotItems;
 	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 };
 // Filter out the placements that put a raid mod on a non-raid armor piece
-export const filterValidRaidModArmorSlotPlacements = ({
+export const filterRaidModArmorSlotPlacements = ({
 	seenArmorSlotItems,
 	requiredClassItemExtraModSocketCategoryId,
 	validRaidModArmorSlotPlacements,
-}: FilterValidRaidModArmorSlotPlacementsParams): ValidRaidModArmorSlotPlacement[] => {
+}: FilterValidRaidModArmorSlotPlacementsParams): PotentialRaidModArmorSlotPlacement[] => {
 	const raidSeenArmorSlotItems =
 		stripNonRaidSeenArmorSlotItems(seenArmorSlotItems);
-	const validPlacements: ValidRaidModArmorSlotPlacement[] = [];
+	const validPlacements: PotentialRaidModArmorSlotPlacement[] = [];
 	const armorItemsExtraModSocketCategories = {
 		[EArmorSlotId.Head]: raidSeenArmorSlotItems.Head,
 		[EArmorSlotId.Arm]: raidSeenArmorSlotItems.Arm,
@@ -298,7 +298,7 @@ export const getArmorStatMappingFromArtificeModIdList = (
 	const armorStatMapping: ArmorStatMapping = getDefaultArmorStatMapping();
 	artificeModIdList.forEach((artificeModId) => {
 		armorStatMapping[getMod(artificeModId).bonuses[0].stat] +=
-			ARTIFICE_BONUS_VALUE;
+			ARTIFICE_MOD_BONUS_VALUE;
 	});
 	return armorStatMapping;
 };

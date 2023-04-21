@@ -1,20 +1,23 @@
 import { IntRange, formatStringForFile } from '@dlb/scripts/generation/utils';
 import {
 	canUseMinorStatMod,
-	deleteFromArray,
 	roundUp10,
 } from '@dlb/services/processArmor/utils';
-import { EDestinyClassId } from '@dlb/types/IdEnums';
 import combinations from '@dlb/utils/combinations';
 import {
-	ARTIFICE_BONUS_VALUE,
+	ARTIFICE_MOD_BONUS_VALUE,
 	MAJOR_MOD_BONUS_VALUE,
+	MAX_POTENTIAL_STAT_BOOST,
 	MINOR_MOD_BONUS_VALUE,
+	MIN_POTENTIAL_STAT_BOOST,
+	NUM_ARMOR_PIECES,
+	NUM_POTENTIAL_ARTIFICER_PIECES,
 } from '@dlb/utils/item-utils';
 import { isEqual, uniqWith } from 'lodash';
 import path from 'path';
 import { promises as fs } from 'fs';
 
+// TODO: Move this type somewhere else as it's used outside of generation
 // Contains the counts of required mods for ANY stat
 export type GenericRequiredModCombo = {
 	/** The number of artifice mods this pick contains. */
@@ -40,7 +43,7 @@ const getGenericRequiredModCombo = ({
 	numMajorMods,
 	numMinorMods,
 	exactStatPoints:
-		numArtificeMods * ARTIFICE_BONUS_VALUE +
+		numArtificeMods * ARTIFICE_MOD_BONUS_VALUE +
 		numMajorMods * MAJOR_MOD_BONUS_VALUE +
 		numMinorMods * MINOR_MOD_BONUS_VALUE,
 });
@@ -54,7 +57,7 @@ enum EStatModType {
 const StatModValues: Record<EStatModType, number> = {
 	[EStatModType.Major]: MAJOR_MOD_BONUS_VALUE,
 	[EStatModType.Minor]: MINOR_MOD_BONUS_VALUE,
-	[EStatModType.Aritifce]: ARTIFICE_BONUS_VALUE,
+	[EStatModType.Aritifce]: ARTIFICE_MOD_BONUS_VALUE,
 };
 
 // Figure out which major/minor stat mods we would need to do hit the targetValue
@@ -74,7 +77,7 @@ const getBaseRequiredArmorStatMods = (
 	});
 };
 
-export const getTotalFromStatModTypeList = (
+const getTotalFromStatModTypeList = (
 	statModTypeList: EStatModType[]
 ): number => {
 	let total = 0;
@@ -95,7 +98,7 @@ const getNumRequiredArtificeMods = ({
 	let result = 0;
 	const diff = targetValue - startingValue;
 	if (diff > 0) {
-		result = Math.ceil(diff / ARTIFICE_BONUS_VALUE);
+		result = Math.ceil(diff / ARTIFICE_MOD_BONUS_VALUE);
 	}
 	return result;
 };
@@ -131,15 +134,12 @@ const getComboFromStatModTypeList = (
 	});
 };
 
-// Four out of five of our armor pieces can be artificer armor
-const NUM_POTENTIAL_ARTIFICER_PIECES = 4;
-
 type GetArtificeAdjustedRequiredModsParams = {
 	baseRequiredModCombo: GenericRequiredModCombo;
 	targetValue: number;
 };
 
-export const getArtificeAdjustedRequiredMods = ({
+const getArtificeAdjustedRequiredMods = ({
 	baseRequiredModCombo,
 	targetValue,
 }: GetArtificeAdjustedRequiredModsParams): GenericRequiredModCombo[] => {
@@ -160,7 +160,7 @@ export const getArtificeAdjustedRequiredMods = ({
 
 	// We can use 5 mod slots for major mods if needed
 	// If we need more than 5 major mods then this is impossible
-	if (numMajorMods - 5 > numPotentiallyReplaceableMajorMods) {
+	if (numMajorMods - NUM_ARMOR_PIECES > numPotentiallyReplaceableMajorMods) {
 		return results;
 	}
 
@@ -170,7 +170,7 @@ export const getArtificeAdjustedRequiredMods = ({
 	// since this is a just a one time generation script.
 	// Find the biggest size combinations we can make given
 	// that we have a maximum of 5 armor pieces
-	const combinationSize = Math.min(numArmorStatMods, 5);
+	const combinationSize = Math.min(numArmorStatMods, NUM_ARMOR_PIECES);
 	const combos = combinations(allStatModsAsList, combinationSize);
 	// Make sure we check the case where we can achieve the desired stats
 	// with only artifice mods.
@@ -198,7 +198,7 @@ export const getArtificeAdjustedRequiredMods = ({
 		});
 
 		// Check if we can replace any major mods with two minor mods
-		const extrapolatedResults = getExtrapolatedStatModTypeCombos(result);
+		const extrapolatedResults = getExtrapolatedStatModTypeCombos([result]);
 
 		extrapolatedResults.forEach((extrapolatedResult) => {
 			results.push(extrapolatedResult);
@@ -241,46 +241,54 @@ export const getArtificeAdjustedRequiredMods = ({
 	return uniqWith(results, isEqual);
 };
 
-// TODO: _extrapolateMajorModsIntoMinorMods can be combined into this function.
-// Initially they were separate because I thought _extrapolateMajorModsIntoMinorMods
-// would be recursive
-export const getExtrapolatedStatModTypeCombos = (
-	baseCombo: GenericRequiredModCombo
+const getExtrapolatedStatModTypeCombos = (
+	combos: GenericRequiredModCombo[]
 ): GenericRequiredModCombo[] => {
 	// The existing combo is valid
-	const results: GenericRequiredModCombo[] = [baseCombo];
-	const { numMajorMods, numMinorMods } = baseCombo;
-	const numArmorStatMods = numMajorMods + numMinorMods;
+	const results: GenericRequiredModCombo[] = [...combos];
+
 	// Any combo that has at least one open mod slot and at least
 	// one major mod can be extrapolated
-	if (numMajorMods === 0 || numArmorStatMods >= 5) {
-		return results;
-	}
+	combos
+		.filter((combo) => {
+			const { numMajorMods, numMinorMods } = combo;
+			const numArmorStatMods = numMajorMods + numMinorMods;
+			return numArmorStatMods < NUM_ARMOR_PIECES && numMajorMods > 0;
+		})
+		.forEach((combo) => {
+			const { numMajorMods, numMinorMods } = combo;
+			const numArmorStatMods = numMajorMods + numMinorMods;
+			// Any combo that has at least one open mod slot and at least
+			// one major mod can be extrapolated
+			if (numMajorMods === 0 || numArmorStatMods >= NUM_ARMOR_PIECES) {
+				return;
+			}
 
-	// Since major mods can be swapped out for two minor mods we only have to care about
-	// two cases. The case where there is only one unusedModSlot and the case where there
-	// are more than one unusedModSlots. If there two - three unusedModSlots it's all the same
-	// logic since no matter what, we can't convert three major mods into six minor mods.
-	/*
-	Logic: If there are x major mods => extrapolate to these combos
-	1 => two minor
-	2 => every unique major mod gets two minor mods; and if there are two+ unused mod slots add on the four minor mods 
-	3 => every unique major mod gets a two minor mods; and if there are two+ unused mod slots every unique combination of two major mods gets two minor mods each 
-	4 => every unique major mod gets a minor mod 
-	*/
-	const unusedModSlots = 5 - numArmorStatMods;
+			// Since major mods can be swapped out for two minor mods we only have to care about
+			// two cases. The case where there is only one unusedModSlot and the case where there
+			// are more than one unusedModSlots. If there two - three unusedModSlots it's all the same
+			// logic since no matter what, we can't convert three major mods into six minor mods.
+			/*
+      Logic: If there are x major mods => extrapolate to these combos
+      1 => two minor
+      2 => every unique major mod gets two minor mods; and if there are two+ unused mod slots add on the four minor mods 
+      3 => every unique major mod gets a two minor mods; and if there are two+ unused mod slots every unique combination of two major mods gets two minor mods each 
+      4 => every unique major mod gets a minor mod 
+      */
+			const unusedModSlots = NUM_ARMOR_PIECES - numArmorStatMods;
 
-	// 1,4 => ...
-	const singleReplacementCombo: GenericRequiredModCombo = { ...baseCombo };
-	replaceMajorModsWithMinorMods(singleReplacementCombo, 1);
-	results.push(singleReplacementCombo);
+			// 1,4 => ...
+			const singleReplacementCombo: GenericRequiredModCombo = { ...combo };
+			replaceMajorModsWithMinorMods(singleReplacementCombo, 1);
+			results.push(singleReplacementCombo);
 
-	// 2,3 => ...
-	if (unusedModSlots > 1 && numMajorMods > 1 && numMajorMods < 4) {
-		const doubleReplacementCombo: GenericRequiredModCombo = { ...baseCombo };
-		replaceMajorModsWithMinorMods(doubleReplacementCombo, 2);
-		results.push(doubleReplacementCombo);
-	}
+			// 2,3 => ...
+			if (unusedModSlots > 1 && numMajorMods > 1 && numMajorMods < 4) {
+				const doubleReplacementCombo: GenericRequiredModCombo = { ...combo };
+				replaceMajorModsWithMinorMods(doubleReplacementCombo, 2);
+				results.push(doubleReplacementCombo);
+			}
+		});
 	return results;
 };
 
@@ -294,11 +302,91 @@ export const replaceMajorModsWithMinorMods = (
 	}
 };
 
-// 5 major mods + 4 artifice mods gived a max stat boost of 62
-const MAX_POTENTIAL_STAT_BOOST = 62;
-const MIN_POTENTIAL_STAT_BOOST = 1;
+// My base stat is 34
+// I want to get to 70
+// I need 36 more points
+// How many ways can I achieve 36 exactly?
+// Chat GPT wrote this lmao
+function getExactMatchCombos(targetValue: number): GenericRequiredModCombo[] {
+	const coins = [
+		ARTIFICE_MOD_BONUS_VALUE,
+		MINOR_MOD_BONUS_VALUE,
+		MAJOR_MOD_BONUS_VALUE,
+	];
+	const results: number[][] = [];
+
+	const backtrack = (combination: number[], sum: number, index: number) => {
+		if (sum === targetValue) {
+			results.push(combination);
+			return;
+		}
+		if (sum > targetValue) {
+			return;
+		}
+		for (let i = index; i < coins.length; i++) {
+			backtrack([...combination, coins[i]], sum + coins[i], i);
+		}
+	};
+
+	backtrack([], 0, 0);
+
+	return results
+		.map((result) => {
+			const numArtificeMods = result.filter(
+				(value) => value === ARTIFICE_MOD_BONUS_VALUE
+			).length;
+			const numMinorMods = result.filter(
+				(value) => value === MINOR_MOD_BONUS_VALUE
+			).length;
+			const numMajorMods = result.filter(
+				(value) => value === MAJOR_MOD_BONUS_VALUE
+			).length;
+			return getGenericRequiredModCombo({
+				numArtificeMods,
+				numMinorMods,
+				numMajorMods,
+			});
+		})
+		.filter(
+			(combo) =>
+				combo.numArtificeMods <= NUM_POTENTIAL_ARTIFICER_PIECES &&
+				combo.numMajorMods + combo.numMinorMods <= NUM_ARMOR_PIECES
+		);
+}
 
 type RequiredModMapping = Record<IntRange<1, 62>, GenericRequiredModCombo[]>;
+const _path = ['.', 'src', 'generated', 'modCombinations'];
+
+const buildZeroWastedStatsRequiredModMapping = (): RequiredModMapping => {
+	const mapping: Partial<RequiredModMapping> = {};
+
+	for (let i = MIN_POTENTIAL_STAT_BOOST; i <= MAX_POTENTIAL_STAT_BOOST; i++) {
+		const targetValue = i;
+		const combos = getExactMatchCombos(targetValue);
+		mapping[i] = combos.length > 0 ? combos : null;
+	}
+
+	return mapping as RequiredModMapping;
+};
+
+const zeroWastedStatsRequiredModMapping: RequiredModMapping =
+	buildZeroWastedStatsRequiredModMapping();
+
+const stringifiedZeroWastedStatsRequiredModMapping = `export const zeroWastedStatModCombinations = ${JSON.stringify(
+	zeroWastedStatsRequiredModMapping
+)}`;
+const formatedZeroWastedStatString = formatStringForFile(
+	stringifiedZeroWastedStatsRequiredModMapping
+);
+
+const generatedZeroWastedPath = path.join(
+	...[..._path, 'zeroWastedStatModCombinations.ts']
+);
+
+fs.writeFile(
+	path.resolve(generatedZeroWastedPath),
+	formatedZeroWastedStatString
+);
 
 const buildParetoOptimalRequiredModMapping = (): RequiredModMapping => {
 	const mapping: Partial<RequiredModMapping> = {};
@@ -316,18 +404,20 @@ const buildParetoOptimalRequiredModMapping = (): RequiredModMapping => {
 	return mapping as RequiredModMapping;
 };
 
-const ParetoOptimalRequiredModMapping: RequiredModMapping =
+const paretoOptimalRequiredModMapping: RequiredModMapping =
 	buildParetoOptimalRequiredModMapping();
-const stringifiedParetoOptimalRequiredModMapping = JSON.stringify(
-	ParetoOptimalRequiredModMapping
-);
-const formatedString = formatStringForFile(
+const stringifiedParetoOptimalRequiredModMapping = `export const paretoOptimalModCombinations = ${JSON.stringify(
+	paretoOptimalRequiredModMapping
+)}`;
+const formatedParetoOpmtimalString = formatStringForFile(
 	stringifiedParetoOptimalRequiredModMapping
 );
 
-const _path = ['.', 'src', 'generated', 'modCombinations'];
+const generatedParetoOptimailPath = path.join(
+	...[..._path, 'paretoOptimalModCombinations.ts']
+);
 
-// We must build the enums first as those are imported by other generated files
-const generatedPath = path.join(...[..._path, 'modCombinations.ts']);
-
-fs.writeFile(path.resolve(generatedPath), formatedString);
+fs.writeFile(
+	path.resolve(generatedParetoOptimailPath),
+	formatedParetoOpmtimalString
+);

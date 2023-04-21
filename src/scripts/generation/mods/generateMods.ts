@@ -45,7 +45,7 @@ const specialArtifactStatModNames = [
 	'Recovery Mod',
 	'Discipline Mod',
 	'Intellect Mod',
-	'Intellect Mod',
+	'Strength Mod',
 ];
 
 // TODO: What about the Aeon Mods? Sect of Force, Insight and Vigor

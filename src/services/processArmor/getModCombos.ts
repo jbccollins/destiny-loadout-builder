@@ -7,18 +7,20 @@ import {
 	EExtraSocketModCategoryId,
 } from '@dlb/types/IdEnums';
 import {
-	ValidRaidModArmorSlotPlacement,
+	PotentialRaidModArmorSlotPlacement,
 	ArmorSlotIdToModIdListMapping,
 } from '@dlb/types/Mod';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import {
-	filterValidRaidModArmorSlotPlacements,
+	filterRaidModArmorSlotPlacements,
 	getExtraSocketModCategoryIdCountsFromRaidModIdList,
 	getItemCountsFromSeenArmorSlotItems,
 	hasValidSeenItemCounts,
 } from './utils';
 import { getAllStatModCombos } from './getAllStatModCombos';
 import { getValidArmorSlotModComboPlacements } from './getValidArmorSlotModComboPlacements';
+import { filterPotentialRaidModArmorSlotPlacements } from './getPotentialRaidModArmorSlotPlacements';
+import { getStatModCombosFromDesiredStats } from './getStatModCombosFromDesiredStats';
 
 /***** ArmorSlotModComboPlacementWithArtificeMods *****/
 export type ArmorSlotModComboPlacementValue = {
@@ -131,7 +133,7 @@ export const getDefaultModCombos = (): ModCombos => ({
 export type GetModCombosParams = {
 	sumOfSeenStats: StatList;
 	desiredArmorStats: ArmorStatMapping;
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
@@ -142,14 +144,12 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	const {
 		sumOfSeenStats,
 		desiredArmorStats,
-		validRaidModArmorSlotPlacements,
+		potentialRaidModArmorSlotPlacements,
 		armorSlotMods,
 		raidMods,
 		destinyClassId,
 		specialSeenArmorSlotItems,
 	} = params;
-
-	const modCombos = getDefaultModCombos();
 
 	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
 		specialSeenArmorSlotItems
@@ -159,75 +159,67 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	let requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId =
 		null;
 
-	let raidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[] = null;
-	// Check to see if this combo even has enough raid pieces capable
-	// of slotting the required raid mods. To do this we need to consider
-	// various raid class items which is the main reason why this logic
-	// is fairly lengthy/complex
+	let filteredPotentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] =
+		null;
+
 	if (raidMods.length > 0) {
-		// Get the counts of each raid type for this armor combo
-		const seenItemCountsWithoutClassItems = getItemCountsFromSeenArmorSlotItems(
-			specialSeenArmorSlotItems,
-			false
-		);
-		// Get the counts of each raid type for our raid mods
-		const raidModExtraSocketModCategoryIdCounts =
-			getExtraSocketModCategoryIdCountsFromRaidModIdList(raidMods);
-		// Given that class item stats are interchangeable, we need to check if we need
-		// any specific raid class item to socket the required raid mods. This is
-		// very common to need to do
+		// Filter the potential raid mod placemnts down to the placements that
+		// have a chance at actually working for this specific armor cobmination
+		const potentialRaidModPlacements =
+			filterPotentialRaidModArmorSlotPlacements({
+				potentialRaidModArmorSlotPlacements,
+				raidMods,
+				specialSeenArmorSlotItems,
+			});
+		// We have nowhere to put raid mods
+		if (potentialRaidModPlacements.potentialPlacements === null) {
+			return null;
+		}
 		const {
-			isValid,
+			potentialPlacements: _raidModArmorSlotPlacements,
 			requiredClassItemExtraModSocketCategoryId:
 				_requiredClassItemExtraModSocketCategoryId,
-		} = hasValidSeenItemCounts(
-			seenItemCountsWithoutClassItems,
-			raidModExtraSocketModCategoryIdCounts,
-			specialSeenArmorSlotItems.ClassItems
-		);
-		if (!isValid) {
-			return modCombos;
+		} = potentialRaidModPlacements;
+
+		if (_raidModArmorSlotPlacements.length === 0) {
+			return null;
 		}
 
+		filteredPotentialRaidModArmorSlotPlacements = _raidModArmorSlotPlacements;
 		requiredClassItemExtraModSocketCategoryId =
 			_requiredClassItemExtraModSocketCategoryId;
-		// We can't use artifice class items now...
-		if (
-			requiredClassItemExtraModSocketCategoryId !== null &&
-			specialSeenArmorSlotItems.ClassItems.artifice &&
-			seenArtificeCount > 0
-		) {
-			seenArtificeCount--;
-		}
-		// Ensure that we have enough raid pieces to slot the required raid mods
-		// This does not check that there is enough space to slot them mods, just
-		// that we have enough raid pieces to slot them.
-		raidModArmorSlotPlacements = filterValidRaidModArmorSlotPlacements({
-			seenArmorSlotItems: specialSeenArmorSlotItems,
-			validRaidModArmorSlotPlacements,
-			requiredClassItemExtraModSocketCategoryId,
-		});
 
-		if (raidModArmorSlotPlacements.length === 0) {
-			return modCombos;
+		// We can't use artifice class items now
+		if (requiredClassItemExtraModSocketCategoryId !== null) {
+			seenArtificeCount -= 1;
 		}
 	}
 
-	// Extrapolate all stat mod combos
-	const allStatModCombos = getAllStatModCombos({
-		desiredArmorStats,
-		stats: sumOfSeenStats,
-		destinyClassId,
-		numSeenArtificeArmorItems: seenArtificeCount,
+	// Get all the stat mod combos which get us to the desiredArmorStats
+	const statModCombos = getStatModCombosFromDesiredStats({
+		currentStats: sumOfSeenStats,
+		targetStats: desiredArmorStats,
+		numArtificeItems: seenArtificeCount,
 	});
 
-	const validComboPlacements = getValidArmorSlotModComboPlacements({
-		armorSlotMods,
-		statModCombos: allStatModCombos,
-		validRaidModArmorSlotPlacements,
-	});
+	if (statModCombos === null) {
+		return null;
+	}
+
+	// const validComboPlacements = getValidArmorSlotModComboPlacements({
+	// 	armorSlotMods,
+	// 	statModCombos: allStatModCombos,
+	// 	potentialRaidModArmorSlotPlacements:
+	// 		filteredPotentialRaidModArmorSlotPlacements,
+	// });
+
+	// if (validComboPlacements.length === 0) {
+	// 	return null
+	// }
+
+	const modCombos = getDefaultModCombos();
 
 	// TODO: Sort this
-	modCombos.sortedArmorSlotModComboPlacementList = validComboPlacements;
+	// modCombos.sortedArmorSlotModComboPlacementList = validComboPlacements;
 	return modCombos;
 };

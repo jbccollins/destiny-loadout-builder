@@ -1,7 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ArmorStatMapping, ArmorStatIdList } from '@dlb/types/ArmorStat';
 import { getArtificeStatModIdFromArmorStatId } from '@dlb/types/Mod';
-import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
+import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 
 export type GetrequiredArtificeModIdListParams = {
 	desiredArmorStats: ArmorStatMapping;
@@ -19,7 +19,7 @@ export const getRequiredArtificeModIdList = ({
 		const diff = desiredArmorStat - achievedArmorStat;
 		let numRequiredArtificeMods = 0;
 		if (diff > 0) {
-			numRequiredArtificeMods += Math.ceil(diff / ARTIFICE_BONUS_VALUE);
+			numRequiredArtificeMods += Math.ceil(diff / ARTIFICE_MOD_BONUS_VALUE);
 			for (let i = 0; i < numRequiredArtificeMods; i++) {
 				requiredArtificeModIdList.push(
 					getArtificeStatModIdFromArmorStatId(armorStatId)

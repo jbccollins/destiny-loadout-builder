@@ -72,7 +72,7 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 import { EElementId } from '@dlb/types/IdEnums';
-import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
+import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 
 export function makeStore() {
 	return configureStore({
@@ -302,7 +302,7 @@ function handleChange() {
 				const possibleStat =
 					result.metadata.totalArmorStatMapping[armorStatId] +
 					10 * availableMods +
-					ARTIFICE_BONUS_VALUE * result.numUnusedArtificeMods;
+					ARTIFICE_MOD_BONUS_VALUE * result.numUnusedArtificeMods;
 				if (possibleStat > maxPossibleStats[armorStatId]) {
 					maxPossibleStats[armorStatId] = possibleStat;
 				}

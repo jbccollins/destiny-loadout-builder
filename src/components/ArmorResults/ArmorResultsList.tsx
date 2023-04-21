@@ -55,7 +55,7 @@ import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/d
 import { MISSING_ICON } from '@dlb/types/globals';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
+import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];

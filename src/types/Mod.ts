@@ -155,7 +155,7 @@ type ArmorSlotCapacity = {
 };
 
 export const getDefaultValidRaidModArmorSlotPlacement =
-	(): ValidRaidModArmorSlotPlacement => {
+	(): PotentialRaidModArmorSlotPlacement => {
 		return {
 			[EArmorSlotId.Head]: null,
 			[EArmorSlotId.Arm]: null,
@@ -191,7 +191,7 @@ export const getArmorSlotEnergyCapacity = (
 // 	unusedArmorEnergyCapacity: number;
 // };
 
-export type ValidRaidModArmorSlotPlacement = Partial<
+export type PotentialRaidModArmorSlotPlacement = Partial<
 	Record<EArmorSlotId, EModId>
 >;
 
@@ -221,7 +221,7 @@ forEach(armorSlot) { // head, arm, legs....
 export const hasValidArmorStatModPermutation = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping,
 	armorStatMods: EModId[],
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[]
+	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[]
 ): boolean => {
 	const sortedArmorStatMods = [...armorStatMods].sort(
 		(a, b) => getMod(b).cost - getMod(a).cost
@@ -338,11 +338,11 @@ const placeRaidMods = (
 export const getValidRaidModArmorSlotPlacements = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping,
 	raidModIdList: EModId[]
-): ValidRaidModArmorSlotPlacement[] => {
+): PotentialRaidModArmorSlotPlacement[] => {
 	if (raidModIdList.filter((modId) => modId !== null).length === 0) {
 		return [getDefaultValidRaidModArmorSlotPlacement()];
 	}
-	const validPlacements: ValidRaidModArmorSlotPlacement[] = [];
+	const validPlacements: PotentialRaidModArmorSlotPlacement[] = [];
 	// const armorSlotElementMapping: Record<EArmorSlotId, EElementId> = {};
 	// Sort by armor slots with the most remaining energy capacity to the least remaining capacity.
 
@@ -361,7 +361,7 @@ export const getValidRaidModArmorSlotPlacements = (
 	for (let i = 0; i < raidModIdListPermutations.length; i++) {
 		raidModIdListPermutation = raidModIdListPermutations[i];
 		isValidPermutation = true;
-		const validPlacement: ValidRaidModArmorSlotPlacement =
+		const validPlacement: PotentialRaidModArmorSlotPlacement =
 			getDefaultValidRaidModArmorSlotPlacement();
 		for (let j = 0; j < raidModIdListPermutation.length; j++) {
 			armorSlotCapacity = armorSlotCapacities[ArmorSlotWithClassItemIdList[j]];

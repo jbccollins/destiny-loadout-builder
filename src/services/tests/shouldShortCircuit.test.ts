@@ -13,7 +13,7 @@ import {
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorSlotIdToModIdListMapping,
-	ValidRaidModArmorSlotPlacement,
+	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
@@ -32,13 +32,13 @@ const generateDefaultArmorSlotIdToModIDListMapping =
 	};
 
 const generateDefaultValidRaidModArmorSlotPlacements =
-	(): ValidRaidModArmorSlotPlacement[] => {
+	(): PotentialRaidModArmorSlotPlacement[] => {
 		return [
 			ArmorSlotWithClassItemIdList.reduce((accumulator, currentValue) => {
 				accumulator[currentValue] = null;
 				return accumulator;
 			}, {}),
-		] as ValidRaidModArmorSlotPlacement[];
+		] as PotentialRaidModArmorSlotPlacement[];
 	};
 
 type ShouldShortCircuitTestCase = {

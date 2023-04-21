@@ -3,7 +3,7 @@ import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToModIdListMapping,
-	ValidRaidModArmorSlotPlacement,
+	PotentialRaidModArmorSlotPlacement,
 	getMod,
 	getArmorSlotEnergyCapacity,
 } from '@dlb/types/Mod';
@@ -16,14 +16,16 @@ import {
 export type GetValidArmorSlotModComboPlacementsParams = {
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	statModCombos: StatModComboWithMetadata[];
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	potentialRaidModArmorSlotPlacements:
+		| PotentialRaidModArmorSlotPlacement[]
+		| null;
 };
 
 // Places stat mods and raid mods
 export const getValidArmorSlotModComboPlacements = ({
 	armorSlotMods,
 	statModCombos,
-	validRaidModArmorSlotPlacements,
+	potentialRaidModArmorSlotPlacements,
 }: GetValidArmorSlotModComboPlacementsParams): ArmorSlotModComboPlacementWithArtificeMods[] => {
 	const results: ArmorSlotModComboPlacementWithArtificeMods[] = [];
 	statModCombos.forEach(({ armorStatModIdList, artificeModIdList }) => {
@@ -32,11 +34,14 @@ export const getValidArmorSlotModComboPlacements = ({
 		);
 
 		let allArmorSlotCapacities = [getArmorSlotEnergyCapacity(armorSlotMods)];
-		if (validRaidModArmorSlotPlacements.length > 0) {
+		if (
+			potentialRaidModArmorSlotPlacements &&
+			potentialRaidModArmorSlotPlacements.length > 0
+		) {
 			allArmorSlotCapacities = [];
-			for (let i = 0; i < validRaidModArmorSlotPlacements.length; i++) {
+			for (let i = 0; i < potentialRaidModArmorSlotPlacements.length; i++) {
 				const armorSlotCapacities = getArmorSlotEnergyCapacity(armorSlotMods);
-				const raidModPlacement = validRaidModArmorSlotPlacements[i];
+				const raidModPlacement = potentialRaidModArmorSlotPlacements[i];
 				// Update the armorSlotCapacities for this particular raid mod placement permutation
 				for (let j = 0; j < ArmorSlotWithClassItemIdList.length; j++) {
 					const armorSlotId = ArmorSlotWithClassItemIdList[j];
@@ -61,9 +66,9 @@ export const getValidArmorSlotModComboPlacements = ({
 				getDefaultArmorSlotModComboPlacementWithArtificeMods();
 
 			// Place the raid mods
-			if (validRaidModArmorSlotPlacements.length > 0) {
+			if (potentialRaidModArmorSlotPlacements.length > 0) {
 				const raidModPlacements: Partial<Record<EArmorSlotId, EModId>> =
-					validRaidModArmorSlotPlacements[j];
+					potentialRaidModArmorSlotPlacements[j];
 				for (const armorSlotId in raidModPlacements) {
 					comboPlacement.placement[armorSlotId].raidModId =
 						raidModPlacements[armorSlotId];

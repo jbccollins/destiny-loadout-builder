@@ -49,10 +49,10 @@ import {
 	hasValidArmorStatModPermutation,
 	MajorStatModIdList,
 	MinorStatModIdList,
-	ValidRaidModArmorSlotPlacement,
+	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
 import combinations from '@dlb/utils/combinations';
-import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
+import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 import { permute } from '@dlb/utils/permutations';
 import { cloneDeep, isEqual, uniqWith } from 'lodash';
 
@@ -122,7 +122,7 @@ const getRequiredArtificeModIdList = ({
 		const diff = desiredArmorStat - achievedArmorStat;
 		let numRequiredArtificeMods = 0;
 		if (diff > 0) {
-			numRequiredArtificeMods += Math.ceil(diff / ARTIFICE_BONUS_VALUE);
+			numRequiredArtificeMods += Math.ceil(diff / ARTIFICE_MOD_BONUS_VALUE);
 			for (let i = 0; i < numRequiredArtificeMods; i++) {
 				requiredArtificeModIdList.push(
 					getArtificeStatModIdFromArmorStatId(armorStatId)
@@ -739,7 +739,7 @@ export type ShouldShortCircuitParams = {
 	sumOfSeenStats: StatList;
 	desiredArmorStats: ArmorStatMapping;
 	numRemainingArmorPieces: number; // TODO: Can we enforce this to be one of 3 | 2 | 1
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
@@ -773,7 +773,7 @@ const getMaxPossibleRemainingStatValue = (
 ): number => {
 	let maxPossibleRemainingStatValue =
 		MAX_SINGLE_STAT_VALUE * numRemainingArmorPieces +
-		numSeenArtificeArmorItems * ARTIFICE_BONUS_VALUE;
+		numSeenArtificeArmorItems * ARTIFICE_MOD_BONUS_VALUE;
 	const armorSlotId = getArmorSlotFromNumRemainingArmorPieces(
 		numRemainingArmorPieces
 	);
@@ -787,7 +787,7 @@ const getMaxPossibleRemainingStatValue = (
 			armorSlotId !== selectedExotic.armorSlot && // Exotic items cannot be artifice
 			armorMetadataItem.artifice.items[armorSlotId].count > 0
 		) {
-			maxPossibleRemainingStatValue += ARTIFICE_BONUS_VALUE;
+			maxPossibleRemainingStatValue += ARTIFICE_MOD_BONUS_VALUE;
 		}
 	}
 	return maxPossibleRemainingStatValue;
@@ -896,17 +896,17 @@ const stripNonRaidSeenArmorSlotItems = (
 export type FilterValidRaidModArmorSlotPlacementsParams = {
 	seenArmorSlotItems: SeenArmorSlotItems;
 	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 };
 
 export const filterValidRaidModArmorSlotPlacements = ({
 	seenArmorSlotItems,
 	requiredClassItemExtraModSocketCategoryId,
 	validRaidModArmorSlotPlacements,
-}: FilterValidRaidModArmorSlotPlacementsParams): ValidRaidModArmorSlotPlacement[] => {
+}: FilterValidRaidModArmorSlotPlacementsParams): PotentialRaidModArmorSlotPlacement[] => {
 	const raidSeenArmorSlotItems =
 		stripNonRaidSeenArmorSlotItems(seenArmorSlotItems);
-	const validPlacements: ValidRaidModArmorSlotPlacement[] = [];
+	const validPlacements: PotentialRaidModArmorSlotPlacement[] = [];
 	const armorItemsExtraModSocketCategories = {
 		[EArmorSlotId.Head]: raidSeenArmorSlotItems.Head,
 		[EArmorSlotId.Arm]: raidSeenArmorSlotItems.Arm,
@@ -1048,7 +1048,7 @@ export const getDefaultModCombos = (): ModCombos => ({
 export type GetModCombosParams = {
 	sumOfSeenStats: StatList;
 	desiredArmorStats: ArmorStatMapping;
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
@@ -1076,7 +1076,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	let requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId =
 		null;
 
-	let raidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[] = null;
+	let raidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] = null;
 	// Check to see if this combo even has enough raid pieces capable
 	// of slotting the required raid mods. To do this we need to consider
 	// various raid class items which is the main reason why this logic
@@ -1152,7 +1152,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 export type GetValidArmorSlotModComboPlacementsParams = {
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	statModCombos: StatModComboWithMetadata[];
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 };
 
 // Places stat mods and raid mods
@@ -1439,7 +1439,7 @@ export type DoProcessArmorParams = {
 	masterworkAssumption: EMasterworkAssumption;
 	fragmentArmorStatMapping: ArmorStatMapping;
 	modArmorStatMapping: ArmorStatMapping;
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
@@ -1467,7 +1467,7 @@ const getArmorStatMappingFromArtificeModIdList = (
 	const armorStatMapping: ArmorStatMapping = getDefaultArmorStatMapping();
 	artificeModIdList.forEach((artificeModId) => {
 		armorStatMapping[getMod(artificeModId).bonuses[0].stat] +=
-			ARTIFICE_BONUS_VALUE;
+			ARTIFICE_MOD_BONUS_VALUE;
 	});
 	return armorStatMapping;
 };
@@ -1762,7 +1762,7 @@ type ProcessArmorParams = {
 	sumOfSeenStats: StatList;
 	seenArmorIds: string[];
 	masterworkAssumption: EMasterworkAssumption;
-	validRaidModArmorSlotPlacements: ValidRaidModArmorSlotPlacement[];
+	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;

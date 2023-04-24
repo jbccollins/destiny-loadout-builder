@@ -206,6 +206,17 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		return null;
 	}
 
+	/**
+	 * Next steps
+	 * 1. Check if there is a single stat mod combo that has a valid placement
+	 * 2. Find all permutations of stat mods combo and raid mod placements that work
+	 * 	- Store this in a cache. Something like
+	 * {
+	 * "Recovery2-MinorDiscipline1-Strength2-ReleaseRecoverClassItem": [... placement permutations ...],
+	 * "Recovery2-MinorDiscipline1-Strength2-ReleaseRecoverArm": false,
+	 * }
+	 */
+
 	// const validComboPlacements = getValidArmorSlotModComboPlacements({
 	// 	armorSlotMods,
 	// 	statModCombos: allStatModCombos,

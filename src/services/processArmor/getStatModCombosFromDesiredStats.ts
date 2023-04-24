@@ -16,7 +16,7 @@ import {
 
 export type StatModCombo = Record<EArmorStatId, GenericRequiredModCombo>;
 
-const getDefaultStatModCombo = (): StatModCombo => ({
+export const getDefaultStatModCombo = (): StatModCombo => ({
 	[EArmorStatId.Mobility]: null,
 	[EArmorStatId.Resilience]: null,
 	[EArmorStatId.Recovery]: null,
@@ -25,7 +25,10 @@ const getDefaultStatModCombo = (): StatModCombo => ({
 	[EArmorStatId.Strength]: null,
 });
 
-const getUnfilteredStatModCombos = (targetStatShortfalls: ArmorStatMapping) => {
+const getUnfilteredStatModCombos = (
+	targetStatShortfalls: ArmorStatMapping,
+	useZeroWastedStats = false
+) => {
 	const allGenericCombos: Record<EArmorStatId, GenericRequiredModCombo[]> = {
 		[EArmorStatId.Mobility]: null,
 		[EArmorStatId.Resilience]: null,
@@ -34,29 +37,60 @@ const getUnfilteredStatModCombos = (targetStatShortfalls: ArmorStatMapping) => {
 		[EArmorStatId.Intellect]: null,
 		[EArmorStatId.Strength]: null,
 	};
-	ArmorStatIdList.forEach((armorStatId) => {
+	for (let i = 0; i < ArmorStatIdList.length; i++) {
+		const armorStatId = ArmorStatIdList[i];
 		const targetStatShortfall = targetStatShortfalls[armorStatId];
+
 		if (targetStatShortfall > 0) {
-			const genericCombos = getGenericModCombinations(targetStatShortfall);
+			let genericCombos: GenericRequiredModCombo[] = null;
+
+			// Try adding +10 to the target stat until we get a result
+			// This should only matter for specific zero wasted stats cases
+			for (let i = targetStatShortfall; i < MAX_POTENTIAL_STAT_BOOST; i += 10) {
+				genericCombos = getGenericModCombinations(i, useZeroWastedStats);
+				if (genericCombos !== null) {
+					break;
+				}
+			}
+
+			if (genericCombos === null) {
+				// Break immediately. This means that there is no way to achieve the target stats.
+				return null;
+			}
 			allGenericCombos[armorStatId] = genericCombos;
 		}
-	});
+	}
 	return allGenericCombos;
 };
 
-const getAllValidStatModCombos = (
-	targetStatShortfalls: ArmorStatMapping,
-	numAvailableArtificePieces: number
-) => {
-	const unfilteredStatModCombos =
-		getUnfilteredStatModCombos(targetStatShortfalls);
+export type GetAllValidStatModCombosParams = {
+	targetStatShortfalls: ArmorStatMapping;
+	numAvailableArtificePieces: number;
+	useZeroWastedStats?: boolean;
+};
+export const getAllValidStatModCombos = ({
+	targetStatShortfalls,
+	numAvailableArtificePieces,
+	useZeroWastedStats = false,
+}: GetAllValidStatModCombosParams) => {
+	const unfilteredStatModCombos = getUnfilteredStatModCombos(
+		targetStatShortfalls,
+		useZeroWastedStats
+	);
+
+	if (unfilteredStatModCombos === null) {
+		return null;
+	}
 	let result: StatModCombo[] = [];
-	ArmorStatIdList.forEach((armorStatId) => {
+
+	for (let i = 0; i < ArmorStatIdList.length; i++) {
+		const armorStatId = ArmorStatIdList[i];
 		const unfilteredStatModCombo = unfilteredStatModCombos[armorStatId];
 		// If we don't need any mods for this stat, skip it
 		if (!unfilteredStatModCombo) {
-			return;
+			continue;
 		}
+		// The first time we get here, we need to initialize the result
 		if (result.length === 0) {
 			unfilteredStatModCombo.forEach((combo) => {
 				// Skip combos with more artifice mods than we can slot
@@ -68,10 +102,10 @@ const getAllValidStatModCombos = (
 					[armorStatId]: combo,
 				});
 			});
-			return;
+			continue;
 		}
 		const newResult: StatModCombo[] = [];
-		result.forEach((establishedCombo, i) => {
+		result.forEach((establishedCombo) => {
 			let totalEstablishedStatMods = 0;
 			let totalEstablishedArtificeMods = 0;
 			ArmorStatIdList.forEach((armorStatId) => {
@@ -102,17 +136,22 @@ const getAllValidStatModCombos = (
 				});
 			});
 		});
+		// If the result ever becomes empty, we know it's impossible to achieve the desired stats
+		// so we can prune the search early
+		if (newResult.length === 0) {
+			return null;
+		}
 		// Prune as we go
 		result = newResult;
-	});
+	}
 	return result;
 };
 
 const getGenericModCombinations = (
 	value: number,
-	withZeroWastedStats = false
+	useZeroWastedStats = false
 ): GenericRequiredModCombo[] => {
-	return withZeroWastedStats
+	return useZeroWastedStats
 		? zeroWastedStatModCombinations[value]
 		: paretoOptimalModCombinations[value];
 };
@@ -121,11 +160,13 @@ type GetStatModCombosFromDesiredStatsParams = {
 	currentStats: StatList;
 	targetStats: ArmorStatMapping;
 	numArtificeItems: number;
+	useZeroWastedStats?: boolean;
 };
 export const getStatModCombosFromDesiredStats = (
 	params: GetStatModCombosFromDesiredStatsParams
 ): StatModCombo[] => {
-	const { currentStats, targetStats, numArtificeItems } = params;
+	const { currentStats, targetStats, numArtificeItems, useZeroWastedStats } =
+		params;
 	const targetStatShortfalls: ArmorStatMapping = getDefaultArmorStatMapping();
 	let totalTargetStatShortfall = 0;
 	ArmorStatIdList.forEach((armorStatId) => {
@@ -143,9 +184,13 @@ export const getStatModCombosFromDesiredStats = (
 	if (totalTargetStatShortfall === 0) {
 		return [];
 	}
-	const allValidStatModCombos = getAllValidStatModCombos(
+	const allValidStatModCombos = getAllValidStatModCombos({
 		targetStatShortfalls,
-		numArtificeItems
-	);
+		numAvailableArtificePieces: numArtificeItems,
+		useZeroWastedStats,
+	});
+	if (allValidStatModCombos === null) {
+		return null;
+	}
 	return allValidStatModCombos.length > 0 ? allValidStatModCombos : null;
 };

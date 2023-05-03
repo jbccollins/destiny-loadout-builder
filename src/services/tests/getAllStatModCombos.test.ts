@@ -7,7 +7,7 @@ import {
 } from './utils';
 import { EModId } from '@dlb/generated/mod/EModId';
 
-export const sortModsIdsAlphabetically = (arr: EModId[]) =>
+const sortModsIdsAlphabetically = (arr: EModId[]) =>
 	arr.sort((a, b) => a.localeCompare(b));
 
 const testFunction = getAllStatModCombos;

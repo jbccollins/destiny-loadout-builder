@@ -4,9 +4,6 @@ import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { getDefaultArmorSlotModComboPlacementWithArtificeMods } from '@dlb/services/processArmor/getModCombos';
 
-export const sortModsIdsAlphabetically = (arr: EModId[]) =>
-	arr.sort((a, b) => a.localeCompare(b));
-
 const testFunction = getValidArmorSlotModComboPlacements;
 
 type TestCaseInput = Parameters<typeof testFunction>;

@@ -83,6 +83,7 @@ export const getArmorStat = (id: EArmorStatId): IArmorStat =>
 export type ArmorStatModSplit = {
 	major: EModId;
 	minor: EModId;
+	artifice: EModId;
 };
 
 /***** Extra  *****/
@@ -93,26 +94,32 @@ const ArmorStatIdToArmorStatModSplitMapping: EnumDictionary<
 	[EArmorStatId.Mobility]: {
 		minor: EModId.MinorMobilityMod,
 		major: EModId.MobilityMod,
+		artifice: EModId.MobilityForged,
 	},
 	[EArmorStatId.Resilience]: {
 		minor: EModId.MinorResilienceMod,
 		major: EModId.ResilienceMod,
+		artifice: EModId.ResilienceForged,
 	},
 	[EArmorStatId.Recovery]: {
 		minor: EModId.MinorRecoveryMod,
 		major: EModId.RecoveryMod,
+		artifice: EModId.RecoveryForged,
 	},
 	[EArmorStatId.Discipline]: {
 		minor: EModId.MinorDisciplineMod,
 		major: EModId.DisciplineMod,
+		artifice: EModId.DisciplineForged,
 	},
 	[EArmorStatId.Intellect]: {
 		minor: EModId.MinorIntellectMod,
 		major: EModId.IntellectMod,
+		artifice: EModId.IntellectForged,
 	},
 	[EArmorStatId.Strength]: {
 		minor: EModId.MinorStrengthMod,
 		major: EModId.StrengthMod,
+		artifice: EModId.StrengthForged,
 	},
 };
 

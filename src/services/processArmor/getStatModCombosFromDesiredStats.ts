@@ -13,6 +13,7 @@ import {
 	MAX_POTENTIAL_STAT_BOOST,
 	NUM_ARMOR_PIECES,
 } from '@dlb/utils/item-utils';
+import { filterRedundantStatModCombos } from './filterRedundantModCombos';
 
 export type StatModCombo = Record<EArmorStatId, GenericRequiredModCombo>;
 
@@ -144,7 +145,7 @@ export const getAllValidStatModCombos = ({
 		// Prune as we go
 		result = newResult;
 	}
-	return result;
+	return filterRedundantStatModCombos(result);
 };
 
 const getGenericModCombinations = (

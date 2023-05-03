@@ -3,7 +3,7 @@ import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { MajorStatModIdList } from '@dlb/types/Mod';
 import combinations from '@dlb/utils/combinations';
 import { replaceMajorModsWithMinorMods } from './utils';
-import { StatModCombo } from './getAllStatModCombos'; // TODO: I think this is a circular import
+import { ExpandedStatModCombo } from './getAllStatModCombos'; // TODO: I think this is a circular import
 
 const _extrapolateMajorModsIntoMinorMods = (
 	armorStatModIdList: EModId[],
@@ -58,11 +58,11 @@ const _extrapolateMajorModsIntoMinorMods = (
 // Initially they were separate because I thought _extrapolateMajorModsIntoMinorMods
 // would be recursive
 export const getExtrapolatedStatModCombos = (
-	statModComboList: StatModCombo[],
+	statModComboList: ExpandedStatModCombo[],
 	destinyClassId: EDestinyClassId
-): StatModCombo[] => {
+): ExpandedStatModCombo[] => {
 	// The existing combos are valid and must be considered
-	const results: StatModCombo[] = [...statModComboList];
+	const results: ExpandedStatModCombo[] = [...statModComboList];
 	// Any combo that has at least one open mod slot and at least
 	// one major mod can be extrapolated
 	statModComboList

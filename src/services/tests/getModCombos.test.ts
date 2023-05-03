@@ -4,7 +4,6 @@ import {
 	EDestinyClassId,
 } from '@dlb/types/IdEnums';
 import { getDefaultStatList } from './utils';
-import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import {
@@ -12,9 +11,6 @@ import {
 	getModCombos,
 } from '@dlb/services/processArmor/getModCombos';
 import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArmorSlotItems';
-
-export const sortModsIdsAlphabetically = (arr: EModId[]) =>
-	arr.sort((a, b) => a.localeCompare(b));
 
 const testFunction = getModCombos;
 

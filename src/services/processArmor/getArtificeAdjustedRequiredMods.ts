@@ -9,7 +9,7 @@ import { MajorStatModIdList } from '@dlb/types/Mod';
 import combinations from '@dlb/utils/combinations';
 import { isEqual, uniqWith } from 'lodash';
 import { getRequiredArtificeModIdList } from './getRequiredArtificeModIdList';
-import { StatModCombo } from './getAllStatModCombos';
+import { ExpandedStatModCombo } from './getAllStatModCombos';
 import { getExtrapolatedStatModCombos } from './getExtrapolatedStatModCombos';
 
 export const getArtificeAdjustedRequiredMods = (
@@ -18,8 +18,8 @@ export const getArtificeAdjustedRequiredMods = (
 	desiredArmorStats: ArmorStatMapping,
 	baseArmorStatMapping: ArmorStatMapping,
 	numArtificeItems: number
-): StatModCombo[] => {
-	const results: StatModCombo[] = [];
+): ExpandedStatModCombo[] => {
+	const results: ExpandedStatModCombo[] = [];
 	if (numArtificeItems === 0) {
 		return results;
 	}
@@ -72,7 +72,7 @@ export const getArtificeAdjustedRequiredMods = (
 			continue;
 		}
 
-		const result: StatModCombo = {
+		const result: ExpandedStatModCombo = {
 			armorStatModIdList: combo,
 			artificeModIdList: requiredArtificeModIdList,
 		};

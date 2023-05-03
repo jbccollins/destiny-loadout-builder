@@ -11,35 +11,30 @@ import {
 	ArmorSlotIdToModIdListMapping,
 } from '@dlb/types/Mod';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
-import {
-	filterRaidModArmorSlotPlacements,
-	getExtraSocketModCategoryIdCountsFromRaidModIdList,
-	getItemCountsFromSeenArmorSlotItems,
-	hasValidSeenItemCounts,
-} from './utils';
-import { getAllStatModCombos } from './getAllStatModCombos';
-import { getValidArmorSlotModComboPlacements } from './getValidArmorSlotModComboPlacements';
+import { getItemCountsFromSeenArmorSlotItems } from './utils';
 import { filterPotentialRaidModArmorSlotPlacements } from './getPotentialRaidModArmorSlotPlacements';
 import { getStatModCombosFromDesiredStats } from './getStatModCombosFromDesiredStats';
+import { getModPlacements } from './getModPlacements';
+import { getMaximumSingleStatValues } from './getMaximumSingleStatValues';
 
 /***** ArmorSlotModComboPlacementWithArtificeMods *****/
-export type ArmorSlotModComboPlacementValue = {
+export type ArmorStatAndRaidModComboPlacementValue = {
 	armorStatModId: EModId;
 	raidModId: EModId;
 };
 
-export type ArmorSlotModComboPlacement = Record<
+export type ArmorStatAndRaidModComboPlacement = Record<
 	EArmorSlotId,
-	ArmorSlotModComboPlacementValue
+	ArmorStatAndRaidModComboPlacementValue
 >;
 
-export type ArmorSlotModComboPlacementWithArtificeMods = {
-	placement: ArmorSlotModComboPlacement;
+export type ModPlacements = {
+	placement: ArmorStatAndRaidModComboPlacement;
 	artificeModIdList: EModId[];
 };
 
 export const getDefaultArmorSlotModComboPlacementWithArtificeMods =
-	(): ArmorSlotModComboPlacementWithArtificeMods => {
+	(): ModPlacements => {
 		return {
 			placement: {
 				[EArmorSlotId.Head]: {
@@ -114,7 +109,7 @@ export type ModCombos = {
 		maxUnusedArmorEnergy: number;
 		armorSlotMetadata: ModComboArmorSlotMetadata;
 	};
-	sortedArmorSlotModComboPlacementList: ArmorSlotModComboPlacementWithArtificeMods[];
+	sortedArmorSlotModComboPlacementList: ModPlacements[];
 };
 
 export const getDefaultModCombos = (): ModCombos => ({
@@ -162,6 +157,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	let filteredPotentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] =
 		null;
 
+	// TODO: Cache this result
 	if (raidMods.length > 0) {
 		// Filter the potential raid mod placemnts down to the placements that
 		// have a chance at actually working for this specific armor cobmination
@@ -196,6 +192,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	}
 
 	// Get all the stat mod combos which get us to the desiredArmorStats
+	// TODO: Cache this result
 	const statModCombos = getStatModCombosFromDesiredStats({
 		currentStats: sumOfSeenStats,
 		targetStats: desiredArmorStats,
@@ -206,27 +203,20 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		return null;
 	}
 
-	/**
-	 * Next steps
-	 * 1. Check if there is a single stat mod combo that has a valid placement
-	 * 2. Find all permutations of stat mods combo and raid mod placements that work
-	 * 	- Store this in a cache. Something like
-	 * {
-	 * "Recovery2-MinorDiscipline1-Strength2-ReleaseRecoverClassItem": [... placement permutations ...],
-	 * "Recovery2-MinorDiscipline1-Strength2-ReleaseRecoverArm": false,
-	 * }
-	 */
+	const modPlacements = getModPlacements({
+		statModCombos,
+		armorSlotMods,
+		potentialRaidModArmorSlotPlacements,
+	});
 
-	// const validComboPlacements = getValidArmorSlotModComboPlacements({
-	// 	armorSlotMods,
-	// 	statModCombos: allStatModCombos,
-	// 	potentialRaidModArmorSlotPlacements:
-	// 		filteredPotentialRaidModArmorSlotPlacements,
-	// });
-
-	// if (validComboPlacements.length === 0) {
-	// 	return null
-	// }
+	if (modPlacements === null) {
+		return null;
+	}
+	const maximumSingleStatValues = getMaximumSingleStatValues({
+		sumOfSeenStats,
+		numArtificeItems: seenArtificeCount,
+		placements: modPlacements.placements,
+	});
 
 	const modCombos = getDefaultModCombos();
 

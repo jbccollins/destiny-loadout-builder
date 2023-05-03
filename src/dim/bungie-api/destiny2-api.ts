@@ -178,14 +178,11 @@ export async function getMembershipData() {
 		result = memberships?.[lastLoggedInProfileIndex];
 	}
 
-	// If you write abusive chat messages, i do not allow you to use my tool.
-	if (
-		result.membershipType == BungieMembershipType.TigerSteam &&
-		result.membershipId == '4611686018482586660'
-	) {
-		alert(
-			"Yeah, no. You write abusive chat messages, and thus you won't be able to use this tool. Have a good day!"
-		);
+	const bannedUsers = [
+		'4611686018444338689', // Lord Wiegraf#7296 (Bagging)
+	];
+	if (bannedUsers.includes(result.membershipId)) {
+		alert('Go fuck yourself 😘');
 		return null; // automatically log out
 	}
 	return result;

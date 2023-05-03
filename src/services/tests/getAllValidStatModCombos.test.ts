@@ -1,13 +1,9 @@
 import { EArmorStatId } from '@dlb/types/IdEnums';
-import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import {
 	getAllValidStatModCombos,
 	getDefaultStatModCombo,
 } from '@dlb/services/processArmor/getStatModCombosFromDesiredStats';
-
-export const sortModsIdsAlphabetically = (arr: EModId[]) =>
-	arr.sort((a, b) => a.localeCompare(b));
 
 const testFunction = getAllValidStatModCombos;
 
@@ -170,7 +166,7 @@ const testCases: TestCase[] = [
 		],
 	],
 	[
-		'Zero wasted stats where a +10 is needed',
+		'Zero wasted stats where a 10 is needed',
 		[
 			{
 				targetStatShortfalls: {
@@ -220,9 +216,227 @@ const testCases: TestCase[] = [
 		],
 		null,
 	],
+	[
+		'Two stats with redundancy',
+		[
+			{
+				targetStatShortfalls: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Discipline]: 10,
+					[EArmorStatId.Strength]: 10,
+				},
+				numAvailableArtificePieces: 0,
+			},
+		],
+		[
+			// Note that two minor discipline and one major strength is redundant so it is not included in the results
+			{
+				...getDefaultStatModCombo(),
+				[EArmorStatId.Discipline]: {
+					numMajorMods: 1,
+					numMinorMods: 0,
+					numArtificeMods: 0,
+					exactStatPoints: 10,
+				},
+				[EArmorStatId.Strength]: {
+					numMajorMods: 1,
+					numMinorMods: 0,
+					numArtificeMods: 0,
+					exactStatPoints: 10,
+				},
+			},
+			{
+				...getDefaultStatModCombo(),
+				[EArmorStatId.Strength]: {
+					numMajorMods: 0,
+					numMinorMods: 2,
+					numArtificeMods: 0,
+					exactStatPoints: 10,
+				},
+				[EArmorStatId.Discipline]: {
+					numMajorMods: 1,
+					numMinorMods: 0,
+					numArtificeMods: 0,
+					exactStatPoints: 10,
+				},
+			},
+			{
+				...getDefaultStatModCombo(),
+				[EArmorStatId.Discipline]: {
+					numMajorMods: 0,
+					numMinorMods: 2,
+					numArtificeMods: 0,
+					exactStatPoints: 10,
+				},
+				[EArmorStatId.Strength]: {
+					numMajorMods: 0,
+					numMinorMods: 2,
+					numArtificeMods: 0,
+					exactStatPoints: 10,
+				},
+			},
+		],
+	],
+	[
+		'Four stats with artifice mods and redundancy',
+		[
+			{
+				targetStatShortfalls: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Recovery]: 15,
+					[EArmorStatId.Discipline]: 10,
+					[EArmorStatId.Strength]: 10,
+					[EArmorStatId.Intellect]: 10,
+				},
+				numAvailableArtificePieces: 2,
+			},
+		],
+		[
+			{
+				[EArmorStatId.Discipline]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Intellect]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Mobility]: null,
+				[EArmorStatId.Recovery]: {
+					exactStatPoints: 15,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 1,
+				},
+				[EArmorStatId.Resilience]: null,
+				[EArmorStatId.Strength]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+			},
+			{
+				[EArmorStatId.Discipline]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Intellect]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Mobility]: null,
+				[EArmorStatId.Recovery]: {
+					exactStatPoints: 15,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 1,
+				},
+				[EArmorStatId.Resilience]: null,
+				[EArmorStatId.Strength]: {
+					exactStatPoints: 11,
+					numArtificeMods: 2,
+					numMajorMods: 0,
+					numMinorMods: 1,
+				},
+			},
+			{
+				[EArmorStatId.Discipline]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Intellect]: {
+					exactStatPoints: 11,
+					numArtificeMods: 2,
+					numMajorMods: 0,
+					numMinorMods: 1,
+				},
+				[EArmorStatId.Mobility]: null,
+				[EArmorStatId.Recovery]: {
+					exactStatPoints: 15,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 1,
+				},
+				[EArmorStatId.Resilience]: null,
+				[EArmorStatId.Strength]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+			},
+			{
+				[EArmorStatId.Discipline]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Intellect]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Mobility]: null,
+				[EArmorStatId.Recovery]: {
+					exactStatPoints: 16,
+					numArtificeMods: 2,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Resilience]: null,
+				[EArmorStatId.Strength]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+			},
+			{
+				[EArmorStatId.Discipline]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Intellect]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Mobility]: null,
+				[EArmorStatId.Recovery]: {
+					exactStatPoints: 16,
+					numArtificeMods: 2,
+					numMajorMods: 1,
+					numMinorMods: 0,
+				},
+				[EArmorStatId.Resilience]: null,
+				[EArmorStatId.Strength]: {
+					exactStatPoints: 10,
+					numArtificeMods: 0,
+					numMajorMods: 0,
+					numMinorMods: 2,
+				},
+			},
+		],
+	],
 ];
 
-const nameOfTestToDebug = 'Less ridiculous, but still impossible target stats';
+const nameOfTestToDebug = 'Four stats';
 // const nameOfTestToDebug = null;
 describe('getAllValidStatModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug

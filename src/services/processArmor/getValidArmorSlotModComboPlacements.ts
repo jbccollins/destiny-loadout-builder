@@ -9,7 +9,7 @@ import {
 } from '@dlb/types/Mod';
 import { StatModComboWithMetadata } from './getAllStatModCombos';
 import {
-	ArmorSlotModComboPlacementWithArtificeMods,
+	ModPlacements,
 	getDefaultArmorSlotModComboPlacementWithArtificeMods,
 } from './getModCombos';
 
@@ -26,8 +26,8 @@ export const getValidArmorSlotModComboPlacements = ({
 	armorSlotMods,
 	statModCombos,
 	potentialRaidModArmorSlotPlacements,
-}: GetValidArmorSlotModComboPlacementsParams): ArmorSlotModComboPlacementWithArtificeMods[] => {
-	const results: ArmorSlotModComboPlacementWithArtificeMods[] = [];
+}: GetValidArmorSlotModComboPlacementsParams): ModPlacements[] => {
+	const results: ModPlacements[] = [];
 	statModCombos.forEach(({ armorStatModIdList, artificeModIdList }) => {
 		const sortedArmorStatMods = [...armorStatModIdList].sort(
 			(a, b) => getMod(b).cost - getMod(a).cost
@@ -62,7 +62,7 @@ export const getValidArmorSlotModComboPlacements = ({
 					b.capacity - a.capacity || a.armorSlotId.localeCompare(b.armorSlotId)
 			);
 
-			const comboPlacement: ArmorSlotModComboPlacementWithArtificeMods =
+			const comboPlacement: ModPlacements =
 				getDefaultArmorSlotModComboPlacementWithArtificeMods();
 
 			// Place the raid mods

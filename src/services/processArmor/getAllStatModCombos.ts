@@ -15,12 +15,12 @@ import {
 import { getArtificeAdjustedRequiredMods } from './getArtificeAdjustedRequiredMods';
 import { getExtrapolatedStatModCombos } from './getExtrapolatedStatModCombos';
 
-export type StatModCombo = {
+export type ExpandedStatModCombo = {
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
 };
 
-export type StatModComboWithMetadata = StatModCombo & {
+export type StatModComboWithMetadata = ExpandedStatModCombo & {
 	metadata: {
 		totalArmorStatModCost: number;
 	};
@@ -40,7 +40,7 @@ export const getAllStatModCombos = ({
 	destinyClassId,
 	numSeenArtificeArmorItems,
 }: GetAllStatModCombosParams): StatModComboWithMetadata[] => {
-	let allStatModCombos: StatModCombo[] = [];
+	let allStatModCombos: ExpandedStatModCombo[] = [];
 
 	/*
 	Step 1:
@@ -110,7 +110,7 @@ export const getAllStatModCombos = ({
 		);
 
 		artificeAdjustedRequiredMods.forEach((x) => {
-			const artificeStatModCombo: StatModCombo = {
+			const artificeStatModCombo: ExpandedStatModCombo = {
 				armorStatModIdList: x.armorStatModIdList,
 				artificeModIdList: x.artificeModIdList,
 			};

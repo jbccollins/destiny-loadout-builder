@@ -4,14 +4,13 @@ import {
 	selectSelectedDestinyClass,
 	setSelectedDestinyClass,
 } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { selectValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import IconDropdown from './IconDropdown';
 import {
 	DestinyClassIdList,
 	DestinyClassIdToDestinyClass,
 } from '@dlb/types/DestinyClass';
-import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
-import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { useMemo } from 'react';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
@@ -30,8 +29,8 @@ type Option = {
 };
 
 function DestinyClassSelector() {
-	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
+	const validDestinyClassIds = useAppSelector(selectValidDestinyClassIds);
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.label;
@@ -44,29 +43,6 @@ function DestinyClassSelector() {
 		dispatch(setSelectedDestinyClass(destinyClass));
 	};
 
-	// This will be used to disable any classes that have no exotic armor.
-	// TOOD: Also disable classes that don't have enough legendary/rare armor
-	// to make a full loadout
-	// TODO: What happens if the user has no exotic for any class?
-	const hasExoticArmor: Record<EDestinyClassId, boolean> = useMemo(() => {
-		console.log('>>>>>>>>>>> [Memo] hasExoticArmor calcuated <<<<<<<<<<<');
-		const res: Record<EDestinyClassId, boolean> = {
-			[EDestinyClassId.Hunter]: false,
-			[EDestinyClassId.Warlock]: false,
-			[EDestinyClassId.Titan]: false,
-		};
-		if (availableExoticArmor) {
-			DestinyClassIdList.forEach((destinyClassId) => {
-				ArmorSlotIdList.forEach((armorSlotId) => {
-					if (availableExoticArmor[destinyClassId][armorSlotId].length > 0) {
-						res[destinyClassId] = true;
-					}
-				});
-			});
-		}
-		return res;
-	}, [availableExoticArmor]);
-
 	const options = useMemo(() => {
 		return DestinyClassIdList.map((destinyClassId) => {
 			const { name, id, icon } =
@@ -75,10 +51,10 @@ function DestinyClassSelector() {
 				label: name,
 				icon: icon,
 				id: id,
-				disabled: !hasExoticArmor[destinyClassId],
+				disabled: !validDestinyClassIds.includes(destinyClassId),
 			};
 		});
-	}, [hasExoticArmor]);
+	}, [validDestinyClassIds]);
 
 	return (
 		<>

@@ -24,6 +24,8 @@ import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
 import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
 import loadErrorReducer from './features/loadError/loadErrorSlice';
+import validDestinyClassIdsReducer from './features/validDestinyClassIds/validDestinyClassIdsSlice';
+
 import resultsPaginationReducer, {
 	setResultsPagination,
 } from './features/resultsPagination/resultsPaginationSlice';
@@ -105,6 +107,7 @@ export function makeStore() {
 			selectedMinimumGearTier: selectedMinimumGearTierReducer,
 			selectedRaidMods: selectedRaidModsReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
+			validDestinyClassIds: validDestinyClassIdsReducer,
 		},
 	});
 }

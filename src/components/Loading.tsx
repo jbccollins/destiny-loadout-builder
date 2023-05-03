@@ -14,7 +14,11 @@ import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/
 import { setSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { extractArmor, extractCharacters } from '@dlb/services/data';
+import {
+	extractArmor,
+	extractCharacters,
+	getValidDestinyClassIds,
+} from '@dlb/services/data';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
@@ -64,6 +68,7 @@ import {
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
+import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -176,6 +181,18 @@ function Loading() {
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
 				dispatch(setArmorMetadata({ ...armorMetadata }));
+				const validDestinyClassIds = getValidDestinyClassIds(armorMetadata);
+				console.log(
+					'>>>>>>>>>>> [LOAD] validDestinyClassIds <<<<<<<<<<<',
+					validDestinyClassIds
+				);
+				if (validDestinyClassIds.length === 0) {
+					// TODO: Throw error
+					console.error('No valid Destiny Class IDs found');
+					router.push('/not-enough-armor');
+					return;
+				}
+				dispatch(setValidDestinyClassIds(validDestinyClassIds));
 				console.log('>>>>>>>>>>> [LOAD] armor <<<<<<<<<<<', armor);
 				console.log(
 					'>>>>>>>>>>> [LOAD] availableExoticArmor <<<<<<<<<<<',
@@ -183,7 +200,7 @@ function Loading() {
 				);
 				const characters = extractCharacters(stores);
 				dispatch(setCharacters([...characters]));
-				dispatch(setSelectedDestinyClass(characters[0].destinyClassId));
+				dispatch(setSelectedDestinyClass(validDestinyClassIds[0]));
 				console.log('>>>>>>>>>>> [LOAD] characters <<<<<<<<<<<', characters);
 
 				const defaultSelectedExoticArmor: Record<

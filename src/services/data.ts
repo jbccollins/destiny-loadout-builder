@@ -32,8 +32,12 @@ import {
 	getDefaultArmorCountMaxStatsMetadata,
 } from '@dlb/types/Armor';
 import { Character, Characters } from '@dlb/types/Character';
-import { DestinyClassIdToDestinyClass } from '@dlb/types/DestinyClass';
+import {
+	DestinyClassIdList,
+	DestinyClassIdToDestinyClass,
+} from '@dlb/types/DestinyClass';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 
 const updateMaxStatsMetadata = (
 	armorItem: ArmorItem,
@@ -48,6 +52,35 @@ const updateMaxStatsMetadata = (
 			};
 		}
 	});
+};
+
+// If we don't have enough armor to create a loadout for any class we want to
+// make sure the user can't select that class
+export const getValidDestinyClassIds = (
+	armorMetadata: ArmorMetadata
+): EDestinyClassId[] => {
+	const validDestinyClassIds: EDestinyClassId[] = [];
+	DestinyClassIdList.forEach((destinyClassId) => {
+		const armorMetadataItem = armorMetadata[destinyClassId];
+		let hasValidLegendaryItems = true;
+		let hasExoticItem = false;
+		for (let i = 0; i < ArmorSlotWithClassItemIdList.length; i++) {
+			const armorSlotId = ArmorSlotWithClassItemIdList[i];
+			if (
+				armorMetadataItem.nonExotic.legendary.items[armorSlotId].count === 0
+			) {
+				hasValidLegendaryItems = false;
+				break;
+			}
+			if (armorMetadataItem.exotic.count > 0) {
+				hasExoticItem = true;
+			}
+		}
+		if (hasValidLegendaryItems && hasExoticItem) {
+			validDestinyClassIds.push(destinyClassId);
+		}
+	});
+	return validDestinyClassIds;
 };
 
 // Convert a DimStore into our own, smaller, types and transform the data into the desired shape.

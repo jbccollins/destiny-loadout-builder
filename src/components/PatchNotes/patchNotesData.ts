@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-05-03',
+		version: '1.4.1',
+		title: 'Fix crash for users without enough armor',
+		sections: [
+			{
+				items: [
+					`Added more error handling for users without enough armor to create a loadout`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-04-03',
 		version: '1.4.0',
 		title: 'Raid mods BETA',

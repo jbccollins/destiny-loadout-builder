@@ -42,7 +42,7 @@ function NotEnoughArmor() {
 					<li>At least one exotic armor piece for that character</li>
 					<li>
 						At least one legendary armor piece for every armor slot for that
-						character. So a legendary helment, arms, chestpiece, legs and class
+						character. So a legendary helmet, arms, chestpiece, legs and class
 						item.
 					</li>
 				</ul>

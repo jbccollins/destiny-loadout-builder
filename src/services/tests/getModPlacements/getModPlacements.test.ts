@@ -6,7 +6,7 @@ import {
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { getDefaultStatModCombo } from '@dlb/services/processArmor/getStatModCombosFromDesiredStats';
 import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
-import { ModPlacements } from '@dlb/services/processArmor/getModCombos';
+import { ModPlacement } from '@dlb/services/processArmor/getModCombos';
 import {
 	complexNonRedundantModComboOutput,
 	complexNonRedundantModComboOutputWithRaidAndArtificeAndArmorSlotModsOutput,
@@ -24,7 +24,7 @@ type TestCaseOutput = ReturnType<typeof testFunction>;
 
 type TestCase = [name: string, input: TestCaseInput, output: TestCaseOutput];
 
-const getDefaultModPlacements = (): ModPlacements => ({
+const getDefaultModPlacements = (): ModPlacement => ({
 	artificeModIdList: [],
 	placement: {
 		[EArmorSlotId.Head]: {

@@ -179,7 +179,7 @@ export async function getMembershipData() {
 	}
 
 	const bannedUsers = [
-		'4611686018444338689', // Lord Wiegraf#7296 (Bagging)
+		// '4611686018444338689', // Lord Wiegraf#7296 (Bagging)
 	];
 	if (bannedUsers.includes(result.membershipId)) {
 		alert('Go fuck yourself 😘');

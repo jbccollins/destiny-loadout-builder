@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { ProcessArmorOutput } from '@dlb/services/armor-processing';
+import { ProcessArmorOutput } from '@dlb/services/processArmor/index';
 
 export interface ProcessedArmorState {
 	value: ProcessArmorOutput;
 }
 
 const initialState: ProcessedArmorState = {
-	value: []
+	value: [],
 };
 
 export const processedArmorSlice = createSlice({
@@ -17,8 +17,8 @@ export const processedArmorSlice = createSlice({
 	reducers: {
 		setProcessedArmor: (state, action: PayloadAction<ProcessArmorOutput>) => {
 			state.value = action.payload;
-		}
-	}
+		},
+	},
 });
 
 export const { setProcessedArmor } = processedArmorSlice.actions;

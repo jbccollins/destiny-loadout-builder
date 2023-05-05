@@ -3,6 +3,7 @@ import { StatList } from '@dlb/types/Armor';
 import { ArmorStatMapping } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
+	EArmorStatId,
 	EDestinyClassId,
 	EExtraSocketModCategoryId,
 } from '@dlb/types/IdEnums';
@@ -28,13 +29,24 @@ export type ArmorStatAndRaidModComboPlacement = Record<
 	ArmorStatAndRaidModComboPlacementValue
 >;
 
-export type ModPlacements = {
+export type ModPlacement = {
 	placement: ArmorStatAndRaidModComboPlacement;
 	artificeModIdList: EModId[];
 };
 
+export const getDefaultModPlacements = (): ModPlacement => ({
+	placement: {
+		[EArmorSlotId.Head]: { armorStatModId: null, raidModId: null },
+		[EArmorSlotId.Arm]: { armorStatModId: null, raidModId: null },
+		[EArmorSlotId.Chest]: { armorStatModId: null, raidModId: null },
+		[EArmorSlotId.Leg]: { armorStatModId: null, raidModId: null },
+		[EArmorSlotId.ClassItem]: { armorStatModId: null, raidModId: null },
+	},
+	artificeModIdList: [],
+});
+
 export const getDefaultArmorSlotModComboPlacementWithArtificeMods =
-	(): ModPlacements => {
+	(): ModPlacement => {
 		return {
 			placement: {
 				[EArmorSlotId.Head]: {
@@ -100,29 +112,26 @@ export const getDefaultModComboArmorSlotMetadata =
 
 /***** ModCombos *****/
 export type ModCombos = {
-	metadata: {
-		minTotalArmorStatModCost: number;
-		maxTotalArmorStatModCost: number;
-		minUsedArtificeMods: number;
-		maxUsedArtificeMods: number;
-		minUnusedArmorEnergy: number;
-		maxUnusedArmorEnergy: number;
-		armorSlotMetadata: ModComboArmorSlotMetadata;
-	};
-	sortedArmorSlotModComboPlacementList: ModPlacements[];
+	maximumSingleStatValues: Record<EArmorStatId, number>;
+	armorSlotMetadata: ModComboArmorSlotMetadata;
+	lowestCostPlacement: ModPlacement;
+	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+	// TODO: fewestWastedStatsPlacement: ModPlacement;
+	// TODO: mostStatTiersPlacement: ModPlacement;
 };
 
 export const getDefaultModCombos = (): ModCombos => ({
-	metadata: {
-		minTotalArmorStatModCost: 0,
-		maxTotalArmorStatModCost: Infinity,
-		minUsedArtificeMods: 0,
-		maxUsedArtificeMods: Infinity,
-		minUnusedArmorEnergy: 0,
-		maxUnusedArmorEnergy: Infinity,
-		armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
+	maximumSingleStatValues: {
+		[EArmorStatId.Mobility]: 0,
+		[EArmorStatId.Resilience]: 0,
+		[EArmorStatId.Recovery]: 0,
+		[EArmorStatId.Discipline]: 0,
+		[EArmorStatId.Intellect]: 0,
+		[EArmorStatId.Strength]: 0,
 	},
-	sortedArmorSlotModComboPlacementList: [],
+	armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
+	lowestCostPlacement: null,
+	requiredClassItemExtraModSocketCategoryId: null,
 });
 
 export type GetModCombosParams = {
@@ -206,21 +215,32 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	const modPlacements = getModPlacements({
 		statModCombos,
 		armorSlotMods,
-		potentialRaidModArmorSlotPlacements,
+		potentialRaidModArmorSlotPlacements:
+			filteredPotentialRaidModArmorSlotPlacements,
 	});
 
 	if (modPlacements === null) {
 		return null;
 	}
+
 	const maximumSingleStatValues = getMaximumSingleStatValues({
 		sumOfSeenStats,
 		numArtificeItems: seenArtificeCount,
 		placements: modPlacements.placements,
+		armorSlotMods,
 	});
 
-	const modCombos = getDefaultModCombos();
+	// TODO: This is wrong. We need to get the lowest cost placement
+	// by sorting the placements by cost and then getting the first one
+	const lowestCostPlacement =
+		modPlacements.placements.length > 0 ? modPlacements.placements[0] : null;
 
-	// TODO: Sort this
-	// modCombos.sortedArmorSlotModComboPlacementList = validComboPlacements;
-	return modCombos;
+	const result: ModCombos = {
+		maximumSingleStatValues,
+		armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
+		lowestCostPlacement,
+		requiredClassItemExtraModSocketCategoryId,
+	};
+
+	return result;
 };

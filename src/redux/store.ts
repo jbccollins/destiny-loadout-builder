@@ -47,10 +47,15 @@ import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
 import { NIL } from 'uuid';
+// import {
+// 	doProcessArmor,
+// 	preProcessArmor,
+// } from '@dlb/services/armor-processing';
+
 import {
 	doProcessArmor,
 	preProcessArmor,
-} from '@dlb/services/armor-processing';
+} from '@dlb/services/processArmor/index';
 import {
 	ArmorStatIdList,
 	ArmorStatMapping,
@@ -284,7 +289,7 @@ function handleChange() {
 			armorItems: preProcessedArmor,
 			fragmentArmorStatMapping,
 			modArmorStatMapping: modsArmorStatMapping,
-			validRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
+			potentialRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
 			armorSlotMods: selectedArmorSlotMods,
 			raidMods: selectedRaidMods.filter((x) => x !== null),
 			destinyClassId: selectedDestinyClass,
@@ -294,18 +299,11 @@ function handleChange() {
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = getDefaultArmorStatMapping();
 		results.forEach((result) => {
-			const availableMods = 5 - result.armorStatModIdList.length;
 			ArmorStatIdList.forEach((armorStatId) => {
-				// TODO: this "* 10" is a bug that assumes you can always fit major mods.
-				// This causes the desired armor stat tiers to show you can achieve stat
-				// tiers that aren't actually possible.
-				const possibleStat =
-					result.metadata.totalArmorStatMapping[armorStatId] +
-					10 * availableMods +
-					ARTIFICE_MOD_BONUS_VALUE * result.numUnusedArtificeMods;
-				if (possibleStat > maxPossibleStats[armorStatId]) {
-					maxPossibleStats[armorStatId] = possibleStat;
-				}
+				maxPossibleStats[armorStatId] = Math.max(
+					maxPossibleStats[armorStatId],
+					result.maximumSingleStatValues[armorStatId]
+				);
 			});
 		});
 		// TODO: We can probably calculate max possible stats while doing armor processing without

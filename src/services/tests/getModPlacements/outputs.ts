@@ -1,7 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
-import { ModPlacements } from '@dlb/services/processArmor/getModCombos';
+import { ModPlacement } from '@dlb/services/processArmor/getModCombos';
 
-export const singleStatModComboOutput: ModPlacements[] = [
+export const singleStatModComboOutput: ModPlacement[] = [
 	{
 		artificeModIdList: [],
 		placement: {
@@ -254,7 +254,7 @@ export const singleStatModComboOutput: ModPlacements[] = [
 	},
 ];
 
-export const twoStatModComboOutput: ModPlacements[] = [
+export const twoStatModComboOutput: ModPlacement[] = [
 	{
 		artificeModIdList: [],
 		placement: {
@@ -1007,7 +1007,7 @@ export const twoStatModComboOutput: ModPlacements[] = [
 	},
 ];
 
-export const redundantModComboOutput: ModPlacements[] = [
+export const redundantModComboOutput: ModPlacement[] = [
 	{
 		artificeModIdList: [],
 		placement: {
@@ -1260,7 +1260,7 @@ export const redundantModComboOutput: ModPlacements[] = [
 	},
 ];
 
-export const nonRedundantModComboOutput: ModPlacements[] = [
+export const nonRedundantModComboOutput: ModPlacement[] = [
 	{
 		artificeModIdList: [],
 		placement: {
@@ -1763,7 +1763,7 @@ export const nonRedundantModComboOutput: ModPlacements[] = [
 	},
 ];
 
-export const complexNonRedundantModComboOutput: ModPlacements[] = [
+export const complexNonRedundantModComboOutput: ModPlacement[] = [
 	{
 		placement: {
 			Head: { armorStatModId: EModId.ResilienceMod, raidModId: null },
@@ -2366,7 +2366,7 @@ export const complexNonRedundantModComboOutput: ModPlacements[] = [
 	},
 ];
 
-export const singleStatModComboWithRaidModOutput: ModPlacements[] = [
+export const singleStatModComboWithRaidModOutput: ModPlacement[] = [
 	{
 		artificeModIdList: [],
 		placement: {
@@ -2619,7 +2619,7 @@ export const singleStatModComboWithRaidModOutput: ModPlacements[] = [
 	},
 ];
 
-export const complexNonRedundantModComboOutputWithRaidAndArtificeAndArmorSlotModsOutput: ModPlacements[] =
+export const complexNonRedundantModComboOutputWithRaidAndArtificeAndArmorSlotModsOutput: ModPlacement[] =
 	[
 		{
 			placement: {

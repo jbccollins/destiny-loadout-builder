@@ -11,7 +11,7 @@ import {
 	getArmorSlotEnergyCapacity,
 } from '@dlb/types/Mod';
 import {
-	ModPlacements,
+	ModPlacement,
 	getDefaultArmorSlotModComboPlacementWithArtificeMods,
 } from './getModCombos';
 import { StatModCombo } from './getStatModCombosFromDesiredStats';
@@ -54,8 +54,8 @@ const convertStatModComboToExpandedStatModCombo = (
 // is defined as having the same remaining energy capacity
 // for each armor slot
 export const filterRedundantPlacements = (
-	placements: ModPlacements[]
-): ModPlacements[] => {
+	placements: ModPlacement[]
+): ModPlacement[] => {
 	const _placements = [...placements];
 	for (let i = 0; i < _placements.length; i++) {
 		for (let j = i; j < _placements.length; j++) {
@@ -145,7 +145,7 @@ export type GetModPlacementsParams = {
 };
 
 type GetModPlacementsResult = {
-	placements: ModPlacements[];
+	placements: ModPlacement[];
 	armorSlotCapacityRangeMapping: ArmorSlotCapacityRangeMapping;
 };
 // Places stat mods and raid mods
@@ -154,12 +154,12 @@ export const getModPlacements = ({
 	statModCombos,
 	potentialRaidModArmorSlotPlacements,
 }: GetModPlacementsParams): GetModPlacementsResult | null => {
-	let results: ModPlacements[] = [];
+	let results: ModPlacement[] = [];
 	const armorSlotCapacityRangeMapping =
 		getDefaultArmorSlotCapacityRangeMapping();
 	const hasRaidMods = potentialRaidModArmorSlotPlacements?.length > 0;
 
-	// Generate the capaciteis for each armor slot
+	// Generate the capacities for each armor slot
 	let allArmorSlotCapacities = [getArmorSlotEnergyCapacity(armorSlotMods)];
 	if (hasRaidMods) {
 		allArmorSlotCapacities = [];
@@ -193,7 +193,7 @@ export const getModPlacements = ({
 					b.capacity - a.capacity || a.armorSlotId.localeCompare(b.armorSlotId)
 			);
 
-			const comboPlacement: ModPlacements =
+			const comboPlacement: ModPlacement =
 				getDefaultArmorSlotModComboPlacementWithArtificeMods();
 
 			// Place the raid mods

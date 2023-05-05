@@ -10,8 +10,10 @@ import {
 } from '@dlb/types/ArmorStat';
 import { EArmorStatId } from '@dlb/types/IdEnums';
 import {
+	ARTIFICE_MOD_BONUS_VALUE,
 	MAX_POTENTIAL_STAT_BOOST,
 	NUM_ARMOR_PIECES,
+	NUM_POTENTIAL_ARTIFICER_PIECES,
 } from '@dlb/utils/item-utils';
 import { filterRedundantStatModCombos } from './filterRedundantModCombos';
 
@@ -178,7 +180,12 @@ export const getStatModCombosFromDesiredStats = (
 		totalTargetStatShortfall += shortFall;
 	});
 	// If we can't possibly hit the target stats, return null
-	if (totalTargetStatShortfall > MAX_POTENTIAL_STAT_BOOST) {
+	if (
+		totalTargetStatShortfall >
+		MAX_POTENTIAL_STAT_BOOST -
+			(NUM_POTENTIAL_ARTIFICER_PIECES - numArtificeItems) *
+				ARTIFICE_MOD_BONUS_VALUE
+	) {
 		return null;
 	}
 	// If we don't need any mods to hit our target value then return an empty array

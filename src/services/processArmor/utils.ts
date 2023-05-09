@@ -170,6 +170,26 @@ export const getArmorStatMappingFromStatList = (
 	return res;
 };
 
+export const getStatListFromArmorStatMapping = (
+	armorStatMapping: ArmorStatMapping
+): StatList => {
+	const res: StatList = [0, 0, 0, 0, 0, 0];
+	ArmorStatIdList.forEach((armorStatId, i) => {
+		res[i] = armorStatMapping[armorStatId];
+	});
+	return res;
+};
+
+export const sumStatLists = (statLists: StatList[]): StatList => {
+	const res: StatList = [0, 0, 0, 0, 0, 0];
+	statLists.forEach((statList) => {
+		statList.forEach((stat, i) => {
+			res[i] += stat;
+		});
+	});
+	return res;
+};
+
 export const replaceMajorModsWithMinorMods = (
 	armorStatModIdList: EModId[],
 	modsToReplace: EModId[],

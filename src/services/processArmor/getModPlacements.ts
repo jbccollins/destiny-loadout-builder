@@ -9,6 +9,7 @@ import {
 	PotentialRaidModArmorSlotPlacement,
 	getMod,
 	getArmorSlotEnergyCapacity,
+	ArmorSlotCapacity,
 } from '@dlb/types/Mod';
 import {
 	ModPlacement,
@@ -136,6 +137,63 @@ export const getDefaultArmorSlotCapacityRangeMapping =
 			max: -Infinity,
 		},
 	});
+
+type HasValidModPlacementParams = {
+	sortedArmorStatMods: EModId[];
+	sortedArmorSlotCapacities: ArmorSlotCapacity[];
+};
+
+// Put the highest cost mod in the highest capacity slot
+// Put the second highest cost mod in the second highest capacity slot, etc...
+export const hasValidModPlacement = ({
+	sortedArmorStatMods,
+	sortedArmorSlotCapacities,
+}: HasValidModPlacementParams): boolean => {
+	let isValid = true;
+	for (let i = 0; i < sortedArmorStatMods.length; i++) {
+		if (
+			getMod(sortedArmorStatMods[i]).cost >
+			sortedArmorSlotCapacities[i].capacity
+		) {
+			isValid = false;
+			break;
+		}
+	}
+	return isValid;
+};
+
+export type GetArmorSlotCapacitiesParams = {
+	potentialRaidModArmorSlotPlacements:
+		| PotentialRaidModArmorSlotPlacement[]
+		| null;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
+};
+export const getArmorSlotCapacities = ({
+	potentialRaidModArmorSlotPlacements,
+	armorSlotMods,
+}: GetArmorSlotCapacitiesParams) => {
+	const hasRaidMods = potentialRaidModArmorSlotPlacements?.length > 0;
+	let allArmorSlotCapacities = [getArmorSlotEnergyCapacity(armorSlotMods)];
+	if (hasRaidMods) {
+		allArmorSlotCapacities = [];
+		for (let i = 0; i < potentialRaidModArmorSlotPlacements.length; i++) {
+			const armorSlotCapacities = getArmorSlotEnergyCapacity(armorSlotMods);
+			const raidModPlacement = potentialRaidModArmorSlotPlacements[i];
+			// Update the armorSlotCapacities for this particular raid mod placement permutation
+			for (let j = 0; j < ArmorSlotWithClassItemIdList.length; j++) {
+				const armorSlotId = ArmorSlotWithClassItemIdList[j];
+				if (raidModPlacement[armorSlotId]) {
+					armorSlotCapacities[armorSlotId].capacity -= getMod(
+						raidModPlacement[armorSlotId]
+					).cost;
+				}
+			}
+			allArmorSlotCapacities.push(armorSlotCapacities);
+		}
+	}
+	return allArmorSlotCapacities;
+};
+
 export type GetModPlacementsParams = {
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	statModCombos: StatModCombo[];
@@ -160,24 +218,10 @@ export const getModPlacements = ({
 	const hasRaidMods = potentialRaidModArmorSlotPlacements?.length > 0;
 
 	// Generate the capacities for each armor slot
-	let allArmorSlotCapacities = [getArmorSlotEnergyCapacity(armorSlotMods)];
-	if (hasRaidMods) {
-		allArmorSlotCapacities = [];
-		for (let i = 0; i < potentialRaidModArmorSlotPlacements.length; i++) {
-			const armorSlotCapacities = getArmorSlotEnergyCapacity(armorSlotMods);
-			const raidModPlacement = potentialRaidModArmorSlotPlacements[i];
-			// Update the armorSlotCapacities for this particular raid mod placement permutation
-			for (let j = 0; j < ArmorSlotWithClassItemIdList.length; j++) {
-				const armorSlotId = ArmorSlotWithClassItemIdList[j];
-				if (raidModPlacement[armorSlotId]) {
-					armorSlotCapacities[armorSlotId].capacity -= getMod(
-						raidModPlacement[armorSlotId]
-					).cost;
-				}
-			}
-			allArmorSlotCapacities.push(armorSlotCapacities);
-		}
-	}
+	const allArmorSlotCapacities = getArmorSlotCapacities({
+		potentialRaidModArmorSlotPlacements,
+		armorSlotMods,
+	});
 
 	statModCombos.forEach((statModCombo) => {
 		const { artificeModIdList, armorStatModIdList } =
@@ -207,25 +251,17 @@ export const getModPlacements = ({
 			}
 
 			comboPlacement.artificeModIdList = artificeModIdList;
-			let isValid = true;
 
 			// Before checking all permutations of armorStatMods we
 			// ensure that at least one permutation works
 			// Check if the highest cost armor stat mod can fit into the highest capacity slot
 			// Check if the second highest cost armor stat mod can fit in to the second highest capacity slot, etc...
-			for (let i = 0; i < sortedArmorStatMods.length; i++) {
-				if (
-					getMod(sortedArmorStatMods[i]).cost >
-					sortedArmorSlotCapacities[i].capacity
-				) {
-					isValid = false;
-					break;
-				}
-				// comboPlacement.placement[
-				// 	sortedArmorSlotCapacities[i].armorSlotId
-				// ].armorStatModId = sortedArmorStatMods[i];
-			}
-			if (!isValid) {
+			if (
+				!hasValidModPlacement({
+					sortedArmorStatMods,
+					sortedArmorSlotCapacities,
+				})
+			) {
 				results = null;
 				return;
 			}

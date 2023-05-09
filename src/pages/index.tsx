@@ -36,7 +36,10 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { setSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import {
+	getDefaultArmorSlotIdToModIdListMapping,
+	getDefaultValidRaidModArmorSlotPlacement,
+} from '@dlb/types/Mod';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
 import {
 	selectSelectedDestinySubclass,
@@ -71,6 +74,10 @@ import {
 	setSelectedJump,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 import Logout from '@dlb/components/LogOutButton';
+import {
+	defaultRaidMods,
+	setSelectedRaidMods,
+} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -142,6 +149,7 @@ const LeftSectionComponent = () => {
 		dispatch(
 			setSelectedArmorSlotMods(getDefaultArmorSlotIdToModIdListMapping())
 		);
+		dispatch(setSelectedRaidMods(defaultRaidMods));
 	};
 
 	const clearSubclassOptions = () => {

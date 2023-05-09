@@ -49,12 +49,12 @@ function RaidModSelector() {
 	const dropdownIndices = selectedRaidMods.map((_, i) => i);
 	return (
 		<Container>
-			<Box sx={{ color: 'orange', display: 'flex', marginBottom: '16px' }}>
+			{/* <Box sx={{ color: 'orange', display: 'flex', marginBottom: '16px' }}>
 				<Warning />
 				<Box sx={{ paddingLeft: '8px' }}>
 					Raid Mods are in beta. Expect bugs.
 				</Box>
-			</Box>
+			</Box> */}
 			{dropdownIndices.map((index) => (
 				<ModSelector
 					idPrefix={'raid-mod-selector'}

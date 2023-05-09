@@ -297,23 +297,8 @@ function handleChange() {
 			selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		});
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
-		const maxPossibleStats: ArmorStatMapping = getDefaultArmorStatMapping();
-		// results.forEach((result) => {
-		// 	ArmorStatIdList.forEach((armorStatId) => {
-		// 		maxPossibleStats[armorStatId] = Math.max(
-		// 			maxPossibleStats[armorStatId],
-		// 			result.maximumSingleStatValues[armorStatId]
-		// 		);
-		// 	});
-		// });
-		// TODO: We can probably calculate max possible stats while doing armor processing without
-		// the need to loop over the processed armor again here.
-		console.log(
-			'>>>>>>>>>>> [STORE] maxPossibleStats <<<<<<<<<<<',
-			maxPossibleStats
-		);
-		store.dispatch(setMaxPossibleStats(maxPossibleStats));
-		store.dispatch(setProcessedArmor(results));
+		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
+		store.dispatch(setProcessedArmor(results.items));
 	}
 }
 

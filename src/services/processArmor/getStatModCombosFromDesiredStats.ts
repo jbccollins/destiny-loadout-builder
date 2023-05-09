@@ -6,6 +6,7 @@ import {
 	ArmorStatIdList,
 	ArmorStatMapping,
 	getArmorStat,
+	getArmorStatModSpitFromArmorStatId,
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { EArmorStatId } from '@dlb/types/IdEnums';
@@ -16,6 +17,7 @@ import {
 	NUM_POTENTIAL_ARTIFICER_PIECES,
 } from '@dlb/utils/item-utils';
 import { filterRedundantStatModCombos } from './filterRedundantModCombos';
+import { getMod } from '@dlb/types/Mod';
 
 export type StatModCombo = Record<EArmorStatId, GenericRequiredModCombo>;
 
@@ -147,6 +149,9 @@ export const getAllValidStatModCombos = ({
 		// Prune as we go
 		result = newResult;
 	}
+	// TODO: Find a better way to filter out redundant combos
+	// Preferably do it as we go instead of at the end which requires
+	// a double loop
 	return result; //filterRedundantStatModCombos(result);
 };
 
@@ -199,6 +204,27 @@ export const getStatModCombosFromDesiredStats = (
 	});
 	if (allValidStatModCombos === null) {
 		return null;
+	}
+	// Sort cheapest to most expensive
+	if (allValidStatModCombos.length > 0) {
+		allValidStatModCombos.sort((a, b) => {
+			let aCost = 0;
+			let bCost = 0;
+			ArmorStatIdList.forEach((armorStatId) => {
+				const aVal = a[armorStatId];
+				const bVal = b[armorStatId];
+				const split = getArmorStatModSpitFromArmorStatId(armorStatId);
+				if (aVal) {
+					aCost += aVal.numMajorMods * getMod(split.major).cost;
+					aCost += aVal.numMinorMods * getMod(split.minor).cost;
+				}
+				if (bVal) {
+					bCost += bVal.numMajorMods * getMod(split.major).cost;
+					bCost += bVal.numMinorMods * getMod(split.minor).cost;
+				}
+			});
+			return aCost - bCost;
+		});
 	}
 	return allValidStatModCombos.length > 0 ? allValidStatModCombos : null;
 };

@@ -1,6 +1,10 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { StatList } from '@dlb/types/Armor';
-import { ArmorStatIdList, ArmorStatMapping } from '@dlb/types/ArmorStat';
+import {
+	ArmorStatIdList,
+	ArmorStatMapping,
+	getArmorStatModSpitFromArmorStatId,
+} from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
 	EArmorStatId,
@@ -10,14 +14,21 @@ import {
 import {
 	PotentialRaidModArmorSlotPlacement,
 	ArmorSlotIdToModIdListMapping,
+	getMod,
+	ArmorSlotCapacity,
 } from '@dlb/types/Mod';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import { getItemCountsFromSeenArmorSlotItems } from './utils';
 import { filterPotentialRaidModArmorSlotPlacements } from './getPotentialRaidModArmorSlotPlacements';
-import { getStatModCombosFromDesiredStats } from './getStatModCombosFromDesiredStats';
+import {
+	StatModCombo,
+	getStatModCombosFromDesiredStats,
+} from './getStatModCombosFromDesiredStats';
 import {
 	convertStatModComboToExpandedStatModCombo,
+	getArmorSlotCapacities,
 	getModPlacements,
+	hasValidModPlacement,
 } from './getModPlacements';
 import { getMaximumSingleStatValues } from './getMaximumSingleStatValues';
 import combinations from '@dlb/utils/combinations';
@@ -159,7 +170,6 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		potentialRaidModArmorSlotPlacements,
 		armorSlotMods,
 		raidMods,
-		destinyClassId,
 		specialSeenArmorSlotItems,
 	} = params;
 
@@ -185,7 +195,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 				specialSeenArmorSlotItems,
 			});
 		// We have nowhere to put raid mods
-		if (potentialRaidModPlacements.potentialPlacements === null) {
+		if (!potentialRaidModPlacements?.potentialPlacements) {
 			return null;
 		}
 		const {
@@ -203,10 +213,10 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 			_requiredClassItemExtraModSocketCategoryId;
 
 		// We can't use artifice class items now
-		// TODO: This is bad logic. If the user has no artifice class items
-		// but has other artifice armor then this combination will have inncorrect
-		// results
-		if (requiredClassItemExtraModSocketCategoryId !== null) {
+		if (
+			requiredClassItemExtraModSocketCategoryId !== null &&
+			specialSeenArmorSlotItems.ClassItems.artifice
+		) {
 			seenArtificeCount -= 1;
 		}
 	}
@@ -223,56 +233,36 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		return null;
 	}
 
-	// const modPlacements = getModPlacements({
-	// 	statModCombos,
-	// 	armorSlotMods,
-	// 	potentialRaidModArmorSlotPlacements:
-	// 		filteredPotentialRaidModArmorSlotPlacements,
-	// });
-
-	// if (modPlacements === null) {
-	// 	return null;
-	// }
-
-	// const maximumSingleStatValues = getMaximumSingleStatValues({
-	// 	sumOfSeenStats,
-	// 	numArtificeItems: seenArtificeCount,
-	// 	placements: modPlacements.placements,
-	// 	armorSlotMods,
-	// });
-
-	// // TODO: This is wrong. We need to get the lowest cost placement
-	// // by sorting the placements by cost and then getting the first one
-	// const lowestCostPlacement =
-	// 	modPlacements.placements.length > 0 ? modPlacements.placements[0] : null;
-
-	// const result: ModCombos = {
-	// 	maximumSingleStatValues,
-	// 	armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
-	// 	lowestCostPlacement,
-	// 	requiredClassItemExtraModSocketCategoryId,
-	// };
-
-	// return result;
-
-	// ArmorStatIdList.forEach((armorStatId) => {
-	// 	const statModId = statModCombos[0][armorStatId].numMajorMods;
-	// 	if (modId) {
-	// 		statMods.push(statModId);
-	// 	}
-	// });
-
 	const lowestCostPlacement =
 		getDefaultArmorSlotModComboPlacementWithArtificeMods();
-	if (statModCombos.length > 0) {
-		const derp = convertStatModComboToExpandedStatModCombo(statModCombos[0]);
-		derp.armorStatModIdList.forEach((modId, i) => {
+
+	const { isValid, combo } = getFirstValidStatModCombo({
+		statModComboList: statModCombos,
+		potentialRaidModArmorSlotPlacements:
+			filteredPotentialRaidModArmorSlotPlacements,
+		armorSlotMods,
+	});
+
+	if (!isValid) {
+		return null;
+	}
+
+	if (combo) {
+		const expandedCombo = convertStatModComboToExpandedStatModCombo(combo);
+		expandedCombo.armorStatModIdList.forEach((modId, i) => {
 			lowestCostPlacement.placement[
 				ArmorSlotWithClassItemIdList[i]
 			].armorStatModId = modId;
 		});
-		lowestCostPlacement.artificeModIdList = derp.artificeModIdList;
+		lowestCostPlacement.artificeModIdList = expandedCombo.artificeModIdList;
 	}
+
+	// TODO: Two more steps
+	// 1. Get the desired stat preview. Binary search increased desired stat tiers for each stat
+	//    Make sure to cache the highest seen natural stat tier for each stat to make
+	//    this faster
+	// 2. Get the armor slot mod preview. Use existing desired stat tiers
+	//    to binary search reserved armor energy for each armor slot
 
 	const result: ModCombos = {
 		maximumSingleStatValues: null,
@@ -282,4 +272,70 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	};
 
 	return result;
+};
+
+type GetFirstValidStatModComboParams = {
+	statModComboList: StatModCombo[];
+	potentialRaidModArmorSlotPlacements:
+		| PotentialRaidModArmorSlotPlacement[]
+		| null;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
+};
+
+type GetFirstValidStatModComboResult = {
+	isValid: boolean;
+	combo: StatModCombo;
+};
+
+// Pick the first combo that has a valid placement
+const getFirstValidStatModCombo = ({
+	statModComboList,
+	potentialRaidModArmorSlotPlacements,
+	armorSlotMods,
+}: GetFirstValidStatModComboParams): GetFirstValidStatModComboResult => {
+	if (statModComboList.length === 0) {
+		return { isValid: true, combo: null };
+	}
+
+	if (armorSlotMods[EArmorSlotId.Arm].filter((x) => x !== null).length === 3) {
+		console.log('>>> three', armorSlotMods);
+	}
+
+	const armorSlotCapacities = getArmorSlotCapacities({
+		armorSlotMods,
+		potentialRaidModArmorSlotPlacements,
+	});
+
+	const allSortedCapacities: ArmorSlotCapacity[][] = [];
+	for (let j = 0; j < armorSlotCapacities.length; j++) {
+		const capacity = armorSlotCapacities[j];
+		const sortedArmorSlotCapacities = Object.values(capacity).sort(
+			// Sort by capacity then by name. By name is just for making consistent testing easier
+			(a, b) =>
+				b.capacity - a.capacity || a.armorSlotId.localeCompare(b.armorSlotId)
+		);
+		allSortedCapacities.push(sortedArmorSlotCapacities);
+	}
+
+	for (let i = 0; i < statModComboList.length; i++) {
+		const { armorStatModIdList } = convertStatModComboToExpandedStatModCombo(
+			statModComboList[i]
+		);
+		const sortedArmorStatMods = [...armorStatModIdList].sort(
+			(a, b) => getMod(b).cost - getMod(a).cost
+		);
+
+		for (let j = 0; j < allSortedCapacities.length; j++) {
+			const capacity = allSortedCapacities[j];
+			if (
+				hasValidModPlacement({
+					sortedArmorStatMods,
+					sortedArmorSlotCapacities: capacity,
+				})
+			) {
+				return { isValid: true, combo: statModComboList[i] };
+			}
+		}
+	}
+	return { isValid: false, combo: null };
 };

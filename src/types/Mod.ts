@@ -149,7 +149,7 @@ export const getDefaultArmorSlotIdToModIdListMapping =
 			return accumulator;
 		}, {}) as ArmorSlotIdToModIdListMapping;
 
-type ArmorSlotCapacity = {
+export type ArmorSlotCapacity = {
 	armorSlotId: EArmorSlotId;
 	capacity: number;
 };
@@ -343,10 +343,11 @@ export const getValidRaidModArmorSlotPlacements = (
 		return [getDefaultValidRaidModArmorSlotPlacement()];
 	}
 	const validPlacements: PotentialRaidModArmorSlotPlacement[] = [];
-	// const armorSlotElementMapping: Record<EArmorSlotId, EElementId> = {};
 	// Sort by armor slots with the most remaining energy capacity to the least remaining capacity.
 
-	const paddedRaidModIdList = [null, null, null, null];
+	// 5 Slots, Even though the exotic armor piece can't support it we still
+	// need this padding to make sure we get all the permutations
+	const paddedRaidModIdList = [null, null, null, null, null];
 	for (let i = 0; i < raidModIdList.length; i++) {
 		paddedRaidModIdList[i] = raidModIdList[i];
 	}

@@ -1,6 +1,6 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { StatList } from '@dlb/types/Armor';
-import { ArmorStatMapping } from '@dlb/types/ArmorStat';
+import { ArmorStatIdList, ArmorStatMapping } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
 	EArmorStatId,
@@ -15,8 +15,16 @@ import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import { getItemCountsFromSeenArmorSlotItems } from './utils';
 import { filterPotentialRaidModArmorSlotPlacements } from './getPotentialRaidModArmorSlotPlacements';
 import { getStatModCombosFromDesiredStats } from './getStatModCombosFromDesiredStats';
-import { getModPlacements } from './getModPlacements';
+import {
+	convertStatModComboToExpandedStatModCombo,
+	getModPlacements,
+} from './getModPlacements';
 import { getMaximumSingleStatValues } from './getMaximumSingleStatValues';
+import combinations from '@dlb/utils/combinations';
+import {
+	ArmorSlotIdList,
+	ArmorSlotWithClassItemIdList,
+} from '@dlb/types/ArmorSlot';
 
 /***** ArmorSlotModComboPlacementWithArtificeMods *****/
 export type ArmorStatAndRaidModComboPlacementValue = {
@@ -195,6 +203,9 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 			_requiredClassItemExtraModSocketCategoryId;
 
 		// We can't use artifice class items now
+		// TODO: This is bad logic. If the user has no artifice class items
+		// but has other artifice armor then this combination will have inncorrect
+		// results
 		if (requiredClassItemExtraModSocketCategoryId !== null) {
 			seenArtificeCount -= 1;
 		}
@@ -212,31 +223,59 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		return null;
 	}
 
-	const modPlacements = getModPlacements({
-		statModCombos,
-		armorSlotMods,
-		potentialRaidModArmorSlotPlacements:
-			filteredPotentialRaidModArmorSlotPlacements,
-	});
+	// const modPlacements = getModPlacements({
+	// 	statModCombos,
+	// 	armorSlotMods,
+	// 	potentialRaidModArmorSlotPlacements:
+	// 		filteredPotentialRaidModArmorSlotPlacements,
+	// });
 
-	if (modPlacements === null) {
-		return null;
+	// if (modPlacements === null) {
+	// 	return null;
+	// }
+
+	// const maximumSingleStatValues = getMaximumSingleStatValues({
+	// 	sumOfSeenStats,
+	// 	numArtificeItems: seenArtificeCount,
+	// 	placements: modPlacements.placements,
+	// 	armorSlotMods,
+	// });
+
+	// // TODO: This is wrong. We need to get the lowest cost placement
+	// // by sorting the placements by cost and then getting the first one
+	// const lowestCostPlacement =
+	// 	modPlacements.placements.length > 0 ? modPlacements.placements[0] : null;
+
+	// const result: ModCombos = {
+	// 	maximumSingleStatValues,
+	// 	armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
+	// 	lowestCostPlacement,
+	// 	requiredClassItemExtraModSocketCategoryId,
+	// };
+
+	// return result;
+
+	// ArmorStatIdList.forEach((armorStatId) => {
+	// 	const statModId = statModCombos[0][armorStatId].numMajorMods;
+	// 	if (modId) {
+	// 		statMods.push(statModId);
+	// 	}
+	// });
+
+	const lowestCostPlacement =
+		getDefaultArmorSlotModComboPlacementWithArtificeMods();
+	if (statModCombos.length > 0) {
+		const derp = convertStatModComboToExpandedStatModCombo(statModCombos[0]);
+		derp.armorStatModIdList.forEach((modId, i) => {
+			lowestCostPlacement.placement[
+				ArmorSlotWithClassItemIdList[i]
+			].armorStatModId = modId;
+		});
+		lowestCostPlacement.artificeModIdList = derp.artificeModIdList;
 	}
 
-	const maximumSingleStatValues = getMaximumSingleStatValues({
-		sumOfSeenStats,
-		numArtificeItems: seenArtificeCount,
-		placements: modPlacements.placements,
-		armorSlotMods,
-	});
-
-	// TODO: This is wrong. We need to get the lowest cost placement
-	// by sorting the placements by cost and then getting the first one
-	const lowestCostPlacement =
-		modPlacements.placements.length > 0 ? modPlacements.placements[0] : null;
-
 	const result: ModCombos = {
-		maximumSingleStatValues,
+		maximumSingleStatValues: null,
 		armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
 		lowestCostPlacement,
 		requiredClassItemExtraModSocketCategoryId,

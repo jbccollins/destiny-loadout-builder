@@ -298,14 +298,14 @@ function handleChange() {
 		});
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		const maxPossibleStats: ArmorStatMapping = getDefaultArmorStatMapping();
-		results.forEach((result) => {
-			ArmorStatIdList.forEach((armorStatId) => {
-				maxPossibleStats[armorStatId] = Math.max(
-					maxPossibleStats[armorStatId],
-					result.maximumSingleStatValues[armorStatId]
-				);
-			});
-		});
+		// results.forEach((result) => {
+		// 	ArmorStatIdList.forEach((armorStatId) => {
+		// 		maxPossibleStats[armorStatId] = Math.max(
+		// 			maxPossibleStats[armorStatId],
+		// 			result.maximumSingleStatValues[armorStatId]
+		// 		);
+		// 	});
+		// });
 		// TODO: We can probably calculate max possible stats while doing armor processing without
 		// the need to loop over the processed armor again here.
 		console.log(

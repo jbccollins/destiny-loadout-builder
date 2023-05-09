@@ -24,7 +24,7 @@ import { permute } from '@dlb/utils/permutations';
 import { cloneDeep } from 'lodash';
 
 // Use the counts to generate lists of mods to permute
-const convertStatModComboToExpandedStatModCombo = (
+export const convertStatModComboToExpandedStatModCombo = (
 	combo: StatModCombo
 ): ExpandedStatModCombo => {
 	const expandedCombo: ExpandedStatModCombo = {

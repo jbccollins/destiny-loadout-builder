@@ -147,7 +147,7 @@ export const getAllValidStatModCombos = ({
 		// Prune as we go
 		result = newResult;
 	}
-	return filterRedundantStatModCombos(result);
+	return result; //filterRedundantStatModCombos(result);
 };
 
 const getGenericModCombinations = (

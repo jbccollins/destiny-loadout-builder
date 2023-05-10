@@ -216,7 +216,7 @@ function Loading() {
 			if (item) {
 				dispatch(
 					setSelectedExoticArmor({
-						...selectedExoticArmor,
+						...defaultSelectedExoticArmor,
 						[loadoutConfig.destinyClassId]: item,
 					})
 				);
@@ -406,6 +406,26 @@ function Loading() {
 				const characters = extractCharacters(stores);
 				dispatch(setCharacters([...characters]));
 
+				DestinyClassIdList.forEach((destinyClassId) => {
+					if (availableExoticArmor[destinyClassId]) {
+						for (const armorSlotId of ArmorSlotIdList) {
+							// TODO: this lookup of className in the availableExoticArmor const is not
+							// typesafe and is not picked up by intellisense. remove all such mapping consts
+							// availableExoticArmor['derp'] is not caught!!!!!
+							if (
+								availableExoticArmor[destinyClassId][armorSlotId].length > 0
+							) {
+								// Just pick the first exotic item we find
+								defaultSelectedExoticArmor[destinyClassId] =
+									availableExoticArmor[destinyClassId][armorSlotId][0];
+								break;
+							}
+						}
+					}
+				});
+				console.log('>>>> setting exotic armor', defaultSelectedExoticArmor);
+				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
+
 				if (hasLoadout) {
 					loadFromQueryParams({
 						availableExoticArmor,
@@ -415,24 +435,6 @@ function Loading() {
 					dispatch(setSelectedDestinyClass(validDestinyClassIds[0]));
 					console.log('>>>>>>>>>>> [LOAD] characters <<<<<<<<<<<', characters);
 
-					DestinyClassIdList.forEach((destinyClassId) => {
-						if (availableExoticArmor[destinyClassId]) {
-							for (const armorSlotId of ArmorSlotIdList) {
-								// TODO: this lookup of className in the availableExoticArmor const is not
-								// typesafe and is not picked up by intellisense. remove all such mapping consts
-								// availableExoticArmor['derp'] is not caught!!!!!
-								if (
-									availableExoticArmor[destinyClassId][armorSlotId].length > 0
-								) {
-									// Just pick the first exotic item we find
-									defaultSelectedExoticArmor[destinyClassId] =
-										availableExoticArmor[destinyClassId][armorSlotId][0];
-									break;
-								}
-							}
-						}
-					});
-					dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
 					console.log(
 						'>>>>>>>>>>> [LOAD] defaultSelectedExoticArmor <<<<<<<<<<<',
 						defaultSelectedExoticArmor

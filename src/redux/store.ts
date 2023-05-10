@@ -25,6 +25,7 @@ import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selec
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
 import loadErrorReducer from './features/loadError/loadErrorSlice';
 import validDestinyClassIdsReducer from './features/validDestinyClassIds/validDestinyClassIdsSlice';
+import reservedArmorSlotEnergyReducer from './features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 
 import resultsPaginationReducer, {
 	setResultsPagination,
@@ -57,9 +58,6 @@ import {
 	preProcessArmor,
 } from '@dlb/services/processArmor/index';
 import {
-	ArmorStatIdList,
-	ArmorStatMapping,
-	DefaultArmorStatMapping,
 	getArmorStatMappingFromMods,
 	getArmorStatMappingFromFragments,
 	getDefaultArmorStatMapping,
@@ -77,7 +75,6 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 import { EElementId } from '@dlb/types/IdEnums';
-import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 
 export function makeStore() {
 	return configureStore({
@@ -97,6 +94,7 @@ export function makeStore() {
 			loadError: loadErrorReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
 			processedArmor: processedArmorReducer,
+			reservedArmorSlotEnergy: reservedArmorSlotEnergyReducer,
 			resultsPagination: resultsPaginationReducer,
 			selectedArmorSlotMods: selectedArmorSlotModsReducer,
 			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
@@ -132,6 +130,7 @@ let selectedArmorSlotModsUuid = NIL;
 let selectedMinimumGearTierUuid = NIL;
 let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
+let reservedArmorSlotEnergyUuid = NIL;
 function handleChange() {
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
@@ -148,6 +147,7 @@ function handleChange() {
 		selectedMinimumGearTier: { uuid: nextSelectedMinimumGearTierUuid },
 		dimLoadouts: { uuid: nextDimLoadoutsUuid },
 		dimLoadoutsFilter: { uuid: nextDimLoadoutsFilterUuid },
+		reservedArmorSlotEnergy: { uuid: nextReservedArmorSlotEnergyUuid },
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -164,7 +164,8 @@ function handleChange() {
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
 		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
 		dimLoadoutsUuid !== nextDimLoadoutsUuid ||
-		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid;
+		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
+		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedDestinyClassUuid !== NIL &&
@@ -176,7 +177,8 @@ function handleChange() {
 		nextSelectedArmorSlotModsUuid !== NIL &&
 		nextSelectedMinimumGearTierUuid !== NIL &&
 		nextDimLoadoutsUuid !== NIL &&
-		nextDimLoadoutsFilterUuid !== NIL;
+		nextDimLoadoutsFilterUuid !== NIL &&
+		nextReservedArmorSlotEnergyUuid !== NIL;
 
 	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
 		console.log('>>>>>>>>>>> [STORE] store is dirty <<<<<<<<<<<');
@@ -191,6 +193,7 @@ function handleChange() {
 		selectedMinimumGearTierUuid = nextSelectedMinimumGearTierUuid;
 		dimLoadoutsUuid = nextDimLoadoutsUuid;
 		dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
+		reservedArmorSlotEnergyUuid = nextReservedArmorSlotEnergyUuid;
 
 		// TODO: Move this out of the store file
 		const {
@@ -207,6 +210,7 @@ function handleChange() {
 			selectedMinimumGearTier: { value: selectedMinimumGearTier },
 			dimLoadouts: { value: dimLoadouts },
 			dimLoadoutsFilter: { value: dimLoadoutsFilter },
+			reservedArmorSlotEnergy: { value: reservedArmorSlotEnergy },
 		} = store.getState();
 
 		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -295,6 +299,7 @@ function handleChange() {
 			destinyClassId: selectedDestinyClass,
 			armorMetadataItem: armorMetadata[selectedDestinyClass],
 			selectedExotic: selectedExoticArmor[selectedDestinyClass],
+			reservedArmorSlotEnergy,
 		});
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));

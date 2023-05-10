@@ -16,26 +16,16 @@ import {
 	ArmorSlotIdToModIdListMapping,
 	getMod,
 	ArmorSlotCapacity,
+	getArmorSlotEnergyCapacity,
 } from '@dlb/types/Mod';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import { getItemCountsFromSeenArmorSlotItems } from './utils';
-import { filterPotentialRaidModArmorSlotPlacements } from './getPotentialRaidModArmorSlotPlacements';
+import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
 	StatModCombo,
 	getStatModCombosFromDesiredStats,
 } from './getStatModCombosFromDesiredStats';
-import {
-	convertStatModComboToExpandedStatModCombo,
-	getArmorSlotCapacities,
-	getModPlacements,
-	hasValidModPlacement,
-} from './getModPlacements';
-import { getMaximumSingleStatValues } from './getMaximumSingleStatValues';
-import combinations from '@dlb/utils/combinations';
-import {
-	ArmorSlotIdList,
-	ArmorSlotWithClassItemIdList,
-} from '@dlb/types/ArmorSlot';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 
 /***** ArmorSlotModComboPlacementWithArtificeMods *****/
 export type ArmorStatAndRaidModComboPlacementValue = {
@@ -161,6 +151,7 @@ export type GetModCombosParams = {
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
+	reservedArmorSlotEnergy: Record<EArmorSlotId, number>;
 };
 
 export const getModCombos = (params: GetModCombosParams): ModCombos => {
@@ -171,6 +162,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		armorSlotMods,
 		raidMods,
 		specialSeenArmorSlotItems,
+		reservedArmorSlotEnergy,
 	} = params;
 
 	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
@@ -241,6 +233,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		potentialRaidModArmorSlotPlacements:
 			filteredPotentialRaidModArmorSlotPlacements,
 		armorSlotMods,
+		reservedArmorSlotEnergy,
 	});
 
 	if (!isValid) {
@@ -280,6 +273,7 @@ type GetFirstValidStatModComboParams = {
 		| PotentialRaidModArmorSlotPlacement[]
 		| null;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	reservedArmorSlotEnergy: Record<EArmorSlotId, number>;
 };
 
 type GetFirstValidStatModComboResult = {
@@ -292,6 +286,7 @@ const getFirstValidStatModCombo = ({
 	statModComboList,
 	potentialRaidModArmorSlotPlacements,
 	armorSlotMods,
+	reservedArmorSlotEnergy,
 }: GetFirstValidStatModComboParams): GetFirstValidStatModComboResult => {
 	if (statModComboList.length === 0) {
 		return { isValid: true, combo: null };
@@ -304,6 +299,7 @@ const getFirstValidStatModCombo = ({
 	const armorSlotCapacities = getArmorSlotCapacities({
 		armorSlotMods,
 		potentialRaidModArmorSlotPlacements,
+		reservedArmorSlotEnergy,
 	});
 
 	const allSortedCapacities: ArmorSlotCapacity[][] = [];
@@ -338,4 +334,106 @@ const getFirstValidStatModCombo = ({
 		}
 	}
 	return { isValid: false, combo: null };
+};
+
+export type ExpandedStatModCombo = {
+	armorStatModIdList: EModId[];
+	artificeModIdList: EModId[];
+};
+
+// Use the counts to generate lists of mods to permute
+export const convertStatModComboToExpandedStatModCombo = (
+	combo: StatModCombo
+): ExpandedStatModCombo => {
+	const expandedCombo: ExpandedStatModCombo = {
+		armorStatModIdList: [],
+		artificeModIdList: [],
+	};
+	ArmorStatIdList.forEach((armorStatId) => {
+		if (!combo[armorStatId]) {
+			return;
+		}
+		const { numArtificeMods, numMajorMods, numMinorMods } = combo[armorStatId];
+		const split = getArmorStatModSpitFromArmorStatId(armorStatId);
+		for (let i = 0; i < numArtificeMods; i++) {
+			expandedCombo.artificeModIdList.push(split.artifice);
+		}
+		for (let i = 0; i < numMajorMods; i++) {
+			expandedCombo.armorStatModIdList.push(split.major);
+		}
+		for (let i = 0; i < numMinorMods; i++) {
+			expandedCombo.armorStatModIdList.push(split.minor);
+		}
+	});
+	return expandedCombo;
+};
+
+type HasValidModPlacementParams = {
+	sortedArmorStatMods: EModId[];
+	sortedArmorSlotCapacities: ArmorSlotCapacity[];
+};
+
+// Put the highest cost mod in the highest capacity slot
+// Put the second highest cost mod in the second highest capacity slot, etc...
+export const hasValidModPlacement = ({
+	sortedArmorStatMods,
+	sortedArmorSlotCapacities,
+}: HasValidModPlacementParams): boolean => {
+	let isValid = true;
+	for (let i = 0; i < sortedArmorStatMods.length; i++) {
+		if (
+			getMod(sortedArmorStatMods[i]).cost >
+			sortedArmorSlotCapacities[i].capacity
+		) {
+			isValid = false;
+			break;
+		}
+	}
+	return isValid;
+};
+
+export type GetArmorSlotCapacitiesParams = {
+	potentialRaidModArmorSlotPlacements:
+		| PotentialRaidModArmorSlotPlacement[]
+		| null;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	reservedArmorSlotEnergy: Record<EArmorSlotId, number>;
+};
+export const getArmorSlotCapacities = ({
+	potentialRaidModArmorSlotPlacements,
+	armorSlotMods,
+	reservedArmorSlotEnergy,
+}: GetArmorSlotCapacitiesParams) => {
+	const hasRaidMods = potentialRaidModArmorSlotPlacements?.length > 0;
+	let allArmorSlotCapacities = [getArmorSlotEnergyCapacity(armorSlotMods)];
+	if (hasRaidMods) {
+		allArmorSlotCapacities = [];
+		for (let i = 0; i < potentialRaidModArmorSlotPlacements.length; i++) {
+			const armorSlotCapacities = getArmorSlotEnergyCapacity(armorSlotMods);
+			const raidModPlacement = potentialRaidModArmorSlotPlacements[i];
+			// Update the armorSlotCapacities for this particular raid mod placement permutation
+			for (let j = 0; j < ArmorSlotWithClassItemIdList.length; j++) {
+				const armorSlotId = ArmorSlotWithClassItemIdList[j];
+				if (raidModPlacement[armorSlotId]) {
+					armorSlotCapacities[armorSlotId].capacity -= getMod(
+						raidModPlacement[armorSlotId]
+					).cost;
+				}
+			}
+			allArmorSlotCapacities.push(armorSlotCapacities);
+		}
+	}
+
+	for (let i = 0; i < ArmorSlotWithClassItemIdList.length; i++) {
+		const armorSlotId = ArmorSlotWithClassItemIdList[i];
+		if (reservedArmorSlotEnergy[armorSlotId] === 0) {
+			continue;
+		}
+		for (let j = 0; j < allArmorSlotCapacities.length; j++) {
+			allArmorSlotCapacities[j][armorSlotId].capacity -=
+				reservedArmorSlotEnergy[armorSlotId];
+		}
+	}
+
+	return allArmorSlotCapacities;
 };

@@ -1,11 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
-import { StatList } from '@dlb/types/Armor';
-import { ArmorStatMapping } from '@dlb/types/ArmorStat';
-import { EDestinyClassId, EExtraSocketModCategoryId } from '@dlb/types/IdEnums';
-import {
-	ArmorSlotIdToModIdListMapping,
-	PotentialRaidModArmorSlotPlacement,
-} from '@dlb/types/Mod';
+
+import { EExtraSocketModCategoryId } from '@dlb/types/IdEnums';
+import { PotentialRaidModArmorSlotPlacement } from '@dlb/types/Mod';
 import {
 	filterRaidModArmorSlotPlacements,
 	getExtraSocketModCategoryIdCountsFromRaidModIdList,
@@ -14,20 +10,20 @@ import {
 } from './utils';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 
-export type GetPotentialRaidModArmorSlotPlacementsParams = {
+export type filterPotentialRaidModArmorSlotPlacementsParams = {
 	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	raidMods: EModId[];
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 };
 
-type GetPotentialRaidModArmorSlotPlacementsOutput = {
+type filterPotentialRaidModArmorSlotPlacementsOutput = {
 	potentialPlacements: PotentialRaidModArmorSlotPlacement[];
 	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
 };
 
 export const filterPotentialRaidModArmorSlotPlacements = (
-	params: GetPotentialRaidModArmorSlotPlacementsParams
-): GetPotentialRaidModArmorSlotPlacementsOutput => {
+	params: filterPotentialRaidModArmorSlotPlacementsParams
+): filterPotentialRaidModArmorSlotPlacementsOutput => {
 	const {
 		potentialRaidModArmorSlotPlacements,
 		raidMods,

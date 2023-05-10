@@ -2,7 +2,7 @@ import {
 	doProcessArmor,
 	ProcessArmorOutput,
 	DoProcessArmorParams,
-} from '@dlb/services/armor-processing';
+} from '@dlb/services/processArmor/index';
 import { describe, expect, test } from '@jest/globals';
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 import {
@@ -14,7 +14,6 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
-	DefaultArmorStatMapping,
 	getArmorStatMappingFromFragments,
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';

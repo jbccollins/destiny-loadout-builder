@@ -69,6 +69,10 @@ import {
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
+import {
+	selectReservedArmorSlotEnergy,
+	setReservedArmorSlotEnergy,
+} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -119,6 +123,7 @@ function Loading() {
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
+	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const selectedMasterworkAssumption = useAppSelector(
@@ -220,19 +225,6 @@ function Loading() {
 					[EDestinyClassId.Warlock]: null,
 				};
 				DestinyClassIdList.forEach((destinyClassId) => {
-					// defaultSelectedDestinySubclass[destinyClassId] =
-					// 	DestinySubclassAndSuperAbilityOptions[
-					// 		destinyClassId
-					// 	][0].destinySubclassId;
-					// {
-					// 	destinySubclassId:
-					// 		DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
-					// 			.destinySubclassId,
-					// 	superAbilityId:
-					// 		DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
-					// 			.superAbilityId,
-					// };
-
 					if (availableExoticArmor[destinyClassId]) {
 						for (const armorSlotId of ArmorSlotIdList) {
 							// TODO: this lookup of className in the availableExoticArmor const is not
@@ -268,7 +260,8 @@ function Loading() {
 				// 		dimLoadouts,
 				// 		dimLoadoutsFilter,
 				// 		selectedMinimumGearTier,
-				// 		selectedRaidMods
+				// 		selectedRaidMods,
+				// 		reservedArmorSlotEnergy
 				// 	]
 				// we can "dirty" the store so it knows it needs to recalculate the
 				// processedArmorItems
@@ -289,6 +282,7 @@ function Loading() {
 				}
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
+				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
 			} catch (error) {

@@ -67,6 +67,7 @@ const _processArmorRecursiveCase = ({
 	armorMetadataItem,
 	specialSeenArmorSlotItems,
 	selectedExotic,
+	reservedArmorSlotEnergy,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
 	const output: ProcessArmorOutput[] = [];
@@ -96,6 +97,7 @@ const _processArmorRecursiveCase = ({
 				armorMetadataItem,
 				specialSeenArmorSlotItems: nextSpecialSeenArmorSlotItems,
 				selectedExotic,
+				reservedArmorSlotEnergy,
 			})
 		);
 	});
@@ -116,6 +118,7 @@ const _processArmorBaseCase = ({
 	armorMetadataItem,
 	specialSeenArmorSlotItems,
 	selectedExotic,
+	reservedArmorSlotEnergy,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
@@ -140,6 +143,7 @@ const _processArmorBaseCase = ({
 			raidMods,
 			destinyClassId,
 			specialSeenArmorSlotItems: finalSpecialSeenArmorSlotItems,
+			reservedArmorSlotEnergy,
 		});
 
 		if (modCombos === null) {
@@ -196,6 +200,7 @@ type ProcessArmorParams = {
 	armorMetadataItem: ArmorMetadataItem;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 	selectedExotic: AvailableExoticArmorItem;
+	reservedArmorSlotEnergy: Record<EArmorSlotId, number>;
 };
 
 const processArmor = ({
@@ -211,6 +216,7 @@ const processArmor = ({
 	armorMetadataItem,
 	specialSeenArmorSlotItems,
 	selectedExotic,
+	reservedArmorSlotEnergy,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const func =
 		armorItems.length === 1
@@ -229,6 +235,7 @@ const processArmor = ({
 		armorMetadataItem,
 		specialSeenArmorSlotItems,
 		selectedExotic,
+		reservedArmorSlotEnergy,
 	});
 };
 
@@ -268,6 +275,7 @@ export type DoProcessArmorParams = {
 	destinyClassId: EDestinyClassId;
 	armorMetadataItem: ArmorMetadataItem;
 	selectedExotic: AvailableExoticArmorItem;
+	reservedArmorSlotEnergy: Record<EArmorSlotId, number>;
 };
 /**
  * @param {ArmorItems2} armorItems - [heads, arms, chests, legs]
@@ -287,6 +295,7 @@ export const doProcessArmor = ({
 	destinyClassId,
 	armorMetadataItem,
 	selectedExotic,
+	reservedArmorSlotEnergy,
 }: DoProcessArmorParams): DoProcessArmorOutput => {
 	// Add in the class item
 	const extraSumOfSeenStats = getExtraSumOfSeenStats(
@@ -321,11 +330,12 @@ export const doProcessArmor = ({
 		armorMetadataItem,
 		specialSeenArmorSlotItems: seenArmorSlotItems,
 		selectedExotic,
+		reservedArmorSlotEnergy,
 	};
 
 	const processedArmor: ProcessArmorOutput = processArmor(processArmorParams);
 
-	const maxPossibleDesiredStatTiers = getMaxPossibleDesiredStatTiersV2({
+	const maxPossibleDesiredStatTiers = getMaxPossibleDesiredStatTiers({
 		processedArmor,
 		processArmorParams,
 	});
@@ -383,22 +393,6 @@ export const preProcessArmor = (
 	return strictArmorItems;
 };
 
-// const getArmorStatMappingFromArmorStatAndRaidModComboPlacement = (
-// 	placement: ArmorStatAndRaidModComboPlacement
-// ): ArmorStatMapping => {
-// 	const armorStatMapping: ArmorStatMapping = getDefaultArmorStatMapping();
-// 	ArmorSlotWithClassItemIdList.forEach((armorSlot) => {
-// 		const modId = placement[armorSlot].armorStatModId;
-// 		if (!modId) {
-// 			return;
-// 		}
-// 		const mod = getMod(modId);
-// 		const armorStatId = mod.bonuses[0].stat as EArmorStatId;
-// 		armorStatMapping[armorStatId] += mod.bonuses[0].value;
-// 	});
-// 	return armorStatMapping;
-// };
-
 const getModIdListFromArmorStatAndRaidModComboPlacement = (
 	placement: ArmorStatAndRaidModComboPlacement
 ): EModId[] => {
@@ -418,7 +412,7 @@ type GetMaxPossibleDesiredStatTiers = {
 	processedArmor: ProcessArmorOutput;
 	processArmorParams: ProcessArmorParams;
 };
-export const getMaxPossibleDesiredStatTiersV2 = ({
+export const getMaxPossibleDesiredStatTiers = ({
 	processedArmor,
 	processArmorParams,
 }: GetMaxPossibleDesiredStatTiers): ArmorStatMapping => {
@@ -450,6 +444,7 @@ export const getMaxPossibleDesiredStatTiersV2 = ({
 						destinyClassId: processArmorParams.destinyClassId,
 						specialSeenArmorSlotItems:
 							processedArmor[j].metadata.seenArmorSlotItems,
+						reservedArmorSlotEnergy: processArmorParams.reservedArmorSlotEnergy,
 					}) !== null;
 				if (hasCombo) {
 					maximumStatTiers[armorStatId] = desiredStat;

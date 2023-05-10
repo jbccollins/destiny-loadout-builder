@@ -78,6 +78,7 @@ import {
 	defaultRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import ReservedArmorSlotEnergySelector from '@dlb/components/ReservedArmorSlotEnergySelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -237,6 +238,7 @@ const LeftSectionComponent = () => {
 								>
 									<ArmorSlotModSelector />
 									<RaidModSelector />
+									{/* <ReservedArmorSlotEnergySelector /> */}
 								</SelectionControlGroup>
 							</>
 						),

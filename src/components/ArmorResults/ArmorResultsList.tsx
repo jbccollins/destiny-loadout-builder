@@ -113,6 +113,7 @@ const IconText = styled(Box)(({ theme }) => ({
 }));
 const Title = styled(Box)(({ theme }) => ({
 	fontSize: `1.15rem`,
+	fontWeight: '500',
 	paddingBottom: theme.spacing(1),
 }));
 const Description = styled(Box)(({ theme }) => ({
@@ -315,7 +316,7 @@ function ResultsItem({
 					(x) => !ArmorStatIdList.includes(x as EArmorStatId)
 				).map((sortableFieldKey) => {
 					return (
-						<Box key={sortableFieldKey}>
+						<Box sx={{ fontWeight: '500' }} key={sortableFieldKey}>
 							{getSortableFieldDisplayName(sortableFieldKey)}:{' '}
 							{item.sortableFields[sortableFieldKey]}
 						</Box>

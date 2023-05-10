@@ -75,6 +75,31 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 import { EElementId } from '@dlb/types/IdEnums';
+import isEqual from 'lodash/isEqual';
+
+function getChangedProperties(previousObj, currentObj, changes) {
+	// Loop through the properties of the current object
+	for (const prop in currentObj) {
+		// If the property is an object, recursively check its properties
+		if (
+			previousObj &&
+			previousObj[prop] &&
+			typeof currentObj[prop] === 'object'
+		) {
+			getChangedProperties(previousObj[prop], currentObj[prop], changes);
+		}
+		// If the property has changed, add it to the changes array
+		else if (
+			previousObj &&
+			previousObj[prop] &&
+			!isEqual(previousObj[prop], currentObj[prop])
+		) {
+			changes.push(prop);
+		}
+	}
+
+	return changes;
+}
 
 export function makeStore() {
 	return configureStore({
@@ -131,7 +156,28 @@ let selectedMinimumGearTierUuid = NIL;
 let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
+const debugStoreLoop = false;
+
+let previousState: any = null;
+if (debugStoreLoop) {
+	previousState = store.getState();
+}
 function handleChange() {
+	if (debugStoreLoop) {
+		const currentState = store.getState();
+
+		const changedProperties = getChangedProperties(
+			previousState,
+			currentState,
+			[]
+		);
+
+		if (changedProperties.length > 0) {
+			console.log('>>> Redux store changed:', changedProperties);
+		}
+
+		previousState = currentState;
+	}
 	const {
 		allDataLoaded: { value: hasAllDataLoaded },
 		desiredArmorStats: { uuid: nextDesiredArmorStatsUuid },
@@ -307,7 +353,8 @@ function handleChange() {
 	}
 }
 
-const unsubscribe = store.subscribe(handleChange);
+store.subscribe(handleChange);
+// const unsubscribe = store.subscribe(handleChange);
 // unsubscribe();
 
 // TODO: Move this helper function out of the store

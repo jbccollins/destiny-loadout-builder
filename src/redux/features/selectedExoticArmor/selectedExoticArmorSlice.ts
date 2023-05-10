@@ -27,6 +27,11 @@ export const selectedExoticArmorSlice = createSlice({
 			state,
 			action: PayloadAction<Record<EDestinyClassId, AvailableExoticArmorItem>>
 		) => {
+			console.log(
+				'>>>>>>>> settingSelectedExoticArmor',
+				action.payload,
+				'<<<<<<<<<<'
+			);
 			state.value = action.payload;
 			state.uuid = uuid();
 		},

@@ -19,7 +19,8 @@ import {
 	EElementId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
-import generateDimLink from '@dlb/services/dim/generateDimLoadoutLink';
+import generateDimLink from '@dlb/services/links/generateDimLoadoutLink';
+import generateDlbLink from '@dlb/services/links/generateDlbLoadoutLink';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getMod } from '@dlb/types/Mod';
@@ -70,6 +71,7 @@ type ResultsItemProps = {
 		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	>;
 	dimLink: string;
+	dlbLink: string;
 };
 
 const ResultsContainer = styled(Box)(({ theme }) => ({
@@ -189,6 +191,7 @@ function ResultsItem({
 	fragmentArmorStatMappings,
 	armorSlotModArmorStatMappings,
 	dimLink,
+	dlbLink,
 }: ResultsItemProps) {
 	const [open, setOpen] = React.useState(false);
 	const totalStatMapping = getDefaultArmorStatMapping();
@@ -350,6 +353,16 @@ function ResultsItem({
 						href={dimLink}
 					>
 						Open loadout in DIM
+					</Button>
+				</Box>
+				<Box sx={{ flexBasis: '100%' }}>
+					<Button
+						sx={{ width: 200 }}
+						variant="contained"
+						target={'_blank'}
+						href={dlbLink}
+					>
+						Share Loadout
 					</Button>
 				</Box>
 				<Box
@@ -675,6 +688,21 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							masterworkAssumption={selectedMasterworkAssumption}
 							fragmentArmorStatMappings={fragmentArmorStatMappings}
 							armorSlotModArmorStatMappings={armorSlotModArmorStatMapppings}
+							dlbLink={`${generateDlbLink({
+								raidModIdList: selectedRaidMods,
+								armorSlotMods: selectedArmorSlotMods,
+								fragmentIdList: fragmentIds,
+								aspectIdList: aspectIds,
+								exoticArmor: exoticArmor,
+								destinySubclassId,
+								destinyClassId: selectedDestinyClass,
+								jumpId: selectedJump[destinySubclassId],
+								meleeId: selectedMelee[destinySubclassId],
+								superAbilityId: selectedSuperAbility[destinySubclassId],
+								classAbilityId: selectedClassAbility[destinySubclassId],
+								grenadeId: selectedGrenade[elementId],
+								desiredArmorStats,
+							})}`}
 							dimLink={`${generateDimLink({
 								raidModIdList: selectedRaidMods,
 								armorStatModIdList: item.requiredStatModIdList,

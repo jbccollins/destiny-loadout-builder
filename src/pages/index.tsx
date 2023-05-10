@@ -79,6 +79,7 @@ import {
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import ReservedArmorSlotEnergySelector from '@dlb/components/ReservedArmorSlotEnergySelector';
+import ShareLoadout from '@dlb/components/ShareLoadout';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -240,6 +241,7 @@ const LeftSectionComponent = () => {
 									<RaidModSelector />
 									{/* <ReservedArmorSlotEnergySelector /> */}
 								</SelectionControlGroup>
+								<ShareLoadout />
 							</>
 						),
 						index: 0,

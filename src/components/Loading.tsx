@@ -104,6 +104,10 @@ import {
 	selectSelectedMelee,
 	setSelectedMelee,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+import {
+	selectSharedLoadoutDesiredStats,
+	setSharedLoadoutDesiredStats,
+} from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -167,6 +171,9 @@ function Loading() {
 	const selectedMelee = useAppSelector(selectSelectedMelee);
 	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
 	const selectedJump = useAppSelector(selectSelectedJump);
+	const sharedLoadoutDesiredStats = useAppSelector(
+		selectSharedLoadoutDesiredStats
+	);
 
 	const defaultSelectedDestinySubclass: Record<
 		EDestinyClassId,
@@ -306,7 +313,14 @@ function Loading() {
 		}
 
 		if (loadoutConfig.desiredArmorStats) {
-			dispatch(setDesiredArmorStats(loadoutConfig.desiredArmorStats));
+			dispatch(
+				setSharedLoadoutDesiredStats({
+					desiredArmorStats: loadoutConfig.desiredArmorStats,
+					needed: true,
+					processing: false,
+					complete: false,
+				})
+			);
 		}
 	}
 
@@ -391,6 +405,7 @@ function Loading() {
 				);
 				const characters = extractCharacters(stores);
 				dispatch(setCharacters([...characters]));
+
 				if (hasLoadout) {
 					loadFromQueryParams({
 						availableExoticArmor,
@@ -454,9 +469,10 @@ function Loading() {
 					);
 					dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
 					dispatch(setSelectedRaidMods(selectedRaidMods));
-					dispatch(setDesiredArmorStats(desiredArmorStats));
+					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
 				}
 
+				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
 
 				if (hasDimLoadoutsError) {

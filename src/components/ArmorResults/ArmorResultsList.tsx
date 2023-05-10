@@ -71,7 +71,7 @@ type ResultsItemProps = {
 		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	>;
 	dimLink: string;
-	dlbLink: string;
+	isRecommendedLoadout: boolean;
 };
 
 const ResultsContainer = styled(Box)(({ theme }) => ({
@@ -148,6 +148,15 @@ const LoadoutDetails = styled(Box)(({ theme }) => ({
 	// overflowX: 'auto',
 }));
 
+const RecommendedLoadoutHeader = styled(Box)(({ theme }) => ({
+	color: 'orange',
+	fontSize: '1.5rem',
+	fontWeight: 'bold',
+	width: '100%',
+	textAlign: 'center',
+	marginBottom: theme.spacing(1),
+}));
+
 // TODO: Figure this out from the initial ingestion of armor and store in redux
 const hasMasterworkedClassItem = true;
 
@@ -191,7 +200,7 @@ function ResultsItem({
 	fragmentArmorStatMappings,
 	armorSlotModArmorStatMappings,
 	dimLink,
-	dlbLink,
+	isRecommendedLoadout,
 }: ResultsItemProps) {
 	const [open, setOpen] = React.useState(false);
 	const totalStatMapping = getDefaultArmorStatMapping();
@@ -266,7 +275,14 @@ function ResultsItem({
 		);
 	};
 	return (
-		<ResultsItemContainer>
+		<ResultsItemContainer
+			sx={{
+				border: isRecommendedLoadout ? '2px solid orange' : 'none',
+			}}
+		>
+			{isRecommendedLoadout && (
+				<RecommendedLoadoutHeader>Recommended Loadout</RecommendedLoadoutHeader>
+			)}
 			<ResultsSection>
 				<Title>Armor</Title>
 				{item.armorItems.map((armorItem) => {
@@ -353,16 +369,6 @@ function ResultsItem({
 						href={dimLink}
 					>
 						Open loadout in DIM
-					</Button>
-				</Box>
-				<Box sx={{ flexBasis: '100%' }}>
-					<Button
-						sx={{ width: 200 }}
-						variant="contained"
-						target={'_blank'}
-						href={dlbLink}
-					>
-						Share Loadout
 					</Button>
 				</Box>
 				<Box
@@ -595,6 +601,9 @@ function ResultsItem({
 }
 
 function ArmorResultsList({ items }: ArmorResultsListProps) {
+	const urlParams = new URLSearchParams(window.location.search);
+	const loadoutString = urlParams.get('loadout');
+	const hasLoadoutQueryParams = loadoutString ? true : false;
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
@@ -679,30 +688,16 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 		<ResultsContainer>
 			{items
 				//  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-				.map((item) => {
+				.map((item, i) => {
 					return (
 						<ResultsItem
 							key={item.id}
 							item={item}
+							isRecommendedLoadout={i === 0 && hasLoadoutQueryParams}
 							destinyClassId={selectedDestinyClass}
 							masterworkAssumption={selectedMasterworkAssumption}
 							fragmentArmorStatMappings={fragmentArmorStatMappings}
 							armorSlotModArmorStatMappings={armorSlotModArmorStatMapppings}
-							dlbLink={`${generateDlbLink({
-								raidModIdList: selectedRaidMods,
-								armorSlotMods: selectedArmorSlotMods,
-								fragmentIdList: fragmentIds,
-								aspectIdList: aspectIds,
-								exoticArmor: exoticArmor,
-								destinySubclassId,
-								destinyClassId: selectedDestinyClass,
-								jumpId: selectedJump[destinySubclassId],
-								meleeId: selectedMelee[destinySubclassId],
-								superAbilityId: selectedSuperAbility[destinySubclassId],
-								classAbilityId: selectedClassAbility[destinySubclassId],
-								grenadeId: selectedGrenade[elementId],
-								desiredArmorStats,
-							})}`}
 							dimLink={`${generateDimLink({
 								raidModIdList: selectedRaidMods,
 								armorStatModIdList: item.requiredStatModIdList,

@@ -1,7 +1,9 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 
 import counterReducer from './features/counter/counterSlice';
-import desiredArmorStatsReducer from './features/desiredArmorStats/desiredArmorStatsSlice';
+import desiredArmorStatsReducer, {
+	setDesiredArmorStats,
+} from './features/desiredArmorStats/desiredArmorStatsSlice';
 import maxPossibleStatsReducer, {
 	setMaxPossibleStats,
 } from './features/maxPossibleStats/maxPossibleStatsSlice';
@@ -26,6 +28,9 @@ import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidMod
 import loadErrorReducer from './features/loadError/loadErrorSlice';
 import validDestinyClassIdsReducer from './features/validDestinyClassIds/validDestinyClassIdsSlice';
 import reservedArmorSlotEnergyReducer from './features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import sharedLoadoutDesiredStatsReducer, {
+	setSharedLoadoutDesiredStats,
+} from './features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
 
 import resultsPaginationReducer, {
 	setResultsPagination,
@@ -54,6 +59,7 @@ import { NIL } from 'uuid';
 // } from '@dlb/services/armor-processing';
 
 import {
+	DoProcessArmorOutput,
 	doProcessArmor,
 	preProcessArmor,
 } from '@dlb/services/processArmor/index';
@@ -61,6 +67,8 @@ import {
 	getArmorStatMappingFromMods,
 	getArmorStatMappingFromFragments,
 	getDefaultArmorStatMapping,
+	ArmorStatIdList,
+	ArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
@@ -136,6 +144,7 @@ export function makeStore() {
 			selectedMinimumGearTier: selectedMinimumGearTierReducer,
 			selectedRaidMods: selectedRaidModsReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
+			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
 		},
 	});
@@ -156,6 +165,7 @@ let selectedMinimumGearTierUuid = NIL;
 let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
+let sharedLoadoutDesiredStatsUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: any = null;
@@ -194,6 +204,7 @@ function handleChange() {
 		dimLoadouts: { uuid: nextDimLoadoutsUuid },
 		dimLoadoutsFilter: { uuid: nextDimLoadoutsFilterUuid },
 		reservedArmorSlotEnergy: { uuid: nextReservedArmorSlotEnergyUuid },
+		sharedLoadoutDesiredStats: { uuid: nextSharedLoadoutDesiredStatsUuid },
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -211,7 +222,8 @@ function handleChange() {
 		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
 		dimLoadoutsUuid !== nextDimLoadoutsUuid ||
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
-		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid;
+		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
+		sharedLoadoutDesiredStatsUuid !== nextSharedLoadoutDesiredStatsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedDestinyClassUuid !== NIL &&
@@ -224,132 +236,224 @@ function handleChange() {
 		nextSelectedMinimumGearTierUuid !== NIL &&
 		nextDimLoadoutsUuid !== NIL &&
 		nextDimLoadoutsFilterUuid !== NIL &&
-		nextReservedArmorSlotEnergyUuid !== NIL;
+		nextReservedArmorSlotEnergyUuid !== NIL &&
+		nextSharedLoadoutDesiredStatsUuid !== NIL;
 
-	if (hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) {
-		console.log('>>>>>>>>>>> [STORE] store is dirty <<<<<<<<<<<');
-		desiredArmorStatsUuid = nextDesiredArmorStatsUuid;
-		selectedDestinyClassUuid = nextSelectedDestinyClassUuid;
-		selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
-		selectedDestinySubclassUuid = nextSelectedDestinySubclassUuid;
-		selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
-		selectedFragmentsUuid = nextSelectedFragmentsUuid;
-		selectedRaidModsUuid = nextSelectedRaidModsUuid;
-		selectedArmorSlotModsUuid = nextSelectedArmorSlotModsUuid;
-		selectedMinimumGearTierUuid = nextSelectedMinimumGearTierUuid;
-		dimLoadoutsUuid = nextDimLoadoutsUuid;
-		dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
-		reservedArmorSlotEnergyUuid = nextReservedArmorSlotEnergyUuid;
+	if (!(hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids)) {
+		return;
+	}
 
-		// TODO: Move this out of the store file
-		const {
-			armor: { value: armor },
-			armorMetadata: { value: armorMetadata },
-			selectedExoticArmor: { value: selectedExoticArmor },
-			selectedDestinyClass: { value: selectedDestinyClass },
-			desiredArmorStats: { value: desiredArmorStats },
-			selectedMasterworkAssumption: { value: masterworkAssumption },
-			selectedFragments: { value: selectedFragments },
-			selectedDestinySubclass: { value: selectedDestinySubclass },
-			selectedRaidMods: { value: selectedRaidMods },
-			selectedArmorSlotMods: { value: selectedArmorSlotMods },
-			selectedMinimumGearTier: { value: selectedMinimumGearTier },
-			dimLoadouts: { value: dimLoadouts },
-			dimLoadoutsFilter: { value: dimLoadoutsFilter },
-			reservedArmorSlotEnergy: { value: reservedArmorSlotEnergy },
-		} = store.getState();
+	console.log('>>>>>>>>>>> [STORE] store is dirty <<<<<<<<<<<');
+	desiredArmorStatsUuid = nextDesiredArmorStatsUuid;
+	selectedDestinyClassUuid = nextSelectedDestinyClassUuid;
+	selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
+	selectedDestinySubclassUuid = nextSelectedDestinySubclassUuid;
+	selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
+	selectedFragmentsUuid = nextSelectedFragmentsUuid;
+	selectedRaidModsUuid = nextSelectedRaidModsUuid;
+	selectedArmorSlotModsUuid = nextSelectedArmorSlotModsUuid;
+	selectedMinimumGearTierUuid = nextSelectedMinimumGearTierUuid;
+	dimLoadoutsUuid = nextDimLoadoutsUuid;
+	dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
+	reservedArmorSlotEnergyUuid = nextReservedArmorSlotEnergyUuid;
+	sharedLoadoutDesiredStatsUuid = nextSharedLoadoutDesiredStatsUuid;
 
-		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
-		// const { elementId } = getDestinySubclass(destinySubclassId);
+	// TODO: Move this out of the store file
+	const {
+		armor: { value: armor },
+		armorMetadata: { value: armorMetadata },
+		selectedExoticArmor: { value: selectedExoticArmor },
+		selectedDestinyClass: { value: selectedDestinyClass },
+		desiredArmorStats: { value: desiredArmorStats },
+		selectedMasterworkAssumption: { value: masterworkAssumption },
+		selectedFragments: { value: selectedFragments },
+		selectedDestinySubclass: { value: selectedDestinySubclass },
+		selectedRaidMods: { value: selectedRaidMods },
+		selectedArmorSlotMods: { value: selectedArmorSlotMods },
+		selectedMinimumGearTier: { value: selectedMinimumGearTier },
+		dimLoadouts: { value: dimLoadouts },
+		dimLoadoutsFilter: { value: dimLoadoutsFilter },
+		reservedArmorSlotEnergy: { value: reservedArmorSlotEnergy },
+		sharedLoadoutDesiredStats: { value: sharedLoadoutDesiredStats },
+	} = store.getState();
 
-		let elementId: EElementId = EElementId.Any;
-		if (destinySubclassId) {
-			elementId = getDestinySubclass(destinySubclassId).elementId;
-		}
+	if (sharedLoadoutDesiredStats.processing) {
+		return;
+	}
 
-		const fragmentArmorStatMapping = destinySubclassId
-			? getArmorStatMappingFromFragments(
-					selectedFragments[elementId],
-					selectedDestinyClass
-			  )
-			: getDefaultArmorStatMapping();
-		let mods = [...selectedRaidMods];
-		ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
-			mods = [...mods, ...selectedArmorSlotMods[armorSlotId]];
-		});
-		const modsArmorStatMapping = getArmorStatMappingFromMods(
-			mods,
-			selectedDestinyClass
-		);
+	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
+	// const { elementId } = getDestinySubclass(destinySubclassId);
 
-		const validRaidModArmorSlotPlacements = getValidRaidModArmorSlotPlacements(
-			selectedArmorSlotMods,
-			selectedRaidMods
-		);
-		console.log(
-			'>>>>>>>>>>> [STORE] validRaidModArmorSlotPlacements <<<<<<<<<<<',
-			validRaidModArmorSlotPlacements
-		);
+	let elementId: EElementId = EElementId.Any;
+	if (destinySubclassId) {
+		elementId = getDestinySubclass(destinySubclassId).elementId;
+	}
 
-		const disabledArmorSlotMods = getDisabledArmorSlotMods(
-			selectedArmorSlotMods,
-			selectedRaidMods
-		);
-		console.log(
-			'>>>>>>>>>>> [STORE] disabledArmorSlotMods <<<<<<<<<<<',
-			disabledArmorSlotMods
-		);
-		store.dispatch(setDisabledArmorSlotMods(disabledArmorSlotMods));
+	const fragmentArmorStatMapping = destinySubclassId
+		? getArmorStatMappingFromFragments(
+				selectedFragments[elementId],
+				selectedDestinyClass
+		  )
+		: getDefaultArmorStatMapping();
+	let mods = [...selectedRaidMods];
+	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+		mods = [...mods, ...selectedArmorSlotMods[armorSlotId]];
+	});
+	const modsArmorStatMapping = getArmorStatMappingFromMods(
+		mods,
+		selectedDestinyClass
+	);
 
-		const disabledRaidMods = getDisabledRaidMods(
-			selectedArmorSlotMods,
-			selectedRaidMods
-		);
-		console.log(
-			'>>>>>>>>>>> [STORE] disabledRaidMods <<<<<<<<<<<',
-			disabledRaidMods
-		);
-		store.dispatch(setDisabledRaidMods(disabledRaidMods));
+	const validRaidModArmorSlotPlacements = getValidRaidModArmorSlotPlacements(
+		selectedArmorSlotMods,
+		selectedRaidMods
+	);
+	console.log(
+		'>>>>>>>>>>> [STORE] validRaidModArmorSlotPlacements <<<<<<<<<<<',
+		validRaidModArmorSlotPlacements
+	);
 
-		const armorSlotModViolations = getArmorSlotModViolations(
-			selectedArmorSlotMods
-		);
-		store.dispatch(setArmorSlotModViolations(armorSlotModViolations));
-		store.dispatch(setResultsPagination(0));
-		// TODO: no need to preProcessArmor when only the stat slider has changed.
-		// Maybe we don't need to trigger that fake initial dispatch in
-		// the slider component if we fix this?
-		const preProcessedArmor = preProcessArmor(
-			armor[selectedDestinyClass],
-			selectedExoticArmor[selectedDestinyClass],
-			dimLoadouts.filter(
-				(x) =>
-					DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
-			),
-			dimLoadoutsFilter,
-			selectedMinimumGearTier
-		);
-		console.log(
-			'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',
-			preProcessedArmor
-		);
-		const results = doProcessArmor({
-			masterworkAssumption,
-			desiredArmorStats,
-			armorItems: preProcessedArmor,
-			fragmentArmorStatMapping,
-			modArmorStatMapping: modsArmorStatMapping,
-			potentialRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
-			armorSlotMods: selectedArmorSlotMods,
-			raidMods: selectedRaidMods.filter((x) => x !== null),
-			destinyClassId: selectedDestinyClass,
-			armorMetadataItem: armorMetadata[selectedDestinyClass],
-			selectedExotic: selectedExoticArmor[selectedDestinyClass],
-			reservedArmorSlotEnergy,
-		});
+	const disabledArmorSlotMods = getDisabledArmorSlotMods(
+		selectedArmorSlotMods,
+		selectedRaidMods
+	);
+	console.log(
+		'>>>>>>>>>>> [STORE] disabledArmorSlotMods <<<<<<<<<<<',
+		disabledArmorSlotMods
+	);
+	store.dispatch(setDisabledArmorSlotMods(disabledArmorSlotMods));
+
+	const disabledRaidMods = getDisabledRaidMods(
+		selectedArmorSlotMods,
+		selectedRaidMods
+	);
+	console.log(
+		'>>>>>>>>>>> [STORE] disabledRaidMods <<<<<<<<<<<',
+		disabledRaidMods
+	);
+	store.dispatch(setDisabledRaidMods(disabledRaidMods));
+
+	const armorSlotModViolations = getArmorSlotModViolations(
+		selectedArmorSlotMods
+	);
+	store.dispatch(setArmorSlotModViolations(armorSlotModViolations));
+	store.dispatch(setResultsPagination(0));
+	// TODO: no need to preProcessArmor when only the stat slider has changed.
+	// Maybe we don't need to trigger that fake initial dispatch in
+	// the slider component if we fix this?
+	const preProcessedArmor = preProcessArmor(
+		armor[selectedDestinyClass],
+		selectedExoticArmor[selectedDestinyClass],
+		dimLoadouts.filter(
+			(x) =>
+				DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
+		),
+		dimLoadoutsFilter,
+		selectedMinimumGearTier
+	);
+	console.log(
+		'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',
+		preProcessedArmor
+	);
+
+	const doProcessArmorParams = {
+		masterworkAssumption,
+		desiredArmorStats,
+		armorItems: preProcessedArmor,
+		fragmentArmorStatMapping,
+		modArmorStatMapping: modsArmorStatMapping,
+		potentialRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
+		armorSlotMods: selectedArmorSlotMods,
+		raidMods: selectedRaidMods.filter((x) => x !== null),
+		destinyClassId: selectedDestinyClass,
+		armorMetadataItem: armorMetadata[selectedDestinyClass],
+		selectedExotic: selectedExoticArmor[selectedDestinyClass],
+		reservedArmorSlotEnergy,
+	};
+
+	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {
+		const results = doProcessArmor(doProcessArmorParams);
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
 		store.dispatch(setProcessedArmor(results.items));
+	}
+
+	if (sharedLoadoutDesiredStats.needed && !sharedLoadoutDesiredStats.complete) {
+		store.dispatch(
+			setSharedLoadoutDesiredStats({
+				...sharedLoadoutDesiredStats,
+				processing: true,
+			})
+		);
+
+		console.log(
+			'>>>>>>>>>>> [STORE] Checking loadout shared desired stat tiers <<<<<<<<<<<'
+		);
+		// Try to hit exactly the stats that the creator of the shared link wanted
+		const sharedLoadoutDesiredStatsResults = doProcessArmor({
+			...doProcessArmorParams,
+			desiredArmorStats: sharedLoadoutDesiredStats.desiredArmorStats,
+		});
+
+		if (sharedLoadoutDesiredStatsResults.items.length > 0) {
+			console.log(
+				'>>>>>>>>>>> [STORE] Found exact match for loadout shared desired stat tiers <<<<<<<<<<<'
+			);
+			store.dispatch(
+				setMaxPossibleStats(
+					sharedLoadoutDesiredStatsResults.maxPossibleDesiredStatTiers
+				)
+			);
+			store.dispatch(
+				setDesiredArmorStats(sharedLoadoutDesiredStats.desiredArmorStats)
+			);
+			store.dispatch(setProcessedArmor(sharedLoadoutDesiredStatsResults.items));
+			store.dispatch(
+				setSharedLoadoutDesiredStats({
+					...sharedLoadoutDesiredStats,
+					processing: false,
+					complete: true,
+				})
+			);
+			return;
+		}
+		console.log(
+			'>>>>>>>>>>> [STORE] Could exact match the loadout shared desired stat tiers. Calculating bestFitResults... <<<<<<<<<<<'
+		);
+		// If we can't get exactly the stats that the creator of the share link wanted then then
+		// find the closest stats to what they wanted
+		// TODO: Allow the creator of the shared link to prioritize the stat order
+		const bestFitDesiredArmorStats: ArmorStatMapping =
+			getDefaultArmorStatMapping();
+		let bestFitResults: DoProcessArmorOutput = null;
+		ArmorStatIdList.forEach((armorStatId) => {
+			const desiredStatValue =
+				sharedLoadoutDesiredStats.desiredArmorStats[armorStatId];
+			for (let i = desiredStatValue; i > 0; i -= 10) {
+				bestFitDesiredArmorStats[armorStatId] = i;
+				bestFitResults = doProcessArmor({
+					...doProcessArmorParams,
+					desiredArmorStats: bestFitDesiredArmorStats,
+				});
+				if (bestFitResults?.items.length > 0) {
+					break;
+				}
+			}
+		});
+		if (bestFitResults?.items.length > 0) {
+			store.dispatch(
+				setMaxPossibleStats(bestFitResults.maxPossibleDesiredStatTiers)
+			);
+			store.dispatch(setDesiredArmorStats(bestFitDesiredArmorStats));
+			store.dispatch(setProcessedArmor(bestFitResults.items));
+			store.dispatch(
+				setSharedLoadoutDesiredStats({
+					...sharedLoadoutDesiredStats,
+					processing: false,
+					complete: true,
+				})
+			);
+		}
 	}
 }
 

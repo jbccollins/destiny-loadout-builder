@@ -278,7 +278,8 @@ function ResultsItem({
 	return (
 		<ResultsItemContainer
 			sx={{
-				border: isRecommendedLoadout ? '2px solid orange' : 'none',
+				borderTop: isRecommendedLoadout ? '2px solid orange' : 'none',
+				borderBottom: isRecommendedLoadout ? '2px solid orange' : 'none',
 			}}
 		>
 			{isRecommendedLoadout && (

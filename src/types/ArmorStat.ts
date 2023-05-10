@@ -83,6 +83,7 @@ export const getArmorStat = (id: EArmorStatId): IArmorStat =>
 export type ArmorStatModSplit = {
 	major: EModId;
 	minor: EModId;
+	artifice: EModId;
 };
 
 /***** Extra  *****/
@@ -93,26 +94,32 @@ const ArmorStatIdToArmorStatModSplitMapping: EnumDictionary<
 	[EArmorStatId.Mobility]: {
 		minor: EModId.MinorMobilityMod,
 		major: EModId.MobilityMod,
+		artifice: EModId.MobilityForged,
 	},
 	[EArmorStatId.Resilience]: {
 		minor: EModId.MinorResilienceMod,
 		major: EModId.ResilienceMod,
+		artifice: EModId.ResilienceForged,
 	},
 	[EArmorStatId.Recovery]: {
 		minor: EModId.MinorRecoveryMod,
 		major: EModId.RecoveryMod,
+		artifice: EModId.RecoveryForged,
 	},
 	[EArmorStatId.Discipline]: {
 		minor: EModId.MinorDisciplineMod,
 		major: EModId.DisciplineMod,
+		artifice: EModId.DisciplineForged,
 	},
 	[EArmorStatId.Intellect]: {
 		minor: EModId.MinorIntellectMod,
 		major: EModId.IntellectMod,
+		artifice: EModId.IntellectForged,
 	},
 	[EArmorStatId.Strength]: {
 		minor: EModId.MinorStrengthMod,
 		major: EModId.StrengthMod,
+		artifice: EModId.StrengthForged,
 	},
 };
 
@@ -138,15 +145,14 @@ export const DefaultArmorStatMapping: ArmorStatMapping = {
 	[EArmorStatId.Strength]: 0,
 };
 
-// export const getStat = (
-// 	stat: StatBonusStat,
-// 	destinyClassId: EDestinyClassId
-// ) => {
-// 	if (typeof stat === 'string') {
-// 		return getArmorStat(stat);
-// 	}
-// 	return getArmorStat(stat(destinyClassId));
-// };
+export const getDefaultArmorStatMapping = (): ArmorStatMapping => ({
+	[EArmorStatId.Mobility]: 0,
+	[EArmorStatId.Resilience]: 0,
+	[EArmorStatId.Recovery]: 0,
+	[EArmorStatId.Discipline]: 0,
+	[EArmorStatId.Intellect]: 0,
+	[EArmorStatId.Strength]: 0,
+});
 
 export const getStat = (
 	stat: StatBonusStat,
@@ -163,7 +169,7 @@ export const getArmorStatMappingFromFragments = (
 	fragmentIds: EFragmentId[],
 	destinyClassId: EDestinyClassId
 ): ArmorStatMapping => {
-	const armorStatMapping = { ...DefaultArmorStatMapping };
+	const armorStatMapping = getDefaultArmorStatMapping();
 	fragmentIds.forEach((id) => {
 		const { bonuses } = getFragment(id);
 		bonuses.map((bonus) => {
@@ -178,7 +184,7 @@ export const getArmorStatMappingFromMods = (
 	modIds: EModId[],
 	destinyClassId: EDestinyClassId
 ): ArmorStatMapping => {
-	const armorStatMapping = { ...DefaultArmorStatMapping };
+	const armorStatMapping = getDefaultArmorStatMapping();
 	modIds
 		.filter((modId) => modId !== null)
 		.forEach((id) => {

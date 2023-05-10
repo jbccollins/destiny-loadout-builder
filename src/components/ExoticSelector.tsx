@@ -42,6 +42,7 @@ function ExoticSelector() {
 		}
 		const newSelectedExoticArmor = { ...selectedExoticArmor };
 		newSelectedExoticArmor[selectedDestinyClass] = armor;
+		console.log('>>>>> HANDLE CHANGE');
 		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
 	};
 

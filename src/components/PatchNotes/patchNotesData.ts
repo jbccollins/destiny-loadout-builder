@@ -11,6 +11,20 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-05-11',
+		version: '2.0.0',
+		title: 'New armor processing algorithm',
+		sections: [
+			{
+				items: [
+					`Completely rewrote the underlying algorithm to process armor combinations. This should result both faster performance and more accurate results.`,
+					`Added the ability to share loadouts via a url`,
+					`Note that shareing loadouts will attempt to "best fit" desired stats.`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-05-03',
 		version: '1.4.1',
 		title: 'Fix crash for users without enough armor',

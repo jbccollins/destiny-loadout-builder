@@ -730,20 +730,6 @@ export function makeItem(
 
 	const statData = itemComponents.perks.data || {};
 	const perks = (statData[item.itemInstanceId || ''] || {})['perks'] || [];
-	if (item.itemInstanceId === '6917529863882213618') {
-		console.log(
-			'+++++++++++++++++++++++',
-			statData,
-			perks,
-			itemDef,
-			itemDef.perks,
-			(
-				itemDef.sockets?.socketEntries.filter(
-					(d) => d.reusablePlugSetHash == 1183
-				) || []
-			).length > 0
-		);
-	}
 	// if (itemDef.perks?.length) {
 	// 	const perks = itemDef.perks.filter(
 	// 		(p) =>

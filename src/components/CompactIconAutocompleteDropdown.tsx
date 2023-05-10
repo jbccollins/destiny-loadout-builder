@@ -16,7 +16,6 @@ import match from 'autosuggest-highlight/match';
 import DecoratedBungieIcon from './DecoratedBungieIcon';
 import { useState } from 'react';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
-import { toDashCase } from '@dlb/utils/string';
 
 const StyledPopper = styled(Popper)({
 	display: 'none',
@@ -27,7 +26,6 @@ const Container = styled('div', {
 })<{ open: boolean }>(({ theme, open }) => ({
 	color: theme.palette.secondary.main,
 	['.armor-slot-mod-selector-text-field']: {
-		//borderRadius: '0px',
 		['fieldset']: {
 			marginLeft: '-1px',
 			borderRadius: '0px',
@@ -45,11 +43,7 @@ const Container = styled('div', {
 		},
 	},
 
-	//////
-
 	['.outer-text-field input']: {
-		// display: 'none',
-		// visibility: 'hidden'
 		maxWidth: '0px !important',
 		minWidth: '0px !important',
 		padding: '0px !important',

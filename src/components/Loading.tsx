@@ -10,7 +10,10 @@ import { setArmor } from '@dlb/redux/features/armor/armorSlice';
 import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import {
+	selectSelectedExoticArmor,
+	setSelectedExoticArmor,
+} from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { setSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
@@ -19,10 +22,12 @@ import {
 	extractCharacters,
 	getValidDestinyClassIds,
 } from '@dlb/services/data';
-import { AvailableExoticArmorItem } from '@dlb/types/Armor';
+import {
+	AvailableExoticArmor,
+	AvailableExoticArmorItem,
+} from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
-import DestinySubclassAndSuperAbilityOptions from '@dlb/constants/DestinySubclassAndSuperAbilityOptions';
 
 import {
 	EDestinyClassId,
@@ -69,6 +74,40 @@ import {
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
+import {
+	selectReservedArmorSlotEnergy,
+	setReservedArmorSlotEnergy,
+} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
+import {
+	selectSelectedAspects,
+	setSelectedAspects,
+} from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import {
+	selectSelectedSuperAbility,
+	setSelectedSuperAbility,
+} from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import {
+	selectSelectedGrenade,
+	setSelectedGrenade,
+} from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import {
+	selectSelectedClassAbility,
+	setSelectedClassAbility,
+} from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
+import {
+	selectSelectedJump,
+	setSelectedJump,
+} from '@dlb/redux/features/selectedJump/selectedJumpSlice';
+import {
+	selectSelectedMelee,
+	setSelectedMelee,
+} from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+import {
+	selectSharedLoadoutDesiredStats,
+	setSharedLoadoutDesiredStats,
+} from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -119,14 +158,179 @@ function Loading() {
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
+	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
+	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
+	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
+	const selectedAspects = useAppSelector(selectSelectedAspects);
+	const selectedGrenade = useAppSelector(selectSelectedGrenade);
+	const selectedMelee = useAppSelector(selectSelectedMelee);
+	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
+	const selectedJump = useAppSelector(selectSelectedJump);
+	const sharedLoadoutDesiredStats = useAppSelector(
+		selectSharedLoadoutDesiredStats
+	);
+
+	const defaultSelectedDestinySubclass: Record<
+		EDestinyClassId,
+		EDestinySubclassId
+	> = {
+		[EDestinyClassId.Titan]: null,
+		[EDestinyClassId.Hunter]: null,
+		[EDestinyClassId.Warlock]: null,
+	};
+
+	const defaultSelectedExoticArmor: Record<
+		EDestinyClassId,
+		AvailableExoticArmorItem
+	> = {
+		[EDestinyClassId.Titan]: null,
+		[EDestinyClassId.Hunter]: null,
+		[EDestinyClassId.Warlock]: null,
+	};
+
+	type LoadFromQueryParamsParams = {
+		availableExoticArmor: AvailableExoticArmor;
+		loadoutString: string;
+	};
+	function loadFromQueryParams({
+		availableExoticArmor,
+		loadoutString,
+	}: LoadFromQueryParamsParams) {
+		const loadoutConfig = JSON.parse(loadoutString) as DlbLoadoutConfiguration;
+		// Class
+		dispatch(setSelectedDestinyClass(loadoutConfig.destinyClassId));
+
+		// Exotic
+		for (const armorSlotId of ArmorSlotIdList) {
+			const availableExoticArmorForSlot = availableExoticArmor[
+				loadoutConfig.destinyClassId
+			][armorSlotId] as AvailableExoticArmorItem[];
+			const item = availableExoticArmorForSlot.find(
+				(x) => x.hash === loadoutConfig.exoticArmor.hash
+			);
+			if (item) {
+				dispatch(
+					setSelectedExoticArmor({
+						...selectedExoticArmor,
+						[loadoutConfig.destinyClassId]: item,
+					})
+				);
+				break;
+			}
+		}
+
+		let elementId: EElementId = null;
+		// Subclass
+		if (loadoutConfig.destinySubclassId) {
+			elementId = getDestinySubclass(loadoutConfig.destinySubclassId).elementId;
+			dispatch(
+				setSelectedDestinySubclass({
+					...defaultSelectedDestinySubclass,
+					[loadoutConfig.destinyClassId]: loadoutConfig.destinySubclassId,
+				})
+			);
+		} else {
+			dispatch(setSelectedDestinySubclass(defaultSelectedDestinySubclass));
+		}
+
+		// Super ability
+		if (loadoutConfig.superAbilityId) {
+			dispatch(
+				setSelectedSuperAbility({
+					...selectedSuperAbility,
+					[loadoutConfig.destinySubclassId]: loadoutConfig.superAbilityId,
+				})
+			);
+		}
+
+		// Aspects
+		if (loadoutConfig.aspectIdList) {
+			dispatch(
+				setSelectedAspects({
+					...selectedAspects,
+					[loadoutConfig.destinySubclassId]: loadoutConfig.aspectIdList,
+				})
+			);
+		}
+
+		// Fragments
+		if (loadoutConfig.fragmentIdList) {
+			dispatch(
+				setSelectedFragments({
+					elementId,
+					fragments: loadoutConfig.fragmentIdList,
+				})
+			);
+		}
+
+		if (loadoutConfig.grenadeId) {
+			dispatch(
+				setSelectedGrenade({
+					...selectedGrenade,
+					[elementId]: loadoutConfig.grenadeId,
+				})
+			);
+		}
+
+		if (loadoutConfig.meleeId) {
+			dispatch(
+				setSelectedMelee({
+					...selectedMelee,
+					[loadoutConfig.destinySubclassId]: loadoutConfig.meleeId,
+				})
+			);
+		}
+
+		if (loadoutConfig.classAbilityId) {
+			dispatch(
+				setSelectedClassAbility({
+					...selectedClassAbility,
+					[loadoutConfig.destinySubclassId]: loadoutConfig.classAbilityId,
+				})
+			);
+		}
+
+		if (loadoutConfig.jumpId) {
+			dispatch(
+				setSelectedJump({
+					...selectedJump,
+					[loadoutConfig.destinySubclassId]: loadoutConfig.jumpId,
+				})
+			);
+		}
+
+		if (loadoutConfig.armorSlotMods) {
+			dispatch(setSelectedArmorSlotMods(loadoutConfig.armorSlotMods));
+		}
+
+		if (loadoutConfig.raidModIdList) {
+			dispatch(setSelectedRaidMods(loadoutConfig.raidModIdList));
+		}
+
+		if (loadoutConfig.desiredArmorStats) {
+			dispatch(
+				setSharedLoadoutDesiredStats({
+					desiredArmorStats: loadoutConfig.desiredArmorStats,
+					needed: true,
+					processing: false,
+					complete: false,
+				})
+			);
+		}
+	}
 
 	useEffect(() => {
 		(async () => {
+			const urlParams = new URLSearchParams(window.location.search);
+			const loadoutString = urlParams.get('loadout');
+
+			const hasLoadout = loadoutString ? true : false;
+
 			try {
 				console.log('>>>>>>>>>>> [LOAD] begin <<<<<<<<<<<');
 				dispatch(setAllDataLoaded(false));
@@ -178,6 +382,7 @@ function Loading() {
 				setHasStores(true);
 				const [armor, availableExoticArmor, armorMetadata] =
 					extractArmor(stores);
+
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
 				dispatch(setArmorMetadata({ ...armorMetadata }));
@@ -200,95 +405,82 @@ function Loading() {
 				);
 				const characters = extractCharacters(stores);
 				dispatch(setCharacters([...characters]));
-				dispatch(setSelectedDestinyClass(validDestinyClassIds[0]));
-				console.log('>>>>>>>>>>> [LOAD] characters <<<<<<<<<<<', characters);
 
-				const defaultSelectedExoticArmor: Record<
-					EDestinyClassId,
-					AvailableExoticArmorItem
-				> = {
-					[EDestinyClassId.Titan]: null,
-					[EDestinyClassId.Hunter]: null,
-					[EDestinyClassId.Warlock]: null,
-				};
-				const defaultSelectedDestinySubclass: Record<
-					EDestinyClassId,
-					EDestinySubclassId
-				> = {
-					[EDestinyClassId.Titan]: null,
-					[EDestinyClassId.Hunter]: null,
-					[EDestinyClassId.Warlock]: null,
-				};
-				DestinyClassIdList.forEach((destinyClassId) => {
-					// defaultSelectedDestinySubclass[destinyClassId] =
-					// 	DestinySubclassAndSuperAbilityOptions[
-					// 		destinyClassId
-					// 	][0].destinySubclassId;
-					// {
-					// 	destinySubclassId:
-					// 		DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
-					// 			.destinySubclassId,
-					// 	superAbilityId:
-					// 		DestinySubclassAndSuperAbilityOptions[destinyClassId][0]
-					// 			.superAbilityId,
-					// };
+				if (hasLoadout) {
+					loadFromQueryParams({
+						availableExoticArmor,
+						loadoutString,
+					});
+				} else {
+					dispatch(setSelectedDestinyClass(validDestinyClassIds[0]));
+					console.log('>>>>>>>>>>> [LOAD] characters <<<<<<<<<<<', characters);
 
-					if (availableExoticArmor[destinyClassId]) {
-						for (const armorSlotId of ArmorSlotIdList) {
-							// TODO: this lookup of className in the availableExoticArmor const is not
-							// typesafe and is not picked up by intellisense. remove all such mapping consts
-							// availableExoticArmor['derp'] is not caught!!!!!
-							if (
-								availableExoticArmor[destinyClassId][armorSlotId].length > 0
-							) {
-								// Just pick the first exotic item we find
-								defaultSelectedExoticArmor[destinyClassId] =
-									availableExoticArmor[destinyClassId][armorSlotId][0];
-								break;
+					DestinyClassIdList.forEach((destinyClassId) => {
+						if (availableExoticArmor[destinyClassId]) {
+							for (const armorSlotId of ArmorSlotIdList) {
+								// TODO: this lookup of className in the availableExoticArmor const is not
+								// typesafe and is not picked up by intellisense. remove all such mapping consts
+								// availableExoticArmor['derp'] is not caught!!!!!
+								if (
+									availableExoticArmor[destinyClassId][armorSlotId].length > 0
+								) {
+									// Just pick the first exotic item we find
+									defaultSelectedExoticArmor[destinyClassId] =
+										availableExoticArmor[destinyClassId][armorSlotId][0];
+									break;
+								}
 							}
 						}
-					}
-				});
-				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
-				console.log(
-					'>>>>>>>>>>> [LOAD] defaultSelectedExoticArmor <<<<<<<<<<<',
-					defaultSelectedExoticArmor
-				);
-				dispatch(setSelectedDestinySubclass(defaultSelectedDestinySubclass));
-				console.log(
-					'>>>>>>>>>>> [LOAD] defaultSelectedDestinySubclass <<<<<<<<<<<',
-					defaultSelectedDestinySubclass
-				);
-				// This is kinda hacky but by triggering a dispatch of the existing
-				// default values for
-				//  [
-				// 		desiredArmorStats,
-				// 		selectedMasterworkAssumption,
-				// 		selectedFragments,
-				// 		dimLoadouts,
-				// 		dimLoadoutsFilter,
-				// 		selectedMinimumGearTier,
-				// 		selectedRaidMods
-				// 	]
-				// we can "dirty" the store so it knows it needs to recalculate the
-				// processedArmorItems
-				dispatch(setSelectedRaidMods(selectedRaidMods));
+					});
+					dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
+					console.log(
+						'>>>>>>>>>>> [LOAD] defaultSelectedExoticArmor <<<<<<<<<<<',
+						defaultSelectedExoticArmor
+					);
+
+					dispatch(setSelectedDestinySubclass(defaultSelectedDestinySubclass));
+					console.log(
+						'>>>>>>>>>>> [LOAD] defaultSelectedDestinySubclass <<<<<<<<<<<',
+						defaultSelectedDestinySubclass
+					);
+
+					// This is kinda hacky but by triggering a dispatch of the existing
+					// default values for
+					//  [
+					// 		desiredArmorStats,
+					// 		selectedMasterworkAssumption,
+					// 		selectedFragments,
+					// 		dimLoadouts,
+					// 		dimLoadoutsFilter,
+					// 		selectedMinimumGearTier,
+					// 		selectedRaidMods,
+					// 		reservedArmorSlotEnergy
+					// 	]
+					// we can "dirty" the store so it knows it needs to recalculate the
+					// processedArmorItems
+
+					// TODO: Rework setSelectedFragments to not require an element id. Just set all elements
+					// with spread syntax
+					dispatch(
+						setSelectedFragments({
+							elementId: EElementId.Stasis,
+							fragments: selectedFragments[EElementId.Stasis],
+						})
+					);
+					dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
+					dispatch(setSelectedRaidMods(selectedRaidMods));
+					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
+				}
+
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
-				// TODO: Rework setSelectedFragments to not require an element id. Just set all elements
-				// with spread syntax
-				dispatch(
-					setSelectedFragments({
-						elementId: EElementId.Stasis,
-						fragments: selectedFragments[EElementId.Stasis],
-					})
-				);
-				dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
+
 				if (hasDimLoadoutsError) {
 					dispatch(setDimLoadouts(dimLoadouts));
 				}
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
+				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
 			} catch (error) {
@@ -316,7 +508,7 @@ function Loading() {
 			// this now gets called when the component unmounts
 			// TODO: Clean up
 		};
-	}, [dispatch, router]);
+	}, []);
 
 	const items: [string, boolean][] = [
 		['Bungie Membership Data', hasMembershipData],

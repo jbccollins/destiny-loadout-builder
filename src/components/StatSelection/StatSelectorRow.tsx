@@ -38,6 +38,7 @@ const TierBlock = styled(Box, {
 		borderRight: '1px solid',
 		borderColor: filled ? 'white' : 'rgb(128, 128, 128)',
 		color: filled ? 'black' : '',
+		opacity: filled || possible ? 1 : 0.6,
 		borderRightColor: filled && !last ? 'black' : '',
 	})
 );

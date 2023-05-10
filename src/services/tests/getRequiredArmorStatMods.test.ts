@@ -1,10 +1,5 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	getRequiredArmorStatMods,
-	GetRequiredArmorStatModsParams,
-	RequiredStatMods,
-} from '@dlb/services/armor-processing';
-import {
 	getDefaultArmorMetadata,
 	getDefaultAvailableExoticArmorItem,
 } from '@dlb/types/Armor';
@@ -16,6 +11,17 @@ import {
 } from '@dlb/types/IdEnums';
 
 import { describe, expect, test } from '@jest/globals';
+import {
+	GetRequiredArmorStatModsParams,
+	RequiredStatMods,
+	getRequiredArmorStatMods,
+} from '@dlb/services/processArmor/getRequiredArmorStatMods';
+
+// import {
+// 	GetRequiredArmorStatModsParams,
+// 	RequiredStatMods,
+// 	getRequiredArmorStatMods,
+// } from '@dlb/services/armor-processing';
 
 const defaultArmorMetadataItem = getDefaultArmorMetadata().Warlock;
 
@@ -331,20 +337,20 @@ const getRequiredArmorStatModsTestCases: GetRequiredArmorStatModsTestCase[] = [
 				EModId.MinorMobilityMod,
 				EModId.MinorResilienceMod,
 				EModId.MinorDisciplineMod,
-				EModId.MinorStrengthMod,
+				EModId.MinorIntellectMod,
 			],
 			requiredArtificeModIdList: [
 				EModId.RecoveryForged,
-				EModId.IntellectForged,
-				EModId.IntellectForged,
+				EModId.StrengthForged,
+				EModId.StrengthForged,
 			],
 			requiredArmorStatModsArmorStatMapping: {
 				[EArmorStatId.Mobility]: 15,
 				[EArmorStatId.Resilience]: 5,
 				[EArmorStatId.Recovery]: 0,
 				[EArmorStatId.Discipline]: 5,
-				[EArmorStatId.Intellect]: 0,
-				[EArmorStatId.Strength]: 5,
+				[EArmorStatId.Intellect]: 5,
+				[EArmorStatId.Strength]: 0,
 			},
 			numUnusedArtificeMods: 1,
 			// This would also work. The algorithm doesn't try to use fewer
@@ -450,7 +456,8 @@ describe('getRequiredArmorStatMods', () => {
 	});
 	test(getRequiredArmorStatModsTestCases[7].name, () => {
 		const { input, output } = getRequiredArmorStatModsTestCases[7];
-		expect(getRequiredArmorStatMods(input)).toEqual(output);
+		const result = getRequiredArmorStatMods(input);
+		expect(result).toEqual(output);
 	});
 	test(getRequiredArmorStatModsTestCases[8].name, () => {
 		const { input, output } = getRequiredArmorStatModsTestCases[8];

@@ -11,7 +11,7 @@ import { isEqual, uniqWith } from 'lodash';
  *   combinations(set, k)
  *
  * Parameters:
- *   set: Array of objects of any type. They are treated as unique.
+ *   set: Array of objects of any type. They are not treated as unique.
  *   k: size of combinations to search for.
  *
  * Return:
@@ -40,7 +40,7 @@ import { isEqual, uniqWith } from 'lodash';
  *   combinations([], 0)
  *   -> []
  */
-function combinations<T>(set: T[], k: number): T[][] {
+function combinations<T>(set: T[], k: number) {
 	// var i, j, combs, head, tailcombs;
 	let combs: T[][];
 	let i: number;
@@ -99,9 +99,13 @@ function combinations<T>(set: T[], k: number): T[][] {
 			combs.push(head.concat(tailcombs[j]));
 		}
 	}
+
 	// return combs;
-	// TODO: This is inefficient. We should just generate only unique permutations in the first place.
+	// TODO: This is inefficient. We should just generate only unique combinations in the first place.
 	return uniqWith(combs, isEqual);
 }
 
-export default combinations;
+console.log('>>> 1', combinations([8, 8], 1));
+console.log('>>> 2', combinations([8, 8, 8], 2));
+console.log('>>> 2.1', combinations([1, 2, 3], 2));
+console.log('>>> 3', combinations([1, 1, 2, 3], 3));

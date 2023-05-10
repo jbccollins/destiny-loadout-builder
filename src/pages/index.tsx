@@ -31,9 +31,15 @@ import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector
 import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
 import RaidModSelector from '@dlb/components/RaidModsSelector';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
-import { DefaultArmorStatMapping } from '@dlb/types/ArmorStat';
+import {
+	DefaultArmorStatMapping,
+	getDefaultArmorStatMapping,
+} from '@dlb/types/ArmorStat';
 import { setSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import {
+	getDefaultArmorSlotIdToModIdListMapping,
+	getDefaultValidRaidModArmorSlotPlacement,
+} from '@dlb/types/Mod';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
 import {
 	selectSelectedDestinySubclass,
@@ -68,6 +74,12 @@ import {
 	setSelectedJump,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 import Logout from '@dlb/components/LogOutButton';
+import {
+	defaultRaidMods,
+	setSelectedRaidMods,
+} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import ReservedArmorSlotEnergySelector from '@dlb/components/ReservedArmorSlotEnergySelector';
+import ShareLoadout from '@dlb/components/ShareLoadout';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -132,13 +144,14 @@ const LeftSectionComponent = () => {
 
 	const dispatch = useAppDispatch();
 	const clearDesiredStatTiers = () => {
-		dispatch(setDesiredArmorStats({ ...DefaultArmorStatMapping }));
+		dispatch(setDesiredArmorStats(getDefaultArmorStatMapping()));
 	};
 
 	const clearArmorSlotMods = () => {
 		dispatch(
 			setSelectedArmorSlotMods(getDefaultArmorSlotIdToModIdListMapping())
 		);
+		dispatch(setSelectedRaidMods(defaultRaidMods));
 	};
 
 	const clearSubclassOptions = () => {
@@ -226,7 +239,9 @@ const LeftSectionComponent = () => {
 								>
 									<ArmorSlotModSelector />
 									<RaidModSelector />
+									{/* <ReservedArmorSlotEnergySelector /> */}
 								</SelectionControlGroup>
+								<ShareLoadout />
 							</>
 						),
 						index: 0,

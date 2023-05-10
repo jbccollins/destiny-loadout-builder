@@ -8,6 +8,7 @@ import {
 	getArmorStat,
 	getArmorStatMappingFromFragments,
 	getArmorStatMappingFromMods,
+	getDefaultArmorStatMapping,
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import {
@@ -18,7 +19,8 @@ import {
 	EElementId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
-import generateDimLink from '@dlb/services/dim/generateDimLoadoutLink';
+import generateDimLink from '@dlb/services/links/generateDimLoadoutLink';
+import generateDlbLink from '@dlb/services/links/generateDlbLoadoutLink';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getMod } from '@dlb/types/Mod';
@@ -54,7 +56,7 @@ import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/d
 import { MISSING_ICON } from '@dlb/types/globals';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { ARTIFICE_BONUS_VALUE } from '@dlb/utils/item-utils';
+import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];
@@ -69,6 +71,7 @@ type ResultsItemProps = {
 		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	>;
 	dimLink: string;
+	isRecommendedLoadout: boolean;
 };
 
 const ResultsContainer = styled(Box)(({ theme }) => ({
@@ -110,6 +113,7 @@ const IconText = styled(Box)(({ theme }) => ({
 }));
 const Title = styled(Box)(({ theme }) => ({
 	fontSize: `1.15rem`,
+	fontWeight: '500',
 	paddingBottom: theme.spacing(1),
 }));
 const Description = styled(Box)(({ theme }) => ({
@@ -143,6 +147,15 @@ const LoadoutDetails = styled(Box)(({ theme }) => ({
 	height: '340px',
 	marginLeft: '60px',
 	// overflowX: 'auto',
+}));
+
+const RecommendedLoadoutHeader = styled(Box)(({ theme }) => ({
+	color: 'orange',
+	fontSize: '1.5rem',
+	fontWeight: 'bold',
+	width: '100%',
+	textAlign: 'center',
+	marginBottom: theme.spacing(1),
 }));
 
 // TODO: Figure this out from the initial ingestion of armor and store in redux
@@ -188,9 +201,10 @@ function ResultsItem({
 	fragmentArmorStatMappings,
 	armorSlotModArmorStatMappings,
 	dimLink,
+	isRecommendedLoadout,
 }: ResultsItemProps) {
 	const [open, setOpen] = React.useState(false);
-	const totalStatMapping = { ...DefaultArmorStatMapping };
+	const totalStatMapping = getDefaultArmorStatMapping();
 	ArmorStatIdList.forEach((armorStatId) => {
 		totalStatMapping[armorStatId] += item.sortableFields[armorStatId];
 	});
@@ -262,7 +276,14 @@ function ResultsItem({
 		);
 	};
 	return (
-		<ResultsItemContainer>
+		<ResultsItemContainer
+			sx={{
+				border: isRecommendedLoadout ? '2px solid orange' : 'none',
+			}}
+		>
+			{isRecommendedLoadout && (
+				<RecommendedLoadoutHeader>Recommended Loadout</RecommendedLoadoutHeader>
+			)}
 			<ResultsSection>
 				<Title>Armor</Title>
 				{item.armorItems.map((armorItem) => {
@@ -285,7 +306,6 @@ function ResultsItem({
 						height={'40px'}
 						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 					/>
-					{/* TODO: Pull this out into a function. Also this > 0 logic is just wrong. */}
 					<IconText>{getClassItemText(item)}</IconText>
 				</IconTextContainer>
 			</ResultsSection>
@@ -296,7 +316,7 @@ function ResultsItem({
 					(x) => !ArmorStatIdList.includes(x as EArmorStatId)
 				).map((sortableFieldKey) => {
 					return (
-						<Box key={sortableFieldKey}>
+						<Box sx={{ fontWeight: '500' }} key={sortableFieldKey}>
 							{getSortableFieldDisplayName(sortableFieldKey)}:{' '}
 							{item.sortableFields[sortableFieldKey]}
 						</Box>
@@ -582,6 +602,9 @@ function ResultsItem({
 }
 
 function ArmorResultsList({ items }: ArmorResultsListProps) {
+	const urlParams = new URLSearchParams(window.location.search);
+	const loadoutString = urlParams.get('loadout');
+	const hasLoadoutQueryParams = loadoutString ? true : false;
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
@@ -666,11 +689,12 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 		<ResultsContainer>
 			{items
 				//  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-				.map((item) => {
+				.map((item, i) => {
 					return (
 						<ResultsItem
 							key={item.id}
 							item={item}
+							isRecommendedLoadout={i === 0 && hasLoadoutQueryParams}
 							destinyClassId={selectedDestinyClass}
 							masterworkAssumption={selectedMasterworkAssumption}
 							fragmentArmorStatMappings={fragmentArmorStatMappings}

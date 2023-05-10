@@ -1,12 +1,14 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	getDefaultSeenArmorSlotItems,
 	getExtraSocketModCategoryIdCountsFromRaidModIdList,
 	hasValidSeenItemCounts,
-	SeenArmorSlotClassItems,
-} from '@dlb/services/armor-processing';
+} from '@dlb/services/processArmor/utils';
 import { getDefaultItemCounts, ItemCounts } from '@dlb/types/Armor';
 import { EExtraSocketModCategoryId } from '@dlb/types/IdEnums';
+import {
+	SeenArmorSlotClassItems,
+	getDefaultSeenArmorSlotItems,
+} from '@dlb/services/processArmor/seenArmorSlotItems';
 
 type hasValidSeenItemCountsTestCase = {
 	name: string;

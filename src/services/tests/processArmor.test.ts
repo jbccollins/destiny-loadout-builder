@@ -2,7 +2,7 @@ import {
 	doProcessArmor,
 	ProcessArmorOutput,
 	DoProcessArmorParams,
-} from '@dlb/services/armor-processing';
+} from '@dlb/services/processArmor/index';
 import { describe, expect, test } from '@jest/globals';
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 import {
@@ -14,12 +14,12 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
-	DefaultArmorStatMapping,
 	getArmorStatMappingFromFragments,
+	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	DefaultValidPlacement,
+	getDefaultValidRaidModArmorSlotPlacement,
 	getDefaultArmorSlotIdToModIdListMapping,
 } from '@dlb/types/Mod';
 import {
@@ -98,8 +98,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
-			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			modArmorStatMapping: getDefaultArmorStatMapping(),
+			validRaidModArmorSlotPlacements: [
+				getDefaultValidRaidModArmorSlotPlacement(),
+			],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
@@ -192,8 +194,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
-			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			modArmorStatMapping: getDefaultArmorStatMapping(),
+			validRaidModArmorSlotPlacements: [
+				getDefaultValidRaidModArmorSlotPlacement(),
+			],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
@@ -304,8 +308,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
-			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			modArmorStatMapping: getDefaultArmorStatMapping(),
+			validRaidModArmorSlotPlacements: [
+				getDefaultValidRaidModArmorSlotPlacement(),
+			],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
@@ -415,8 +421,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
-			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			modArmorStatMapping: getDefaultArmorStatMapping(),
+			validRaidModArmorSlotPlacements: [
+				getDefaultValidRaidModArmorSlotPlacement(),
+			],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
@@ -515,8 +523,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
-			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			modArmorStatMapping: getDefaultArmorStatMapping(),
+			validRaidModArmorSlotPlacements: [
+				getDefaultValidRaidModArmorSlotPlacement(),
+			],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,
@@ -622,8 +632,10 @@ const processArmorTestCases: ProcessArmorTestCase[] = [
 				[],
 				EDestinyClassId.Warlock
 			),
-			modArmorStatMapping: { ...DefaultArmorStatMapping },
-			validRaidModArmorSlotPlacements: [{ ...DefaultValidPlacement }],
+			modArmorStatMapping: getDefaultArmorStatMapping(),
+			validRaidModArmorSlotPlacements: [
+				getDefaultValidRaidModArmorSlotPlacement(),
+			],
 			armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 			raidMods: [],
 			destinyClassId: EDestinyClassId.Warlock,

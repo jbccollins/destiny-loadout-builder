@@ -18,9 +18,9 @@ export interface DesiredArmorStatsState {
 const initialState: DesiredArmorStatsState = {
 	value: {
 		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 100,
-		[EArmorStatId.Recovery]: 100,
-		[EArmorStatId.Discipline]: 90,
+		[EArmorStatId.Resilience]: 0,
+		[EArmorStatId.Recovery]: 0,
+		[EArmorStatId.Discipline]: 0,
 		[EArmorStatId.Intellect]: 0,
 		[EArmorStatId.Strength]: 0,
 		// For testing these will give me a single combo of armor

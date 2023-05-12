@@ -355,6 +355,12 @@ export const doProcessArmor = ({
 		processedArmor,
 		processArmorParams,
 	});
+
+	// Pick the first 1k items. Keeps the storage in redux lower
+	// and speeds up the app
+	const elemsToDelete = Math.max(processedArmor.length - 1000, 0);
+	processedArmor.splice(processedArmor.length - elemsToDelete, elemsToDelete);
+
 	return {
 		items: processedArmor,
 		maxPossibleDesiredStatTiers,
@@ -362,10 +368,15 @@ export const doProcessArmor = ({
 	};
 };
 
+export type GetMaxPossibleDesiredStatTiersParams = {
+	processedArmor: ProcessArmorOutput;
+	processArmorParams: ProcessArmorParams;
+};
+
 export const getMaxPossibleMetadata = ({
 	processedArmor,
 	processArmorParams,
-}: GetMaxReservedArmorEnergy): {
+}: GetMaxPossibleDesiredStatTiersParams): {
 	maxReservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	maxStatTiers: ArmorStatMapping;
 } => {
@@ -383,9 +394,15 @@ export const getMaxPossibleMetadata = ({
 
 	const unprocessedArmorStatIds = [...ArmorStatIdList];
 	const unprocessedArmorSlotIds = [...ArmorSlotWithClassItemIdList];
+
+	let totalIterations = 0;
+	let armorSlotIterations = 0;
+	let armorStatIterations = 0;
 	for (let i = 10; i > 0; i--) {
 		for (let j = 0; j < processedArmor.length; j++) {
 			for (let k = 0; k < unprocessedArmorSlotIds.length; k++) {
+				totalIterations++;
+				armorSlotIterations++;
 				let hasCombo = false;
 				const armorSlotId = unprocessedArmorSlotIds[k];
 				const reservedArmorSlotEnergyValue = i;
@@ -418,6 +435,8 @@ export const getMaxPossibleMetadata = ({
 			}
 
 			for (let k = 0; k < unprocessedArmorStatIds.length; k++) {
+				totalIterations++;
+				armorStatIterations++;
 				let hasCombo = false;
 				const armorStatId = unprocessedArmorStatIds[k];
 				const desiredStat = i * 10;
@@ -454,9 +473,15 @@ export const getMaxPossibleMetadata = ({
 			processedArmorSlotCount === ArmorSlotWithClassItemIdList.length &&
 			processedArmorStatCount === ArmorStatIdList.length
 		) {
+			console.log('>>> break', totalIterations);
 			break;
 		}
 	}
+	console.log('>>> iterations', {
+		totalIterations,
+		armorSlotIterations,
+		armorStatIterations,
+	});
 	return { maxReservedArmorSlotEnergy, maxStatTiers };
 };
 

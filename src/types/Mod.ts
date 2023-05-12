@@ -1,15 +1,10 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
-import { IMod } from './generation';
-import {
-	EArmorSlotId,
-	EArmorStatId,
-	EElementId,
-	EModSocketCategoryId,
-} from './IdEnums';
-import { EnumDictionary } from './globals';
 import { permute } from '@dlb/utils/permutations';
 import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
+import { EArmorSlotId, EArmorStatId, EModSocketCategoryId } from './IdEnums';
+import { IMod } from './generation';
+import { EnumDictionary } from './globals';
 
 export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 
@@ -38,6 +33,17 @@ export const StatModIdList = ModIdList.filter((id) => {
 		!mod?.isArtifactMod
 	);
 });
+
+export const MaxStatModCost = StatModIdList.reduce(
+	(accumulator, currentValue) => {
+		const mod = getMod(currentValue);
+		if (mod.cost > accumulator) {
+			return mod.cost;
+		}
+		return accumulator;
+	},
+	0
+);
 
 export const MajorStatModIdList = StatModIdList.filter(
 	(id) => !getMod(id)?.name.includes('Minor')

@@ -1,16 +1,27 @@
-import { styled } from '@mui/material';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import BoxCountIndicator from '@dlb/components/BoxCountIndicator';
 import IconDropdown from '@dlb/components/IconDropdown';
-import { getAspectsByDestinySubclassId } from '@dlb/types/Aspect';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import {
 	selectSelectedAspects,
 	setSelectedAspects,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import {
+	getAspect,
+	getAspectIdsByDestinySubclassId,
+	getAspectsByDestinySubclassId,
+} from '@dlb/types/Aspect';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { EElementId } from '@dlb/types/IdEnums';
+import { Box, styled } from '@mui/material';
+
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
+	position: 'relative',
 }));
 
 const IconDropdownContainer = styled('div')(({ theme }) => ({
@@ -26,18 +37,98 @@ type Option = {
 };
 
 function AspectSelector() {
+	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.name;
-	const getDescription = (option: Option) => option.description;
+	const getDescription = (option: Option) => (
+		<Box>
+			<Box>{option.description}</Box>
+			{/* <Box>
+				Fragment Slots: {getAspect(option.id as EAspectId).fragmentSlots}
+			</Box> */}
+
+			<Box
+				sx={{
+					position: 'absolute',
+					right: '0px',
+					top: '0px',
+					marginRight: '16px',
+					marginTop: '8px',
+					// background: 'rgb(19,19,19)',
+					zIndex: 1,
+				}}
+			>
+				<BoxCountIndicator
+					prefix={'Slots'}
+					max={getAspect(option.id as EAspectId).fragmentSlots}
+					count={getAspect(option.id as EAspectId).fragmentSlots}
+				/>
+			</Box>
+		</Box>
+	);
 
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 	const aspectIds = destinySubclassId
 		? [...selectedAspects[destinySubclassId]]
 		: [];
+
+	let fragments: EFragmentId[] = [];
+	let elementId = EElementId.Any;
+
+	let firstDisabledAspectIdList: EAspectId[] = [];
+	let secondDisabledAspectIdList: EAspectId[] = [];
+	if (destinySubclassId) {
+		const { elementId: subclassElementId } =
+			getDestinySubclass(destinySubclassId);
+		elementId = subclassElementId;
+		fragments = selectedFragments[elementId];
+
+		const availableAspectIds =
+			getAspectIdsByDestinySubclassId(destinySubclassId);
+
+		// If an aspect cannot be combined with any other aspect to get use enough fragment slots
+		// then it must be disabled
+		for (let i = 0; i < availableAspectIds.length; i++) {
+			const fragmentSlots = getAspect(availableAspectIds[i]).fragmentSlots;
+			const otherAspectIndex = availableAspectIds
+				.filter((x) => x !== availableAspectIds[i])
+				.findIndex(
+					(x) => getAspect(x).fragmentSlots + fragmentSlots >= fragments.length
+				);
+			if (otherAspectIndex < 0) {
+				firstDisabledAspectIdList.push(availableAspectIds[i]);
+				secondDisabledAspectIdList.push(availableAspectIds[i]);
+			}
+		}
+
+		if (aspectIds[0]) {
+			secondDisabledAspectIdList.push(aspectIds[0]);
+			const fragmentSlots = getAspect(aspectIds[0]).fragmentSlots;
+			const secondAspectSlotDisabledIds = availableAspectIds.filter(
+				(x) => getAspect(x).fragmentSlots + fragmentSlots < fragments.length
+			);
+			secondDisabledAspectIdList = [
+				...secondDisabledAspectIdList,
+				...secondAspectSlotDisabledIds,
+			];
+		}
+		if (aspectIds[1]) {
+			firstDisabledAspectIdList.push(aspectIds[1]);
+			const fragmentSlots = getAspect(aspectIds[1]).fragmentSlots;
+			const firstAspectSlotDisabledIds = availableAspectIds.filter(
+				(x) => getAspect(x).fragmentSlots + fragmentSlots < fragments.length
+			);
+			firstDisabledAspectIdList = [
+				...firstDisabledAspectIdList,
+				...firstAspectSlotDisabledIds,
+			];
+		}
+	}
+	console.log({ firstDisabledAspectIdList, secondDisabledAspectIdList });
 
 	const handleChange = (aspectId: EAspectId, index: number) => {
 		const aspectIds = [...selectedAspects[destinySubclassId]];
@@ -68,7 +159,9 @@ function AspectSelector() {
 							(x) => {
 								return {
 									...x,
-									disabled: aspectIds.indexOf(x.id as EAspectId) > -1,
+									disabled: firstDisabledAspectIdList.includes(
+										x.id as EAspectId
+									),
 								};
 							}
 						)}
@@ -93,7 +186,9 @@ function AspectSelector() {
 							(x) => {
 								return {
 									...x,
-									disabled: aspectIds.indexOf(x.id as EAspectId) > -1,
+									disabled: secondDisabledAspectIdList.includes(
+										x.id as EAspectId
+									),
 								};
 							}
 						)}

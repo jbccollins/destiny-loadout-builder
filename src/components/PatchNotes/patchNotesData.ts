@@ -11,6 +11,31 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-05-13',
+		version: '2.0.2',
+		title: 'Aspect and Fragment limits',
+		sections: [
+			{
+				items: [
+					`Added logic to prevent the user from selecting more fragmaents than their aspects allow`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-05-12',
+		version: '2.0.1',
+		title: 'Reworked Mod Selection',
+		sections: [
+			{
+				items: [
+					`Added an indicator for each armor slot that shows the minimum armor energy cost`,
+					`Added the ability to reserver armor energy for a specific armor slot`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-05-11',
 		version: '2.0.0',
 		title: 'New armor processing algorithm',

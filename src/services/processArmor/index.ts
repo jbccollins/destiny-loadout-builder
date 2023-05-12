@@ -261,6 +261,7 @@ export type ProcessArmorOutput = ProcessArmorOutputItem[];
 
 export type DoProcessArmorOutput = {
 	items: ProcessArmorOutputItem[];
+	totalItemCount: number;
 	maxPossibleDesiredStatTiers: ArmorStatMapping;
 	maxPossibleReservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 };
@@ -356,6 +357,7 @@ export const doProcessArmor = ({
 		processArmorParams,
 	});
 
+	const totalItemCount = processedArmor.length;
 	// Pick the first 1k items. Keeps the storage in redux lower
 	// and speeds up the app
 	const elemsToDelete = Math.max(processedArmor.length - 1000, 0);
@@ -363,6 +365,7 @@ export const doProcessArmor = ({
 
 	return {
 		items: processedArmor,
+		totalItemCount,
 		maxPossibleDesiredStatTiers,
 		maxPossibleReservedArmorSlotEnergy,
 	};

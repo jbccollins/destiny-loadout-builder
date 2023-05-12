@@ -1,27 +1,22 @@
-import * as React from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { IArmorStat } from '@dlb/types/ArmorStat';
+import { getElement } from '@dlb/types/Element';
+import { EElementId } from '@dlb/types/IdEnums';
+import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import {
 	Avatar,
 	Box,
 	Chip,
 	FormControl,
 	InputLabel,
-	Menu,
 	MenuItem,
 	Select,
 	SelectChangeEvent,
 	styled,
 } from '@mui/material';
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { getFragment, getFragmentIdsByElementId } from '@dlb/types/Fragment';
-import { EElementId } from '@dlb/types/IdEnums';
-import { getArmorStat, IArmorStat } from '@dlb/types/ArmorStat';
-import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
-import { getElement } from '@dlb/types/Element';
+import Checkbox from '@mui/material/Checkbox';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -96,6 +91,7 @@ type IIconMultiSelectDropdownProps = {
 	getOptionStat: (stat: StatBonusStat) => IArmorStat;
 	showElement?: boolean;
 	disabled?: boolean;
+	maxSelectionCount?: number;
 };
 
 const PLACEHOLDER_OPTION = 'None Selected...';
@@ -110,6 +106,7 @@ export default function IconMultiSelectDropdown({
 	getOptionStat,
 	showElement,
 	disabled,
+	maxSelectionCount,
 }: IIconMultiSelectDropdownProps) {
 	const handleChange = (event: SelectChangeEvent<string[]>) => {
 		const {
@@ -152,10 +149,44 @@ export default function IconMultiSelectDropdown({
 						return (
 							<Tag
 								//onClick={(e) => onDelete(e)}
+								sx={{
+									display: 'flex',
+									flexDirection: 'row',
+									justifyContent: 'left',
+									alignItems: 'left',
+									flexWrap: 'wrap',
+									paddingTop: '8px',
+									paddingBottom: '0px',
+									'&:nth-of-type(even)': {
+										background: 'rgba(50,50,50,0.5)',
+									},
+								}}
 								key={optionValue.id}
 							>
-								<BungieImage src={optionValue.icon} width={'40px'} />
-								<MenuItemText>{optionValue.name}</MenuItemText>
+								<Box sx={{ display: 'flex', marginBottom: '8px' }}>
+									<BungieImage src={optionValue.icon} width={'40px'} />
+									<MenuItemText sx={{ lineHeight: '40px' }}>
+										{optionValue.name}
+									</MenuItemText>
+								</Box>
+								<Box sx={{ height: '40px', marginBottom: '2px' }}>
+									{optionValue.bonuses && optionValue.bonuses.length > 0 && (
+										<MenuItemRow>
+											{optionValue.bonuses.map(({ stat, value }) => {
+												const { icon: statIcon, id: statId } =
+													getOptionStat(stat);
+												return (
+													<Chip
+														style={{ marginLeft: '8px', marginTop: '2px' }}
+														key={statId}
+														avatar={<Avatar alt={'stat-icon'} src={statIcon} />}
+														label={value > 0 ? `+${value}` : value}
+													/>
+												);
+											})}
+										</MenuItemRow>
+									)}
+								</Box>
 							</Tag>
 						);
 					});
@@ -164,10 +195,16 @@ export default function IconMultiSelectDropdown({
 			>
 				{options.map((id) => {
 					const optionValue = getOptionValue(id);
+					const isChecked = value.indexOf(id) > -1;
 					return (
 						<MenuItem
 							key={optionValue.id}
 							value={optionValue.id}
+							disabled={
+								!isChecked &&
+								maxSelectionCount &&
+								value.length >= maxSelectionCount
+							}
 							//style={getStyles(name, personName, theme)}
 						>
 							<MenuItemContent>
@@ -176,7 +213,7 @@ export default function IconMultiSelectDropdown({
 										icon={icon}
 										checkedIcon={checkedIcon}
 										style={{ marginRight: 8 }}
-										checked={value.indexOf(id) > -1}
+										checked={isChecked}
 									/>
 									<BungieImage width={40} height={40} src={optionValue.icon} />
 									<MenuItemText>{optionValue.name}</MenuItemText>

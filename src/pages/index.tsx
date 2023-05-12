@@ -327,7 +327,7 @@ const Home: NextPage = () => {
 											setSmallScreenResultsOpen(!smallScreenResultsOpen)
 										}
 									>
-										<Box>{`Show Results (${processedArmor.length})`}</Box>
+										<Box>{`Show Results (${processedArmor.items.length})`}</Box>
 									</SmallScreenResultsViewToggle>
 								)}
 							</>

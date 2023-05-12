@@ -392,7 +392,12 @@ function handleChange() {
 				results.maxPossibleReservedArmorSlotEnergy
 			)
 		);
-		store.dispatch(setProcessedArmor(results.items));
+		store.dispatch(
+			setProcessedArmor({
+				items: results.items,
+				totalItemCount: results.totalItemCount,
+			})
+		);
 	}
 
 	if (sharedLoadoutDesiredStats.needed && !sharedLoadoutDesiredStats.complete) {
@@ -429,7 +434,12 @@ function handleChange() {
 			store.dispatch(
 				setDesiredArmorStats(sharedLoadoutDesiredStats.desiredArmorStats)
 			);
-			store.dispatch(setProcessedArmor(sharedLoadoutDesiredStatsResults.items));
+			store.dispatch(
+				setProcessedArmor({
+					items: sharedLoadoutDesiredStatsResults.items,
+					totalItemCount: sharedLoadoutDesiredStatsResults.totalItemCount,
+				})
+			);
 			store.dispatch(
 				setSharedLoadoutDesiredStats({
 					...sharedLoadoutDesiredStats,
@@ -472,7 +482,12 @@ function handleChange() {
 				)
 			);
 			store.dispatch(setDesiredArmorStats(bestFitDesiredArmorStats));
-			store.dispatch(setProcessedArmor(bestFitResults.items));
+			store.dispatch(
+				setProcessedArmor({
+					items: bestFitResults.items,
+					totalItemCount: bestFitResults.totalItemCount,
+				})
+			);
 			store.dispatch(
 				setSharedLoadoutDesiredStats({
 					...sharedLoadoutDesiredStats,

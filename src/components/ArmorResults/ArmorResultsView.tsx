@@ -372,7 +372,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		);
 		const res: ResultsTableLoadout[] = [];
 
-		processedArmor.forEach(
+		processedArmor.items.forEach(
 			({
 				armorIdList,
 				armorStatModIdList,

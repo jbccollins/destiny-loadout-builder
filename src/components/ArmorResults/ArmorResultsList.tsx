@@ -141,7 +141,13 @@ const StatsBreakdownItem = styled(Box, {
 		paddingLeft: theme.spacing(1),
 		display: 'flex',
 		lineHeight: '22px',
-		opacity: isZero ? '0.5' : 1,
+		color: isZero ? 'rgba(255, 255, 255, 0.5)' : 'white',
+		'&:nth-of-type(even)': {
+			background: 'rgba(9, 9, 9, 0.5)',
+		},
+		'&:last-child': {
+			background: 'none',
+		},
 	})
 );
 

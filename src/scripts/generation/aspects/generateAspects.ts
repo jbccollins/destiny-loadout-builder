@@ -1,22 +1,22 @@
 /*
 USAGE: From the root directory run "npm run generate"
 */
-import lodash from 'lodash';
-import path from 'path';
-import {
-	DestinyInventoryItemDefinition,
-	DestinySandboxPerkDefinition,
-} from 'bungie-api-ts-no-const-enum/destiny2';
-import { promises as fs } from 'fs';
 import {
 	generateId,
 	getDefinitions,
 	getDescription,
 } from '@dlb/scripts/generation/utils';
 import { IAspect } from '@dlb/types/generation';
+import { bungieNetPath } from '@dlb/utils/item-utils';
+import {
+	DestinyInventoryItemDefinition,
+	DestinySandboxPerkDefinition,
+} from 'bungie-api-ts-no-const-enum/destiny2';
+import { promises as fs } from 'fs';
+import lodash from 'lodash';
+import path from 'path';
 import { generateAspectIdEnumFileString } from './generateAspectIdEnum';
 import { generateAspectMapping } from './generateAspectMapping';
-import { bungieNetPath } from '@dlb/utils/item-utils';
 
 const buildAspectData = (
 	aspect: DestinyInventoryItemDefinition,
@@ -28,7 +28,7 @@ const buildAspectData = (
 		description: getDescription(aspect, sandboxPerkDefinitions),
 		icon: bungieNetPath(aspect.displayProperties.icon),
 		hash: aspect.hash,
-		fragementSlots: aspect.plug.energyCapacity.capacityValue,
+		fragmentSlots: aspect.plug.energyCapacity.capacityValue,
 	};
 };
 

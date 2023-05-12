@@ -1,3 +1,5 @@
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { MISSING_ICON } from '@dlb/types/globals';
 import {
 	Box,
 	FormControl,
@@ -7,8 +9,6 @@ import {
 	SelectProps,
 	styled,
 } from '@mui/material';
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { MISSING_ICON } from '@dlb/types/globals';
 
 const Container = styled(Box, {
 	shouldForwardProp: (prop) => prop !== 'hideSelectedOptionText',
@@ -51,7 +51,7 @@ interface IconDropdownOption {
 type IconDropdownProps = {
 	options: IconDropdownOption[];
 	getLabel: (option: IconDropdownOption) => string;
-	getDescription?: (option: IconDropdownOption) => string;
+	getDescription?: (option: IconDropdownOption) => string | JSX.Element;
 	onChange: (value: string) => void;
 	value: string;
 	title?: string;
@@ -114,7 +114,7 @@ const IconDropdown = ({
 					)}
 					{options.map((option) => {
 						const label = getLabel(option);
-						let description: string = null;
+						let description: string | JSX.Element = null;
 						let hasDescription = false;
 						if (getDescription) {
 							description = getDescription(option);

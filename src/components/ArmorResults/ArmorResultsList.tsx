@@ -1,16 +1,40 @@
+import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
+import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
+import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import { selectSelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { selectSelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
+import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
+import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { useAppSelector } from '@dlb/redux/hooks';
+import generateDimLink from '@dlb/services/links/generateDimLoadoutLink';
+import { ArmorItem, getExtraMasterworkedStats } from '@dlb/types/Armor';
+import {
+	ArmorSlotWithClassItemIdList,
+	getArmorSlot,
+} from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
 	ArmorStatMapping,
-	DefaultArmorStatMapping,
 	getArmorStat,
 	getArmorStatMappingFromFragments,
 	getArmorStatMappingFromMods,
 	getDefaultArmorStatMapping,
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { getFragment } from '@dlb/types/Fragment';
 import {
 	EArmorExtraModSlotId,
 	EArmorSlotId,
@@ -19,44 +43,17 @@ import {
 	EElementId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
-import generateDimLink from '@dlb/services/links/generateDimLoadoutLink';
-import generateDlbLink from '@dlb/services/links/generateDlbLoadoutLink';
+import { getMod } from '@dlb/types/Mod';
+import { MISSING_ICON } from '@dlb/types/globals';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { getMod } from '@dlb/types/Mod';
-import { styled, Box, Collapse, IconButton, Button } from '@mui/material';
+import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
 import React from 'react';
-import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
 import {
-	getSortableFieldDisplayName,
 	ResultsTableLoadout,
 	SortableFieldsDisplayOrder,
+	getSortableFieldDisplayName,
 } from './ArmorResultsView';
-import { useAppSelector } from '@dlb/redux/hooks';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import StatTiers from '@dlb/components/StatTiers';
-import { ArmorItem, getExtraMasterworkedStats } from '@dlb/types/Armor';
-import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
-import { getFragment } from '@dlb/types/Fragment';
-import {
-	ArmorSlotWithClassItemIdList,
-	getArmorSlot,
-} from '@dlb/types/ArmorSlot';
-import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
-import { selectSelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
-import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
-import { selectSelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
-import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
-import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
-import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
-import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
-import { MISSING_ICON } from '@dlb/types/globals';
-import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
-import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 
 type ArmorResultsListProps = {
 	items: ResultsTableLoadout[];
@@ -113,6 +110,12 @@ const IconText = styled(Box)(({ theme }) => ({
 }));
 const Title = styled(Box)(({ theme }) => ({
 	fontSize: `1.15rem`,
+	fontWeight: '500',
+	paddingBottom: theme.spacing(1),
+}));
+
+const SubTitle = styled(Box)(({ theme }) => ({
+	fontSize: `1.05rem`,
 	fontWeight: '500',
 	paddingBottom: theme.spacing(1),
 }));
@@ -324,6 +327,20 @@ function ResultsItem({
 					);
 				})}
 			</ResultsSection>
+			{/* <ResultsSection>
+				<Title>Metadata</Title>
+				{SortableFieldsDisplayOrder.filter(
+					(x) => !ArmorStatIdList.includes(x as EArmorStatId)
+				).map((sortableFieldKey) => {
+					return (
+						<Box sx={{ fontWeight: '500' }} key={sortableFieldKey}>
+							{getSortableFieldDisplayName(sortableFieldKey)}:{' '}
+							{item.sortableFields[sortableFieldKey]}
+						</Box>
+					);
+				})}
+			</ResultsSection> */}
+
 			{item.requiredStatModIdList.length > 0 && (
 				<ResultsSection>
 					<Title>Required Stat Mods</Title>

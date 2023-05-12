@@ -2,13 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
-import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
-import { getJumpIdsByDestinySubclassId } from '@dlb/types/Jump';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
+import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
 import { EDestinySubclassId } from '@dlb/types/IdEnums';
+import { NIL, v4 as uuid } from 'uuid';
 
-type SelectedJump = {
+export type SelectedJump = {
 	[key in EDestinySubclassId]: EJumpId;
 };
 

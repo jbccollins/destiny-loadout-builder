@@ -1,13 +1,13 @@
+import CompactIconAutocompleteDropdown from '@dlb/components/CompactIconAutocompleteDropdown';
+import IconAutocompleteDropdown from '@dlb/components/IconAutocompleteDropdown';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getStat } from '@dlb/types/ArmorStat';
-import { IMod } from '@dlb/types/generation';
-import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
+import { IMod } from '@dlb/types/generation';
+import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
 import { Avatar, Box, Chip } from '@mui/material';
-import CompactIconAutocompleteDropdown from '@dlb/components/CompactIconAutocompleteDropdown';
-import IconAutocompleteDropdown from '@dlb/components/IconAutocompleteDropdown';
 
 type Option = {
 	name: string;

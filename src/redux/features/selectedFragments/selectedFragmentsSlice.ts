@@ -6,16 +6,15 @@ import { AppState } from '@dlb/redux/store';
 // (e.g, selectedFragments, selectedDestinyClass, selectedExoticArmor, etc...)
 // To use a single reducer with one uuid. Or....... keep it as is and just
 // Keep track of a single uuid in the store? idk... that might be harder to code around...
-import { v4 as uuid, NIL } from 'uuid';
-import { EArmorStatId, EElementId } from '@dlb/types/IdEnums';
-import { ArmorStatMapping } from '@dlb/types/ArmorStat';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { EElementId } from '@dlb/types/IdEnums';
+import { NIL, v4 as uuid } from 'uuid';
 
 // TODO: There is probably a cleaner way to say
 // "This type has all the elements as keys"
 // See how selected aspects did this. But we would need to refactor
 // EElementId to not include "Any" before doing that
-type SelectedFragments = {
+export type SelectedFragments = {
 	[EElementId.Stasis]: EFragmentId[];
 	[EElementId.Void]: EFragmentId[];
 	[EElementId.Solar]: EFragmentId[];

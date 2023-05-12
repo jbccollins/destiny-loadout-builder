@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { AppState } from '@dlb/redux/store';
-import { EDestinySubclassId } from '@dlb/types/IdEnums';
-import { v4 as uuid, NIL } from 'uuid';
 import {
 	DestinySubclassIdList,
 	getDestinySubclass,
 } from '@dlb/types/DestinySubclass';
-import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { EDestinySubclassId } from '@dlb/types/IdEnums';
+import { NIL, v4 as uuid } from 'uuid';
 
-type SelectedSuperAbility = {
+export type SelectedSuperAbility = {
 	[key in EDestinySubclassId]: ESuperAbilityId;
 };
 

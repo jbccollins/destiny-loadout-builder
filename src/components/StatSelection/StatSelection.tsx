@@ -7,10 +7,8 @@ import { selectMaxPossibleStats } from '@dlb/redux/features/maxPossibleStats/max
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import { EArmorStatId } from '@dlb/types/IdEnums';
-import { styled, Card, Box } from '@mui/material';
-import { useEffect } from 'react';
+import { Box, styled } from '@mui/material';
 import StatSelectorRow from './StatSelectorRow';
-import StatSlider from './StatSlider';
 
 type StatSelectionProps = {
 	//

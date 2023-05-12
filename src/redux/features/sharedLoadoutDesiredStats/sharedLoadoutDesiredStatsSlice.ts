@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '@dlb/redux/store';
 
 import { v4 as uuid, NIL } from 'uuid';
-import { EModId } from '@dlb/generated/mod/EModId';
+
 import {
 	ArmorStatMapping,
 	getDefaultArmorStatMapping,

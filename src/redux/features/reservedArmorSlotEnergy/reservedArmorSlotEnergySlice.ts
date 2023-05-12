@@ -2,23 +2,26 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
-import { ArmorStatMapping } from '@dlb/types/ArmorStat';
+import { NIL, v4 as uuid } from 'uuid';
+
+export type ArmorSlotEnergyMapping = Record<EArmorSlotId, number>;
+
+export const getDefaultArmorSlotEnergyMapping = (): ArmorSlotEnergyMapping => ({
+	[EArmorSlotId.Head]: 0,
+	[EArmorSlotId.Arm]: 0,
+	[EArmorSlotId.Chest]: 0,
+	[EArmorSlotId.Leg]: 0,
+	[EArmorSlotId.ClassItem]: 0,
+});
 
 export interface ReservedArmorSlotEnergyState {
-	value: Record<EArmorSlotId, number>;
+	value: ArmorSlotEnergyMapping;
 	uuid: string;
 }
 
 const initialState: ReservedArmorSlotEnergyState = {
-	value: {
-		[EArmorSlotId.Head]: 0,
-		[EArmorSlotId.Arm]: 0,
-		[EArmorSlotId.Chest]: 0,
-		[EArmorSlotId.Leg]: 0,
-		[EArmorSlotId.ClassItem]: 0,
-	},
+	value: getDefaultArmorSlotEnergyMapping(),
 	uuid: NIL,
 };
 
@@ -28,7 +31,7 @@ export const reservedArmorSlotEnergySlice = createSlice({
 	reducers: {
 		setReservedArmorSlotEnergy: (
 			state,
-			action: PayloadAction<Record<EArmorSlotId, number>>
+			action: PayloadAction<ArmorSlotEnergyMapping>
 		) => {
 			state.value = action.payload;
 			state.uuid = uuid();

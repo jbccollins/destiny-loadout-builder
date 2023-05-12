@@ -2,13 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
-import { EDestinySubclassId } from '@dlb/types/IdEnums';
-import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
-import { getAspectIdsByDestinySubclassId } from '@dlb/types/Aspect';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
+import { EDestinySubclassId } from '@dlb/types/IdEnums';
+import { NIL, v4 as uuid } from 'uuid';
 
-type SelectedAspects = {
+export type SelectedAspects = {
 	[key in EDestinySubclassId]: EAspectId[];
 };
 

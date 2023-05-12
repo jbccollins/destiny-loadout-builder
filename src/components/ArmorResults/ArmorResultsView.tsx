@@ -1,36 +1,35 @@
-import {
-	styled,
-	Box,
-	TablePagination,
-	FormControl,
-	InputLabel,
-	MenuItem,
-	Select,
-	IconButton,
-} from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { SmallScreenData } from '@dlb/pages';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
+import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
+import {
+	selectResultsPagination,
+	setResultsPagination,
+} from '@dlb/redux/features/resultsPagination/resultsPaginationSlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
-import { useCallback, useMemo, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { ArmorItem } from '@dlb/types/Armor';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
 	EArmorStatId,
 	EExtraSocketModCategoryId,
 } from '@dlb/types/IdEnums';
-import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
-import { ArmorItem, StatList } from '@dlb/types/Armor';
-import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
-import { EModId } from '@dlb/generated/mod/EModId';
-import ArmorResultsList from './ArmorResultsList';
-import React from 'react';
-import { SmallScreenData } from '@dlb/pages';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
-	selectResultsPagination,
-	setResultsPagination,
-} from '@dlb/redux/features/resultsPagination/resultsPaginationSlice';
+	Box,
+	FormControl,
+	IconButton,
+	InputLabel,
+	MenuItem,
+	Select,
+	TablePagination,
+	styled,
+} from '@mui/material';
+import React, { useCallback, useMemo, useState } from 'react';
+import ArmorResultsList from './ArmorResultsList';
 import NoResults from './NoResults';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)

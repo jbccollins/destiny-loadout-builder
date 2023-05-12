@@ -1,13 +1,3 @@
-import {
-	Button,
-	IconButton,
-	Slide,
-	SlideProps,
-	Snackbar,
-	styled,
-} from '@mui/material';
-import ShareIcon from '@mui/icons-material/Share';
-import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
@@ -18,20 +8,16 @@ import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArm
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import { selectSelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
-import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppSelector } from '@dlb/redux/hooks';
-import {
-	ArmorStatMapping,
-	getArmorStatMappingFromFragments,
-} from '@dlb/types/ArmorStat';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { getFragment } from '@dlb/types/Fragment';
-import { EElementId } from '@dlb/types/IdEnums';
-import generateDlbLink from '@dlb/services/links/generateDlbLoadoutLink';
+import generateDlbLink, {
+	getDlbLoadoutConfiguration,
+} from '@dlb/services/links/generateDlbLoadoutLink';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
+import ShareIcon from '@mui/icons-material/Share';
+import { Button, Slide, SlideProps, Snackbar, styled } from '@mui/material';
 import { useState } from 'react';
 
 const Container = styled('div')(({ theme }) => ({
@@ -52,61 +38,30 @@ const ShareLoadout = () => {
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
-	const exoticArmor = selectedExoticArmor[selectedDestinyClass];
 	const selectedJump = useAppSelector(selectSelectedJump);
 	const selectedMelee = useAppSelector(selectSelectedMelee);
 	const selectedGrenade = useAppSelector(selectSelectedGrenade);
 	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
-	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
-	let elementId: EElementId = EElementId.Any;
-	if (destinySubclassId) {
-		elementId = getDestinySubclass(destinySubclassId).elementId;
-	}
-	const aspectIds = destinySubclassId ? selectedAspects[destinySubclassId] : [];
-
-	// TODO: Having to do this cast sucks
-	const fragmentIds =
-		elementId !== EElementId.Any
-			? (selectedFragments[elementId] as EFragmentId[])
-			: [];
-
-	// const { elementId } = getDestinySubclass(destinySubclassId);
-	// const aspectIds = selectedAspects[destinySubclassId];
-
-	// TODO: Having to do this cast sucks
-	// const fragmentIds = selectedFragments[elementId] as EFragmentId[];
-
-	const fragmentArmorStatMappings: Partial<
-		Record<EFragmentId, ArmorStatMapping>
-	> = {};
-	fragmentIds.forEach((id) => {
-		const { bonuses } = getFragment(id);
-		if (bonuses.length > 0) {
-			fragmentArmorStatMappings[id] = getArmorStatMappingFromFragments(
-				[id],
-				selectedDestinyClass
-			);
-		}
+	const configuration = getDlbLoadoutConfiguration({
+		desiredArmorStats,
+		selectedDestinyClass,
+		selectedFragments,
+		selectedDestinySubclass,
+		selectedArmorSlotMods,
+		selectedRaidMods,
+		selectedExoticArmor,
+		selectedJump,
+		selectedMelee,
+		selectedGrenade,
+		selectedClassAbility,
+		selectedSuperAbility,
+		selectedAspects,
 	});
 	const handleClick = async () => {
-		const dlbLink = `${generateDlbLink({
-			raidModIdList: selectedRaidMods,
-			armorSlotMods: selectedArmorSlotMods,
-			fragmentIdList: fragmentIds,
-			aspectIdList: aspectIds,
-			exoticArmor: exoticArmor,
-			destinySubclassId,
-			destinyClassId: selectedDestinyClass,
-			jumpId: selectedJump[destinySubclassId],
-			meleeId: selectedMelee[destinySubclassId],
-			superAbilityId: selectedSuperAbility[destinySubclassId],
-			classAbilityId: selectedClassAbility[destinySubclassId],
-			grenadeId: selectedGrenade[elementId],
-			desiredArmorStats,
-		})}`;
+		const dlbLink = `${generateDlbLink(configuration)}`;
 		await copyToClipboard({
 			value: dlbLink,
 		});

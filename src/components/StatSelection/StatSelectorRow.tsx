@@ -1,4 +1,4 @@
-import { styled, Box } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { Mark } from './StatSelection';
 
 type StatSelectorRowProps = {

@@ -13,11 +13,11 @@ import {
 	ArmorSlotWithClassItemIdList,
 } from '@dlb/types/ArmorSlot';
 import {
-	ArmorStatMapping,
 	ArmorStatIdList,
+	ArmorStatMapping,
 	getArmorStatModSpitFromArmorStatId,
-	getStat,
 	getDefaultArmorStatMapping,
+	getStat,
 } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
@@ -30,13 +30,13 @@ import {
 } from '@dlb/types/IdEnums';
 import { PotentialRaidModArmorSlotPlacement, getMod } from '@dlb/types/Mod';
 import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
+import { cloneDeep } from 'lodash';
 import { ARTIFICE, MAX_SINGLE_STAT_VALUE } from './constants';
 import {
 	SeenArmorSlotClassItems,
 	SeenArmorSlotItems,
 	getDefaultSeenArmorSlotItems,
 } from './seenArmorSlotItems';
-import { cloneDeep } from 'lodash';
 
 // Round a number up to the nearest 5
 export function roundUp5(x: number) {
@@ -114,7 +114,7 @@ export const getArmorSlotFromNumRemainingArmorPieces = (
 
 export const sumModCosts = (modIdList: EModId[]): number => {
 	let cost = 0;
-	modIdList.forEach((modId) => (cost += getMod(modId).cost));
+	modIdList.forEach((modId) => (cost += modId ? getMod(modId).cost : 0));
 	return cost;
 };
 

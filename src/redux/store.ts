@@ -1,88 +1,91 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 
+import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
+import armorReducer from './features/armor/armorSlice';
+import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
+import charactersReducer from './features/characters/charactersSlice';
 import counterReducer from './features/counter/counterSlice';
 import desiredArmorStatsReducer, {
 	setDesiredArmorStats,
 } from './features/desiredArmorStats/desiredArmorStatsSlice';
+import loadErrorReducer from './features/loadError/loadErrorSlice';
+import maxPossibleReservedArmorSlotEnergyReducer, {
+	setMaxPossibleReservedArmorSlotEnergy,
+} from './features/maxPossibleReservedArmorSlotEnergy/maxPossibleReservedArmorSlotEnergySlice';
 import maxPossibleStatsReducer, {
 	setMaxPossibleStats,
 } from './features/maxPossibleStats/maxPossibleStatsSlice';
-import armorReducer from './features/armor/armorSlice';
-import charactersReducer from './features/characters/charactersSlice';
-import selectedDestinyClassReducer from './features/selectedDestinyClass/selectedDestinyClassSlice';
-import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
-import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedExoticArmorSlice';
-import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
+import reservedArmorSlotEnergyReducer, {
+	ArmorSlotEnergyMapping,
+} from './features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import selectedArmorSlotRestrictionsReducer from './features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
-import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
 import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
+import selectedClassAbilityReducer from './features/selectedClassAbility/selectedClassAbilitySlice';
+import selectedDestinyClassReducer from './features/selectedDestinyClass/selectedDestinyClassSlice';
+import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedExoticArmorSlice';
+import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
+import selectedGrenadeReducer from './features/selectedGrenade/selectedGrenadeSlice';
+import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
 import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import selectedMeleeReducer from './features/selectedMelee/selectedMeleeSlice';
-import selectedGrenadeReducer from './features/selectedGrenade/selectedGrenadeSlice';
-import selectedClassAbilityReducer from './features/selectedClassAbility/selectedClassAbilitySlice';
-import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
-import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
-import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
-import loadErrorReducer from './features/loadError/loadErrorSlice';
-import validDestinyClassIdsReducer from './features/validDestinyClassIds/validDestinyClassIdsSlice';
-import reservedArmorSlotEnergyReducer from './features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
 import sharedLoadoutDesiredStatsReducer, {
 	setSharedLoadoutDesiredStats,
 } from './features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
+import validDestinyClassIdsReducer from './features/validDestinyClassIds/validDestinyClassIdsSlice';
 
+import armorMetadataReducer from './features/armorMetadata/armorMetadataSlice';
 import resultsPaginationReducer, {
 	setResultsPagination,
 } from './features/resultsPagination/resultsPaginationSlice';
-import armorMetadataReducer from './features/armorMetadata/armorMetadataSlice';
 
-import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
-import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
-import disabledRaidModsReducer, {
-	setDisabledRaidMods,
-} from './features/disabledRaidMods/disabledRaidModsSlice';
-import disabledArmorSlotModsReducer, {
-	setDisabledArmorSlotMods,
-} from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
+import { getDlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
+import { NIL } from 'uuid';
 import armorSlotModViolationsReducer, {
 	setArmorSlotModViolations,
 } from './features/armorSlotModViolations/armorSlotModViolationsSlice';
-import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
+import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import disabledArmorSlotModsReducer, {
+	setDisabledArmorSlotMods,
+} from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
+import disabledRaidModsReducer, {
+	setDisabledRaidMods,
+} from './features/disabledRaidMods/disabledRaidModsSlice';
 import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
-import { NIL } from 'uuid';
-// import {
-// 	doProcessArmor,
-// 	preProcessArmor,
-// } from '@dlb/services/armor-processing';
+import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
 
+import { EModId } from '@dlb/generated/mod/EModId';
+import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
 import {
 	DoProcessArmorOutput,
 	doProcessArmor,
 	preProcessArmor,
 } from '@dlb/services/processArmor/index';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
-	getArmorStatMappingFromMods,
-	getArmorStatMappingFromFragments,
-	getDefaultArmorStatMapping,
 	ArmorStatIdList,
 	ArmorStatMapping,
+	getArmorStatMappingFromFragments,
+	getArmorStatMappingFromMods,
+	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
+import { EElementId } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToArmorSlotModIdListMapping,
 	ArmorSlotIdToModIdListMapping,
+	RaidModIdList,
 	getValidRaidModArmorSlotPlacements,
 	hasValidRaidModPermutation,
-	RaidModIdList,
 } from '@dlb/types/Mod';
-import { EModId } from '@dlb/generated/mod/EModId';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
-import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
-import { EElementId } from '@dlb/types/IdEnums';
 import isEqual from 'lodash/isEqual';
 
 function getChangedProperties(previousObj, currentObj, changes) {
@@ -125,6 +128,8 @@ export function makeStore() {
 			disabledArmorSlotMods: disabledArmorSlotModsReducer,
 			disabledRaidMods: disabledRaidModsReducer,
 			loadError: loadErrorReducer,
+			maxPossibleReservedArmorSlotEnergy:
+				maxPossibleReservedArmorSlotEnergyReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
 			processedArmor: processedArmorReducer,
 			reservedArmorSlotEnergy: reservedArmorSlotEnergyReducer,
@@ -275,6 +280,12 @@ function handleChange() {
 		dimLoadoutsFilter: { value: dimLoadoutsFilter },
 		reservedArmorSlotEnergy: { value: reservedArmorSlotEnergy },
 		sharedLoadoutDesiredStats: { value: sharedLoadoutDesiredStats },
+		selectedJump: { value: selectedJump },
+		selectedMelee: { value: selectedMelee },
+		selectedClassAbility: { value: selectedClassAbility },
+		selectedSuperAbility: { value: selectedSuperAbility },
+		selectedGrenade: { value: selectedGrenade },
+		selectedAspects: { value: selectedAspects },
 	} = store.getState();
 
 	if (sharedLoadoutDesiredStats.processing) {
@@ -314,6 +325,7 @@ function handleChange() {
 	);
 
 	const disabledArmorSlotMods = getDisabledArmorSlotMods(
+		reservedArmorSlotEnergy,
 		selectedArmorSlotMods,
 		selectedRaidMods
 	);
@@ -375,6 +387,11 @@ function handleChange() {
 		const results = doProcessArmor(doProcessArmorParams);
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
+		store.dispatch(
+			setMaxPossibleReservedArmorSlotEnergy(
+				results.maxPossibleReservedArmorSlotEnergy
+			)
+		);
 		store.dispatch(setProcessedArmor(results.items));
 	}
 
@@ -402,6 +419,11 @@ function handleChange() {
 			store.dispatch(
 				setMaxPossibleStats(
 					sharedLoadoutDesiredStatsResults.maxPossibleDesiredStatTiers
+				)
+			);
+			store.dispatch(
+				setMaxPossibleReservedArmorSlotEnergy(
+					sharedLoadoutDesiredStatsResults.maxPossibleReservedArmorSlotEnergy
 				)
 			);
 			store.dispatch(
@@ -444,6 +466,11 @@ function handleChange() {
 			store.dispatch(
 				setMaxPossibleStats(bestFitResults.maxPossibleDesiredStatTiers)
 			);
+			store.dispatch(
+				setMaxPossibleReservedArmorSlotEnergy(
+					bestFitResults.maxPossibleReservedArmorSlotEnergy
+				)
+			);
 			store.dispatch(setDesiredArmorStats(bestFitDesiredArmorStats));
 			store.dispatch(setProcessedArmor(bestFitResults.items));
 			store.dispatch(
@@ -455,6 +482,22 @@ function handleChange() {
 			);
 		}
 	}
+	const localLoadout: DlbLoadoutConfiguration = getDlbLoadoutConfiguration({
+		desiredArmorStats,
+		selectedDestinyClass,
+		selectedFragments,
+		selectedDestinySubclass,
+		selectedArmorSlotMods,
+		selectedRaidMods,
+		selectedExoticArmor,
+		selectedJump,
+		selectedMelee,
+		selectedGrenade,
+		selectedClassAbility,
+		selectedSuperAbility,
+		selectedAspects,
+	});
+	console.log('>>>>>>>>>>localLoadout', localLoadout);
 }
 
 store.subscribe(handleChange);
@@ -465,10 +508,13 @@ store.subscribe(handleChange);
 // This is not vey efficient. It will do a bunch of duplicate checks
 // and doesn't do the very cheap sanity checks of just looking at elements
 // and cost. Those could be big optimizations if this ends up being very slow.
+// TODO: Rewrite this to properly respect the reservedArmorSlotEnergy
 const getDisabledArmorSlotMods = (
+	reservedArmorSlotEnergy: ArmorSlotEnergyMapping,
 	selectedArmorSlotMods: ArmorSlotIdToModIdListMapping,
 	selectedRaidMods: EModId[]
 ): Partial<Record<EModId, Record<number, boolean>>> => {
+	return {};
 	const disabledMods: Partial<Record<EModId, Record<number, boolean>>> = {};
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 		selectedArmorSlotMods[armorSlotId].forEach((_, i) => {

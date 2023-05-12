@@ -1,5 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
+import { ArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import { StatList } from '@dlb/types/Armor';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
 	ArmorStatMapping,
@@ -12,20 +14,20 @@ import {
 	EExtraSocketModCategoryId,
 } from '@dlb/types/IdEnums';
 import {
-	PotentialRaidModArmorSlotPlacement,
-	ArmorSlotIdToModIdListMapping,
-	getMod,
 	ArmorSlotCapacity,
+	ArmorSlotIdToModIdListMapping,
+	PotentialRaidModArmorSlotPlacement,
 	getArmorSlotEnergyCapacity,
+	getMod,
 } from '@dlb/types/Mod';
-import { SeenArmorSlotItems } from './seenArmorSlotItems';
-import { getItemCountsFromSeenArmorSlotItems } from './utils';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
 	StatModCombo,
+	getDefaultStatModCombo,
 	getStatModCombosFromDesiredStats,
 } from './getStatModCombosFromDesiredStats';
-import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import { SeenArmorSlotItems } from './seenArmorSlotItems';
+import { getItemCountsFromSeenArmorSlotItems, sumModCosts } from './utils';
 
 /***** ArmorSlotModComboPlacementWithArtificeMods *****/
 export type ArmorStatAndRaidModComboPlacementValue = {
@@ -151,7 +153,7 @@ export type GetModCombosParams = {
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
-	reservedArmorSlotEnergy: Record<EArmorSlotId, number>;
+	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 };
 
 export const getModCombos = (params: GetModCombosParams): ModCombos => {
@@ -164,6 +166,19 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		specialSeenArmorSlotItems,
 		reservedArmorSlotEnergy,
 	} = params;
+
+	// First sanity check the armorSlotMods against the reserved armorSlotEnergy
+	// TODO: For some reason getFirstValidStatModCombo won't catch this case
+	// So as a hack I'm doing it here for now...
+	for (const armorSlotId of ArmorSlotWithClassItemIdList) {
+		if (
+			sumModCosts(armorSlotMods[armorSlotId]) +
+				reservedArmorSlotEnergy[armorSlotId] >
+			10
+		) {
+			return null;
+		}
+	}
 
 	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
 		specialSeenArmorSlotItems
@@ -273,7 +288,7 @@ type GetFirstValidStatModComboParams = {
 		| PotentialRaidModArmorSlotPlacement[]
 		| null;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
-	reservedArmorSlotEnergy: Record<EArmorSlotId, number>;
+	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 };
 
 type GetFirstValidStatModComboResult = {
@@ -288,12 +303,12 @@ const getFirstValidStatModCombo = ({
 	armorSlotMods,
 	reservedArmorSlotEnergy,
 }: GetFirstValidStatModComboParams): GetFirstValidStatModComboResult => {
-	if (statModComboList.length === 0) {
+	if (
+		statModComboList.length === 0 &&
+		(potentialRaidModArmorSlotPlacements === null ||
+			potentialRaidModArmorSlotPlacements.length == 0)
+	) {
 		return { isValid: true, combo: null };
-	}
-
-	if (armorSlotMods[EArmorSlotId.Arm].filter((x) => x !== null).length === 3) {
-		console.log('>>> three', armorSlotMods);
 	}
 
 	const armorSlotCapacities = getArmorSlotCapacities({
@@ -313,9 +328,15 @@ const getFirstValidStatModCombo = ({
 		allSortedCapacities.push(sortedArmorSlotCapacities);
 	}
 
-	for (let i = 0; i < statModComboList.length; i++) {
+	let _statModComboList = [...statModComboList];
+
+	// This edge case is when we have raid mods but no stat mods are necessary
+	if (_statModComboList.length === 0) {
+		_statModComboList = [getDefaultStatModCombo()];
+	}
+	for (let i = 0; i < _statModComboList.length; i++) {
 		const { armorStatModIdList } = convertStatModComboToExpandedStatModCombo(
-			statModComboList[i]
+			_statModComboList[i]
 		);
 		const sortedArmorStatMods = [...armorStatModIdList].sort(
 			(a, b) => getMod(b).cost - getMod(a).cost
@@ -329,7 +350,7 @@ const getFirstValidStatModCombo = ({
 					sortedArmorSlotCapacities: capacity,
 				})
 			) {
-				return { isValid: true, combo: statModComboList[i] };
+				return { isValid: true, combo: _statModComboList[i] };
 			}
 		}
 	}
@@ -397,7 +418,7 @@ export type GetArmorSlotCapacitiesParams = {
 		| PotentialRaidModArmorSlotPlacement[]
 		| null;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
-	reservedArmorSlotEnergy: Record<EArmorSlotId, number>;
+	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 };
 export const getArmorSlotCapacities = ({
 	potentialRaidModArmorSlotPlacements,
@@ -411,27 +432,36 @@ export const getArmorSlotCapacities = ({
 		for (let i = 0; i < potentialRaidModArmorSlotPlacements.length; i++) {
 			const armorSlotCapacities = getArmorSlotEnergyCapacity(armorSlotMods);
 			const raidModPlacement = potentialRaidModArmorSlotPlacements[i];
+			let isValid = true;
 			// Update the armorSlotCapacities for this particular raid mod placement permutation
 			for (let j = 0; j < ArmorSlotWithClassItemIdList.length; j++) {
 				const armorSlotId = ArmorSlotWithClassItemIdList[j];
-				if (raidModPlacement[armorSlotId]) {
-					armorSlotCapacities[armorSlotId].capacity -= getMod(
-						raidModPlacement[armorSlotId]
-					).cost;
+				const newCapacity =
+					armorSlotCapacities[armorSlotId].capacity -
+					(raidModPlacement[armorSlotId]
+						? getMod(raidModPlacement[armorSlotId]).cost
+						: 0) -
+					reservedArmorSlotEnergy[armorSlotId];
+				if (newCapacity < 0) {
+					isValid = false;
+					break;
 				}
+				armorSlotCapacities[armorSlotId].capacity = newCapacity;
 			}
-			allArmorSlotCapacities.push(armorSlotCapacities);
+			if (isValid) {
+				allArmorSlotCapacities.push(armorSlotCapacities);
+			}
 		}
-	}
-
-	for (let i = 0; i < ArmorSlotWithClassItemIdList.length; i++) {
-		const armorSlotId = ArmorSlotWithClassItemIdList[i];
-		if (reservedArmorSlotEnergy[armorSlotId] === 0) {
-			continue;
-		}
-		for (let j = 0; j < allArmorSlotCapacities.length; j++) {
-			allArmorSlotCapacities[j][armorSlotId].capacity -=
-				reservedArmorSlotEnergy[armorSlotId];
+	} else {
+		for (let i = 0; i < ArmorSlotWithClassItemIdList.length; i++) {
+			const armorSlotId = ArmorSlotWithClassItemIdList[i];
+			if (reservedArmorSlotEnergy[armorSlotId] === 0) {
+				continue;
+			}
+			for (let j = 0; j < allArmorSlotCapacities.length; j++) {
+				allArmorSlotCapacities[j][armorSlotId].capacity -=
+					reservedArmorSlotEnergy[armorSlotId];
+			}
 		}
 	}
 

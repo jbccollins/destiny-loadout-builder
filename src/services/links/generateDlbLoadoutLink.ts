@@ -1,31 +1,111 @@
-import { Loadout, LoadoutParameters } from '@destinyitemmanager/dim-api-types';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
+import { EJumpId } from '@dlb/generated/jump/EJumpId';
+import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { SelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import { SelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
+import { SelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { SelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import { SelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
+import { SelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+import { SelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import {
-	EArmorStatId,
+	ArmorStatMapping,
+	getArmorStatMappingFromFragments,
+} from '@dlb/types/ArmorStat';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { getFragment } from '@dlb/types/Fragment';
+import {
 	EDestinyClassId,
 	EDestinySubclassId,
-	EMasterworkAssumption,
+	EElementId,
 } from '@dlb/types/IdEnums';
-import { getFragment } from '@dlb/types/Fragment';
-import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
-import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
-import { ArmorItem, AvailableExoticArmorItem } from '@dlb/types/Armor';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { getAspect } from '@dlb/types/Aspect';
-import { EJumpId } from '@dlb/generated/jump/EJumpId';
-import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
-import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
-import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
-import { getClassAbility } from '@dlb/types/ClassAbility';
-import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
-import { getSuperAbility } from '@dlb/types/SuperAbility';
-import { getJump } from '@dlb/types/Jump';
-import { getMelee } from '@dlb/types/Melee';
-import { getGrenade } from '@dlb/types/Grenade';
-import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
-import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
-import { EModId } from '@dlb/generated/mod/EModId';
-import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
-import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { ArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+
+export type GetDlbLoadoutConfigurationParams = {
+	desiredArmorStats: ArmorStatMapping;
+	selectedDestinyClass: EDestinyClassId;
+	selectedFragments: SelectedFragments;
+	selectedDestinySubclass: Record<EDestinyClassId, EDestinySubclassId>;
+	selectedArmorSlotMods: ArmorSlotIdToModIdListMapping;
+	selectedRaidMods: EModId[];
+	selectedExoticArmor: Record<EDestinyClassId, AvailableExoticArmorItem>;
+	selectedJump: SelectedJump;
+	selectedMelee: SelectedMelee;
+	selectedGrenade: SelectedGrenade;
+	selectedClassAbility: SelectedClassAbility;
+	selectedSuperAbility: SelectedSuperAbility;
+	selectedAspects: SelectedAspects;
+};
+export const getDlbLoadoutConfiguration = ({
+	desiredArmorStats,
+	selectedDestinyClass,
+	selectedFragments,
+	selectedDestinySubclass,
+	selectedArmorSlotMods,
+	selectedRaidMods,
+	selectedExoticArmor,
+	selectedJump,
+	selectedMelee,
+	selectedGrenade,
+	selectedClassAbility,
+	selectedSuperAbility,
+	selectedAspects,
+}: GetDlbLoadoutConfigurationParams): DlbLoadoutConfiguration | null => {
+	try {
+		const exoticArmor = selectedExoticArmor[selectedDestinyClass];
+		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
+		let elementId: EElementId = EElementId.Any;
+		if (destinySubclassId) {
+			elementId = getDestinySubclass(destinySubclassId).elementId;
+		}
+		const aspectIds: EAspectId[] = destinySubclassId
+			? selectedAspects[destinySubclassId]
+			: [];
+
+		// TODO: Having to do this cast sucks
+		const fragmentIds =
+			elementId !== EElementId.Any
+				? (selectedFragments[elementId] as EFragmentId[])
+				: [];
+
+		const fragmentArmorStatMappings: Partial<
+			Record<EFragmentId, ArmorStatMapping>
+		> = {};
+		fragmentIds.forEach((id) => {
+			const { bonuses } = getFragment(id);
+			if (bonuses.length > 0) {
+				fragmentArmorStatMappings[id] = getArmorStatMappingFromFragments(
+					[id],
+					selectedDestinyClass
+				);
+			}
+		});
+		return {
+			raidModIdList: selectedRaidMods,
+			armorSlotMods: selectedArmorSlotMods,
+			fragmentIdList: fragmentIds,
+			aspectIdList: aspectIds,
+			exoticArmor: exoticArmor,
+			destinySubclassId,
+			destinyClassId: selectedDestinyClass,
+			jumpId: selectedJump[destinySubclassId],
+			meleeId: selectedMelee[destinySubclassId],
+			superAbilityId: selectedSuperAbility[destinySubclassId],
+			classAbilityId: selectedClassAbility[destinySubclassId],
+			grenadeId: selectedGrenade[elementId],
+			desiredArmorStats,
+		};
+	} catch (e) {
+		console.error(e);
+		return null;
+	}
+};
 
 export type DlbLoadoutConfiguration = {
 	destinyClassId: EDestinyClassId;

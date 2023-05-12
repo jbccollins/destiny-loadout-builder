@@ -1,9 +1,9 @@
+import IconDropdown from '@dlb/components/IconDropdown';
 import {
 	ArmorExtraModSlotIdList,
 	getExtraModSlot,
 } from '@dlb/types/ArmorExtraModSlot';
 import { styled } from '@mui/material';
-import IconDropdown from '@dlb/components/IconDropdown';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
 	// paddingRight: 0

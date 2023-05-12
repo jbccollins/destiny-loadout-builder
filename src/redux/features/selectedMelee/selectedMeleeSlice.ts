@@ -2,13 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
-import { EDestinySubclassId } from '@dlb/types/IdEnums';
-import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
-import { getMeleeIdsByDestinySubclassId } from '@dlb/types/Melee';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
+import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
+import { EDestinySubclassId } from '@dlb/types/IdEnums';
+import { NIL, v4 as uuid } from 'uuid';
 
-type SelectedMelee = {
+export type SelectedMelee = {
 	[key in EDestinySubclassId]: EMeleeId;
 };
 

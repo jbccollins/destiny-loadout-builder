@@ -2,13 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
-import { EElementId } from '@dlb/types/IdEnums';
-import { getGrenadeIdsByElementId } from '@dlb/types/Grenade';
-import { ElementIdList } from '@dlb/types/Element';
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
+import { ElementIdList } from '@dlb/types/Element';
+import { EElementId } from '@dlb/types/IdEnums';
+import { NIL, v4 as uuid } from 'uuid';
 
-type SelectedGrenade = {
+export type SelectedGrenade = {
 	[key in EElementId]: EGrenadeId;
 };
 

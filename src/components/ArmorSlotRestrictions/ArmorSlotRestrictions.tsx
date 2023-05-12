@@ -2,19 +2,17 @@ import { styled } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 
+import { ElementalAffinityOption } from '@dlb/components/ElementalAffinityDropdown';
 import {
 	ArmorSlotRestrictionGroup,
 	selectSelectedArmorSlotRestrictions,
 	setSelectedArmorSlotRestrictions,
 } from '@dlb/redux/features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
-import ElementalAffinityDropdown, {
-	ElementalAffinityOption,
-} from '@dlb/components/ElementalAffinityDropdown';
-import ExtraModSlotDropdown from './ExtraModSlotRestrictions';
-import StatModCostDropdown from './StatModCostDropdown';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ElementIdList, ElementIdToElement } from '@dlb/types/Element';
+import { EArmorSlotId } from '@dlb/types/IdEnums';
+import ExtraModSlotDropdown from './ExtraModSlotRestrictions';
+import StatModCostDropdown from './StatModCostDropdown';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0

@@ -1,6 +1,4 @@
-import { styled, Box } from '@mui/material';
-import { format } from 'date-fns';
-import React from 'react';
+import { Box, styled } from '@mui/material';
 import { PatchNotes as patchNotes } from './patchNotesData';
 
 const Container = styled(Box)(({ theme }) => ({

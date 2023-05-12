@@ -9,13 +9,19 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
-        "editor.tabSize": 2
+        "editor.tabSize": 2,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
     },
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
-        "editor.tabSize": 2
+        "editor.tabSize": 2,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
     },
     "[json]": {
         "editor.tabSize": 2

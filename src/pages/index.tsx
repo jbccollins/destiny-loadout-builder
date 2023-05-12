@@ -1,85 +1,80 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
+import Loading from '@dlb/components/Loading';
+import StatSelection from '@dlb/components/StatSelection/StatSelection';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import Loading from '@dlb/components/Loading';
 import { Box, Button, styled, useMediaQuery, useTheme } from '@mui/material';
-import StatSelection from '@dlb/components/StatSelection/StatSelection';
-import WebWorkerTest from '@dlb/components/WebWorkerTest/WebWorkerTest';
+import type { NextPage } from 'next';
+import Head from 'next/head';
 
-import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
+import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
-import React from 'react';
+import Logout from '@dlb/components/LogOutButton';
+import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
+import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
+import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
+import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
+import RaidModSelector from '@dlb/components/RaidModsSelector';
+import SelectionControlGroup from '@dlb/components/SectionControlGroup';
+import ShareLoadout from '@dlb/components/ShareLoadout';
+import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
+import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
 import DestinySubclassSelector from '@dlb/components/SubclassSelector/DestinySubclassSelector';
 import FragmentSelector from '@dlb/components/SubclassSelector/FragmentSelector';
-import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
-import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
-import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import GrenadeSelector from '@dlb/components/SubclassSelector/GrenadeSelector';
-import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
-import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
 import JumpSelector from '@dlb/components/SubclassSelector/JumpSelector';
+import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
 import SuperAbilitySelector from '@dlb/components/SubclassSelector/SuperAbilitySelector';
-import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import TabContainer from '@dlb/components/TabContainer';
-import SelectionControlGroup from '@dlb/components/SectionControlGroup';
-import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
-import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
-import RaidModSelector from '@dlb/components/RaidModsSelector';
+import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import {
-	DefaultArmorStatMapping,
-	getDefaultArmorStatMapping,
-} from '@dlb/types/ArmorStat';
+	getDefaultArmorSlotEnergyMapping,
+	setReservedArmorSlotEnergy,
+} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import { setSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import {
-	getDefaultArmorSlotIdToModIdListMapping,
-	getDefaultValidRaidModArmorSlotPlacement,
-} from '@dlb/types/Mod';
-import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
-import {
-	selectSelectedDestinySubclass,
-	setSelectedDestinySubclass,
-} from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
 	selectSelectedAspects,
 	setSelectedAspects,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import {
-	selectSelectedSuperAbility,
-	setSelectedSuperAbility,
-} from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+	selectSelectedClassAbility,
+	setSelectedClassAbility,
+} from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import {
+	selectSelectedDestinySubclass,
+	setSelectedDestinySubclass,
+} from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { setSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import {
 	selectSelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import {
+	selectSelectedJump,
+	setSelectedJump,
+} from '@dlb/redux/features/selectedJump/selectedJumpSlice';
+import {
 	selectSelectedMelee,
 	setSelectedMelee,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import {
-	selectSelectedClassAbility,
-	setSelectedClassAbility,
-} from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
-import {
-	selectSelectedJump,
-	setSelectedJump,
-} from '@dlb/redux/features/selectedJump/selectedJumpSlice';
-import Logout from '@dlb/components/LogOutButton';
-import {
 	defaultRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import ReservedArmorSlotEnergySelector from '@dlb/components/ReservedArmorSlotEnergySelector';
-import ShareLoadout from '@dlb/components/ShareLoadout';
+import {
+	selectSelectedSuperAbility,
+	setSelectedSuperAbility,
+} from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import React from 'react';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -152,6 +147,7 @@ const LeftSectionComponent = () => {
 			setSelectedArmorSlotMods(getDefaultArmorSlotIdToModIdListMapping())
 		);
 		dispatch(setSelectedRaidMods(defaultRaidMods));
+		dispatch(setReservedArmorSlotEnergy(getDefaultArmorSlotEnergyMapping()));
 	};
 
 	const clearSubclassOptions = () => {

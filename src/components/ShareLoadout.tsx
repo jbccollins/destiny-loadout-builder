@@ -91,6 +91,7 @@ const ShareLoadout = () => {
 				variant="contained"
 				startIcon={<ShareIcon />}
 				onClick={handleClick}
+				sx={{ width: '300px' }}
 			>
 				Share Loadout Configuration
 			</Button>

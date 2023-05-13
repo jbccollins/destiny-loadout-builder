@@ -31,7 +31,9 @@ import {
 import ModSelector from './ModSelector';
 
 const TierRowContainer = styled('div')(({ theme }) => ({
-	transform: 'scaleY(0.3)',
+	paddingTop: '8px',
+	paddingBottom: '6px',
+	// transform: 'scaleY(0.3)',
 }));
 
 type MaxPossibleReservedArmorSlotEnergyIndicatorProps = {
@@ -52,8 +54,9 @@ function MaxPossibleReservedArmorSlotEnergyIndicator({
 				showValue={false}
 				tiers={tiers}
 				value={value}
-				tierBlockBorderWidth="2px"
+				tierBlockBorderWidth="px"
 				tierBlockBackgroundColor="rgb(50, 50, 50)"
+				tierBlockHeight="8px"
 			/>
 		</TierRowContainer>
 	);

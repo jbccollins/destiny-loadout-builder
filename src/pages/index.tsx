@@ -100,7 +100,7 @@ const LeftSection = styled(Box)(({ theme }) => ({
 	},
 	[theme.breakpoints.down('md')]: {
 		width: '100%', //`calc(100vw - ${theme.spacing(4)})`,
-		paddingBottom: '80px',
+		paddingBottom: '180px',
 	},
 }));
 

@@ -63,7 +63,7 @@ function AspectSelector() {
 				}}
 			>
 				<BoxCountIndicator
-					prefix={'Slots'}
+					prefix={'Fragment Slots'}
 					max={getAspect(option.id as EAspectId).fragmentSlots}
 					count={getAspect(option.id as EAspectId).fragmentSlots}
 				/>

@@ -82,24 +82,26 @@ const FragmentSelector = () => {
 
 	return (
 		<Container>
-			<Box
-				sx={{
-					position: 'absolute',
-					right: '0px',
-					top: '0px',
-					marginRight: '16px',
-					paddingLeft: '4px',
-					paddingRight: '4px',
-					background: 'rgb(19,19,19)',
-					zIndex: 1,
-				}}
-			>
-				<BoxCountIndicator
-					prefix={'Slots'}
-					max={maxFragments}
-					count={fragments.length}
-				/>
-			</Box>
+			{destinySubclassId && (
+				<Box
+					sx={{
+						position: 'absolute',
+						right: '0px',
+						top: '0px',
+						marginRight: '16px',
+						paddingLeft: '4px',
+						paddingRight: '4px',
+						background: 'rgb(19,19,19)',
+						zIndex: 1,
+					}}
+				>
+					<BoxCountIndicator
+						prefix={'Fragment Slots'}
+						max={maxFragments}
+						count={fragments.length}
+					/>
+				</Box>
+			)}
 			<IconMultiSelectDropdown
 				disabled={!destinySubclassId}
 				getOptionValue={getOptionValue}

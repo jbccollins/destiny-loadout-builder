@@ -321,13 +321,18 @@ const Home: NextPage = () => {
 								{!smallScreenResultsOpen && <LeftSectionComponent />}
 								{!smallScreenResultsOpen && (
 									<SmallScreenResultsViewToggle
+										disabled={processedArmor.items.length === 0}
 										className="small-screen-results-view-toggle"
 										variant="contained"
 										onClick={() =>
 											setSmallScreenResultsOpen(!smallScreenResultsOpen)
 										}
 									>
-										<Box>{`Show Results (${processedArmor.items.length})`}</Box>
+										<Box>
+											{processedArmor.items.length > 0
+												? `Show Results (${processedArmor.items.length})`
+												: 'No Results'}
+										</Box>
 									</SmallScreenResultsViewToggle>
 								)}
 							</>

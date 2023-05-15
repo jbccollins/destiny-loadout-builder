@@ -1,43 +1,41 @@
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 
-import { bungieNetPath } from '@dlb/utils/item-utils';
-import {
-	EArmorSlotId,
-	EDestinyClassId,
-	EElementId,
-	EExtraSocketModCategoryId,
-	EGearTierId,
-	EModCategoryId,
-} from '@dlb/types/IdEnums';
-import {
-	DestinyClassHashToDestinyClass,
-	BucketHashToArmorSlot,
-	DestinyArmorTypeToArmorSlotId,
-	DestinyClassStringToDestinyClassId,
-	ElementEnumToEElementId,
-	ItemTierNameToEGearTierId,
-} from '@dlb/types/External';
 import {
 	Armor,
+	ArmorItem,
+	ArmorMaxStatsMetadata,
+	ArmorMetadata,
 	AvailableExoticArmor,
+	AvailableExoticArmorItem,
+	StatList,
 	generateArmorGroup,
 	generateAvailableExoticArmorGroup,
-	AvailableExoticArmorItem,
-	ArmorItem,
-	StatList,
-	ArmorMetadata,
-	getDefaultArmorMetadata,
-	ArmorMaxStatsMetadata,
 	getDefaultArmorCountMaxStatsMetadata,
+	getDefaultArmorMetadata,
 } from '@dlb/types/Armor';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import { ArmorStatIdList } from '@dlb/types/ArmorStat';
 import { Character, Characters } from '@dlb/types/Character';
 import {
 	DestinyClassIdList,
 	DestinyClassIdToDestinyClass,
 } from '@dlb/types/DestinyClass';
-import { ArmorStatIdList } from '@dlb/types/ArmorStat';
-import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import {
+	BucketHashToArmorSlot,
+	DestinyArmorTypeToArmorSlotId,
+	DestinyClassHashToDestinyClass,
+	DestinyClassStringToDestinyClassId,
+	ItemTierNameToEGearTierId,
+} from '@dlb/types/External';
+import {
+	EArmorSlotId,
+	EDestinyClassId,
+	EGearTierId,
+	EIntrinsicArmorPerkOrAttributeId,
+	ERaidAndNightMareModTypeId,
+} from '@dlb/types/IdEnums';
+import { bungieNetPath } from '@dlb/utils/item-utils';
 
 const updateMaxStatsMetadata = (
 	armorItem: ArmorItem,
@@ -158,7 +156,10 @@ export const extractArmor = (
 						? ItemTierNameToEGearTierId[item.tier]
 						: EGearTierId.Unknown,
 					isArtifice: isArtificeArmor(item),
-					extraSocketModCategoryId: getExtraSocketModCategoryId(item),
+					socketableRaidAndNightmareModTypeId:
+						getExtraSocketModCategoryId(item),
+					intrinsicArmorPerkOrAttributeId:
+						getIntrinsicArmorPerkOrAttributeId(item),
 				};
 
 				if (armorItem.gearTierId === EGearTierId.Exotic) {
@@ -220,19 +221,19 @@ export const extractArmor = (
 						armorMetadata[destinyClassName].artifice.items[armorItem.armorSlot]
 							.count++;
 					}
-					if (armorItem.extraSocketModCategoryId !== null) {
+					if (armorItem.socketableRaidAndNightmareModTypeId !== null) {
 						updateMaxStatsMetadata(
 							armorItem,
 							armorMetadata[destinyClassName].extraSocket.items[
-								armorItem.extraSocketModCategoryId
+								armorItem.socketableRaidAndNightmareModTypeId
 							].items[armorItem.armorSlot].maxStats
 						);
 						armorMetadata[destinyClassName].extraSocket.count++;
 						armorMetadata[destinyClassName].extraSocket.items[
-							armorItem.extraSocketModCategoryId
+							armorItem.socketableRaidAndNightmareModTypeId
 						].count++;
 						armorMetadata[destinyClassName].extraSocket.items[
-							armorItem.extraSocketModCategoryId
+							armorItem.socketableRaidAndNightmareModTypeId
 						].items[armorItem.armorSlot].count++;
 					}
 
@@ -308,30 +309,30 @@ const hasSocket = (item: DimItem, hash: number): boolean =>
 
 const getExtraSocketModCategoryId = (
 	item: DimItem
-): EExtraSocketModCategoryId => {
+): ERaidAndNightMareModTypeId => {
 	if (hasSocket(item, KINGS_FALL_SOCKET_HASH)) {
-		return EExtraSocketModCategoryId.KingsFall;
+		return ERaidAndNightMareModTypeId.KingsFall;
 	}
 	if (hasSocket(item, LAST_WISH_SOCKET_HASH)) {
-		return EExtraSocketModCategoryId.LastWish;
+		return ERaidAndNightMareModTypeId.LastWish;
 	}
 	if (hasSocket(item, VAULT_OF_GLASS_SOCKET_HASH)) {
-		return EExtraSocketModCategoryId.VaultOfGlass;
+		return ERaidAndNightMareModTypeId.VaultOfGlass;
 	}
 	if (hasSocket(item, GARDEN_OF_SALVATION_SOCKET_HASH)) {
-		return EExtraSocketModCategoryId.GardenOfSalvation;
+		return ERaidAndNightMareModTypeId.GardenOfSalvation;
 	}
 	if (hasSocket(item, DEEP_STONE_CRYPT_SOCKET_HASH)) {
-		return EExtraSocketModCategoryId.DeepStoneCrypt;
+		return ERaidAndNightMareModTypeId.DeepStoneCrypt;
 	}
 	if (hasSocket(item, VOW_OF_THE_DISCIPLE_SOCKET_HASH)) {
-		return EExtraSocketModCategoryId.VowOfTheDisciple;
+		return ERaidAndNightMareModTypeId.VowOfTheDisciple;
 	}
 	if (hasSocket(item, ROOT_OF_NIGHTMARES_SOCKET_HASH)) {
-		return EExtraSocketModCategoryId.RootOfNightmares;
+		return ERaidAndNightMareModTypeId.RootOfNightmares;
 	}
 	if (hasSocket(item, NIGHTMARE_SOCKET_HASH)) {
-		return EExtraSocketModCategoryId.Nightmare;
+		return ERaidAndNightMareModTypeId.NightmareHunt;
 	}
 	// if ((v.sockets?.socketEntries.filter(d => d.singleInitialItemHash == 2472875850) || []).length > 0)
 	// 	return ArmorPerkOrSlot.PerkIronBanner;
@@ -340,5 +341,57 @@ const getExtraSocketModCategoryId = (
 	// if ((v.sockets?.socketEntries.filter(d => d.singleInitialItemHash == 400659041) || []).length > 0)
 	// 	return ArmorPerkOrSlot.PerkPlunderersTrappings;
 
+	return null;
+};
+
+const IronBannerSocketHash = 2472875850;
+const UniformedOfficerSocketHash = 2392155347;
+const PlunderersTrappingsSocketHash = 400659041;
+const SeraphSensorArraySocketHash = 3525583702;
+const QueensFavoriteSocketHash = 1101259514;
+
+// From: https://github.com/DestinyItemManager/DIM/blob/4be7854f229d76108e3ebbff41545bc6f9abeaf4/src/data/d2/source-info.ts#LL552C11-L552C11
+const GuardianGamesSourceHashes = [
+	2473294025, // 2023 Guardian Games?
+	2006303146, // 2022 Guardian Games?
+	2011810450, // 2021 Guardian Games?
+	3388021959, // Unknown Guardian Games?
+	611838069, // Unknown Guardian Games?
+];
+
+const hasSocketHash = (item: DimItem, hash: number): boolean => {
+	return (
+		(
+			item.sockets?.allSockets.filter(
+				(d) => d.socketDefinition.singleInitialItemHash == hash
+			) || []
+		).length > 0
+	);
+};
+
+const getIntrinsicArmorPerkOrAttributeId = (
+	item: DimItem
+): EIntrinsicArmorPerkOrAttributeId => {
+	if (hasSocketHash(item, IronBannerSocketHash)) {
+		return EIntrinsicArmorPerkOrAttributeId.IronBanner;
+	}
+	if (hasSocketHash(item, UniformedOfficerSocketHash)) {
+		return EIntrinsicArmorPerkOrAttributeId.UniformedOfficer;
+	}
+	if (hasSocketHash(item, PlunderersTrappingsSocketHash)) {
+		return EIntrinsicArmorPerkOrAttributeId.PlunderersTrappings;
+	}
+	if (hasSocketHash(item, SeraphSensorArraySocketHash)) {
+		return EIntrinsicArmorPerkOrAttributeId.SeraphSensorArray;
+	}
+	if (hasSocketHash(item, QueensFavoriteSocketHash)) {
+		return EIntrinsicArmorPerkOrAttributeId.QueensFavor;
+	}
+	if (item.typeName === 'Festival Mask') {
+		return EIntrinsicArmorPerkOrAttributeId.HalloweenMask;
+	}
+	if (GuardianGamesSourceHashes.includes(item.source)) {
+		return EIntrinsicArmorPerkOrAttributeId.GuardianGames;
+	}
 	return null;
 };

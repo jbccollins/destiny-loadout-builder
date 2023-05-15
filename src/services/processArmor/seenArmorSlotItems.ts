@@ -1,16 +1,16 @@
-import { EExtraSocketModCategoryId, EArmorSlotId } from '@dlb/types/IdEnums';
+import { EArmorSlotId, ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
 
 export type SeenArmorSlotClassItems = Record<
-	EExtraSocketModCategoryId,
+	ERaidAndNightMareModTypeId,
 	boolean
 > & {
 	artifice: boolean;
 };
 export type SeenArmorSlotItems = {
-	[EArmorSlotId.Head]: EExtraSocketModCategoryId | 'artifice';
-	[EArmorSlotId.Arm]: EExtraSocketModCategoryId | 'artifice';
-	[EArmorSlotId.Chest]: EExtraSocketModCategoryId | 'artifice';
-	[EArmorSlotId.Leg]: EExtraSocketModCategoryId | 'artifice';
+	[EArmorSlotId.Head]: ERaidAndNightMareModTypeId | 'artifice';
+	[EArmorSlotId.Arm]: ERaidAndNightMareModTypeId | 'artifice';
+	[EArmorSlotId.Chest]: ERaidAndNightMareModTypeId | 'artifice';
+	[EArmorSlotId.Leg]: ERaidAndNightMareModTypeId | 'artifice';
 	ClassItems: SeenArmorSlotClassItems;
 };
 
@@ -22,14 +22,14 @@ export const getDefaultSeenArmorSlotItems = (): SeenArmorSlotItems => {
 		[EArmorSlotId.Leg]: null,
 		ClassItems: {
 			artifice: false,
-			[EExtraSocketModCategoryId.DeepStoneCrypt]: false,
-			[EExtraSocketModCategoryId.GardenOfSalvation]: false,
-			[EExtraSocketModCategoryId.KingsFall]: false,
-			[EExtraSocketModCategoryId.LastWish]: false,
-			[EExtraSocketModCategoryId.Nightmare]: false,
-			[EExtraSocketModCategoryId.VaultOfGlass]: false,
-			[EExtraSocketModCategoryId.VowOfTheDisciple]: false,
-			[EExtraSocketModCategoryId.RootOfNightmares]: false,
+			[ERaidAndNightMareModTypeId.DeepStoneCrypt]: false,
+			[ERaidAndNightMareModTypeId.GardenOfSalvation]: false,
+			[ERaidAndNightMareModTypeId.KingsFall]: false,
+			[ERaidAndNightMareModTypeId.LastWish]: false,
+			[ERaidAndNightMareModTypeId.NightmareHunt]: false,
+			[ERaidAndNightMareModTypeId.VaultOfGlass]: false,
+			[ERaidAndNightMareModTypeId.VowOfTheDisciple]: false,
+			[ERaidAndNightMareModTypeId.RootOfNightmares]: false,
 		},
 	};
 };

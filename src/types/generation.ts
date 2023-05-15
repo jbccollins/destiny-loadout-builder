@@ -5,6 +5,7 @@ import {
 	EElementId,
 	EModCategoryId,
 	EModSocketCategoryId,
+	ERaidAndNightMareModTypeId,
 } from './IdEnums';
 import { IBonuses, IHash, IIcon, IIdentifiableName } from './globals';
 
@@ -15,9 +16,9 @@ export interface IMod extends IIdentifiableName, IHash, IIcon, IBonuses {
 	description: string;
 	modSocketCategoryId: EModSocketCategoryId;
 	modCategoryId: EModCategoryId;
-	elementId?: EElementId; // TODO: Remove elementId
 	cost: number;
 	isArtifactMod: boolean;
+	raidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
 	armorSlotId: EArmorSlotId | null;
 	armorSocketIndex: number;
 	elementOverlayIcon: string;

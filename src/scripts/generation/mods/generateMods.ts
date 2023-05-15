@@ -1,10 +1,23 @@
 /*
 USAGE: From the root directory run "npm run generate"
 */
-import lodash from 'lodash';
-import path from 'path';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
+import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
+import { EModId } from '@dlb/generated/mod/EModId';
+import {
+	generateId,
+	getBonuses,
+	getDefinitions,
+	getDescription,
+} from '@dlb/scripts/generation/utils';
 import { getArmorSlotIdByHash } from '@dlb/types/ArmorSlot';
+import { EArmorSlotId } from '@dlb/types/IdEnums';
+import {
+	getModCategoryId,
+	getRaidAndNightmareModTypeId,
+} from '@dlb/types/ModCategory';
+import { getModSocketCategoryIdByModDisplayNameId } from '@dlb/types/ModSocketCategory';
+import { IMod } from '@dlb/types/generation';
+import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	DestinyEnergyTypeDefinition,
 	DestinyInventoryItemDefinition,
@@ -12,23 +25,11 @@ import {
 	DestinyStatDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
-import { getElementIdByHash } from '@dlb/types/Element';
-import { IMod } from '@dlb/types/generation';
-import {
-	collectRewardsFromArtifacts,
-	generateId,
-	getBonuses,
-	getDefinitions,
-	getDescription,
-} from '@dlb/scripts/generation/utils';
+import lodash from 'lodash';
+import path from 'path';
+import { generateModDisplayNameIdEnumFileString } from './generateModDisplayNameIdEnum';
 import { generateModIdEnumFileString } from './generateModIdEnum';
 import { generateModMapping } from './generateModMapping';
-import { generateModDisplayNameIdEnumFileString } from './generateModDisplayNameIdEnum';
-import { getModSocketCategoryIdByModDisplayNameId } from '@dlb/types/ModSocketCategory';
-import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
-import { bungieNetPath } from '@dlb/utils/item-utils';
-import { EModId } from '@dlb/generated/mod/EModId';
-import { getModCategoryIdByModName } from '@dlb/types/ModCategory';
 
 // TODO: The bungie manifest currently is not including the
 // 'itemTypeDisplayName' field for these mods that come from the
@@ -114,10 +115,12 @@ const buildModData = (
 		displayNameId = EModDisplayNameId.GeneralArmorMod;
 	}
 
+	const modName = mod.displayProperties.name;
+	const modDescription = getDescription(mod, sandboxPerkDefinitions);
 	return {
-		name: mod.displayProperties.name,
+		name: modName,
 		id: modId,
-		description: getDescription(mod, sandboxPerkDefinitions),
+		description: modDescription,
 		icon: bungieNetPath(mod.displayProperties.icon),
 		hash: mod.hash,
 		modSocketCategoryId:
@@ -126,10 +129,7 @@ const buildModData = (
 		armorSlotId: armorSlotId,
 		cost: mod.plug.energyCost?.energyCost ?? 0,
 		isArtifactMod: isArtifactMod,
-		modCategoryId: getModCategoryIdByModName(
-			displayNameId,
-			mod.displayProperties.name
-		),
+		modCategoryId: getModCategoryId(displayNameId, modName, modDescription),
 		elementOverlayIcon: elementOverlayIcon
 			? bungieNetPath(elementOverlayIcon)
 			: null,
@@ -137,6 +137,7 @@ const buildModData = (
 			x?.failureMessage.includes('Similar mod already applied')
 		),
 		bonuses: getBonuses(mod),
+		raidAndNightmareModTypeId: getRaidAndNightmareModTypeId(displayNameId),
 	};
 };
 

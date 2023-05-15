@@ -1,39 +1,44 @@
-import { Box, Icon, styled } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
 	selectSelectedRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { EModId } from '@dlb/generated/mod/EModId';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { RaidModIdList } from '@dlb/types/Mod';
-import ModSelector from './ModSelection/ModSelector';
-import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';
+import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
 import { IMod } from '@dlb/types/generation';
-import { Warning } from '@mui/icons-material';
+import { styled } from '@mui/material';
+import ModSelector from './ModSelection/ModSelector';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));
-
-type Option = {
-	name: string;
-	id: string;
-	disabled?: boolean;
-	icon: string;
-	description: string;
-	extraIcons?: string[];
-	cost: number;
-};
 
 function RaidModSelector() {
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const disabledMods = useAppSelector(selectDisabledRaidMods);
 	const dispatch = useAppDispatch();
 
-	const getLabel = (option: Option) => option.name;
-	const getDescription = (option: Option) => option.description;
-	const getCost = (option: Option) => option.cost;
-	const getTitle = () => '';
+	const getLabel = (option: IMod) => option.name;
+	const getDescription = (option: IMod) => option.description;
+	const getCost = (option: IMod) => option.cost;
+
+	const getGroupBy = (option: IMod) => {
+		return option.raidAndNightmareModTypeId
+			? getRaidAndNightmareModType(option.raidAndNightmareModTypeId).name
+			: '';
+	};
+
+	const getGroupBySort = (optionA: IMod, optionB: IMod) =>
+		`${getRaidAndNightmareModType(optionA.raidAndNightmareModTypeId).name}${
+			optionA.name
+		}`.localeCompare(
+			`${getRaidAndNightmareModType(optionB.raidAndNightmareModTypeId).name}${
+				optionB.name
+			}`
+		);
+
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 
 	const handleChange = (modId: EModId, index: number) => {
@@ -59,7 +64,8 @@ function RaidModSelector() {
 				<ModSelector
 					idPrefix={'raid-mod-selector'}
 					isModDisabled={isModDisabled}
-					enforceMatchingElementRule={false}
+					getGroupBy={getGroupBy}
+					getGroupBySort={getGroupBySort}
 					key={index}
 					selectedDestinyClass={selectedDestinyClass}
 					availableMods={RaidModIdList}

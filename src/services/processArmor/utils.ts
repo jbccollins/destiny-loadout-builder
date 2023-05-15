@@ -23,10 +23,10 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
-	EExtraSocketModCategoryId,
-	EExtraSocketModCategoryIdList,
 	EMasterworkAssumption,
 	EModCategoryId,
+	ERaidAndNightMareModTypeId,
+	ERaidAndNightMareModTypeIdList,
 } from '@dlb/types/IdEnums';
 import { PotentialRaidModArmorSlotPlacement, getMod } from '@dlb/types/Mod';
 import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
@@ -215,7 +215,7 @@ export const getItemCountsFromSeenArmorSlotItems = (
 	const itemCounts = getDefaultItemCounts();
 	ArmorSlotIdList.forEach((armorSlotId) => {
 		const value = seenArmorSlotItems[armorSlotId] as
-			| EExtraSocketModCategoryId
+			| ERaidAndNightMareModTypeId
 			| 'artifice';
 		if (value === ARTIFICE) {
 			itemCounts.artifice++;
@@ -255,7 +255,7 @@ export const stripNonRaidSeenArmorSlotItems = (
 
 export type FilterValidRaidModArmorSlotPlacementsParams = {
 	seenArmorSlotItems: SeenArmorSlotItems;
-	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
 	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 };
 // Filter out the placements that put a raid mod on a non-raid armor piece
@@ -272,8 +272,7 @@ export const filterRaidModArmorSlotPlacements = ({
 		[EArmorSlotId.Arm]: raidSeenArmorSlotItems.Arm,
 		[EArmorSlotId.Chest]: raidSeenArmorSlotItems.Chest,
 		[EArmorSlotId.Leg]: raidSeenArmorSlotItems.Leg,
-		[EArmorSlotId.ClassItem]:
-			requiredClassItemExtraModSocketCategoryId as unknown as EModCategoryId, // TODO: Fuck this cast
+		[EArmorSlotId.ClassItem]: requiredClassItemExtraModSocketCategoryId,
 	};
 
 	for (let i = 0; i < validRaidModArmorSlotPlacements.length; i++) {
@@ -284,7 +283,8 @@ export const filterRaidModArmorSlotPlacements = ({
 			if (placement[armorSlotId]) {
 				const mod = getMod(placement[armorSlotId]);
 				if (
-					mod.modCategoryId !== armorItemsExtraModSocketCategories[armorSlotId]
+					mod.raidAndNightmareModTypeId !==
+					armorItemsExtraModSocketCategories[armorSlotId]
 				) {
 					isValid = false;
 					break;
@@ -332,7 +332,7 @@ export const getSeenArmorSlotItemsFromClassItems = (
 		seenArmorSlotItems.ClassItems.artifice = true;
 	}
 
-	EExtraSocketModCategoryIdList.forEach((extraSocketModCategoryId) => {
+	ERaidAndNightMareModTypeIdList.forEach((extraSocketModCategoryId) => {
 		if (
 			armorMetadataItem.extraSocket.items[extraSocketModCategoryId].items[
 				EArmorSlotId.ClassItem
@@ -375,8 +375,9 @@ export const getNextValues = ({
 	const nextSeenArmorSlotItems = cloneDeep(seenArmorSlotItems);
 	if (armorSlotItem.isArtifice) {
 		nextSeenArmorSlotItems[slot] = ARTIFICE;
-	} else if (armorSlotItem.extraSocketModCategoryId !== null) {
-		nextSeenArmorSlotItems[slot] = armorSlotItem.extraSocketModCategoryId;
+	} else if (armorSlotItem.socketableRaidAndNightmareModTypeId !== null) {
+		nextSeenArmorSlotItems[slot] =
+			armorSlotItem.socketableRaidAndNightmareModTypeId;
 	}
 	const nextSumOfSeenStats = getNextSeenStats(
 		sumOfSeenStats,
@@ -392,14 +393,14 @@ export const getNextValues = ({
 
 export const getExtraSocketModCategoryIdCountsFromRaidModIdList = (
 	raidModIdList: EModId[]
-): Partial<Record<EExtraSocketModCategoryId, number>> => {
-	const counts: Partial<Record<EExtraSocketModCategoryId, number>> = {};
+): Partial<Record<ERaidAndNightMareModTypeId, number>> => {
+	const counts: Partial<Record<ERaidAndNightMareModTypeId, number>> = {};
 	for (let i = 0; i < raidModIdList.length; i++) {
 		const mod = getMod(raidModIdList[i]);
-		if (!counts[mod.modCategoryId]) {
-			counts[mod.modCategoryId] = 0;
+		if (!counts[mod.raidAndNightmareModTypeId]) {
+			counts[mod.raidAndNightmareModTypeId] = 0;
 		}
-		counts[mod.modCategoryId]++;
+		counts[mod.raidAndNightmareModTypeId]++;
 	}
 	return counts;
 };
@@ -407,19 +408,19 @@ export const getExtraSocketModCategoryIdCountsFromRaidModIdList = (
 export const hasValidSeenItemCounts = (
 	seenItemCountsWithoutClassItems: ItemCounts,
 	raidModExtraSocketModCategoryIdCounts: Partial<
-		Record<EExtraSocketModCategoryId, number>
+		Record<ERaidAndNightMareModTypeId, number>
 	>,
 	seenArmorSlotClassItems: SeenArmorSlotClassItems
 ): {
 	isValid: boolean;
-	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
 } => {
 	let isValid = true;
-	let requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId =
+	let requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId =
 		null;
 	const extraSocketModCategoryIdList = Object.keys(
 		raidModExtraSocketModCategoryIdCounts
-	) as unknown as EExtraSocketModCategoryId[];
+	) as unknown as ERaidAndNightMareModTypeId[];
 	if (extraSocketModCategoryIdList.length > 0) {
 		// Check to see if we have armor that can fit these mods
 		for (let i = 0; i < extraSocketModCategoryIdList.length; i++) {

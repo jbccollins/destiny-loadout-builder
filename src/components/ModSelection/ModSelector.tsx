@@ -4,21 +4,9 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { getStat } from '@dlb/types/ArmorStat';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
-import { getModCategory } from '@dlb/types/ModCategory';
 import { IMod } from '@dlb/types/generation';
-import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
+import { MISSING_ICON, StatBonusStat } from '@dlb/types/globals';
 import { Avatar, Box, Chip } from '@mui/material';
-
-type Option = {
-	name: string;
-	id: string;
-	disabled?: boolean;
-	icon: string;
-	description: string;
-	extraIcons?: string[];
-	cost: number;
-	bonuses: StatBonus[] | null;
-};
 
 const placeholderOption: IMod = {
 	name: 'None Selected...',
@@ -26,7 +14,6 @@ const placeholderOption: IMod = {
 	icon: MISSING_ICON,
 	description: '',
 	hash: 1234,
-	elementId: null,
 	cost: 0,
 	isArtifactMod: false,
 	modCategoryId: null,
@@ -36,6 +23,7 @@ const placeholderOption: IMod = {
 	elementOverlayIcon: null,
 	similarModsAllowed: true,
 	bonuses: [],
+	raidAndNightmareModTypeId: null,
 };
 
 const getOptionStat = (
@@ -44,7 +32,7 @@ const getOptionStat = (
 ) => getStat(stat, selectedDestinyClass);
 
 const getExtraContent = (
-	option: Option,
+	option: IMod,
 	selectedDestinyClass: EDestinyClassId
 ) => {
 	return (
@@ -106,13 +94,14 @@ const ModSelector = ({
 	getLabel,
 	getDescription,
 	getCost,
+	getGroupBy,
+	getGroupBySort,
+	getTitle,
 	index,
 	first,
 	last,
 	availableMods,
-	getTitle,
 	selectedDestinyClass,
-	enforceMatchingElementRule,
 	isModDisabled,
 	idPrefix,
 	textFieldClassName,
@@ -121,22 +110,23 @@ const ModSelector = ({
 	selectedMods: EModId[];
 	availableMods: EModId[];
 	handleChange: (armorSlotModId: EModId, index: number) => void;
-	getLabel: (option: Option) => string;
-	getDescription: (option: Option) => string;
-	getCost: (option: Option) => number;
+	getLabel: (option: IMod) => string;
+	getDescription: (option: IMod) => string;
+	getGroupBy: (option: IMod) => string;
+	getGroupBySort: (optionA: IMod, optionB: IMod) => number;
+	getCost: (option: IMod) => number;
 	getTitle?: () => string;
 	index: number;
 	first?: boolean;
 	last?: boolean;
 	selectedDestinyClass: EDestinyClassId;
-	enforceMatchingElementRule: boolean;
 	isModDisabled: (mod: IMod) => boolean;
 	idPrefix: string;
 	textFieldClassName: string;
 	compact: boolean;
 }) => {
 	const selectedMod = getMod(selectedMods[index]);
-	const options: Option[] = [
+	const options: IMod[] = [
 		{ ...placeholderOption, bonuses: null },
 		...availableMods
 			.map((id: EModId) => {
@@ -153,13 +143,7 @@ const ModSelector = ({
 				};
 			})
 			// TODO: Sort this so that the general mods always appear at the top right after no option
-			.sort((optionA, optionB) =>
-				`${getModCategory(optionA.modCategoryId).name}${
-					optionA.name
-				}`.localeCompare(
-					`${getModCategory(optionB.modCategoryId).name}${optionB.name}`
-				)
-			),
+			.sort(getGroupBySort),
 	];
 	const Dropdown = compact
 		? CompactIconAutocompleteDropdown
@@ -172,18 +156,14 @@ const ModSelector = ({
 			// TODO: Memoize these options
 			options={options}
 			value={selectedMod || placeholderOption}
-			//onChange={handleChange}
 			onChange={(mod: IMod) => handleChange(mod.id as EModId, index)}
 			getId={(option: IMod) => option.hash.toString()}
-			getGroupBy={(option: IMod) => {
-				return option.modCategoryId
-					? getModCategory(option.modCategoryId).name
-					: '';
-			}}
+			// TODO: Find a way to put the "General" group at the bottom
+			getGroupBy={getGroupBy}
 			getCost={getCost}
 			getLabel={getLabel}
 			getDescription={getDescription}
-			getExtraContent={(option: Option) =>
+			getExtraContent={(option: IMod) =>
 				getExtraContent(option, selectedDestinyClass)
 			}
 			textFieldClassName={`${textFieldClassName} ${

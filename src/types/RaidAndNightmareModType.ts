@@ -2,88 +2,72 @@ import {
 	EnumDictionary,
 	IIcon,
 	IIdentifiableName,
-	Mapping,
 	MISSING_ICON,
-	ValidateEnumList,
 } from './globals';
-import { EArmorExtraModSlotId } from './IdEnums';
+import { ERaidAndNightMareModTypeId } from './IdEnums';
 
-export const ArmorExtraModSlotIdList = ValidateEnumList(
-	Object.values(EArmorExtraModSlotId),
-	[
-		EArmorExtraModSlotId.Any,
-		EArmorExtraModSlotId.Artificer,
-		EArmorExtraModSlotId.KingsFall,
-		EArmorExtraModSlotId.VowOfTheDisciple,
-		EArmorExtraModSlotId.VaultOfGlass,
-		EArmorExtraModSlotId.DeepStoneCrypt,
-		EArmorExtraModSlotId.GardenOfSalvation,
-		EArmorExtraModSlotId.LastWish,
-		EArmorExtraModSlotId.RootOfNightmares,
-		EArmorExtraModSlotId.NightmareHunt,
-	]
-);
+export interface IRaidAndNightmareModType extends IIdentifiableName, IIcon {
+	abbreviation: string;
+}
 
-export interface IArmorExtraMotSlot extends IIdentifiableName, IIcon {}
-
-const ArmorExtraMotSlotIdToArmorExtraMotSlotMapping: EnumDictionary<
-	EArmorExtraModSlotId,
-	IArmorExtraMotSlot
+const RaidAndNightMareModTypeIdToRaidAndNightMareModTypeMapping: EnumDictionary<
+	ERaidAndNightMareModTypeId,
+	IRaidAndNightmareModType
 > = {
-	[EArmorExtraModSlotId.Any]: {
-		id: EArmorExtraModSlotId.Any,
-		name: 'Any',
-		icon: MISSING_ICON,
-	},
-	[EArmorExtraModSlotId.Artificer]: {
-		id: EArmorExtraModSlotId.Any,
-		name: 'Artificer',
-		icon: MISSING_ICON,
-	},
-	[EArmorExtraModSlotId.DeepStoneCrypt]: {
-		id: EArmorExtraModSlotId.Any,
+	[ERaidAndNightMareModTypeId.DeepStoneCrypt]: {
+		id: ERaidAndNightMareModTypeId.DeepStoneCrypt,
 		name: 'Deep Stone Crypt',
+		abbreviation: 'DSC',
 		icon: MISSING_ICON,
 	},
-	[EArmorExtraModSlotId.GardenOfSalvation]: {
-		id: EArmorExtraModSlotId.Any,
+	[ERaidAndNightMareModTypeId.GardenOfSalvation]: {
+		id: ERaidAndNightMareModTypeId.GardenOfSalvation,
 		name: 'Garden of Salvation',
+		abbreviation: 'GoS',
 		icon: MISSING_ICON,
 	},
-	[EArmorExtraModSlotId.KingsFall]: {
-		id: EArmorExtraModSlotId.Any,
+	[ERaidAndNightMareModTypeId.KingsFall]: {
+		id: ERaidAndNightMareModTypeId.KingsFall,
 		name: "King's Fall",
+		abbreviation: 'KF',
 		icon: MISSING_ICON,
 	},
-	[EArmorExtraModSlotId.LastWish]: {
-		id: EArmorExtraModSlotId.Any,
+	[ERaidAndNightMareModTypeId.LastWish]: {
+		id: ERaidAndNightMareModTypeId.LastWish,
 		name: 'Last Wish',
+		abbreviation: 'LW',
 		icon: MISSING_ICON,
 	},
-	[EArmorExtraModSlotId.NightmareHunt]: {
-		id: EArmorExtraModSlotId.Any,
+	[ERaidAndNightMareModTypeId.NightmareHunt]: {
+		id: ERaidAndNightMareModTypeId.NightmareHunt,
 		name: 'Nightmare Hunt',
+		abbreviation: 'NH',
 		icon: MISSING_ICON,
 	},
-	[EArmorExtraModSlotId.VaultOfGlass]: {
-		id: EArmorExtraModSlotId.Any,
+	[ERaidAndNightMareModTypeId.VaultOfGlass]: {
+		id: ERaidAndNightMareModTypeId.VaultOfGlass,
 		name: 'Vault of Glass',
+		abbreviation: 'VoG',
 		icon: MISSING_ICON,
 	},
-	[EArmorExtraModSlotId.VowOfTheDisciple]: {
-		id: EArmorExtraModSlotId.Any,
+	[ERaidAndNightMareModTypeId.VowOfTheDisciple]: {
+		id: ERaidAndNightMareModTypeId.VowOfTheDisciple,
 		name: 'Vow of the Disciple',
+		abbreviation: 'VotD',
 		icon: MISSING_ICON,
 	},
-	[EArmorExtraModSlotId.RootOfNightmares]: {
-		id: EArmorExtraModSlotId.Any,
+	[ERaidAndNightMareModTypeId.RootOfNightmares]: {
+		id: ERaidAndNightMareModTypeId.RootOfNightmares,
 		name: 'Root of Nightmares',
+		abbreviation: 'RoN',
 		icon: MISSING_ICON,
 	},
 };
 
-export const getExtraModSlot = (id: EArmorExtraModSlotId): IArmorExtraMotSlot =>
-	ArmorExtraMotSlotIdToArmorExtraMotSlotMapping[id];
+export const getRaidAndNightmareModType = (
+	id: ERaidAndNightMareModTypeId
+): IRaidAndNightmareModType =>
+	RaidAndNightMareModTypeIdToRaidAndNightMareModTypeMapping[id];
 
 // TODO copy this icons over to the new mapping
 // // TODO: Fix the images for a few of the newer sockets

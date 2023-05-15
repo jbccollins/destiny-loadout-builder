@@ -11,13 +11,25 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-05-14',
+		version: '2.0.1',
+		title: 'More armor slot mod categories',
+		sections: [
+			{
+				items: [
+					`Added more categories for armor slot mods to group them more intuitively`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-05-13',
 		version: '2.0.2',
 		title: 'Aspect and Fragment limits',
 		sections: [
 			{
 				items: [
-					`Added logic to prevent the user from selecting more fragmaents than their aspects allow`,
+					`Added logic to prevent the user from selecting more fragments than their aspects allow`,
 				],
 			},
 		],
@@ -25,7 +37,7 @@ export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-05-12',
 		version: '2.0.1',
-		title: 'Reworked Mod Selection',
+		title: 'Mod Selection Rework',
 		sections: [
 			{
 				items: [
@@ -208,7 +220,7 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2022-10-23',
+		date: '2022-01-23',
 		version: '1.0.0',
 		title: 'Initial Release',
 		sections: [

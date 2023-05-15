@@ -11,7 +11,7 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
-	EExtraSocketModCategoryId,
+	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotCapacity,
@@ -126,7 +126,7 @@ export type ModCombos = {
 	maximumSingleStatValues: Record<EArmorStatId, number>;
 	armorSlotMetadata: ModComboArmorSlotMetadata;
 	lowestCostPlacement: ModPlacement;
-	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
 	// TODO: fewestWastedStatsPlacement: ModPlacement;
 	// TODO: mostStatTiersPlacement: ModPlacement;
 };
@@ -185,7 +185,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	);
 	let seenArtificeCount = seenItemCounts.artifice;
 
-	let requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId =
+	let requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId =
 		null;
 
 	let filteredPotentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] =

@@ -1,10 +1,10 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	getDefaultSeenArmorSlotItems,
-	filterValidRaidModArmorSlotPlacements,
 	FilterValidRaidModArmorSlotPlacementsParams,
+	filterValidRaidModArmorSlotPlacements,
+	getDefaultSeenArmorSlotItems,
 } from '@dlb/services/armor-processing';
-import { EArmorSlotId, EExtraSocketModCategoryId } from '@dlb/types/IdEnums';
+import { EArmorSlotId, ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
 import { getDefaultValidRaidModArmorSlotPlacement } from '@dlb/types/Mod';
 
 type hasValidSeenItemCountsTestCase = {
@@ -33,7 +33,7 @@ const filterValidRaidModArmorSlotPlacementsTestCases: hasValidSeenItemCountsTest
 			input: {
 				seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 				requiredClassItemExtraModSocketCategoryId:
-					EExtraSocketModCategoryId.DeepStoneCrypt,
+					ERaidAndNightMareModTypeId.DeepStoneCrypt,
 				validRaidModArmorSlotPlacements: [
 					{
 						...getDefaultValidRaidModArmorSlotPlacement(),
@@ -59,11 +59,11 @@ const filterValidRaidModArmorSlotPlacementsTestCases: hasValidSeenItemCountsTest
 			input: {
 				seenArmorSlotItems: {
 					...getDefaultSeenArmorSlotItems(),
-					[EArmorSlotId.Head]: EExtraSocketModCategoryId.GardenOfSalvation,
-					[EArmorSlotId.Arm]: EExtraSocketModCategoryId.GardenOfSalvation,
+					[EArmorSlotId.Head]: ERaidAndNightMareModTypeId.GardenOfSalvation,
+					[EArmorSlotId.Arm]: ERaidAndNightMareModTypeId.GardenOfSalvation,
 				},
 				requiredClassItemExtraModSocketCategoryId:
-					EExtraSocketModCategoryId.DeepStoneCrypt,
+					ERaidAndNightMareModTypeId.DeepStoneCrypt,
 				validRaidModArmorSlotPlacements: [
 					{
 						...getDefaultValidRaidModArmorSlotPlacement(),

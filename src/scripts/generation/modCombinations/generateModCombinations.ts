@@ -13,9 +13,9 @@ import {
 	NUM_ARMOR_PIECES,
 	NUM_POTENTIAL_ARTIFICER_PIECES,
 } from '@dlb/utils/item-utils';
+import { promises as fs } from 'fs';
 import { isEqual, uniqWith } from 'lodash';
 import path from 'path';
-import { promises as fs } from 'fs';
 
 // TODO: Move this type somewhere else as it's used outside of generation
 // Contains the counts of required mods for ANY stat
@@ -413,11 +413,11 @@ const formatedParetoOpmtimalString = formatStringForFile(
 	stringifiedParetoOptimalRequiredModMapping
 );
 
-const generatedParetoOptimailPath = path.join(
+const generatedParetoOptimalPath = path.join(
 	...[..._path, 'paretoOptimalModCombinations.ts']
 );
 
 fs.writeFile(
-	path.resolve(generatedParetoOptimailPath),
+	path.resolve(generatedParetoOptimalPath),
 	formatedParetoOpmtimalString
 );

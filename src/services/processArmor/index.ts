@@ -29,9 +29,9 @@ import {
 	EArmorStatId,
 	EDestinyClassId,
 	EDimLoadoutsFilterId,
-	EExtraSocketModCategoryId,
 	EGearTierId,
 	EMasterworkAssumption,
+	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToModIdListMapping,
@@ -252,7 +252,7 @@ type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
-	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
 	maximumSingleStatValues: Record<EArmorStatId, number>;
 	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: ProcessedArmorItemMetadata;

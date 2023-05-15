@@ -19,6 +19,7 @@ import {
 } from '@dlb/types/ArmorSlot';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdToArmorSlotModIdListMapping, getMod } from '@dlb/types/Mod';
+import { getModCategory } from '@dlb/types/ModCategory';
 import { IMod } from '@dlb/types/generation';
 import {
 	Box,
@@ -115,16 +116,6 @@ const IconDropdownContainer = styled('div')(({ theme }) => ({
 	flexWrap: 'wrap',
 }));
 
-type Option = {
-	name: string;
-	id: string;
-	disabled?: boolean;
-	icon: string;
-	description: string;
-	extraIcons?: string[];
-	cost: number;
-};
-
 function ArmorSlotModSelector() {
 	const maxPossibleReservedArmorSlotEnergy = useAppSelector(
 		selectMaxPossibleReservedArmorSlotEnergy
@@ -134,10 +125,23 @@ function ArmorSlotModSelector() {
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const dispatch = useAppDispatch();
 
-	const getLabel = (option: Option) => option.name;
-	const getDescription = (option: Option) => option.description;
-	const getCost = (option: Option) => option.cost;
-	const getTitle = (id: EArmorSlotId) => ''; //`${getArmorSlot(id).name} Mods`;
+	const getLabel = (option: IMod) => option.name;
+	const getDescription = (option: IMod) => option.description;
+	const getCost = (option: IMod) => option.cost;
+	const getGroupBy = (option: IMod) => {
+		return option.modCategoryId
+			? getModCategory(option.modCategoryId).name
+			: '';
+	};
+
+	const getGroupBySort = (optionA: IMod, optionB: IMod) => {
+		return `${getModCategory(optionA.modCategoryId).name}${
+			optionA.name
+		}`.localeCompare(
+			`${getModCategory(optionB.modCategoryId).name}${optionB.name}`
+		);
+	};
+
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 
 	const handleChange = (
@@ -290,13 +294,9 @@ function ArmorSlotModSelector() {
 															selectedArmorSlotMods[armorSlotId]
 														)
 													}
-													enforceMatchingElementRule
 													selectedDestinyClass={selectedDestinyClass}
 													availableMods={
 														ArmorSlotIdToArmorSlotModIdListMapping[armorSlotId]
-													}
-													getTitle={
-														index === 0 ? () => getTitle(armorSlotId) : null
 													}
 													selectedMods={selectedArmorSlotMods[armorSlotId]}
 													handleChange={(modId: EModId, index: number) =>
@@ -305,6 +305,8 @@ function ArmorSlotModSelector() {
 													getLabel={getLabel}
 													getDescription={getDescription}
 													getCost={getCost}
+													getGroupBy={getGroupBy}
+													getGroupBySort={getGroupBySort}
 													index={index}
 													idPrefix={armorSlotId}
 													first={index === 0}

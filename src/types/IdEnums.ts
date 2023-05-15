@@ -1,9 +1,3 @@
-export enum EAnimalId {
-	Dog = 'Dog',
-	Cat = 'Cat',
-	Lion = 'Lion',
-}
-
 export enum EElementId {
 	Arc = 'Arc',
 	Solar = 'Solar',
@@ -57,23 +51,6 @@ export enum EArmorStatId {
 	Strength = 'Strength',
 }
 
-export enum EArmorExtraModSlotId {
-	KingsFall = 'KF',
-	VowOfTheDisciple = 'VotD',
-	VaultOfGlass = 'VoG',
-	DeepStoneCrypt = 'DSC',
-	GardenOfSalvation = 'GoS',
-	LastWish = 'LW',
-	RootOfNightmares = 'RoN',
-	Artificer = 'Artifice',
-	NightmareHunt = 'NH',
-	// TODO: These are intrinsic perks, not mod slots. Not sure what to do about these. D2armorpicker supports them tho
-	// IronBanner = 'IB',
-	// UniformedOfficer = 'UO',
-	// PlunderersTrappings = 'PT',
-	Any = 'any',
-}
-
 // TODO: Name this like
 // All Armor Is Masterworked, Legendary Armor is Masterworked
 // No assumption is made
@@ -87,40 +64,14 @@ export enum EModSocketCategoryId {
 	Stat = 'Stat', // e.g. major/minor resilience
 	ArtificeStat = 'ArtificeStat', // e.g. resilience-forged
 	ArmorSlot = 'ArmorSlot', // e.g. bomber
-	Raid = 'Raid',
-	// Artifice = 'Artifice',
-	// LastWish = 'LastWish',
-	// GardenOfSalvation = 'GardenOfSalvation',
-	// DeepStoneCrypt = 'DeepStoneCrypt',
-	// VaultOfGlass = 'VaultOfGlass',
-	// VowOfTheDisciple = 'VowOfTheDisciple',
-	// KingsFall = 'KingsFall',
-	// Nightmare = 'Nightmare',
-}
-
-export enum EModTypeDisplayNameId {
-	ArmsArmorMod = 'ArmsArmorMod',
-	LegArmorMod = 'LegArmorMod',
-	ChestArmorMod = 'ChestArmorMod',
-	WarmindCellMod = 'WarmindCellMod',
-	GeneralArmorMod = 'GeneralArmorMod',
-	HelmetArmorMod = 'HelmetArmorMod',
-	ElementalWellMod = 'ElementalWellMod',
-	LastWishRaidMod = 'LastWishRaidMod',
-	ClassItemArmorMod = 'ClassItemArmorMod',
-	VaultofGlassArmorMod = 'VaultofGlassArmorMod',
-	ClassItemMod = 'ClassItemMod',
-	DeepStoneCryptRaidMod = 'DeepStoneCryptRaidMod',
-	KingsFallMod = 'KingsFallMod',
-	GardenofSalvationRaidMod = 'GardenofSalvationRaidMod',
-	VowoftheDiscipleRaidMod = 'VowoftheDiscipleRaidMod',
-	ChargedwithLightMod = 'ChargedwithLightMod',
-	NightmareMod = 'NightmareMod',
+	Raid = 'Raid', // e.g. Release Recover
 }
 
 // TODO: These could easily change. Find a better way to generate them so this isn't so fragile
 export enum EModCategoryId {
+	// Armor Slot Mods
 	AmmoFinder = 'AmmoFinder',
+	Siphon = 'Siophon',
 	Scavenger = 'Scavenger',
 	Reserves = 'Reserves',
 	Targeting = 'Targeting',
@@ -128,9 +79,22 @@ export enum EModCategoryId {
 	Holster = 'Holster',
 	Loader = 'Loader',
 	Unflinching = 'Unflinching',
-	ChargedWithLight = 'ChargedWithLight',
-	ElementalWell = 'ElementalWell',
-	WarmindCell = 'WarmindCell',
+	WeaponSurge = 'WeaponSurge',
+	Resistance = 'Resistance',
+	OrbPickup = 'OrbPickup',
+	ArmorCharge = 'ArmorCharge',
+	// Stat Mods
+	ArmorStat = 'ArmorStat',
+	// Artifice Stat Mods
+	ArtificeArmorStat = 'ArtificeArmorStat',
+	// Raid Mods
+	RaidAndNightmare = 'RaidAndNightmare',
+	// Catchall for everything else, which should only be Armor Slot Mods
+	// that don't cleanly fit into one of the above categories
+	General = 'General',
+}
+
+export enum ERaidAndNightMareModTypeId {
 	LastWish = 'LastWish',
 	GardenOfSalvation = 'GardenOfSalvation',
 	DeepStoneCrypt = 'DeepStoneCrypt',
@@ -138,27 +102,23 @@ export enum EModCategoryId {
 	VowOfTheDisciple = 'VowOfTheDisciple',
 	KingsFall = 'KingsFall',
 	RootOfNightmares = 'RootOfNightmares',
-	Nightmare = 'Nightmare',
-	ArmorStat = 'ArmorStat',
-	ArtificeArmorStat = 'ArtificeArmorStat',
-	General = 'General',
+	NightmareHunt = 'NightmareHunt',
 }
 
-// TODO: Is there a better way to subset the EModCategoryId here?
-// Maybe just split that enum in two?
-export enum EExtraSocketModCategoryId {
-	LastWish = EModCategoryId.LastWish,
-	GardenOfSalvation = EModCategoryId.GardenOfSalvation,
-	DeepStoneCrypt = EModCategoryId.DeepStoneCrypt,
-	VaultOfGlass = EModCategoryId.VaultOfGlass,
-	VowOfTheDisciple = EModCategoryId.VowOfTheDisciple,
-	KingsFall = EModCategoryId.KingsFall,
-	RootOfNightmares = EModCategoryId.RootOfNightmares,
-	Nightmare = EModCategoryId.Nightmare,
+export enum EIntrinsicArmorPerkOrAttributeId {
+	// Perks
+	QueensFavor = 'QueensFavor',
+	UniformedOfficer = 'UniformedOfficer',
+	PlunderersTrappings = 'PlunderersTrappings',
+	SeraphSensorArray = 'SeraphSensorArray',
+	// Attributes
+	IronBanner = 'IronBanner',
+	HalloweenMask = 'HalloweenMask',
+	GuardianGames = 'GuardianGames',
 }
 
-export const EExtraSocketModCategoryIdList = Object.values(
-	EExtraSocketModCategoryId
+export const ERaidAndNightMareModTypeIdList = Object.values(
+	ERaidAndNightMareModTypeId
 );
 
 export enum EGearTierId {

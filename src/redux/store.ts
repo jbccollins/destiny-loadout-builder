@@ -19,7 +19,6 @@ import reservedArmorSlotEnergyReducer, {
 	ArmorSlotEnergyMapping,
 } from './features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import selectedArmorSlotRestrictionsReducer from './features/selectedArmorSlotRestrictions/selectedArmorSlotRestrictionsSlice';
 import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
 import selectedClassAbilityReducer from './features/selectedClassAbility/selectedClassAbilitySlice';
 import selectedDestinyClassReducer from './features/selectedDestinyClass/selectedDestinyClassSlice';
@@ -135,7 +134,6 @@ export function makeStore() {
 			reservedArmorSlotEnergy: reservedArmorSlotEnergyReducer,
 			resultsPagination: resultsPaginationReducer,
 			selectedArmorSlotMods: selectedArmorSlotModsReducer,
-			selectedArmorSlotRestrictions: selectedArmorSlotRestrictionsReducer,
 			selectedAspects: selectedAspectsReducer,
 			selectedClassAbility: selectedClassAbilityReducer,
 			selectedDestinyClass: selectedDestinyClassReducer,

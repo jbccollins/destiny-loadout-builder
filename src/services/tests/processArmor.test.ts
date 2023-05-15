@@ -1,32 +1,32 @@
-import {
-	doProcessArmor,
-	ProcessArmorOutput,
-	DoProcessArmorParams,
-} from '@dlb/services/processArmor/index';
-import { describe, expect, test } from '@jest/globals';
-import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
-import {
-	EArmorSlotId,
-	EArmorStatId,
-	EDestinyClassId,
-	EExtraSocketModCategoryId,
-	EGearTierId,
-	EMasterworkAssumption,
-} from '@dlb/types/IdEnums';
-import {
-	getArmorStatMappingFromFragments,
-	getDefaultArmorStatMapping,
-} from '@dlb/types/ArmorStat';
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	getDefaultValidRaidModArmorSlotPlacement,
-	getDefaultArmorSlotIdToModIdListMapping,
-} from '@dlb/types/Mod';
+	DoProcessArmorParams,
+	ProcessArmorOutput,
+	doProcessArmor,
+} from '@dlb/services/processArmor/index';
+import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 import {
 	ArmorItem,
 	getDefaultArmorMetadata,
 	getDefaultAvailableExoticArmorItem,
 } from '@dlb/types/Armor';
+import {
+	getArmorStatMappingFromFragments,
+	getDefaultArmorStatMapping,
+} from '@dlb/types/ArmorStat';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EDestinyClassId,
+	EGearTierId,
+	EMasterworkAssumption,
+	ERaidAndNightMareModTypeId,
+} from '@dlb/types/IdEnums';
+import {
+	getDefaultArmorSlotIdToModIdListMapping,
+	getDefaultValidRaidModArmorSlotPlacement,
+} from '@dlb/types/Mod';
+import { describe, expect, test } from '@jest/globals';
 import { cloneDeep } from 'lodash';
 
 type ProcessArmorTestCase = {
@@ -48,7 +48,7 @@ const defaultArmorItem: ArmorItem = {
 	isMasterworked: false,
 	gearTierId: EGearTierId.Legendary,
 	isArtifice: false,
-	extraSocketModCategoryId: null,
+	socketableRaidAndNightmareModTypeId: null,
 };
 
 const getDefaultArmorItem = () => cloneDeep(defaultArmorItem);
@@ -76,7 +76,7 @@ defaultArmorMetadataWithLastWishAndArtificeClassItem[
 };
 defaultArmorMetadataWithLastWishAndArtificeClassItem[
 	EDestinyClassId.Warlock
-].extraSocket.items[EExtraSocketModCategoryId.LastWish].items[
+].extraSocket.items[ERaidAndNightMareModTypeId.LastWish].items[
 	EArmorSlotId.ClassItem
 ].count = 4;
 

@@ -1,14 +1,14 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 
-import { EExtraSocketModCategoryId } from '@dlb/types/IdEnums';
+import { ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
 import { PotentialRaidModArmorSlotPlacement } from '@dlb/types/Mod';
+import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import {
 	filterRaidModArmorSlotPlacements,
 	getExtraSocketModCategoryIdCountsFromRaidModIdList,
 	getItemCountsFromSeenArmorSlotItems,
 	hasValidSeenItemCounts,
 } from './utils';
-import { SeenArmorSlotItems } from './seenArmorSlotItems';
 
 export type filterPotentialRaidModArmorSlotPlacementsParams = {
 	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
@@ -18,7 +18,7 @@ export type filterPotentialRaidModArmorSlotPlacementsParams = {
 
 type filterPotentialRaidModArmorSlotPlacementsOutput = {
 	potentialPlacements: PotentialRaidModArmorSlotPlacement[];
-	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
 };
 
 export const filterPotentialRaidModArmorSlotPlacements = (
@@ -30,7 +30,7 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 		specialSeenArmorSlotItems,
 	} = params;
 
-	let requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId =
+	let requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId =
 		null;
 
 	let raidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] = null;

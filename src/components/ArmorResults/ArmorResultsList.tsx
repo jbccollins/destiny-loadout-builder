@@ -36,7 +36,6 @@ import {
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
 import {
-	EArmorExtraModSlotId,
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
@@ -44,6 +43,7 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
+import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
 import { MISSING_ICON } from '@dlb/types/globals';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -191,10 +191,9 @@ const calculateExtraMasterworkedStats = (
 const getClassItemText = (item: ResultsTableLoadout): string => {
 	const artificeArmorItems = item.armorItems.filter((x) => x.isArtifice);
 	if (item.requiredClassItemExtraModSocketCategoryId !== null) {
-		// TODO: This is a really unsafe cast lol. EArmorExtraModSlotId and EExtraSocketModCategoryId are not the same type
-		// We have a bunch of very similar types like this that really should be consolidated
 		return `Any Masterworked ${
-			EArmorExtraModSlotId[item.requiredClassItemExtraModSocketCategoryId]
+			getRaidAndNightmareModType(item.requiredClassItemExtraModSocketCategoryId)
+				.abbreviation
 		} Class Item`;
 	}
 	if (artificeArmorItems.length < item.requiredArtificeModIdList.length) {

@@ -1,7 +1,7 @@
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
 import { EnumDictionary, IIdentifiableName } from './globals';
-import { EModCategoryId, EModSocketCategoryId } from './IdEnums';
+import { EModCategoryId, ERaidAndNightMareModTypeId } from './IdEnums';
 
 export interface IModCategory extends IIdentifiableName {
 	description: string;
@@ -11,11 +11,14 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 	EModCategoryId,
 	IModCategory
 > = {
-	/*** STASIS ***/
-	// POSITIVE
 	[EModCategoryId.AmmoFinder]: {
 		id: EModCategoryId.AmmoFinder,
 		name: 'Ammo Finder',
+		description: '',
+	},
+	[EModCategoryId.Siphon]: {
+		id: EModCategoryId.Siphon,
+		name: 'Siphon',
 		description: '',
 	},
 	[EModCategoryId.Scavenger]: {
@@ -53,59 +56,34 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 		name: 'Unflinching',
 		description: '',
 	},
-	[EModCategoryId.ChargedWithLight]: {
-		id: EModCategoryId.ChargedWithLight,
-		name: 'Charged With Light',
+	[EModCategoryId.WeaponSurge]: {
+		id: EModCategoryId.WeaponSurge,
+		name: 'Weapon Surge',
 		description: '',
 	},
-	[EModCategoryId.ElementalWell]: {
-		id: EModCategoryId.ElementalWell,
-		name: 'Elemental Well',
+	[EModCategoryId.Siphon]: {
+		id: EModCategoryId.Siphon,
+		name: 'Siphon',
 		description: '',
 	},
-	[EModCategoryId.WarmindCell]: {
-		id: EModCategoryId.WarmindCell,
-		name: 'Warmind Cell',
+	[EModCategoryId.Resistance]: {
+		id: EModCategoryId.Resistance,
+		name: 'Resistance',
 		description: '',
 	},
-	[EModCategoryId.LastWish]: {
-		id: EModCategoryId.LastWish,
-		name: 'Last Wish',
+	[EModCategoryId.ArmorCharge]: {
+		id: EModCategoryId.ArmorCharge,
+		name: 'Armor Charge',
 		description: '',
 	},
-	[EModCategoryId.GardenOfSalvation]: {
-		id: EModCategoryId.GardenOfSalvation,
-		name: 'Garden of Salvation',
+	[EModCategoryId.OrbPickup]: {
+		id: EModCategoryId.OrbPickup,
+		name: 'Orb Pickup',
 		description: '',
 	},
-	[EModCategoryId.DeepStoneCrypt]: {
-		id: EModCategoryId.DeepStoneCrypt,
-		name: 'Deep Stone Crypt',
-		description: '',
-	},
-	[EModCategoryId.VaultOfGlass]: {
-		id: EModCategoryId.VaultOfGlass,
-		name: 'Vault of Glass',
-		description: '',
-	},
-	[EModCategoryId.VowOfTheDisciple]: {
-		id: EModCategoryId.VowOfTheDisciple,
-		name: 'Vow of the Disciple',
-		description: '',
-	},
-	[EModCategoryId.KingsFall]: {
-		id: EModCategoryId.KingsFall,
-		name: "King's Fall",
-		description: '',
-	},
-	[EModCategoryId.RootOfNightmares]: {
-		id: EModCategoryId.RootOfNightmares,
-		name: 'Root of Nightmares',
-		description: '',
-	},
-	[EModCategoryId.Nightmare]: {
-		id: EModCategoryId.Nightmare,
-		name: 'Nightmare',
+	[EModCategoryId.RaidAndNightmare]: {
+		id: EModCategoryId.RaidAndNightmare,
+		name: 'Raid and Nightmare',
 		description: '',
 	},
 	[EModCategoryId.ArmorStat]: {
@@ -129,15 +107,16 @@ export const getModCategory = (id: EModCategoryId) => {
 	return ModCategoryIdToModCategoryMapping[id];
 };
 
-const findTerm = (name: string, term: string) => {
-	if (name.includes(term)) {
-		return name;
+const findTerm = (s: string, term: string) => {
+	if (s.includes(term)) {
+		return s;
 	}
 };
 
-export const getModCategoryIdByModName = (
+export const getModCategoryId = (
 	displayNameId: EModDisplayNameId,
-	name: string
+	name: string,
+	description: string
 ): EModCategoryId => {
 	if (displayNameId === EModDisplayNameId.ArtificeArmorMod) {
 		return EModCategoryId.ArtificeArmorStat;
@@ -146,28 +125,28 @@ export const getModCategoryIdByModName = (
 		return EModCategoryId.ArmorStat;
 	}
 	if (displayNameId === EModDisplayNameId.LastWishRaidMod) {
-		return EModCategoryId.LastWish;
+		return EModCategoryId.RaidAndNightmare;
 	}
 	if (displayNameId === EModDisplayNameId.GardenOfSalvationRaidMod) {
-		return EModCategoryId.GardenOfSalvation;
+		return EModCategoryId.RaidAndNightmare;
 	}
 	if (displayNameId === EModDisplayNameId.DeepStoneCryptRaidMod) {
-		return EModCategoryId.DeepStoneCrypt;
+		return EModCategoryId.RaidAndNightmare;
 	}
 	if (displayNameId === EModDisplayNameId.VaultOfGlassArmorMod) {
-		return EModCategoryId.VaultOfGlass;
+		return EModCategoryId.RaidAndNightmare;
 	}
 	if (displayNameId === EModDisplayNameId.VowOfTheDiscipleRaidMod) {
-		return EModCategoryId.VowOfTheDisciple;
+		return EModCategoryId.RaidAndNightmare;
 	}
 	if (displayNameId === EModDisplayNameId.KingsFallMod) {
-		return EModCategoryId.KingsFall;
+		return EModCategoryId.RaidAndNightmare;
 	}
 	if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
-		return EModCategoryId.RootOfNightmares;
+		return EModCategoryId.RaidAndNightmare;
 	}
 	if (displayNameId === EModDisplayNameId.NightmareMod) {
-		return EModCategoryId.Nightmare;
+		return EModCategoryId.RaidAndNightmare;
 	}
 	switch (name) {
 		case findTerm(name, 'Ammo Finder'):
@@ -186,7 +165,51 @@ export const getModCategoryIdByModName = (
 			return EModCategoryId.Loader;
 		case findTerm(name, 'Unflinching'):
 			return EModCategoryId.Unflinching;
-		default:
-			return EModCategoryId.General;
+		case findTerm(name, 'Weapon Surge'):
+			return EModCategoryId.WeaponSurge;
+		case findTerm(name, 'Siphon'):
+			return EModCategoryId.Siphon;
+		case findTerm(name, 'Resistance'):
+			return EModCategoryId.Resistance;
+		// TODO: Look in the description for CD?
+		case findTerm(name, 'Concussive Dampener'):
+			return EModCategoryId.Resistance;
 	}
+	switch (description) {
+		case findTerm(description, 'Armor Charge'):
+			return EModCategoryId.ArmorCharge;
+		case findTerm(description, 'pick up an Orb of Power'):
+			return EModCategoryId.OrbPickup;
+	}
+	return EModCategoryId.General;
+};
+
+export const getRaidAndNightmareModTypeId = (
+	displayNameId: EModDisplayNameId
+): ERaidAndNightMareModTypeId => {
+	if (displayNameId === EModDisplayNameId.LastWishRaidMod) {
+		return ERaidAndNightMareModTypeId.LastWish;
+	}
+	if (displayNameId === EModDisplayNameId.GardenOfSalvationRaidMod) {
+		return ERaidAndNightMareModTypeId.GardenOfSalvation;
+	}
+	if (displayNameId === EModDisplayNameId.DeepStoneCryptRaidMod) {
+		return ERaidAndNightMareModTypeId.DeepStoneCrypt;
+	}
+	if (displayNameId === EModDisplayNameId.VaultOfGlassArmorMod) {
+		return ERaidAndNightMareModTypeId.VaultOfGlass;
+	}
+	if (displayNameId === EModDisplayNameId.VowOfTheDiscipleRaidMod) {
+		return ERaidAndNightMareModTypeId.VowOfTheDisciple;
+	}
+	if (displayNameId === EModDisplayNameId.KingsFallMod) {
+		return ERaidAndNightMareModTypeId.KingsFall;
+	}
+	if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
+		return ERaidAndNightMareModTypeId.RootOfNightmares;
+	}
+	if (displayNameId === EModDisplayNameId.NightmareMod) {
+		return ERaidAndNightMareModTypeId.NightmareHunt;
+	}
+	return null;
 };

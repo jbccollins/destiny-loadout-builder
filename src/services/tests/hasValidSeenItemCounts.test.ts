@@ -1,21 +1,21 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	getExtraSocketModCategoryIdCountsFromRaidModIdList,
-	hasValidSeenItemCounts,
-} from '@dlb/services/processArmor/utils';
-import { getDefaultItemCounts, ItemCounts } from '@dlb/types/Armor';
-import { EExtraSocketModCategoryId } from '@dlb/types/IdEnums';
-import {
 	SeenArmorSlotClassItems,
 	getDefaultSeenArmorSlotItems,
 } from '@dlb/services/processArmor/seenArmorSlotItems';
+import {
+	getExtraSocketModCategoryIdCountsFromRaidModIdList,
+	hasValidSeenItemCounts,
+} from '@dlb/services/processArmor/utils';
+import { ItemCounts, getDefaultItemCounts } from '@dlb/types/Armor';
+import { ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
 
 type hasValidSeenItemCountsTestCase = {
 	name: string;
 	input: {
 		seenArmorSlotItems: ItemCounts;
 		raidModExtraSocketModCategoryIdCounts: Partial<
-			Record<EExtraSocketModCategoryId, number>
+			Record<ERaidAndNightMareModTypeId, number>
 		>;
 		seenArmorSlotClassItems: SeenArmorSlotClassItems;
 	};
@@ -53,7 +53,7 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 		input: {
 			seenArmorSlotItems: (() => {
 				const items = getDefaultItemCounts();
-				items[EExtraSocketModCategoryId.RootOfNightmares] = 1;
+				items[ERaidAndNightMareModTypeId.RootOfNightmares] = 1;
 				return items;
 			})(),
 			raidModExtraSocketModCategoryIdCounts:
@@ -70,9 +70,9 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 		input: {
 			seenArmorSlotItems: (() => {
 				const items = getDefaultItemCounts();
-				items[EExtraSocketModCategoryId.DeepStoneCrypt] = 1;
-				items[EExtraSocketModCategoryId.RootOfNightmares] = 1;
-				items[EExtraSocketModCategoryId.LastWish] = 1;
+				items[ERaidAndNightMareModTypeId.DeepStoneCrypt] = 1;
+				items[ERaidAndNightMareModTypeId.RootOfNightmares] = 1;
+				items[ERaidAndNightMareModTypeId.LastWish] = 1;
 
 				return items;
 			})(),
@@ -92,9 +92,9 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 		input: {
 			seenArmorSlotItems: (() => {
 				const items = getDefaultItemCounts();
-				items[EExtraSocketModCategoryId.VaultOfGlass] = 1;
-				items[EExtraSocketModCategoryId.RootOfNightmares] = 1;
-				items[EExtraSocketModCategoryId.LastWish] = 1;
+				items[ERaidAndNightMareModTypeId.VaultOfGlass] = 1;
+				items[ERaidAndNightMareModTypeId.RootOfNightmares] = 1;
+				items[ERaidAndNightMareModTypeId.LastWish] = 1;
 				return items;
 			})(),
 			raidModExtraSocketModCategoryIdCounts:
@@ -118,13 +118,13 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 				]),
 			seenArmorSlotClassItems: {
 				...getDefaultSeenArmorSlotItems().ClassItems,
-				[EExtraSocketModCategoryId.RootOfNightmares]: true,
+				[ERaidAndNightMareModTypeId.RootOfNightmares]: true,
 			},
 		},
 		output: {
 			isValid: true,
 			requiredClassItemExtraModSocketCategoryId:
-				EExtraSocketModCategoryId.RootOfNightmares,
+				ERaidAndNightMareModTypeId.RootOfNightmares,
 		},
 	},
 	// 6
@@ -139,8 +139,8 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 				]),
 			seenArmorSlotClassItems: {
 				...getDefaultSeenArmorSlotItems().ClassItems,
-				[EExtraSocketModCategoryId.RootOfNightmares]: true,
-				[EExtraSocketModCategoryId.DeepStoneCrypt]: true,
+				[ERaidAndNightMareModTypeId.RootOfNightmares]: true,
+				[ERaidAndNightMareModTypeId.DeepStoneCrypt]: true,
 			},
 		},
 		output: {

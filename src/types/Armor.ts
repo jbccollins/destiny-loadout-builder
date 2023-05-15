@@ -1,15 +1,14 @@
+import { cloneDeep } from 'lodash';
 import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
 	EElementId,
-	EExtraSocketModCategoryId,
 	EGearTierId,
+	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
-	EModCategoryId,
+	ERaidAndNightMareModTypeId,
 } from './IdEnums';
-import { cloneDeep } from 'lodash';
-import { ArmorSlotIdList, ArmorSlotWithClassItemIdList } from './ArmorSlot';
 
 /***** Extra *****/
 export const ArmorElementIdList = [
@@ -69,8 +68,12 @@ export type ArmorItem = {
 	isMasterworked: boolean;
 	// Exotic, Legendary, Rare, etc...
 	gearTierId: EGearTierId;
+	// Is this a piece of artifice armor
 	isArtifice: boolean;
-	extraSocketModCategoryId?: EExtraSocketModCategoryId;
+	// What raid mods can go on this piece of armor
+	socketableRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
+	// Special traits like "is iron banner", "is guardian games", etc...
+	intrinsicArmorPerkOrAttributeId: EIntrinsicArmorPerkOrAttributeId;
 };
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/
@@ -157,7 +160,7 @@ export type ArmorMetadataItem = {
 	artifice: ArmorSlotMetadata;
 	extraSocket: {
 		count: number;
-		items: Partial<Record<EModCategoryId, ArmorSlotMetadata>>;
+		items: Partial<Record<ERaidAndNightMareModTypeId, ArmorSlotMetadata>>;
 	};
 	classItem: {
 		hasLegendaryClassItem: boolean;
@@ -233,17 +236,18 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 	extraSocket: {
 		count: 0,
 		items: {
-			[EExtraSocketModCategoryId.LastWish]: getDefaultArmorSlotMetadata(),
-			[EExtraSocketModCategoryId.GardenOfSalvation]:
+			[ERaidAndNightMareModTypeId.LastWish]: getDefaultArmorSlotMetadata(),
+			[ERaidAndNightMareModTypeId.GardenOfSalvation]:
 				getDefaultArmorSlotMetadata(),
-			[EExtraSocketModCategoryId.DeepStoneCrypt]: getDefaultArmorSlotMetadata(),
-			[EExtraSocketModCategoryId.VaultOfGlass]: getDefaultArmorSlotMetadata(),
-			[EExtraSocketModCategoryId.VowOfTheDisciple]:
+			[ERaidAndNightMareModTypeId.DeepStoneCrypt]:
 				getDefaultArmorSlotMetadata(),
-			[EExtraSocketModCategoryId.KingsFall]: getDefaultArmorSlotMetadata(),
-			[EExtraSocketModCategoryId.RootOfNightmares]:
+			[ERaidAndNightMareModTypeId.VaultOfGlass]: getDefaultArmorSlotMetadata(),
+			[ERaidAndNightMareModTypeId.VowOfTheDisciple]:
 				getDefaultArmorSlotMetadata(),
-			[EExtraSocketModCategoryId.Nightmare]: getDefaultArmorSlotMetadata(),
+			[ERaidAndNightMareModTypeId.KingsFall]: getDefaultArmorSlotMetadata(),
+			[ERaidAndNightMareModTypeId.RootOfNightmares]:
+				getDefaultArmorSlotMetadata(),
+			[ERaidAndNightMareModTypeId.NightmareHunt]: getDefaultArmorSlotMetadata(),
 		},
 	},
 	classItem: {
@@ -266,19 +270,19 @@ const defaultArmorMetadata: ArmorMetadata = {
 
 export const getDefaultArmorMetadata = () => cloneDeep(defaultArmorMetadata);
 
-export type ItemCounts = Partial<Record<EExtraSocketModCategoryId, number>> & {
+export type ItemCounts = Partial<Record<ERaidAndNightMareModTypeId, number>> & {
 	artifice: number;
 };
 
 const defaultItemCounts: ItemCounts = {
-	[EExtraSocketModCategoryId.LastWish]: 0,
-	[EExtraSocketModCategoryId.GardenOfSalvation]: 0,
-	[EExtraSocketModCategoryId.DeepStoneCrypt]: 0,
-	[EExtraSocketModCategoryId.VaultOfGlass]: 0,
-	[EExtraSocketModCategoryId.VowOfTheDisciple]: 0,
-	[EExtraSocketModCategoryId.KingsFall]: 0,
-	[EExtraSocketModCategoryId.RootOfNightmares]: 0,
-	[EExtraSocketModCategoryId.Nightmare]: 0,
+	[ERaidAndNightMareModTypeId.LastWish]: 0,
+	[ERaidAndNightMareModTypeId.GardenOfSalvation]: 0,
+	[ERaidAndNightMareModTypeId.DeepStoneCrypt]: 0,
+	[ERaidAndNightMareModTypeId.VaultOfGlass]: 0,
+	[ERaidAndNightMareModTypeId.VowOfTheDisciple]: 0,
+	[ERaidAndNightMareModTypeId.KingsFall]: 0,
+	[ERaidAndNightMareModTypeId.RootOfNightmares]: 0,
+	[ERaidAndNightMareModTypeId.NightmareHunt]: 0,
 	artifice: 0,
 };
 

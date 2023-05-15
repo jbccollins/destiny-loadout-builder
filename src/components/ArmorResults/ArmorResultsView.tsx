@@ -15,7 +15,7 @@ import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
 	EArmorStatId,
-	EExtraSocketModCategoryId,
+	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -176,7 +176,7 @@ export type ResultsTableLoadout = {
 	armorItems: ArmorItem[];
 	requiredStatModIdList: EModId[];
 	requiredArtificeModIdList: EModId[];
-	requiredClassItemExtraModSocketCategoryId: EExtraSocketModCategoryId;
+	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
 };
 
 export type Order = 'asc' | 'desc';

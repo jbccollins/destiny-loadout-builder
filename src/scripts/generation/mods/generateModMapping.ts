@@ -1,22 +1,21 @@
-import {
-	EArmorSlotId,
-	EElementId,
-	EModCategoryId,
-	EModSocketCategoryId,
-} from '@dlb/types/IdEnums';
-import { IMod } from '@dlb/types/generation';
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	formatStringForFile,
 	getSerializableValue,
 	getSerializedBonusStats,
 } from '@dlb/scripts/generation/utils';
+import {
+	EArmorSlotId,
+	EModCategoryId,
+	EModSocketCategoryId,
+	ERaidAndNightMareModTypeId,
+} from '@dlb/types/IdEnums';
+import { IMod } from '@dlb/types/generation';
 
 export const generateModMapping = (mods: IMod[]): string => {
 	const enumsToSerialize = {
 		armorSlotId: { enumDefinition: EArmorSlotId, enumName: 'EArmorSlotId' },
 		id: { enumDefinition: EModId, enumName: 'EModId' },
-		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
 		modSocketCategoryId: {
 			enumDefinition: EModSocketCategoryId,
 			enumName: 'EModSocketCategoryId',
@@ -25,13 +24,14 @@ export const generateModMapping = (mods: IMod[]): string => {
 			enumDefinition: EModCategoryId,
 			enumName: 'EModCategoryId',
 		},
+		raidAndNightmareModTypeId: {
+			enumDefinition: ERaidAndNightMareModTypeId,
+			enumName: 'ERaidAndNightMareModTypeId',
+		},
 	};
 
 	const serializeMods: Record<string, unknown>[] = [];
 	mods.forEach((mod) => {
-		if (mod.name === 'Strand Reserves') {
-			console.log('sr');
-		}
 		const serializedMod = { ...mod } as Record<string, unknown>;
 		Object.keys(enumsToSerialize).forEach((key) => {
 			const serializedResult = getSerializableValue(
@@ -60,10 +60,10 @@ export const generateModMapping = (mods: IMod[]): string => {
   import { EModId } from '@dlb/generated/mod/EModId';
 	import {
 		EArmorSlotId,
-		EElementId,
 		EModCategoryId,
 		EModSocketCategoryId,
 		EArmorStatId,
+		ERaidAndNightMareModTypeId,
 	} from "@dlb/types/IdEnums";	
 
 	export const ModIdToModMapping: EnumDictionary<EModId, IMod> = {

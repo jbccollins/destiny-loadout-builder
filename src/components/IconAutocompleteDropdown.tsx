@@ -1,18 +1,13 @@
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-
 import {
-	Box,
-	styled,
 	Autocomplete,
+	Box,
 	FormControl,
 	TextField,
-	AutocompleteProps,
-	SxProps,
+	styled,
 } from '@mui/material';
-import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
 import DecoratedBungieIcon from './DecoratedBungieIcon';
-import { toDashCase } from '@dlb/utils/string';
 
 const Container = styled('div')(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -59,6 +54,7 @@ interface IIconAutocompleteDropdownOption {
 	icon: string;
 	elementOverlayIcon?: string;
 	disabled?: boolean;
+	name: string;
 }
 
 type IconAutocompleteDropdownProps = {
@@ -103,13 +99,23 @@ function IconAutocompleteDropdown({
 		onClose();
 	};
 
-	// const handleOpen = () => {
-	// 	console.log('HANDLE OPEN');
-	// 	console.log(document.getElementById(toDashCase(title)));
-	// };
+	const isMobile = false;
 
 	const controlledProps = isControlled
 		? { open: isOpen, onClose: handleClose }
+		: {};
+
+	// This stuff is testing disabling typing in autocomplete fields on mobile
+	const mobileProps = isMobile
+		? { inputValue: value.name, selectOnFocus: false, autoComplete: false }
+		: {};
+	const mobileInputProps = isMobile
+		? {
+				sx: {
+					caretColor: 'transparent',
+					// disabled: true,
+				},
+		  }
 		: {};
 
 	const _showIcon = showIcon ?? true;
@@ -118,6 +124,7 @@ function IconAutocompleteDropdown({
 			<FormControl fullWidth>
 				<Autocomplete
 					{...controlledProps}
+					{...mobileProps}
 					forcePopupIcon={_showIcon ? true : false}
 					id={`${id ?? ''}`}
 					options={options}
@@ -195,6 +202,8 @@ function IconAutocompleteDropdown({
 								{...params}
 								InputProps={{
 									...params.InputProps,
+									...mobileInputProps,
+
 									startAdornment: _showIcon ? (
 										<Box
 											sx={{

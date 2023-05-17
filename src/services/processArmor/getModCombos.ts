@@ -154,6 +154,7 @@ export type GetModCombosParams = {
 	destinyClassId: EDestinyClassId;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
+	useZeroWastedStats: boolean;
 };
 
 export const getModCombos = (params: GetModCombosParams): ModCombos => {
@@ -165,6 +166,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		raidMods,
 		specialSeenArmorSlotItems,
 		reservedArmorSlotEnergy,
+		useZeroWastedStats,
 	} = params;
 
 	// First sanity check the armorSlotMods against the reserved armorSlotEnergy
@@ -234,6 +236,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		currentStats: sumOfSeenStats,
 		targetStats: desiredArmorStats,
 		numArtificeItems: seenArtificeCount,
+		useZeroWastedStats,
 	});
 
 	if (statModCombos === null) {

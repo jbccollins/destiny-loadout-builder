@@ -1,20 +1,16 @@
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-
 import {
-	Box,
-	styled,
 	Autocomplete,
+	Box,
 	FormControl,
-	TextField,
-	AutocompleteProps,
-	SxProps,
 	Popper,
+	TextField,
+	styled,
 	useTheme,
 } from '@mui/material';
-import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-import DecoratedBungieIcon from './DecoratedBungieIcon';
+import parse from 'autosuggest-highlight/parse';
 import { useState } from 'react';
+import DecoratedBungieIcon from './DecoratedBungieIcon';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 
 const StyledPopper = styled(Popper)({
@@ -59,6 +55,7 @@ interface IIconAutocompleteDropdownOption {
 	icon: string;
 	elementOverlayIcon?: string;
 	disabled?: boolean;
+	name: string;
 }
 
 type CompactIconAutocompleteDropdown = {

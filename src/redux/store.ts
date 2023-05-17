@@ -58,6 +58,7 @@ import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
 import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
 
 import { EModId } from '@dlb/generated/mod/EModId';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
@@ -148,6 +149,7 @@ export function makeStore() {
 			selectedRaidMods: selectedRaidModsReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
+			useZeroWastedStats: useZeroWastedStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
 		},
 	});
@@ -169,6 +171,7 @@ let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
+let useZeroWastedStatsUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: any = null;
@@ -208,6 +211,7 @@ function handleChange() {
 		dimLoadoutsFilter: { uuid: nextDimLoadoutsFilterUuid },
 		reservedArmorSlotEnergy: { uuid: nextReservedArmorSlotEnergyUuid },
 		sharedLoadoutDesiredStats: { uuid: nextSharedLoadoutDesiredStatsUuid },
+		useZeroWastedStats: { uuid: nextUseZeroWastedStatsUuid },
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -226,7 +230,8 @@ function handleChange() {
 		dimLoadoutsUuid !== nextDimLoadoutsUuid ||
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
-		sharedLoadoutDesiredStatsUuid !== nextSharedLoadoutDesiredStatsUuid;
+		sharedLoadoutDesiredStatsUuid !== nextSharedLoadoutDesiredStatsUuid ||
+		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedDestinyClassUuid !== NIL &&
@@ -240,7 +245,8 @@ function handleChange() {
 		nextDimLoadoutsUuid !== NIL &&
 		nextDimLoadoutsFilterUuid !== NIL &&
 		nextReservedArmorSlotEnergyUuid !== NIL &&
-		nextSharedLoadoutDesiredStatsUuid !== NIL;
+		nextSharedLoadoutDesiredStatsUuid !== NIL &&
+		nextUseZeroWastedStatsUuid !== NIL;
 
 	if (!(hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids)) {
 		return;
@@ -260,6 +266,7 @@ function handleChange() {
 	dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
 	reservedArmorSlotEnergyUuid = nextReservedArmorSlotEnergyUuid;
 	sharedLoadoutDesiredStatsUuid = nextSharedLoadoutDesiredStatsUuid;
+	useZeroWastedStatsUuid = nextUseZeroWastedStatsUuid;
 
 	// TODO: Move this out of the store file
 	const {
@@ -284,6 +291,7 @@ function handleChange() {
 		selectedSuperAbility: { value: selectedSuperAbility },
 		selectedGrenade: { value: selectedGrenade },
 		selectedAspects: { value: selectedAspects },
+		useZeroWastedStats: { value: useZeroWastedStats },
 	} = store.getState();
 
 	if (sharedLoadoutDesiredStats.processing) {
@@ -379,6 +387,7 @@ function handleChange() {
 		armorMetadataItem: armorMetadata[selectedDestinyClass],
 		selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		reservedArmorSlotEnergy,
+		useZeroWastedStats,
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {

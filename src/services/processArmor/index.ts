@@ -68,6 +68,7 @@ const _processArmorRecursiveCase = ({
 	specialSeenArmorSlotItems,
 	selectedExotic,
 	reservedArmorSlotEnergy,
+	useZeroWastedStats,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
 	const output: ProcessArmorOutput[] = [];
@@ -98,6 +99,7 @@ const _processArmorRecursiveCase = ({
 				specialSeenArmorSlotItems: nextSpecialSeenArmorSlotItems,
 				selectedExotic,
 				reservedArmorSlotEnergy,
+				useZeroWastedStats,
 			})
 		);
 	});
@@ -119,6 +121,7 @@ const _processArmorBaseCase = ({
 	specialSeenArmorSlotItems,
 	selectedExotic,
 	reservedArmorSlotEnergy,
+	useZeroWastedStats,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
@@ -144,6 +147,7 @@ const _processArmorBaseCase = ({
 			destinyClassId,
 			specialSeenArmorSlotItems: finalSpecialSeenArmorSlotItems,
 			reservedArmorSlotEnergy,
+			useZeroWastedStats,
 		});
 
 		if (modCombos === null) {
@@ -201,6 +205,7 @@ type ProcessArmorParams = {
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 	selectedExotic: AvailableExoticArmorItem;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
+	useZeroWastedStats: boolean;
 };
 
 const processArmor = ({
@@ -217,6 +222,7 @@ const processArmor = ({
 	specialSeenArmorSlotItems,
 	selectedExotic,
 	reservedArmorSlotEnergy,
+	useZeroWastedStats,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const func =
 		armorItems.length === 1
@@ -236,6 +242,7 @@ const processArmor = ({
 		specialSeenArmorSlotItems,
 		selectedExotic,
 		reservedArmorSlotEnergy,
+		useZeroWastedStats,
 	});
 };
 
@@ -278,6 +285,7 @@ export type DoProcessArmorParams = {
 	armorMetadataItem: ArmorMetadataItem;
 	selectedExotic: AvailableExoticArmorItem;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
+	useZeroWastedStats: boolean;
 };
 /**
  * @param {ArmorItems2} armorItems - [heads, arms, chests, legs]
@@ -298,6 +306,7 @@ export const doProcessArmor = ({
 	armorMetadataItem,
 	selectedExotic,
 	reservedArmorSlotEnergy,
+	useZeroWastedStats,
 }: DoProcessArmorParams): DoProcessArmorOutput => {
 	// Add in the class item
 	const extraSumOfSeenStats = getExtraSumOfSeenStats(
@@ -333,6 +342,7 @@ export const doProcessArmor = ({
 		specialSeenArmorSlotItems: seenArmorSlotItems,
 		selectedExotic,
 		reservedArmorSlotEnergy,
+		useZeroWastedStats,
 	};
 
 	const processedArmor: ProcessArmorOutput = processArmor(processArmorParams);
@@ -427,6 +437,7 @@ export const getMaxPossibleMetadata = ({
 						specialSeenArmorSlotItems:
 							processedArmor[j].metadata.seenArmorSlotItems,
 						reservedArmorSlotEnergy: _reservedArmorSlotEnergy,
+						useZeroWastedStats: processArmorParams.useZeroWastedStats,
 					}) !== null;
 				if (hasCombo) {
 					maxReservedArmorSlotEnergy[armorSlotId] =
@@ -461,6 +472,7 @@ export const getMaxPossibleMetadata = ({
 						specialSeenArmorSlotItems:
 							processedArmor[j].metadata.seenArmorSlotItems,
 						reservedArmorSlotEnergy: processArmorParams.reservedArmorSlotEnergy,
+						useZeroWastedStats: processArmorParams.useZeroWastedStats,
 					}) !== null;
 				if (hasCombo) {
 					maxStatTiers[armorStatId] = desiredStat;
@@ -591,6 +603,7 @@ export const getMaxPossibleDesiredStatTiers = ({
 						specialSeenArmorSlotItems:
 							processedArmor[j].metadata.seenArmorSlotItems,
 						reservedArmorSlotEnergy: processArmorParams.reservedArmorSlotEnergy,
+						useZeroWastedStats: processArmorParams.useZeroWastedStats,
 					}) !== null;
 				if (hasCombo) {
 					maximumStatTiers[armorStatId] = desiredStat;
@@ -652,6 +665,7 @@ export const getMaxPossibleReservedArmorEnergy = ({
 						specialSeenArmorSlotItems:
 							processedArmor[j].metadata.seenArmorSlotItems,
 						reservedArmorSlotEnergy: _reservedArmorSlotEnergy,
+						useZeroWastedStats: processArmorParams.useZeroWastedStats,
 					}) !== null;
 				if (hasCombo) {
 					maximumReservedArmorSlotEnergy[armorSlotId] =

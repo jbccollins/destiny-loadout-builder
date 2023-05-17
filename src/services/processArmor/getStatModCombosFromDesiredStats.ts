@@ -10,14 +10,14 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { EArmorStatId } from '@dlb/types/IdEnums';
+import { getMod } from '@dlb/types/Mod';
 import {
 	ARTIFICE_MOD_BONUS_VALUE,
 	MAX_POTENTIAL_STAT_BOOST,
 	NUM_ARMOR_PIECES,
-	NUM_POTENTIAL_ARTIFICER_PIECES,
 } from '@dlb/utils/item-utils';
-import { filterRedundantStatModCombos } from './filterRedundantModCombos';
-import { getMod } from '@dlb/types/Mod';
+import { isEqual } from 'lodash';
+import { roundUp10 } from './utils';
 
 export type StatModCombo = Record<EArmorStatId, GenericRequiredModCombo>;
 
@@ -32,7 +32,10 @@ export const getDefaultStatModCombo = (): StatModCombo => ({
 
 const getUnfilteredStatModCombos = (
 	targetStatShortfalls: ArmorStatMapping,
-	useZeroWastedStats = false
+	useZeroWastedStats: boolean,
+	totalTargetStatShortfall: number,
+	numArtificeItems: number,
+	currentStats: StatList
 ) => {
 	const allGenericCombos: Record<EArmorStatId, GenericRequiredModCombo[]> = {
 		[EArmorStatId.Mobility]: null,
@@ -42,20 +45,57 @@ const getUnfilteredStatModCombos = (
 		[EArmorStatId.Intellect]: null,
 		[EArmorStatId.Strength]: null,
 	};
+	if (isEqual(currentStats, [27, 60, 71, 83, 40, 27])) {
+		console.log('here');
+	}
+	// We will recreate the totalTargetStatShortfall as we go
+	// when we want zero wasted stats.
+	let _totalTargetStatShortfall = useZeroWastedStats
+		? 0
+		: totalTargetStatShortfall;
 	for (let i = 0; i < ArmorStatIdList.length; i++) {
 		const armorStatId = ArmorStatIdList[i];
 		const targetStatShortfall = targetStatShortfalls[armorStatId];
 
-		if (targetStatShortfall > 0) {
+		if (
+			targetStatShortfall > 0 ||
+			(useZeroWastedStats && currentStats[i] % 10 !== 0)
+		) {
+			let _targetStatShortfall = targetStatShortfall;
+			if (useZeroWastedStats) {
+				if (targetStatShortfall === 0) {
+					// Round the base armor stats up to the nearest 10 if there is no shortfall
+					_targetStatShortfall = roundUp10(currentStats[i]) - currentStats[i];
+				}
+				_totalTargetStatShortfall += _targetStatShortfall;
+				// If we can't possibly hit the target stats, return null
+				if (
+					!canPotentiallyHitTargetStats(
+						_totalTargetStatShortfall,
+						numArtificeItems
+					)
+				) {
+					return null;
+				}
+			}
 			let genericCombos: GenericRequiredModCombo[] = null;
 
 			// Try adding +10 to the target stat until we get a result
 			// This should only matter for specific zero wasted stats cases
-			for (let i = targetStatShortfall; i < MAX_POTENTIAL_STAT_BOOST; i += 10) {
+			// TODO: I think this logic might be shakey. Is there any case where there
+			// is a way to achieve the +10 with fewer artifice mods than the +0?
+			// If so then we need to include the +10, +20 etc here.
+			let iterations = 0;
+			for (
+				let i = _targetStatShortfall;
+				i < MAX_POTENTIAL_STAT_BOOST;
+				i += 10
+			) {
 				genericCombos = getGenericModCombinations(i, useZeroWastedStats);
 				if (genericCombos !== null) {
 					break;
 				}
+				iterations++;
 			}
 
 			if (genericCombos === null) {
@@ -63,6 +103,16 @@ const getUnfilteredStatModCombos = (
 				return null;
 			}
 			allGenericCombos[armorStatId] = genericCombos;
+			_totalTargetStatShortfall += iterations * 10;
+			// If we can't possibly hit the target stats, return null
+			if (
+				!canPotentiallyHitTargetStats(
+					_totalTargetStatShortfall,
+					numArtificeItems
+				)
+			) {
+				return null;
+			}
 		}
 	}
 	return allGenericCombos;
@@ -71,16 +121,27 @@ const getUnfilteredStatModCombos = (
 export type GetAllValidStatModCombosParams = {
 	targetStatShortfalls: ArmorStatMapping;
 	numAvailableArtificePieces: number;
-	useZeroWastedStats?: boolean;
+	totalTargetStatShortfall: number;
+	useZeroWastedStats: boolean;
+	currentStats: StatList;
 };
 export const getAllValidStatModCombos = ({
 	targetStatShortfalls,
 	numAvailableArtificePieces,
-	useZeroWastedStats = false,
+	useZeroWastedStats,
+	totalTargetStatShortfall,
+	currentStats,
 }: GetAllValidStatModCombosParams) => {
+	if (isEqual(currentStats, [27, 65, 65, 65, 70, 25])) {
+		console.log('here');
+	}
+
 	const unfilteredStatModCombos = getUnfilteredStatModCombos(
 		targetStatShortfalls,
-		useZeroWastedStats
+		useZeroWastedStats,
+		totalTargetStatShortfall,
+		numAvailableArtificePieces,
+		currentStats
 	);
 
 	if (unfilteredStatModCombos === null) {
@@ -97,16 +158,21 @@ export const getAllValidStatModCombos = ({
 		}
 		// The first time we get here, we need to initialize the result
 		if (result.length === 0) {
+			let hasCombo = false;
 			unfilteredStatModCombo.forEach((combo) => {
 				// Skip combos with more artifice mods than we can slot
 				if (combo.numArtificeMods > numAvailableArtificePieces) {
 					return;
 				}
+				hasCombo = true;
 				result.push({
 					...getDefaultStatModCombo(),
 					[armorStatId]: combo,
 				});
 			});
+			if (!hasCombo) {
+				return null;
+			}
 			continue;
 		}
 		const newResult: StatModCombo[] = [];
@@ -157,18 +223,26 @@ export const getAllValidStatModCombos = ({
 
 const getGenericModCombinations = (
 	value: number,
-	useZeroWastedStats = false
+	useZeroWastedStats: boolean
 ): GenericRequiredModCombo[] => {
 	return useZeroWastedStats
 		? zeroWastedStatModCombinations[value]
 		: paretoOptimalModCombinations[value];
 };
 
+const getMaxPotentialStatBoost = (numArtificeItems: number) =>
+	MAX_POTENTIAL_STAT_BOOST - numArtificeItems * ARTIFICE_MOD_BONUS_VALUE;
+
+const canPotentiallyHitTargetStats = (
+	totalTargetStatShortfall: number,
+	numArtificeItems: number
+) => totalTargetStatShortfall <= getMaxPotentialStatBoost(numArtificeItems);
+
 type GetStatModCombosFromDesiredStatsParams = {
 	currentStats: StatList;
 	targetStats: ArmorStatMapping;
 	numArtificeItems: number;
-	useZeroWastedStats?: boolean;
+	useZeroWastedStats: boolean;
 };
 export const getStatModCombosFromDesiredStats = (
 	params: GetStatModCombosFromDesiredStatsParams
@@ -186,21 +260,21 @@ export const getStatModCombosFromDesiredStats = (
 	});
 	// If we can't possibly hit the target stats, return null
 	if (
-		totalTargetStatShortfall >
-		MAX_POTENTIAL_STAT_BOOST -
-			(NUM_POTENTIAL_ARTIFICER_PIECES - numArtificeItems) *
-				ARTIFICE_MOD_BONUS_VALUE
+		!canPotentiallyHitTargetStats(totalTargetStatShortfall, numArtificeItems)
 	) {
 		return null;
 	}
 	// If we don't need any mods to hit our target value then return an empty array
-	if (totalTargetStatShortfall === 0) {
+	// TODO: actually check if this combo doesn't already have zero wasted stats
+	if (totalTargetStatShortfall === 0 && !useZeroWastedStats) {
 		return [];
 	}
 	const allValidStatModCombos = getAllValidStatModCombos({
 		targetStatShortfalls,
 		numAvailableArtificePieces: numArtificeItems,
 		useZeroWastedStats,
+		totalTargetStatShortfall,
+		currentStats,
 	});
 	if (allValidStatModCombos === null) {
 		return null;

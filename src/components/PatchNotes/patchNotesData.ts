@@ -11,8 +11,23 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-05-17',
+		version: '2.0.4',
+		title: 'Zero Wasted Stats Setting',
+		sections: [
+			{
+				items: [
+					`Add a settings toggle to only show armor combinations that have zero wasted stats`,
+					`As this new setting can cause many cases where there are no results found, I also updated the
+					"No Results" UI to be more accurate in helping the user diagnose why they may not be
+					getting any results`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-05-14',
-		version: '2.0.1',
+		version: '2.0.3',
 		title: 'More armor slot mod categories',
 		sections: [
 			{

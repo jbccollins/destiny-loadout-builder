@@ -1,7 +1,7 @@
 import {
-	getMembershipData,
-	getDestinyAccountsForBungieAccount,
 	getCharacters,
+	getDestinyAccountsForBungieAccount,
+	getMembershipData,
 } from '@dlb/dim/bungie-api/destiny2-api';
 import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
@@ -10,11 +10,11 @@ import { setArmor } from '@dlb/redux/features/armor/armorSlice';
 import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { setSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import {
 	selectSelectedExoticArmor,
 	setSelectedExoticArmor,
 } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
-import { setSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
@@ -29,32 +29,12 @@ import {
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 
-import {
-	EDestinyClassId,
-	EDestinySubclassId,
-	EElementId,
-} from '@dlb/types/IdEnums';
-import { CheckCircleRounded } from '@mui/icons-material';
-import { Box, styled, Card, CircularProgress } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
+import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
-import {
-	selectSelectedMasterworkAssumption,
-	setSelectedMasterworkAssumption,
-} from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
-import {
-	selectSelectedFragments,
-	setSelectedFragments,
-} from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
-import {
-	selectSelectedArmorSlotMods,
-	setSelectedArmorSlotMods,
-} from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import {
 	selectDimLoadouts,
 	setDimLoadouts,
@@ -63,6 +43,43 @@ import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
+import {
+	selectReservedArmorSlotEnergy,
+	setReservedArmorSlotEnergy,
+} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import {
+	selectSelectedArmorSlotMods,
+	setSelectedArmorSlotMods,
+} from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
+import {
+	selectSelectedAspects,
+	setSelectedAspects,
+} from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import {
+	selectSelectedClassAbility,
+	setSelectedClassAbility,
+} from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
+import {
+	selectSelectedFragments,
+	setSelectedFragments,
+} from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import {
+	selectSelectedGrenade,
+	setSelectedGrenade,
+} from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import {
+	selectSelectedJump,
+	setSelectedJump,
+} from '@dlb/redux/features/selectedJump/selectedJumpSlice';
+import {
+	selectSelectedMasterworkAssumption,
+	setSelectedMasterworkAssumption,
+} from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
+import {
+	selectSelectedMelee,
+	setSelectedMelee,
+} from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import {
 	selectSelectedMinimumGearTier,
 	setSelectedMinimumGearTier,
@@ -71,43 +88,30 @@ import {
 	selectSelectedRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
-import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
-import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
-import {
-	selectReservedArmorSlotEnergy,
-	setReservedArmorSlotEnergy,
-} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
-import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
-import {
-	selectSelectedAspects,
-	setSelectedAspects,
-} from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import {
 	selectSelectedSuperAbility,
 	setSelectedSuperAbility,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import {
-	selectSelectedGrenade,
-	setSelectedGrenade,
-} from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
-import {
-	selectSelectedClassAbility,
-	setSelectedClassAbility,
-} from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
-import {
-	selectSelectedJump,
-	setSelectedJump,
-} from '@dlb/redux/features/selectedJump/selectedJumpSlice';
-import {
-	selectSelectedMelee,
-	setSelectedMelee,
-} from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import {
 	selectSharedLoadoutDesiredStats,
 	setSharedLoadoutDesiredStats,
 } from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
+import {
+	selectUseZeroWastedStats,
+	setUseZeroWastedStats,
+} from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
+import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
+import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import {
+	EDestinyClassId,
+	EDestinySubclassId,
+	EElementId,
+} from '@dlb/types/IdEnums';
+import { CheckCircleRounded } from '@mui/icons-material';
+import { Box, Card, CircularProgress, styled } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -157,6 +161,7 @@ function Loading() {
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
+	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
@@ -481,6 +486,7 @@ function Loading() {
 					dispatch(setDimLoadouts(dimLoadouts));
 				}
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
+				dispatch(setUseZeroWastedStats(useZeroWastedStats));
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
 				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
 				// Finally we notify the store that we are done loading

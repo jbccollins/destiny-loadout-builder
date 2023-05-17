@@ -28,6 +28,7 @@ import JumpSelector from '@dlb/components/SubclassSelector/JumpSelector';
 import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
 import SuperAbilitySelector from '@dlb/components/SubclassSelector/SuperAbilitySelector';
 import TabContainer from '@dlb/components/TabContainer';
+import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
@@ -249,6 +250,7 @@ const LeftSectionComponent = () => {
 								<MasterworkAssumptionSelector />
 								<MinimumGearTierSelector />
 								<DimLoadoutsFilterSelector />
+								<UseZeroWastedStatsToggleSwitch />
 								<Logout />
 							</>
 						),

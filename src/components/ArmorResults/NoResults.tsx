@@ -1,5 +1,6 @@
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import { selectDimLoadoutsFilter } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
@@ -9,14 +10,16 @@ import { useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
+import { EDimLoadoutsFilterId } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
+import DimLoadoutsFilterSelector from '../DimLoadoutsFilterSelector';
 import UseZeroWastedStatsToggleSwitch from '../UseZeroWastedStatsToggleSwitch';
 
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',
 	width: '50%',
 	minWidth: '300px',
-	maxWidth: '500px',
+	maxWidth: '550px',
 	//border: '3px solid green',
 	padding: theme.spacing(3),
 	height: `calc(100% - 160px)`,
@@ -46,6 +49,7 @@ function NoResults() {
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
+	const dimLoadoutsFilterId = useAppSelector(selectDimLoadoutsFilter);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
 	const hasRaidMods = selectedRaidMods.some((modId) => modId !== null);
@@ -71,6 +75,8 @@ function NoResults() {
 	const hasOptionsToModify =
 		hasDesiredArmorStats || hasRaidMods || hasFragmentsWithStatPenalties;
 
+	const hasSettingsToModify = useZeroWastedStats || dimLoadoutsFilterId;
+
 	return (
 		<>
 			<Container>
@@ -90,10 +96,21 @@ function NoResults() {
 							</ul>
 						</>
 					)}
-					{useZeroWastedStats && (
+					{hasSettingsToModify && (
 						<>
-							<Subtitle>Try turning off these settings:</Subtitle>
-							<UseZeroWastedStatsToggleSwitch />
+							<Subtitle>Try changing these settings:</Subtitle>
+							<ul>
+								{useZeroWastedStats && (
+									<li>
+										<UseZeroWastedStatsToggleSwitch />
+									</li>
+								)}
+								{dimLoadoutsFilterId === EDimLoadoutsFilterId.None && (
+									<li>
+										<DimLoadoutsFilterSelector />
+									</li>
+								)}
+							</ul>
 						</>
 					)}
 				</Content>

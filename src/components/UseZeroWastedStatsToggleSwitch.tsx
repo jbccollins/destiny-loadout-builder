@@ -14,7 +14,7 @@ export default function UseZeroWastedStatsToggleSwitch() {
 	};
 	console.log('>>>> VALUE', useZeroWastedStats);
 	return (
-		<Box>
+		<Box sx={{ paddingLeft: '8px' }}>
 			<ToggleSwitch
 				title={'Only show builds with zero wasted stats'}
 				onChange={handleChange}

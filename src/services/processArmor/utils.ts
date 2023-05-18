@@ -23,6 +23,7 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
+	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
 	EModCategoryId,
 	ERaidAndNightMareModTypeId,
@@ -210,15 +211,17 @@ export const replaceMajorModsWithMinorMods = (
 
 export const getItemCountsFromSeenArmorSlotItems = (
 	seenArmorSlotItems: SeenArmorSlotItems,
-	withClassItems = true
+	withClassItems: boolean
 ): ItemCounts => {
 	const itemCounts = getDefaultItemCounts();
 	ArmorSlotIdList.forEach((armorSlotId) => {
 		const value = seenArmorSlotItems[armorSlotId] as
 			| ERaidAndNightMareModTypeId
-			| 'artifice';
+			| EIntrinsicArmorPerkOrAttributeId
+			| 'Legendary'
+			| 'Artifice';
 		if (value === ARTIFICE) {
-			itemCounts.artifice++;
+			itemCounts.Artifice++;
 		} else if (value !== null) {
 			itemCounts[value]++;
 		}
@@ -255,13 +258,13 @@ export const stripNonRaidSeenArmorSlotItems = (
 
 export type FilterValidRaidModArmorSlotPlacementsParams = {
 	seenArmorSlotItems: SeenArmorSlotItems;
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
 	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 };
 // Filter out the placements that put a raid mod on a non-raid armor piece
 export const filterRaidModArmorSlotPlacements = ({
 	seenArmorSlotItems,
-	requiredClassItemExtraModSocketCategoryId,
+	requiredClassItemRaidAndNightmareModTypeId,
 	validRaidModArmorSlotPlacements,
 }: FilterValidRaidModArmorSlotPlacementsParams): PotentialRaidModArmorSlotPlacement[] => {
 	const raidSeenArmorSlotItems =
@@ -272,7 +275,7 @@ export const filterRaidModArmorSlotPlacements = ({
 		[EArmorSlotId.Arm]: raidSeenArmorSlotItems.Arm,
 		[EArmorSlotId.Chest]: raidSeenArmorSlotItems.Chest,
 		[EArmorSlotId.Leg]: raidSeenArmorSlotItems.Leg,
-		[EArmorSlotId.ClassItem]: requiredClassItemExtraModSocketCategoryId,
+		[EArmorSlotId.ClassItem]: requiredClassItemRaidAndNightmareModTypeId,
 	};
 
 	for (let i = 0; i < validRaidModArmorSlotPlacements.length; i++) {
@@ -328,13 +331,13 @@ export const getSeenArmorSlotItemsFromClassItems = (
 ): SeenArmorSlotItems => {
 	const seenArmorSlotItems = getDefaultSeenArmorSlotItems();
 
-	if (armorMetadataItem.classItem.hasArtificeClassItem) {
+	if (armorMetadataItem.classItem.Artifice.exists) {
 		seenArmorSlotItems.ClassItems.artifice = true;
 	}
 
 	ERaidAndNightMareModTypeIdList.forEach((extraSocketModCategoryId) => {
 		if (
-			armorMetadataItem.extraSocket.items[extraSocketModCategoryId].items[
+			armorMetadataItem.raidAndNightmare.items[extraSocketModCategoryId].items[
 				EArmorSlotId.ClassItem
 			].count > 0
 		) {
@@ -413,10 +416,10 @@ export const hasValidSeenItemCounts = (
 	seenArmorSlotClassItems: SeenArmorSlotClassItems
 ): {
 	isValid: boolean;
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
 } => {
 	let isValid = true;
-	let requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId =
+	let requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId =
 		null;
 	const extraSocketModCategoryIdList = Object.keys(
 		raidModExtraSocketModCategoryIdCounts
@@ -434,19 +437,19 @@ export const hasValidSeenItemCounts = (
 				// non-class item pieces but they don't have the mod space to fit the raid
 				// mods without using the class item for a raid mod
 				if (
-					requiredClassItemExtraModSocketCategoryId === null &&
+					requiredClassItemRaidAndNightmareModTypeId === null &&
 					seenArmorSlotClassItems[extraSocketModCategoryId] &&
 					raidModExtraSocketModCategoryIdCounts[extraSocketModCategoryId] ===
 						seenItemCountsWithoutClassItems[extraSocketModCategoryId] + 1
 				) {
-					requiredClassItemExtraModSocketCategoryId = extraSocketModCategoryId;
+					requiredClassItemRaidAndNightmareModTypeId = extraSocketModCategoryId;
 					continue;
 				}
 				isValid = false;
-				requiredClassItemExtraModSocketCategoryId = null;
+				requiredClassItemRaidAndNightmareModTypeId = null;
 				break;
 			}
 		}
 	}
-	return { isValid, requiredClassItemExtraModSocketCategoryId };
+	return { isValid, requiredClassItemRaidAndNightmareModTypeId };
 };

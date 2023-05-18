@@ -3,6 +3,7 @@ import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
+import { DimIcon } from '@dlb/public/dim_logo.svgicon';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
@@ -387,10 +388,11 @@ function ResultsItem({
 			<ResultsSection fullWidth>
 				<Box sx={{ flexBasis: '100%' }}>
 					<Button
-						sx={{ width: 200 }}
+						sx={{ width: 215 }}
 						variant="contained"
 						target={'_blank'}
 						href={dimLink}
+						startIcon={<DimIcon sx={{ marginTop: '-2px' }} />}
 					>
 						Open loadout in DIM
 					</Button>

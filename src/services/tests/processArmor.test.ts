@@ -76,7 +76,7 @@ defaultArmorMetadataWithLastWishAndArtificeClassItem[
 };
 defaultArmorMetadataWithLastWishAndArtificeClassItem[
 	EDestinyClassId.Warlock
-].extraSocket.items[ERaidAndNightMareModTypeId.LastWish].items[
+].raidAndNightmare.items[ERaidAndNightMareModTypeId.LastWish].items[
 	EArmorSlotId.ClassItem
 ].count = 4;
 

@@ -211,21 +211,105 @@ export const extractArmor = (
 					// Set the class item metadata. Class items are all interchangeable
 					if (armorItem.armorSlot === EArmorSlotId.ClassItem) {
 						if (armorItem.gearTierId === EGearTierId.Legendary) {
-							armorMetadata[destinyClassName].classItem.hasLegendaryClassItem =
-								true;
-						}
-						if (armorItem.isMasterworked) {
-							armorMetadata[
-								destinyClassName
-							].classItem.hasMasterworkedLegendaryClassItem = true;
-						}
-						if (armorItem.isArtifice) {
-							armorMetadata[destinyClassName].classItem.hasArtificeClassItem =
-								true;
-							if (armorItem.isMasterworked) {
+							// Set the legendary class item existence
+							if (!armorMetadata[destinyClassName].classItem.Legendary.exists) {
+								armorMetadata[destinyClassName].classItem.Legendary.exists =
+									true;
+								armorMetadata[destinyClassName].classItem.Legendary.exampleId =
+									armorItem.id;
+							}
+							// Set the masterworked legendary class item existence
+							if (
+								armorItem.isMasterworked &&
+								!armorMetadata[destinyClassName].classItem.Legendary
+									.isMasterworked
+							) {
 								armorMetadata[
 									destinyClassName
-								].classItem.hasMasterworkedArtificeClassItem = true;
+								].classItem.Legendary.isMasterworked = true;
+								armorMetadata[destinyClassName].classItem.Legendary.exampleId =
+									armorItem.id;
+							}
+
+							// Artifice clas items
+							if (armorItem.isArtifice) {
+								if (
+									!armorMetadata[destinyClassName].classItem.Artifice.exists
+								) {
+									armorMetadata[destinyClassName].classItem.Artifice.exists =
+										true;
+									armorMetadata[destinyClassName].classItem.Artifice.exampleId =
+										armorItem.id;
+								}
+								if (
+									armorItem.isMasterworked &&
+									!armorMetadata[destinyClassName].classItem.Artifice
+										.isMasterworked
+								) {
+									armorMetadata[
+										destinyClassName
+									].classItem.Artifice.isMasterworked = true;
+									armorMetadata[destinyClassName].classItem.Artifice.exampleId =
+										armorItem.id;
+								}
+							}
+
+							// Raid and nightmare class items
+							if (armorItem.socketableRaidAndNightmareModTypeId !== null) {
+								if (
+									!armorMetadata[destinyClassName].classItem[
+										armorItem.socketableRaidAndNightmareModTypeId
+									].exists
+								) {
+									armorMetadata[destinyClassName].classItem[
+										armorItem.socketableRaidAndNightmareModTypeId
+									].exists = true;
+									armorMetadata[destinyClassName].classItem[
+										armorItem.socketableRaidAndNightmareModTypeId
+									].exampleId = armorItem.id;
+								}
+								if (
+									armorItem.isMasterworked &&
+									!armorMetadata[destinyClassName].classItem[
+										armorItem.socketableRaidAndNightmareModTypeId
+									].isMasterworked
+								) {
+									armorMetadata[destinyClassName].classItem[
+										armorItem.socketableRaidAndNightmareModTypeId
+									].isMasterworked = true;
+									armorMetadata[destinyClassName].classItem[
+										armorItem.socketableRaidAndNightmareModTypeId
+									].exampleId = armorItem.id;
+								}
+							}
+
+							// Intrinsic perk or attribute class items
+							if (armorItem.intrinsicArmorPerkOrAttributeId !== null) {
+								if (
+									!armorMetadata[destinyClassName].classItem[
+										armorItem.intrinsicArmorPerkOrAttributeId
+									].exists
+								) {
+									armorMetadata[destinyClassName].classItem[
+										armorItem.intrinsicArmorPerkOrAttributeId
+									].exists = true;
+									armorMetadata[destinyClassName].classItem[
+										armorItem.intrinsicArmorPerkOrAttributeId
+									].exampleId = armorItem.id;
+								}
+								if (
+									armorItem.isMasterworked &&
+									!armorMetadata[destinyClassName].classItem[
+										armorItem.intrinsicArmorPerkOrAttributeId
+									].isMasterworked
+								) {
+									armorMetadata[destinyClassName].classItem[
+										armorItem.intrinsicArmorPerkOrAttributeId
+									].isMasterworked = true;
+									armorMetadata[destinyClassName].classItem[
+										armorItem.intrinsicArmorPerkOrAttributeId
+									].exampleId = armorItem.id;
+								}
 							}
 						}
 					}
@@ -243,16 +327,34 @@ export const extractArmor = (
 					if (armorItem.socketableRaidAndNightmareModTypeId !== null) {
 						updateMaxStatsMetadata(
 							armorItem,
-							armorMetadata[destinyClassName].extraSocket.items[
+							armorMetadata[destinyClassName].raidAndNightmare.items[
 								armorItem.socketableRaidAndNightmareModTypeId
 							].items[armorItem.armorSlot].maxStats
 						);
-						armorMetadata[destinyClassName].extraSocket.count++;
-						armorMetadata[destinyClassName].extraSocket.items[
+						armorMetadata[destinyClassName].raidAndNightmare.count++;
+						armorMetadata[destinyClassName].raidAndNightmare.items[
 							armorItem.socketableRaidAndNightmareModTypeId
 						].count++;
-						armorMetadata[destinyClassName].extraSocket.items[
+						armorMetadata[destinyClassName].raidAndNightmare.items[
 							armorItem.socketableRaidAndNightmareModTypeId
+						].items[armorItem.armorSlot].count++;
+					}
+
+					if (armorItem.intrinsicArmorPerkOrAttributeId !== null) {
+						updateMaxStatsMetadata(
+							armorItem,
+							armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute
+								.items[armorItem.intrinsicArmorPerkOrAttributeId].items[
+								armorItem.armorSlot
+							].maxStats
+						);
+						armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute
+							.count++;
+						armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute.items[
+							armorItem.intrinsicArmorPerkOrAttributeId
+						].count++;
+						armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute.items[
+							armorItem.intrinsicArmorPerkOrAttributeId
 						].items[armorItem.armorSlot].count++;
 					}
 

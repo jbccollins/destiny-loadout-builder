@@ -1,6 +1,6 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
-import { StatList } from '@dlb/types/Armor';
+import { AllClassItemMetadata, StatList } from '@dlb/types/Armor';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
@@ -20,6 +20,7 @@ import {
 	getArmorSlotEnergyCapacity,
 	getMod,
 } from '@dlb/types/Mod';
+import { EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
 	StatModCombo,
@@ -27,7 +28,11 @@ import {
 	getStatModCombosFromDesiredStats,
 } from './getStatModCombosFromDesiredStats';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
-import { getItemCountsFromSeenArmorSlotItems, sumModCosts } from './utils';
+import {
+	getItemCountsFromSeenArmorSlotItems,
+	sumModCosts,
+	sumStatLists,
+} from './utils';
 
 /***** ArmorSlotModComboPlacementWithArtificeMods *****/
 export type ArmorStatAndRaidModComboPlacementValue = {
@@ -126,7 +131,8 @@ export type ModCombos = {
 	maximumSingleStatValues: Record<EArmorStatId, number>;
 	armorSlotMetadata: ModComboArmorSlotMetadata;
 	lowestCostPlacement: ModPlacement;
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
+	hasMasterworkedClassItem: boolean;
 	// TODO: fewestWastedStatsPlacement: ModPlacement;
 	// TODO: mostStatTiersPlacement: ModPlacement;
 };
@@ -142,7 +148,8 @@ export const getDefaultModCombos = (): ModCombos => ({
 	},
 	armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
 	lowestCostPlacement: null,
-	requiredClassItemExtraModSocketCategoryId: null,
+	requiredClassItemRaidAndNightmareModTypeId: null,
+	hasMasterworkedClassItem: false,
 });
 
 export type GetModCombosParams = {
@@ -155,6 +162,7 @@ export type GetModCombosParams = {
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	useZeroWastedStats: boolean;
+	allClassItemMetadata: AllClassItemMetadata;
 };
 
 export const getModCombos = (params: GetModCombosParams): ModCombos => {
@@ -167,6 +175,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		specialSeenArmorSlotItems,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
+		allClassItemMetadata,
 	} = params;
 
 	// First sanity check the armorSlotMods against the reserved armorSlotEnergy
@@ -183,15 +192,18 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	}
 
 	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
-		specialSeenArmorSlotItems
+		specialSeenArmorSlotItems,
+		false
 	);
-	let seenArtificeCount = seenItemCounts.artifice;
+	let seenArtificeCount = seenItemCounts.Artifice;
 
-	let requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId =
+	let requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId =
 		null;
 
 	let filteredPotentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] =
 		null;
+
+	let _sumOfSeenStats: StatList = [...sumOfSeenStats];
 
 	// TODO: Cache this result
 	if (raidMods.length > 0) {
@@ -209,8 +221,8 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		}
 		const {
 			potentialPlacements: _raidModArmorSlotPlacements,
-			requiredClassItemExtraModSocketCategoryId:
-				_requiredClassItemExtraModSocketCategoryId,
+			requiredClassItemRaidAndNightmareModTypeId:
+				_requiredClassItemRaidAndNightmareTypeId,
 		} = potentialRaidModPlacements;
 
 		if (_raidModArmorSlotPlacements.length === 0) {
@@ -218,22 +230,51 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		}
 
 		filteredPotentialRaidModArmorSlotPlacements = _raidModArmorSlotPlacements;
-		requiredClassItemExtraModSocketCategoryId =
-			_requiredClassItemExtraModSocketCategoryId;
+		requiredClassItemRaidAndNightmareModTypeId =
+			_requiredClassItemRaidAndNightmareTypeId;
+	}
 
-		// We can't use artifice class items now
-		if (
-			requiredClassItemExtraModSocketCategoryId !== null &&
-			specialSeenArmorSlotItems.ClassItems.artifice
-		) {
-			seenArtificeCount -= 1;
+	let hasMasterworkedClassItem = false;
+	// We can use artifice class items if we don't need a special kind of class item
+	// TODO: We need to be careful in the case where the user does not have a masterworked artifice class item
+	// and they have turned off the legendary masterwork assumption. It may be more beneficial
+	// to use a standard masterworked legendary class item over an unmasterworked artifice class item.
+	// The current logic here is bad. We probably need to check both cases and return each
+	// as a different result if both have valid mod combos.
+	if (requiredClassItemRaidAndNightmareModTypeId === null) {
+		if (allClassItemMetadata.Artifice.exists) {
+			seenArtificeCount++;
+			if (allClassItemMetadata.Artifice.isMasterworked) {
+				hasMasterworkedClassItem = true;
+				_sumOfSeenStats = sumStatLists([
+					sumOfSeenStats,
+					EXTRA_MASTERWORK_STAT_LIST,
+				]);
+			}
+		} else {
+			if (allClassItemMetadata.Legendary.isMasterworked) {
+				hasMasterworkedClassItem = true;
+				_sumOfSeenStats = sumStatLists([
+					sumOfSeenStats,
+					EXTRA_MASTERWORK_STAT_LIST,
+				]);
+			}
 		}
+	} else if (
+		allClassItemMetadata[requiredClassItemRaidAndNightmareModTypeId]
+			.isMasterworked
+	) {
+		hasMasterworkedClassItem = true;
+		_sumOfSeenStats = sumStatLists([
+			sumOfSeenStats,
+			EXTRA_MASTERWORK_STAT_LIST,
+		]);
 	}
 
 	// Get all the stat mod combos which get us to the desiredArmorStats
 	// TODO: Cache this result
 	const statModCombos = getStatModCombosFromDesiredStats({
-		currentStats: sumOfSeenStats,
+		currentStats: _sumOfSeenStats,
 		targetStats: desiredArmorStats,
 		numArtificeItems: seenArtificeCount,
 		useZeroWastedStats,
@@ -246,7 +287,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	const lowestCostPlacement =
 		getDefaultArmorSlotModComboPlacementWithArtificeMods();
 
-	const { isValid, combo } = getFirstValidStatModCombo({
+	const { isValid, combo, placementCapacity } = getFirstValidStatModCombo({
 		statModComboList: statModCombos,
 		potentialRaidModArmorSlotPlacements:
 			filteredPotentialRaidModArmorSlotPlacements,
@@ -265,6 +306,11 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 				ArmorSlotWithClassItemIdList[i]
 			].armorStatModId = modId;
 		});
+		// placementCapacity.forEach((placement, i) => {
+		// 	lowestCostPlacement.placement[
+		// 		placement.armorSlotId
+		// 	].armorStatModId = placement.;
+		// })
 		lowestCostPlacement.artificeModIdList = expandedCombo.artificeModIdList;
 	}
 
@@ -279,7 +325,8 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		maximumSingleStatValues: null,
 		armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
 		lowestCostPlacement,
-		requiredClassItemExtraModSocketCategoryId,
+		requiredClassItemRaidAndNightmareModTypeId,
+		hasMasterworkedClassItem,
 	};
 
 	return result;
@@ -297,6 +344,7 @@ type GetFirstValidStatModComboParams = {
 type GetFirstValidStatModComboResult = {
 	isValid: boolean;
 	combo: StatModCombo;
+	placementCapacity: ArmorSlotCapacity[];
 };
 
 // Pick the first combo that has a valid placement
@@ -311,7 +359,7 @@ const getFirstValidStatModCombo = ({
 		(potentialRaidModArmorSlotPlacements === null ||
 			potentialRaidModArmorSlotPlacements.length == 0)
 	) {
-		return { isValid: true, combo: null };
+		return { isValid: true, combo: null, placementCapacity: null };
 	}
 
 	const armorSlotCapacities = getArmorSlotCapacities({
@@ -353,11 +401,15 @@ const getFirstValidStatModCombo = ({
 					sortedArmorSlotCapacities: capacity,
 				})
 			) {
-				return { isValid: true, combo: _statModComboList[i] };
+				return {
+					isValid: true,
+					combo: _statModComboList[i],
+					placementCapacity: capacity,
+				};
 			}
 		}
 	}
-	return { isValid: false, combo: null };
+	return { isValid: false, combo: null, placementCapacity: null };
 };
 
 export type ExpandedStatModCombo = {

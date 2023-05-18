@@ -16,21 +16,21 @@ export type filterPotentialRaidModArmorSlotPlacementsParams = {
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 };
 
-type filterPotentialRaidModArmorSlotPlacementsOutput = {
+type FilterPotentialRaidModArmorSlotPlacementsOutput = {
 	potentialPlacements: PotentialRaidModArmorSlotPlacement[];
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
 };
 
 export const filterPotentialRaidModArmorSlotPlacements = (
 	params: filterPotentialRaidModArmorSlotPlacementsParams
-): filterPotentialRaidModArmorSlotPlacementsOutput => {
+): FilterPotentialRaidModArmorSlotPlacementsOutput => {
 	const {
 		potentialRaidModArmorSlotPlacements,
 		raidMods,
 		specialSeenArmorSlotItems,
 	} = params;
 
-	let requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId =
+	let requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId =
 		null;
 
 	let raidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] = null;
@@ -52,7 +52,7 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 	// very common to need to do
 	const {
 		isValid,
-		requiredClassItemExtraModSocketCategoryId:
+		requiredClassItemRaidAndNightmareModTypeId:
 			_requiredClassItemExtraModSocketCategoryId,
 	} = hasValidSeenItemCounts(
 		seenItemCountsWithoutClassItems,
@@ -63,7 +63,7 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 		return null;
 	}
 
-	requiredClassItemExtraModSocketCategoryId =
+	requiredClassItemRaidAndNightmareModTypeId =
 		_requiredClassItemExtraModSocketCategoryId;
 
 	// Ensure that we have enough raid pieces to slot the required raid mods
@@ -72,7 +72,7 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 	raidModArmorSlotPlacements = filterRaidModArmorSlotPlacements({
 		seenArmorSlotItems: specialSeenArmorSlotItems,
 		validRaidModArmorSlotPlacements: potentialRaidModArmorSlotPlacements,
-		requiredClassItemExtraModSocketCategoryId,
+		requiredClassItemRaidAndNightmareModTypeId,
 	});
 
 	if (raidModArmorSlotPlacements.length === 0) {
@@ -80,6 +80,7 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 	}
 	return {
 		potentialPlacements: raidModArmorSlotPlacements,
-		requiredClassItemExtraModSocketCategoryId,
+		requiredClassItemRaidAndNightmareModTypeId:
+			requiredClassItemRaidAndNightmareModTypeId,
 	};
 };

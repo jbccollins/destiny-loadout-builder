@@ -5,6 +5,7 @@ import {
 	getDefaultArmorSlotEnergyMapping,
 } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import {
+	AllClassItemMetadata,
 	ArmorGroup,
 	ArmorIdList,
 	ArmorItems,
@@ -37,6 +38,7 @@ import {
 	ArmorSlotIdToModIdListMapping,
 	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
+import { EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import {
 	ArmorStatAndRaidModComboPlacement,
 	getModCombos,
@@ -64,11 +66,11 @@ const _processArmorRecursiveCase = ({
 	armorSlotMods,
 	raidMods,
 	destinyClassId,
-	armorMetadataItem,
 	specialSeenArmorSlotItems,
 	selectedExotic,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
+	allClassItemMetadata,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
 	const output: ProcessArmorOutput[] = [];
@@ -95,11 +97,11 @@ const _processArmorRecursiveCase = ({
 				armorSlotMods,
 				raidMods,
 				destinyClassId,
-				armorMetadataItem,
 				specialSeenArmorSlotItems: nextSpecialSeenArmorSlotItems,
 				selectedExotic,
 				reservedArmorSlotEnergy,
 				useZeroWastedStats,
+				allClassItemMetadata,
 			})
 		);
 	});
@@ -117,11 +119,11 @@ const _processArmorBaseCase = ({
 	armorSlotMods,
 	raidMods,
 	destinyClassId,
-	armorMetadataItem,
 	specialSeenArmorSlotItems,
 	selectedExotic,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
+	allClassItemMetadata,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
@@ -148,6 +150,7 @@ const _processArmorBaseCase = ({
 			specialSeenArmorSlotItems: finalSpecialSeenArmorSlotItems,
 			reservedArmorSlotEnergy,
 			useZeroWastedStats,
+			allClassItemMetadata,
 		});
 
 		if (modCombos === null) {
@@ -155,6 +158,7 @@ const _processArmorBaseCase = ({
 		}
 		// TODO: Change this based on what the user prioritizes
 		const placement = modCombos.lowestCostPlacement;
+		const hasMasterworkedClassItem = modCombos.hasMasterworkedClassItem;
 
 		const requiredArmorStatModIdList = placement
 			? getModIdListFromArmorStatAndRaidModComboPlacement(placement.placement)
@@ -164,9 +168,15 @@ const _processArmorBaseCase = ({
 			? placement.artificeModIdList
 			: [];
 
+		// const baseArmorStatMapping =
+		// 	getArmorStatMappingFromStatList(_finalSumOfSeenStats);
 		const baseArmorStatMapping =
 			getArmorStatMappingFromStatList(finalSumOfSeenStats);
+		const masterworkedStatList = hasMasterworkedClassItem
+			? getArmorStatMappingFromStatList(EXTRA_MASTERWORK_STAT_LIST)
+			: getDefaultArmorStatMapping();
 		const totalArmorStatMapping = sumArmorStatMappings([
+			masterworkedStatList,
 			baseArmorStatMapping,
 			getArmorStatMappingFromMods(requiredArmorStatModIdList, destinyClassId),
 			getArmorStatMappingFromArtificeModIdList(requiredArtificeModIdList),
@@ -176,7 +186,7 @@ const _processArmorBaseCase = ({
 			armorStatModIdList: requiredArmorStatModIdList,
 			artificeModIdList: requiredArtificeModIdList,
 			requiredClassItemExtraModSocketCategoryId:
-				modCombos.requiredClassItemExtraModSocketCategoryId,
+				modCombos.requiredClassItemRaidAndNightmareModTypeId,
 			maximumSingleStatValues: modCombos.maximumSingleStatValues,
 			metadata: {
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
@@ -201,11 +211,11 @@ type ProcessArmorParams = {
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
 	destinyClassId: EDestinyClassId;
-	armorMetadataItem: ArmorMetadataItem;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 	selectedExotic: AvailableExoticArmorItem;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	useZeroWastedStats: boolean;
+	allClassItemMetadata: AllClassItemMetadata;
 };
 
 const processArmor = ({
@@ -218,11 +228,11 @@ const processArmor = ({
 	armorSlotMods,
 	raidMods,
 	destinyClassId,
-	armorMetadataItem,
 	specialSeenArmorSlotItems,
 	selectedExotic,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
+	allClassItemMetadata,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const func =
 		armorItems.length === 1
@@ -238,11 +248,11 @@ const processArmor = ({
 		armorSlotMods,
 		raidMods,
 		destinyClassId,
-		armorMetadataItem,
 		specialSeenArmorSlotItems,
 		selectedExotic,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
+		allClassItemMetadata,
 	});
 };
 
@@ -308,23 +318,10 @@ export const doProcessArmor = ({
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
 }: DoProcessArmorParams): DoProcessArmorOutput => {
-	// Add in the class item
-	const extraSumOfSeenStats = getExtraSumOfSeenStats(
+	const sumOfSeenStats = getExtraSumOfSeenStats(
 		fragmentArmorStatMapping,
 		modArmorStatMapping
 	);
-	let sumOfSeenStats = [...extraSumOfSeenStats];
-	// TODO: This logic won't work well with the logic that checks
-	// for the necessary class item mod socket category. If we have
-	// an unmasterworked raid class item that we need then this will assume
-	// that the class item is masterworked which is no bueno.
-	if (
-		armorMetadataItem.classItem.hasMasterworkedLegendaryClassItem ||
-		(masterworkAssumption !== EMasterworkAssumption.None &&
-			armorMetadataItem.classItem.hasLegendaryClassItem)
-	) {
-		sumOfSeenStats = sumOfSeenStats.map((x) => x + 2);
-	}
 
 	const seenArmorSlotItems =
 		getSeenArmorSlotItemsFromClassItems(armorMetadataItem);
@@ -338,11 +335,11 @@ export const doProcessArmor = ({
 		armorSlotMods,
 		raidMods,
 		destinyClassId,
-		armorMetadataItem,
 		specialSeenArmorSlotItems: seenArmorSlotItems,
 		selectedExotic,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
+		allClassItemMetadata: armorMetadataItem.classItem,
 	};
 
 	const processedArmor: ProcessArmorOutput = processArmor(processArmorParams);
@@ -438,6 +435,7 @@ export const getMaxPossibleMetadata = ({
 							processedArmor[j].metadata.seenArmorSlotItems,
 						reservedArmorSlotEnergy: _reservedArmorSlotEnergy,
 						useZeroWastedStats: processArmorParams.useZeroWastedStats,
+						allClassItemMetadata: processArmorParams.allClassItemMetadata,
 					}) !== null;
 				if (hasCombo) {
 					maxReservedArmorSlotEnergy[armorSlotId] =
@@ -473,6 +471,7 @@ export const getMaxPossibleMetadata = ({
 							processedArmor[j].metadata.seenArmorSlotItems,
 						reservedArmorSlotEnergy: processArmorParams.reservedArmorSlotEnergy,
 						useZeroWastedStats: processArmorParams.useZeroWastedStats,
+						allClassItemMetadata: processArmorParams.allClassItemMetadata,
 					}) !== null;
 				if (hasCombo) {
 					maxStatTiers[armorStatId] = desiredStat;
@@ -565,118 +564,118 @@ const getModIdListFromArmorStatAndRaidModComboPlacement = (
 	return result;
 };
 
-// Iterate over the existing results to figure out what tiers we can achieve
-type GetMaxPossibleDesiredStatTiers = {
-	processedArmor: ProcessArmorOutput;
-	processArmorParams: ProcessArmorParams;
-};
-export const getMaxPossibleDesiredStatTiers = ({
-	processedArmor,
-	processArmorParams,
-}: GetMaxPossibleDesiredStatTiers): ArmorStatMapping => {
-	const maximumStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
-	if (processedArmor.length === 0) {
-		return maximumStatTiers;
-	}
-	const { desiredArmorStats } = processArmorParams;
+// // Iterate over the existing results to figure out what tiers we can achieve
+// type GetMaxPossibleDesiredStatTiers = {
+// 	processedArmor: ProcessArmorOutput;
+// 	processArmorParams: ProcessArmorParams;
+// };
+// export const getMaxPossibleDesiredStatTiers = ({
+// 	processedArmor,
+// 	processArmorParams,
+// }: GetMaxPossibleDesiredStatTiers): ArmorStatMapping => {
+// 	const maximumStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
+// 	if (processedArmor.length === 0) {
+// 		return maximumStatTiers;
+// 	}
+// 	const { desiredArmorStats } = processArmorParams;
 
-	ArmorStatIdList.forEach((armorStatId) => {
-		for (let i = 10; i > 0; i--) {
-			const desiredStat = i * 10;
-			const _desiredArmorStats = {
-				...desiredArmorStats,
-				[armorStatId]: desiredStat,
-			};
-			let hasCombo = false;
-			for (let j = 0; j < processedArmor.length; j++) {
-				hasCombo =
-					getModCombos({
-						sumOfSeenStats: getStatListFromArmorStatMapping(
-							processedArmor[j].metadata.baseArmorStatMapping
-						),
-						desiredArmorStats: _desiredArmorStats,
-						potentialRaidModArmorSlotPlacements:
-							processArmorParams.potentialRaidModArmorSlotPlacements,
-						armorSlotMods: processArmorParams.armorSlotMods,
-						raidMods: processArmorParams.raidMods,
-						destinyClassId: processArmorParams.destinyClassId,
-						specialSeenArmorSlotItems:
-							processedArmor[j].metadata.seenArmorSlotItems,
-						reservedArmorSlotEnergy: processArmorParams.reservedArmorSlotEnergy,
-						useZeroWastedStats: processArmorParams.useZeroWastedStats,
-					}) !== null;
-				if (hasCombo) {
-					maximumStatTiers[armorStatId] = desiredStat;
-					break;
-				}
-			}
-			if (hasCombo) {
-				break;
-			}
-		}
-	});
-	return maximumStatTiers;
-};
+// 	ArmorStatIdList.forEach((armorStatId) => {
+// 		for (let i = 10; i > 0; i--) {
+// 			const desiredStat = i * 10;
+// 			const _desiredArmorStats = {
+// 				...desiredArmorStats,
+// 				[armorStatId]: desiredStat,
+// 			};
+// 			let hasCombo = false;
+// 			for (let j = 0; j < processedArmor.length; j++) {
+// 				hasCombo =
+// 					getModCombos({
+// 						sumOfSeenStats: getStatListFromArmorStatMapping(
+// 							processedArmor[j].metadata.baseArmorStatMapping
+// 						),
+// 						desiredArmorStats: _desiredArmorStats,
+// 						potentialRaidModArmorSlotPlacements:
+// 							processArmorParams.potentialRaidModArmorSlotPlacements,
+// 						armorSlotMods: processArmorParams.armorSlotMods,
+// 						raidMods: processArmorParams.raidMods,
+// 						destinyClassId: processArmorParams.destinyClassId,
+// 						specialSeenArmorSlotItems:
+// 							processedArmor[j].metadata.seenArmorSlotItems,
+// 						reservedArmorSlotEnergy: processArmorParams.reservedArmorSlotEnergy,
+// 						useZeroWastedStats: processArmorParams.useZeroWastedStats,
+// 					}) !== null;
+// 				if (hasCombo) {
+// 					maximumStatTiers[armorStatId] = desiredStat;
+// 					break;
+// 				}
+// 			}
+// 			if (hasCombo) {
+// 				break;
+// 			}
+// 		}
+// 	});
+// 	return maximumStatTiers;
+// };
 
-// Iterate over the existing results to figure out what tiers we can achieve
-type GetMaxReservedArmorEnergy = {
-	processedArmor: ProcessArmorOutput;
-	processArmorParams: ProcessArmorParams;
-};
-export const getMaxPossibleReservedArmorEnergy = ({
-	processedArmor,
-	processArmorParams,
-}: GetMaxReservedArmorEnergy): ArmorSlotEnergyMapping => {
-	const maximumReservedArmorSlotEnergy: ArmorSlotEnergyMapping =
-		getDefaultArmorSlotEnergyMapping();
-	if (processedArmor.length === 0) {
-		return maximumReservedArmorSlotEnergy;
-	}
-	const { reservedArmorSlotEnergy } = processArmorParams;
+// // Iterate over the existing results to figure out what tiers we can achieve
+// type GetMaxReservedArmorEnergy = {
+// 	processedArmor: ProcessArmorOutput;
+// 	processArmorParams: ProcessArmorParams;
+// };
+// export const getMaxPossibleReservedArmorEnergy = ({
+// 	processedArmor,
+// 	processArmorParams,
+// }: GetMaxReservedArmorEnergy): ArmorSlotEnergyMapping => {
+// 	const maximumReservedArmorSlotEnergy: ArmorSlotEnergyMapping =
+// 		getDefaultArmorSlotEnergyMapping();
+// 	if (processedArmor.length === 0) {
+// 		return maximumReservedArmorSlotEnergy;
+// 	}
+// 	const { reservedArmorSlotEnergy } = processArmorParams;
 
-	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
-		for (let i = 10; i > 0; i--) {
-			// if (
-			// 	i === 10 &&
-			// 	processArmorParams.armorSlotMods[EArmorSlotId.Head].findIndex(
-			// 		(x) => x === null
-			// 	) === -1
-			// ) {
-			// 	debugger;
-			// }
-			const testReservedArmorSlotEnergyValue = i;
-			const _reservedArmorSlotEnergy = {
-				...reservedArmorSlotEnergy,
-				[armorSlotId]: testReservedArmorSlotEnergyValue,
-			};
-			let hasCombo = false;
-			for (let j = 0; j < processedArmor.length; j++) {
-				hasCombo =
-					getModCombos({
-						sumOfSeenStats: getStatListFromArmorStatMapping(
-							processedArmor[j].metadata.baseArmorStatMapping
-						),
-						desiredArmorStats: processArmorParams.desiredArmorStats,
-						potentialRaidModArmorSlotPlacements:
-							processArmorParams.potentialRaidModArmorSlotPlacements,
-						armorSlotMods: processArmorParams.armorSlotMods,
-						raidMods: processArmorParams.raidMods,
-						destinyClassId: processArmorParams.destinyClassId,
-						specialSeenArmorSlotItems:
-							processedArmor[j].metadata.seenArmorSlotItems,
-						reservedArmorSlotEnergy: _reservedArmorSlotEnergy,
-						useZeroWastedStats: processArmorParams.useZeroWastedStats,
-					}) !== null;
-				if (hasCombo) {
-					maximumReservedArmorSlotEnergy[armorSlotId] =
-						testReservedArmorSlotEnergyValue;
-					break;
-				}
-			}
-			if (hasCombo) {
-				break;
-			}
-		}
-	});
-	return maximumReservedArmorSlotEnergy;
-};
+// 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+// 		for (let i = 10; i > 0; i--) {
+// 			// if (
+// 			// 	i === 10 &&
+// 			// 	processArmorParams.armorSlotMods[EArmorSlotId.Head].findIndex(
+// 			// 		(x) => x === null
+// 			// 	) === -1
+// 			// ) {
+// 			// 	debugger;
+// 			// }
+// 			const testReservedArmorSlotEnergyValue = i;
+// 			const _reservedArmorSlotEnergy = {
+// 				...reservedArmorSlotEnergy,
+// 				[armorSlotId]: testReservedArmorSlotEnergyValue,
+// 			};
+// 			let hasCombo = false;
+// 			for (let j = 0; j < processedArmor.length; j++) {
+// 				hasCombo =
+// 					getModCombos({
+// 						sumOfSeenStats: getStatListFromArmorStatMapping(
+// 							processedArmor[j].metadata.baseArmorStatMapping
+// 						),
+// 						desiredArmorStats: processArmorParams.desiredArmorStats,
+// 						potentialRaidModArmorSlotPlacements:
+// 							processArmorParams.potentialRaidModArmorSlotPlacements,
+// 						armorSlotMods: processArmorParams.armorSlotMods,
+// 						raidMods: processArmorParams.raidMods,
+// 						destinyClassId: processArmorParams.destinyClassId,
+// 						specialSeenArmorSlotItems:
+// 							processedArmor[j].metadata.seenArmorSlotItems,
+// 						reservedArmorSlotEnergy: _reservedArmorSlotEnergy,
+// 						useZeroWastedStats: processArmorParams.useZeroWastedStats,
+// 					}) !== null;
+// 				if (hasCombo) {
+// 					maximumReservedArmorSlotEnergy[armorSlotId] =
+// 						testReservedArmorSlotEnergyValue;
+// 					break;
+// 				}
+// 			}
+// 			if (hasCombo) {
+// 				break;
+// 			}
+// 		}
+// 	});
+// 	return maximumReservedArmorSlotEnergy;
+// };

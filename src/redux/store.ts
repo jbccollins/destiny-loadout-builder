@@ -53,6 +53,8 @@ import disabledArmorSlotModsReducer, {
 import disabledRaidModsReducer, {
 	setDisabledRaidMods,
 } from './features/disabledRaidMods/disabledRaidModsSlice';
+import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
+import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
@@ -125,6 +127,8 @@ export function makeStore() {
 			dimLoadoutsFilter: dimLoadoutsFilterReducer,
 			disabledArmorSlotMods: disabledArmorSlotModsReducer,
 			disabledRaidMods: disabledRaidModsReducer,
+			inGameLoadouts: inGameLoadoutsReducer,
+			inGameLoadoutsFilter: inGameLoadoutsFilterReducer,
 			loadError: loadErrorReducer,
 			maxPossibleReservedArmorSlotEnergy:
 				maxPossibleReservedArmorSlotEnergyReducer,
@@ -170,6 +174,8 @@ let dimLoadoutsFilterUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
 let useZeroWastedStatsUuid = NIL;
+let inGameLoadoutsUuid = NIL;
+let inGameLoadoutsFilterUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: any = null;
@@ -210,6 +216,8 @@ function handleChange() {
 		reservedArmorSlotEnergy: { uuid: nextReservedArmorSlotEnergyUuid },
 		sharedLoadoutDesiredStats: { uuid: nextSharedLoadoutDesiredStatsUuid },
 		useZeroWastedStats: { uuid: nextUseZeroWastedStatsUuid },
+		inGameLoadoutsFilter: { uuid: nextInGameLoadoutsFilterUuid },
+		inGameLoadouts: { uuid: nextInGameLoadoutsUuid },
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -229,7 +237,9 @@ function handleChange() {
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
 		sharedLoadoutDesiredStatsUuid !== nextSharedLoadoutDesiredStatsUuid ||
-		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid;
+		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
+		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
+		inGameLoadoutsUuid !== nextInGameLoadoutsUuid;
 	const hasNonDefaultUuids =
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedDestinyClassUuid !== NIL &&
@@ -244,7 +254,9 @@ function handleChange() {
 		nextDimLoadoutsFilterUuid !== NIL &&
 		nextReservedArmorSlotEnergyUuid !== NIL &&
 		nextSharedLoadoutDesiredStatsUuid !== NIL &&
-		nextUseZeroWastedStatsUuid !== NIL;
+		nextUseZeroWastedStatsUuid !== NIL &&
+		nextInGameLoadoutsFilterUuid !== NIL &&
+		nextInGameLoadoutsUuid !== NIL;
 
 	if (!(hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids)) {
 		return;
@@ -265,6 +277,8 @@ function handleChange() {
 	reservedArmorSlotEnergyUuid = nextReservedArmorSlotEnergyUuid;
 	sharedLoadoutDesiredStatsUuid = nextSharedLoadoutDesiredStatsUuid;
 	useZeroWastedStatsUuid = nextUseZeroWastedStatsUuid;
+	inGameLoadoutsFilterUuid = nextInGameLoadoutsFilterUuid;
+	inGameLoadoutsUuid = nextInGameLoadoutsUuid;
 
 	// TODO: Move this out of the store file
 	const {
@@ -290,6 +304,8 @@ function handleChange() {
 		selectedGrenade: { value: selectedGrenade },
 		selectedAspects: { value: selectedAspects },
 		useZeroWastedStats: { value: useZeroWastedStats },
+		inGameLoadoutsFilter: { value: inGameLoadoutsFilter },
+		inGameLoadouts: { value: inGameLoadouts },
 	} = store.getState();
 
 	if (sharedLoadoutDesiredStats.processing) {
@@ -297,7 +313,6 @@ function handleChange() {
 	}
 
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
-	// const { elementId } = getDestinySubclass(destinySubclassId);
 
 	let elementId: EElementId = EElementId.Any;
 	if (destinySubclassId) {
@@ -365,6 +380,8 @@ function handleChange() {
 				DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
 		),
 		dimLoadoutsFilter,
+		inGameLoadouts,
+		inGameLoadoutsFilter,
 		selectedMinimumGearTier
 	);
 	console.log(

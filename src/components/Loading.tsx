@@ -43,6 +43,11 @@ import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import { setInGameLoadouts } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	selectInGameLoadoutsFilter,
+	setInGameLoadoutsFilter,
+} from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import {
 	selectReservedArmorSlotEnergy,
@@ -161,6 +166,7 @@ function Loading() {
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
+	const inGameLoadoutsFilter = useAppSelector(selectInGameLoadoutsFilter);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
@@ -382,8 +388,14 @@ function Loading() {
 				);
 				setHasRawCharacters(true);
 
-				const stores = await loadStoresData(mostRecentPlatform);
+				const { stores, inGameLoadoutItemIdList } = await loadStoresData(
+					mostRecentPlatform
+				);
 				console.log('>>>>>>>>>>> [LOAD] stores <<<<<<<<<<<', stores);
+				console.log(
+					'>>>>>>>>>>> [LOAD] inGameLoadoutItemIdList <<<<<<<<<<<',
+					inGameLoadoutItemIdList
+				);
 				setHasStores(true);
 				const [armor, availableExoticArmor, armorMetadata] = extractArmor(
 					stores,
@@ -488,6 +500,8 @@ function Loading() {
 					dispatch(setDimLoadouts(dimLoadouts));
 				}
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
+				dispatch(setInGameLoadouts(inGameLoadoutItemIdList));
+				dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
 				dispatch(setUseZeroWastedStats(useZeroWastedStats));
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
 				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));

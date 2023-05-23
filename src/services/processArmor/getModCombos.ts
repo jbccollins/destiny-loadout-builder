@@ -20,6 +20,7 @@ import {
 	getArmorSlotEnergyCapacity,
 	getMod,
 } from '@dlb/types/Mod';
+import { cloneDeep } from 'lodash';
 import { EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
@@ -332,6 +333,11 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	return result;
 };
 
+type AgnosticModPlacement = Record<
+	EArmorSlotId,
+	{ armorStatModId: EModId; raidModId: EModId }
+>;
+
 type GetFirstValidStatModComboParams = {
 	statModComboList: StatModCombo[];
 	potentialRaidModArmorSlotPlacements:
@@ -401,10 +407,14 @@ const getFirstValidStatModCombo = ({
 					sortedArmorSlotCapacities: capacity,
 				})
 			) {
+				const placementCapacity = cloneDeep(capacity);
+				sortedArmorStatMods.forEach((modId, k) => {
+					placementCapacity[k].armorStatModId = modId;
+				});
 				return {
 					isValid: true,
 					combo: _statModComboList[i],
-					placementCapacity: capacity,
+					placementCapacity,
 				};
 			}
 		}
@@ -479,7 +489,7 @@ export const getArmorSlotCapacities = ({
 	potentialRaidModArmorSlotPlacements,
 	armorSlotMods,
 	reservedArmorSlotEnergy,
-}: GetArmorSlotCapacitiesParams) => {
+}: GetArmorSlotCapacitiesParams): Record<EArmorSlotId, ArmorSlotCapacity>[] => {
 	const hasRaidMods = potentialRaidModArmorSlotPlacements?.length > 0;
 	let allArmorSlotCapacities = [getArmorSlotEnergyCapacity(armorSlotMods)];
 	if (hasRaidMods) {
@@ -502,6 +512,8 @@ export const getArmorSlotCapacities = ({
 					break;
 				}
 				armorSlotCapacities[armorSlotId].capacity = newCapacity;
+				armorSlotCapacities[armorSlotId].raidModId =
+					raidModPlacement[armorSlotId];
 			}
 			if (isValid) {
 				allArmorSlotCapacities.push(armorSlotCapacities);

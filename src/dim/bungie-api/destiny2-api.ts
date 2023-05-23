@@ -1,13 +1,16 @@
+import { DestinyAccount } from '@dlb/dim/accounts/destiny-account';
 import {
-	// BungieMembershipType,
+	BungieMembershipType,
 	DestinyCharacterResponse,
 	DestinyComponentType,
 	DestinyItemResponse,
 	DestinyLinkedProfilesResponse,
 	DestinyManifest,
 	DestinyProfileResponse,
+	DestinyProfileUserInfoCard,
 	DestinyVendorResponse,
 	DestinyVendorsResponse,
+	ServerResponse,
 	getCharacter as getCharacterApi,
 	getDestinyManifest,
 	getItem,
@@ -15,22 +18,16 @@ import {
 	getProfile as getProfileApi,
 	getVendor as getVendorApi,
 	getVendors as getVendorsApi,
-	BungieMembershipType,
-	DestinyProfileUserInfoCard,
-	PlatformErrorCodes,
-	ServerResponse,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import { DestinyAccount } from '@dlb/dim/accounts/destiny-account';
+import {
+	UserInfoCard,
+	getMembershipDataForCurrentUser,
+} from 'bungie-api-ts-no-const-enum/user';
+import _ from 'lodash';
 import {
 	authenticatedHttpClient,
 	unauthenticatedHttpClient,
 } from './bungie-service-helper';
-import {
-	getMembershipDataForCurrentUser,
-	UserInfoCard,
-} from 'bungie-api-ts-no-const-enum/user';
-import _ from 'lodash';
-import { API_KEY } from './bungie-api-utils';
 
 /**
  * APIs for interacting with Destiny 2 game data.
@@ -236,7 +233,7 @@ export function getStores(
 		// DestinyComponentType.ItemObjectives,
 		// DestinyComponentType.ItemSockets,
 		// DestinyComponentType.ItemCommonData,
-		DestinyComponentType.Collectibles
+		DestinyComponentType.Collectibles,
 		// DestinyComponentType.ItemPlugStates,
 		// DestinyComponentType.ItemReusablePlugs,
 		// // TODO: We should try to defer this until the popup is open!
@@ -250,6 +247,7 @@ export function getStores(
 		// DestinyComponentType.Transitory,
 		// // TODO: This is only needed for event progress
 		// DestinyComponentType.PresentationNodes
+		DestinyComponentType.CharacterLoadouts
 	);
 }
 

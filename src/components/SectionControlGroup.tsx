@@ -1,5 +1,7 @@
-import { Box, Button, styled } from '@mui/material';
-
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Box, Button, IconButton, styled } from '@mui/material';
+import { noop } from 'lodash';
 const Container = styled(Box)(({ theme }) => ({
 	//paddingLeft: theme.spacing(1),
 	marginBottom: theme.spacing(2),
@@ -17,6 +19,9 @@ const Title = styled(Box)(({ theme }) => ({
 type SelectionControlGroupProps = {
 	children: React.ReactNode;
 	title: React.ReactNode;
+	withCollapse?: boolean;
+	open?: boolean;
+	handleCollapseToggle?: () => void;
 	clearHandler?: () => void;
 };
 
@@ -24,17 +29,37 @@ function SelectionControlGroup({
 	children,
 	title,
 	clearHandler,
+	withCollapse,
+	handleCollapseToggle,
+	open,
 }: SelectionControlGroupProps) {
 	return (
 		<Container>
 			<Title>
-				<Box sx={{ flex: 1 }}>{title}</Box>
+				<Box
+					onClick={withCollapse ? handleCollapseToggle : noop}
+					sx={{ cursor: withCollapse ? 'pointer' : 'initial' }}
+				>
+					{title}
+				</Box>
+				{withCollapse && (
+					<Box
+						onClick={handleCollapseToggle}
+						sx={{ cursor: 'pointer', marginLeft: '4px' }}
+					>
+						<IconButton aria-label="expand row" size="small">
+							{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+						</IconButton>
+					</Box>
+				)}
+				{/* Spacer box */}
+				<Box sx={{ flex: 1 }}></Box>
 				{clearHandler && (
 					<Button
-						sx={{ marginRight: '8px' }}
 						size="small"
 						variant="outlined"
 						onClick={clearHandler}
+						sx={{ height: '30px', marginRight: '9px' }}
 					>
 						Clear
 					</Button>

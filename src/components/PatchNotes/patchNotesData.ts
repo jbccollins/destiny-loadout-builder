@@ -48,6 +48,22 @@ export const PatchNotes: PatchNote[] = [
 	},
 	{
 		date: '2023-05-17',
+		version: '2.0.5',
+		title: 'Class Item Logic Rework',
+		sections: [
+			{
+				items: [
+					`Reworked the logic for determining the stats provided masterworked class items. This fixes rare bugs
+					which would only really come up when the user had the masterwork assumption setting set to "none"`,
+					`Add DIM logos to relevant UI elements`,
+					`Add a new setting to filter out items that are in D2 loadouts`,
+					`Make left panel sections collapsible`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-05-17',
 		version: '2.0.4',
 		title: 'Zero Wasted Stats Setting',
 		sections: [

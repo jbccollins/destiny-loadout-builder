@@ -4,13 +4,21 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Box, Button, styled, useMediaQuery, useTheme } from '@mui/material';
+import {
+	Box,
+	Button,
+	Collapse,
+	styled,
+	useMediaQuery,
+	useTheme,
+} from '@mui/material';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
+import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import Logout from '@dlb/components/LogOutButton';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
@@ -137,6 +145,9 @@ const LeftSectionComponent = () => {
 	const selectedMelee = useAppSelector(selectSelectedMelee);
 	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
 	const selectedJump = useAppSelector(selectSelectedJump);
+	const [subclassSelectionOpen, setSubclassSelectionOpen] =
+		React.useState(true);
+	const [modsSelectionOpen, setModsSelectionOpen] = React.useState(true);
 
 	const dispatch = useAppDispatch();
 	const clearDesiredStatTiers = () => {
@@ -201,6 +212,14 @@ const LeftSectionComponent = () => {
 		}
 	};
 
+	const toggleSubclassSelectionOpen = () => {
+		setSubclassSelectionOpen(!subclassSelectionOpen);
+	};
+
+	const toggleModsSelectionOpen = () => {
+		setModsSelectionOpen(!modsSelectionOpen);
+	};
+
 	return (
 		<LeftSection className="left-section">
 			<TabContainer
@@ -220,23 +239,36 @@ const LeftSectionComponent = () => {
 								<SelectionControlGroup
 									title="Subclass Options"
 									clearHandler={clearSubclassOptions}
+									withCollapse={true}
+									handleCollapseToggle={toggleSubclassSelectionOpen}
+									open={subclassSelectionOpen}
 								>
-									<DestinySubclassSelector />
-									<SuperAbilitySelector />
-									<AspectSelector />
-									<FragmentSelector />
-									<GrenadeSelector />
-									<MeleeSelector />
-									<ClassAbilitySelector />
-									<JumpSelector />
+									<Collapse
+										in={subclassSelectionOpen}
+										timeout="auto"
+										unmountOnExit
+									>
+										<DestinySubclassSelector />
+										<SuperAbilitySelector />
+										<AspectSelector />
+										<FragmentSelector />
+										<GrenadeSelector />
+										<MeleeSelector />
+										<ClassAbilitySelector />
+										<JumpSelector />
+									</Collapse>
 								</SelectionControlGroup>
 								<SelectionControlGroup
 									title="Mods"
 									clearHandler={clearArmorSlotMods}
+									withCollapse={true}
+									handleCollapseToggle={toggleModsSelectionOpen}
+									open={modsSelectionOpen}
 								>
-									<ArmorSlotModSelector />
-									<RaidModSelector />
-									{/* <ReservedArmorSlotEnergySelector /> */}
+									<Collapse in={modsSelectionOpen} timeout="auto" unmountOnExit>
+										<ArmorSlotModSelector />
+										<RaidModSelector />
+									</Collapse>
 								</SelectionControlGroup>
 								<ShareLoadout />
 							</>
@@ -250,6 +282,7 @@ const LeftSectionComponent = () => {
 								<MasterworkAssumptionSelector />
 								<MinimumGearTierSelector />
 								<DimLoadoutsFilterSelector />
+								<InGameLoadoutsFilterSelector />
 								<UseZeroWastedStatsToggleSwitch />
 								<Logout />
 							</>

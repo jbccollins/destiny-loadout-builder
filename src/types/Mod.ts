@@ -158,6 +158,8 @@ export const getDefaultArmorSlotIdToModIdListMapping =
 export type ArmorSlotCapacity = {
 	armorSlotId: EArmorSlotId;
 	capacity: number;
+	raidModId: EModId;
+	armorStatModId: EModId;
 };
 
 export const getDefaultValidRaidModArmorSlotPlacement =
@@ -187,48 +189,29 @@ export const getArmorSlotEnergyCapacity = (
 			capacity -= cost;
 		});
 
-		armorSlotCapacities[armorSlotId] = { capacity, armorSlotId };
+		armorSlotCapacities[armorSlotId] = {
+			capacity,
+			armorSlotId,
+			raidModId: null,
+			armorStatModId: null,
+		};
 	});
 	return armorSlotCapacities as Record<EArmorSlotId, ArmorSlotCapacity>;
 };
-
-// export type ValidRaidModArmorSlotPlacementValue = {
-// 	modId: EModId;
-// 	unusedArmorEnergyCapacity: number;
-// };
 
 export type PotentialRaidModArmorSlotPlacement = Partial<
 	Record<EArmorSlotId, EModId>
 >;
 
-// { [EArmorSlotId.Head]: {modId: EModId.ArgentOrdinance, remainingCapacity: 5, elementId: EElementId.Solar}}
-
-/*
-What is the goal here...
-We want to be able to answer the question "What armor slot mods am I able to insert as my next move?"
-So we only care about knowing if the very next change to the set of selected mods would be valid. Nothing
-beyond that.
-
-
-
-forEach(armorSlot) { // head, arm, legs....
-	forEach(modSocket in armorSlot) { // artifice and raid armor will have three sockets, others will have two
-		forEach(armorSlotMod that would fit in modSocket) {
-			// Check if we can create a valid permutation using all other equipped mods
-			if (hasOneValidPermutation({...allOtherMods, armorSlotMod})) {
-				this mod is enabled
-			} else {
-				this mod is disabled
-			}
-		}
-	}
-}
-*/
+type HasValidArmorStatModPermutationResult = {
+	hasValidPermutation: boolean;
+	sortedArmorSlotCapacities: ArmorSlotCapacity[];
+};
 export const hasValidArmorStatModPermutation = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping,
 	armorStatMods: EModId[],
 	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[]
-): boolean => {
+): HasValidArmorStatModPermutationResult => {
 	const sortedArmorStatMods = [...armorStatMods].sort(
 		(a, b) => getMod(b).cost - getMod(a).cost
 	);
@@ -242,6 +225,8 @@ export const hasValidArmorStatModPermutation = (
 				armorSlotCapacities[armorSlotId].capacity -= getMod(
 					raidModPlacement[armorSlotId]
 				).cost;
+				armorSlotCapacities[armorSlotId].raidModId =
+					raidModPlacement[armorSlotId];
 			}
 		}
 		const sortedArmorSlotCapacities = Object.values(armorSlotCapacities).sort(
@@ -255,15 +240,19 @@ export const hasValidArmorStatModPermutation = (
 				getMod(sortedArmorStatMods[i]).cost >
 				sortedArmorSlotCapacities[i].capacity
 			) {
+				sortedArmorSlotCapacities[i].armorStatModId = sortedArmorStatMods[i];
 				isValid = false;
 				break;
 			}
 		}
 		if (isValid) {
-			return true;
+			return {
+				hasValidPermutation: true,
+				sortedArmorSlotCapacities: sortedArmorSlotCapacities,
+			};
 		}
 	}
-	return false;
+	return { hasValidPermutation: false, sortedArmorSlotCapacities: null };
 };
 
 // Determine if there is at least one valid raid mod permutation

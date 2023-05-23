@@ -1,6 +1,7 @@
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectDimLoadoutsFilter } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import { selectInGameLoadoutsFilter } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
@@ -10,9 +11,13 @@ import { useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
-import { EDimLoadoutsFilterId } from '@dlb/types/IdEnums';
+import {
+	EDimLoadoutsFilterId,
+	EInGameLoadoutsFilterId,
+} from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
 import DimLoadoutsFilterSelector from '../DimLoadoutsFilterSelector';
+import InGameLoadoutsFilterSelector from '../InGameLoadoutsFilterSelector';
 import UseZeroWastedStatsToggleSwitch from '../UseZeroWastedStatsToggleSwitch';
 
 const Container = styled(Box)(({ theme }) => ({
@@ -50,6 +55,7 @@ function NoResults() {
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const dimLoadoutsFilterId = useAppSelector(selectDimLoadoutsFilter);
+	const inGameLoadoutsFilterId = useAppSelector(selectInGameLoadoutsFilter);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
 	const hasRaidMods = selectedRaidMods.some((modId) => modId !== null);
@@ -75,7 +81,10 @@ function NoResults() {
 	const hasOptionsToModify =
 		hasDesiredArmorStats || hasRaidMods || hasFragmentsWithStatPenalties;
 
-	const hasSettingsToModify = useZeroWastedStats || dimLoadoutsFilterId;
+	const hasSettingsToModify =
+		useZeroWastedStats ||
+		dimLoadoutsFilterId === EDimLoadoutsFilterId.None ||
+		inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None;
 
 	return (
 		<>
@@ -108,6 +117,11 @@ function NoResults() {
 								{dimLoadoutsFilterId === EDimLoadoutsFilterId.None && (
 									<li>
 										<DimLoadoutsFilterSelector />
+									</li>
+								)}
+								{inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None && (
+									<li>
+										<InGameLoadoutsFilterSelector />
 									</li>
 								)}
 							</ul>

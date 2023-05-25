@@ -3,8 +3,8 @@
 
 export enum EModDisplayNameId {
   HelmetArmorMod = "HelmetArmorMod",
-  LegArmorMod = "LegArmorMod",
   ClassItemArmorMod = "ClassItemArmorMod",
+  LegArmorMod = "LegArmorMod",
   ArmsArmorMod = "ArmsArmorMod",
   ArtificeArmorMod = "ArtificeArmorMod",
   ChestArmorMod = "ChestArmorMod",

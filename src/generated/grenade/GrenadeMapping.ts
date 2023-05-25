@@ -12,7 +12,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.DuskfieldGrenade,
     description:
       "A grenade that shatters on impact, leaving behind a field that slows targets and freezes those who do not leave the volume.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/b4baaca576193defa185f59457b81de1.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5ed90305d6131582eb76abd99c487826.png",
     hash: 1399216,
     elementId: EElementId.Stasis,
   },
@@ -21,7 +21,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.GlacierGrenade,
     description:
       "A grenade that creates walls out of [Stasis] Stasis crystals to block damage and freeze targets; these walls can be shattered for damage.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/d9c632884b8b5cc0a3280c25a16c030e.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/08b4d8632636f78c57425b844d7b42e4.png",
     hash: 1399217,
     elementId: EElementId.Stasis,
   },
@@ -30,7 +30,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.ColdsnapGrenade,
     description:
       "A grenade that freezes on impact and sends another seeker to find and freeze targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/9ccafe089fdec2002b18f5deb0ec4bf9.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/ff53139f18628530891598936e7a8c13.png",
     hash: 1399219,
     elementId: EElementId.Stasis,
   },
@@ -39,7 +39,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.SkipGrenade,
     description:
       "A grenade that splits upon impact, creating multiple projectiles that seek targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/506b6803d54790304775545568d1f9e9.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/4beec209d1009f30116a9a10721864aa.jpg",
     hash: 146194908,
     elementId: EElementId.Arc,
   },
@@ -48,7 +48,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.FusionGrenade,
     description:
       "An explosive grenade that attaches to targets, damaging and moderately scorching them on detonation.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/18b417aa16f3472a02db57943383ef1c.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/37a4f29aa2ef6ffcdee1a8eb6b5bfade.jpg",
     hash: 1013086087,
     elementId: EElementId.Solar,
   },
@@ -57,7 +57,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.VortexGrenade,
     description:
       "A grenade that creates a Vortex that pulls targets inward and continually damages those trapped inside.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/c0380f98212741e67092cb0a5080ee16.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/12997544665705bbbd94742268ce7091.jpg",
     hash: 1016030582,
     elementId: EElementId.Void,
   },
@@ -66,7 +66,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.VoidSpike,
     description:
       "A grenade that attaches to any surface and emits a torrent of damaging Void Light.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/aa8480964870b6b8be7d19ee68814b14.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/7dabddafe91884860ed108c440cc9591.jpg",
     hash: 1255073825,
     elementId: EElementId.Void,
   },
@@ -75,7 +75,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.ScatterGrenade,
     description:
       "A grenade that splits into many submunitions and covers a large area with multiple explosions.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/4809222d69a67300601706cc70fec814.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/562f1b6ca7ecda82248f4b02e833d211.jpg",
     hash: 1514173218,
     elementId: EElementId.Void,
   },
@@ -83,7 +83,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     name: "Magnetic Grenade",
     id: EGrenadeId.MagneticGrenade,
     description: "A grenade that attaches to targets and explodes twice.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/1be0be8f8b7d67414b6f96ff0562f527.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/72966b5c97e45d8668483f2263138613.jpg",
     hash: 1547656727,
     elementId: EElementId.Void,
   },
@@ -91,7 +91,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     name: "Arcbolt Grenade",
     id: EGrenadeId.ArcboltGrenade,
     description: "A grenade that chains bolts of lightning to nearby targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/1d4e4334f59a2369a0558452d686d3d0.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/04c36b4cfebda156a8eca2b257e3ce4f.jpg",
     hash: 1582574009,
     elementId: EElementId.Arc,
   },
@@ -100,7 +100,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.PulseGrenade,
     description:
       "A grenade that periodically damages targets within its explosion radius.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a1f1c4b248bf506739a9888949ca7e57.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/11837de6306d28df467178af097d748b.jpg",
     hash: 1713935764,
     elementId: EElementId.Arc,
   },
@@ -109,7 +109,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.HealingGrenade,
     description:
       "A grenade that cures allies on impact and creates an Orb of benevolent Solar Light, granting restoration to allies when picked up.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/35824c115235240b6889fe523448fb10.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/d7fa54aea967c101aeafcbc1163508d6.jpg",
     hash: 1841016428,
     elementId: EElementId.Solar,
   },
@@ -118,7 +118,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.FireboltGrenade,
     description:
       "A grenade that unleashes bolts of damaging Solar Light at nearby targets and slightly scorches them.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/aa1f8d3a4ed11906061872beef20cefe.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/bb77ba17b16192e7f383bc10a71bf014.jpg",
     hash: 2202441959,
     elementId: EElementId.Solar,
   },
@@ -127,7 +127,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.SolarGrenade,
     description:
       "A grenade that creates a flare of Solar Light that continuously damages and scorches targets trapped inside.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/b3bcabb4c6f5d4e210a832ea92c5da66.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/720bf9cc73dce537c5ee5577e0edcf9b.jpg",
     hash: 2216698406,
     elementId: EElementId.Solar,
   },
@@ -136,7 +136,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.SuppressorGrenade,
     description:
       "An explosive grenade that suppresses, preventing targets from using abilities for a short time.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/bbdf2e0f41bad0fdf167aace75b88b8a.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/17372092d1add4cf52bb4862037b418c.jpg",
     hash: 2265076177,
     elementId: EElementId.Void,
   },
@@ -145,7 +145,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.Grapple,
     description:
       "Weave a grappling hook, and quickly pull yourself forward. Grappling to a Tangle immediately recharges your grenade energy.\n\nDuring and shortly after grappling, your melee attack deals area damage and unravels targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/0cab0abc819d270a92f9e2027e46816d.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5d65ba9eb04c2f3760eba0b5eec9be8a.jpg",
     hash: 2470512752,
     elementId: EElementId.Strand,
   },
@@ -153,7 +153,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     name: "Storm Grenade",
     id: EGrenadeId.StormGrenade,
     description: "A grenade that calls down a focused lightning storm.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/ce01ccf413b2ae6e991f6cef3f226aaa.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9f4ace2bd6ab050148f54ff6f4ce9a0f.jpg",
     hash: 2481624867,
     elementId: EElementId.Arc,
   },
@@ -162,7 +162,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.IncendiaryGrenade,
     description:
       "A grenade that explodes in a fiery burst and heavily scorches nearby targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/e3d95f3eaba5b9c1ef795b10dc096b5a.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/1dc2e8b05e9311431682e2bab28cf1ea.jpg",
     hash: 2581086849,
     elementId: EElementId.Solar,
   },
@@ -171,7 +171,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.VoidWall,
     description:
       "A grenade that creates a horizontal wall of burning Void Light.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/e1fe72608ed560d20f81ff41c8997fb7.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a905c46ea9edc45f2773b30b719bd6dc.jpg",
     hash: 2809141585,
     elementId: EElementId.Void,
   },
@@ -180,7 +180,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.ShackleGrenade,
     description:
       "A thrown weapon of weighted Strand matter that detonates on impact, suspending targets and creating additional suspending subprojectiles.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/03fe35299cf2c09185d08986585da50d.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a2c73298753fdd565a22d3d6712820ab.jpg",
     hash: 2809342386,
     elementId: EElementId.Strand,
   },
@@ -188,7 +188,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     name: "Flashbang Grenade",
     id: EGrenadeId.FlashbangGrenade,
     description: "An explosive grenade that damages and blinds nearby targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/9ca15ccec054e10cfe44db67331bbb6b.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/937015647a56bc422dd87fe784465548.jpg",
     hash: 2909720723,
     elementId: EElementId.Arc,
   },
@@ -197,7 +197,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.TripmineGrenade,
     description:
       "An explosive grenade that sticks to surfaces and detonates when targets pass through its laser trigger, dealing damage and moderately scorching them.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/004dc00b44da7351baab210b2061d3ca.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/05609c418be3a985a640632ccaca796b.jpg",
     hash: 2946990961,
     elementId: EElementId.Solar,
   },
@@ -206,7 +206,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.LightningGrenade,
     description:
       "A grenade that sticks to any surface and emits bolts of lightning.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/6cbbd606e7d696eab7d54a49ba8a9c0a.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/fd8f038f2d0a62c6a43024767998f383.jpg",
     hash: 2994412667,
     elementId: EElementId.Arc,
   },
@@ -215,7 +215,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.SwarmGrenade,
     description:
       "A grenade that detonates on impact, releasing multiple drones that seek nearby targets. Each drone slightly scorches affected targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/d9d4237a75d02a37eb3c1a72795eb77c.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0c322768dd41ac416e04dac131cf5fb5.jpg",
     hash: 3199702642,
     elementId: EElementId.Solar,
   },
@@ -224,7 +224,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.AxionBolt,
     description:
       "A bolt of Void Light that forks on impact into smaller bolts that seek out targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/5212672b29258f5fe2dce884083f69e1.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3ecbc1ab120d80d0aa322c0a18fa22a1.jpg",
     hash: 3232422679,
     elementId: EElementId.Void,
   },
@@ -233,7 +233,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.ThermiteGrenade,
     description:
       "A grenade that sends forth a burning line of fire, dealing damage and scorching targets in its path.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/62c119a4f9b44f9abecc5bfcafb94efa.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/e4aa73bf21f3da3e22f9e07475e2e614.jpg",
     hash: 3969294337,
     elementId: EElementId.Solar,
   },
@@ -241,7 +241,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     name: "Flux Grenade",
     id: EGrenadeId.FluxGrenade,
     description: "An explosive grenade that attaches to targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/9a30af5e62d440a3f201b307e19e54e0.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/1d7e8eb7c2c5884cb658a1877a084548.jpg",
     hash: 4198689901,
     elementId: EElementId.Arc,
   },
@@ -250,7 +250,7 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     id: EGrenadeId.ThreadlingGrenade,
     description:
       "A woven projectile that reweaves itself into Threadlings while in flight.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a9a0a8785006eb5ba4f069fd5657defd.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/18a14aeac121b2a5c8699556b63e38fd.jpg",
     hash: 4228170798,
     elementId: EElementId.Strand,
   },

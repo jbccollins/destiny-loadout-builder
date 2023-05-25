@@ -41,6 +41,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 	],
 	[EDestinySubclassId.Threadrunner]: [
 		EAspectId.EnsnaringSlam,
+		EAspectId.ThreadedSpecter,
 		EAspectId.WidowsSilk,
 	],
 
@@ -68,6 +69,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 	],
 	[EDestinySubclassId.Broodweaver]: [
 		EAspectId.MindspunInvocation,
+		EAspectId.TheWanderer,
 		EAspectId.WeaversCall,
 	],
 
@@ -95,6 +97,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 	],
 	[EDestinySubclassId.Berserker]: [
 		EAspectId.DrengrsLash,
+		EAspectId.FlechetteStorm,
 		EAspectId.IntoTheFray,
 	],
 };

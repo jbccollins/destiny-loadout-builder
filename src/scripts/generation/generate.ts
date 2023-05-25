@@ -8,10 +8,9 @@ import { run as generateMods } from './mods/generateMods';
 import { run as generateSuperAbilities } from './superAbilities/generateSuperAbilities';
 
 (async function run() {
-	await generateMods();
-	return;
-	await generateFragments();
 	await generateAspects();
+	await generateFragments();
+	await generateMods();
 	await generateGrenades();
 	await generateMelees();
 	await generateClassAbilities();

@@ -2,16 +2,16 @@ import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDestinyClassAbilityStat } from './DestinyClass';
 import { getFragment } from './Fragment';
-import {
-	EnumDictionary,
-	IIcon,
-	IIdentifiableName,
-	ValidateEnumList,
-	StatBonusStat,
-	IHash,
-} from './globals';
 import { EArmorStatId, EDestinyClassId } from './IdEnums';
 import { getMod } from './Mod';
+import {
+	EnumDictionary,
+	IHash,
+	IIcon,
+	IIdentifiableName,
+	StatBonusStat,
+	ValidateEnumList,
+} from './globals';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 	EArmorStatId.Mobility,
@@ -53,21 +53,21 @@ const ArmorStatIdToArmorStatMapping: EnumDictionary<EArmorStatId, IArmorStat> =
 		[EArmorStatId.Discipline]: {
 			id: EArmorStatId.Discipline,
 			name: 'Discipline',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/ca62128071dc254fe75891211b98b237.png',
+			icon: 'https://www.bungie.net/common/destiny2_content/icons/79be2d4adef6a19203f7385e5c63b45b.png',
 			hash: 1735777505,
 			index: 3,
 		},
 		[EArmorStatId.Intellect]: {
 			id: EArmorStatId.Intellect,
 			name: 'Intellect',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/59732534ce7060dba681d1ba84c055a6.png',
+			icon: 'https://www.bungie.net/common/destiny2_content/icons/d1c154469670e9a592c9d4cbdcae5764.png',
 			hash: 144602215,
 			index: 4,
 		},
 		[EArmorStatId.Strength]: {
 			id: EArmorStatId.Strength,
 			name: 'Strength',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/c7eefc8abbaa586eeab79e962a79d6ad.png',
+			icon: 'https://www.bungie.net/common/destiny2_content/icons/ea5af04ccd6a3470a44fd7bb0f66e2f7.png',
 			hash: 4244567218,
 			index: 5,
 		},

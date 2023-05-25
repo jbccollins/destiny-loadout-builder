@@ -1,14 +1,12 @@
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { EDestinyClassId, EDestinySubclassId, EElementId } from './IdEnums';
 import {
 	EnumDictionary,
 	IHash,
-	Mapping,
 	IIcon,
 	IIdentifiableName,
 	ValidateEnumList,
-	MISSING_ICON,
 } from './globals';
-import { EDestinyClassId, EDestinySubclassId, EElementId } from './IdEnums';
 
 // Sorted by [hunter, warlock, titan] and then alphabetically
 export const DestinySubclassIdList = ValidateEnumList(
@@ -46,7 +44,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Stormcaller]: {
 		id: EDestinySubclassId.Stormcaller,
 		name: 'Stormcaller',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/83c478558665bbadd251d80d3d05bc2e.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png',
 		superAbilityIdList: [
 			ESuperAbilityId.ChaosReach,
 			ESuperAbilityId.Stormtrance,
@@ -70,7 +68,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Voidwalker]: {
 		id: EDestinySubclassId.Voidwalker,
 		name: 'Voidwalker',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/fa3084d2798d59db7b3419a2fae1bf0c.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png',
 		superAbilityIdList: [
 			ESuperAbilityId.NovaWarp,
 			ESuperAbilityId.NovaBombVortex,
@@ -83,7 +81,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Shadebinder]: {
 		id: EDestinySubclassId.Shadebinder,
 		name: 'Shadebinder',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/3c0dc830b83a9f3e9a52b7bea4494f64.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png',
 		superAbilityIdList: [ESuperAbilityId.WintersWrath],
 		destinyClassId: EDestinyClassId.Warlock,
 		elementId: EElementId.Stasis,
@@ -101,7 +99,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Striker]: {
 		id: EDestinySubclassId.Striker,
 		name: 'Striker',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/83c478558665bbadd251d80d3d05bc2e.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png',
 		superAbilityIdList: [
 			ESuperAbilityId.Thundercrash,
 			ESuperAbilityId.FistsOfHavoc,
@@ -113,7 +111,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Sentinel]: {
 		id: EDestinySubclassId.Sentinel,
 		name: 'Sentinel',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/fa3084d2798d59db7b3419a2fae1bf0c.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png',
 		superAbilityIdList: [
 			ESuperAbilityId.SentinelShield,
 			ESuperAbilityId.WardOfDawn,
@@ -137,7 +135,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Behemoth]: {
 		id: EDestinySubclassId.Behemoth,
 		name: 'Behemoth',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/3c0dc830b83a9f3e9a52b7bea4494f64.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png',
 		superAbilityIdList: [ESuperAbilityId.GlacialQuake],
 		destinyClassId: EDestinyClassId.Titan,
 		elementId: EElementId.Stasis,
@@ -168,7 +166,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Nightstalker]: {
 		id: EDestinySubclassId.Nightstalker,
 		name: 'Nightstalker',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/fa3084d2798d59db7b3419a2fae1bf0c.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png',
 		superAbilityIdList: [
 			ESuperAbilityId.ShadowshotDeadfall,
 			ESuperAbilityId.ShadowshotMoebiusQuiver,
@@ -181,7 +179,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Arcstrider]: {
 		id: EDestinySubclassId.Arcstrider,
 		name: 'Arcstrider',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/83c478558665bbadd251d80d3d05bc2e.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png',
 		superAbilityIdList: [
 			ESuperAbilityId.ArcStaff,
 			ESuperAbilityId.GatheringStorm,
@@ -193,7 +191,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	[EDestinySubclassId.Revenant]: {
 		id: EDestinySubclassId.Revenant,
 		name: 'Revenant',
-		icon: 'https://www.bungie.net/common/destiny2_content/icons/3c0dc830b83a9f3e9a52b7bea4494f64.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/6e441ffa8c8171ce9caf71e51b72fc19.png',
 		superAbilityIdList: [ESuperAbilityId.SilenceAndSquall],
 		destinyClassId: EDestinyClassId.Hunter,
 		elementId: EElementId.Stasis,

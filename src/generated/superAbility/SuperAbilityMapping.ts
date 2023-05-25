@@ -15,7 +15,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.Thundercrash,
     description:
       "Hurtle through the air like a missile and crash into targets to inflict meteoric damage.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/4e03473a24049bdb6013badca6b61965.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/adb140aba83a6c14345852531d4ee2e0.png",
     hash: 119041298,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Striker,
@@ -24,8 +24,8 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     name: "Fists of Havoc",
     id: ESuperAbilityId.FistsOfHavoc,
     description:
-      "Supercharge your fists and slam the ground with the force of a maelstrom. While active:\n\n[Light Attack]  : Quickly charge forward, dealing damage to any impacted targets.\n\n[Heavy Attack] : Slam your fists to the ground, dealing damage in an area around you and leaving aftershocks in your wake. Performing a slam from the air deals additional damage.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/20f5a1879f8562e3ce6c0140b0e2fd8d.png",
+      "Supercharge your fists and slam the ground with the force of a maelstrom. While active:\n\n[Light Attack]  : Quickly charge forward, dealing damage to any impacted targets.\n\n[Heavy Attack] : Slam your fists to the ground, blinding targets and dealing damage in an area around you, leaving aftershocks in your wake. Performing a slam from the air deals additional damage.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5bc4f4029b38fd41d0232460b4295600.png",
     hash: 119041299,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Striker,
@@ -35,7 +35,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.GoldenGunMarksman,
     description:
       "Summon a precision flaming pistol that disintegrates targets with Solar Light.\n\nYour Golden Gun deals massively increased precision damage, overpenetrates targets, and creates Orbs of Power on precision hits.\n\nBenefits from being radiant.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/6f3e329cf7d330f7ba0cd0f940e98110.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/52f2eb1fefa20e9c7b064c190855d588.png",
     hash: 375052468,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Gunslinger,
@@ -45,7 +45,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.GoldenGunDeadshot,
     description:
       "Summon a rapid-fire flaming pistol that disintegrates targets with Solar Light.\n\nCausing Solar ignitions while your Super is active refunds a Golden Gun round.\n\nBenefits from being radiant.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/16e3aaf50ac9fa802b692af48b895886.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/e19ebe4d56d6f95d582703f6b481813f.png",
     hash: 375052469,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Gunslinger,
@@ -55,7 +55,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.BladeBarrage,
     description:
       "Vault into the air and unleash a volley of Solar-charged explosive knives.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/5178685d628a640be304950a6b7da11f.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0b01a6ddceb7b0e2e86ebcb7a6a83eaa.png",
     hash: 375052471,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Gunslinger,
@@ -64,8 +64,8 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     name: "Stormtrance",
     id: ESuperAbilityId.Stormtrance,
     description:
-      "Chain Arc Lightning from your hands to electrify targets with devastating streams of Arc Light that intensify over time. Casting Stormtrance creates a shockwave underneath you.\n\n[Sprint]  : Teleport forward, consuming a small amount of Super energy.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/2dd43a50e48bab5c297c8459bc125bd2.png",
+      "Chain Arc Lightning from your hands to electrify targets with devastating streams of Arc Light that intensify over time. Casting Stormtrance creates a jolting shockwave underneath you.\n\n[Sprint]  : Teleport forward, consuming a small amount of Super energy.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/31a0445d352fd44b62c9a8dd2752ccdf.png",
     hash: 1081893460,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Stormcaller,
@@ -74,8 +74,8 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     name: "Chaos Reach",
     id: ESuperAbilityId.ChaosReach,
     description:
-      "Unleash a long-range channeled beam of concentrated Arc energy.\n\n [Super]  while active to deactivate your Super early, saving Super energy.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/c1e711eb4bd8ee24a257fd83a635054c.png",
+      "Unleash a long-range channeled beam of concentrated Arc energy. Sustained damage on a single target creates a jolting lightning strike at their position.\n\n [Super]  while active to deactivate your Super early, saving Super energy.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/b54195b2d82a31ae970ca85fb7fb0be7.png",
     hash: 1081893461,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Stormcaller,
@@ -84,8 +84,8 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     name: "Nova Warp",
     id: ESuperAbilityId.NovaWarp,
     description:
-      "Step between dimensions to subvert the laws of physics.\n[Super Secondary]  : Teleport a short distance.\n[Super Primary]  : Unleash a deadly Void eruption.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/82a9885b09a090770b56f21927df9d03.png",
+      "Step between dimensions to subvert the laws of physics.\n\n[Super Secondary]  : Teleport a short distance.\n\n[Super Primary]  : Unleash a deadly Void eruption. A fully charged attack makes targets volatile.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/feb001db8e9776bc822007c74564c1b6.png",
     hash: 1656118680,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Voidwalker,
@@ -95,7 +95,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.NovaBombVortex,
     description:
       "Hurl an explosive bolt of Void Light at a target, disintegrating those caught within its blast.\n\nNova Bomb creates a singularity that pulls targets inward and continually damages those trapped inside.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/0230272ce6d6d6ed1d1a3a951e460f34.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/e9dc1cc0179cda4d2445845cf8992a7e.png",
     hash: 1656118681,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Voidwalker,
@@ -105,7 +105,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.NovaBombCataclysm,
     description:
       "Hurl an explosive bolt of Void Light at a target, disintegrating those caught within its blast.\n\nNova Bomb travels slowly and seeks targets. Detonations shatter into smaller seeker projectiles.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/fd0d80cb5f7c0f777795ab3d1b701f4f.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/b1efa0eaa710653d85e2fcf5321047fb.png",
     hash: 1656118682,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Voidwalker,
@@ -115,7 +115,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.Needlestorm,
     description:
       "[Super]  : Conjure a hail of deadly woven needles.\n\nAfter embedding themselves in the environment, the needles will re-weave into a host of Threadlings.\n\nThreadlings you create will return to you and perch if they can't find any nearby targets. Damaging targets with your weapons or melee will send out perched Threadlings to attack.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/6fdb9a0d36cf076f17cb22eeaafeaed8.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/2e486aef07bd3551c35807f416ba0b6c.png",
     hash: 1885339915,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Broodweaver,
@@ -125,7 +125,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.GlacialQuake,
     description:
       "Summon a [Stasis] Stasis gauntlet. While your Super is active:\n\n[Heavy Attack]  : Slam your gauntlet down to create a shockwave that freezes targets and sends out [Stasis] Stasis crystals to freeze additional ones.\n\n[Light Attack]  : Supercharge your Shiver Strike for bonus damage. Sprint through [Stasis] Stasis crystals or frozen targets to shatter them instantly.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a764f6e02c1912967ea8e2b701d90cfd.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3c522f849a7d4d86d5224d7d5d5671a4.png",
     hash: 2021620139,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Behemoth,
@@ -135,7 +135,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.Daybreak,
     description:
       "Fashion Solar Light into blades and smite your foes from the sky.\n\nYour Daybreak projectiles launch a streak of deadly flames on impact.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/ce006cb360a96d8f054e49499d924603.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/89b89220e92c5b363d3e105c25a21640.png",
     hash: 2274196886,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Dawnblade,
@@ -145,7 +145,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.WellOfRadiance,
     description:
       "Thrust your Sword into the ground, damaging and scorching nearby targets. The Sword projects a continuous aura, granting restoration and radiant effects to nearby allies, protecting them from the effects of Stasis.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/5dbb9a2f285df3ee20fe37d073350a37.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/2f3615ddcd86ab7c50653d2d1847c3bf.png",
     hash: 2274196887,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Dawnblade,
@@ -155,7 +155,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.Silkstrike,
     description:
       "Weave a vicious rope dart and tear through your targets.\n\n[Light Attack]  : Swing the rope dart in front of you to deal damage. The tip of the dart deals bonus damage, and defeating targets with the tip causes them to explode.\n\n[Heavy Attack]  : Swing the rope dart in a circular motion to deal heavy damage all around you.\n\n[Grenade]  : Use the grapple to move forward quickly.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3ac39f9698612951757a3edbd52a006b.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3da7e8684b09600e90ea5c16f1edebe0.png",
     hash: 2463983862,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Threadrunner,
@@ -165,7 +165,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.SilenceAndSquall,
     description:
       "Summon two Stasis kamas, Silence and Squall, that you throw one after another.\n\nSilence : Creates a flash-freeze blast that freezes and damages targets.\n\nSquall : Creates a Stasis Storm that slows and damages targets caught inside.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/bac0872a1d59eb9a6f3a0ca7f349b8cc.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a8bbee32ce8f259e7b9e112c0c8a401a.png",
     hash: 2625980631,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Revenant,
@@ -175,7 +175,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.ShadowshotMoebiusQuiver,
     description:
       "Tether foes to a Void Anchor, weakening and suppressing them for you and your allies.\n\nFire two volleys of three Void Arrows that seek nearby targets. Shadowshot makes targets volatile and deals increased damage to tethered targets. Defeating tethered targets creates Orbs of Power.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/af58a42be4e803d1b5a7885b13985977.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/986e8f2dd0699371d605a331bb63742a.png",
     hash: 2722573681,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Nightstalker,
@@ -184,8 +184,8 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     name: "Spectral Blades",
     id: ESuperAbilityId.SpectralBlades,
     description:
-      "Summon a pair of deadly Void blades and stalk the battlefield in a veil of shadows.\n[Light Attack]  : Perform a quick melee attack.\n[Heavy Attack]  : Perform a heavy attack and once again vanish from sight.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a219dacf9847a5c6174d096ce394e460.png",
+      "Summon a pair of deadly Void blades and stalk the battlefield in a veil of shadows.\n\n[Light Attack]  : Perform a quick melee attack.\n\n[Heavy Attack]  : Perform a heavy attack that weakens your target, and once again vanish from sight.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/1fbfacd5dfe847c5cd0262c5616653ff.png",
     hash: 2722573682,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Nightstalker,
@@ -195,7 +195,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.ShadowshotDeadfall,
     description:
       "Tether foes to a Void Anchor, weakening and suppressing them for you and your allies.\n\nThe Void Anchors fired from Shadowshot pull targets toward the impact point, which then become traps and wait for prey. Void Anchors have increased range and last longer.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a30563f95eea66ef729a4e65a7152fa7.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/61feac4f1271ba6cecc29cc50e20ab5a.png",
     hash: 2722573683,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Nightstalker,
@@ -204,8 +204,8 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     name: "Burning Maul",
     id: ESuperAbilityId.BurningMaul,
     description:
-      "Summon a flaming maul and crush your enemies with the force of an earthquake.\n\n[Light Attack]  : Spin the maul in a circle around you, damaging nearby targets.\n\n[Heavy Attack]  : Slam the maul to the ground and create a cyclone of flames that seeks targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/81b0c61ff8ac802d3216324028b7e835.png",
+      "Summon a flaming maul and crush targets with the force of an earthquake.\n\n[Light Attack]  : Spin the maul in a circle around you, damaging nearby targets.\n\n[Heavy Attack]  : Slam the maul to the ground and create a cyclone of flames that seeks targets, dealing damage and scorching them.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a0391bd2a8cf73c58cec261961db0136.png",
     hash: 2747500760,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Sunbreaker,
@@ -215,7 +215,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.HammerOfSol,
     description:
       "Summon a flaming hammer and wreak destruction down upon your enemies.\n\n[Light Attack]  : Throw your hammer at foes.\n\nUpon impact, your hammers shatter into explosive molten shards.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/746ed830d614d66f57d379811a57d03d.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9d1fd669f61cce4abd35dbefd22ba90c.png",
     hash: 2747500761,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Sunbreaker,
@@ -225,7 +225,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.Bladefury,
     description:
       "[Super]  : Create two woven blades and roam the battlefield. While active:\n\n[Light Attack]  : Perform a leaping slash towards nearby targets, severing them on hit and dealing bonus damage to suspended targets. Each successful hit briefly increases your attack speed and grants energy for your heavy attack.\n\n[Heavy Attack]  : Unleash a heavy upward slash, creating two suspending projectiles that seek out targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/9c3cbd31113be1f463a41b27b81bec19.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/228496331415f6854ef589f33c2a2622.png",
     hash: 3574662354,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Berserker,
@@ -235,7 +235,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.WintersWrath,
     description:
       "Summon a [Stasis] Stasis staff. While your Super is active:\n\n[Super Primary]  : Cast out a barrage of [Stasis] Stasis shards that freeze targets.\n\n[Super Secondary]  : Cast out a shockwave that shatters all frozen targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3adf16d07aab7c46551bd1bfa9e2e283.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/c9f25c8f6d5e647366ffc4f71a825961.png",
     hash: 3683904166,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Shadebinder,
@@ -245,7 +245,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.GatheringStorm,
     description:
       "Hurl your Arc Staff forward, embedding it into surfaces or large targets and jolting nearby targets.\n\nAfter a short time, a devastating lightning bolt strikes the staff, overcharging it with Arc energy. While overcharged, your staff discharges lightning at nearby foes.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/5919e3e43ab455cee03ff23cdaa23080.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/edf23f2e6951efcab4c4b10630b6f7c4.png",
     hash: 3769507632,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Arcstrider,
@@ -255,7 +255,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.ArcStaff,
     description:
       "Form a staff of pure Arc energy and acrobatically take out your foes.\n\n[Block] : Hold to deflect incoming projectiles with your Arc staff.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/022d0ea9e0ca89294bb1c9cef65273b8.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/435489f514e2bf88d25c452a96f2dff9.png",
     hash: 3769507633,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Arcstrider,
@@ -265,7 +265,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.SentinelShield,
     description:
       "[Super]  : Summon a shield of Void Light. \nWhile Sentinel Shield is active:\n[Light Attack]  : Attack.\n[Block]  : Block.\n[Grenade]  : Perform a Shield Throw.\n\nGuard with Sentinel Shield to create a defensive wall. Allies who shoot through the wall have increased weapon damage, and guarding allies makes the shield last longer.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/f02fd0d90b8d3d7182b9c7cab1a46f64.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a929ea604d638e5e99125e48f76989e2.png",
     hash: 4260353952,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Sentinel,
@@ -275,7 +275,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     id: ESuperAbilityId.WardOfDawn,
     description:
       "Create an indestructible dome to protect you and your allies. Passing through Ward of Dawn grants you and your allies a temporary increase to weapon damage.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/91eec50f00de84db8b666ec299859a21.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/1caf1eccf1072969ab93bd35fde62599.png",
     hash: 4260353953,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Sentinel,

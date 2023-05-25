@@ -49,7 +49,7 @@ export async function run() {
 	const allAspects = lodash(destinyInventoryItemDefinitions)
 		.values()
 		.filter((v) => v.traitIds)
-		.filter((v) => v.traitIds.includes('item_type.aspect'))
+		.filter((v) => v.traitIds.includes('item.plug.aspect'))
 		.value() as DestinyInventoryItemDefinition[];
 
 	allAspects.forEach((aspect) => {

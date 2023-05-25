@@ -1,23 +1,23 @@
 /*
 USAGE: From the root directory run "npm run generate"
 */
-import lodash from 'lodash';
-import path from 'path';
-import {
-	DestinyInventoryItemDefinition,
-	DestinySandboxPerkDefinition,
-} from 'bungie-api-ts-no-const-enum/destiny2';
-import { promises as fs } from 'fs';
 import {
 	generateId,
 	getBonuses,
 	getDefinitions,
 } from '@dlb/scripts/generation/utils';
+import { EElementId } from '@dlb/types/IdEnums';
 import { IFragment } from '@dlb/types/generation';
+import { bungieNetPath } from '@dlb/utils/item-utils';
+import {
+	DestinyInventoryItemDefinition,
+	DestinySandboxPerkDefinition,
+} from 'bungie-api-ts-no-const-enum/destiny2';
+import { promises as fs } from 'fs';
+import lodash from 'lodash';
+import path from 'path';
 import { generateFragmentIdEnumFileString } from './generateFragmentIdEnum';
 import { generateFragmentMapping } from './generateFragmentMapping';
-import { bungieNetPath } from '@dlb/utils/item-utils';
-import { EElementId } from '@dlb/types/IdEnums';
 
 const buildFragmentData = (
 	fragment: DestinyInventoryItemDefinition,
@@ -57,7 +57,7 @@ export async function run() {
 	const allFragments = lodash(destinyInventoryItemDefinitions)
 		.values()
 		.filter((v) => v.traitIds)
-		.filter((v) => v.traitIds.includes('item_type.fragment'))
+		.filter((v) => v.traitIds.includes('item.plug.fragment'))
 		.value() as DestinyInventoryItemDefinition[];
 
 	allFragments.forEach((fragment) => {

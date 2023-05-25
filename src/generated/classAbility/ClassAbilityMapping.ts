@@ -15,7 +15,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.EmpoweringRiftArc,
     description:
       "Conjure a well of power that increases weapon damage for those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/f631796f82ace46e7db45bac7ca69e88.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9b08ff451b1b63c88096bc32698c62a0.jpg",
     hash: 25156514,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Stormcaller,
@@ -25,7 +25,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.HealingRiftArc,
     description:
       "Conjure a well of power that continuously heals those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/8b1e33b126c4b552ee232cd021fd21a3.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/21c913ded4a635f654ee47bed3d780be.jpg",
     hash: 25156515,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Stormcaller,
@@ -35,7 +35,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.HealingRiftStrand,
     description:
       "Conjure a well of power that continuously heals those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/feefb41e76f8d550b201c93e8d050cb1.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5af22b96589e8e20148a711d46b90ff3.png",
     hash: 383852320,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Broodweaver,
@@ -45,7 +45,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.EmpoweringRiftStrand,
     description:
       "Conjure a well of power that increases weapon damage for those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/5d874462f91e55c074d41c64ad475ade.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3208b3698319d9ef6c771c583ed0e36a.png",
     hash: 383852321,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Broodweaver,
@@ -55,7 +55,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.MarksmansDodgeArc,
     description:
       "Dodge to perform an evasive maneuver with a steady hand. Dodging automatically reloads your weapon.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/42d04af758af600bc9116f4f76503463.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a0c91a37b3f1ad57da0e4e64ded13569.jpg",
     hash: 426473316,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Arcstrider,
@@ -65,7 +65,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.GamblersDodgeArc,
     description:
       "Dodge to perform a deft tumble, avoiding enemy attacks. Dodging near enemies fully recharges your Melee Ability.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/edbabd1bdba4846ff5bfb0f7b272627a.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/7ad146429d1375f825841d33641650ac.jpg",
     hash: 426473317,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Arcstrider,
@@ -75,7 +75,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.ToweringBarricadeArc,
     description:
       "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/d2fee1e6e74be34076ea6ea1a0943722.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/44389de78b61efe84346a87ed55a5f80.jpg",
     hash: 489583096,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Striker,
@@ -85,7 +85,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.RallyBarricadeArc,
     description:
       "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/511e28fd7b108633c836fac32a9ba05a.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/095be27fd5f742a241fe77176e80cfdf.jpg",
     hash: 489583097,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Striker,
@@ -94,7 +94,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Thruster",
     id: EClassAbilityId.ThrusterArc,
     description: "While grounded, quickly evade in a lateral direction.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/76b275a4b8547f96bba2b7324b0fc4a0.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/24fec20486dcadb8be276226b56c5500.jpg",
     hash: 489583098,
     elementId: EElementId.Arc,
     destinySubclassId: EDestinySubclassId.Striker,
@@ -104,7 +104,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.GamblersDodgeStrand,
     description:
       "Dodge to perform a deft tumble, avoiding enemy attacks. Dodging near enemies fully recharges your Melee Ability.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3b3b077b3d01d0f1782982451815f770.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5bb832a0d1719210c76442528d9ca1ac.png",
     hash: 1282157890,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Threadrunner,
@@ -114,7 +114,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.MarksmansDodgeStrand,
     description:
       "Dodge to perform an evasive maneuver with a steady hand. Dodging automatically reloads your weapon.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3ab0fd209b6bd5fe15b3c6d9d58ccb9b.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/6148e0135ab295e24888a4b083e4e480.png",
     hash: 1282157891,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Threadrunner,
@@ -124,7 +124,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.RallyBarricadeStrand,
     description:
       "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/ced8899f7ff33bf58c0e0ec5c5da5666.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/d29754d40cae05f736b8318b1654dc9a.png",
     hash: 2087010644,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Berserker,
@@ -134,7 +134,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.ToweringBarricadeStrand,
     description:
       "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/ac96e6784aee2e7011c720eca39fd531.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/04e9c35e9f14147ce3898cea505dc7cf.png",
     hash: 2087010645,
     elementId: EElementId.Strand,
     destinySubclassId: EDestinySubclassId.Berserker,
@@ -144,7 +144,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.EmpoweringRiftVoid,
     description:
       "Conjure a well of power that increases weapon damage for those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/eaccd2b0e0321fa9842313d188ddc2ef.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/7ed7831666e47cd300a5b1529584c18c.jpg",
     hash: 2209081648,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Voidwalker,
@@ -154,7 +154,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.HealingRiftVoid,
     description:
       "Conjure a well of power that continuously heals those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/725c7d76abfb19121f358c04bbd623dc.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/12e2bcbfb817e4f67ec6eeda111c0790.jpg",
     hash: 2209081649,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Voidwalker,
@@ -164,7 +164,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.ToweringBarricadeSolar,
     description:
       "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/aca794c2a4ca7ee45bdb596c68243a89.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/b727baee6fe4228fbe35743a3bb199a9.jpg",
     hash: 2495523340,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Sunbreaker,
@@ -174,7 +174,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.RallyBarricadeSolar,
     description:
       "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a1e53d747b9eaf2e3cbb5db2b1963e48.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/278392023803641890167602fef8bb4f.jpg",
     hash: 2495523341,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Sunbreaker,
@@ -184,7 +184,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.ToweringBarricadeVoid,
     description:
       "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/20342b719c0692b003401cb457de5d08.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/8042b480c9dea2fc3301e15e7695feaf.jpg",
     hash: 2722641740,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Sentinel,
@@ -194,7 +194,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.RallyBarricadeVoid,
     description:
       "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a3d7491049c20609490ecd337c4d4575.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/dbf616cee47329f90049fa84655790b8.jpg",
     hash: 2722641741,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Sentinel,
@@ -204,7 +204,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.MarksmansDodgeVoid,
     description:
       "Dodge to perform an evasive maneuver with a steady hand. Dodging automatically reloads your weapon.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/bca550b5e1e2db9e3ec358c22f6984c0.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/17c8532ba08411f2cad7fe8a443a63d0.jpg",
     hash: 2816982784,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Nightstalker,
@@ -214,7 +214,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.GamblersDodgeVoid,
     description:
       "Dodge to perform a deft tumble, avoiding enemy attacks. Dodging near enemies fully recharges your Melee Ability.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3536ce85290691269b0fabac3d7e760d.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/06f00a7fbe80686a21c95d53e1506ed1.jpg",
     hash: 2816982785,
     elementId: EElementId.Void,
     destinySubclassId: EDestinySubclassId.Nightstalker,
@@ -224,7 +224,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.PhoenixDiveSolar,
     description:
       "Dive to the ground and create a burst of Solar Light that cures nearby allies.\n\nWhile Heat Rises is active, you gain restoration while diving and scorch targets upon landing.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/85ef85819a19d528c86a6329ea895fb5.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/344563b4a5bee94734c4499ef83a6ac2.jpg",
     hash: 2979486801,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Dawnblade,
@@ -234,7 +234,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.EmpoweringRiftSolar,
     description:
       "Conjure a well of power that increases weapon damage for those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/f606abdd0247debab5073a48f71672df.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/88925f27c4a89905a3bde07f9602763c.jpg",
     hash: 2979486802,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Dawnblade,
@@ -244,7 +244,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.HealingRiftSolar,
     description:
       "Conjure a well of power that continuously heals those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/ab46c7eb6138308a593b396b389d75ce.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/1cf5b4574886d65d39e4016d798c96a6.jpg",
     hash: 2979486803,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Dawnblade,
@@ -254,7 +254,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.ToweringBarricadeStasis,
     description:
       "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/ac96e6784aee2e7011c720eca39fd531.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/04e9c35e9f14147ce3898cea505dc7cf.png",
     hash: 3260056808,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Behemoth,
@@ -264,7 +264,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.RallyBarricadeStasis,
     description:
       "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/ced8899f7ff33bf58c0e0ec5c5da5666.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/d29754d40cae05f736b8318b1654dc9a.png",
     hash: 3260056809,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Behemoth,
@@ -274,7 +274,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.EmpoweringRiftStasis,
     description:
       "Conjure a well of power that increases weapon damage for those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/5d874462f91e55c074d41c64ad475ade.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/3208b3698319d9ef6c771c583ed0e36a.png",
     hash: 3492047640,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Shadebinder,
@@ -284,7 +284,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.HealingRiftStasis,
     description:
       "Conjure a well of power that continuously heals those inside it.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/feefb41e76f8d550b201c93e8d050cb1.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5af22b96589e8e20148a711d46b90ff3.png",
     hash: 3492047641,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Shadebinder,
@@ -294,7 +294,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.AcrobatsDodgeSolar,
     description:
       "Dodge to perform an acrobatic leap. Upon landing, make yourself and nearby allies radiant.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/18b507607e6971bb10fec7addc24786b.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/7b7917cbb4697af66a810def2b558328.jpg",
     hash: 3636300852,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Gunslinger,
@@ -304,7 +304,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.MarksmansDodgeSolar,
     description:
       "Dodge to perform an evasive maneuver with a steady hand. Dodging automatically reloads your weapon.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/fa8364dbc5fd5bf175bd2107c72dd171.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a87b7b80d34f93fecf446486e9e683e7.jpg",
     hash: 3636300854,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Gunslinger,
@@ -314,7 +314,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.GamblersDodgeSolar,
     description:
       "Dodge to perform a deft tumble, avoiding enemy attacks. Dodging near enemies fully recharges your Melee Ability.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/8a6b9c02f527bfd3b5dba6ca9b88e9b0.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a701bc92b729da5331aee944106912cf.jpg",
     hash: 3636300855,
     elementId: EElementId.Solar,
     destinySubclassId: EDestinySubclassId.Gunslinger,
@@ -324,7 +324,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.MarksmansDodgeStasis,
     description:
       "Dodge to perform an evasive maneuver with a steady hand. Dodging automatically reloads your weapon.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3ab0fd209b6bd5fe15b3c6d9d58ccb9b.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/6148e0135ab295e24888a4b083e4e480.png",
     hash: 3933525366,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Revenant,
@@ -334,7 +334,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     id: EClassAbilityId.GamblersDodgeStasis,
     description:
       "Dodge to perform a deft tumble, avoiding enemy attacks. Dodging near enemies fully recharges your Melee Ability.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3b3b077b3d01d0f1782982451815f770.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5bb832a0d1719210c76442528d9ca1ac.png",
     hash: 3933525367,
     elementId: EElementId.Stasis,
     destinySubclassId: EDestinySubclassId.Revenant,

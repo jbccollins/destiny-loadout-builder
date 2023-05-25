@@ -3,6 +3,7 @@
 
 export enum EModId {
   ArtifactHeavyAmmoFinder = "ArtifactHeavyAmmoFinder",
+  PowerfulAttraction = "PowerfulAttraction",
   KineticWeaponSurge = "KineticWeaponSurge",
   SpecialAmmoScout = "SpecialAmmoScout",
   Reaper = "Reaper",
@@ -208,6 +209,7 @@ export enum EModId {
   ArtifactStasisHolster = "ArtifactStasisHolster",
   UmbralSharpening = "UmbralSharpening",
   ArtifactStrandHolster = "ArtifactStrandHolster",
+  ArtifactDualCurrentSiphon = "ArtifactDualCurrentSiphon",
   ArtifactVoidScavenger = "ArtifactVoidScavenger",
   ArtifactSolarStrandDualSiphon = "ArtifactSolarStrandDualSiphon",
   SmolderingGlyphkeeper = "SmolderingGlyphkeeper",
@@ -261,6 +263,7 @@ export enum EModId {
   ArtifactFocusingStrike = "ArtifactFocusingStrike",
   ArtifactSolarHolster = "ArtifactSolarHolster",
   FocusingStrike = "FocusingStrike",
+  ElementalCharge = "ElementalCharge",
   ConcussiveDampener = "ConcussiveDampener",
   BolsteringDetonation = "BolsteringDetonation",
   NightmareCrusher = "NightmareCrusher",

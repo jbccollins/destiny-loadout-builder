@@ -44,7 +44,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Ember of Tempering",
     id: EFragmentId.EmberOfTempering,
     description:
-      "Solar weapon final blows grant you and your allies increased recovery for a short duration. Stacks 3 times.\n\nWhile Tempered Metal is active, your weapons have increased airborne effectiveness.\n\nWhile Ember of Tempering is active, Solar weapon final blows create a Firesprite.",
+      "Solar weapon final blows grant you and your allies increased recovery for a short duration. Stacks 3 times.\n\nWhile Ember of Tempering is active, your weapons have increased airborne effectiveness, and your Solar weapon final blows create a Firesprite.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/cddc93648f0917dc8bd6663d38d7c379.jpg",
     hash: 362132290,
     bonuses: [
@@ -148,7 +148,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfChains,
     description:
       "While you are near frozen targets or a friendly [Stasis] Stasis crystal, you take reduced damage from targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/2c705256113eb0e8fe8e0ad572c5cad7.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/d764e09a79be71fb5d37e612e610cf18.png",
     hash: 537774540,
     bonuses: [
       {
@@ -163,7 +163,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfTorment,
     description:
       "You gain grenade energy each time you take damage from targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/557294f02042a60ed1aca7420c5e3873.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0f69591331f4def8ab2a4bb27c55b2aa.png",
     hash: 537774541,
     bonuses: [],
     elementId: EElementId.Stasis,
@@ -173,7 +173,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfFractures,
     description:
       "Your melee energy recharges faster when you are near two or more targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3f0407601489c2687f5be7a31446e272.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a28274406a8a0e7ec916a33ec830ba6f.png",
     hash: 537774542,
     bonuses: [
       {
@@ -188,7 +188,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfImpetus,
     description:
       "Damaging targets with a [Stasis] Stasis melee reloads your stowed weapons and grants you a temporary boost to weapon ready speed.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/488155e2c0af761888b6c9013d3df1b8.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/710c5e3aec26f0e3e468c656a2669e0d.png",
     hash: 537774543,
     bonuses: [],
     elementId: EElementId.Stasis,
@@ -251,7 +251,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfFocus,
     description:
       "After sprinting for a short time, your class ability regeneration is increased.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/fced4c09d825339ad7cae3e9f5e821ca.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/cfcdcc8f7d07111f6079ad8f869273c6.jpg",
     hash: 1727069360,
     bonuses: [
       {
@@ -266,7 +266,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfFrequency,
     description:
       "Melee hits greatly increase your reload speed for a short duration.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a2284206fa7f64f2b759d7a6ab0b30f2.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/4979f2f84c3da353c19815106267beb9.jpg",
     hash: 1727069361,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -276,7 +276,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfDischarge,
     description:
       "Arc weapon final blows have a chance to create an Ionic Trace.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/bba280442340b4aaad92c0948745865e.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/c883bf91f42e9c4b9c9ddce1ba2d2de5.jpg",
     hash: 1727069362,
     bonuses: [
       {
@@ -290,7 +290,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Spark of Ions",
     id: EFragmentId.SparkOfIons,
     description: "Defeating a jolted target creates an Ionic Trace.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/a5fcd930857f55a26be897ebe970876c.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/2a7f5d325fc745877be70c443427d15b.jpg",
     hash: 1727069363,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -299,7 +299,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Spark of Shock",
     id: EFragmentId.SparkOfShock,
     description: "Your Arc grenades jolt targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/db029ae0f6a374deb0fe7de4468ec1ba.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/2f49889b1fe7bcf01ef12b2cdc0fb511.jpg",
     hash: 1727069364,
     bonuses: [
       {
@@ -314,7 +314,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfMomentum,
     description:
       "Sliding over ammo bricks reloads your equipped weapon and grants a small amount of melee energy.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/9d29b48dd38c57d65dc2fb38406faf37.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/b8cfaccdc40ccdd6a3fb4f544dcb7700.jpg",
     hash: 1727069365,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -324,7 +324,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfResistance,
     description:
       "While surrounded by combatants, you are more resistant to incoming damage.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/30757f1ce4023d7aff2d6b7f65221916.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/d92e1a6770ebbb509ceda1c6ab545e43.jpg",
     hash: 1727069366,
     bonuses: [
       {
@@ -339,7 +339,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfBeacons,
     description:
       "While you are amplified, your Arc Special weapon final blows create a blinding explosion.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/70277aba7cb9f53c2771651a6d67eb6d.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/8924af183dc3e6200536171a72c9fd77.jpg",
     hash: 1727069367,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -349,7 +349,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfMagnitude,
     description:
       "Your lingering Arc grenades (Lightning Grenade, Pulse Grenade, and Storm Grenade) have extended duration.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/1f1bf91b93b3acddbc56ade6d48300b7.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0b39167c8fc628482dea26cf43d78ec9.jpg",
     hash: 1727069374,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -359,7 +359,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfRecharge,
     description:
       "While critically wounded, your melee and grenade energy regenerates more quickly.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/cf0315c1051a75b37620efa79d5a8719.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/10b793e347263d81cc0404acf91aadc7.jpg",
     hash: 1727069375,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -504,7 +504,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfRending,
     description:
       "Primary ammo weapons do increased damage to [Stasis] Stasis crystals and frozen targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/8e53a7df5257ba6eb07608b829afc808.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a315a6aaba35eba7f021fbea22e5e0ba.png",
     hash: 2483898428,
     bonuses: [],
     elementId: EElementId.Stasis,
@@ -513,7 +513,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Whisper of Conduction",
     id: EFragmentId.WhisperOfConduction,
     description: "Nearby [Stasis] Stasis shards track to your position.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/789d37b375fc999befea9341713b3009.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/2d84a595d269762c434718e34d2e7d78.png",
     hash: 2483898429,
     bonuses: [
       {
@@ -532,7 +532,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfRime,
     description:
       "Collecting a [Stasis] Stasis shard grants a small amount of overshield, which falls off after 10 seconds. Collecting additional shards adds to the overshield and refreshes the timer.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/24fd250f6c23137597567b1061bb5e96.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0ec49820a6de05851c099cf7fb5d7554.png",
     hash: 2483898430,
     bonuses: [],
     elementId: EElementId.Stasis,
@@ -542,7 +542,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfHunger,
     description:
       "Increases the melee energy gained from picking up [Stasis] Stasis shards.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/468994cf44d0127e341efc8f6eadd217.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/549368f903ac85dc177a56555ce69ae7.png",
     hash: 2483898431,
     bonuses: [
       {
@@ -575,7 +575,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Echo of Harvest",
     id: EFragmentId.EchoOfHarvest,
     description:
-      "Defeating weakened targets with precision final blows creates an Orb of Power and a Void Breach.",
+      "Defeating weakened targets creates an Orb of Power and a Void Breach.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/6bd23524f7129761043724acbe90c7b5.jpg",
     hash: 2661180601,
     bonuses: [
@@ -671,7 +671,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Spark of Volts",
     id: EFragmentId.SparkOfVolts,
     description: "Finishers make you amplified.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/77e0281c6537838e182329c84ff77f1a.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/bb6175746eecf3160a591efe343a3fdf.jpg",
     hash: 3277705904,
     bonuses: [
       {
@@ -686,7 +686,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfBrilliance,
     description:
       "Defeating a blinded target with precision damage creates a blinding explosion.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/c96a87c59c94489d372fd952699bc221.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/d38a4297cfe3ec89427f68ef92b076e5.jpg",
     hash: 3277705905,
     bonuses: [
       {
@@ -701,7 +701,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfAmplitude,
     description:
       "Rapidly defeating targets while you are amplified creates an Orb of Power.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/b8f972ce6d63a48b8533652090fd9966.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/4138dfce109db20c49877c08852f13a8.jpg",
     hash: 3277705906,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -711,7 +711,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfFeedback,
     description:
       "Taking melee damage briefly increases your outgoing melee damage.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/af2131cbee6e59c247ac063d89d2ab9a.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/58a935c2948d5f20d060bc87a0ad25d2.jpg",
     hash: 3277705907,
     bonuses: [
       {
@@ -726,7 +726,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfRefraction,
     description:
       "Defeating slowed or frozen targets grants you class ability energy.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/83f0937d1d3599a70054ef7c5cb2d372.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5c9285f7b0320f56a560ce9c0aa65043.png",
     hash: 3469412968,
     bonuses: [],
     elementId: EElementId.Stasis,
@@ -736,7 +736,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfDurance,
     description:
       "Slow from your abilities lasts longer. For those abilities that linger, their duration will also increase.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/87bf9175979ee9a31ce9c233b5feb045.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/263713a8639fb73350c13b5b520fefa2.png",
     hash: 3469412969,
     bonuses: [
       {
@@ -751,7 +751,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfHedrons,
     description:
       "Dramatically increases weapon stability, weapon aim assist, weapon airborne effectiveness, mobility, resilience, and recovery after freezing a target with [Stasis] Stasis.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/6babcb674b6bfd511cad1e765f9c9be4.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/70b60b70634c6e539a531d47e58e1b9f.png",
     hash: 3469412970,
     bonuses: [
       {
@@ -766,7 +766,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfFissures,
     description:
       "Increases the damage and size of the burst of [Stasis] Stasis when you destroy a [Stasis] Stasis crystal or defeat a frozen target.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/d7873bd4ff3999ae933f2efbc84f75c3.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9eaa93107ad40372c335ce495273c318.png",
     hash: 3469412971,
     bonuses: [],
     elementId: EElementId.Stasis,
@@ -775,7 +775,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Whisper of Bonds",
     id: EFragmentId.WhisperOfBonds,
     description: "Defeating frozen targets grants you Super energy.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/b4b3feab1addf7bfc09046412b9b8f15.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/12b591b2720cc265d800e870484f6d5b.png",
     hash: 3469412974,
     bonuses: [
       {
@@ -794,7 +794,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.WhisperOfShards,
     description:
       "Shattering a [Stasis] Stasis crystal temporarily boosts your grenade recharge rate. Shattering additional [Stasis] Stasis crystals increases the duration of this benefit.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/b0e2bbd933299443fb8e0c8b0950821a.png",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5fa98c6e62d008621119d1b394e9cae9.png",
     hash: 3469412975,
     bonuses: [
       {
@@ -809,7 +809,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfInstinct,
     description:
       "While critically wounded, taking damage emits a burst of damaging Arc energy that jolts targets.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/9af61929fb9deed3ed6466efefcb966b.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/eb9c8ec91e56b1410457aecae09ceeed.jpg",
     hash: 3478354816,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -819,7 +819,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.SparkOfHaste,
     description:
       "You have greatly increased resilience, recovery, and mobility while sprinting.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/e86d118a2d954e93e1e2f467df270c63.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/e840532ca79e23311804760b3833e6bb.jpg",
     hash: 3478354817,
     bonuses: [],
     elementId: EElementId.Arc,
@@ -829,7 +829,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.EchoOfCessation,
     description:
       "Finisher final blows create a burst of Void damage that causes nearby combatants to become volatile.\n\nDefeating volatile targets creates a Void Breach.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/cff39459331dba47792c1866e843d18d.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/87d29fbf5c877e2a385354ae76a09f06.jpg",
     hash: 3854948620,
     bonuses: [],
     elementId: EElementId.Void,
@@ -839,7 +839,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.EchoOfVigilance,
     description:
       "Defeating a target while your shields are depleted grants you a temporary Void overshield.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/9d2e72c44ba6649187b58f040a7f21f9.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/91e0f86be9e41faf06994faf41d818af.jpg",
     hash: 3854948621,
     bonuses: [
       {
@@ -853,7 +853,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Ember of Resolve",
     id: EFragmentId.EmberOfResolve,
     description: "Solar grenade final blows cure you.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3a633440f21817801caadb6615e0961a.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/24b60501785856e2898417115e3b2afd.jpg",
     hash: 4180586736,
     bonuses: [],
     elementId: EElementId.Solar,
@@ -863,7 +863,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     id: EFragmentId.EmberOfMercy,
     description:
       "When you revive an ally, you and other nearby allies gain restoration.\n\nPicking up a Firesprite grants restoration.",
-    icon: "https://www.bungie.net/common/destiny2_content/icons/3a3bcf657be5a88bc051fcf10cd6d701.jpg",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5ca8c8de03f981b9c984a1f2bdea0f61.jpg",
     hash: 4180586737,
     bonuses: [
       {

@@ -11,6 +11,16 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-05-24',
+		version: '2.0.5',
+		title: 'Add new Strand Aspects',
+		sections: [
+			{
+				items: [`Update aspects, mods and such for Season of the Deep`],
+			},
+		],
+	},
+	{
 		date: '2023-05-17',
 		version: '2.0.4',
 		title: 'Zero Wasted Stats Setting',

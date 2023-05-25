@@ -391,11 +391,6 @@ function Loading() {
 				const { stores, inGameLoadoutItemIdList } = await loadStoresData(
 					mostRecentPlatform
 				);
-				console.log('>>>>>>>>>>> [LOAD] stores <<<<<<<<<<<', stores);
-				console.log(
-					'>>>>>>>>>>> [LOAD] inGameLoadoutItemIdList <<<<<<<<<<<',
-					inGameLoadoutItemIdList
-				);
 				setHasStores(true);
 				const [armor, availableExoticArmor, armorMetadata] = extractArmor(
 					stores,
@@ -442,7 +437,6 @@ function Loading() {
 						}
 					}
 				});
-				console.log('>>>> setting exotic armor', defaultSelectedExoticArmor);
 				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
 
 				if (hasLoadout) {

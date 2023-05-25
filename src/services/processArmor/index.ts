@@ -27,7 +27,6 @@ import {
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import {
-	EArmorStatId,
 	EDestinyClassId,
 	EDimLoadoutsFilterId,
 	EGearTierId,
@@ -188,7 +187,6 @@ const _processArmorBaseCase = ({
 			artificeModIdList: requiredArtificeModIdList,
 			requiredClassItemExtraModSocketCategoryId:
 				modCombos.requiredClassItemRaidAndNightmareModTypeId,
-			maximumSingleStatValues: modCombos.maximumSingleStatValues,
 			metadata: {
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
@@ -271,7 +269,6 @@ type ProcessArmorOutputItem = {
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
 	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
-	maximumSingleStatValues: Record<EArmorStatId, number>;
 	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: ProcessedArmorItemMetadata;
 };

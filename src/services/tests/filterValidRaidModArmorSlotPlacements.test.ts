@@ -1,16 +1,16 @@
 import { EModId } from '@dlb/generated/mod/EModId';
+import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArmorSlotItems';
 import {
 	FilterValidRaidModArmorSlotPlacementsParams,
-	filterValidRaidModArmorSlotPlacements,
-	getDefaultSeenArmorSlotItems,
-} from '@dlb/services/armor-processing';
+	filterRaidModArmorSlotPlacements,
+} from '@dlb/services/processArmor/utils';
 import { EArmorSlotId, ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
 import { getDefaultValidRaidModArmorSlotPlacement } from '@dlb/types/Mod';
 
 type hasValidSeenItemCountsTestCase = {
 	name: string;
 	input: FilterValidRaidModArmorSlotPlacementsParams;
-	output: ReturnType<typeof filterValidRaidModArmorSlotPlacements>;
+	output: ReturnType<typeof filterRaidModArmorSlotPlacements>;
 };
 
 const filterValidRaidModArmorSlotPlacementsTestCases: hasValidSeenItemCountsTestCase[] =
@@ -20,7 +20,7 @@ const filterValidRaidModArmorSlotPlacementsTestCases: hasValidSeenItemCountsTest
 			name: 'With no raid mods it returns nothing',
 			input: {
 				seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
-				requiredClassItemExtraModSocketCategoryId: null,
+				requiredClassItemRaidAndNightmareModTypeId: null,
 				validRaidModArmorSlotPlacements: [
 					getDefaultValidRaidModArmorSlotPlacement(),
 				],
@@ -32,7 +32,7 @@ const filterValidRaidModArmorSlotPlacementsTestCases: hasValidSeenItemCountsTest
 			name: 'With a correct raid class mod it returns one placement',
 			input: {
 				seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
-				requiredClassItemExtraModSocketCategoryId:
+				requiredClassItemRaidAndNightmareModTypeId:
 					ERaidAndNightMareModTypeId.DeepStoneCrypt,
 				validRaidModArmorSlotPlacements: [
 					{
@@ -62,7 +62,7 @@ const filterValidRaidModArmorSlotPlacementsTestCases: hasValidSeenItemCountsTest
 					[EArmorSlotId.Head]: ERaidAndNightMareModTypeId.GardenOfSalvation,
 					[EArmorSlotId.Arm]: ERaidAndNightMareModTypeId.GardenOfSalvation,
 				},
-				requiredClassItemExtraModSocketCategoryId:
+				requiredClassItemRaidAndNightmareModTypeId:
 					ERaidAndNightMareModTypeId.DeepStoneCrypt,
 				validRaidModArmorSlotPlacements: [
 					{
@@ -111,14 +111,14 @@ const filterValidRaidModArmorSlotPlacementsTestCases: hasValidSeenItemCountsTest
 describe('filterValidRaidModArmorSlotPlacements', () => {
 	test(filterValidRaidModArmorSlotPlacementsTestCases[0].name, () => {
 		const { input, output } = filterValidRaidModArmorSlotPlacementsTestCases[0];
-		expect(filterValidRaidModArmorSlotPlacements(input)).toEqual(output);
+		expect(filterRaidModArmorSlotPlacements(input)).toEqual(output);
 	});
 	test(filterValidRaidModArmorSlotPlacementsTestCases[1].name, () => {
 		const { input, output } = filterValidRaidModArmorSlotPlacementsTestCases[1];
-		expect(filterValidRaidModArmorSlotPlacements(input)).toEqual(output);
+		expect(filterRaidModArmorSlotPlacements(input)).toEqual(output);
 	});
 	test(filterValidRaidModArmorSlotPlacementsTestCases[2].name, () => {
 		const { input, output } = filterValidRaidModArmorSlotPlacementsTestCases[2];
-		expect(filterValidRaidModArmorSlotPlacements(input)).toEqual(output);
+		expect(filterRaidModArmorSlotPlacements(input)).toEqual(output);
 	});
 });

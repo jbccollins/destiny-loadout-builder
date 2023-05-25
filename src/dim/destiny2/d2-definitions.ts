@@ -2,6 +2,7 @@
 // import { ThunkResult } from 'app/store/types';
 // import { reportException } from 'app/utils/exceptions';
 import { ItemCategoryHashes } from '@dlb/dim/data/d2/generated-enums';
+import { getManifest } from '@dlb/dim/manifest/manifest-service-json';
 import { warnLogCollapsedStack } from '@dlb/dim/utils/log';
 import {
 	AllDestinyManifestComponents,
@@ -43,8 +44,6 @@ import {
 	DestinyVendorDefinition,
 	DestinyVendorGroupDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-// import { setD2Manifest } from '../manifest/actions';
-import { getManifest } from '@dlb/dim/manifest/manifest-service-json';
 import { ManifestDefinitions } from './definitions';
 
 const lazyTables = [

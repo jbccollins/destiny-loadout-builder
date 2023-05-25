@@ -248,7 +248,7 @@ export const stripNonRaidSeenArmorSlotItems = (
 		[EArmorSlotId.Leg]: null,
 	};
 	ArmorSlotIdList.forEach((armorSlotId) => {
-		if (seenArmorSlotItems[armorSlotId] !== 'artifice') {
+		if (seenArmorSlotItems[armorSlotId] !== ARTIFICE) {
 			// TODO: God I hate this casting shit
 			items[armorSlotId] = seenArmorSlotItems[armorSlotId] as EModCategoryId;
 		}

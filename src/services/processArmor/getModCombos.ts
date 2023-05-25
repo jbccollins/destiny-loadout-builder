@@ -9,7 +9,6 @@ import {
 } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
-	EArmorStatId,
 	EDestinyClassId,
 	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
@@ -129,7 +128,6 @@ export const getDefaultModComboArmorSlotMetadata =
 
 /***** ModCombos *****/
 export type ModCombos = {
-	maximumSingleStatValues: Record<EArmorStatId, number>;
 	armorSlotMetadata: ModComboArmorSlotMetadata;
 	lowestCostPlacement: ModPlacement;
 	requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
@@ -139,16 +137,32 @@ export type ModCombos = {
 };
 
 export const getDefaultModCombos = (): ModCombos => ({
-	maximumSingleStatValues: {
-		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 0,
-		[EArmorStatId.Recovery]: 0,
-		[EArmorStatId.Discipline]: 0,
-		[EArmorStatId.Intellect]: 0,
-		[EArmorStatId.Strength]: 0,
-	},
 	armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
-	lowestCostPlacement: null,
+	lowestCostPlacement: {
+		artificeModIdList: [],
+		placement: {
+			[EArmorSlotId.Arm]: {
+				armorStatModId: null,
+				raidModId: null,
+			},
+			[EArmorSlotId.Chest]: {
+				armorStatModId: null,
+				raidModId: null,
+			},
+			[EArmorSlotId.ClassItem]: {
+				armorStatModId: null,
+				raidModId: null,
+			},
+			[EArmorSlotId.Head]: {
+				armorStatModId: null,
+				raidModId: null,
+			},
+			[EArmorSlotId.Leg]: {
+				armorStatModId: null,
+				raidModId: null,
+			},
+		},
+	},
 	requiredClassItemRaidAndNightmareModTypeId: null,
 	hasMasterworkedClassItem: false,
 });
@@ -323,7 +337,6 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	//    to binary search reserved armor energy for each armor slot
 
 	const result: ModCombos = {
-		maximumSingleStatValues: null,
 		armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
 		lowestCostPlacement,
 		requiredClassItemRaidAndNightmareModTypeId,

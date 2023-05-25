@@ -329,7 +329,7 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 	},
 };
 
-const getDefaultArmorMetadataItem = () => cloneDeep(ArmorMetadataItem);
+export const getDefaultArmorMetadataItem = () => cloneDeep(ArmorMetadataItem);
 
 export type ArmorMetadata = Record<EDestinyClassId, ArmorMetadataItem>;
 

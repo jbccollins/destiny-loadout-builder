@@ -37,7 +37,6 @@ import {
 import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
-// import { warnMissingDefinition } from '../../manifest/manifest-service-json';
 // import { reportException } from '@dlb/dim/utils/exceptions';
 import { InventoryBuckets } from '@dlb/dim/inventory/inventory-buckets';
 import { DimItem } from '@dlb/dim/inventory/item-types';

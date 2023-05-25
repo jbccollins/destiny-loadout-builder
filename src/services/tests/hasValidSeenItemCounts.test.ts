@@ -32,7 +32,7 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 				getExtraSocketModCategoryIdCountsFromRaidModIdList([]),
 			seenArmorSlotClassItems: getDefaultSeenArmorSlotItems().ClassItems,
 		},
-		output: { isValid: true, requiredClassItemExtraModSocketCategoryId: null },
+		output: { isValid: true, requiredClassItemRaidAndNightmareModTypeId: null },
 	},
 	// 1
 	{
@@ -45,7 +45,10 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 				]),
 			seenArmorSlotClassItems: getDefaultSeenArmorSlotItems().ClassItems,
 		},
-		output: { isValid: false, requiredClassItemExtraModSocketCategoryId: null },
+		output: {
+			isValid: false,
+			requiredClassItemRaidAndNightmareModTypeId: null,
+		},
 	},
 	// 2
 	{
@@ -62,7 +65,7 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 				]),
 			seenArmorSlotClassItems: getDefaultSeenArmorSlotItems().ClassItems,
 		},
-		output: { isValid: true, requiredClassItemExtraModSocketCategoryId: null },
+		output: { isValid: true, requiredClassItemRaidAndNightmareModTypeId: null },
 	},
 	// 3
 	{
@@ -84,7 +87,7 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 				]),
 			seenArmorSlotClassItems: getDefaultSeenArmorSlotItems().ClassItems,
 		},
-		output: { isValid: true, requiredClassItemExtraModSocketCategoryId: null },
+		output: { isValid: true, requiredClassItemRaidAndNightmareModTypeId: null },
 	},
 	// 4
 	{
@@ -105,7 +108,10 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 				]),
 			seenArmorSlotClassItems: getDefaultSeenArmorSlotItems().ClassItems,
 		},
-		output: { isValid: false, requiredClassItemExtraModSocketCategoryId: null },
+		output: {
+			isValid: false,
+			requiredClassItemRaidAndNightmareModTypeId: null,
+		},
 	},
 	// 5
 	{
@@ -123,7 +129,7 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 		},
 		output: {
 			isValid: true,
-			requiredClassItemExtraModSocketCategoryId:
+			requiredClassItemRaidAndNightmareModTypeId:
 				ERaidAndNightMareModTypeId.RootOfNightmares,
 		},
 	},
@@ -145,7 +151,7 @@ const hasValidSeenItemCountsTestCases: hasValidSeenItemCountsTestCase[] = [
 		},
 		output: {
 			isValid: false,
-			requiredClassItemExtraModSocketCategoryId: null,
+			requiredClassItemRaidAndNightmareModTypeId: null,
 		},
 	},
 ];

@@ -7,10 +7,10 @@ export type SeenArmorSlotClassItems = Record<
 	artifice: boolean;
 };
 export type SeenArmorSlotItems = {
-	[EArmorSlotId.Head]: ERaidAndNightMareModTypeId | 'artifice';
-	[EArmorSlotId.Arm]: ERaidAndNightMareModTypeId | 'artifice';
-	[EArmorSlotId.Chest]: ERaidAndNightMareModTypeId | 'artifice';
-	[EArmorSlotId.Leg]: ERaidAndNightMareModTypeId | 'artifice';
+	[EArmorSlotId.Head]: ERaidAndNightMareModTypeId | 'Artifice';
+	[EArmorSlotId.Arm]: ERaidAndNightMareModTypeId | 'Artifice';
+	[EArmorSlotId.Chest]: ERaidAndNightMareModTypeId | 'Artifice';
+	[EArmorSlotId.Leg]: ERaidAndNightMareModTypeId | 'Artifice';
 	ClassItems: SeenArmorSlotClassItems;
 };
 

@@ -1,16 +1,20 @@
-import {
-	EArmorSlotId,
-	EArmorStatId,
-	EDestinyClassId,
-} from '@dlb/types/IdEnums';
-import { getDefaultStatList } from './utils';
-import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
-import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import { ARTIFICE } from '@dlb/services/processArmor/constants';
 import {
 	getDefaultModCombos,
 	getModCombos,
 } from '@dlb/services/processArmor/getModCombos';
 import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArmorSlotItems';
+import { getDefaultArmorMetadataItem } from '@dlb/types/Armor';
+import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EDestinyClassId,
+} from '@dlb/types/IdEnums';
+import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import { getDefaultStatList } from './utils';
 
 const testFunction = getModCombos;
 
@@ -31,6 +35,9 @@ const testCases: TestCase[] = [
 				raidMods: [],
 				destinyClassId: EDestinyClassId.Warlock,
 				specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+				useZeroWastedStats: false,
+				allClassItemMetadata: getDefaultArmorMetadataItem().classItem,
 			},
 		],
 		getDefaultModCombos(),
@@ -50,9 +57,45 @@ const testCases: TestCase[] = [
 				raidMods: [],
 				destinyClassId: EDestinyClassId.Warlock,
 				specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+				useZeroWastedStats: false,
+				allClassItemMetadata: getDefaultArmorMetadataItem().classItem,
 			},
 		],
-		getDefaultModCombos(),
+		{
+			...getDefaultModCombos(),
+			lowestCostPlacement: {
+				...getDefaultModCombos().lowestCostPlacement,
+				placement: {
+					...getDefaultModCombos().lowestCostPlacement.placement,
+
+					[EArmorSlotId.Head]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.Head
+						],
+						armorStatModId: EModId.ResilienceMod,
+					},
+					[EArmorSlotId.Arm]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.Arm
+						],
+						armorStatModId: EModId.ResilienceMod,
+					},
+					[EArmorSlotId.Chest]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.Chest
+						],
+						armorStatModId: EModId.ResilienceMod,
+					},
+					[EArmorSlotId.Leg]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.Leg
+						],
+						armorStatModId: EModId.IntellectMod,
+					},
+				},
+			},
+		},
 	],
 	[
 		'Lots of stats',
@@ -74,22 +117,73 @@ const testCases: TestCase[] = [
 				destinyClassId: EDestinyClassId.Warlock,
 				specialSeenArmorSlotItems: {
 					...getDefaultSeenArmorSlotItems(),
-					[EArmorSlotId.Head]: 'artifice',
-					[EArmorSlotId.Arm]: 'artifice',
-					[EArmorSlotId.Chest]: 'artifice',
+					[EArmorSlotId.Head]: ARTIFICE,
+					[EArmorSlotId.Arm]: ARTIFICE,
+					[EArmorSlotId.Chest]: ARTIFICE,
 					ClassItems: {
 						...getDefaultSeenArmorSlotItems().ClassItems,
 						artifice: true,
 					},
 				},
+				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+				useZeroWastedStats: false,
+				allClassItemMetadata: {
+					...getDefaultArmorMetadataItem().classItem,
+					Artifice: { exists: true, isMasterworked: true, exampleId: '1' },
+				},
 			},
 		],
-		getDefaultModCombos(),
+		{
+			...getDefaultModCombos(),
+			hasMasterworkedClassItem: true,
+			lowestCostPlacement: {
+				...getDefaultModCombos().lowestCostPlacement,
+				artificeModIdList: [
+					EModId.MobilityForged,
+					EModId.MobilityForged,
+					EModId.DisciplineForged,
+					EModId.StrengthForged,
+				],
+				placement: {
+					...getDefaultModCombos().lowestCostPlacement.placement,
+					[EArmorSlotId.Head]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.Head
+						],
+						armorStatModId: EModId.MobilityMod,
+					},
+					[EArmorSlotId.Arm]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.Arm
+						],
+						armorStatModId: EModId.DisciplineMod,
+					},
+					[EArmorSlotId.Chest]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.Chest
+						],
+						armorStatModId: EModId.MinorDisciplineMod,
+					},
+					[EArmorSlotId.Leg]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.Leg
+						],
+						armorStatModId: EModId.StrengthMod,
+					},
+					[EArmorSlotId.ClassItem]: {
+						...getDefaultModCombos().lowestCostPlacement.placement[
+							EArmorSlotId.ClassItem
+						],
+						armorStatModId: EModId.MinorStrengthMod,
+					},
+				},
+			},
+		},
 	],
 ];
 
-const nameOfTestToDebug = 'Lots of stats';
-// const nameOfTestToDebug = null;
+// const nameOfTestToDebug = 'Lots of stats';
+const nameOfTestToDebug = null;
 describe('getModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

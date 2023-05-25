@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-05-24',
+		version: '2.0.6',
+		title: 'Fix bug where some artifice armor was not considered',
+		sections: [
+			{
+				items: [
+					`Fixed a bug that caused some armor combinations with artifice armor to not be considered in the results`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-05-24',
 		version: '2.0.5',
 		title: 'Add new Strand Aspects',
 		sections: [

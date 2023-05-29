@@ -1,5 +1,5 @@
-import { DamageType } from 'bungie-api-ts-no-const-enum/destiny2';
 import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
+import { DamageType } from 'bungie-api-ts-no-const-enum/destiny2';
 import {
 	armorStats,
 	CUSTOM_TOTAL_STAT_HASH,
@@ -7,7 +7,7 @@ import {
 	D2LightStats,
 	D2WeaponStatHashByName,
 	swordStatsByName,
-	TOTAL_STAT_HASH
+	TOTAL_STAT_HASH,
 } from './d2-known-values';
 
 // ✨ magic values ✨
@@ -22,7 +22,8 @@ export const damageNamesByEnum: { [key in DamageType]: string | null } = {
 	3: 'solar',
 	4: 'void',
 	5: 'raid',
-	6: 'stasis'
+	6: 'stasis',
+	7: 'strand',
 };
 
 // typescript doesn't understand array.filter
@@ -37,13 +38,13 @@ export const damageTypeNames = Object.values(damageNamesByEnum).filter(
 export const dimArmorStatHashByName = {
 	...D2ArmorStatHashByName,
 	total: TOTAL_STAT_HASH,
-	custom: CUSTOM_TOTAL_STAT_HASH
+	custom: CUSTOM_TOTAL_STAT_HASH,
 };
 
 /** stats names used to create armor-specific filters, real ones plus an "any" keyword */
 export const searchableArmorStatNames = [
 	...Object.keys(dimArmorStatHashByName),
-	'any'
+	'any',
 ];
 
 /** armor stat hashes to check for the "any" keyword */
@@ -56,7 +57,7 @@ export const armorStatHashes = Object.values(dimArmorStatHashByName);
 export const statHashByName: Record<string, number> = {
 	...D2WeaponStatHashByName,
 	...swordStatsByName,
-	...dimArmorStatHashByName
+	...dimArmorStatHashByName,
 };
 
 /** all-stat list, to generate filters from */
@@ -73,5 +74,5 @@ export const cosmeticTypes: BucketHashes[] = [
 	BucketHashes.Emblems,
 	BucketHashes.Vehicle,
 	BucketHashes.Ships,
-	BucketHashes.Finishers
+	BucketHashes.Finishers,
 ];

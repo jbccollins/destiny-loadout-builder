@@ -1,6 +1,7 @@
 // import { d2ManifestSelector } from 'app/manifest/selectors';
 // import { ThunkResult } from 'app/store/types';
 // import { reportException } from 'app/utils/exceptions';
+import { ItemCategoryHashes } from '@dlb/dim/data/d2/generated-enums';
 import { warnLogCollapsedStack } from '@dlb/dim/utils/log';
 import {
 	AllDestinyManifestComponents,
@@ -40,12 +41,11 @@ import {
 	DestinyStatGroupDefinition,
 	DestinyTraitDefinition,
 	DestinyVendorDefinition,
-	DestinyVendorGroupDefinition
+	DestinyVendorGroupDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import { ItemCategoryHashes } from '@dlb/dim/data/d2/generated-enums';
 // import { setD2Manifest } from '../manifest/actions';
 import { getManifest } from '@dlb/dim/manifest/manifest-service-json';
-import { HashLookupFailure, ManifestDefinitions } from './definitions';
+import { ManifestDefinitions } from './definitions';
 
 const lazyTables = [
 	'InventoryItem',
@@ -77,7 +77,7 @@ const lazyTables = [
 	'Trait',
 	'PowerCap',
 	'BreakerType',
-	'EventCard'
+	'EventCard',
 ];
 
 const eagerTables = [
@@ -87,7 +87,7 @@ const eagerTables = [
 	'Race',
 	'Faction',
 	'ItemTierType',
-	'ActivityMode'
+	'ActivityMode',
 ];
 
 /** These aren't really lazy */
@@ -158,7 +158,7 @@ export async function getDefinitions(): Promise<D2ManifestDefinitions> {
 export function buildDefinitionsFromManifest(db: AllDestinyManifestComponents) {
 	enhanceDBWithFakeEntries(db);
 	const defs = {
-		isDestiny2: () => true
+		isDestiny2: () => true,
 	};
 	lazyTables.forEach((tableShort) => {
 		const table =
@@ -193,7 +193,7 @@ export function buildDefinitionsFromManifest(db: AllDestinyManifestComponents) {
 			},
 			getAll() {
 				return db[table];
-			}
+			},
 		};
 	});
 	// Resources that need to be fully loaded (because they're iterated over)
@@ -210,6 +210,6 @@ function enhanceDBWithFakeEntries(db: AllDestinyManifestComponents) {
 	// We made up an item category for special grenade launchers. For now they can just be a copy
 	// of the regular "Grenade Launcher" category but we could patch in localized descriptions if we wanted.
 	db.DestinyItemCategoryDefinition[-ItemCategoryHashes.GrenadeLaunchers] = {
-		...db.DestinyItemCategoryDefinition[ItemCategoryHashes.GrenadeLaunchers]
+		...db.DestinyItemCategoryDefinition[ItemCategoryHashes.GrenadeLaunchers],
 	};
 }

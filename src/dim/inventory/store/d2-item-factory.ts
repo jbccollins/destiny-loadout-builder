@@ -7,10 +7,8 @@ import {
 } from '@dlb/dim/search/d2-known-values';
 import { lightStats } from '@dlb/dim/search/search-filter-values';
 import { errorLog, warnLog } from '@dlb/dim/utils/log';
-import { countEnhancedPerks } from '@dlb/dim/utils/socket-utils';
 import {
 	BucketCategory,
-	ComponentPrivacySetting,
 	DestinyAmmunitionType,
 	DestinyClass,
 	DestinyCollectibleComponent,
@@ -19,17 +17,12 @@ import {
 	DestinyItemComponent,
 	DestinyItemComponentSetOfint64,
 	DestinyItemInstanceComponent,
-	DestinyItemResponse,
 	DestinyItemSubType,
 	DestinyItemType,
 	DestinyObjectiveProgress,
 	DestinyProfileRecordsComponent,
-	DictionaryComponentResponse,
-	ItemBindStatus,
 	ItemLocation,
-	ItemPerkVisibility,
 	ItemState,
-	SingleComponentResponse,
 	TransferStatuses,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 // import enhancedIntrinsics from 'data/d2/crafting-enhanced-intrinsics';
@@ -41,9 +34,9 @@ import {
 	ItemCategoryHashes,
 	StatHashes,
 } from '@dlb/dim/data/d2/generated-enums';
+import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
-import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 // import { warnMissingDefinition } from '../../manifest/manifest-service-json';
 // import { reportException } from '@dlb/dim/utils/exceptions';
 import { InventoryBuckets } from '@dlb/dim/inventory/inventory-buckets';
@@ -57,7 +50,6 @@ import { createItemIndex } from '@dlb/dim/inventory/store/item-index';
 import { buildMasterwork } from './masterwork';
 import { buildSockets } from './sockets';
 import { buildStats } from './stats';
-import { EModCategoryId } from '@dlb/types/IdEnums';
 
 const collectiblesByItemHash = memoizeOne(
 	(Collectible: ReturnType<D2ManifestDefinitions['Collectible']['getAll']>) =>

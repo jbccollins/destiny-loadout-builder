@@ -128,7 +128,6 @@ function AspectSelector() {
 			];
 		}
 	}
-	console.log({ firstDisabledAspectIdList, secondDisabledAspectIdList });
 
 	const handleChange = (aspectId: EAspectId, index: number) => {
 		const aspectIds = [...selectedAspects[destinySubclassId]];

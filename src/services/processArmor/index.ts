@@ -488,15 +488,15 @@ export const getMaxPossibleMetadata = ({
 			processedArmorSlotCount === ArmorSlotWithClassItemIdList.length &&
 			processedArmorStatCount === ArmorStatIdList.length
 		) {
-			console.log('>>> break', totalIterations);
+			// console.log('>>> break', totalIterations);
 			break;
 		}
 	}
-	console.log('>>> iterations', {
-		totalIterations,
-		armorSlotIterations,
-		armorStatIterations,
-	});
+	// console.log('>>> iterations', {
+	// 	totalIterations,
+	// 	armorSlotIterations,
+	// 	armorStatIterations,
+	// });
 	return { maxReservedArmorSlotEnergy, maxStatTiers };
 };
 

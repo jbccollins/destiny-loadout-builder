@@ -1,3 +1,4 @@
+import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 
@@ -8,6 +9,7 @@ import {
 	ArmorMetadata,
 	AvailableExoticArmor,
 	AvailableExoticArmorItem,
+	ExoticPerk,
 	StatList,
 	generateArmorGroup,
 	generateAvailableExoticArmorGroup,
@@ -83,7 +85,8 @@ export const getValidDestinyClassIds = (
 
 // Convert a DimStore into our own, smaller, types and transform the data into the desired shape.
 export const extractArmor = (
-	stores: DimStore<DimItem>[]
+	stores: DimStore<DimItem>[],
+	manifest: D2ManifestDefinitions
 ): [Armor, AvailableExoticArmor, ArmorMetadata] => {
 	const armor: Armor = {
 		[EDestinyClassId.Titan]: generateArmorGroup(),
@@ -121,6 +124,21 @@ export const extractArmor = (
 					if (seenExotics[item.hash]) {
 						seenExotics[item.hash].count++;
 					} else {
+						const exoticPerkHash = item.sockets.allSockets.find((socket) => {
+							return socket.socketDefinition.socketTypeHash === 965959289;
+						})?.socketDefinition?.singleInitialItemHash;
+
+						let exoticPerk: ExoticPerk = null;
+						// Aeon Exotics have no exotic perk. They have mod sockets instead
+						if (exoticPerkHash) {
+							const _exoticPerk = manifest.InventoryItem.get(exoticPerkHash);
+							exoticPerk = {
+								name: _exoticPerk.displayProperties.name,
+								description: _exoticPerk.displayProperties.description,
+								icon: bungieNetPath(_exoticPerk.displayProperties.icon),
+								hash: exoticPerkHash,
+							};
+						}
 						armorMetadata[destinyClassName].exotic.items[armorSlot][item.name] =
 							getDefaultArmorCountMaxStatsMetadata();
 						seenExotics[item.hash] = {
@@ -131,6 +149,7 @@ export const extractArmor = (
 							destinyClassName:
 								DestinyClassStringToDestinyClassId[item.classTypeNameLocalized],
 							count: 1,
+							exoticPerk,
 						};
 					}
 				}

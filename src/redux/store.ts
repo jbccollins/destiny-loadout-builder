@@ -41,7 +41,6 @@ import resultsPaginationReducer, {
 	setResultsPagination,
 } from './features/resultsPagination/resultsPaginationSlice';
 
-import { getDlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
 import { NIL } from 'uuid';
 import armorSlotModViolationsReducer, {
 	setArmorSlotModViolations,
@@ -61,7 +60,6 @@ import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/s
 import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
 
 import { EModId } from '@dlb/generated/mod/EModId';
-import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
 import {
 	DoProcessArmorOutput,
 	doProcessArmor,
@@ -504,22 +502,22 @@ function handleChange() {
 			);
 		}
 	}
-	const localLoadout: DlbLoadoutConfiguration = getDlbLoadoutConfiguration({
-		desiredArmorStats,
-		selectedDestinyClass,
-		selectedFragments,
-		selectedDestinySubclass,
-		selectedArmorSlotMods,
-		selectedRaidMods,
-		selectedExoticArmor,
-		selectedJump,
-		selectedMelee,
-		selectedGrenade,
-		selectedClassAbility,
-		selectedSuperAbility,
-		selectedAspects,
-	});
-	console.log('>>>>>>>>>>localLoadout', localLoadout);
+	// const localLoadout: DlbLoadoutConfiguration = getDlbLoadoutConfiguration({
+	// 	desiredArmorStats,
+	// 	selectedDestinyClass,
+	// 	selectedFragments,
+	// 	selectedDestinySubclass,
+	// 	selectedArmorSlotMods,
+	// 	selectedRaidMods,
+	// 	selectedExoticArmor,
+	// 	selectedJump,
+	// 	selectedMelee,
+	// 	selectedGrenade,
+	// 	selectedClassAbility,
+	// 	selectedSuperAbility,
+	// 	selectedAspects,
+	// });
+	// console.log('>>>>>>>>>>localLoadout', localLoadout);
 }
 
 store.subscribe(handleChange);

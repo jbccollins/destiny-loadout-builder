@@ -30,7 +30,12 @@ function SelectionControlGroup({
 			<Title>
 				<Box sx={{ flex: 1 }}>{title}</Box>
 				{clearHandler && (
-					<Button size="small" variant="outlined" onClick={clearHandler}>
+					<Button
+						sx={{ marginRight: '8px' }}
+						size="small"
+						variant="outlined"
+						onClick={clearHandler}
+					>
 						Clear
 					</Button>
 				)}

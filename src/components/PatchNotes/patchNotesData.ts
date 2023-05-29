@@ -11,6 +11,20 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-05-28',
+		version: '2.0.7',
+		title: 'Add exotic perk details to exotic armor selector',
+		sections: [
+			{
+				items: [
+					`Adds exotic perk name, icon and description to the exotic armor selector`,
+					`Adds more space on mobile for users to click out of the fragment selector`,
+					`Adjusts some styling for buttons`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-05-24',
 		version: '2.0.6',
 		title: 'Fix bug where some artifice armor was not considered',

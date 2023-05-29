@@ -94,6 +94,13 @@ export type AvailableExoticArmorGroup = {
 	[EArmorSlotId.Leg]: AvailableExoticArmorItem[];
 };
 
+export type ExoticPerk = {
+	name: string;
+	description: string;
+	hash: number;
+	icon: string;
+};
+
 // TODO: I think we only really need the hash here.
 // It would be easy enough to look it up on click given that we know
 // the selected class and the slot
@@ -104,6 +111,7 @@ export type AvailableExoticArmorItem = {
 	icon: string;
 	armorSlot: EArmorSlotId;
 	destinyClassName: EDestinyClassId;
+	exoticPerk: ExoticPerk | null;
 	// TODO: Maybe this would be an ez way to pre-filter out exotics when
 	// there is no masterworked instance of that exotic?
 	// hasMasterworkedVariant: boolean
@@ -116,6 +124,7 @@ const defaultAvailableExoticArmorItem: AvailableExoticArmorItem = {
 	icon: '',
 	armorSlot: EArmorSlotId.Head,
 	destinyClassName: EDestinyClassId.Warlock,
+	exoticPerk: null,
 };
 
 export const getDefaultAvailableExoticArmorItem = () =>

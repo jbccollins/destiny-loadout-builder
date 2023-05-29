@@ -385,8 +385,10 @@ function Loading() {
 				const stores = await loadStoresData(mostRecentPlatform);
 				console.log('>>>>>>>>>>> [LOAD] stores <<<<<<<<<<<', stores);
 				setHasStores(true);
-				const [armor, availableExoticArmor, armorMetadata] =
-					extractArmor(stores);
+				const [armor, availableExoticArmor, armorMetadata] = extractArmor(
+					stores,
+					manifest
+				);
 
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));

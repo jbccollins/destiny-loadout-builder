@@ -389,7 +389,7 @@ export const getValidRaidModArmorSlotPlacements = (
 			validPlacements.push(validPlacement);
 		}
 	}
-	console.log('>>>>>>>>+ valid placements:', validPlacements);
+	// console.log('>>>>>>>>+ valid placements:', validPlacements);
 	return validPlacements.length > 0
 		? validPlacements
 		: [getDefaultValidRaidModArmorSlotPlacement()];

@@ -17,7 +17,6 @@ import {
 	NUM_ARMOR_PIECES,
 	NUM_POTENTIAL_ARTIFICER_PIECES,
 } from '@dlb/utils/item-utils';
-import { isEqual } from 'lodash';
 import { roundUp10 } from './utils';
 
 export type StatModCombo = Record<EArmorStatId, GenericRequiredModCombo>;
@@ -46,9 +45,6 @@ const getUnfilteredStatModCombos = (
 		[EArmorStatId.Intellect]: null,
 		[EArmorStatId.Strength]: null,
 	};
-	if (isEqual(currentStats, [27, 60, 71, 83, 40, 27])) {
-		console.log('here');
-	}
 	// We will recreate the totalTargetStatShortfall as we go
 	// when we want zero wasted stats.
 	let _totalTargetStatShortfall = useZeroWastedStats
@@ -133,10 +129,6 @@ export const getAllValidStatModCombos = ({
 	totalTargetStatShortfall,
 	currentStats,
 }: GetAllValidStatModCombosParams) => {
-	if (isEqual(currentStats, [27, 65, 65, 65, 70, 25])) {
-		console.log('here');
-	}
-
 	const unfilteredStatModCombos = getUnfilteredStatModCombos(
 		targetStatShortfalls,
 		useZeroWastedStats,

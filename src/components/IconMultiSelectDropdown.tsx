@@ -65,7 +65,8 @@ const MenuProps = {
 	PaperProps: {
 		style: {
 			// maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			// maxHeight: '70vh',
+			maxHeight: '70vh',
+			marginTop: '-12vh',
 			width: 250,
 		},
 	},

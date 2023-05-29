@@ -1,16 +1,62 @@
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
 	selectSelectedExoticArmor,
 	setSelectedExoticArmor,
 } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 
-import IconAutocompleteDropdown from './IconAutocompleteDropdown';
-import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
+import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
+import { MISSING_ICON } from '@dlb/types/globals';
+import { Box } from '@mui/material';
 import { useMemo } from 'react';
+import IconAutocompleteDropdown from './IconAutocompleteDropdown';
+
+const getExtraContent = (option: AvailableExoticArmorItem) => {
+	return (
+		<Box sx={{ marginTop: '10px' }}>
+			{option.exoticPerk && (
+				<Box>
+					<Box sx={{ display: 'flex', alignItems: 'center' }}>
+						<Box>
+							<BungieImage
+								width={'25px'}
+								height={'25px'}
+								src={option.exoticPerk.icon}
+							/>
+						</Box>
+						<Box
+							sx={{ marginLeft: '4px', fontSize: '14px', marginTop: '-5px' }}
+						>
+							{option.exoticPerk.name}
+						</Box>
+					</Box>
+					<Box sx={{ fontSize: '12px' }}>{option.exoticPerk.description}</Box>
+				</Box>
+			)}
+			{!option.exoticPerk && (
+				<Box>
+					<Box sx={{ display: 'flex', alignItems: 'center' }}>
+						<Box>
+							<BungieImage width={'25px'} height={'25px'} src={MISSING_ICON} />
+						</Box>
+						<Box
+							sx={{ marginLeft: '4px', fontSize: '14px', marginTop: '-5px' }}
+						>
+							No Exotic Perk
+						</Box>
+					</Box>
+					<Box sx={{ fontSize: '12px' }}>
+						{'Aeon exotics have no intrinsic exotic perk.'}
+					</Box>
+				</Box>
+			)}
+		</Box>
+	);
+};
 
 function ExoticSelector() {
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
@@ -62,6 +108,7 @@ function ExoticSelector() {
 				getGroupBy={(option: AvailableExoticArmorItem) =>
 					getArmorSlot(option.armorSlot).name
 				}
+				getExtraContent={getExtraContent}
 				getLabel={(option: AvailableExoticArmorItem) => option.name}
 				textFieldClassName={'exotic-selector-text-field'}
 			/>

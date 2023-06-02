@@ -20,6 +20,7 @@ import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/sel
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import generateDimLink from '@dlb/services/links/generateDimLoadoutLink';
+import { isRaidOrNightmareRequiredClassItem } from '@dlb/services/processArmor/utils';
 import { ArmorItem, getExtraMasterworkedStats } from '@dlb/types/Armor';
 import {
 	ArmorSlotWithClassItemIdList,
@@ -42,6 +43,7 @@ import {
 	EDestinyClassId,
 	EElementId,
 	EMasterworkAssumption,
+	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
 import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
@@ -191,10 +193,14 @@ const calculateExtraMasterworkedStats = (
 // Does not have a masterworked class item
 const getClassItemText = (item: ResultsTableLoadout): string => {
 	const artificeArmorItems = item.armorItems.filter((x) => x.isArtifice);
-	if (item.requiredClassItemExtraModSocketCategoryId !== null) {
+	if (
+		item.requiredClassItemMetadataKey !== null &&
+		isRaidOrNightmareRequiredClassItem(item.requiredClassItemMetadataKey)
+	) {
 		return `Any Masterworked ${
-			getRaidAndNightmareModType(item.requiredClassItemExtraModSocketCategoryId)
-				.abbreviation
+			getRaidAndNightmareModType(
+				item.requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
+			).abbreviation
 		} Class Item`;
 	}
 	if (artificeArmorItems.length < item.requiredArtificeModIdList.length) {

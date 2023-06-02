@@ -30,6 +30,7 @@ import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
+import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
@@ -175,6 +176,7 @@ function Loading() {
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
+	// const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
@@ -392,14 +394,18 @@ function Loading() {
 					mostRecentPlatform
 				);
 				setHasStores(true);
-				const [armor, availableExoticArmor, armorMetadata] = extractArmor(
-					stores,
-					manifest
-				);
+				const [
+					armor,
+					availableExoticArmor,
+					armorMetadata,
+					allClassItemMetadata,
+				] = extractArmor(stores, manifest);
 
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
 				dispatch(setArmorMetadata({ ...armorMetadata }));
+				dispatch(setAllClassItemMetadata(allClassItemMetadata));
+
 				const validDestinyClassIds = getValidDestinyClassIds(armorMetadata);
 				console.log(
 					'>>>>>>>>>>> [LOAD] validDestinyClassIds <<<<<<<<<<<',
@@ -469,7 +475,8 @@ function Loading() {
 					// 		dimLoadoutsFilter,
 					// 		selectedMinimumGearTier,
 					// 		selectedRaidMods,
-					// 		reservedArmorSlotEnergy
+					// 		reservedArmorSlotEnergy,
+					// 		allClassItemMetadata
 					// 	]
 					// we can "dirty" the store so it knows it needs to recalculate the
 					// processedArmorItems

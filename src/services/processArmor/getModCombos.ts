@@ -7,11 +7,7 @@ import {
 	ArmorStatMapping,
 	getArmorStatModSpitFromArmorStatId,
 } from '@dlb/types/ArmorStat';
-import {
-	EArmorSlotId,
-	EDestinyClassId,
-	ERaidAndNightMareModTypeId,
-} from '@dlb/types/IdEnums';
+import { EArmorSlotId, EDestinyClassId } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotCapacity,
 	ArmorSlotIdToModIdListMapping,
@@ -29,6 +25,7 @@ import {
 } from './getStatModCombosFromDesiredStats';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import {
+	RequiredClassItemMetadataKey,
 	getItemCountsFromSeenArmorSlotItems,
 	sumModCosts,
 	sumStatLists,
@@ -130,7 +127,7 @@ export const getDefaultModComboArmorSlotMetadata =
 export type ModCombos = {
 	armorSlotMetadata: ModComboArmorSlotMetadata;
 	lowestCostPlacement: ModPlacement;
-	requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
 	hasMasterworkedClassItem: boolean;
 	// TODO: fewestWastedStatsPlacement: ModPlacement;
 	// TODO: mostStatTiersPlacement: ModPlacement;
@@ -163,7 +160,7 @@ export const getDefaultModCombos = (): ModCombos => ({
 			},
 		},
 	},
-	requiredClassItemRaidAndNightmareModTypeId: null,
+	requiredClassItemMetadataKey: null,
 	hasMasterworkedClassItem: false,
 });
 
@@ -207,13 +204,11 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	}
 
 	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
-		specialSeenArmorSlotItems,
-		false
+		specialSeenArmorSlotItems
 	);
 	let seenArtificeCount = seenItemCounts.Artifice;
 
-	let requiredClassItemRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId =
-		null;
+	let requiredClassItemMetadataKey: RequiredClassItemMetadataKey = null;
 
 	let filteredPotentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] =
 		null;
@@ -229,6 +224,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 				potentialRaidModArmorSlotPlacements,
 				raidMods,
 				specialSeenArmorSlotItems,
+				allClassItemMetadata,
 			});
 		// We have nowhere to put raid mods
 		if (!potentialRaidModPlacements?.potentialPlacements) {
@@ -236,8 +232,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		}
 		const {
 			potentialPlacements: _raidModArmorSlotPlacements,
-			requiredClassItemRaidAndNightmareModTypeId:
-				_requiredClassItemRaidAndNightmareTypeId,
+			requiredClassItemMetadataKey: _requiredClassItemMetadataKey,
 		} = potentialRaidModPlacements;
 
 		if (_raidModArmorSlotPlacements.length === 0) {
@@ -245,8 +240,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 		}
 
 		filteredPotentialRaidModArmorSlotPlacements = _raidModArmorSlotPlacements;
-		requiredClassItemRaidAndNightmareModTypeId =
-			_requiredClassItemRaidAndNightmareTypeId;
+		requiredClassItemMetadataKey = _requiredClassItemMetadataKey;
 	}
 
 	let hasMasterworkedClassItem = false;
@@ -256,10 +250,10 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	// to use a standard masterworked legendary class item over an unmasterworked artifice class item.
 	// The current logic here is bad. We probably need to check both cases and return each
 	// as a different result if both have valid mod combos.
-	if (requiredClassItemRaidAndNightmareModTypeId === null) {
-		if (allClassItemMetadata.Artifice.exists) {
+	if (requiredClassItemMetadataKey === null) {
+		if (allClassItemMetadata.Artifice.items.length > 0) {
 			seenArtificeCount++;
-			if (allClassItemMetadata.Artifice.isMasterworked) {
+			if (allClassItemMetadata.Artifice.hasMasterworkedVariant) {
 				hasMasterworkedClassItem = true;
 				_sumOfSeenStats = sumStatLists([
 					sumOfSeenStats,
@@ -267,7 +261,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 				]);
 			}
 		} else {
-			if (allClassItemMetadata.Legendary.isMasterworked) {
+			if (allClassItemMetadata.Legendary.hasMasterworkedVariant) {
 				hasMasterworkedClassItem = true;
 				_sumOfSeenStats = sumStatLists([
 					sumOfSeenStats,
@@ -276,8 +270,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 			}
 		}
 	} else if (
-		allClassItemMetadata[requiredClassItemRaidAndNightmareModTypeId]
-			.isMasterworked
+		allClassItemMetadata[requiredClassItemMetadataKey].hasMasterworkedVariant
 	) {
 		hasMasterworkedClassItem = true;
 		_sumOfSeenStats = sumStatLists([
@@ -339,7 +332,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos => {
 	const result: ModCombos = {
 		armorSlotMetadata: getDefaultModComboArmorSlotMetadata(),
 		lowestCostPlacement,
-		requiredClassItemRaidAndNightmareModTypeId,
+		requiredClassItemMetadataKey,
 		hasMasterworkedClassItem,
 	};
 

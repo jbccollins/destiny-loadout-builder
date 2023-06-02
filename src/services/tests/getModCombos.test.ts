@@ -129,7 +129,11 @@ const testCases: TestCase[] = [
 				useZeroWastedStats: false,
 				allClassItemMetadata: {
 					...getDefaultArmorMetadataItem().classItem,
-					Artifice: { exists: true, isMasterworked: true, exampleId: '1' },
+					Artifice: {
+						exists: true,
+						hasMasterworkedVariant: true,
+						exampleId: '1',
+					},
 				},
 			},
 		],

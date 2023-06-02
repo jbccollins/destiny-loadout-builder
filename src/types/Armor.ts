@@ -76,6 +76,23 @@ export type ArmorItem = {
 	intrinsicArmorPerkOrAttributeId: EIntrinsicArmorPerkOrAttributeId;
 };
 
+export const getDefaultArmorItem = (): ArmorItem => ({
+	name: '',
+	icon: '',
+	id: '',
+	baseStatTotal: 0,
+	power: 0,
+	stats: [0, 0, 0, 0, 0, 0],
+	armorSlot: EArmorSlotId.Head,
+	hash: 0,
+	destinyClassName: EDestinyClassId.Warlock,
+	isMasterworked: false,
+	gearTierId: EGearTierId.Legendary,
+	isArtifice: false,
+	socketableRaidAndNightmareModTypeId: null,
+	intrinsicArmorPerkOrAttributeId: null,
+});
+
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/
 // TODO: Could we do this more cleanly by pulling from the Armor directly? I think this is probably
 // fine though. It's a bit more explicit and easier to code with, even if it isn't very DRY.
@@ -157,10 +174,22 @@ export type ArmorSlotMetadata = {
 };
 
 export type ClassItemMetadata = {
-	exists: boolean;
-	isMasterworked: boolean;
+	hasMasterworkedVariant: boolean;
 	exampleId: string;
+	items: ArmorItem[];
 };
+
+export type DestinyClassToAllClassItemMetadataMapping = Record<
+	EDestinyClassId,
+	AllClassItemMetadata
+>;
+
+export const getDefaultDestinyClassToAllClassItemMetadataMapping =
+	(): DestinyClassToAllClassItemMetadataMapping => ({
+		[EDestinyClassId.Hunter]: getDefaultAllClassItemMetadata(),
+		[EDestinyClassId.Warlock]: getDefaultAllClassItemMetadata(),
+		[EDestinyClassId.Titan]: getDefaultAllClassItemMetadata(),
+	});
 
 export type AllClassItemMetadata = Record<
 	ERaidAndNightMareModTypeId,
@@ -190,7 +219,6 @@ export type ArmorMetadataItem = {
 		count: number;
 		items: Partial<Record<EIntrinsicArmorPerkOrAttributeId, ArmorSlotMetadata>>;
 	};
-	classItem: AllClassItemMetadata;
 };
 
 const defaultArmorMaxStatsMetadata: ArmorMaxStatsMetadata = {
@@ -240,9 +268,9 @@ const defaultArmorSlotMetadata: ArmorSlotMetadata = {
 const getDefaultArmorSlotMetadata = () => cloneDeep(defaultArmorSlotMetadata);
 
 const getDefaultClassItemMetadata = (): ClassItemMetadata => ({
-	exists: false,
-	isMasterworked: false,
+	hasMasterworkedVariant: false,
 	exampleId: null,
+	items: [],
 });
 
 const ArmorMetadataItem: ArmorMetadataItem = {
@@ -298,36 +326,34 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 				getDefaultArmorSlotMetadata(),
 		},
 	},
-	classItem: {
-		[EIntrinsicArmorPerkOrAttributeId.GuardianGames]:
-			getDefaultClassItemMetadata(),
-		[EIntrinsicArmorPerkOrAttributeId.HalloweenMask]:
-			getDefaultClassItemMetadata(),
-		[EIntrinsicArmorPerkOrAttributeId.IronBanner]:
-			getDefaultClassItemMetadata(),
-		[EIntrinsicArmorPerkOrAttributeId.PlunderersTrappings]:
-			getDefaultClassItemMetadata(),
-		[EIntrinsicArmorPerkOrAttributeId.QueensFavor]:
-			getDefaultClassItemMetadata(),
-		[EIntrinsicArmorPerkOrAttributeId.SeraphSensorArray]:
-			getDefaultClassItemMetadata(),
-		[EIntrinsicArmorPerkOrAttributeId.UniformedOfficer]:
-			getDefaultClassItemMetadata(),
-		[ERaidAndNightMareModTypeId.LastWish]: getDefaultClassItemMetadata(),
-		[ERaidAndNightMareModTypeId.GardenOfSalvation]:
-			getDefaultClassItemMetadata(),
-		[ERaidAndNightMareModTypeId.DeepStoneCrypt]: getDefaultClassItemMetadata(),
-		[ERaidAndNightMareModTypeId.VaultOfGlass]: getDefaultClassItemMetadata(),
-		[ERaidAndNightMareModTypeId.VowOfTheDisciple]:
-			getDefaultClassItemMetadata(),
-		[ERaidAndNightMareModTypeId.KingsFall]: getDefaultClassItemMetadata(),
-		[ERaidAndNightMareModTypeId.RootOfNightmares]:
-			getDefaultClassItemMetadata(),
-		[ERaidAndNightMareModTypeId.NightmareHunt]: getDefaultClassItemMetadata(),
-		Legendary: getDefaultClassItemMetadata(),
-		Artifice: getDefaultClassItemMetadata(),
-	},
 };
+
+const allClassItemMetadata: AllClassItemMetadata = {
+	[EIntrinsicArmorPerkOrAttributeId.GuardianGames]:
+		getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.HalloweenMask]:
+		getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.IronBanner]: getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.PlunderersTrappings]:
+		getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.QueensFavor]: getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.SeraphSensorArray]:
+		getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.UniformedOfficer]:
+		getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.LastWish]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.GardenOfSalvation]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.DeepStoneCrypt]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.VaultOfGlass]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.VowOfTheDisciple]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.KingsFall]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.RootOfNightmares]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.NightmareHunt]: getDefaultClassItemMetadata(),
+	Legendary: getDefaultClassItemMetadata(),
+	Artifice: getDefaultClassItemMetadata(),
+};
+export const getDefaultAllClassItemMetadata = () =>
+	cloneDeep(allClassItemMetadata);
 
 export const getDefaultArmorMetadataItem = () => cloneDeep(ArmorMetadataItem);
 

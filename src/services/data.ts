@@ -9,12 +9,14 @@ import {
 	ArmorMetadata,
 	AvailableExoticArmor,
 	AvailableExoticArmorItem,
+	DestinyClassToAllClassItemMetadataMapping,
 	ExoticPerk,
 	StatList,
 	generateArmorGroup,
 	generateAvailableExoticArmorGroup,
 	getDefaultArmorCountMaxStatsMetadata,
 	getDefaultArmorMetadata,
+	getDefaultDestinyClassToAllClassItemMetadataMapping,
 } from '@dlb/types/Armor';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
@@ -87,7 +89,12 @@ export const getValidDestinyClassIds = (
 export const extractArmor = (
 	stores: DimStore<DimItem>[],
 	manifest: D2ManifestDefinitions
-): [Armor, AvailableExoticArmor, ArmorMetadata] => {
+): [
+	Armor,
+	AvailableExoticArmor,
+	ArmorMetadata,
+	DestinyClassToAllClassItemMetadataMapping
+] => {
 	const armor: Armor = {
 		[EDestinyClassId.Titan]: generateArmorGroup(),
 		[EDestinyClassId.Hunter]: generateArmorGroup(),
@@ -101,6 +108,8 @@ export const extractArmor = (
 	};
 
 	const armorMetadata: ArmorMetadata = getDefaultArmorMetadata();
+	const allClassItemMetadataMapping: DestinyClassToAllClassItemMetadataMapping =
+		getDefaultDestinyClassToAllClassItemMetadataMapping();
 
 	const seenExotics: Record<number, AvailableExoticArmorItem> = {};
 
@@ -211,73 +220,85 @@ export const extractArmor = (
 					// Set the class item metadata. Class items are all interchangeable
 					if (armorItem.armorSlot === EArmorSlotId.ClassItem) {
 						if (armorItem.gearTierId === EGearTierId.Legendary) {
+							// TODO: This is storing duplicates of the raid, artifice and intrinsic class items
+							allClassItemMetadataMapping[
+								destinyClassName
+							].Legendary.items.push(armorItem);
 							// Set the legendary class item existence
-							if (!armorMetadata[destinyClassName].classItem.Legendary.exists) {
-								armorMetadata[destinyClassName].classItem.Legendary.exists =
-									true;
-								armorMetadata[destinyClassName].classItem.Legendary.exampleId =
-									armorItem.id;
+							if (
+								allClassItemMetadataMapping[destinyClassName].Legendary.items
+									.length === 0
+							) {
+								allClassItemMetadataMapping[
+									destinyClassName
+								].Legendary.exampleId = armorItem.id;
 							}
 							// Set the masterworked legendary class item existence
 							if (
 								armorItem.isMasterworked &&
-								!armorMetadata[destinyClassName].classItem.Legendary
-									.isMasterworked
+								!allClassItemMetadataMapping[destinyClassName].Legendary
+									.hasMasterworkedVariant
 							) {
-								armorMetadata[
+								allClassItemMetadataMapping[
 									destinyClassName
-								].classItem.Legendary.isMasterworked = true;
-								armorMetadata[destinyClassName].classItem.Legendary.exampleId =
-									armorItem.id;
+								].Legendary.hasMasterworkedVariant = true;
+								allClassItemMetadataMapping[
+									destinyClassName
+								].Legendary.exampleId = armorItem.id;
 							}
 
-							// Artifice clas items
+							// Artifice class items
 							if (armorItem.isArtifice) {
+								allClassItemMetadataMapping[
+									destinyClassName
+								].Artifice.items.push(armorItem);
 								if (
-									!armorMetadata[destinyClassName].classItem.Artifice.exists
+									allClassItemMetadataMapping[destinyClassName].Artifice.items
+										.length === 0
 								) {
-									armorMetadata[destinyClassName].classItem.Artifice.exists =
-										true;
-									armorMetadata[destinyClassName].classItem.Artifice.exampleId =
-										armorItem.id;
+									allClassItemMetadataMapping[
+										destinyClassName
+									].Artifice.exampleId = armorItem.id;
 								}
 								if (
 									armorItem.isMasterworked &&
-									!armorMetadata[destinyClassName].classItem.Artifice
-										.isMasterworked
+									!allClassItemMetadataMapping[destinyClassName].Artifice
+										.hasMasterworkedVariant
 								) {
-									armorMetadata[
+									allClassItemMetadataMapping[
 										destinyClassName
-									].classItem.Artifice.isMasterworked = true;
-									armorMetadata[destinyClassName].classItem.Artifice.exampleId =
-										armorItem.id;
+									].Artifice.hasMasterworkedVariant = true;
+									allClassItemMetadataMapping[
+										destinyClassName
+									].Artifice.exampleId = armorItem.id;
 								}
 							}
 
 							// Raid and nightmare class items
 							if (armorItem.socketableRaidAndNightmareModTypeId !== null) {
+								allClassItemMetadataMapping[destinyClassName][
+									armorItem.socketableRaidAndNightmareModTypeId
+								].items.push(armorItem);
+
 								if (
-									!armorMetadata[destinyClassName].classItem[
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.socketableRaidAndNightmareModTypeId
-									].exists
+									].items.length === 0
 								) {
-									armorMetadata[destinyClassName].classItem[
-										armorItem.socketableRaidAndNightmareModTypeId
-									].exists = true;
-									armorMetadata[destinyClassName].classItem[
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.socketableRaidAndNightmareModTypeId
 									].exampleId = armorItem.id;
 								}
 								if (
 									armorItem.isMasterworked &&
-									!armorMetadata[destinyClassName].classItem[
+									!allClassItemMetadataMapping[destinyClassName][
 										armorItem.socketableRaidAndNightmareModTypeId
-									].isMasterworked
+									].hasMasterworkedVariant
 								) {
-									armorMetadata[destinyClassName].classItem[
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.socketableRaidAndNightmareModTypeId
-									].isMasterworked = true;
-									armorMetadata[destinyClassName].classItem[
+									].hasMasterworkedVariant = true;
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.socketableRaidAndNightmareModTypeId
 									].exampleId = armorItem.id;
 								}
@@ -285,28 +306,33 @@ export const extractArmor = (
 
 							// Intrinsic perk or attribute class items
 							if (armorItem.intrinsicArmorPerkOrAttributeId !== null) {
+								allClassItemMetadataMapping[destinyClassName][
+									armorItem.intrinsicArmorPerkOrAttributeId
+								].items.push(armorItem);
+
 								if (
-									!armorMetadata[destinyClassName].classItem[
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.intrinsicArmorPerkOrAttributeId
-									].exists
+									].items.length === 0
 								) {
-									armorMetadata[destinyClassName].classItem[
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.intrinsicArmorPerkOrAttributeId
-									].exists = true;
-									armorMetadata[destinyClassName].classItem[
+									].exampleId = armorItem.id;
+
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.intrinsicArmorPerkOrAttributeId
 									].exampleId = armorItem.id;
 								}
 								if (
 									armorItem.isMasterworked &&
-									!armorMetadata[destinyClassName].classItem[
+									!allClassItemMetadataMapping[destinyClassName][
 										armorItem.intrinsicArmorPerkOrAttributeId
-									].isMasterworked
+									].hasMasterworkedVariant
 								) {
-									armorMetadata[destinyClassName].classItem[
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.intrinsicArmorPerkOrAttributeId
-									].isMasterworked = true;
-									armorMetadata[destinyClassName].classItem[
+									].hasMasterworkedVariant = true;
+									allClassItemMetadataMapping[destinyClassName][
 										armorItem.intrinsicArmorPerkOrAttributeId
 									].exampleId = armorItem.id;
 								}
@@ -377,7 +403,26 @@ export const extractArmor = (
 			);
 		});
 
-	return [armor, availableExoticArmor, armorMetadata];
+	// (a, b) =>
+	// b.capacity - a.capacity || a.armorSlotId.localeCompare(b.armorSlotId)
+
+	DestinyClassIdList.forEach((destinyClassId) => {
+		Object.values(allClassItemMetadataMapping[destinyClassId]).forEach((v) => {
+			// sort v
+			v.items.sort(
+				(a, b) =>
+					a.name.localeCompare(b.name) ||
+					Number(a.isMasterworked) - Number(b.isMasterworked)
+			);
+		});
+	});
+
+	return [
+		armor,
+		availableExoticArmor,
+		armorMetadata,
+		allClassItemMetadataMapping,
+	];
 };
 
 const isArtificeArmor = (item: DimItem): boolean => {

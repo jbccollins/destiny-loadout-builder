@@ -9,14 +9,11 @@ import {
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { RequiredClassItemMetadataKey } from '@dlb/services/processArmor/utils';
 import { ArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
-import {
-	EArmorSlotId,
-	EArmorStatId,
-	ERaidAndNightMareModTypeId,
-} from '@dlb/types/IdEnums';
+import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
 	Box,
@@ -176,7 +173,7 @@ export type ResultsTableLoadout = {
 	armorItems: ArmorItem[];
 	requiredStatModIdList: EModId[];
 	requiredArtificeModIdList: EModId[];
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
 };
 
 export type Order = 'asc' | 'desc';
@@ -377,7 +374,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 				armorIdList,
 				armorStatModIdList,
 				artificeModIdList,
-				requiredClassItemExtraModSocketCategoryId,
+				requiredClassItemMetadataKey,
 				metadata,
 			}) => {
 				const resultLoadout: ResultsTableLoadout = {
@@ -385,7 +382,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 					armorItems: [],
 					requiredStatModIdList: armorStatModIdList,
 					requiredArtificeModIdList: artificeModIdList,
-					requiredClassItemExtraModSocketCategoryId,
+					requiredClassItemMetadataKey,
 					sortableFields: {
 						[EArmorStatId.Mobility]: 0,
 						[EArmorStatId.Resilience]: 0,

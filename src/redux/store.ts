@@ -1,5 +1,6 @@
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 
+import allClassItemMetadataReducer from './features/allClassItemMetadata/allClassItemMetadataSlice';
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
 import armorReducer from './features/armor/armorSlice';
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
@@ -31,6 +32,7 @@ import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAs
 import selectedMeleeReducer from './features/selectedMelee/selectedMeleeSlice';
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
 import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
+
 import sharedLoadoutDesiredStatsReducer, {
 	setSharedLoadoutDesiredStats,
 } from './features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
@@ -115,6 +117,7 @@ function getChangedProperties(previousObj, currentObj, changes) {
 export function makeStore() {
 	return configureStore({
 		reducer: {
+			allClassItemMetadata: allClassItemMetadataReducer,
 			allDataLoaded: allDataLoadedReducer,
 			armor: armorReducer,
 			armorMetadata: armorMetadataReducer,
@@ -160,6 +163,7 @@ export function makeStore() {
 const store = makeStore();
 
 /**** This is a janky way to check when a change that would trigger a re-process of armor is needed *****/
+let allClassItemMetadataUuid = NIL;
 let desiredArmorStatsUuid = NIL;
 let selectedDestinyClassUuid = NIL;
 let selectedExoticArmorUuid = NIL;
@@ -199,6 +203,7 @@ function handleChange() {
 		previousState = currentState;
 	}
 	const {
+		allClassItemMetadata: { uuid: nextAllClassItemMetadataUuid },
 		allDataLoaded: { value: hasAllDataLoaded },
 		desiredArmorStats: { uuid: nextDesiredArmorStatsUuid },
 		selectedDestinyClass: { uuid: nextSelectedDestinyClassUuid },
@@ -221,6 +226,7 @@ function handleChange() {
 	} = store.getState();
 
 	const hasMismatchedUuids =
+		allClassItemMetadataUuid !== nextAllClassItemMetadataUuid ||
 		desiredArmorStatsUuid !== nextDesiredArmorStatsUuid ||
 		selectedDestinyClassUuid !== nextSelectedDestinyClassUuid ||
 		selectedExoticArmorUuid !== nextSelectedExoticArmorUuid ||
@@ -241,6 +247,7 @@ function handleChange() {
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
 		inGameLoadoutsUuid !== nextInGameLoadoutsUuid;
 	const hasNonDefaultUuids =
+		nextAllClassItemMetadataUuid !== NIL &&
 		nextDesiredArmorStatsUuid !== NIL &&
 		nextSelectedDestinyClassUuid !== NIL &&
 		nextSelectedExoticArmorUuid !== NIL &&
@@ -263,6 +270,7 @@ function handleChange() {
 	}
 
 	console.log('>>>>>>>>>>> [STORE] store is dirty <<<<<<<<<<<');
+	allClassItemMetadataUuid = nextAllClassItemMetadataUuid;
 	desiredArmorStatsUuid = nextDesiredArmorStatsUuid;
 	selectedDestinyClassUuid = nextSelectedDestinyClassUuid;
 	selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
@@ -282,6 +290,7 @@ function handleChange() {
 
 	// TODO: Move this out of the store file
 	const {
+		allClassItemMetadata: { value: allClassItemMetadata },
 		armor: { value: armor },
 		armorMetadata: { value: armorMetadata },
 		selectedExoticArmor: { value: selectedExoticArmor },
@@ -403,6 +412,7 @@ function handleChange() {
 		selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
+		allClassItemMetadata: allClassItemMetadata[selectedDestinyClass],
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {

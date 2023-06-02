@@ -32,7 +32,6 @@ import {
 	EGearTierId,
 	EInGameLoadoutsFilterId,
 	EMasterworkAssumption,
-	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToModIdListMapping,
@@ -43,13 +42,16 @@ import {
 	ArmorStatAndRaidModComboPlacement,
 	getModCombos,
 } from './getModCombos';
-import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import {
+	SeenArmorSlotItems,
+	getDefaultSeenArmorSlotItems,
+} from './seenArmorSlotItems';
+import {
+	RequiredClassItemMetadataKey,
 	getArmorStatMappingFromArtificeModIdList,
 	getArmorStatMappingFromStatList,
 	getExtraSumOfSeenStats,
 	getNextValues,
-	getSeenArmorSlotItemsFromClassItems,
 	getStatListFromArmorStatMapping,
 	getTotalModCost,
 	getTotalStatTiers,
@@ -185,8 +187,7 @@ const _processArmorBaseCase = ({
 			armorIdList,
 			armorStatModIdList: requiredArmorStatModIdList,
 			artificeModIdList: requiredArtificeModIdList,
-			requiredClassItemExtraModSocketCategoryId:
-				modCombos.requiredClassItemRaidAndNightmareModTypeId,
+			requiredClassItemMetadataKey: modCombos.requiredClassItemMetadataKey,
 			metadata: {
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
@@ -268,7 +269,7 @@ type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
 	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: ProcessedArmorItemMetadata;
 };
@@ -294,6 +295,7 @@ export type DoProcessArmorParams = {
 	selectedExotic: AvailableExoticArmorItem;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	useZeroWastedStats: boolean;
+	allClassItemMetadata: AllClassItemMetadata;
 };
 /**
  * @param {ArmorItems2} armorItems - [heads, arms, chests, legs]
@@ -315,14 +317,14 @@ export const doProcessArmor = ({
 	selectedExotic,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
+	allClassItemMetadata,
 }: DoProcessArmorParams): DoProcessArmorOutput => {
 	const sumOfSeenStats = getExtraSumOfSeenStats(
 		fragmentArmorStatMapping,
 		modArmorStatMapping
 	);
 
-	const seenArmorSlotItems =
-		getSeenArmorSlotItemsFromClassItems(armorMetadataItem);
+	const seenArmorSlotItems = getDefaultSeenArmorSlotItems();
 	const processArmorParams: ProcessArmorParams = {
 		masterworkAssumption,
 		desiredArmorStats,
@@ -337,7 +339,7 @@ export const doProcessArmor = ({
 		selectedExotic,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
-		allClassItemMetadata: armorMetadataItem.classItem,
+		allClassItemMetadata,
 	};
 
 	const processedArmor: ProcessArmorOutput = processArmor(processArmorParams);

@@ -3,6 +3,7 @@ import {
 	IIcon,
 	IIdentifiableName,
 	MISSING_ICON,
+	ValidateEnumList,
 } from './globals';
 import { ERaidAndNightMareModTypeId } from './IdEnums';
 
@@ -68,6 +69,20 @@ export const getRaidAndNightmareModType = (
 	id: ERaidAndNightMareModTypeId
 ): IRaidAndNightmareModType =>
 	RaidAndNightMareModTypeIdToRaidAndNightMareModTypeMapping[id];
+
+export const RaidAndNightmareModTypeIdList = ValidateEnumList(
+	Object.values(ERaidAndNightMareModTypeId),
+	[
+		ERaidAndNightMareModTypeId.DeepStoneCrypt,
+		ERaidAndNightMareModTypeId.GardenOfSalvation,
+		ERaidAndNightMareModTypeId.KingsFall,
+		ERaidAndNightMareModTypeId.LastWish,
+		ERaidAndNightMareModTypeId.NightmareHunt,
+		ERaidAndNightMareModTypeId.VaultOfGlass,
+		ERaidAndNightMareModTypeId.VowOfTheDisciple,
+		ERaidAndNightMareModTypeId.RootOfNightmares,
+	]
+);
 
 // TODO copy this icons over to the new mapping
 // // TODO: Fix the images for a few of the newer sockets

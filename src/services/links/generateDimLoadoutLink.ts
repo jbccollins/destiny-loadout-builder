@@ -1,31 +1,31 @@
 import { Loadout, LoadoutParameters } from '@destinyitemmanager/dim-api-types';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
+import { EJumpId } from '@dlb/generated/jump/EJumpId';
+import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { ArmorItem, AvailableExoticArmorItem } from '@dlb/types/Armor';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
+import { getAspect } from '@dlb/types/Aspect';
+import { getClassAbility } from '@dlb/types/ClassAbility';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
+import { getFragment } from '@dlb/types/Fragment';
+import { getGrenade } from '@dlb/types/Grenade';
 import {
 	EArmorStatId,
 	EDestinyClassId,
 	EDestinySubclassId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
-import { getFragment } from '@dlb/types/Fragment';
-import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
-import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
-import { ArmorItem, AvailableExoticArmorItem } from '@dlb/types/Armor';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { getAspect } from '@dlb/types/Aspect';
-import { EJumpId } from '@dlb/generated/jump/EJumpId';
-import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
-import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
-import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
-import { getClassAbility } from '@dlb/types/ClassAbility';
-import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
-import { getSuperAbility } from '@dlb/types/SuperAbility';
 import { getJump } from '@dlb/types/Jump';
 import { getMelee } from '@dlb/types/Melee';
-import { getGrenade } from '@dlb/types/Grenade';
-import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
-import { EModId } from '@dlb/generated/mod/EModId';
-import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
-import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { getSuperAbility } from '@dlb/types/SuperAbility';
 
 export type DimLoadoutConfiguration = {
 	raidModIdList: EModId[];
@@ -47,7 +47,18 @@ export type DimLoadoutConfiguration = {
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 };
 
-const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
+export const generateDimQuery = (armorList: ArmorItem[]): string => {
+	const query = armorList
+		.map((armorItem) => {
+			return `id:'${armorItem.id}'`;
+		})
+		.join(' or ');
+	return query;
+};
+
+export const generateDimLink = (
+	configuration: DimLoadoutConfiguration
+): string => {
 	const {
 		raidModIdList,
 		fragmentIdList,
@@ -185,5 +196,3 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 
 	return url;
 };
-
-export default generateDimLink;

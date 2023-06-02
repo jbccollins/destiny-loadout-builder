@@ -133,7 +133,7 @@ const testCases: TestCase[] = [
 					...getDefaultAllClassItemMetadata(),
 					[ERaidAndNightMareModTypeId.RootOfNightmares]: {
 						hasMasterworkedVariant: false,
-						exampleId: '0',
+
 						items: [
 							{
 								...getDefaultArmorItem(),
@@ -171,7 +171,6 @@ const testCases: TestCase[] = [
 							},
 						],
 						hasMasterworkedVariant: false,
-						exampleId: '0',
 					},
 					[ERaidAndNightMareModTypeId.DeepStoneCrypt]: {
 						items: [
@@ -182,7 +181,6 @@ const testCases: TestCase[] = [
 							},
 						],
 						hasMasterworkedVariant: false,
-						exampleId: '1',
 					},
 				},
 			},
@@ -219,7 +217,6 @@ const testCases: TestCase[] = [
 							},
 						],
 						hasMasterworkedVariant: false,
-						exampleId: '0',
 					},
 				},
 			},
@@ -256,7 +253,6 @@ const testCases: TestCase[] = [
 							},
 						],
 						hasMasterworkedVariant: false,
-						exampleId: '0',
 					},
 				},
 			},

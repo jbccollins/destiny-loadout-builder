@@ -11,6 +11,13 @@ export type SeenArmorSlotItem = {
 	isMasterworked: boolean;
 };
 
+export const getDefaultSeenArmorSlotItem = (): SeenArmorSlotItem => ({
+	isArtifice: false,
+	raidAndNightmareModTypeId: null,
+	intrinsicArmorPerkOrAttributeId: null,
+	isMasterworked: false,
+});
+
 export type SeenArmorSlotItems = {
 	[EArmorSlotId.Head]: SeenArmorSlotItem;
 	[EArmorSlotId.Arm]: SeenArmorSlotItem;
@@ -20,9 +27,9 @@ export type SeenArmorSlotItems = {
 
 export const getDefaultSeenArmorSlotItems = (): SeenArmorSlotItems => {
 	return {
-		[EArmorSlotId.Head]: null,
-		[EArmorSlotId.Arm]: null,
-		[EArmorSlotId.Chest]: null,
-		[EArmorSlotId.Leg]: null,
+		[EArmorSlotId.Head]: getDefaultSeenArmorSlotItem(),
+		[EArmorSlotId.Arm]: getDefaultSeenArmorSlotItem(),
+		[EArmorSlotId.Chest]: getDefaultSeenArmorSlotItem(),
+		[EArmorSlotId.Leg]: getDefaultSeenArmorSlotItem(),
 	};
 };

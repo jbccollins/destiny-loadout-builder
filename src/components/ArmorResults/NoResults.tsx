@@ -1,3 +1,6 @@
+import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
+import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
+import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectDimLoadoutsFilter } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
@@ -16,9 +19,6 @@ import {
 	EInGameLoadoutsFilterId,
 } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
-import DimLoadoutsFilterSelector from '../DimLoadoutsFilterSelector';
-import InGameLoadoutsFilterSelector from '../InGameLoadoutsFilterSelector';
-import UseZeroWastedStatsToggleSwitch from '../UseZeroWastedStatsToggleSwitch';
 
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',

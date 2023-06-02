@@ -32,7 +32,7 @@ import { PotentialRaidModArmorSlotPlacement, getMod } from '@dlb/types/Mod';
 import { RaidAndNightmareModTypeIdList } from '@dlb/types/RaidAndNightmareModType';
 import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 import { cloneDeep } from 'lodash';
-import { ARTIFICE, MAX_SINGLE_STAT_VALUE } from './constants';
+import { MAX_SINGLE_STAT_VALUE } from './constants';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 
 // Round a number up to the nearest 5
@@ -358,13 +358,23 @@ export const getNextValues = ({
 	armorSlotItem,
 	masterworkAssumption,
 }: GetNextValuesParams) => {
+	// export type SeenArmorSlotItem = {
+	// 	isArtifice: boolean;
+	// 	raidAndNightmareModTypeId: ERaidAndNightMareModTypeId | null;
+	// 	intrinsicArmorPerkOrAttributeId: EIntrinsicArmorPerkOrAttributeId | null;
+	// 	isMasterworked: boolean;
+	// };
+
 	const slot = getArmorSlotFromNumRemainingArmorPieces(numArmorItems);
 	const nextSeenArmorSlotItems = cloneDeep(seenArmorSlotItems);
 	if (armorSlotItem.isArtifice) {
-		nextSeenArmorSlotItems[slot] = ARTIFICE;
+		nextSeenArmorSlotItems[slot].isArtifice = true;
 	} else if (armorSlotItem.socketableRaidAndNightmareModTypeId !== null) {
-		nextSeenArmorSlotItems[slot] =
+		nextSeenArmorSlotItems[slot].raidAndNightmareModTypeId =
 			armorSlotItem.socketableRaidAndNightmareModTypeId;
+	} else if (armorSlotItem.intrinsicArmorPerkOrAttributeId !== null) {
+		nextSeenArmorSlotItems[slot].intrinsicArmorPerkOrAttributeId =
+			armorSlotItem.intrinsicArmorPerkOrAttributeId;
 	}
 	const nextSumOfSeenStats = getNextSeenStats(
 		sumOfSeenStats,

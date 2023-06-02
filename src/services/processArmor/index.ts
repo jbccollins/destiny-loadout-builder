@@ -142,7 +142,18 @@ const _processArmorBaseCase = ({
 		});
 		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
 
-		const modCombos = getModCombos({
+		// Single DSC
+		// if (
+		// 	isEqual(armorIdList, [
+		// 		'6917529773926529265',
+		// 		'6917529902551406277',
+		// 		'6917529902253861037',
+		// 		'6917529902224254662',
+		// 	])
+		// ) {
+		// 	console.log('KLJHLSFDKLHJSFDKLHJSDSFHJKL');
+		// }
+		const modCombosList = getModCombos({
 			sumOfSeenStats: finalSumOfSeenStats,
 			desiredArmorStats,
 			potentialRaidModArmorSlotPlacements,
@@ -153,49 +164,70 @@ const _processArmorBaseCase = ({
 			reservedArmorSlotEnergy,
 			useZeroWastedStats,
 			allClassItemMetadata,
+			masterworkAssumption,
 		});
-
-		if (modCombos === null) {
+		if (modCombosList === null) {
 			return;
 		}
-		// TODO: Change this based on what the user prioritizes
-		const placement = modCombos.lowestCostPlacement;
-		const hasMasterworkedClassItem = modCombos.hasMasterworkedClassItem;
+		modCombosList.forEach((modCombos) => {
+			// TODO: Change this based on what the user prioritizes
+			const placement = modCombos.lowestCostPlacement;
+			// const hasMasterworkedClassItem = modCombos.hasMasterworkedClassItem;
 
-		const requiredArmorStatModIdList = placement
-			? getModIdListFromArmorStatAndRaidModComboPlacement(placement.placement)
-			: [];
+			let hasMasterworkedClassItem = false;
 
-		const requiredArtificeModIdList = placement
-			? placement.artificeModIdList
-			: [];
+			if (allClassItemMetadata[modCombos.requiredClassItemMetadataKey]) {
+				if (
+					allClassItemMetadata[modCombos.requiredClassItemMetadataKey]
+						?.hasMasterworkedVariant
+				) {
+					hasMasterworkedClassItem = true;
+				}
+			} else {
+				hasMasterworkedClassItem =
+					allClassItemMetadata.Legendary?.hasMasterworkedVariant;
+			}
 
-		// const baseArmorStatMapping =
-		// 	getArmorStatMappingFromStatList(_finalSumOfSeenStats);
-		const baseArmorStatMapping =
-			getArmorStatMappingFromStatList(finalSumOfSeenStats);
-		const masterworkedStatList = hasMasterworkedClassItem
-			? getArmorStatMappingFromStatList(EXTRA_MASTERWORK_STAT_LIST)
-			: getDefaultArmorStatMapping();
-		const totalArmorStatMapping = sumArmorStatMappings([
-			masterworkedStatList,
-			baseArmorStatMapping,
-			getArmorStatMappingFromMods(requiredArmorStatModIdList, destinyClassId),
-			getArmorStatMappingFromArtificeModIdList(requiredArtificeModIdList),
-		]);
-		output.push({
-			armorIdList,
-			armorStatModIdList: requiredArmorStatModIdList,
-			artificeModIdList: requiredArtificeModIdList,
-			requiredClassItemMetadataKey: modCombos.requiredClassItemMetadataKey,
-			metadata: {
-				totalModCost: getTotalModCost(requiredArmorStatModIdList),
-				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
-				wastedStats: getWastedStats(totalArmorStatMapping),
-				totalArmorStatMapping,
+			const requiredArmorStatModIdList = placement
+				? getModIdListFromArmorStatAndRaidModComboPlacement(placement.placement)
+				: [];
+
+			const requiredArtificeModIdList = placement
+				? placement.artificeModIdList
+				: [];
+
+			// const baseArmorStatMapping =
+			// 	getArmorStatMappingFromStatList(_finalSumOfSeenStats);
+			const baseArmorStatMapping =
+				getArmorStatMappingFromStatList(finalSumOfSeenStats);
+			const masterworkedStatList = hasMasterworkedClassItem
+				? getArmorStatMappingFromStatList(EXTRA_MASTERWORK_STAT_LIST)
+				: getDefaultArmorStatMapping();
+			const totalArmorStatMapping = sumArmorStatMappings([
+				masterworkedStatList,
 				baseArmorStatMapping,
-				seenArmorSlotItems: finalSpecialSeenArmorSlotItems,
-			},
+				getArmorStatMappingFromMods(requiredArmorStatModIdList, destinyClassId),
+				getArmorStatMappingFromArtificeModIdList(requiredArtificeModIdList),
+			]);
+
+			output.push({
+				armorIdList,
+				armorStatModIdList: requiredArmorStatModIdList,
+				artificeModIdList: requiredArtificeModIdList,
+				metadata: {
+					totalModCost: getTotalModCost(requiredArmorStatModIdList),
+					totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
+					wastedStats: getWastedStats(totalArmorStatMapping),
+					totalArmorStatMapping,
+					baseArmorStatMapping,
+					seenArmorSlotItems: finalSpecialSeenArmorSlotItems,
+					classItem: {
+						requiredClassItemMetadataKey:
+							modCombos.requiredClassItemMetadataKey,
+						hasMasterworkedVariant: hasMasterworkedClassItem,
+					},
+				},
+			});
 		});
 	});
 	return output;
@@ -256,6 +288,16 @@ const processArmor = ({
 	});
 };
 
+export type ProcessedArmorItemMetadataClassItem = {
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
+	hasMasterworkedVariant: boolean;
+};
+
+export const getDefaultProcessedArmorItemMetadataClassItem = () => ({
+	requiredClassItemMetadataKey: null,
+	hasMasterworkedVariant: false,
+});
+
 export type ProcessedArmorItemMetadata = {
 	totalModCost: number;
 	totalStatTiers: number;
@@ -263,14 +305,13 @@ export type ProcessedArmorItemMetadata = {
 	totalArmorStatMapping: ArmorStatMapping;
 	baseArmorStatMapping: ArmorStatMapping;
 	seenArmorSlotItems: SeenArmorSlotItems;
+	classItem: ProcessedArmorItemMetadataClassItem;
 };
 
 type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
-	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
-	// Anything that the user can sort the results by should be pre-calculated right here
 	metadata: ProcessedArmorItemMetadata;
 };
 export type ProcessArmorOutput = ProcessArmorOutputItem[];
@@ -424,6 +465,7 @@ export const getMaxPossibleMetadata = ({
 						reservedArmorSlotEnergy: _reservedArmorSlotEnergy,
 						useZeroWastedStats: processArmorParams.useZeroWastedStats,
 						allClassItemMetadata: processArmorParams.allClassItemMetadata,
+						masterworkAssumption: processArmorParams.masterworkAssumption,
 					}) !== null;
 				if (hasCombo) {
 					maxReservedArmorSlotEnergy[armorSlotId] =
@@ -460,6 +502,7 @@ export const getMaxPossibleMetadata = ({
 						reservedArmorSlotEnergy: processArmorParams.reservedArmorSlotEnergy,
 						useZeroWastedStats: processArmorParams.useZeroWastedStats,
 						allClassItemMetadata: processArmorParams.allClassItemMetadata,
+						masterworkAssumption: processArmorParams.masterworkAssumption,
 					}) !== null;
 				if (hasCombo) {
 					maxStatTiers[armorStatId] = desiredStat;

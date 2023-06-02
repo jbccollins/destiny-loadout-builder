@@ -175,7 +175,6 @@ export type ArmorSlotMetadata = {
 
 export type ClassItemMetadata = {
 	hasMasterworkedVariant: boolean;
-	exampleId: string;
 	items: ArmorItem[];
 };
 
@@ -269,7 +268,6 @@ const getDefaultArmorSlotMetadata = () => cloneDeep(defaultArmorSlotMetadata);
 
 const getDefaultClassItemMetadata = (): ClassItemMetadata => ({
 	hasMasterworkedVariant: false,
-	exampleId: null,
 	items: [],
 });
 

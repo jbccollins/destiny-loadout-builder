@@ -224,27 +224,11 @@ export const extractArmor = (
 							allClassItemMetadataMapping[
 								destinyClassName
 							].Legendary.items.push(armorItem);
-							// Set the legendary class item existence
-							if (
-								allClassItemMetadataMapping[destinyClassName].Legendary.items
-									.length === 0
-							) {
-								allClassItemMetadataMapping[
-									destinyClassName
-								].Legendary.exampleId = armorItem.id;
-							}
 							// Set the masterworked legendary class item existence
-							if (
-								armorItem.isMasterworked &&
-								!allClassItemMetadataMapping[destinyClassName].Legendary
-									.hasMasterworkedVariant
-							) {
+							if (armorItem.isMasterworked) {
 								allClassItemMetadataMapping[
 									destinyClassName
 								].Legendary.hasMasterworkedVariant = true;
-								allClassItemMetadataMapping[
-									destinyClassName
-								].Legendary.exampleId = armorItem.id;
 							}
 
 							// Artifice class items
@@ -252,25 +236,10 @@ export const extractArmor = (
 								allClassItemMetadataMapping[
 									destinyClassName
 								].Artifice.items.push(armorItem);
-								if (
-									allClassItemMetadataMapping[destinyClassName].Artifice.items
-										.length === 0
-								) {
-									allClassItemMetadataMapping[
-										destinyClassName
-									].Artifice.exampleId = armorItem.id;
-								}
-								if (
-									armorItem.isMasterworked &&
-									!allClassItemMetadataMapping[destinyClassName].Artifice
-										.hasMasterworkedVariant
-								) {
+								if (armorItem.isMasterworked) {
 									allClassItemMetadataMapping[
 										destinyClassName
 									].Artifice.hasMasterworkedVariant = true;
-									allClassItemMetadataMapping[
-										destinyClassName
-									].Artifice.exampleId = armorItem.id;
 								}
 							}
 
@@ -279,28 +248,10 @@ export const extractArmor = (
 								allClassItemMetadataMapping[destinyClassName][
 									armorItem.socketableRaidAndNightmareModTypeId
 								].items.push(armorItem);
-
-								if (
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.socketableRaidAndNightmareModTypeId
-									].items.length === 0
-								) {
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.socketableRaidAndNightmareModTypeId
-									].exampleId = armorItem.id;
-								}
-								if (
-									armorItem.isMasterworked &&
-									!allClassItemMetadataMapping[destinyClassName][
-										armorItem.socketableRaidAndNightmareModTypeId
-									].hasMasterworkedVariant
-								) {
+								if (armorItem.isMasterworked) {
 									allClassItemMetadataMapping[destinyClassName][
 										armorItem.socketableRaidAndNightmareModTypeId
 									].hasMasterworkedVariant = true;
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.socketableRaidAndNightmareModTypeId
-									].exampleId = armorItem.id;
 								}
 							}
 
@@ -309,32 +260,10 @@ export const extractArmor = (
 								allClassItemMetadataMapping[destinyClassName][
 									armorItem.intrinsicArmorPerkOrAttributeId
 								].items.push(armorItem);
-
-								if (
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.intrinsicArmorPerkOrAttributeId
-									].items.length === 0
-								) {
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.intrinsicArmorPerkOrAttributeId
-									].exampleId = armorItem.id;
-
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.intrinsicArmorPerkOrAttributeId
-									].exampleId = armorItem.id;
-								}
-								if (
-									armorItem.isMasterworked &&
-									!allClassItemMetadataMapping[destinyClassName][
-										armorItem.intrinsicArmorPerkOrAttributeId
-									].hasMasterworkedVariant
-								) {
+								if (armorItem.isMasterworked) {
 									allClassItemMetadataMapping[destinyClassName][
 										armorItem.intrinsicArmorPerkOrAttributeId
 									].hasMasterworkedVariant = true;
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.intrinsicArmorPerkOrAttributeId
-									].exampleId = armorItem.id;
 								}
 							}
 						}

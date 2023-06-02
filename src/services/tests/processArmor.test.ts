@@ -1,5 +1,8 @@
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
-import { doProcessArmor } from '@dlb/services/processArmor/index';
+import {
+	doProcessArmor,
+	getDefaultProcessedArmorItemMetadataClassItem,
+} from '@dlb/services/processArmor/index';
 import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArmorSlotItems';
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 import {
@@ -163,7 +166,6 @@ const testCases: TestCase[] = [
 					armorIdList: ['0', '1', '2', '3'],
 					armorStatModIdList: [],
 					artificeModIdList: [],
-					requiredClassItemMetadataKey: null,
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
@@ -182,21 +184,11 @@ const testCases: TestCase[] = [
 							[EArmorStatId.Intellect]: 64,
 							[EArmorStatId.Strength]: 8,
 						},
-						// TODO: Remove class items from seenArmorSlotItems. Have them as a separate object like
-						/*
-						type ClassItemMetadata = {
-							requiredClassItemExtraModSocketCategoryId: EModSocketCategoryId | null,
-						 	requiredClassItemIntrinsicArmorPerkOrAttributeId: IntrinsicArmorPerkOrAttributeId | null,
-						  isMasterworked: boolean,
-							needsMasterworked: boolean,
-							isArtifice: boolean,
-							needsArtifice: boolean, // TODO maybe I don't need this field?
-						}
-						*/
 						seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 						totalModCost: 0,
 						totalStatTiers: 24,
 						wastedStats: 32,
+						classItem: getDefaultProcessedArmorItemMetadataClassItem(),
 					},
 				},
 			],

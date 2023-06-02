@@ -22,6 +22,7 @@ export const PatchNotes: PatchNote[] = [
 					`Add DIM logos to relevant UI elements`,
 					`Add a new setting to filter out items that are in D2 loadouts`,
 					`Make left panel sections collapsible`,
+					`Add "Copy DIM Query" button`,
 				],
 			},
 		],

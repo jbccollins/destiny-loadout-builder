@@ -4,7 +4,7 @@ import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArm
 import { enforceValidLegendaryArmorBaseStats as es } from '@dlb/services/test-utils';
 import {
 	ArmorItem,
-	ArmorMetadata,
+	getDefaultAllClassItemMetadata,
 	getDefaultArmorMetadata,
 	getDefaultAvailableExoticArmorItem,
 } from '@dlb/types/Armor';
@@ -52,31 +52,31 @@ const defaultArmorItem: ArmorItem = {
 
 const getDefaultArmorItem = () => cloneDeep(defaultArmorItem);
 
-const defaultArmorMetadataWithArtificeClassItem: ArmorMetadata = {
-	...getDefaultArmorMetadata(),
+// const defaultArmorMetadataWithArtificeClassItem: ArmorMetadata = {
+// 	...getDefaultArmorMetadata(),
 
-	[EDestinyClassId.Warlock]: {
-		...getDefaultArmorMetadata()[EDestinyClassId.Warlock],
-		classItem: {
-			...getDefaultArmorMetadata()[EDestinyClassId.Warlock].classItem,
-			Artifice: {
-				exists: true,
-				isMasterworked: true,
-				exampleId: '1',
-			},
-		},
-	},
-};
+// 	[EDestinyClassId.Warlock]: {
+// 		...getDefaultArmorMetadata()[EDestinyClassId.Warlock],
+// 		classItem: {
+// 			...getDefaultArmorMetadata()[EDestinyClassId.Warlock].classItem,
+// 			Artifice: {
+// 				exists: true,
+// 				isMasterworked: true,
+// 				exampleId: '1',
+// 			},
+// 		},
+// 	},
+// };
 
-const defaultArmorMetadataWithLastWishAndArtificeClassItem: ArmorMetadata =
-	cloneDeep(defaultArmorMetadataWithArtificeClassItem);
-defaultArmorMetadataWithLastWishAndArtificeClassItem[
-	EDestinyClassId.Warlock
-].classItem.LastWish = {
-	exists: true,
-	isMasterworked: true,
-	exampleId: '1',
-};
+// const defaultArmorMetadataWithLastWishAndArtificeClassItem: ArmorMetadata =
+// 	cloneDeep(defaultArmorMetadataWithArtificeClassItem);
+// defaultArmorMetadataWithLastWishAndArtificeClassItem[
+// 	EDestinyClassId.Warlock
+// ].classItem.LastWish = {
+// 	exists: true,
+// 	isMasterworked: true,
+// 	exampleId: '1',
+// };
 
 const testCases: TestCase[] = [
 	// 0
@@ -108,6 +108,7 @@ const testCases: TestCase[] = [
 				selectedExotic: getDefaultAvailableExoticArmorItem(),
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
+				allClassItemMetadata: getDefaultAllClassItemMetadata(),
 				armorItems: [
 					[
 						{
@@ -162,7 +163,7 @@ const testCases: TestCase[] = [
 					armorIdList: ['0', '1', '2', '3'],
 					armorStatModIdList: [],
 					artificeModIdList: [],
-					requiredClassItemExtraModSocketCategoryId: null,
+					requiredClassItemMetadataKey: null,
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {

@@ -24,7 +24,6 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
-	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
 	EModCategoryId,
 	ERaidAndNightMareModTypeId,
@@ -212,15 +211,19 @@ export const getItemCountsFromSeenArmorSlotItems = (
 ): ItemCounts => {
 	const itemCounts = getDefaultItemCounts();
 	ArmorSlotIdList.forEach((armorSlotId) => {
-		const value = seenArmorSlotItems[armorSlotId] as
-			| ERaidAndNightMareModTypeId
-			| EIntrinsicArmorPerkOrAttributeId
-			| 'Legendary'
-			| 'Artifice';
-		if (value === ARTIFICE) {
+		const seenArmorSlotItem = seenArmorSlotItems[armorSlotId];
+		if (seenArmorSlotItem === null) {
+			return;
+		}
+		if (seenArmorSlotItem.isArtifice) {
 			itemCounts.Artifice++;
-		} else if (value !== null) {
-			itemCounts[value]++;
+		} else {
+			const value =
+				seenArmorSlotItem.raidAndNightmareModTypeId ||
+				seenArmorSlotItem.intrinsicArmorPerkOrAttributeId;
+			if (value !== null) {
+				itemCounts[value]++;
+			}
 		}
 	});
 	// if (withClassItems) {
@@ -245,9 +248,14 @@ export const stripNonRaidSeenArmorSlotItems = (
 		[EArmorSlotId.Leg]: null,
 	};
 	ArmorSlotIdList.forEach((armorSlotId) => {
-		if (seenArmorSlotItems[armorSlotId] !== ARTIFICE) {
+		if (
+			RaidAndNightmareModTypeIdList.includes(
+				seenArmorSlotItems[armorSlotId]?.raidAndNightmareModTypeId
+			)
+		) {
 			// TODO: God I hate this casting shit
-			items[armorSlotId] = seenArmorSlotItems[armorSlotId] as EModCategoryId;
+			items[armorSlotId] = seenArmorSlotItems[armorSlotId]
+				.raidAndNightmareModTypeId as EModCategoryId;
 		}
 	});
 	return items;

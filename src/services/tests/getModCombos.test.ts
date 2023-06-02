@@ -1,12 +1,14 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
-import { ARTIFICE } from '@dlb/services/processArmor/constants';
 import {
 	getDefaultModCombos,
 	getModCombos,
 } from '@dlb/services/processArmor/getModCombos';
 import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArmorSlotItems';
-import { getDefaultArmorMetadataItem } from '@dlb/types/Armor';
+import {
+	getDefaultAllClassItemMetadata,
+	getDefaultArmorItem,
+} from '@dlb/types/Armor';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
@@ -37,7 +39,7 @@ const testCases: TestCase[] = [
 				specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
-				allClassItemMetadata: getDefaultArmorMetadataItem().classItem,
+				allClassItemMetadata: getDefaultAllClassItemMetadata(),
 			},
 		],
 		getDefaultModCombos(),
@@ -59,7 +61,7 @@ const testCases: TestCase[] = [
 				specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
-				allClassItemMetadata: getDefaultArmorMetadataItem().classItem,
+				allClassItemMetadata: getDefaultAllClassItemMetadata(),
 			},
 		],
 		{
@@ -117,20 +119,35 @@ const testCases: TestCase[] = [
 				destinyClassId: EDestinyClassId.Warlock,
 				specialSeenArmorSlotItems: {
 					...getDefaultSeenArmorSlotItems(),
-					[EArmorSlotId.Head]: ARTIFICE,
-					[EArmorSlotId.Arm]: ARTIFICE,
-					[EArmorSlotId.Chest]: ARTIFICE,
-					ClassItems: {
-						...getDefaultSeenArmorSlotItems().ClassItems,
-						artifice: true,
+					[EArmorSlotId.Head]: {
+						isArtifice: true,
+						isMasterworked: false,
+						raidAndNightmareModTypeId: null,
+						intrinsicArmorPerkOrAttributeId: null,
+					},
+					[EArmorSlotId.Arm]: {
+						isArtifice: true,
+						isMasterworked: false,
+						raidAndNightmareModTypeId: null,
+						intrinsicArmorPerkOrAttributeId: null,
+					},
+					[EArmorSlotId.Chest]: {
+						isArtifice: true,
+						isMasterworked: false,
+						raidAndNightmareModTypeId: null,
+						intrinsicArmorPerkOrAttributeId: null,
 					},
 				},
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
 				allClassItemMetadata: {
-					...getDefaultArmorMetadataItem().classItem,
+					...getDefaultAllClassItemMetadata(),
 					Artifice: {
-						exists: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+							},
+						],
 						hasMasterworkedVariant: true,
 						exampleId: '1',
 					},

@@ -4,6 +4,7 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { DimIcon } from '@dlb/public/dim_logo.svgicon';
+import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
@@ -672,6 +673,9 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const selectedAspects = useAppSelector(selectSelectedAspects);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
+	const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
+	const classItemMetadata = allClassItemMetadata[selectedDestinyClass];
+
 	let elementId: EElementId = EElementId.Any;
 	if (destinySubclassId) {
 		elementId = getDestinySubclass(destinySubclassId).elementId;
@@ -763,8 +767,14 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 								superAbilityId: selectedSuperAbility[destinySubclassId],
 								classAbilityId: selectedClassAbility[destinySubclassId],
 								grenadeId: selectedGrenade[elementId],
+								classItem: item.classItem,
+								classItemMetadata: classItemMetadata,
 							})}`}
-							dimQuery={`${generateDimQuery(item.armorItems)}`}
+							dimQuery={`${generateDimQuery(
+								item.armorItems,
+								item.classItem,
+								classItemMetadata
+							)}`}
 						/>
 					);
 				})}

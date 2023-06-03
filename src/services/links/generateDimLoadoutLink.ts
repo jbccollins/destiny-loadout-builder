@@ -7,7 +7,12 @@ import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
-import { ArmorItem, AvailableExoticArmorItem } from '@dlb/types/Armor';
+import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
+import {
+	AllClassItemMetadata,
+	ArmorItem,
+	AvailableExoticArmorItem,
+} from '@dlb/types/Armor';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
 import { getAspect } from '@dlb/types/Aspect';
@@ -45,14 +50,28 @@ export type DimLoadoutConfiguration = {
 	destinyClassId: EDestinyClassId;
 	armorList: ArmorItem[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	classItem: ProcessedArmorItemMetadataClassItem;
+	classItemMetadata: AllClassItemMetadata;
 };
 
-export const generateDimQuery = (armorList: ArmorItem[]): string => {
-	const query = armorList
+export const generateDimQuery = (
+	armorList: ArmorItem[],
+	classItem: ProcessedArmorItemMetadataClassItem,
+	classItemMetadata: AllClassItemMetadata
+): string => {
+	let query = armorList
 		.map((armorItem) => {
 			return `id:'${armorItem.id}'`;
 		})
 		.join(' or ');
+	if (classItem.requiredClassItemMetadataKey !== null) {
+		query += ` or id:'${
+			classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id
+		}'`;
+	} else {
+		query += ` or id:'${classItemMetadata.Legendary.items[0].id}'`;
+	}
+
 	return query;
 };
 
@@ -77,6 +96,8 @@ export const generateDimLink = (
 		grenadeId,
 		superAbilityId,
 		armorSlotMods,
+		classItem,
+		classItemMetadata,
 	} = configuration;
 	const fragmentHashes: number[] = fragmentIdList.map(
 		(fragmentId: EFragmentId) => getFragment(fragmentId).hash
@@ -155,6 +176,19 @@ export const generateDimLink = (
 		unequipped: [],
 		clearSpace: false,
 	};
+
+	if (classItem.requiredClassItemMetadataKey !== null) {
+		loadout.equipped.push({
+			id: classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id,
+			hash: classItemMetadata[classItem.requiredClassItemMetadataKey].items[0]
+				.hash,
+		});
+	} else {
+		loadout.equipped.push({
+			id: classItemMetadata.Legendary.items[0].id,
+			hash: classItemMetadata.Legendary.items[0].hash,
+		});
+	}
 
 	// Configure subclass
 	const socketOverrides: Record<number, number> = {};

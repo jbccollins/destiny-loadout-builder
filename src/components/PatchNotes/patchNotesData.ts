@@ -12,13 +12,13 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-05-17',
-		version: '2.1.0',
-		title: 'Class Item Logic Rework',
+		version: '2.0.8',
+		title: 'Class Item Bug Fixes',
 		sections: [
 			{
 				items: [
-					`Reworked the logic for determining the stats provided masterworked class items. This fixes rare bugs
-					which would only really come up when the user had the masterwork assumption setting set to "none"`,
+					`Fix a bug where the class item was always assumed to be masterworked`,
+					`Fix a bug where class items would not be added to the DIM loadout`,
 					`Add DIM logos to relevant UI elements`,
 					`Add a new setting to filter out items that are in D2 loadouts`,
 					`Make left panel sections collapsible`,

@@ -12,7 +12,6 @@ export default function UseZeroWastedStatsToggleSwitch() {
 	const handleChange = (value: boolean) => {
 		dispatch(setUseZeroWastedStats(value));
 	};
-	console.log('>>>> VALUE', useZeroWastedStats);
 	return (
 		<Box sx={{ paddingLeft: '8px' }}>
 			<ToggleSwitch

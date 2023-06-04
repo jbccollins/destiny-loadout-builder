@@ -3,6 +3,8 @@ import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
+import { DimIcon } from '@dlb/public/dim_logo.svgicon';
+import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
@@ -18,8 +20,16 @@ import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedM
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppSelector } from '@dlb/redux/hooks';
-import generateDimLink from '@dlb/services/links/generateDimLoadoutLink';
-import { ArmorItem, getExtraMasterworkedStats } from '@dlb/types/Armor';
+import {
+	generateDimLink,
+	generateDimQuery,
+} from '@dlb/services/links/generateDimLoadoutLink';
+import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
+import {
+	ArmorItem,
+	getDefaultArmorItem,
+	getExtraMasterworkedStats,
+} from '@dlb/types/Armor';
 import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
@@ -43,14 +53,14 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
-import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
 import { MISSING_ICON } from '@dlb/types/globals';
+import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
 import React from 'react';
+import { ResultsTableLoadout, getClassItemText } from './ArmorResultsTypes';
 import {
-	ResultsTableLoadout,
 	SortableFieldsDisplayOrder,
 	getSortableFieldDisplayName,
 } from './ArmorResultsView';
@@ -68,6 +78,7 @@ type ResultsItemProps = {
 		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	>;
 	dimLink: string;
+	dimQuery: string;
 	isRecommendedLoadout: boolean;
 };
 
@@ -154,7 +165,7 @@ const StatsBreakdownItem = styled(Box, {
 const LoadoutDetails = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	height: '340px',
-	marginLeft: '60px',
+	marginLeft: '80px',
 	// overflowX: 'auto',
 }));
 
@@ -167,11 +178,9 @@ const RecommendedLoadoutHeader = styled(Box)(({ theme }) => ({
 	marginBottom: theme.spacing(1),
 }));
 
-// TODO: Figure this out from the initial ingestion of armor and store in redux
-const hasMasterworkedClassItem = true;
-
 const calculateExtraMasterworkedStats = (
 	armorItems: ArmorItem[],
+	classItem: ProcessedArmorItemMetadataClassItem,
 	masterworkAssumption: EMasterworkAssumption
 ): number => {
 	let extraMasterworkedStats = 0;
@@ -183,23 +192,19 @@ const calculateExtraMasterworkedStats = (
 			);
 		}
 	});
+	if (!classItem.hasMasterworkedVariant) {
+		extraMasterworkedStats += getExtraMasterworkedStats(
+			getDefaultArmorItem(),
+			masterworkAssumption
+		);
+	}
 	return extraMasterworkedStats;
 };
 
-// TODO: This isn't taking into consideration the possibility that the user
-// Does not have a masterworked class item
-const getClassItemText = (item: ResultsTableLoadout): string => {
-	const artificeArmorItems = item.armorItems.filter((x) => x.isArtifice);
-	if (item.requiredClassItemExtraModSocketCategoryId !== null) {
-		return `Any Masterworked ${
-			getRaidAndNightmareModType(item.requiredClassItemExtraModSocketCategoryId)
-				.abbreviation
-		} Class Item`;
-	}
-	if (artificeArmorItems.length < item.requiredArtificeModIdList.length) {
-		return 'Any Masterworked Artifice Class Item';
-	}
-	return 'Any Masterworked Class Item';
+const handleCopyDimQueryClick = async (dimQuery: string) => {
+	await copyToClipboard({
+		value: dimQuery,
+	});
 };
 
 function ResultsItem({
@@ -209,6 +214,7 @@ function ResultsItem({
 	fragmentArmorStatMappings,
 	armorSlotModArmorStatMappings,
 	dimLink,
+	dimQuery,
 	isRecommendedLoadout,
 }: ResultsItemProps) {
 	const [open, setOpen] = React.useState(false);
@@ -255,6 +261,7 @@ function ResultsItem({
 	const getExtraMasterworkedStatsBreakdown = () => {
 		const extraMasterworkedStats = calculateExtraMasterworkedStats(
 			item.armorItems,
+			item.classItem,
 			masterworkAssumption
 		);
 		return (
@@ -310,7 +317,7 @@ function ResultsItem({
 				})}
 				<IconTextContainer>
 					<MasterworkedBungieImage
-						isMasterworked={true}
+						isMasterworked={item.classItem.hasMasterworkedVariant}
 						width={'40px'}
 						height={'40px'}
 						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
@@ -385,14 +392,30 @@ function ResultsItem({
 				</ResultsSection>
 			)}
 			<ResultsSection fullWidth>
-				<Box sx={{ flexBasis: '100%' }}>
+				<Box
+					sx={{
+						flexBasis: '100%',
+						display: 'flex',
+						flexWrap: 'wrap',
+						// justifyContent: 'space-between',
+					}}
+				>
 					<Button
-						sx={{ width: 200 }}
+						sx={{ marginRight: '8px', marginBottom: '8px', width: 215 }}
 						variant="contained"
 						target={'_blank'}
 						href={dimLink}
+						startIcon={<DimIcon sx={{ marginTop: '-2px' }} />}
 					>
 						Open loadout in DIM
+					</Button>
+					<Button
+						sx={{ width: 180, marginBottom: '8px' }}
+						variant="contained"
+						onClick={() => handleCopyDimQueryClick(dimQuery)}
+						startIcon={<DimIcon sx={{ marginTop: '-2px' }} />}
+					>
+						Copy DIM Query
 					</Button>
 				</Box>
 				<Box
@@ -458,29 +481,30 @@ function ResultsItem({
 								</StatsBreakdownItem>
 							</StatsBreakdown>
 						))}
-						{hasMasterworkedClassItem && (
-							<StatsBreakdown className="stats-breakdown">
-								<StatsBreakdownItem>
-									<MasterworkedBungieImage
-										isMasterworked={true}
-										width={'20px'}
-										height={'20px'}
-										src={getArmorSlot(EArmorSlotId.ClassItem).icon}
-									/>
+
+						<StatsBreakdown className="stats-breakdown">
+							<StatsBreakdownItem>
+								<MasterworkedBungieImage
+									isMasterworked={item.classItem.hasMasterworkedVariant}
+									width={'20px'}
+									height={'20px'}
+									src={getArmorSlot(EArmorSlotId.ClassItem).icon}
+								/>
+							</StatsBreakdownItem>
+							{ArmorStatIdList.map((armorStatId) => (
+								<StatsBreakdownItem
+									isZero={!item.classItem.hasMasterworkedVariant}
+									key={armorStatId}
+									className="stats-breakdown"
+								>
+									{item.classItem.hasMasterworkedVariant ? 2 : 0}
 								</StatsBreakdownItem>
-								{ArmorStatIdList.map((armorStatId) => (
-									<StatsBreakdownItem
-										key={armorStatId}
-										className="stats-breakdown"
-									>
-										2
-									</StatsBreakdownItem>
-								))}
-								<StatsBreakdownItem>
-									<Description>{getClassItemText(item)}</Description>
-								</StatsBreakdownItem>
-							</StatsBreakdown>
-						)}
+							))}
+							<StatsBreakdownItem>
+								<Description>{getClassItemText(item)}</Description>
+							</StatsBreakdownItem>
+						</StatsBreakdown>
+
 						{getExtraMasterworkedStatsBreakdown()}
 
 						{Object.keys(fragmentArmorStatMappings).map(
@@ -649,6 +673,9 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const selectedAspects = useAppSelector(selectSelectedAspects);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
+	const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
+	const classItemMetadata = allClassItemMetadata[selectedDestinyClass];
+
 	let elementId: EElementId = EElementId.Any;
 	if (destinySubclassId) {
 		elementId = getDestinySubclass(destinySubclassId).elementId;
@@ -740,7 +767,14 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 								superAbilityId: selectedSuperAbility[destinySubclassId],
 								classAbilityId: selectedClassAbility[destinySubclassId],
 								grenadeId: selectedGrenade[elementId],
+								classItem: item.classItem,
+								classItemMetadata: classItemMetadata,
 							})}`}
+							dimQuery={`${generateDimQuery(
+								item.armorItems,
+								item.classItem,
+								classItemMetadata
+							)}`}
 						/>
 					);
 				})}

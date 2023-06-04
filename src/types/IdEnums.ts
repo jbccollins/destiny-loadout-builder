@@ -140,3 +140,8 @@ export enum EDimLoadoutsFilterId {
 	All = 'All',
 	None = 'None',
 }
+
+export enum EInGameLoadoutsFilterId {
+	All = 'All',
+	None = 'None',
+}

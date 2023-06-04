@@ -11,6 +11,26 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-06-04',
+		version: '2.1.0',
+		title: 'Class Item Bug Fixes',
+		sections: [
+			{
+				items: [
+					`Fix a bug where the class item was always assumed to be masterworked`,
+					`Fix a bug where class items would not be added to the DIM loadout`,
+					`Fix a bug where shared loadout URLs would not work properly when the user was not already logged in`,
+					`Add DIM logos to relevant UI elements`,
+					`Add a new setting to filter out items that are in D2 loadouts`,
+					`Add "Copy DIM Query" button`,
+					`Add Social and Support links`,
+					`Make left panel sections collapsible`,
+					`Rename "Patch Notes" tab to "About"`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-05-28',
 		version: '2.0.7',
 		title: 'Add exotic perk details to exotic armor selector',

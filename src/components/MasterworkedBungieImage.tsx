@@ -1,5 +1,5 @@
-import { Box, styled } from '@mui/material';
 import BungieImage, { BungieImageProps } from '@dlb/dim/dim-ui/BungieImage';
+import { Box, styled } from '@mui/material';
 
 const Container = styled(Box, {
 	shouldForwardProp: (prop) => prop !== 'isMasterworked',

@@ -2,10 +2,17 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
 import { EModId } from '@dlb/generated/mod/EModId';
+import { NIL, v4 as uuid } from 'uuid';
 
 export const defaultRaidMods = [null, null, null, null];
+
+// export const defaultRaidMods = [
+// 	EModId.RunForYourLife,
+// 	EModId.WillOfLightArc,
+// 	EModId.MortalMedicine,
+// 	EModId.WillOfLightKinetic,
+// ];
 
 export interface SelectedRaidModsState {
 	value: EModId[];

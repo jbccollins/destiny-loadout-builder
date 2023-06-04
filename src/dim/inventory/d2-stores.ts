@@ -1,3 +1,4 @@
+import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 import {
 	DestinyCollectibleComponent,
 	DestinyCollectiblesComponent,
@@ -5,29 +6,28 @@ import {
 	DestinyProfileCollectiblesComponent,
 	DestinyProfileResponse,
 	DictionaryComponentResponse,
-	SingleComponentResponse
+	SingleComponentResponse,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import { BucketHashes, StatHashes } from '@dlb/dim/data/d2/generated-enums';
-import _ from 'lodash';
+import _, { isEqual, uniqWith } from 'lodash';
 
-import {
-	D2ManifestDefinitions,
-	getDefinitions
-} from '@dlb/dim/destiny2/d2-definitions';
-import { InventoryBuckets } from './inventory-buckets';
-import { processItems } from '@dlb/dim/inventory/store/d2-item-factory';
-import { makeCharacter, makeVault } from './store/d2-store-factory';
-import { DimStore } from '@dlb/dim/inventory/store-types';
-import { getCharacters, getStores } from '@dlb/dim//bungie-api/destiny2-api';
+import { getStores } from '@dlb/dim//bungie-api/destiny2-api';
 import { DestinyAccount } from '@dlb/dim/accounts/destiny-account';
 import { getBuckets } from '@dlb/dim/destiny2/d2-buckets';
+import {
+	D2ManifestDefinitions,
+	getDefinitions,
+} from '@dlb/dim/destiny2/d2-definitions';
+import { DimStore } from '@dlb/dim/inventory/store-types';
+import { processItems } from '@dlb/dim/inventory/store/d2-item-factory';
+import { InventoryBuckets } from './inventory-buckets';
+import { makeCharacter, makeVault } from './store/d2-store-factory';
 
 export function mergeCollectibles(
 	profileCollectibles: SingleComponentResponse<DestinyProfileCollectiblesComponent>,
 	characterCollectibles: DictionaryComponentResponse<DestinyCollectiblesComponent>
 ) {
 	const allCollectibles = {
-		...profileCollectibles?.data?.collectibles
+		...profileCollectibles?.data?.collectibles,
 	};
 
 	_.forIn(characterCollectibles?.data || {}, ({ collectibles }) => {
@@ -37,9 +37,14 @@ export function mergeCollectibles(
 	return allCollectibles;
 }
 
+export type LoadStoresDataResult = {
+	stores: DimStore[];
+	inGameLoadoutItemIdList: string[];
+};
+
 export const loadStoresData = (
 	account: DestinyAccount
-): Promise<DimStore[] | undefined> => {
+): Promise<LoadStoresDataResult> => {
 	const promise = (async () => {
 		// TODO: if we've already loaded profile recently, don't load it again
 
@@ -50,7 +55,7 @@ export const loadStoresData = (
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				getDefinitions()!,
 				//dispatch(loadNewItems(account)),
-				getStores(account)
+				getStores(account),
 			]);
 
 			if (!defs || !profileInfo) {
@@ -62,7 +67,13 @@ export const loadStoresData = (
 
 			const currencies = processCurrencies(profileInfo, defs);
 
-			return stores;
+			const inGameLoadoutItemIdList = processInGameLoadouts(profileInfo);
+			const result: LoadStoresDataResult = {
+				stores,
+				inGameLoadoutItemIdList,
+			};
+
+			return result;
 		} catch (e) {
 			console.error('d2-stores', 'Error loading stores', e);
 
@@ -147,8 +158,8 @@ function processCurrencies(
 		displayProperties: defs.InventoryItem.get(c.itemHash)
 			?.displayProperties ?? {
 			name: 'Unknown',
-			description: 'Unknown item'
-		}
+			description: 'Unknown item',
+		},
 	}));
 	return currencies;
 }
@@ -211,6 +222,24 @@ function processCharacter(
 	return store;
 }
 
+export const processInGameLoadouts = (
+	profileResponse: DestinyProfileResponse
+): string[] => {
+	const characterLoadouts = profileResponse?.characterLoadouts?.data;
+	console.log(characterLoadouts);
+	const results: string[] = [];
+	if (characterLoadouts) {
+		Object.values(characterLoadouts).forEach((value) => {
+			value.loadouts.forEach((loadout) => {
+				loadout.items.forEach((item) => {
+					results.push(item.itemInstanceId);
+				});
+			});
+		});
+	}
+	return uniqWith(results, isEqual);
+};
+
 function processVault(
 	defs: D2ManifestDefinitions,
 	buckets: InventoryBuckets,
@@ -269,7 +298,7 @@ function findLastPlayedDate(profileInfo: DestinyProfileResponse) {
 export const fakeCharacterStatHashes = {
 	maxGearPower: -3,
 	powerBonus: -2,
-	maxTotalPower: -1
+	maxTotalPower: -1,
 };
 
 // // Add a fake stat for "max base power"

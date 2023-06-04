@@ -1,37 +1,39 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 
-import { ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
+import { AllClassItemMetadata } from '@dlb/types/Armor';
 import { PotentialRaidModArmorSlotPlacement } from '@dlb/types/Mod';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import {
+	RequiredClassItemMetadataKey,
 	filterRaidModArmorSlotPlacements,
 	getExtraSocketModCategoryIdCountsFromRaidModIdList,
 	getItemCountsFromSeenArmorSlotItems,
 	hasValidSeenItemCounts,
 } from './utils';
 
-export type filterPotentialRaidModArmorSlotPlacementsParams = {
+export type FilterPotentialRaidModArmorSlotPlacementsParams = {
 	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	raidMods: EModId[];
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
+	allClassItemMetadata: AllClassItemMetadata;
 };
 
-type filterPotentialRaidModArmorSlotPlacementsOutput = {
+type FilterPotentialRaidModArmorSlotPlacementsOutput = {
 	potentialPlacements: PotentialRaidModArmorSlotPlacement[];
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
 };
 
 export const filterPotentialRaidModArmorSlotPlacements = (
-	params: filterPotentialRaidModArmorSlotPlacementsParams
-): filterPotentialRaidModArmorSlotPlacementsOutput => {
+	params: FilterPotentialRaidModArmorSlotPlacementsParams
+): FilterPotentialRaidModArmorSlotPlacementsOutput => {
 	const {
 		potentialRaidModArmorSlotPlacements,
 		raidMods,
 		specialSeenArmorSlotItems,
+		allClassItemMetadata,
 	} = params;
 
-	let requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId =
-		null;
+	let requiredClassItemMetadataKey: RequiredClassItemMetadataKey = null;
 
 	let raidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] = null;
 	// Check to see if this combo even has enough raid pieces capable
@@ -40,9 +42,9 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 	// is fairly lengthy/complex
 
 	// Get the counts of each raid type for this armor combo
-	const seenItemCountsWithoutClassItems = getItemCountsFromSeenArmorSlotItems(
-		specialSeenArmorSlotItems,
-		false
+	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
+		specialSeenArmorSlotItems
+		// , false
 	);
 	// Get the counts of each raid type for our raid mods
 	const raidModExtraSocketModCategoryIdCounts =
@@ -52,19 +54,17 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 	// very common to need to do
 	const {
 		isValid,
-		requiredClassItemExtraModSocketCategoryId:
-			_requiredClassItemExtraModSocketCategoryId,
-	} = hasValidSeenItemCounts(
-		seenItemCountsWithoutClassItems,
+		requiredClassItemMetadataKey: _requiredClassItemMetadataKey,
+	} = hasValidSeenItemCounts({
+		seenItemCounts,
 		raidModExtraSocketModCategoryIdCounts,
-		specialSeenArmorSlotItems.ClassItems
-	);
+		allClassItemMetadata,
+	});
 	if (!isValid) {
 		return null;
 	}
 
-	requiredClassItemExtraModSocketCategoryId =
-		_requiredClassItemExtraModSocketCategoryId;
+	requiredClassItemMetadataKey = _requiredClassItemMetadataKey;
 
 	// Ensure that we have enough raid pieces to slot the required raid mods
 	// This does not check that there is enough space to slot them mods, just
@@ -72,7 +72,7 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 	raidModArmorSlotPlacements = filterRaidModArmorSlotPlacements({
 		seenArmorSlotItems: specialSeenArmorSlotItems,
 		validRaidModArmorSlotPlacements: potentialRaidModArmorSlotPlacements,
-		requiredClassItemExtraModSocketCategoryId,
+		requiredClassItemMetadataKey,
 	});
 
 	if (raidModArmorSlotPlacements.length === 0) {
@@ -80,6 +80,6 @@ export const filterPotentialRaidModArmorSlotPlacements = (
 	}
 	return {
 		potentialPlacements: raidModArmorSlotPlacements,
-		requiredClassItemExtraModSocketCategoryId,
+		requiredClassItemMetadataKey,
 	};
 };

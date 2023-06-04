@@ -1,5 +1,6 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
+	AllClassItemMetadata,
 	ArmorItem,
 	ArmorMetadataItem,
 	AvailableExoticArmorItem,
@@ -26,17 +27,13 @@ import {
 	EMasterworkAssumption,
 	EModCategoryId,
 	ERaidAndNightMareModTypeId,
-	ERaidAndNightMareModTypeIdList,
 } from '@dlb/types/IdEnums';
 import { PotentialRaidModArmorSlotPlacement, getMod } from '@dlb/types/Mod';
+import { RaidAndNightmareModTypeIdList } from '@dlb/types/RaidAndNightmareModType';
 import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 import { cloneDeep } from 'lodash';
-import { ARTIFICE, MAX_SINGLE_STAT_VALUE } from './constants';
-import {
-	SeenArmorSlotClassItems,
-	SeenArmorSlotItems,
-	getDefaultSeenArmorSlotItems,
-} from './seenArmorSlotItems';
+import { MAX_SINGLE_STAT_VALUE } from './constants';
+import { SeenArmorSlotItems } from './seenArmorSlotItems';
 
 // Round a number up to the nearest 5
 export function roundUp5(x: number) {
@@ -209,27 +206,33 @@ export const replaceMajorModsWithMinorMods = (
 };
 
 export const getItemCountsFromSeenArmorSlotItems = (
-	seenArmorSlotItems: SeenArmorSlotItems,
-	withClassItems = true
+	seenArmorSlotItems: SeenArmorSlotItems
+	// withClassItems: boolean
 ): ItemCounts => {
 	const itemCounts = getDefaultItemCounts();
 	ArmorSlotIdList.forEach((armorSlotId) => {
-		const value = seenArmorSlotItems[armorSlotId] as
-			| ERaidAndNightMareModTypeId
-			| 'artifice';
-		if (value === ARTIFICE) {
-			itemCounts.artifice++;
-		} else if (value !== null) {
-			itemCounts[value]++;
+		const seenArmorSlotItem = seenArmorSlotItems[armorSlotId];
+		if (seenArmorSlotItem === null) {
+			return;
+		}
+		if (seenArmorSlotItem.isArtifice) {
+			itemCounts.Artifice++;
+		} else {
+			const value =
+				seenArmorSlotItem.raidAndNightmareModTypeId ||
+				seenArmorSlotItem.intrinsicArmorPerkOrAttributeId;
+			if (value !== null) {
+				itemCounts[value]++;
+			}
 		}
 	});
-	if (withClassItems) {
-		Object.keys(getDefaultItemCounts()).forEach((key) => {
-			if (seenArmorSlotItems.ClassItems[key]) {
-				itemCounts[key]++;
-			}
-		});
-	}
+	// if (withClassItems) {
+	// 	Object.keys(getDefaultItemCounts()).forEach((key) => {
+	// 		if (seenArmorSlotItems.ClassItems[key]) {
+	// 			itemCounts[key]++;
+	// 		}
+	// 	});
+	// }
 	return itemCounts;
 };
 
@@ -245,9 +248,14 @@ export const stripNonRaidSeenArmorSlotItems = (
 		[EArmorSlotId.Leg]: null,
 	};
 	ArmorSlotIdList.forEach((armorSlotId) => {
-		if (seenArmorSlotItems[armorSlotId] !== 'artifice') {
+		if (
+			RaidAndNightmareModTypeIdList.includes(
+				seenArmorSlotItems[armorSlotId]?.raidAndNightmareModTypeId
+			)
+		) {
 			// TODO: God I hate this casting shit
-			items[armorSlotId] = seenArmorSlotItems[armorSlotId] as EModCategoryId;
+			items[armorSlotId] = seenArmorSlotItems[armorSlotId]
+				.raidAndNightmareModTypeId as EModCategoryId;
 		}
 	});
 	return items;
@@ -255,13 +263,13 @@ export const stripNonRaidSeenArmorSlotItems = (
 
 export type FilterValidRaidModArmorSlotPlacementsParams = {
 	seenArmorSlotItems: SeenArmorSlotItems;
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
 	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 };
 // Filter out the placements that put a raid mod on a non-raid armor piece
 export const filterRaidModArmorSlotPlacements = ({
 	seenArmorSlotItems,
-	requiredClassItemExtraModSocketCategoryId,
+	requiredClassItemMetadataKey,
 	validRaidModArmorSlotPlacements,
 }: FilterValidRaidModArmorSlotPlacementsParams): PotentialRaidModArmorSlotPlacement[] => {
 	const raidSeenArmorSlotItems =
@@ -272,7 +280,7 @@ export const filterRaidModArmorSlotPlacements = ({
 		[EArmorSlotId.Arm]: raidSeenArmorSlotItems.Arm,
 		[EArmorSlotId.Chest]: raidSeenArmorSlotItems.Chest,
 		[EArmorSlotId.Leg]: raidSeenArmorSlotItems.Leg,
-		[EArmorSlotId.ClassItem]: requiredClassItemExtraModSocketCategoryId,
+		[EArmorSlotId.ClassItem]: requiredClassItemMetadataKey,
 	};
 
 	for (let i = 0; i < validRaidModArmorSlotPlacements.length; i++) {
@@ -323,27 +331,6 @@ export const getArmorStatMappingFromArtificeModIdList = (
 	return armorStatMapping;
 };
 
-export const getSeenArmorSlotItemsFromClassItems = (
-	armorMetadataItem: ArmorMetadataItem
-): SeenArmorSlotItems => {
-	const seenArmorSlotItems = getDefaultSeenArmorSlotItems();
-
-	if (armorMetadataItem.classItem.hasArtificeClassItem) {
-		seenArmorSlotItems.ClassItems.artifice = true;
-	}
-
-	ERaidAndNightMareModTypeIdList.forEach((extraSocketModCategoryId) => {
-		if (
-			armorMetadataItem.extraSocket.items[extraSocketModCategoryId].items[
-				EArmorSlotId.ClassItem
-			].count > 0
-		) {
-			seenArmorSlotItems.ClassItems[extraSocketModCategoryId] = true;
-		}
-	});
-	return seenArmorSlotItems;
-};
-
 export const getNextSeenStats = (
 	sumOfSeenStats: StatList,
 	armorSlotItem: ArmorItem,
@@ -371,13 +358,23 @@ export const getNextValues = ({
 	armorSlotItem,
 	masterworkAssumption,
 }: GetNextValuesParams) => {
+	// export type SeenArmorSlotItem = {
+	// 	isArtifice: boolean;
+	// 	raidAndNightmareModTypeId: ERaidAndNightMareModTypeId | null;
+	// 	intrinsicArmorPerkOrAttributeId: EIntrinsicArmorPerkOrAttributeId | null;
+	// 	isMasterworked: boolean;
+	// };
+
 	const slot = getArmorSlotFromNumRemainingArmorPieces(numArmorItems);
 	const nextSeenArmorSlotItems = cloneDeep(seenArmorSlotItems);
 	if (armorSlotItem.isArtifice) {
-		nextSeenArmorSlotItems[slot] = ARTIFICE;
+		nextSeenArmorSlotItems[slot].isArtifice = true;
 	} else if (armorSlotItem.socketableRaidAndNightmareModTypeId !== null) {
-		nextSeenArmorSlotItems[slot] =
+		nextSeenArmorSlotItems[slot].raidAndNightmareModTypeId =
 			armorSlotItem.socketableRaidAndNightmareModTypeId;
+	} else if (armorSlotItem.intrinsicArmorPerkOrAttributeId !== null) {
+		nextSeenArmorSlotItems[slot].intrinsicArmorPerkOrAttributeId =
+			armorSlotItem.intrinsicArmorPerkOrAttributeId;
 	}
 	const nextSumOfSeenStats = getNextSeenStats(
 		sumOfSeenStats,
@@ -405,19 +402,34 @@ export const getExtraSocketModCategoryIdCountsFromRaidModIdList = (
 	return counts;
 };
 
-export const hasValidSeenItemCounts = (
-	seenItemCountsWithoutClassItems: ItemCounts,
+export type RequiredClassItemMetadataKey = keyof AllClassItemMetadata | null;
+
+export type HasValidSeenItemCountsParams = {
+	seenItemCounts: ItemCounts;
 	raidModExtraSocketModCategoryIdCounts: Partial<
 		Record<ERaidAndNightMareModTypeId, number>
-	>,
-	seenArmorSlotClassItems: SeenArmorSlotClassItems
-): {
+	>;
+	allClassItemMetadata: AllClassItemMetadata;
+};
+
+export const isRaidOrNightmareRequiredClassItem = (
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey
+): boolean => {
+	return RaidAndNightmareModTypeIdList.includes(
+		requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
+	);
+};
+
+export const hasValidSeenItemCounts = ({
+	seenItemCounts,
+	raidModExtraSocketModCategoryIdCounts,
+	allClassItemMetadata,
+}: HasValidSeenItemCountsParams): {
 	isValid: boolean;
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
 } => {
 	let isValid = true;
-	let requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId =
-		null;
+	let requiredClassItemMetadataKey: RequiredClassItemMetadataKey = null;
 	const extraSocketModCategoryIdList = Object.keys(
 		raidModExtraSocketModCategoryIdCounts
 	) as unknown as ERaidAndNightMareModTypeId[];
@@ -427,26 +439,33 @@ export const hasValidSeenItemCounts = (
 			const extraSocketModCategoryId = extraSocketModCategoryIdList[i];
 			if (
 				raidModExtraSocketModCategoryIdCounts[extraSocketModCategoryId] >
-				seenItemCountsWithoutClassItems[extraSocketModCategoryId]
+				seenItemCounts[extraSocketModCategoryId]
 			) {
 				// Add in the class item if we have to
 				// TODO: This logic will need to change for combos where we have enough
 				// non-class item pieces but they don't have the mod space to fit the raid
 				// mods without using the class item for a raid mod
 				if (
-					requiredClassItemExtraModSocketCategoryId === null &&
-					seenArmorSlotClassItems[extraSocketModCategoryId] &&
+					// We don't already have a special required class item
+					requiredClassItemMetadataKey === null &&
+					// We have a class item that can fit the special requirements
+					allClassItemMetadata[extraSocketModCategoryId].items.length > 0 &&
+					// Adding the special class item will allow us to potentially
+					// fit all the raid mods
 					raidModExtraSocketModCategoryIdCounts[extraSocketModCategoryId] ===
-						seenItemCountsWithoutClassItems[extraSocketModCategoryId] + 1
+						seenItemCounts[extraSocketModCategoryId] + 1
 				) {
-					requiredClassItemExtraModSocketCategoryId = extraSocketModCategoryId;
+					requiredClassItemMetadataKey = extraSocketModCategoryId;
 					continue;
 				}
 				isValid = false;
-				requiredClassItemExtraModSocketCategoryId = null;
+				requiredClassItemMetadataKey = null;
 				break;
 			}
 		}
 	}
-	return { isValid, requiredClassItemExtraModSocketCategoryId };
+	return {
+		isValid,
+		requiredClassItemMetadataKey,
+	};
 };

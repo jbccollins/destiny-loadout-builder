@@ -1,31 +1,36 @@
 import { Loadout, LoadoutParameters } from '@destinyitemmanager/dim-api-types';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
+import { EJumpId } from '@dlb/generated/jump/EJumpId';
+import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
+import {
+	AllClassItemMetadata,
+	ArmorItem,
+	AvailableExoticArmorItem,
+} from '@dlb/types/Armor';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
+import { getAspect } from '@dlb/types/Aspect';
+import { getClassAbility } from '@dlb/types/ClassAbility';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
+import { getFragment } from '@dlb/types/Fragment';
+import { getGrenade } from '@dlb/types/Grenade';
 import {
 	EArmorStatId,
 	EDestinyClassId,
 	EDestinySubclassId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
-import { getFragment } from '@dlb/types/Fragment';
-import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
-import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
-import { ArmorItem, AvailableExoticArmorItem } from '@dlb/types/Armor';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { getAspect } from '@dlb/types/Aspect';
-import { EJumpId } from '@dlb/generated/jump/EJumpId';
-import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
-import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
-import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
-import { getClassAbility } from '@dlb/types/ClassAbility';
-import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
-import { getSuperAbility } from '@dlb/types/SuperAbility';
 import { getJump } from '@dlb/types/Jump';
 import { getMelee } from '@dlb/types/Melee';
-import { getGrenade } from '@dlb/types/Grenade';
-import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
-import { EModId } from '@dlb/generated/mod/EModId';
-import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
-import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { getSuperAbility } from '@dlb/types/SuperAbility';
 
 export type DimLoadoutConfiguration = {
 	raidModIdList: EModId[];
@@ -45,9 +50,34 @@ export type DimLoadoutConfiguration = {
 	destinyClassId: EDestinyClassId;
 	armorList: ArmorItem[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	classItem: ProcessedArmorItemMetadataClassItem;
+	classItemMetadata: AllClassItemMetadata;
 };
 
-const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
+export const generateDimQuery = (
+	armorList: ArmorItem[],
+	classItem: ProcessedArmorItemMetadataClassItem,
+	classItemMetadata: AllClassItemMetadata
+): string => {
+	let query = armorList
+		.map((armorItem) => {
+			return `id:'${armorItem.id}'`;
+		})
+		.join(' or ');
+	if (classItem.requiredClassItemMetadataKey !== null) {
+		query += ` or id:'${
+			classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id
+		}'`;
+	} else {
+		query += ` or id:'${classItemMetadata.Legendary.items[0].id}'`;
+	}
+
+	return query;
+};
+
+export const generateDimLink = (
+	configuration: DimLoadoutConfiguration
+): string => {
 	const {
 		raidModIdList,
 		fragmentIdList,
@@ -66,6 +96,8 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 		grenadeId,
 		superAbilityId,
 		armorSlotMods,
+		classItem,
+		classItemMetadata,
 	} = configuration;
 	const fragmentHashes: number[] = fragmentIdList.map(
 		(fragmentId: EFragmentId) => getFragment(fragmentId).hash
@@ -145,6 +177,19 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 		clearSpace: false,
 	};
 
+	if (classItem.requiredClassItemMetadataKey !== null) {
+		loadout.equipped.push({
+			id: classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id,
+			hash: classItemMetadata[classItem.requiredClassItemMetadataKey].items[0]
+				.hash,
+		});
+	} else {
+		loadout.equipped.push({
+			id: classItemMetadata.Legendary.items[0].id,
+			hash: classItemMetadata.Legendary.items[0].hash,
+		});
+	}
+
 	// Configure subclass
 	const socketOverrides: Record<number, number> = {};
 
@@ -185,5 +230,3 @@ const generateDimLink = (configuration: DimLoadoutConfiguration): string => {
 
 	return url;
 };
-
-export default generateDimLink;

@@ -1,16 +1,24 @@
-import {
-	EArmorSlotId,
-	EArmorStatId,
-	EDestinyClassId,
-} from '@dlb/types/IdEnums';
-import { getDefaultStatList } from './utils';
-import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
-import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import { ARTIFICE } from '@dlb/services/processArmor/constants';
 import {
 	getDefaultModCombos,
 	getModCombos,
 } from '@dlb/services/processArmor/getModCombos';
 import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArmorSlotItems';
+import {
+	getDefaultAllClassItemMetadata,
+	getDefaultArmorItem,
+} from '@dlb/types/Armor';
+import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EDestinyClassId,
+	EMasterworkAssumption,
+} from '@dlb/types/IdEnums';
+import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import { getDefaultStatList } from './utils';
 
 const testFunction = getModCombos;
 
@@ -19,21 +27,29 @@ type TestCaseOutput = ReturnType<typeof testFunction>;
 
 type TestCase = [name: string, input: TestCaseInput, output: TestCaseOutput];
 
+const getDefaultTestCaseInput = () => ({
+	sumOfSeenStats: getDefaultStatList(),
+	desiredArmorStats: getDefaultArmorStatMapping(),
+	potentialRaidModArmorSlotPlacements: [],
+	armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+	raidMods: [],
+	destinyClassId: EDestinyClassId.Warlock,
+	specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+	reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+	useZeroWastedStats: false,
+	allClassItemMetadata: getDefaultAllClassItemMetadata(),
+	masterworkAssumption: EMasterworkAssumption.None,
+});
+
 const testCases: TestCase[] = [
 	[
 		'Simple',
 		[
 			{
-				sumOfSeenStats: getDefaultStatList(),
-				desiredArmorStats: getDefaultArmorStatMapping(),
-				potentialRaidModArmorSlotPlacements: [],
-				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
-				raidMods: [],
-				destinyClassId: EDestinyClassId.Warlock,
-				specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+				...getDefaultTestCaseInput(),
 			},
 		],
-		getDefaultModCombos(),
+		[getDefaultModCombos()],
 	],
 	[
 		'Two stats',
@@ -50,9 +66,48 @@ const testCases: TestCase[] = [
 				raidMods: [],
 				destinyClassId: EDestinyClassId.Warlock,
 				specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+				useZeroWastedStats: false,
+				allClassItemMetadata: getDefaultAllClassItemMetadata(),
+				masterworkAssumption: EMasterworkAssumption.None,
 			},
 		],
-		getDefaultModCombos(),
+		[
+			{
+				...getDefaultModCombos(),
+				lowestCostPlacement: {
+					...getDefaultModCombos().lowestCostPlacement,
+					placement: {
+						...getDefaultModCombos().lowestCostPlacement.placement,
+
+						[EArmorSlotId.Head]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.Head
+							],
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.Arm]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.Arm
+							],
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.Chest]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.Chest
+							],
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.Leg]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.Leg
+							],
+							armorStatModId: EModId.IntellectMod,
+						},
+					},
+				},
+			},
+		],
 	],
 	[
 		'Lots of stats',
@@ -72,24 +127,512 @@ const testCases: TestCase[] = [
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
 				destinyClassId: EDestinyClassId.Warlock,
+				masterworkAssumption: EMasterworkAssumption.None,
 				specialSeenArmorSlotItems: {
 					...getDefaultSeenArmorSlotItems(),
-					[EArmorSlotId.Head]: 'artifice',
-					[EArmorSlotId.Arm]: 'artifice',
-					[EArmorSlotId.Chest]: 'artifice',
-					ClassItems: {
-						...getDefaultSeenArmorSlotItems().ClassItems,
-						artifice: true,
+					[EArmorSlotId.Head]: {
+						isArtifice: true,
+						isMasterworked: false,
+						raidAndNightmareModTypeId: null,
+						intrinsicArmorPerkOrAttributeId: null,
+					},
+					[EArmorSlotId.Arm]: {
+						isArtifice: true,
+						isMasterworked: false,
+						raidAndNightmareModTypeId: null,
+						intrinsicArmorPerkOrAttributeId: null,
+					},
+					[EArmorSlotId.Chest]: {
+						isArtifice: true,
+						isMasterworked: false,
+						raidAndNightmareModTypeId: null,
+						intrinsicArmorPerkOrAttributeId: null,
+					},
+				},
+				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+				useZeroWastedStats: false,
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						items: [
+							{
+								...getDefaultArmorItem(),
+							},
+						],
+						hasMasterworkedVariant: true,
 					},
 				},
 			},
 		],
-		getDefaultModCombos(),
+
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+				requiredClassItemMetadataKey: ARTIFICE,
+				lowestCostPlacement: {
+					...getDefaultModCombos().lowestCostPlacement,
+					artificeModIdList: [
+						EModId.MobilityForged,
+						EModId.MobilityForged,
+						EModId.DisciplineForged,
+						EModId.StrengthForged,
+					],
+					placement: {
+						...getDefaultModCombos().lowestCostPlacement.placement,
+						[EArmorSlotId.Head]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.Head
+							],
+							armorStatModId: EModId.MobilityMod,
+						},
+						[EArmorSlotId.Arm]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.Arm
+							],
+							armorStatModId: EModId.DisciplineMod,
+						},
+						[EArmorSlotId.Chest]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.Chest
+							],
+							armorStatModId: EModId.MinorDisciplineMod,
+						},
+						[EArmorSlotId.Leg]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.Leg
+							],
+							armorStatModId: EModId.StrengthMod,
+						},
+						[EArmorSlotId.ClassItem]: {
+							...getDefaultModCombos().lowestCostPlacement.placement[
+								EArmorSlotId.ClassItem
+							],
+							armorStatModId: EModId.MinorStrengthMod,
+						},
+					},
+				},
+			},
+		],
+	],
+	[
+		'Just Masterworked Legendary Class Item',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+			},
+		],
+	],
+	[
+		'Just Unmasterworked Artifice Class Item (No Desired Stats)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: false,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: false,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: false,
+			},
+		],
+	],
+	[
+		'Just Unmasterworked Artifice Class Item (+3 Single Desired Stat)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Mobility]: 30,
+				},
+				sumOfSeenStats: [27, 0, 0, 0, 0, 0],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: false,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: false,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: false,
+				requiredClassItemMetadataKey: ARTIFICE,
+				lowestCostPlacement: {
+					...getDefaultModCombos().lowestCostPlacement,
+					artificeModIdList: [EModId.MobilityForged],
+				},
+			},
+		],
+	],
+	[
+		'Unmasterworked Artifice & Masterworked Legendary (+3 Single Desired Stat)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Mobility]: 30,
+				},
+				sumOfSeenStats: [27, 0, 0, 0, 0, 0],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: false,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: false,
+							},
+						],
+					},
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: false,
+				requiredClassItemMetadataKey: ARTIFICE,
+				lowestCostPlacement: {
+					...getDefaultModCombos().lowestCostPlacement,
+					artificeModIdList: [EModId.MobilityForged],
+				},
+			},
+		],
+	],
+	[
+		'Unmasterworked Artifice & Masterworked Legendary (+2 Single Desired Stat)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Mobility]: 30,
+				},
+				sumOfSeenStats: [28, 0, 0, 0, 0, 0],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: false,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: false,
+							},
+						],
+					},
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+			},
+		],
+	],
+	[
+		'Unmasterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Mobility]: 30,
+					[EArmorStatId.Resilience]: 30,
+				},
+				sumOfSeenStats: [28, 28, 0, 0, 0, 0],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: false,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: false,
+							},
+						],
+					},
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			// Masterworked Legedary
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+			},
+		],
+	],
+	[
+		'Unmasterworked Artifice & Masterworked Legendary (No Desired Stats)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: false,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: false,
+							},
+						],
+					},
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			// Masterworked Legedary
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+			},
+		],
+	],
+	[
+		'Masterworked Artifice & Masterworked Legendary (No Desired Stats)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+			},
+		],
+	],
+	[
+		'Masterworked Artifice & Masterworked Legendary (+2 Single Desired Stat)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Mobility]: 30,
+				},
+				sumOfSeenStats: [28, 0, 0, 0, 0, 0],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+			},
+		],
+	],
+	[
+		'Masterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Mobility]: 30,
+					[EArmorStatId.Resilience]: 30,
+				},
+				sumOfSeenStats: [28, 28, 0, 0, 0, 0],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			// Masterworked Legedary
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+			},
+		],
+	],
+	[
+		'Masterworked Artifice & Masterworked Legendary (+3 Single Desired Stat)',
+		[
+			{
+				...getDefaultTestCaseInput(),
+				desiredArmorStats: {
+					...getDefaultArmorStatMapping(),
+					[EArmorStatId.Mobility]: 30,
+				},
+				sumOfSeenStats: [27, 0, 0, 0, 0, 0],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					Artifice: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+					Legendary: {
+						hasMasterworkedVariant: true,
+						items: [
+							{
+								...getDefaultArmorItem(),
+								isMasterworked: true,
+							},
+						],
+					},
+				},
+			},
+		],
+		[
+			{
+				...getDefaultModCombos(),
+				hasMasterworkedClassItem: true,
+				requiredClassItemMetadataKey: ARTIFICE,
+				lowestCostPlacement: {
+					...getDefaultModCombos().lowestCostPlacement,
+					artificeModIdList: [EModId.MobilityForged],
+				},
+			},
+		],
 	],
 ];
 
-const nameOfTestToDebug = 'Lots of stats';
-// const nameOfTestToDebug = null;
+// const nameOfTestToDebug =
+// 	'Unmasterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)';
+const nameOfTestToDebug = null;
 describe('getModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

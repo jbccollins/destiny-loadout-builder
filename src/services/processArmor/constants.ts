@@ -6,7 +6,12 @@
 // I *think* it's impossible to have a short circuit before chest if we keep this at 30.
 // But it *should* be possible once we make this dynamic. We *could* also check to see
 // if there even are any masterworked items in a slot (relevant mostly for the exotic chosen)
+
+import { StatList } from '@dlb/types/Armor';
+
 // and if there aren't then this is just 30. Probably not needed once done dynamically anyway tho
 export const MAX_SINGLE_STAT_VALUE = 32;
 
-export const ARTIFICE = 'artifice';
+export const ARTIFICE = 'Artifice';
+
+export const EXTRA_MASTERWORK_STAT_LIST: StatList = [2, 2, 2, 2, 2, 2];

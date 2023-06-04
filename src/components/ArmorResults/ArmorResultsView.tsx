@@ -1,4 +1,3 @@
-import { EModId } from '@dlb/generated/mod/EModId';
 import { SmallScreenData } from '@dlb/pages';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
@@ -9,14 +8,9 @@ import {
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { ArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
-import {
-	EArmorSlotId,
-	EArmorStatId,
-	ERaidAndNightMareModTypeId,
-} from '@dlb/types/IdEnums';
+import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
 	Box,
@@ -30,6 +24,7 @@ import {
 } from '@mui/material';
 import React, { useCallback, useMemo, useState } from 'react';
 import ArmorResultsList from './ArmorResultsList';
+import { ResultsTableLoadout, SortableFields } from './ArmorResultsTypes';
 import NoResults from './NoResults';
 const Container = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
@@ -92,18 +87,6 @@ const OrderByFormControl = styled(FormControl)(({ theme }) => ({
 		marginLeft: '-1px',
 	},
 }));
-
-export type SortableFields = {
-	Mobility: number;
-	Resilience: number;
-	Recovery: number;
-	Discipline: number;
-	Intellect: number;
-	Strength: number;
-	totalModCost: number;
-	totalStatTiers: number;
-	wastedStats: number;
-};
 
 function descendingComparator(
 	a: ResultsTableLoadout,
@@ -168,15 +151,6 @@ const SortableFieldsDefaultSortOrder: Record<SortableFieldsKey, Order> = {
 	totalModCost: 'asc',
 	totalStatTiers: 'desc',
 	wastedStats: 'asc',
-};
-
-export type ResultsTableLoadout = {
-	id: string;
-	sortableFields: SortableFields;
-	armorItems: ArmorItem[];
-	requiredStatModIdList: EModId[];
-	requiredArtificeModIdList: EModId[];
-	requiredClassItemExtraModSocketCategoryId: ERaidAndNightMareModTypeId;
 };
 
 export type Order = 'asc' | 'desc';
@@ -373,19 +347,13 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		const res: ResultsTableLoadout[] = [];
 
 		processedArmor.items.forEach(
-			({
-				armorIdList,
-				armorStatModIdList,
-				artificeModIdList,
-				requiredClassItemExtraModSocketCategoryId,
-				metadata,
-			}) => {
+			({ armorIdList, armorStatModIdList, artificeModIdList, metadata }) => {
 				const resultLoadout: ResultsTableLoadout = {
 					id: '',
 					armorItems: [],
 					requiredStatModIdList: armorStatModIdList,
 					requiredArtificeModIdList: artificeModIdList,
-					requiredClassItemExtraModSocketCategoryId,
+					classItem: metadata.classItem,
 					sortableFields: {
 						[EArmorStatId.Mobility]: 0,
 						[EArmorStatId.Resilience]: 0,

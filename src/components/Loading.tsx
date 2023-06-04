@@ -30,6 +30,7 @@ import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
+import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
@@ -43,6 +44,11 @@ import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import { setInGameLoadouts } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	selectInGameLoadoutsFilter,
+	setInGameLoadoutsFilter,
+} from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import {
 	selectReservedArmorSlotEnergy,
@@ -148,6 +154,8 @@ const LoadingSpinnerContainer = styled(Box)(() => ({
 	height: '24px !important', // `${theme.spacing(2.6)} !important`
 }));
 
+const LOCAL_STORAGE_SHARED_LOADOUT_URL = 'sharedLoadoutString';
+
 function Loading() {
 	const [hasMembershipData, setHasMembershipData] = useState(false);
 	const [hasPlatformData, setHasPlatformData] = useState(false);
@@ -161,6 +169,7 @@ function Loading() {
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
+	const inGameLoadoutsFilter = useAppSelector(selectInGameLoadoutsFilter);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
@@ -169,6 +178,7 @@ function Loading() {
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
+	// const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
@@ -332,9 +342,21 @@ function Loading() {
 	useEffect(() => {
 		(async () => {
 			const urlParams = new URLSearchParams(window.location.search);
-			const loadoutString = urlParams.get('loadout');
-
-			const hasLoadout = loadoutString ? true : false;
+			let sharedLoadoutString = urlParams.get('loadout');
+			console.log(
+				'>>>>>>>>>>> [LOAD] sharedLoadoutString <<<<<<<<<<<',
+				sharedLoadoutString
+			);
+			if (sharedLoadoutString) {
+				localStorage.setItem(
+					LOCAL_STORAGE_SHARED_LOADOUT_URL,
+					sharedLoadoutString
+				);
+				console.log(
+					'>>>>>>>>>>> [LOAD] sharedLoadoutString cached <<<<<<<<<<<',
+					localStorage.getItem(LOCAL_STORAGE_SHARED_LOADOUT_URL)
+				);
+			}
 
 			try {
 				console.log('>>>>>>>>>>> [LOAD] begin <<<<<<<<<<<');
@@ -342,6 +364,20 @@ function Loading() {
 				// TODO can any of these requests be paralellized? Like a Promise.All or whatever?
 				const membershipData = await getMembershipData();
 				setHasMembershipData(true);
+				// If membershipData is null then we are not logged in
+				let loadoutStringFromLocalStorage = false;
+				if (!sharedLoadoutString) {
+					loadoutStringFromLocalStorage = true;
+					sharedLoadoutString = localStorage.getItem(
+						LOCAL_STORAGE_SHARED_LOADOUT_URL
+					);
+				}
+				if (loadoutStringFromLocalStorage && sharedLoadoutString) {
+					router.push('/?loadout=' + encodeURIComponent(sharedLoadoutString));
+				}
+
+				const hasLoadout = sharedLoadoutString ? true : false;
+
 				console.log(
 					'>>>>>>>>>>> [LOAD] membership <<<<<<<<<<<',
 					membershipData
@@ -382,17 +418,22 @@ function Loading() {
 				);
 				setHasRawCharacters(true);
 
-				const stores = await loadStoresData(mostRecentPlatform);
-				console.log('>>>>>>>>>>> [LOAD] stores <<<<<<<<<<<', stores);
-				setHasStores(true);
-				const [armor, availableExoticArmor, armorMetadata] = extractArmor(
-					stores,
-					manifest
+				const { stores, inGameLoadoutItemIdList } = await loadStoresData(
+					mostRecentPlatform
 				);
+				setHasStores(true);
+				const [
+					armor,
+					availableExoticArmor,
+					armorMetadata,
+					allClassItemMetadata,
+				] = extractArmor(stores, manifest);
 
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
 				dispatch(setArmorMetadata({ ...armorMetadata }));
+				dispatch(setAllClassItemMetadata(allClassItemMetadata));
+
 				const validDestinyClassIds = getValidDestinyClassIds(armorMetadata);
 				console.log(
 					'>>>>>>>>>>> [LOAD] validDestinyClassIds <<<<<<<<<<<',
@@ -430,13 +471,12 @@ function Loading() {
 						}
 					}
 				});
-				console.log('>>>> setting exotic armor', defaultSelectedExoticArmor);
 				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
 
 				if (hasLoadout) {
 					loadFromQueryParams({
 						availableExoticArmor,
-						loadoutString,
+						loadoutString: sharedLoadoutString,
 					});
 				} else {
 					dispatch(setSelectedDestinyClass(validDestinyClassIds[0]));
@@ -463,7 +503,8 @@ function Loading() {
 					// 		dimLoadoutsFilter,
 					// 		selectedMinimumGearTier,
 					// 		selectedRaidMods,
-					// 		reservedArmorSlotEnergy
+					// 		reservedArmorSlotEnergy,
+					// 		allClassItemMetadata
 					// 	]
 					// we can "dirty" the store so it knows it needs to recalculate the
 					// processedArmorItems
@@ -488,9 +529,13 @@ function Loading() {
 					dispatch(setDimLoadouts(dimLoadouts));
 				}
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
+				dispatch(setInGameLoadouts(inGameLoadoutItemIdList));
+				dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
 				dispatch(setUseZeroWastedStats(useZeroWastedStats));
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
 				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
+				console.log('>>>>>>>>>>> [LOAD] removeItem <<<<<<<<<<<');
+				localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
 			} catch (error) {

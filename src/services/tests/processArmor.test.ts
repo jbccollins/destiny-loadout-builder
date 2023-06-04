@@ -192,7 +192,7 @@ const testCases: TestCase[] = [
 					},
 				},
 			],
-			// TOOD: Rename totalItemCount to untruncateItemCount
+			// TOOD: Rename totalItemCount to untruncatedItemCount
 			totalItemCount: 1,
 			// TODO: Change max posible desired stat tiers to actual tiers, not values. So divide these by 10
 			maxPossibleDesiredStatTiers: {

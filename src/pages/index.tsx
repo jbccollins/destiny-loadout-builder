@@ -297,7 +297,7 @@ const LeftSectionComponent = () => {
 							</>
 						),
 						index: 2,
-						title: 'Patch Notes',
+						title: 'About',
 					},
 				]}
 			/>

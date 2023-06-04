@@ -1,4 +1,8 @@
-import { Box, styled } from '@mui/material';
+import discord_image from '@dlb/public/discord-mark-white.png';
+import kofi_image from '@dlb/public/kofi-logo.png';
+import twitter_image from '@dlb/public/twitter-logo.png';
+import { Box, Link, styled } from '@mui/material';
+import Image, { StaticImageData } from 'next/image';
 import { PatchNotes as patchNotes } from './patchNotesData';
 
 const Container = styled(Box)(({ theme }) => ({
@@ -32,6 +36,13 @@ const Title = styled(Box)(({ theme }) => ({
 	fontWeight: 'bold',
 }));
 
+const SectionTitle = styled(Box)(({ theme }) => ({
+	fontSize: '1.5rem',
+	paddingBottom: theme.spacing(0.2),
+	width: '100%',
+	fontWeight: 'bold',
+}));
+
 const Subtitle = styled(Box)(({ theme }) => ({
 	fontSize: '0.8rem',
 }));
@@ -51,10 +62,69 @@ const Bullet = styled(Box)(({ theme }) => ({
 	marginRight: '4px',
 }));
 
+const SocialIcon = (props: {
+	linkUrl: string;
+	iconUrl: StaticImageData;
+	text: string;
+}) => {
+	const { linkUrl, iconUrl, text } = props;
+	return (
+		<Link href={linkUrl} target="_blank" sx={{ marginBottom: '8px' }}>
+			<Box sx={{ display: 'flex' }}>
+				<Image
+					src={iconUrl}
+					alt="me"
+					height="40"
+					width="50"
+					objectFit="contain"
+					objectPosition="left"
+				/>
+				<Box
+					sx={{
+						fontSize: '20px',
+						marginLeft: '8px',
+						marginTop: '4px',
+						fontWeight: 'bold',
+					}}
+				>
+					{text}
+				</Box>
+			</Box>
+		</Link>
+	);
+};
+const DISCORD_LINK = 'https://discord.gg/zNYma78N94';
+const KOFI_LINK = 'https://ko-fi.com/my_derpy_turtle';
+const TWITTER_LINK = 'https://twitter.com/LoadoutBuilder';
+
 function PatchNotes() {
 	return (
 		<>
 			<Container>
+				<SectionTitle>Social and Support</SectionTitle>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						marginTop: '8px',
+						marginLeft: '8px',
+						flex: 1,
+						flexWrap: 'wrap',
+					}}
+				>
+					<SocialIcon
+						linkUrl={DISCORD_LINK}
+						iconUrl={discord_image}
+						text="Discord"
+					/>
+					<SocialIcon linkUrl={KOFI_LINK} iconUrl={kofi_image} text="Donate" />
+					<SocialIcon
+						linkUrl={TWITTER_LINK}
+						iconUrl={twitter_image}
+						text="Twitter"
+					/>
+				</Box>
+				<SectionTitle sx={{ marginTop: '16px' }}>Patch Notes</SectionTitle>
 				{patchNotes.map((patchNote) => (
 					<PatchNoteContainer key={patchNote.version}>
 						<Header>

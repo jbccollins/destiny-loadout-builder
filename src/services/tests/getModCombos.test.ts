@@ -339,22 +339,6 @@ const testCases: TestCase[] = [
 		[
 			{
 				...getDefaultModCombos(),
-				hasMasterworkedClassItem: true,
-				lowestCostPlacement: {
-					...getDefaultModCombos().lowestCostPlacement,
-					placement: {
-						...getDefaultModCombos().lowestCostPlacement.placement,
-						[EArmorSlotId.Head]: {
-							...getDefaultModCombos().lowestCostPlacement.placement[
-								EArmorSlotId.Head
-							],
-							armorStatModId: EModId.MinorMobilityMod,
-						},
-					},
-				},
-			},
-			{
-				...getDefaultModCombos(),
 				hasMasterworkedClassItem: false,
 				requiredClassItemMetadataKey: ARTIFICE,
 				lowestCostPlacement: {

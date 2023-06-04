@@ -153,6 +153,15 @@ export type GetModCombosParams = {
 	masterworkAssumption: EMasterworkAssumption;
 };
 
+// This return type is a bit... misleading...
+// At the moment it SHOULD only ever return a single [ModCombos] array.
+// When writing this I was wrestling with how to handle masterwork assumptions
+// If the user wants to reduce wasted stats or hit zero wasted stats then there
+// are cases where we want to ignore the masterwork assumption and determine
+// whether or not to masterwork certain pieces of unmasterworked armor. But
+// That logic is just too complex for the moment. So for now we just return
+// a single [ModCombos] array. If we ever need to return multiple [ModCombos]
+// arrays then we'll need to refactor this.
 export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 	const {
 		sumOfSeenStats,
@@ -377,8 +386,8 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 		}
 		result.push(res);
 	});
-	// If using the special case artifice class item provides no benefit
-	// over using the masterworked class item then just return the masterworked class item
+	// If either result provides no benefit over the other then remove one of them
+	// Prefer the masterworked legedary over the unmasterworked artifice
 	if (result.length === 2) {
 		const comboCosts = result.map((x) => {
 			return sumModCosts(
@@ -389,6 +398,8 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 		});
 		if (comboCosts[0] <= comboCosts[1]) {
 			result.splice(1, 1);
+		} else if (comboCosts[1] <= comboCosts[0]) {
+			result.splice(0, 1);
 		}
 	}
 	return result.length > 0 ? result : null;

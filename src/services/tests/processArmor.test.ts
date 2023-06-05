@@ -1,5 +1,6 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import { ARTIFICE } from '@dlb/services/processArmor/constants';
 import {
 	doProcessArmor,
 	getDefaultProcessedArmorItemMetadataClassItem,
@@ -21,6 +22,7 @@ import {
 	EDestinyClassId,
 	EGearTierId,
 	EMasterworkAssumption,
+	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
 import {
 	getDefaultArmorSlotIdToModIdListMapping,
@@ -28,7 +30,6 @@ import {
 } from '@dlb/types/Mod';
 import { describe, expect, test } from '@jest/globals';
 import { cloneDeep } from 'lodash';
-import { ARTIFICE } from '../processArmor/constants';
 
 const testFunction = doProcessArmor;
 
@@ -96,6 +97,35 @@ const defaultClassItemMetadataWithMasterworkedArtifice: AllClassItemMetadata = {
 		],
 	},
 };
+
+const defaultClassItemMetadataWithUnMasterworkedRaidClassItem: AllClassItemMetadata =
+	{
+		...getDefaultAllClassItemMetadata(),
+		Legendary: {
+			hasMasterworkedVariant: false,
+			items: [
+				{
+					...getDefaultArmorItem(),
+					socketableRaidAndNightmareModTypeId:
+						ERaidAndNightMareModTypeId.RootOfNightmares,
+					isMasterworked: false,
+					id: '4',
+				},
+			],
+		},
+		RootOfNightmares: {
+			hasMasterworkedVariant: false,
+			items: [
+				{
+					...getDefaultArmorItem(),
+					socketableRaidAndNightmareModTypeId:
+						ERaidAndNightMareModTypeId.RootOfNightmares,
+					isMasterworked: false,
+					id: '4',
+				},
+			],
+		},
+	};
 
 // const defaultArmorMetadataWithLastWishAndArtificeClassItem: ArmorMetadata =
 // 	cloneDeep(defaultArmorMetadataWithArtificeClassItem);
@@ -834,10 +864,166 @@ const testCases: TestCase[] = [
 			},
 		},
 	],
+	[
+		'It returns results with a raid chest and class item where the chestpiece has no capacity',
+		[
+			{
+				masterworkAssumption: EMasterworkAssumption.None,
+				desiredArmorStats: {
+					[EArmorStatId.Mobility]: 0,
+					[EArmorStatId.Resilience]: 0,
+					[EArmorStatId.Recovery]: 0,
+					[EArmorStatId.Discipline]: 0,
+					[EArmorStatId.Intellect]: 0,
+					[EArmorStatId.Strength]: 0,
+				},
+				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
+				modArmorStatMapping: getDefaultArmorStatMapping(),
+				potentialRaidModArmorSlotPlacements: [
+					{
+						...getDefaultValidRaidModArmorSlotPlacement(),
+						[EArmorSlotId.Head]: EModId.ReleaseRecover,
+					},
+					{
+						...getDefaultValidRaidModArmorSlotPlacement(),
+						[EArmorSlotId.Arm]: EModId.ReleaseRecover,
+					},
+					{
+						...getDefaultValidRaidModArmorSlotPlacement(),
+						[EArmorSlotId.Chest]: EModId.ReleaseRecover,
+					},
+					{
+						...getDefaultValidRaidModArmorSlotPlacement(),
+						[EArmorSlotId.Leg]: EModId.ReleaseRecover,
+					},
+					{
+						...getDefaultValidRaidModArmorSlotPlacement(),
+						[EArmorSlotId.ClassItem]: EModId.ReleaseRecover,
+					},
+				],
+				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+				raidMods: [EModId.ReleaseRecover],
+				destinyClassId: EDestinyClassId.Warlock,
+				armorMetadataItem: getDefaultArmorMetadata().Warlock,
+				selectedExotic: getDefaultAvailableExoticArmorItem(),
+				reservedArmorSlotEnergy: {
+					...getDefaultArmorSlotEnergyMapping(),
+					[EArmorSlotId.Chest]: 10,
+				},
+				useZeroWastedStats: false,
+				allClassItemMetadata:
+					defaultClassItemMetadataWithUnMasterworkedRaidClassItem,
+				armorItems: [
+					[
+						{
+							...getDefaultArmorItem(),
+							id: '0',
+							stats: [0, 0, 0, 0, 0, 0],
+							hash: -1,
+							gearTierId: EGearTierId.Legendary,
+							isMasterworked: false,
+							isArtifice: false,
+						},
+					],
+					[
+						{
+							...getDefaultArmorItem(),
+							id: '1',
+							stats: [0, 0, 0, 0, 0, 0],
+							hash: -1,
+							gearTierId: EGearTierId.Legendary,
+							isMasterworked: false,
+							isArtifice: false,
+						},
+					],
+					[
+						{
+							...getDefaultArmorItem(),
+							id: '2',
+							stats: [0, 0, 0, 0, 0, 0],
+							hash: -1,
+							gearTierId: EGearTierId.Legendary,
+							isMasterworked: false,
+							isArtifice: false,
+							socketableRaidAndNightmareModTypeId:
+								ERaidAndNightMareModTypeId.RootOfNightmares,
+						},
+					],
+					[
+						{
+							...getDefaultArmorItem(),
+							id: '3',
+							stats: [0, 0, 0, 0, 0, 0],
+							hash: -1,
+							gearTierId: EGearTierId.Legendary,
+							isMasterworked: false,
+							isArtifice: false,
+						},
+					],
+				],
+			},
+		],
+		{
+			items: [
+				{
+					armorIdList: ['0', '1', '2', '3'],
+					armorStatModIdList: [],
+					artificeModIdList: [],
+					metadata: {
+						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
+						baseArmorStatMapping: {
+							[EArmorStatId.Mobility]: 0,
+							[EArmorStatId.Resilience]: 0,
+							[EArmorStatId.Recovery]: 0,
+							[EArmorStatId.Discipline]: 0,
+							[EArmorStatId.Intellect]: 0,
+							[EArmorStatId.Strength]: 0,
+						},
+						totalArmorStatMapping: {
+							[EArmorStatId.Mobility]: 0,
+							[EArmorStatId.Resilience]: 0,
+							[EArmorStatId.Recovery]: 0,
+							[EArmorStatId.Discipline]: 0,
+							[EArmorStatId.Intellect]: 0,
+							[EArmorStatId.Strength]: 0,
+						},
+						seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+						classItem: {
+							...getDefaultProcessedArmorItemMetadataClassItem(),
+							requiredClassItemMetadataKey:
+								ERaidAndNightMareModTypeId.RootOfNightmares,
+						},
+						totalModCost: 0,
+						totalStatTiers: 0,
+						wastedStats: 0,
+					},
+				},
+			],
+			// TOOD: Rename totalItemCount to untruncatedItemCount
+			totalItemCount: 1,
+			// TODO: Change max posible desired stat tiers to actual tiers, not values. So divide these by 10
+			maxPossibleDesiredStatTiers: {
+				[EArmorStatId.Mobility]: 40,
+				[EArmorStatId.Resilience]: 40,
+				[EArmorStatId.Recovery]: 40,
+				[EArmorStatId.Discipline]: 40,
+				[EArmorStatId.Intellect]: 40,
+				[EArmorStatId.Strength]: 40,
+			},
+			maxPossibleReservedArmorSlotEnergy: {
+				[EArmorSlotId.Head]: 10,
+				[EArmorSlotId.Arm]: 10,
+				[EArmorSlotId.Chest]: 10,
+				[EArmorSlotId.Leg]: 10,
+				[EArmorSlotId.ClassItem]: 9,
+			},
+		},
+	],
 ];
 
-// const nameOfTestToDebug = 'It returns results with artifice boosts required';
-const nameOfTestToDebug = null;
+const nameOfTestToDebug =
+	'It returns results with a raid chest and class item where the chestpiece has no capacity';
+// const nameOfTestToDebug = null;
 describe('doProcessArmor', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

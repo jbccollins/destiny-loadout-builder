@@ -41,6 +41,7 @@ export type GetDlbLoadoutConfigurationParams = {
 	selectedClassAbility: SelectedClassAbility;
 	selectedSuperAbility: SelectedSuperAbility;
 	selectedAspects: SelectedAspects;
+	sharedLoadoutConfigStatPriorityOrder: number[];
 };
 export const getDlbLoadoutConfiguration = ({
 	desiredArmorStats,
@@ -56,6 +57,7 @@ export const getDlbLoadoutConfiguration = ({
 	selectedClassAbility,
 	selectedSuperAbility,
 	selectedAspects,
+	sharedLoadoutConfigStatPriorityOrder,
 }: GetDlbLoadoutConfigurationParams): DlbLoadoutConfiguration | null => {
 	try {
 		const exoticArmor = selectedExoticArmor[selectedDestinyClass];
@@ -87,19 +89,20 @@ export const getDlbLoadoutConfiguration = ({
 			}
 		});
 		return {
-			raidModIdList: selectedRaidMods,
-			armorSlotMods: selectedArmorSlotMods,
-			fragmentIdList: fragmentIds,
-			aspectIdList: aspectIds,
-			exoticArmor: exoticArmor,
-			destinySubclassId,
-			destinyClassId: selectedDestinyClass,
-			jumpId: selectedJump[destinySubclassId],
-			meleeId: selectedMelee[destinySubclassId],
-			superAbilityId: selectedSuperAbility[destinySubclassId],
-			classAbilityId: selectedClassAbility[destinySubclassId],
-			grenadeId: selectedGrenade[elementId],
-			desiredArmorStats,
+			rml: selectedRaidMods,
+			asm: selectedArmorSlotMods,
+			fl: fragmentIds,
+			al: aspectIds,
+			e: exoticArmor.hash,
+			dsc: destinySubclassId,
+			dc: selectedDestinyClass,
+			j: selectedJump[destinySubclassId],
+			m: selectedMelee[destinySubclassId],
+			s: selectedSuperAbility[destinySubclassId],
+			c: selectedClassAbility[destinySubclassId],
+			g: selectedGrenade[elementId],
+			das: desiredArmorStats,
+			spo: sharedLoadoutConfigStatPriorityOrder,
 		};
 	} catch (e) {
 		console.error(e);
@@ -108,21 +111,20 @@ export const getDlbLoadoutConfiguration = ({
 };
 
 export type DlbLoadoutConfiguration = {
-	destinyClassId: EDestinyClassId;
-	destinySubclassId: EDestinySubclassId;
-	aspectIdList: EAspectId[];
-	fragmentIdList: EFragmentId[];
-	superAbilityId: ESuperAbilityId;
-	jumpId: EJumpId;
-	grenadeId: EGrenadeId;
-	meleeId: EMeleeId;
-	classAbilityId: EClassAbilityId;
-
-	exoticArmor: AvailableExoticArmorItem;
-
-	raidModIdList: EModId[];
-	armorSlotMods: ArmorSlotIdToModIdListMapping;
-	desiredArmorStats: ArmorStatMapping;
+	dc: EDestinyClassId; // destinyClassId
+	dsc: EDestinySubclassId; // destinySubclassId
+	al: EAspectId[]; // aspectIdList
+	fl: EFragmentId[]; // fragmentIdList
+	s: ESuperAbilityId; // superAbilityId
+	j: EJumpId; // jumpId
+	g: EGrenadeId; // grenadeId
+	m: EMeleeId; // meleeId
+	c: EClassAbilityId; // classAbilityId
+	e: number; // exoticArmorHash
+	rml: EModId[]; // raidModIdList
+	asm: ArmorSlotIdToModIdListMapping; // armorSlotMods
+	das: ArmorStatMapping; // desiredArmorStats
+	spo: number[]; // sharedLoadoutConfigStatPriorityOrder
 };
 
 const generateDlbLink = (configuration: DlbLoadoutConfiguration): string => {

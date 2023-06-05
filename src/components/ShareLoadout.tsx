@@ -11,14 +11,104 @@ import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJum
 import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
-import { useAppSelector } from '@dlb/redux/hooks';
+import {
+	selectSharedLoadoutConfigStatPriorityOrder,
+	setSharedLoadoutConfigStatPriorityOrder,
+} from '@dlb/redux/features/sharedLoadoutConfigStatPriorityOrder/sharedLoadoutConfigStatPriorityOrderSlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import generateDlbLink, {
 	getDlbLoadoutConfiguration,
 } from '@dlb/services/links/generateDlbLoadoutLink';
+import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
+import { EArmorStatId } from '@dlb/types/IdEnums';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
+import { Help } from '@mui/icons-material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ShareIcon from '@mui/icons-material/Share';
-import { Button, Slide, SlideProps, Snackbar, styled } from '@mui/material';
+import {
+	Box,
+	Button,
+	Collapse,
+	IconButton,
+	Slide,
+	SlideProps,
+	Snackbar,
+	Tooltip,
+	styled,
+} from '@mui/material';
 import { useState } from 'react';
+import { SortableList, SortableOption } from './SortableList/SortableList';
+
+const AdvanceShareSortableOptions: SortableOption[] = ArmorStatIdList.map(
+	(x) => ({
+		id: x,
+		label: getArmorStat(x).name,
+		icon: getArmorStat(x).icon,
+	})
+);
+
+const AdvancedShareOptions = () => {
+	const sharedLoadoutConfigStatPriorityOrder = useAppSelector(
+		selectSharedLoadoutConfigStatPriorityOrder
+	);
+	const dispatch = useAppDispatch();
+
+	const handleChange = (items: SortableOption[]) => {
+		dispatch(
+			setSharedLoadoutConfigStatPriorityOrder(
+				items.map((x) => getArmorStat(x.id as EArmorStatId).index)
+			)
+		);
+	};
+	const items = sharedLoadoutConfigStatPriorityOrder.map((index) => ({
+		...AdvanceShareSortableOptions.find(
+			(x) => getArmorStat(x.id as EArmorStatId).index === index
+		),
+	}));
+	return (
+		<>
+			<Box sx={{ marginTop: '8px' }}>
+				<Box sx={{ display: 'flex' }}>
+					<Box sx={{ marginRight: '8px', fontWeight: 'bold' }}>
+						Shared Stat Priority Order
+					</Box>
+					<Tooltip
+						title="If the user who receives your shared loadout link is unable to
+						achieve the desired stat tiers, the stats will be prioritized in the
+						order below. So if you have a loadout with tier 10 in Recovery, and
+						Discipline, but you think that achieving tier 10 Discipline is more
+						important than tier 10 Recovery, you can drag Discipline above
+						Recovery."
+						arrow
+					>
+						<Help />
+					</Tooltip>
+				</Box>
+				<Box></Box>
+			</Box>
+			<Box sx={{ position: 'relative', width: '100%' }}>
+				<Box
+					sx={{
+						position: 'absolute',
+						overflowX: 'hidden',
+						overflowY: 'hidden',
+						width: 'calc(100% + 80px)',
+						top: '0px',
+						left: '0px',
+						marginLeft: '-40px',
+						paddingLeft: '40px',
+						paddingRight: '40px',
+						paddingTop: '16px',
+						paddingBottom: '64px',
+					}}
+				>
+					<SortableList items={items} onChange={handleChange} />
+				</Box>
+			</Box>
+		</>
+	);
+};
 
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
@@ -28,7 +118,8 @@ const Container = styled('div')(({ theme }) => ({
 }));
 
 const ShareLoadout = () => {
-	const [open, setOpen] = useState(false);
+	const [toastOpen, setToastOpen] = useState(false);
+	const [advancedOptionsOpen, setAdvancedOptionsOpen] = useState(false);
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
@@ -44,6 +135,9 @@ const ShareLoadout = () => {
 	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
+	const sharedLoadoutConfigStatPriorityOrder = useAppSelector(
+		selectSharedLoadoutConfigStatPriorityOrder
+	);
 
 	const configuration = getDlbLoadoutConfiguration({
 		desiredArmorStats,
@@ -59,13 +153,14 @@ const ShareLoadout = () => {
 		selectedClassAbility,
 		selectedSuperAbility,
 		selectedAspects,
+		sharedLoadoutConfigStatPriorityOrder,
 	});
 	const handleClick = async () => {
 		const dlbLink = `${generateDlbLink(configuration)}`;
 		await copyToClipboard({
 			value: dlbLink,
 		});
-		setOpen(true);
+		setToastOpen(true);
 	};
 
 	function SlideTransition(props: SlideProps) {
@@ -80,35 +175,55 @@ const ShareLoadout = () => {
 			return;
 		}
 
-		setOpen(false);
+		setToastOpen(false);
 	};
 	return (
 		<Container>
-			{/* <IconButton aria-label="share" onClick={handleClick}>
+			<Box>
+				{/* <IconButton aria-label="share" onClick={handleClick}>
 				<ShareIcon /> Share Loadout
 			</IconButton> */}
-			<Button
-				variant="contained"
-				startIcon={<ShareIcon />}
-				onClick={handleClick}
-				sx={{ width: '300px' }}
-			>
-				Share Loadout Configuration
-			</Button>
-			<Snackbar
-				open={open}
-				autoHideDuration={3000}
-				onClose={handleClose}
-				message="Loadout URL copied to clipboard!"
-				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-				TransitionComponent={SlideTransition}
-				ContentProps={{
-					sx: {
-						display: 'block',
-						textAlign: 'center',
-					},
-				}}
-			/>
+				<Button
+					variant="contained"
+					startIcon={<ShareIcon />}
+					onClick={handleClick}
+					sx={{ width: '300px' }}
+				>
+					Share Loadout Configuration
+				</Button>
+				<Snackbar
+					open={toastOpen}
+					autoHideDuration={3000}
+					onClose={handleClose}
+					message="Loadout URL copied to clipboard!"
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+					TransitionComponent={SlideTransition}
+					ContentProps={{
+						sx: {
+							display: 'block',
+							textAlign: 'center',
+						},
+					}}
+				/>
+				<Box
+					onClick={() => setAdvancedOptionsOpen(!advancedOptionsOpen)}
+					sx={{ cursor: 'pointer', marginTop: '16px' }}
+				>
+					Show Advanced Share Options
+					<IconButton aria-label="expand row" size="small">
+						{advancedOptionsOpen ? (
+							<KeyboardArrowUpIcon />
+						) : (
+							<KeyboardArrowDownIcon />
+						)}
+					</IconButton>
+				</Box>
+				<Box>
+					<Collapse in={advancedOptionsOpen} timeout="auto" unmountOnExit>
+						<AdvancedShareOptions />
+					</Collapse>
+				</Box>
+			</Box>
 		</Container>
 	);
 };

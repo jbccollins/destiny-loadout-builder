@@ -1,10 +1,10 @@
+import store from '@dlb/redux/store';
 import '@dlb/styles/globals.css';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Analytics } from '@vercel/analytics/react';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
-import store from '@dlb/redux/store';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Analytics } from '@vercel/analytics/react';
 const darkTheme = createTheme({
 	palette: {
 		mode: 'dark',

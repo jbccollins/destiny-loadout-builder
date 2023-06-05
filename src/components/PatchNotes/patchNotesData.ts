@@ -11,9 +11,33 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-06-05',
+		version: '2.1.3',
+		title: 'Add Shared Loadout Stat Priority',
+		sections: [
+			{
+				items: [
+					`Add the ability order stats by priority for shared loadout links`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-06-05',
+		version: '2.1.2',
+		title: 'Class Item Bug Fixes Round 2',
+		sections: [
+			{
+				items: [
+					`Fix a bug where class items were not respecting the "DIM" and "D2" loadout filters`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-06-04',
 		version: '2.1.1',
-		title: 'Class Item Bug Fixes',
+		title: 'Leg Mod Categorization Fixes',
 		sections: [
 			{
 				items: [`Fix a bug where some leg mods were improperly categorized`],

@@ -14,6 +14,7 @@ import {
 	ISelectedExoticArmor,
 	StatList,
 	StrictArmorItems,
+	getDefaultAllClassItemMetadata,
 } from '@dlb/types/Armor';
 import {
 	ArmorSlotIdList,
@@ -37,6 +38,7 @@ import {
 	ArmorSlotIdToModIdListMapping,
 	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
+import { cloneDeep } from 'lodash';
 import { EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import {
 	ArmorStatAndRaidModComboPlacement,
@@ -48,6 +50,7 @@ import {
 } from './seenArmorSlotItems';
 import {
 	RequiredClassItemMetadataKey,
+	RequiredClassItemMetadataKeyList,
 	getArmorStatMappingFromArtificeModIdList,
 	getArmorStatMappingFromStatList,
 	getExtraSumOfSeenStats,
@@ -141,14 +144,13 @@ const _processArmorBaseCase = ({
 			masterworkAssumption,
 		});
 		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
-
 		// Single DSC
 		// if (
 		// 	isEqual(armorIdList, [
 		// 		'6917529773926529265',
-		// 		'6917529902551406277',
+		// 		'6917529902244174837',
 		// 		'6917529902253861037',
-		// 		'6917529902224254662',
+		// 		'6917529902556888089',
 		// 	])
 		// ) {
 		// 	console.log('KLJHLSFDKLHJSFDKLHJSDSFHJKL');
@@ -539,18 +541,21 @@ export const preProcessArmor = (
 	dimLoadoutsFilterId: EDimLoadoutsFilterId,
 	inGameLoadoutItemIdList: string[],
 	inGameLoadoutsFilterId: EInGameLoadoutsFilterId,
-	minimumGearTier: EGearTierId
-): StrictArmorItems => {
+	minimumGearTier: EGearTierId,
+	allClassItemMetadata: AllClassItemMetadata
+): [StrictArmorItems, AllClassItemMetadata] => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
 		dimLoadouts.forEach((loadout) =>
 			loadout.equipped.forEach((equipped) => {
+				console.log('DIM', equipped.id);
 				excludedItemIds[equipped.id] = true;
 			})
 		);
 	}
 	if (inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None) {
 		inGameLoadoutItemIdList.forEach((id) => {
+			console.log('D2', id);
 			excludedItemIds[id] = true;
 		});
 	}
@@ -585,7 +590,22 @@ export const preProcessArmor = (
 			}
 		);
 	});
-	return strictArmorItems;
+	const _allClassItemMetadata = getDefaultAllClassItemMetadata();
+	RequiredClassItemMetadataKeyList.forEach((requiredClassItemMetadataKey) => {
+		_allClassItemMetadata[requiredClassItemMetadataKey] = cloneDeep(
+			allClassItemMetadata[requiredClassItemMetadataKey]
+		);
+
+		_allClassItemMetadata[requiredClassItemMetadataKey].items =
+			_allClassItemMetadata[requiredClassItemMetadataKey].items.filter(
+				(item) => !excludedItemIds[item.id]
+			);
+		_allClassItemMetadata[requiredClassItemMetadataKey].hasMasterworkedVariant =
+			_allClassItemMetadata[requiredClassItemMetadataKey].items.some(
+				(item) => item.isMasterworked
+			);
+	});
+	return [strictArmorItems, _allClassItemMetadata];
 };
 
 const getModIdListFromArmorStatAndRaidModComboPlacement = (

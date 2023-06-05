@@ -6,6 +6,7 @@ import {
 	AvailableExoticArmorItem,
 	ItemCounts,
 	StatList,
+	getDefaultAllClassItemMetadata,
 	getDefaultItemCounts,
 	getExtraMasterworkedStats,
 } from '@dlb/types/Armor';
@@ -403,6 +404,11 @@ export const getExtraSocketModCategoryIdCountsFromRaidModIdList = (
 };
 
 export type RequiredClassItemMetadataKey = keyof AllClassItemMetadata | null;
+
+export const RequiredClassItemMetadataKeyList: RequiredClassItemMetadataKey[] =
+	Object.keys(
+		getDefaultAllClassItemMetadata()
+	) as RequiredClassItemMetadataKey[];
 
 export type HasValidSeenItemCountsParams = {
 	seenItemCounts: ItemCounts;

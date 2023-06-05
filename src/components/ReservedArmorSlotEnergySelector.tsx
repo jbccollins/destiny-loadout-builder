@@ -1,33 +1,18 @@
 import {
-	Box,
+	selectReservedArmorSlotEnergy,
+	setReservedArmorSlotEnergy,
+} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
+import { EArmorSlotId } from '@dlb/types/IdEnums';
+import {
 	FormControl,
-	Icon,
 	InputLabel,
 	MenuItem,
 	Select,
 	SelectChangeEvent,
 	styled,
 } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import {
-	selectSelectedRaidMods,
-	setSelectedRaidMods,
-} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { EModId } from '@dlb/generated/mod/EModId';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { RaidModIdList } from '@dlb/types/Mod';
-import ModSelector from './ModSelection/ModSelector';
-import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';
-import { IMod } from '@dlb/types/generation';
-import {
-	selectReservedArmorSlotEnergy,
-	setReservedArmorSlotEnergy,
-} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
-import {
-	ArmorSlotWithClassItemIdList,
-	getArmorSlot,
-} from '@dlb/types/ArmorSlot';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 }));

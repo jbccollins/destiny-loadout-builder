@@ -226,7 +226,6 @@ export const processInGameLoadouts = (
 	profileResponse: DestinyProfileResponse
 ): string[] => {
 	const characterLoadouts = profileResponse?.characterLoadouts?.data;
-	console.log(characterLoadouts);
 	const results: string[] = [];
 	if (characterLoadouts) {
 		Object.values(characterLoadouts).forEach((value) => {

@@ -366,7 +366,8 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 			requiredClassItemMetadataKey:
 				// If we don't need the artifice class item to socket an artifice mod then clear
 				// the requiredClassItemMetadataKey
-				(requiredClassItemMetadataKey === null &&
+				(canUseArtificeClassItem &&
+					requiredClassItemMetadataKey === null &&
 					lowestCostPlacement.artificeModIdList.length > 0 &&
 					lowestCostPlacement.artificeModIdList.length) === seenArtificeCount
 					? ARTIFICE

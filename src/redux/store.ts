@@ -32,6 +32,10 @@ import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAs
 import selectedMeleeReducer from './features/selectedMelee/selectedMeleeSlice';
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
 import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
+import sharedLoadoutConfigStatPriorityOrderReducer, {
+	defaultOrder,
+	setSharedLoadoutConfigStatPriorityOrder,
+} from './features/sharedLoadoutConfigStatPriorityOrder/sharedLoadoutConfigStatPriorityOrderSlice';
 
 import sharedLoadoutDesiredStatsReducer, {
 	setSharedLoadoutDesiredStats,
@@ -73,6 +77,7 @@ import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
 	ArmorStatMapping,
+	getArmorStat,
 	getArmorStatMappingFromFragments,
 	getArmorStatMappingFromMods,
 	getDefaultArmorStatMapping,
@@ -153,6 +158,8 @@ export function makeStore() {
 			selectedMinimumGearTier: selectedMinimumGearTierReducer,
 			selectedRaidMods: selectedRaidModsReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
+			sharedLoadoutConfigStatPriorityOrder:
+				sharedLoadoutConfigStatPriorityOrderReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
 			useZeroWastedStats: useZeroWastedStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
@@ -306,6 +313,9 @@ function handleChange() {
 		dimLoadoutsFilter: { value: dimLoadoutsFilter },
 		reservedArmorSlotEnergy: { value: reservedArmorSlotEnergy },
 		sharedLoadoutDesiredStats: { value: sharedLoadoutDesiredStats },
+		sharedLoadoutConfigStatPriorityOrder: {
+			value: sharedLoadoutConfigStatPriorityOrder,
+		},
 		selectedJump: { value: selectedJump },
 		selectedMelee: { value: selectedMelee },
 		selectedClassAbility: { value: selectedClassAbility },
@@ -381,7 +391,7 @@ function handleChange() {
 	// TODO: no need to preProcessArmor when only the stat slider has changed.
 	// Maybe we don't need to trigger that fake initial dispatch in
 	// the slider component if we fix this?
-	const preProcessedArmor = preProcessArmor(
+	const [preProcessedArmor, _allClassItemMetadata] = preProcessArmor(
 		armor[selectedDestinyClass],
 		selectedExoticArmor[selectedDestinyClass],
 		dimLoadouts.filter(
@@ -391,7 +401,8 @@ function handleChange() {
 		dimLoadoutsFilter,
 		inGameLoadouts,
 		inGameLoadoutsFilter,
-		selectedMinimumGearTier
+		selectedMinimumGearTier,
+		allClassItemMetadata[selectedDestinyClass]
 	);
 	console.log(
 		'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',
@@ -412,7 +423,7 @@ function handleChange() {
 		selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
-		allClassItemMetadata: allClassItemMetadata[selectedDestinyClass],
+		allClassItemMetadata: _allClassItemMetadata,
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {
@@ -490,20 +501,29 @@ function handleChange() {
 		const bestFitDesiredArmorStats: ArmorStatMapping =
 			getDefaultArmorStatMapping();
 		let bestFitResults: DoProcessArmorOutput = null;
-		ArmorStatIdList.forEach((armorStatId) => {
-			const desiredStatValue =
-				sharedLoadoutDesiredStats.desiredArmorStats[armorStatId];
-			for (let i = desiredStatValue; i > 0; i -= 10) {
-				bestFitDesiredArmorStats[armorStatId] = i;
-				bestFitResults = doProcessArmor({
-					...doProcessArmorParams,
-					desiredArmorStats: bestFitDesiredArmorStats,
-				});
-				if (bestFitResults?.items.length > 0) {
-					break;
+		[...ArmorStatIdList]
+			.sort((a, b) => {
+				const aIndex = getArmorStat(a).index;
+				const bIndex = getArmorStat(b).index;
+				return (
+					sharedLoadoutConfigStatPriorityOrder.indexOf(aIndex) -
+					sharedLoadoutConfigStatPriorityOrder.indexOf(bIndex)
+				);
+			})
+			.forEach((armorStatId) => {
+				const desiredStatValue =
+					sharedLoadoutDesiredStats.desiredArmorStats[armorStatId];
+				for (let i = desiredStatValue; i > 0; i -= 10) {
+					bestFitDesiredArmorStats[armorStatId] = i;
+					bestFitResults = doProcessArmor({
+						...doProcessArmorParams,
+						desiredArmorStats: bestFitDesiredArmorStats,
+					});
+					if (bestFitResults?.items.length > 0) {
+						break;
+					}
 				}
-			}
-		});
+			});
 		if (bestFitResults?.items.length > 0) {
 			store.dispatch(
 				setMaxPossibleStats(bestFitResults.maxPossibleDesiredStatTiers)
@@ -527,6 +547,8 @@ function handleChange() {
 					complete: true,
 				})
 			);
+			// Reset the share order to the default
+			store.dispatch(setSharedLoadoutConfigStatPriorityOrder(defaultOrder));
 		}
 	}
 	// const localLoadout: DlbLoadoutConfiguration = getDlbLoadoutConfiguration({

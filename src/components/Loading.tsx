@@ -98,6 +98,7 @@ import {
 	selectSelectedSuperAbility,
 	setSelectedSuperAbility,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { setSharedLoadoutConfigStatPriorityOrder } from '@dlb/redux/features/sharedLoadoutConfigStatPriorityOrder/sharedLoadoutConfigStatPriorityOrderSlice';
 import {
 	selectSharedLoadoutDesiredStats,
 	setSharedLoadoutDesiredStats,
@@ -218,21 +219,21 @@ function Loading() {
 	}: LoadFromQueryParamsParams) {
 		const loadoutConfig = JSON.parse(loadoutString) as DlbLoadoutConfiguration;
 		// Class
-		dispatch(setSelectedDestinyClass(loadoutConfig.destinyClassId));
+		dispatch(setSelectedDestinyClass(loadoutConfig.dc));
 
 		// Exotic
 		for (const armorSlotId of ArmorSlotIdList) {
 			const availableExoticArmorForSlot = availableExoticArmor[
-				loadoutConfig.destinyClassId
+				loadoutConfig.dc
 			][armorSlotId] as AvailableExoticArmorItem[];
 			const item = availableExoticArmorForSlot.find(
-				(x) => x.hash === loadoutConfig.exoticArmor.hash
+				(x) => x.hash === loadoutConfig.e
 			);
 			if (item) {
 				dispatch(
 					setSelectedExoticArmor({
 						...defaultSelectedExoticArmor,
-						[loadoutConfig.destinyClassId]: item,
+						[loadoutConfig.dc]: item,
 					})
 				);
 				break;
@@ -241,12 +242,12 @@ function Loading() {
 
 		let elementId: EElementId = null;
 		// Subclass
-		if (loadoutConfig.destinySubclassId) {
-			elementId = getDestinySubclass(loadoutConfig.destinySubclassId).elementId;
+		if (loadoutConfig.dsc) {
+			elementId = getDestinySubclass(loadoutConfig.dsc).elementId;
 			dispatch(
 				setSelectedDestinySubclass({
 					...defaultSelectedDestinySubclass,
-					[loadoutConfig.destinyClassId]: loadoutConfig.destinySubclassId,
+					[loadoutConfig.dc]: loadoutConfig.dsc,
 				})
 			);
 		} else {
@@ -254,88 +255,91 @@ function Loading() {
 		}
 
 		// Super ability
-		if (loadoutConfig.superAbilityId) {
+		if (loadoutConfig.s) {
 			dispatch(
 				setSelectedSuperAbility({
 					...selectedSuperAbility,
-					[loadoutConfig.destinySubclassId]: loadoutConfig.superAbilityId,
+					[loadoutConfig.dsc]: loadoutConfig.s,
 				})
 			);
 		}
 
 		// Aspects
-		if (loadoutConfig.aspectIdList) {
+		if (loadoutConfig.al) {
 			dispatch(
 				setSelectedAspects({
 					...selectedAspects,
-					[loadoutConfig.destinySubclassId]: loadoutConfig.aspectIdList,
+					[loadoutConfig.dsc]: loadoutConfig.al,
 				})
 			);
 		}
 
 		// Fragments
-		if (loadoutConfig.fragmentIdList) {
+		if (loadoutConfig.fl) {
 			dispatch(
 				setSelectedFragments({
 					elementId,
-					fragments: loadoutConfig.fragmentIdList,
+					fragments: loadoutConfig.fl,
 				})
 			);
 		}
 
-		if (loadoutConfig.grenadeId) {
+		if (loadoutConfig.g) {
 			dispatch(
 				setSelectedGrenade({
 					...selectedGrenade,
-					[elementId]: loadoutConfig.grenadeId,
+					[elementId]: loadoutConfig.g,
 				})
 			);
 		}
 
-		if (loadoutConfig.meleeId) {
+		if (loadoutConfig.m) {
 			dispatch(
 				setSelectedMelee({
 					...selectedMelee,
-					[loadoutConfig.destinySubclassId]: loadoutConfig.meleeId,
+					[loadoutConfig.dsc]: loadoutConfig.m,
 				})
 			);
 		}
 
-		if (loadoutConfig.classAbilityId) {
+		if (loadoutConfig.c) {
 			dispatch(
 				setSelectedClassAbility({
 					...selectedClassAbility,
-					[loadoutConfig.destinySubclassId]: loadoutConfig.classAbilityId,
+					[loadoutConfig.dsc]: loadoutConfig.c,
 				})
 			);
 		}
 
-		if (loadoutConfig.jumpId) {
+		if (loadoutConfig.j) {
 			dispatch(
 				setSelectedJump({
 					...selectedJump,
-					[loadoutConfig.destinySubclassId]: loadoutConfig.jumpId,
+					[loadoutConfig.dsc]: loadoutConfig.j,
 				})
 			);
 		}
 
-		if (loadoutConfig.armorSlotMods) {
-			dispatch(setSelectedArmorSlotMods(loadoutConfig.armorSlotMods));
+		if (loadoutConfig.asm) {
+			dispatch(setSelectedArmorSlotMods(loadoutConfig.asm));
 		}
 
-		if (loadoutConfig.raidModIdList) {
-			dispatch(setSelectedRaidMods(loadoutConfig.raidModIdList));
+		if (loadoutConfig.rml) {
+			dispatch(setSelectedRaidMods(loadoutConfig.rml));
 		}
 
-		if (loadoutConfig.desiredArmorStats) {
+		if (loadoutConfig.das) {
 			dispatch(
 				setSharedLoadoutDesiredStats({
-					desiredArmorStats: loadoutConfig.desiredArmorStats,
+					desiredArmorStats: loadoutConfig.das,
 					needed: true,
 					processing: false,
 					complete: false,
 				})
 			);
+		}
+		if (loadoutConfig.spo) {
+			dispatch(setSharedLoadoutConfigStatPriorityOrder(loadoutConfig.spo));
 		}
 	}
 

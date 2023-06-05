@@ -108,7 +108,7 @@ export const getModCategory = (id: EModCategoryId) => {
 };
 
 const findTerm = (s: string, term: string) => {
-	if (s.includes(term)) {
+	if (s.toLowerCase().includes(term.toLowerCase())) {
 		return s;
 	}
 };
@@ -178,7 +178,9 @@ export const getModCategoryId = (
 	switch (description) {
 		case findTerm(description, 'Armor Charge'):
 			return EModCategoryId.ArmorCharge;
-		case findTerm(description, 'pick up an Orb of Power'):
+		case findTerm(description, 'pick up an orb of power'):
+			return EModCategoryId.OrbPickup;
+		case findTerm(description, 'picking up an orb of power'):
 			return EModCategoryId.OrbPickup;
 	}
 	return EModCategoryId.General;

@@ -12,6 +12,16 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-06-04',
+		version: '2.1.1',
+		title: 'Class Item Bug Fixes',
+		sections: [
+			{
+				items: [`Fix a bug where some leg mods were improperly categorized`],
+			},
+		],
+	},
+	{
+		date: '2023-06-04',
 		version: '2.1.0',
 		title: 'Class Item Bug Fixes',
 		sections: [

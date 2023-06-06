@@ -178,7 +178,7 @@ const ShareLoadout = () => {
 		setToastOpen(false);
 	};
 	return (
-		<Container>
+		<Container sx={{ height: advancedOptionsOpen ? '450px' : '' }}>
 			<Box>
 				{/* <IconButton aria-label="share" onClick={handleClick}>
 				<ShareIcon /> Share Loadout

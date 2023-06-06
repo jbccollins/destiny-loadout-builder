@@ -1,7 +1,53 @@
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
+import { EModId } from '@dlb/generated/mod/EModId';
+import {
+	EElementId,
+	EModCategoryId,
+	ERaidAndNightMareModTypeId,
+} from './IdEnums';
 import { EnumDictionary, IIdentifiableName } from './globals';
-import { EModCategoryId, ERaidAndNightMareModTypeId } from './IdEnums';
+
+enum EAuthorizedAbility {
+	Melee = 'Melee',
+	Grenade = 'Grenade',
+	ClassAbility = 'ClassAbility',
+}
+
+// TODO: Figure out how to generate these programatically
+const currentSeasonAuthorizedElements: EElementId[] = [
+	EElementId.Arc,
+	EElementId.Void,
+	EElementId.Strand,
+];
+const currentSeasonAuthorizedAbilities: EAuthorizedAbility[] = [
+	EAuthorizedAbility.Melee,
+];
+
+const AuthorizedAbilityMapping: Record<EAuthorizedAbility, EModId[]> = {
+	[EAuthorizedAbility.Melee]: [
+		EModId.ArtifactHandsOn,
+		EModId.ArtifactHeavyHanded,
+		EModId.ArtifactFocusingStrike,
+		EModId.ArtifactMeleeKickstart,
+		EModId.ArtifactMomentumTransfer,
+	],
+	[EAuthorizedAbility.Grenade]: [],
+	[EAuthorizedAbility.ClassAbility]: [],
+};
+
+const AuthorizedElementalModCategories: EModCategoryId[] = [
+	EModCategoryId.AmmoFinder,
+	EModCategoryId.Scavenger,
+	EModCategoryId.Reserves,
+	EModCategoryId.Targeting,
+	EModCategoryId.Dexterity,
+	EModCategoryId.Holster,
+	EModCategoryId.Loader,
+	EModCategoryId.Unflinching,
+	EModCategoryId.WeaponSurge,
+	EModCategoryId.Siphon,
+];
 
 export interface IModCategory extends IIdentifiableName {
 	description: string;
@@ -101,6 +147,12 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 		name: 'General',
 		description: '',
 	},
+	[EModCategoryId.AlternateSeasonalArtifact]: {
+		id: EModCategoryId.AlternateSeasonalArtifact,
+		// TODO: Fix this name. It starts with z for sorting
+		name: 'z Alternate Seasonal Artifact z',
+		description: '',
+	},
 };
 
 export const getModCategory = (id: EModCategoryId) => {
@@ -116,8 +168,14 @@ const findTerm = (s: string, term: string) => {
 export const getModCategoryId = (
 	displayNameId: EModDisplayNameId,
 	name: string,
-	description: string
+	description: string,
+	modId: EModId,
+	isArtifactMod: boolean
 ): EModCategoryId => {
+	// TODO: Fix this. Actually figure out which dual siphon mods are authorized
+	if (modId.includes('DualSiphon')) {
+		return EModCategoryId.AlternateSeasonalArtifact;
+	}
 	if (displayNameId === EModDisplayNameId.ArtificeArmorMod) {
 		return EModCategoryId.ArtificeArmorStat;
 	}
@@ -148,33 +206,85 @@ export const getModCategoryId = (
 	if (displayNameId === EModDisplayNameId.NightmareMod) {
 		return EModCategoryId.RaidAndNightmare;
 	}
+	let termModCategory: EModCategoryId = null;
 	switch (name) {
 		case findTerm(name, 'Ammo Finder'):
-			return EModCategoryId.AmmoFinder;
+			termModCategory = EModCategoryId.AmmoFinder;
+			break;
 		case findTerm(name, 'Scavenger'):
-			return EModCategoryId.Scavenger;
+			termModCategory = EModCategoryId.Scavenger;
+			break;
 		case findTerm(name, 'Reserves'):
-			return EModCategoryId.Reserves;
+			termModCategory = EModCategoryId.Reserves;
+			break;
 		case findTerm(name, 'Targeting'):
-			return EModCategoryId.Targeting;
+			termModCategory = EModCategoryId.Targeting;
+			break;
 		case findTerm(name, 'Dexterity'):
-			return EModCategoryId.Dexterity;
+			termModCategory = EModCategoryId.Dexterity;
+			break;
 		case findTerm(name, 'Holster'):
-			return EModCategoryId.Holster;
+			termModCategory = EModCategoryId.Holster;
+			break;
 		case findTerm(name, 'Loader'):
-			return EModCategoryId.Loader;
+			termModCategory = EModCategoryId.Loader;
+			break;
 		case findTerm(name, 'Unflinching'):
-			return EModCategoryId.Unflinching;
+			termModCategory = EModCategoryId.Unflinching;
+			break;
 		case findTerm(name, 'Weapon Surge'):
-			return EModCategoryId.WeaponSurge;
+			termModCategory = EModCategoryId.WeaponSurge;
+			break;
 		case findTerm(name, 'Siphon'):
-			return EModCategoryId.Siphon;
+			termModCategory = EModCategoryId.Siphon;
+			break;
 		case findTerm(name, 'Resistance'):
-			return EModCategoryId.Resistance;
+			termModCategory = EModCategoryId.Resistance;
+			break;
 		// TODO: Look in the description for CD?
 		case findTerm(name, 'Concussive Dampener'):
-			return EModCategoryId.Resistance;
+			termModCategory = EModCategoryId.Resistance;
+			break;
 	}
+
+	if (modId === EModId.ArtifactMeleeDamageResistance) {
+		console.log('derp');
+	}
+	let isInCurrentSeasonArtifact = false;
+	// Hacky check to see if the element is in the mod id
+	if (termModCategory) {
+		if (
+			isArtifactMod &&
+			AuthorizedElementalModCategories.includes(termModCategory)
+		) {
+			for (let i = 0; i < currentSeasonAuthorizedElements.length; i++) {
+				const element = currentSeasonAuthorizedElements[i];
+				if (modId.includes(element)) {
+					isInCurrentSeasonArtifact = true;
+					break;
+				}
+			}
+			if (!isInCurrentSeasonArtifact) {
+				return EModCategoryId.AlternateSeasonalArtifact;
+			}
+		}
+	} else if (isArtifactMod) {
+		// Hacky check to see if the ability is authorized in the current artifact
+		for (let i = 0; i < currentSeasonAuthorizedAbilities.length; i++) {
+			const ability = currentSeasonAuthorizedAbilities[i];
+			if (AuthorizedAbilityMapping[ability].includes(modId)) {
+				isInCurrentSeasonArtifact = true;
+				break;
+			}
+		}
+	}
+
+	if (isArtifactMod && !isInCurrentSeasonArtifact) {
+		return EModCategoryId.AlternateSeasonalArtifact;
+	} else if (termModCategory !== null) {
+		return termModCategory;
+	}
+
 	switch (description) {
 		case findTerm(description, 'Armor Charge'):
 			return EModCategoryId.ArmorCharge;

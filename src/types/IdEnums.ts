@@ -92,6 +92,8 @@ export enum EModCategoryId {
 	// Catchall for everything else, which should only be Armor Slot Mods
 	// that don't cleanly fit into one of the above categories
 	General = 'General',
+	// Mods not "authorized" on the current seasonal artifact
+	AlternateSeasonalArtifact = 'AlternateSeasonArtifiact',
 }
 
 export enum ERaidAndNightMareModTypeId {

@@ -81,7 +81,7 @@ const buildModData = (
 	let armorSlotId: EArmorSlotId = null;
 	mod.itemCategoryHashes.forEach((hash) => {
 		if (mod.itemTypeDisplayName === 'Minor Recovery Mod') {
-			console.log('TODO: Fix armorSlot for artiface stat mods');
+			console.log('TODO: Fix armorSlot for artifice stat mods');
 		}
 		const _armorSlotId = getArmorSlotIdByHash(hash);
 		if (_armorSlotId) {
@@ -129,7 +129,13 @@ const buildModData = (
 		armorSlotId: armorSlotId,
 		cost: mod.plug.energyCost?.energyCost ?? 0,
 		isArtifactMod: isArtifactMod,
-		modCategoryId: getModCategoryId(displayNameId, modName, modDescription),
+		modCategoryId: getModCategoryId(
+			displayNameId,
+			modName,
+			modDescription,
+			modId,
+			isArtifactMod
+		),
 		elementOverlayIcon: elementOverlayIcon
 			? bungieNetPath(elementOverlayIcon)
 			: null,
@@ -185,16 +191,6 @@ export async function run() {
 				(v.plug.energyCost ||
 					v.plug.plugCategoryIdentifier === 'enhancements.artifice')
 		)
-		.value() as DestinyInventoryItemDefinition[];
-
-	const artifactUnlocks = lodash(destinyInventoryItemDefinitions)
-		.values()
-		.filter((v) => v.itemCategoryHashes)
-		.filter((v) => v.displayProperties)
-		.filter((v) => !v.displayProperties.description.includes('deprecated'))
-		.filter((v) => v.itemCategoryHashes.includes(4104513227)) // armor mods
-		// exclude ornaments while still including the no-cost artifce 'forged' mods
-		.filter((v) => v.plug.plugCategoryIdentifier === 'enhancements.artifice')
 		.value() as DestinyInventoryItemDefinition[];
 
 	const artifactMods = allMods

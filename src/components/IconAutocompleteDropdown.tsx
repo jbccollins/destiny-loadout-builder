@@ -7,9 +7,10 @@ import {
 } from '@mui/material';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
+import { useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
+import { v4 as uuid } from 'uuid';
 import DecoratedBungieIcon from './DecoratedBungieIcon';
-
 const Container = styled('div')(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	width: '100%',
@@ -96,7 +97,14 @@ function IconAutocompleteDropdown({
 	id,
 	showIcon,
 }: IconAutocompleteDropdownProps) {
+	const textInputClass = uuid();
+
+	const handleOpen = () => {
+		console.log('open');
+	};
+
 	const handleClose = () => {
+		console.log('close');
 		onClose();
 	};
 
@@ -106,29 +114,35 @@ function IconAutocompleteDropdown({
 
 	// This stuff is testing disabling typing in autocomplete fields on mobile
 	const mobileProps = isMobile
-		? { inputValue: value.name, selectOnFocus: false, autoComplete: false }
-		: {};
-	const mobileInputProps = isMobile
 		? {
-				sx: {
-					caretColor: 'transparent',
-					// disabled: true,
-				},
-				readOnly: true,
+				inputValue: value.name,
+				selectOnFocus: false,
+				autoComplete: false,
+				// readOnly: true,
+				// open: true,
 		  }
 		: {};
 
 	const _showIcon = showIcon ?? true;
+
+	useEffect(() => {
+		if (isMobile) {
+			document
+				.getElementsByClassName(textInputClass)[0]
+				.querySelector('input').disabled = true;
+		}
+	}, [textInputClass]);
+
 	return (
 		<Container>
 			<FormControl fullWidth>
 				<Autocomplete
 					{...controlledProps}
 					{...mobileProps}
+					onOpen={handleOpen}
 					forcePopupIcon={_showIcon ? true : false}
 					id={`${id ?? ''}`}
 					options={options}
-					// open={true}
 					autoHighlight
 					value={value}
 					disableClearable
@@ -202,8 +216,8 @@ function IconAutocompleteDropdown({
 								{...params}
 								InputProps={{
 									...params.InputProps,
-									...mobileInputProps,
-
+									// ...mobileInputProps,
+									className: textInputClass,
 									startAdornment: _showIcon ? (
 										<Box
 											sx={{

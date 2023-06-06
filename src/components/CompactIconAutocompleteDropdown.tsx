@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import DecoratedBungieIcon from './DecoratedBungieIcon';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 
@@ -108,6 +109,15 @@ function CompactIconAutocompleteDropdown(
 			setOpen(false);
 		}
 	};
+
+	useEffect(() => {
+		if (isMobile) {
+			document
+				.getElementsByClassName(textFieldClassName)[0]
+				.querySelector('input').disabled = true;
+		}
+	}, [textFieldClassName]);
+
 	return (
 		<Box>
 			{open && (

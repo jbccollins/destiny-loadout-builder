@@ -187,6 +187,16 @@ export async function run() {
 		)
 		.value() as DestinyInventoryItemDefinition[];
 
+	const artifactUnlocks = lodash(destinyInventoryItemDefinitions)
+		.values()
+		.filter((v) => v.itemCategoryHashes)
+		.filter((v) => v.displayProperties)
+		.filter((v) => !v.displayProperties.description.includes('deprecated'))
+		.filter((v) => v.itemCategoryHashes.includes(4104513227)) // armor mods
+		// exclude ornaments while still including the no-cost artifce 'forged' mods
+		.filter((v) => v.plug.plugCategoryIdentifier === 'enhancements.artifice')
+		.value() as DestinyInventoryItemDefinition[];
+
 	const artifactMods = allMods
 		.filter(
 			(mod) =>

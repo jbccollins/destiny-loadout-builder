@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
+import { isMobile } from 'react-device-detect';
 import DecoratedBungieIcon from './DecoratedBungieIcon';
 
 const Container = styled('div')(({ theme }) => ({
@@ -99,8 +100,6 @@ function IconAutocompleteDropdown({
 		onClose();
 	};
 
-	const isMobile = false;
-
 	const controlledProps = isControlled
 		? { open: isOpen, onClose: handleClose }
 		: {};
@@ -115,6 +114,7 @@ function IconAutocompleteDropdown({
 					caretColor: 'transparent',
 					// disabled: true,
 				},
+				readOnly: true,
 		  }
 		: {};
 

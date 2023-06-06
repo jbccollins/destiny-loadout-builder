@@ -26,10 +26,19 @@ export function SortableItem(props: SortableItemProps) {
 		marginBottom: '6px',
 		display: 'flex',
 		justifyContent: 'space-between',
+		touchAction: 'none',
 	};
 
 	return (
-		<Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
+		<Box
+			// onClick={() => {
+			// 	console.log('click');
+			// }}
+			ref={setNodeRef}
+			style={style}
+			{...attributes}
+			{...listeners}
+		>
 			<Box sx={{ display: 'flex' }}>
 				<BungieImage src={icon} width={26} height={26} />
 				<Box sx={{ marginLeft: '8px' }}>{label}</Box>

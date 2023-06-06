@@ -538,7 +538,6 @@ function Loading() {
 				dispatch(setUseZeroWastedStats(useZeroWastedStats));
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
 				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
-				console.log('>>>>>>>>>>> [LOAD] removeItem <<<<<<<<<<<');
 				localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));

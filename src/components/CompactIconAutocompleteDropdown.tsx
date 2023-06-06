@@ -96,16 +96,24 @@ function CompactIconAutocompleteDropdown(
 	} = props;
 	const theme = useTheme();
 	const [open, setOpen] = useState(false);
+
+	// All this "isMobile" hackyness is to prevent the virtual keyboard
+	// from opening on mobile devices
 	const handleOpen = () => {
 		setOpen(true);
-		setTimeout(() => {
-			const input = document.getElementById(id) as HTMLInputElement;
-			input.focus();
-			input.select();
-		}, 1);
+		if (!isMobile) {
+			setTimeout(() => {
+				const input = document.getElementById(id) as HTMLInputElement;
+				input.focus();
+				input.select();
+			}, 1);
+		}
 	};
 	const handleClose = (close: boolean) => {
-		if (close) {
+		console.log('compact close', close);
+		if (close && !isMobile) {
+			setOpen(false);
+		} else if (isMobile) {
 			setOpen(false);
 		}
 	};

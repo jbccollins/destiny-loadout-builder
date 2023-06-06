@@ -282,7 +282,7 @@ function ArmorSlotModSelector() {
 											value={usedArmorEnergy}
 										/>
 									</Box>
-									<Box sx={{ display: 'flex' }}>
+									<Box sx={{ display: 'flex', flexDirection: 'column' }}>
 										{dropdownIndices.map((index) => (
 											<Box key={index} sx={{ flex: 1 }}>
 												<ModSelector
@@ -314,7 +314,7 @@ function ArmorSlotModSelector() {
 													textFieldClassName={
 														'armor-slot-mod-selector-text-field'
 													}
-													compact
+													compact={false}
 												/>
 											</Box>
 										))}

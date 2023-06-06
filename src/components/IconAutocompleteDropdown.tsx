@@ -32,7 +32,7 @@ const Container = styled('div')(({ theme }) => ({
 		},
 	},
 
-	['.combat-style-mod-selector-text-field, .raid-mod-selector-text-field']: {
+	['.raid-mod-selector-text-field, .armor-slot-mod-selector-text-field']: {
 		//borderRadius: '0px',
 		['fieldset']: {
 			marginTop: '-1px',
@@ -75,6 +75,7 @@ type IconAutocompleteDropdownProps = {
 	isControlled?: boolean; // Is this component's open/close status controlled externally
 	isOpen?: boolean; // If isControlled, is it open
 	onClose?: () => void; // If isControlled, trigger this
+	onOpen?: () => void;
 	id?: string;
 	showIcon?: boolean;
 };
@@ -94,6 +95,7 @@ function IconAutocompleteDropdown({
 	isControlled,
 	isOpen,
 	onClose,
+	onOpen,
 	id,
 	showIcon,
 }: IconAutocompleteDropdownProps) {
@@ -101,6 +103,9 @@ function IconAutocompleteDropdown({
 
 	const handleOpen = () => {
 		console.log('open');
+		if (onOpen) {
+			onOpen();
+		}
 	};
 
 	const handleClose = () => {

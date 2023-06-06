@@ -12,6 +12,19 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-06-05',
+		version: '2.1.4',
+		title: 'De-clutter Mod Selection',
+		sections: [
+			{
+				items: [
+					`Put "authorized" mods that are not from the current season into a separate category that is below all other categories in the mod selection dropdowns`,
+					`Change some dropdowns to not open the virtual keyboard on mobile (This will be a setting in the future)`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-06-05',
 		version: '2.1.3',
 		title: 'Add Shared Loadout Stat Priority',
 		sections: [

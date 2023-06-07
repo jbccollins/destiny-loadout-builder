@@ -44,6 +44,7 @@ import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import { setHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
 import { setInGameLoadouts } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import {
 	selectInGameLoadoutsFilter,
@@ -91,6 +92,7 @@ import {
 	setSelectedMinimumGearTier,
 } from '@dlb/redux/features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
 import {
+	defaultRaidMods,
 	selectSelectedRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
@@ -222,6 +224,7 @@ function Loading() {
 		dispatch(setSelectedDestinyClass(loadoutConfig.dc));
 
 		// Exotic
+		// TODO: If the exotic has doesn't exist then throw some error
 		for (const armorSlotId of ArmorSlotIdList) {
 			const availableExoticArmorForSlot = availableExoticArmor[
 				loadoutConfig.dc
@@ -324,8 +327,13 @@ function Loading() {
 			dispatch(setSelectedArmorSlotMods(loadoutConfig.asm));
 		}
 
+		// TODO: Add defaults for all other stuff, not just raid mods.
+		// This prevents the no-load bug when the shared loadout doesn't have
+		// one of the keys and doesn't trigger a redux dirty
 		if (loadoutConfig.rml) {
 			dispatch(setSelectedRaidMods(loadoutConfig.rml));
+		} else {
+			dispatch(setSelectedRaidMods(defaultRaidMods));
 		}
 
 		if (loadoutConfig.das) {
@@ -380,7 +388,7 @@ function Loading() {
 					router.push('/?loadout=' + encodeURIComponent(sharedLoadoutString));
 				}
 
-				const hasLoadout = sharedLoadoutString ? true : false;
+				let hasLoadout = sharedLoadoutString ? true : false;
 
 				console.log(
 					'>>>>>>>>>>> [LOAD] membership <<<<<<<<<<<',
@@ -477,12 +485,23 @@ function Loading() {
 				});
 				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
 
+				let successfullyParsedSharedLoadoutUrl = false;
 				if (hasLoadout) {
-					loadFromQueryParams({
-						availableExoticArmor,
-						loadoutString: sharedLoadoutString,
-					});
-				} else {
+					try {
+						loadFromQueryParams({
+							availableExoticArmor,
+							loadoutString: sharedLoadoutString,
+						});
+						successfullyParsedSharedLoadoutUrl = true;
+						dispatch(setHasValidLoadoutQueryParams(true));
+					} catch (e) {
+						// Clear the shared loadout url in case it was causing an issue
+						// TODO: Only do this if the error is related to the shared loadout
+						localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
+						hasLoadout = false;
+					}
+				}
+				if (!successfullyParsedSharedLoadoutUrl) {
 					dispatch(setSelectedDestinyClass(validDestinyClassIds[0]));
 					console.log('>>>>>>>>>>> [LOAD] characters <<<<<<<<<<<', characters);
 
@@ -545,8 +564,6 @@ function Loading() {
 				// TODO redirect only on the right kind of error
 				// Test by deleting 'authorization' from localStorage
 				localStorage.removeItem('authorization');
-				// Clear the shared loadout url in case it was causing an issue
-				localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 				console.error(error);
 				const errorMessage = error.toString();
 				// TODO: The DIM code hides the real error but this is good enough for now...

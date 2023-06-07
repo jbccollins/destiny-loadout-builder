@@ -1,11 +1,9 @@
-import Link from 'next/link';
-import { oauthClientId } from '@dlb/dim/bungie-api/bungie-api-utils';
-import { Button, styled, Box } from '@mui/material';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { selectLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
+import { Box, Button, styled } from '@mui/material';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const sendErrorEmail = async (error: string): Promise<void> => {
 	await axios
@@ -41,7 +39,6 @@ const Title = styled(Box)(({ theme }) => ({
 
 const Subtitle = styled(Box)(({ theme }) => ({
 	fontSize: 18,
-	fontWeight: 'bold',
 	marginBottom: theme.spacing(1),
 }));
 
@@ -54,6 +51,7 @@ const ErrorWrapper = styled(Box)(({ theme }) => ({
 }));
 
 function Error() {
+	const router = useRouter();
 	const loadError = useAppSelector(selectLoadError);
 	useEffect(() => {
 		(async () => {
@@ -67,17 +65,30 @@ function Error() {
 		};
 	}, [loadError]);
 	const [showError, setShowError] = useState(false);
+
+	const handleReset = () => {
+		localStorage.clear();
+		router.push('/login');
+	};
+
 	return (
 		<Container>
 			<Title>A fatal error occured while loading your Destiny inventory</Title>
 			<Subtitle>
-				<Link href={'/login'}>Click here</Link> to log in again
+				Click the RESET button to hard refresh the application
 			</Subtitle>
 			<Content>
+				<Button
+					sx={{ margin: '8px' }}
+					variant="contained"
+					onClick={() => handleReset()}
+				>
+					Reset
+				</Button>
 				{!showError && (
 					<Button
 						sx={{ margin: '8px' }}
-						variant="contained"
+						variant="text"
 						onClick={() => setShowError(true)}
 					>
 						Show Error

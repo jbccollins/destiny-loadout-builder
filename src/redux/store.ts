@@ -9,6 +9,7 @@ import counterReducer from './features/counter/counterSlice';
 import desiredArmorStatsReducer, {
 	setDesiredArmorStats,
 } from './features/desiredArmorStats/desiredArmorStatsSlice';
+import hasValidLoadoutQueryParams from './features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
 import loadErrorReducer from './features/loadError/loadErrorSlice';
 import maxPossibleReservedArmorSlotEnergyReducer, {
 	setMaxPossibleReservedArmorSlotEnergy,
@@ -124,6 +125,7 @@ export function makeStore() {
 		reducer: {
 			allClassItemMetadata: allClassItemMetadataReducer,
 			allDataLoaded: allDataLoadedReducer,
+			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
 			armor: armorReducer,
 			armorMetadata: armorMetadataReducer,
 			armorSlotModViolations: armorSlotModViolationsReducer,

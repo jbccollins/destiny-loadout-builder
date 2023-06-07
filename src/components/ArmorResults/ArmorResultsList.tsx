@@ -6,6 +6,7 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { DimIcon } from '@dlb/public/dim_logo.svgicon';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import { selectHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import { selectSelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import { selectSelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
@@ -649,9 +650,9 @@ function ResultsItem({
 }
 
 function ArmorResultsList({ items }: ArmorResultsListProps) {
-	const urlParams = new URLSearchParams(window.location.search);
-	const loadoutString = urlParams.get('loadout');
-	const hasLoadoutQueryParams = loadoutString ? true : false;
+	const hasLoadoutQueryParams = useAppSelector(
+		selectHasValidLoadoutQueryParams
+	);
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);

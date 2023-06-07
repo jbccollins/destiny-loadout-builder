@@ -545,6 +545,8 @@ function Loading() {
 				// TODO redirect only on the right kind of error
 				// Test by deleting 'authorization' from localStorage
 				localStorage.removeItem('authorization');
+				// Clear the shared loadout url in case it was causing an issue
+				localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 				console.error(error);
 				const errorMessage = error.toString();
 				// TODO: The DIM code hides the real error but this is good enough for now...

@@ -40,13 +40,15 @@ interface TabContainerItem {
 
 interface TabContainerProps {
 	tabs: TabContainerItem[];
+	onChange: (value: number) => void;
 }
 
 export default function BasicTabs(props: TabContainerProps) {
-	const { tabs } = props;
+	const { tabs, onChange } = props;
 	const [value, setValue] = React.useState(tabs[0].index);
 
 	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+		onChange(newValue);
 		setValue(newValue);
 	};
 

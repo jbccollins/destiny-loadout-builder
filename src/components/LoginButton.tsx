@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { oauthClientId } from '@dlb/dim/bungie-api/bungie-api-utils';
 import { Button } from '@mui/material';
+import Link from 'next/link';
 
 function Login() {
 	const queryParams = new URLSearchParams({
@@ -11,7 +11,7 @@ function Login() {
 	return (
 		<Link href={`https://www.bungie.net/en/OAuth/Authorize?${queryParams}`}>
 			<Button variant="contained" color="secondary">
-				Authorize With BNet
+				Authorize With Bungie.net
 			</Button>
 		</Link>
 	);

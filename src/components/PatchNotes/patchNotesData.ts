@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-06-06',
+		version: '2.1.5',
+		title: 'Permissions disclosure',
+		sections: [
+			{
+				items: [
+					`Add text to the login page that discloses the permissions this app requires from Bungie`,
+					`Fix a bug where the "Show Results" button appeared on the "Settings" and "About" tabs`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-06-05',
 		version: '2.1.4',
 		title: 'De-clutter Mod Selection',

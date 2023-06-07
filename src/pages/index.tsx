@@ -135,7 +135,11 @@ const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
 	transform: 'translate(-50%, -50%)',
 }));
 
-const LeftSectionComponent = () => {
+type LeftSectionComponentProps = {
+	onTabChange: (value: number) => void;
+};
+
+const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
@@ -220,9 +224,14 @@ const LeftSectionComponent = () => {
 		setModsSelectionOpen(!modsSelectionOpen);
 	};
 
+	const handleTabChange = (index: number) => {
+		props.onTabChange(index);
+	};
+
 	return (
 		<LeftSection className="left-section">
 			<TabContainer
+				onChange={handleTabChange}
 				tabs={[
 					{
 						content: (
@@ -337,11 +346,15 @@ const Home: NextPage = () => {
 		toggleSmallScreenResultsView: () =>
 			setSmallScreenResultsOpen(!smallScreenResultsOpen),
 	};
+
+	const [tabIndex, setTabIndex] = React.useState(0);
+
 	return (
 		<>
 			<Head>
 				<title>Destiny Loadout Builder</title>
 				<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+				<link rel="shortcut icon" href="/favicon.ico" sizes="any" />
 			</Head>
 			{/* <WebWorkerTest derp={true} /> */}
 			<Container className="application-container">
@@ -353,8 +366,10 @@ const Home: NextPage = () => {
 								{smallScreenResultsOpen && (
 									<RightSectionComponent smallScreenData={smallScreenData} />
 								)}
-								{!smallScreenResultsOpen && <LeftSectionComponent />}
 								{!smallScreenResultsOpen && (
+									<LeftSectionComponent onTabChange={setTabIndex} />
+								)}
+								{!smallScreenResultsOpen && tabIndex === 0 && (
 									<SmallScreenResultsViewToggle
 										disabled={processedArmor.items.length === 0}
 										className="small-screen-results-view-toggle"
@@ -374,7 +389,7 @@ const Home: NextPage = () => {
 						)}
 						{!isSmallScreen && (
 							<>
-								<LeftSectionComponent />
+								<LeftSectionComponent onTabChange={setTabIndex} />
 								<RightSectionComponent smallScreenData={smallScreenData} />
 							</>
 						)}

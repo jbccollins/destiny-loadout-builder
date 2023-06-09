@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-06-09',
+		version: '2.1.6',
+		title: 'Class and Exotic selecor UI changes',
+		sections: [
+			{
+				items: [
+					`Change the class and exotic selectors to be stacked instead of side by side`,
+					`Increase the maximum height of the exotic selector dropdown popover`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-06-06',
 		version: '2.1.5',
 		title: 'Permissions disclosure',

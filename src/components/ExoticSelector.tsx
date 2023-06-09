@@ -11,7 +11,7 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
 import { MISSING_ICON } from '@dlb/types/globals';
-import { Box } from '@mui/material';
+import { Box, Popper, styled } from '@mui/material';
 import { useMemo } from 'react';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 
@@ -57,6 +57,16 @@ const getExtraContent = (option: AvailableExoticArmorItem) => {
 		</Box>
 	);
 };
+const StyledPopper = styled(Popper)({
+	maxHeight: '60vh',
+	// maxHeight: '600px',
+	['.MuiPaper-root']: {
+		maxHeight: '60vh',
+	},
+	['.MuiAutocomplete-listbox']: {
+		maxHeight: '60vh',
+	},
+});
 
 function ExoticSelector() {
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
@@ -100,7 +110,8 @@ function ExoticSelector() {
 		selectedExoticArmor &&
 		selectedExoticArmor[selectedDestinyClass] && (
 			<IconAutocompleteDropdown
-				title={'Exotic'}
+				title={''}
+				popperComponent={StyledPopper}
 				options={options}
 				value={selectedExoticArmor[selectedDestinyClass]}
 				onChange={handleChange}

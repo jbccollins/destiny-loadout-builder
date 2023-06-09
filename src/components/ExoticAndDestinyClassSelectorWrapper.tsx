@@ -1,4 +1,4 @@
-import { Box, Card, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import DestinyClassSelector from './DestinyClassSelector';
 import ExoticSelector from './ExoticSelector';
 
@@ -6,12 +6,13 @@ const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
 	padding: theme.spacing(1),
 	display: 'flex',
-	justifyContent: 'left',
+	flexWrap: 'wrap',
+	flexDirection: 'column',
 }));
 const ExoticSelectorWrapper = styled('div')(({ theme }) => ({
-	marginLeft: '-1px',
-	flexGrow: 1,
-	minWidth: 0,
+	marginTop: '-1px',
+	// flexGrow: 1,
+	// minWidth: 0,
 }));
 
 const ExoticAndDestinyClassSelectorWrapper = () => {

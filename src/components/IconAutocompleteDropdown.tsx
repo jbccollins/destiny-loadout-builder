@@ -2,12 +2,13 @@ import {
 	Autocomplete,
 	Box,
 	FormControl,
+	PopperProps,
 	TextField,
 	styled,
 } from '@mui/material';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import { useEffect } from 'react';
+import { JSXElementConstructor, useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
 import { v4 as uuid } from 'uuid';
 import DecoratedBungieIcon from './DecoratedBungieIcon';
@@ -17,7 +18,7 @@ const Container = styled('div')(({ theme }) => ({
 	// TODO: this is a bit clunky given that it's passed by the exotic selector. Find a better way.
 	['.exotic-selector-text-field fieldset']: {
 		borderTopLeftRadius: '0px',
-		borderBottomLeftRadius: '0px',
+		borderTopRightRadius: '0px',
 		padding: theme.spacing(1),
 		paddingRight: 0,
 	},
@@ -78,6 +79,7 @@ type IconAutocompleteDropdownProps = {
 	onOpen?: () => void;
 	id?: string;
 	showIcon?: boolean;
+	popperComponent?: JSXElementConstructor<PopperProps>;
 };
 
 function IconAutocompleteDropdown({
@@ -98,6 +100,7 @@ function IconAutocompleteDropdown({
 	onOpen,
 	id,
 	showIcon,
+	popperComponent,
 }: IconAutocompleteDropdownProps) {
 	const textInputClass = uuid();
 
@@ -127,6 +130,12 @@ function IconAutocompleteDropdown({
 				// open: true,
 		  }
 		: {};
+	const popperProps =
+		popperComponent && !isMobile
+			? {
+					PopperComponent: popperComponent,
+			  }
+			: {};
 
 	const _showIcon = showIcon ?? true;
 
@@ -144,6 +153,7 @@ function IconAutocompleteDropdown({
 				<Autocomplete
 					{...controlledProps}
 					{...mobileProps}
+					{...popperProps}
 					onOpen={handleOpen}
 					forcePopupIcon={_showIcon ? true : false}
 					id={`${id ?? ''}`}

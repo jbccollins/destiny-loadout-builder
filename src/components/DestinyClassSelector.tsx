@@ -1,17 +1,17 @@
-import { EDestinyClassId } from '@dlb/types/IdEnums';
-import { styled } from '@mui/material';
 import {
 	selectSelectedDestinyClass,
 	setSelectedDestinyClass,
 } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import IconDropdown from './IconDropdown';
 import {
 	DestinyClassIdList,
 	DestinyClassIdToDestinyClass,
 } from '@dlb/types/DestinyClass';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
+import { styled } from '@mui/material';
 import { useMemo } from 'react';
+import IconDropdown from './IconDropdown';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),
 	// paddingRight: 0
@@ -61,11 +61,10 @@ function DestinyClassSelector() {
 			<Container>
 				<IconDropdownContainer>
 					<IconDropdown
-						hideSelectedOptionText={true}
+						// hideSelectedOptionText={true}
 						selectComponentProps={{
 							sx: {
-								maxWidth: 100,
-								borderTopRightRadius: 0,
+								borderBottomLeftRadius: 0,
 								borderBottomRightRadius: 0,
 							},
 						}}
@@ -73,7 +72,7 @@ function DestinyClassSelector() {
 						getLabel={getLabel}
 						value={selectedDestinyClass || ''}
 						onChange={handleChange}
-						title="Class"
+						// title="Class and Exotic"
 					/>
 				</IconDropdownContainer>
 			</Container>

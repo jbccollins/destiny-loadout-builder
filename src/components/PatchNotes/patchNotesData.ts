@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-06-16',
+		version: '2.1.7',
+		title: 'Stop using beta DIM links',
+		sections: [
+			{
+				items: [
+					`Switch over to using production DIM links instead of beta DIM links`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-06-09',
 		version: '2.1.6',
 		title: 'Class and Exotic selecor UI changes',

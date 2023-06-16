@@ -225,7 +225,7 @@ export const generateDimLink = (
 	}
 
 	const url =
-		'https://beta.destinyitemmanager.com/loadouts?loadout=' +
+		'https://app.destinyitemmanager.com/loadouts?loadout=' +
 		encodeURIComponent(JSON.stringify(loadout));
 
 	return url;

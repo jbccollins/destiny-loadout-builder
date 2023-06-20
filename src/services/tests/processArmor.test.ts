@@ -26,7 +26,7 @@ import {
 } from '@dlb/types/IdEnums';
 import {
 	getDefaultArmorSlotIdToModIdListMapping,
-	getDefaultValidRaidModArmorSlotPlacement,
+	getDefaultPotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
 import { describe, expect, test } from '@jest/globals';
 import { cloneDeep } from 'lodash';
@@ -155,7 +155,7 @@ const testCases: TestCase[] = [
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
-					getDefaultValidRaidModArmorSlotPlacement(),
+					getDefaultPotentialRaidModArmorSlotPlacement(),
 				],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
@@ -285,7 +285,7 @@ const testCases: TestCase[] = [
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
-					getDefaultValidRaidModArmorSlotPlacement(),
+					getDefaultPotentialRaidModArmorSlotPlacement(),
 				],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
@@ -440,7 +440,7 @@ const testCases: TestCase[] = [
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
-					getDefaultValidRaidModArmorSlotPlacement(),
+					getDefaultPotentialRaidModArmorSlotPlacement(),
 				],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
@@ -573,7 +573,7 @@ const testCases: TestCase[] = [
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
-					getDefaultValidRaidModArmorSlotPlacement(),
+					getDefaultPotentialRaidModArmorSlotPlacement(),
 				],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
@@ -722,7 +722,7 @@ const testCases: TestCase[] = [
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
-					getDefaultValidRaidModArmorSlotPlacement(),
+					getDefaultPotentialRaidModArmorSlotPlacement(),
 				],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
@@ -865,7 +865,7 @@ const testCases: TestCase[] = [
 		},
 	],
 	[
-		'It returns results with a raid chest and class item where the chestpiece has no capacity',
+		'It returns results with a raid chest and class item when the chestpiece has no capacity',
 		[
 			{
 				masterworkAssumption: EMasterworkAssumption.None,
@@ -881,23 +881,23 @@ const testCases: TestCase[] = [
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.Head]: EModId.ReleaseRecover,
 					},
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.Arm]: EModId.ReleaseRecover,
 					},
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.Chest]: EModId.ReleaseRecover,
 					},
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.Leg]: EModId.ReleaseRecover,
 					},
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.ClassItem]: EModId.ReleaseRecover,
 					},
 				],
@@ -987,7 +987,14 @@ const testCases: TestCase[] = [
 							[EArmorStatId.Intellect]: 0,
 							[EArmorStatId.Strength]: 0,
 						},
-						seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
+						seenArmorSlotItems: {
+							...getDefaultSeenArmorSlotItems(),
+							[EArmorSlotId.Chest]: {
+								...getDefaultSeenArmorSlotItems().Chest,
+								raidAndNightmareModTypeId:
+									ERaidAndNightMareModTypeId.RootOfNightmares,
+							},
+						},
 						classItem: {
 							...getDefaultProcessedArmorItemMetadataClassItem(),
 							requiredClassItemMetadataKey:
@@ -1021,9 +1028,9 @@ const testCases: TestCase[] = [
 	],
 ];
 
-const nameOfTestToDebug =
-	'It returns results with a raid chest and class item where the chestpiece has no capacity';
-// const nameOfTestToDebug = null;
+// const nameOfTestToDebug =
+// 	'It returns results with a raid chest and class item when the chestpiece has no capacity';
+const nameOfTestToDebug = null;
 describe('doProcessArmor', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

@@ -1,6 +1,6 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
-import { AllClassItemMetadata, StatList } from '@dlb/types/Armor';
+import { AllClassItemMetadata, ItemCounts, StatList } from '@dlb/types/Armor';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
@@ -17,6 +17,7 @@ import {
 	ArmorSlotIdToModIdListMapping,
 	PotentialRaidModArmorSlotPlacement,
 	getArmorSlotEnergyCapacity,
+	getDefaultPotentialRaidModArmorSlotPlacement,
 	getMod,
 } from '@dlb/types/Mod';
 import { cloneDeep } from 'lodash';
@@ -139,97 +140,40 @@ export const getDefaultModCombos = (): ModCombos => ({
 	hasMasterworkedClassItem: false,
 });
 
-export type GetModCombosParams = {
+type ProcessPotentialRaidModArmorSlotPlacmentParams = {
+	placement: PotentialRaidModArmorSlotPlacement;
 	sumOfSeenStats: StatList;
-	desiredArmorStats: ArmorStatMapping;
-	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
-	armorSlotMods: ArmorSlotIdToModIdListMapping;
-	raidMods: EModId[];
-	destinyClassId: EDestinyClassId;
-	specialSeenArmorSlotItems: SeenArmorSlotItems;
-	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
-	useZeroWastedStats: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
+	desiredArmorStats: ArmorStatMapping;
+	useZeroWastedStats: boolean;
+	seenItemCounts: ItemCounts;
 	masterworkAssumption: EMasterworkAssumption;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 };
 
-// This return type is a bit... misleading...
-// At the moment it SHOULD only ever return a single [ModCombos] array.
-// When writing this I was wrestling with how to handle masterwork assumptions
-// If the user wants to reduce wasted stats or hit zero wasted stats then there
-// are cases where we want to ignore the masterwork assumption and determine
-// whether or not to masterwork certain pieces of unmasterworked armor. But
-// That logic is just too complex for the moment. So for now we just return
-// a single [ModCombos] array. If we ever need to return multiple [ModCombos]
-// arrays then we'll need to refactor this.
-export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
+const processPotentialRaidModArmorSlotPlacement = (
+	params: ProcessPotentialRaidModArmorSlotPlacmentParams
+) => {
 	const {
+		placement,
 		sumOfSeenStats,
-		desiredArmorStats,
-		potentialRaidModArmorSlotPlacements,
-		armorSlotMods,
-		raidMods,
-		specialSeenArmorSlotItems,
-		reservedArmorSlotEnergy,
-		useZeroWastedStats,
 		allClassItemMetadata,
+		desiredArmorStats,
+		useZeroWastedStats,
+		seenItemCounts,
 		masterworkAssumption,
+		armorSlotMods,
+		reservedArmorSlotEnergy,
 	} = params;
-
-	// First sanity check the armorSlotMods against the reserved armorSlotEnergy
-	// TODO: For some reason getFirstValidStatModCombo won't catch this case
-	// So as a hack I'm doing it here for now...
-	for (const armorSlotId of ArmorSlotWithClassItemIdList) {
-		if (
-			sumModCosts(armorSlotMods[armorSlotId]) +
-				reservedArmorSlotEnergy[armorSlotId] >
-			10
-		) {
-			return null;
-		}
-	}
-
-	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
-		specialSeenArmorSlotItems
-	);
-
-	let requiredClassItemMetadataKey: RequiredClassItemMetadataKey = null;
-
-	let filteredPotentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[] =
-		null;
-
-	let _sumOfSeenStats: StatList = [...sumOfSeenStats];
-
-	// TODO: Cache this result
-	if (raidMods.length > 0) {
-		// Filter the potential raid mod placemnts down to the placements that
-		// have a chance at actually working for this specific armor cobmination
-		const potentialRaidModPlacements =
-			filterPotentialRaidModArmorSlotPlacements({
-				potentialRaidModArmorSlotPlacements,
-				raidMods,
-				specialSeenArmorSlotItems,
-				allClassItemMetadata,
-			});
-		// We have nowhere to put raid mods
-		if (!potentialRaidModPlacements?.potentialPlacements) {
-			return null;
-		}
-		const {
-			potentialPlacements: _raidModArmorSlotPlacements,
-			requiredClassItemMetadataKey: _requiredClassItemMetadataKey,
-		} = potentialRaidModPlacements;
-
-		if (_raidModArmorSlotPlacements.length === 0) {
-			return null;
-		}
-
-		filteredPotentialRaidModArmorSlotPlacements = _raidModArmorSlotPlacements;
-		requiredClassItemMetadataKey = _requiredClassItemMetadataKey;
-	}
-
 	let canUseArtificeClassItem = false;
 	let hasDefaultMasterworkedClassItem = false;
+	let _sumOfSeenStats: StatList = [...sumOfSeenStats];
+
+	const requiredClassItemMetadataKey = placement.ClassItem
+		? getMod(placement.ClassItem).raidAndNightmareModTypeId
+		: null;
+
 	// We can use artifice class items if we don't need a special kind of class item
 	// TODO: We need to be careful in the case where the user does not have a masterworked artifice class item
 	// and they have turned off the legendary masterwork assumption. It may be more beneficial
@@ -334,8 +278,8 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 
 		const { isValid, combo, placementCapacity } = getFirstValidStatModCombo({
 			statModComboList: statModCombos,
-			potentialRaidModArmorSlotPlacements:
-				filteredPotentialRaidModArmorSlotPlacements,
+			// TODO: This will always be a list of 1. Refactor this
+			potentialRaidModArmorSlotPlacements: [placement],
 			armorSlotMods,
 			reservedArmorSlotEnergy,
 		});
@@ -404,6 +348,100 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 		}
 	}
 	return result.length > 0 ? result : null;
+};
+
+export type GetModCombosParams = {
+	sumOfSeenStats: StatList;
+	desiredArmorStats: ArmorStatMapping;
+	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	raidMods: EModId[];
+	destinyClassId: EDestinyClassId;
+	specialSeenArmorSlotItems: SeenArmorSlotItems;
+	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
+	useZeroWastedStats: boolean;
+	allClassItemMetadata: AllClassItemMetadata;
+	masterworkAssumption: EMasterworkAssumption;
+};
+
+// This return type is a bit... misleading...
+// At the moment it SHOULD only ever return a single [ModCombos] array.
+// When writing this I was wrestling with how to handle masterwork assumptions
+// If the user wants to reduce wasted stats or hit zero wasted stats then there
+// are cases where we want to ignore the masterwork assumption and determine
+// whether or not to masterwork certain pieces of unmasterworked armor. But
+// That logic is just too complex for the moment. So for now we just return
+// a single [ModCombos] array. If we ever need to return multiple [ModCombos]
+// arrays then we'll need to refactor this.
+export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
+	const {
+		sumOfSeenStats,
+		desiredArmorStats,
+		potentialRaidModArmorSlotPlacements,
+		armorSlotMods,
+		raidMods,
+		specialSeenArmorSlotItems,
+		reservedArmorSlotEnergy,
+		useZeroWastedStats,
+		allClassItemMetadata,
+		masterworkAssumption,
+	} = params;
+
+	// First sanity check the armorSlotMods against the reserved armorSlotEnergy
+	// TODO: For some reason getFirstValidStatModCombo won't catch this case
+	// So as a hack I'm doing it here for now...
+	for (const armorSlotId of ArmorSlotWithClassItemIdList) {
+		if (
+			sumModCosts(armorSlotMods[armorSlotId]) +
+				reservedArmorSlotEnergy[armorSlotId] >
+			10
+		) {
+			return null;
+		}
+	}
+
+	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
+		specialSeenArmorSlotItems
+	);
+
+	let filteredPotentialRaidModArmorSlotPlacements = [
+		getDefaultPotentialRaidModArmorSlotPlacement(),
+	];
+
+	// TODO: Cache this result
+	if (raidMods.length > 0) {
+		// Filter the potential raid mod placements down to the placements that
+		// have a chance at actually working for this specific armor cobmination
+		filteredPotentialRaidModArmorSlotPlacements =
+			filterPotentialRaidModArmorSlotPlacements({
+				potentialRaidModArmorSlotPlacements,
+				raidMods,
+				specialSeenArmorSlotItems,
+				allClassItemMetadata,
+			});
+		// We have nowhere to put raid mods
+		if (filteredPotentialRaidModArmorSlotPlacements?.length === 0) {
+			return null;
+		}
+	}
+
+	const modCombos: ModCombos[] = [];
+	filteredPotentialRaidModArmorSlotPlacements.forEach((placement) => {
+		processPotentialRaidModArmorSlotPlacement({
+			placement,
+			sumOfSeenStats,
+			allClassItemMetadata,
+			desiredArmorStats,
+			useZeroWastedStats,
+			seenItemCounts,
+			masterworkAssumption,
+			armorSlotMods,
+			reservedArmorSlotEnergy,
+		})?.forEach((modCombo) => {
+			modCombos.push(modCombo);
+		});
+	});
+	return modCombos.length > 0 ? modCombos : null;
 };
 
 export type ModCombosClassItem = {

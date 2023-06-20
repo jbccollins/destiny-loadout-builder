@@ -10,10 +10,7 @@ import {
 	getDefaultItemCounts,
 	getExtraMasterworkedStats,
 } from '@dlb/types/Armor';
-import {
-	ArmorSlotIdList,
-	ArmorSlotWithClassItemIdList,
-} from '@dlb/types/ArmorSlot';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
 	ArmorStatMapping,
@@ -29,7 +26,7 @@ import {
 	EModCategoryId,
 	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
-import { PotentialRaidModArmorSlotPlacement, getMod } from '@dlb/types/Mod';
+import { getMod } from '@dlb/types/Mod';
 import { RaidAndNightmareModTypeIdList } from '@dlb/types/RaidAndNightmareModType';
 import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
 import { cloneDeep } from 'lodash';
@@ -260,51 +257,6 @@ export const stripNonRaidSeenArmorSlotItems = (
 		}
 	});
 	return items;
-};
-
-export type FilterValidRaidModArmorSlotPlacementsParams = {
-	seenArmorSlotItems: SeenArmorSlotItems;
-	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
-	validRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
-};
-// Filter out the placements that put a raid mod on a non-raid armor piece
-export const filterRaidModArmorSlotPlacements = ({
-	seenArmorSlotItems,
-	requiredClassItemMetadataKey,
-	validRaidModArmorSlotPlacements,
-}: FilterValidRaidModArmorSlotPlacementsParams): PotentialRaidModArmorSlotPlacement[] => {
-	const raidSeenArmorSlotItems =
-		stripNonRaidSeenArmorSlotItems(seenArmorSlotItems);
-	const validPlacements: PotentialRaidModArmorSlotPlacement[] = [];
-	const armorItemsExtraModSocketCategories = {
-		[EArmorSlotId.Head]: raidSeenArmorSlotItems.Head,
-		[EArmorSlotId.Arm]: raidSeenArmorSlotItems.Arm,
-		[EArmorSlotId.Chest]: raidSeenArmorSlotItems.Chest,
-		[EArmorSlotId.Leg]: raidSeenArmorSlotItems.Leg,
-		[EArmorSlotId.ClassItem]: requiredClassItemMetadataKey,
-	};
-
-	for (let i = 0; i < validRaidModArmorSlotPlacements.length; i++) {
-		const placement = validRaidModArmorSlotPlacements[i];
-		let isValid = true;
-		for (let j = 0; j < ArmorSlotWithClassItemIdList.length; j++) {
-			const armorSlotId = ArmorSlotWithClassItemIdList[j];
-			if (placement[armorSlotId]) {
-				const mod = getMod(placement[armorSlotId]);
-				if (
-					mod.raidAndNightmareModTypeId !==
-					armorItemsExtraModSocketCategories[armorSlotId]
-				) {
-					isValid = false;
-					break;
-				}
-			}
-		}
-		if (isValid) {
-			validPlacements.push(placement);
-		}
-	}
-	return validPlacements;
 };
 
 export const getExtraSumOfSeenStats = (

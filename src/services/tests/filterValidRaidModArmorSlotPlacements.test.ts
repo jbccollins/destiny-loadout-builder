@@ -1,8 +1,12 @@
 import { EModId } from '@dlb/generated/mod/EModId';
+import { filterRaidModArmorSlotPlacements } from '@dlb/services/processArmor/filterPotentialRaidModArmorSlotPlacements';
 import { getDefaultSeenArmorSlotItems } from '@dlb/services/processArmor/seenArmorSlotItems';
-import { filterRaidModArmorSlotPlacements } from '@dlb/services/processArmor/utils';
+import {
+	getDefaultAllClassItemMetadata,
+	getDefaultArmorItem,
+} from '@dlb/types/Armor';
 import { EArmorSlotId, ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
-import { getDefaultValidRaidModArmorSlotPlacement } from '@dlb/types/Mod';
+import { getDefaultPotentialRaidModArmorSlotPlacement } from '@dlb/types/Mod';
 
 const testFunction = filterRaidModArmorSlotPlacements;
 
@@ -19,12 +23,14 @@ const testCases: TestCase[] = [
 			{
 				seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 				requiredClassItemMetadataKey: null,
-				validRaidModArmorSlotPlacements: [
-					getDefaultValidRaidModArmorSlotPlacement(),
+				potentialRaidModArmorSlotPlacements: [
+					getDefaultPotentialRaidModArmorSlotPlacement(),
 				],
+				raidModIdList: [],
+				allClassItemMetadata: getDefaultAllClassItemMetadata(),
 			},
 		],
-		[getDefaultValidRaidModArmorSlotPlacement()],
+		[getDefaultPotentialRaidModArmorSlotPlacement()],
 	],
 	// 1
 	[
@@ -33,21 +39,35 @@ const testCases: TestCase[] = [
 			{
 				seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 				requiredClassItemMetadataKey: ERaidAndNightMareModTypeId.DeepStoneCrypt,
-				validRaidModArmorSlotPlacements: [
+				potentialRaidModArmorSlotPlacements: [
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.Head]: EModId.EnhancedOperatorAugment,
 					},
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.ClassItem]: EModId.EnhancedOperatorAugment,
 					},
 				],
+				raidModIdList: [EModId.EnhancedOperatorAugment],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					[ERaidAndNightMareModTypeId.DeepStoneCrypt]: {
+						items: [
+							{
+								...getDefaultArmorItem(),
+								socketableRaidAndNightmareModTypeId:
+									ERaidAndNightMareModTypeId.DeepStoneCrypt,
+							},
+						],
+						hasMasterworkedVariant: false,
+					},
+				},
 			},
 		],
 		[
 			{
-				...getDefaultValidRaidModArmorSlotPlacement(),
+				...getDefaultPotentialRaidModArmorSlotPlacement(),
 				[EArmorSlotId.ClassItem]: EModId.EnhancedOperatorAugment,
 			},
 		],
@@ -76,37 +96,65 @@ const testCases: TestCase[] = [
 					},
 				},
 				requiredClassItemMetadataKey: ERaidAndNightMareModTypeId.DeepStoneCrypt,
-				validRaidModArmorSlotPlacements: [
+				potentialRaidModArmorSlotPlacements: [
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.Head]: EModId.ResistantTether,
 						[EArmorSlotId.Arm]: EModId.EnhancedResistantTether,
 						[EArmorSlotId.ClassItem]: EModId.EnhancedOperatorAugment,
 					},
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.Head]: EModId.EnhancedResistantTether,
 						[EArmorSlotId.Arm]: EModId.ResistantTether,
 						[EArmorSlotId.ClassItem]: EModId.EnhancedOperatorAugment,
 					},
 					{
-						...getDefaultValidRaidModArmorSlotPlacement(),
+						...getDefaultPotentialRaidModArmorSlotPlacement(),
 						[EArmorSlotId.Head]: EModId.EnhancedOperatorAugment,
 						[EArmorSlotId.Arm]: EModId.ResistantTether,
 						[EArmorSlotId.Chest]: EModId.EnhancedResistantTether,
 					},
 				],
+				raidModIdList: [
+					EModId.EnhancedOperatorAugment,
+					EModId.ResistantTether,
+					EModId.EnhancedResistantTether,
+				],
+				allClassItemMetadata: {
+					...getDefaultAllClassItemMetadata(),
+					[ERaidAndNightMareModTypeId.DeepStoneCrypt]: {
+						items: [
+							{
+								...getDefaultArmorItem(),
+								socketableRaidAndNightmareModTypeId:
+									ERaidAndNightMareModTypeId.DeepStoneCrypt,
+							},
+						],
+						hasMasterworkedVariant: false,
+					},
+					[ERaidAndNightMareModTypeId.GardenOfSalvation]: {
+						items: [
+							{
+								...getDefaultArmorItem(),
+								socketableRaidAndNightmareModTypeId:
+									ERaidAndNightMareModTypeId.GardenOfSalvation,
+							},
+						],
+						hasMasterworkedVariant: false,
+					},
+				},
 			},
 		],
 		[
 			{
-				...getDefaultValidRaidModArmorSlotPlacement(),
+				...getDefaultPotentialRaidModArmorSlotPlacement(),
 				[EArmorSlotId.Head]: EModId.ResistantTether,
 				[EArmorSlotId.Arm]: EModId.EnhancedResistantTether,
 				[EArmorSlotId.ClassItem]: EModId.EnhancedOperatorAugment,
 			},
 			{
-				...getDefaultValidRaidModArmorSlotPlacement(),
+				...getDefaultPotentialRaidModArmorSlotPlacement(),
 				[EArmorSlotId.Head]: EModId.EnhancedResistantTether,
 				[EArmorSlotId.Arm]: EModId.ResistantTether,
 				[EArmorSlotId.ClassItem]: EModId.EnhancedOperatorAugment,

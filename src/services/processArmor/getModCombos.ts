@@ -20,7 +20,6 @@ import {
 	getDefaultPotentialRaidModArmorSlotPlacement,
 	getMod,
 } from '@dlb/types/Mod';
-import { cloneDeep } from 'lodash';
 import { ARTIFICE, EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
@@ -276,7 +275,7 @@ const processPotentialRaidModArmorSlotPlacement = (
 		const lowestCostPlacement =
 			getDefaultArmorSlotModComboPlacementWithArtificeMods();
 
-		const { isValid, combo, placementCapacity } = getFirstValidStatModCombo({
+		const { isValid, combo } = getFirstValidStatModCombo({
 			statModComboList: statModCombos,
 			// TODO: This will always be a list of 1. Refactor this
 			potentialRaidModArmorSlotPlacements: [placement],
@@ -290,6 +289,7 @@ const processPotentialRaidModArmorSlotPlacement = (
 
 		if (combo) {
 			const expandedCombo = convertStatModComboToExpandedStatModCombo(combo);
+			// TODO: This is wrong logic. It's just placing mods with no regard for capacity
 			expandedCombo.armorStatModIdList.forEach((modId, i) => {
 				lowestCostPlacement.placement[
 					ArmorSlotWithClassItemIdList[i]
@@ -420,7 +420,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 				allClassItemMetadata,
 			});
 		// We have nowhere to put raid mods
-		if (filteredPotentialRaidModArmorSlotPlacements?.length === 0) {
+		if (filteredPotentialRaidModArmorSlotPlacements === null) {
 			return null;
 		}
 	}
@@ -462,7 +462,7 @@ type GetFirstValidStatModComboParams = {
 type GetFirstValidStatModComboResult = {
 	isValid: boolean;
 	combo: StatModCombo;
-	placementCapacity: ArmorSlotCapacity[];
+	// placementCapacity: ArmorSlotCapacity[];
 };
 
 // Pick the first combo that has a valid placement
@@ -477,7 +477,7 @@ const getFirstValidStatModCombo = ({
 		(potentialRaidModArmorSlotPlacements === null ||
 			potentialRaidModArmorSlotPlacements.length == 0)
 	) {
-		return { isValid: true, combo: null, placementCapacity: null };
+		return { isValid: true, combo: null };
 	}
 
 	const armorSlotCapacities = getArmorSlotCapacities({
@@ -519,19 +519,19 @@ const getFirstValidStatModCombo = ({
 					sortedArmorSlotCapacities: capacity,
 				})
 			) {
-				const placementCapacity = cloneDeep(capacity);
-				sortedArmorStatMods.forEach((modId, k) => {
-					placementCapacity[k].armorStatModId = modId;
-				});
+				// const placementCapacity = cloneDeep(capacity);
+				// sortedArmorStatMods.forEach((modId, k) => {
+				// 	placementCapacity[k].armorStatModId = modId;
+				// });
 				return {
 					isValid: true,
 					combo: _statModComboList[i],
-					placementCapacity,
+					// placementCapacity,
 				};
 			}
 		}
 	}
-	return { isValid: false, combo: null, placementCapacity: null };
+	return { isValid: false, combo: null };
 };
 
 export type ExpandedStatModCombo = {

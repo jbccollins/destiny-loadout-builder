@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-06-20',
+		version: '2.1.9',
+		title: 'Consider items in postmaster',
+		sections: [
+			{
+				items: [
+					`Fixed a bug where armor in the postmaster was not being considered in the results`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-06-20',
 		version: '2.1.8',
 		title: 'Fix rare bug with raid mods',
 		sections: [

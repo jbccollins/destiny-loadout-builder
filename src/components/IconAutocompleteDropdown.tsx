@@ -105,14 +105,12 @@ function IconAutocompleteDropdown({
 	const textInputClass = uuid();
 
 	const handleOpen = () => {
-		console.log('open');
 		if (onOpen) {
 			onOpen();
 		}
 	};
 
 	const handleClose = () => {
-		console.log('close');
 		onClose();
 	};
 

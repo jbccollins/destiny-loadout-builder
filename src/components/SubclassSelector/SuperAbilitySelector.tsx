@@ -1,16 +1,15 @@
-import { styled } from '@mui/material';
+import IconDropdown from '@dlb/components/IconDropdown';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import {
 	selectSelectedSuperAbility,
 	setSelectedSuperAbility,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { getSuperAbility } from '@dlb/types/SuperAbility';
-import IconDropdown from '@dlb/components/IconDropdown';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { MISSING_ICON } from '@dlb/types/globals';
+import { getSuperAbility } from '@dlb/types/SuperAbility';
+import { styled } from '@mui/material';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0
@@ -42,7 +41,6 @@ function SuperAbilitySelector() {
 		selectedDestinySubclass[selectedDestinyClass];
 
 	const handleChange = (superAbilityId: ESuperAbilityId) => {
-		console.log('>>>>> HANDLE CHANGE', superAbilityId);
 		dispatch(
 			setSelectedSuperAbility({
 				...selectedSuperAbility,

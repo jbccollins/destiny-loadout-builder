@@ -115,10 +115,17 @@ export const extractArmor = (
 
 	stores.forEach(({ items }) => {
 		items.forEach((item) => {
+			if (item.location.inPostmaster && item.name === "Liar's Handshake") {
+				// 21, 47, 20
+				console.log('inPostmaster');
+			}
 			// Filter out all items that don't have an element. These are really old armor
 			// TODO: Is this element filter really safe now that armor affinity is gone?
 			if (
-				item.location.inArmor &&
+				(item.location.inArmor ||
+					// Include postmaster armor. 20 is the category hash for armor.
+					(item.location.inPostmaster &&
+						item.itemCategoryHashes.includes(20))) &&
 				item.element?.enumValue &&
 				!item.classified // Classified armor has no stats
 			) {

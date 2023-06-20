@@ -110,7 +110,6 @@ function CompactIconAutocompleteDropdown(
 		}
 	};
 	const handleClose = (close: boolean) => {
-		console.log('compact close', close);
 		if (close && !isMobile) {
 			setOpen(false);
 		} else if (isMobile) {

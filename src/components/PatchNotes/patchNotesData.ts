@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-06-20',
+		version: '2.1.8',
+		title: 'Fix rare bug with raid mods',
+		sections: [
+			{
+				items: [
+					`Fixed a rare bug that could prevent some results from being shown when the user selected raid mods in combination with many armor mods or high reserved armor energy`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-06-16',
 		version: '2.1.7',
 		title: 'Stop using beta DIM links',

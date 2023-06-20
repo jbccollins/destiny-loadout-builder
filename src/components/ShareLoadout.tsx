@@ -178,11 +178,15 @@ const ShareLoadout = () => {
 		setToastOpen(false);
 	};
 	return (
-		<Container sx={{ height: advancedOptionsOpen ? '450px' : '' }}>
-			<Box>
-				{/* <IconButton aria-label="share" onClick={handleClick}>
-				<ShareIcon /> Share Loadout
-			</IconButton> */}
+		<Container>
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}
+			>
 				<Button
 					variant="contained"
 					startIcon={<ShareIcon />}
@@ -207,7 +211,13 @@ const ShareLoadout = () => {
 				/>
 				<Box
 					onClick={() => setAdvancedOptionsOpen(!advancedOptionsOpen)}
-					sx={{ cursor: 'pointer', marginTop: '16px' }}
+					sx={{
+						cursor: 'pointer',
+						marginTop: '16px',
+						// position: 'absolute',
+						// left: '50%',
+						// transform: 'translate(-50%, 0)',
+					}}
 				>
 					Show Advanced Share Options
 					<IconButton aria-label="expand row" size="small">

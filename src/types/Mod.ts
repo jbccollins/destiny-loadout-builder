@@ -162,7 +162,7 @@ export type ArmorSlotCapacity = {
 	armorStatModId: EModId;
 };
 
-export const getDefaultValidRaidModArmorSlotPlacement =
+export const getDefaultPotentialRaidModArmorSlotPlacement =
 	(): PotentialRaidModArmorSlotPlacement => {
 		return {
 			[EArmorSlotId.Head]: null,
@@ -335,7 +335,7 @@ export const getValidRaidModArmorSlotPlacements = (
 	raidModIdList: EModId[]
 ): PotentialRaidModArmorSlotPlacement[] => {
 	if (raidModIdList.filter((modId) => modId !== null).length === 0) {
-		return [getDefaultValidRaidModArmorSlotPlacement()];
+		return [getDefaultPotentialRaidModArmorSlotPlacement()];
 	}
 	const validPlacements: PotentialRaidModArmorSlotPlacement[] = [];
 	// Sort by armor slots with the most remaining energy capacity to the least remaining capacity.
@@ -358,7 +358,7 @@ export const getValidRaidModArmorSlotPlacements = (
 		raidModIdListPermutation = raidModIdListPermutations[i];
 		isValidPermutation = true;
 		const validPlacement: PotentialRaidModArmorSlotPlacement =
-			getDefaultValidRaidModArmorSlotPlacement();
+			getDefaultPotentialRaidModArmorSlotPlacement();
 		for (let j = 0; j < raidModIdListPermutation.length; j++) {
 			armorSlotCapacity = armorSlotCapacities[ArmorSlotWithClassItemIdList[j]];
 			if (raidModIdListPermutation[j] !== null) {
@@ -381,5 +381,5 @@ export const getValidRaidModArmorSlotPlacements = (
 	// console.log('>>>>>>>>+ valid placements:', validPlacements);
 	return validPlacements.length > 0
 		? validPlacements
-		: [getDefaultValidRaidModArmorSlotPlacement()];
+		: [getDefaultPotentialRaidModArmorSlotPlacement()];
 };

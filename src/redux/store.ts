@@ -28,11 +28,13 @@ import selectedDestinySubclassReducer from './features/selectedDestinySubclass/s
 import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedExoticArmorSlice';
 import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
 import selectedGrenadeReducer from './features/selectedGrenade/selectedGrenadeSlice';
+import selectedIntrinsicArmorPerkOrAttributeIdsSlice from './features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import selectedJumpReducer from './features/selectedJump/selectedJumpSlice';
 import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import selectedMeleeReducer from './features/selectedMelee/selectedMeleeSlice';
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
 import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
+
 import sharedLoadoutConfigStatPriorityOrderReducer, {
 	defaultOrder,
 	setSharedLoadoutConfigStatPriorityOrder,
@@ -154,6 +156,8 @@ export function makeStore() {
 			selectedExoticArmor: selectedExoticArmorReducer,
 			selectedFragments: selectedFragmentsReducer,
 			selectedGrenade: selectedGrenadeReducer,
+			selectedIntrinsicArmorPerkOrAttributeIds:
+				selectedIntrinsicArmorPerkOrAttributeIdsSlice,
 			selectedJump: selectedJumpReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
 			selectedMelee: selectedMeleeReducer,
@@ -189,6 +193,7 @@ let sharedLoadoutDesiredStatsUuid = NIL;
 let useZeroWastedStatsUuid = NIL;
 let inGameLoadoutsUuid = NIL;
 let inGameLoadoutsFilterUuid = NIL;
+let selectedIntrinsicArmorPerkOrAttributeIdsUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: any = null;
@@ -232,6 +237,9 @@ function handleChange() {
 		useZeroWastedStats: { uuid: nextUseZeroWastedStatsUuid },
 		inGameLoadoutsFilter: { uuid: nextInGameLoadoutsFilterUuid },
 		inGameLoadouts: { uuid: nextInGameLoadoutsUuid },
+		selectedIntrinsicArmorPerkOrAttributeIds: {
+			uuid: nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid,
+		},
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -254,7 +262,9 @@ function handleChange() {
 		sharedLoadoutDesiredStatsUuid !== nextSharedLoadoutDesiredStatsUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
-		inGameLoadoutsUuid !== nextInGameLoadoutsUuid;
+		inGameLoadoutsUuid !== nextInGameLoadoutsUuid ||
+		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
+			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid;
 	const hasNonDefaultUuids =
 		nextAllClassItemMetadataUuid !== NIL &&
 		nextDesiredArmorStatsUuid !== NIL &&
@@ -272,7 +282,8 @@ function handleChange() {
 		nextSharedLoadoutDesiredStatsUuid !== NIL &&
 		nextUseZeroWastedStatsUuid !== NIL &&
 		nextInGameLoadoutsFilterUuid !== NIL &&
-		nextInGameLoadoutsUuid !== NIL;
+		nextInGameLoadoutsUuid !== NIL &&
+		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid !== NIL;
 
 	if (!(hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids)) {
 		return;
@@ -296,6 +307,8 @@ function handleChange() {
 	useZeroWastedStatsUuid = nextUseZeroWastedStatsUuid;
 	inGameLoadoutsFilterUuid = nextInGameLoadoutsFilterUuid;
 	inGameLoadoutsUuid = nextInGameLoadoutsUuid;
+	selectedIntrinsicArmorPerkOrAttributeIdsUuid =
+		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid;
 
 	// TODO: Move this out of the store file
 	const {
@@ -327,6 +340,9 @@ function handleChange() {
 		useZeroWastedStats: { value: useZeroWastedStats },
 		inGameLoadoutsFilter: { value: inGameLoadoutsFilter },
 		inGameLoadouts: { value: inGameLoadouts },
+		selectedIntrinsicArmorPerkOrAttributeIds: {
+			value: selectedIntrinsicArmorPerkOrAttributeIds,
+		},
 	} = store.getState();
 
 	if (sharedLoadoutDesiredStats.processing) {

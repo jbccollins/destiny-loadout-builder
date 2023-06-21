@@ -19,6 +19,7 @@ import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
+import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
 import Logout from '@dlb/components/LogOutButton';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
@@ -236,6 +237,9 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					{
 						content: (
 							<>
+								<SelectionControlGroup title="Intrinsic Armor Attributes">
+									<IntrinsicArmorPerkOrAttributeSelector />
+								</SelectionControlGroup>
 								<SelectionControlGroup title="Class and Exotic">
 									<ExoticAndDestinyClassSelectorWrapper />
 								</SelectionControlGroup>

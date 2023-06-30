@@ -76,6 +76,10 @@ import {
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import {
+	selectSelectedIntrinsicArmorPerkOrAttributeIds,
+	setSelectedIntrinsicArmorPerkOrAttributeIds,
+} from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
+import {
 	selectSelectedJump,
 	setSelectedJump,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
@@ -178,6 +182,9 @@ function Loading() {
 	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
+	const selectedIntrisicArmorPerkOrAttributeIds = useAppSelector(
+		selectSelectedIntrinsicArmorPerkOrAttributeIds
+	);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
@@ -542,6 +549,11 @@ function Loading() {
 					);
 					dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
 					dispatch(setSelectedRaidMods(selectedRaidMods));
+					dispatch(
+						setSelectedIntrinsicArmorPerkOrAttributeIds(
+							selectedIntrisicArmorPerkOrAttributeIds
+						)
+					);
 					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
 				}
 

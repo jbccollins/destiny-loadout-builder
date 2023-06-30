@@ -10,27 +10,29 @@ import {
 import {
 	EArmorSlotId,
 	EDestinyClassId,
+	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
+import { intrinsicArmorPerkOrAttributeIdList } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
 import {
 	ArmorSlotCapacity,
 	ArmorSlotIdToModIdListMapping,
-	PotentialRaidModArmorSlotPlacement,
 	getArmorSlotEnergyCapacity,
 	getDefaultPotentialRaidModArmorSlotPlacement,
 	getMod,
+	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
 import { ARTIFICE, EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
-	StatModCombo,
 	getDefaultStatModCombo,
 	getStatModCombosFromDesiredStats,
+	StatModCombo,
 } from './getStatModCombosFromDesiredStats';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import {
-	RequiredClassItemMetadataKey,
 	getItemCountsFromSeenArmorSlotItems,
+	RequiredClassItemMetadataKey,
 	sumModCosts,
 	sumStatLists,
 } from './utils';
@@ -149,6 +151,7 @@ type ProcessPotentialRaidModArmorSlotPlacmentParams = {
 	masterworkAssumption: EMasterworkAssumption;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
+	requiredAttributeClassItemMetadataKey: RequiredClassItemMetadataKey;
 };
 
 const processPotentialRaidModArmorSlotPlacement = (
@@ -164,14 +167,23 @@ const processPotentialRaidModArmorSlotPlacement = (
 		masterworkAssumption,
 		armorSlotMods,
 		reservedArmorSlotEnergy,
+		requiredAttributeClassItemMetadataKey,
 	} = params;
 	let canUseArtificeClassItem = false;
 	let hasDefaultMasterworkedClassItem = false;
 	let _sumOfSeenStats: StatList = [...sumOfSeenStats];
 
-	const requiredClassItemMetadataKey = placement.ClassItem
-		? getMod(placement.ClassItem).raidAndNightmareModTypeId
-		: null;
+	let requiredClassItemMetadataKey: RequiredClassItemMetadataKey =
+		placement.ClassItem
+			? getMod(placement.ClassItem).raidAndNightmareModTypeId
+			: null;
+
+	// Conflicting required class items
+	if (requiredClassItemMetadataKey && requiredAttributeClassItemMetadataKey) {
+		return null;
+	} else if (requiredAttributeClassItemMetadataKey) {
+		requiredClassItemMetadataKey = requiredAttributeClassItemMetadataKey;
+	}
 
 	// We can use artifice class items if we don't need a special kind of class item
 	// TODO: We need to be careful in the case where the user does not have a masterworked artifice class item
@@ -362,6 +374,7 @@ export type GetModCombosParams = {
 	useZeroWastedStats: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
 	masterworkAssumption: EMasterworkAssumption;
+	intrinsicArmorPerkOrAttributeIds: EIntrinsicArmorPerkOrAttributeId[];
 };
 
 // This return type is a bit... misleading...
@@ -385,6 +398,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 		useZeroWastedStats,
 		allClassItemMetadata,
 		masterworkAssumption,
+		intrinsicArmorPerkOrAttributeIds,
 	} = params;
 
 	// First sanity check the armorSlotMods against the reserved armorSlotEnergy
@@ -403,6 +417,46 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 	const seenItemCounts = getItemCountsFromSeenArmorSlotItems(
 		specialSeenArmorSlotItems
 	);
+
+	const requiredAttributeCounts: Partial<
+		Record<EIntrinsicArmorPerkOrAttributeId, number>
+	> = {};
+	intrinsicArmorPerkOrAttributeIds.forEach((id) => {
+		requiredAttributeCounts[id] = requiredAttributeCounts[id]
+			? requiredAttributeCounts[id] + 1
+			: 1;
+	});
+
+	let requiredAttributeClassItemMetadataKey: RequiredClassItemMetadataKey =
+		null;
+	let hasValidAttributes = true;
+	for (let i = 0; i < intrinsicArmorPerkOrAttributeIdList.length; i++) {
+		const id = intrinsicArmorPerkOrAttributeIdList[i];
+		const requiredCount = requiredAttributeCounts[id] ?? 0;
+		const seenCount = seenItemCounts[id] ?? 0;
+		const diff = requiredCount - seenCount;
+		// We can compensate for a diff of 1 by using a class item.
+		// But more than 1 is impossible
+		if (diff > 1) {
+			hasValidAttributes = false;
+			break;
+		}
+		// If we need to use the class item for this attribute and we don't
+		// already need a class item for another attribute
+		if (diff === 1) {
+			if (
+				requiredAttributeClassItemMetadataKey !== null ||
+				!(allClassItemMetadata[id].items.length > 0)
+			) {
+				hasValidAttributes = false;
+				break;
+			}
+			requiredAttributeClassItemMetadataKey = id;
+		}
+	}
+	if (!hasValidAttributes) {
+		return null;
+	}
 
 	let filteredPotentialRaidModArmorSlotPlacements = [
 		getDefaultPotentialRaidModArmorSlotPlacement(),
@@ -437,6 +491,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 			masterworkAssumption,
 			armorSlotMods,
 			reservedArmorSlotEnergy,
+			requiredAttributeClassItemMetadataKey,
 		})?.forEach((modCombo) => {
 			modCombos.push(modCombo);
 		});

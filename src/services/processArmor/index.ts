@@ -11,10 +11,10 @@ import {
 	ArmorItems,
 	ArmorMetadataItem,
 	AvailableExoticArmorItem,
+	getDefaultAllClassItemMetadata,
 	ISelectedExoticArmor,
 	StatList,
 	StrictArmorItems,
-	getDefaultAllClassItemMetadata,
 } from '@dlb/types/Armor';
 import {
 	ArmorSlotIdList,
@@ -32,6 +32,7 @@ import {
 	EDimLoadoutsFilterId,
 	EGearTierId,
 	EInGameLoadoutsFilterId,
+	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
@@ -45,12 +46,10 @@ import {
 	getModCombos,
 } from './getModCombos';
 import {
-	SeenArmorSlotItems,
 	getDefaultSeenArmorSlotItems,
+	SeenArmorSlotItems,
 } from './seenArmorSlotItems';
 import {
-	RequiredClassItemMetadataKey,
-	RequiredClassItemMetadataKeyList,
 	getArmorStatMappingFromArtificeModIdList,
 	getArmorStatMappingFromStatList,
 	getExtraSumOfSeenStats,
@@ -59,6 +58,8 @@ import {
 	getTotalModCost,
 	getTotalStatTiers,
 	getWastedStats,
+	RequiredClassItemMetadataKey,
+	RequiredClassItemMetadataKeyList,
 	sumModCosts,
 } from './utils';
 
@@ -71,6 +72,7 @@ const _processArmorRecursiveCase = ({
 	potentialRaidModArmorSlotPlacements,
 	armorSlotMods,
 	raidMods,
+	intrinsicArmorPerkOrAttributeIds,
 	destinyClassId,
 	specialSeenArmorSlotItems,
 	selectedExotic,
@@ -102,6 +104,7 @@ const _processArmorRecursiveCase = ({
 				potentialRaidModArmorSlotPlacements,
 				armorSlotMods,
 				raidMods,
+				intrinsicArmorPerkOrAttributeIds,
 				destinyClassId,
 				specialSeenArmorSlotItems: nextSpecialSeenArmorSlotItems,
 				selectedExotic,
@@ -124,6 +127,7 @@ const _processArmorBaseCase = ({
 	potentialRaidModArmorSlotPlacements,
 	armorSlotMods,
 	raidMods,
+	intrinsicArmorPerkOrAttributeIds,
 	destinyClassId,
 	specialSeenArmorSlotItems,
 	selectedExotic,
@@ -145,7 +149,7 @@ const _processArmorBaseCase = ({
 			masterworkAssumption,
 		});
 		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
-		// With 10 Reserved Helmet energy this should force the class item to be DSC but it doesn't
+		// How to debug a specific armor combo
 		// if (
 		// 	isEqual(armorIdList, [
 		// 		'6917529902561529068',
@@ -154,27 +158,7 @@ const _processArmorBaseCase = ({
 		// 		'6917529902556888089',
 		// 	])
 		// ) {
-		// 	console.log('KLJHLSFDKLHJSFDKLHJSDSFHJKL');
-		// }
-		// THIS IS A BUG RIGHT NOW
-		/*
-			Reproduce
-			1. Hoarfrost Exotic
-			2.10 Reserved armor energy helemet
-			3. Enhanced Operator Augment
-			4. Enhanced Scanner Augment.
-
-			Duplicate results are returned.
-		*/
-		// if (
-		// 	isEqual(armorIdList, [
-		// 		'6917529902561529068',
-		// 		'6917529352187267880',
-		// 		'6917529787821797238',
-		// 		'6917529902556888089',
-		// 	])
-		// ) {
-		// 	console.log('wat');
+		// 	console.log('>>>> Specific Combo');
 		// }
 		const modCombosList = getModCombos({
 			sumOfSeenStats: finalSumOfSeenStats,
@@ -188,6 +172,7 @@ const _processArmorBaseCase = ({
 			useZeroWastedStats,
 			allClassItemMetadata,
 			masterworkAssumption,
+			intrinsicArmorPerkOrAttributeIds,
 		});
 		// TODO: We should only have to check one or the other. This is messy
 		if (modCombosList === null || modCombosList.length === 0) {
@@ -280,6 +265,7 @@ type ProcessArmorParams = {
 	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
+	intrinsicArmorPerkOrAttributeIds: EIntrinsicArmorPerkOrAttributeId[];
 	destinyClassId: EDestinyClassId;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 	selectedExotic: AvailableExoticArmorItem;
@@ -297,6 +283,7 @@ const processArmor = ({
 	potentialRaidModArmorSlotPlacements,
 	armorSlotMods,
 	raidMods,
+	intrinsicArmorPerkOrAttributeIds,
 	destinyClassId,
 	specialSeenArmorSlotItems,
 	selectedExotic,
@@ -317,6 +304,7 @@ const processArmor = ({
 		potentialRaidModArmorSlotPlacements,
 		armorSlotMods,
 		raidMods,
+		intrinsicArmorPerkOrAttributeIds,
 		destinyClassId,
 		specialSeenArmorSlotItems,
 		selectedExotic,
@@ -369,6 +357,7 @@ export type DoProcessArmorParams = {
 	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
+	intrinsicArmorPerkOrAttributeIds: EIntrinsicArmorPerkOrAttributeId[];
 	destinyClassId: EDestinyClassId;
 	armorMetadataItem: ArmorMetadataItem;
 	selectedExotic: AvailableExoticArmorItem;
@@ -391,6 +380,7 @@ export const doProcessArmor = ({
 	potentialRaidModArmorSlotPlacements,
 	armorSlotMods,
 	raidMods,
+	intrinsicArmorPerkOrAttributeIds,
 	destinyClassId,
 	armorMetadataItem,
 	selectedExotic,
@@ -413,6 +403,7 @@ export const doProcessArmor = ({
 		potentialRaidModArmorSlotPlacements,
 		armorSlotMods,
 		raidMods,
+		intrinsicArmorPerkOrAttributeIds,
 		destinyClassId,
 		specialSeenArmorSlotItems: seenArmorSlotItems,
 		selectedExotic,
@@ -502,6 +493,8 @@ export const getMaxPossibleMetadata = ({
 					useZeroWastedStats: processArmorParams.useZeroWastedStats,
 					allClassItemMetadata: processArmorParams.allClassItemMetadata,
 					masterworkAssumption: processArmorParams.masterworkAssumption,
+					intrinsicArmorPerkOrAttributeIds:
+						processArmorParams.intrinsicArmorPerkOrAttributeIds,
 				});
 				if (combos !== null) {
 					maxReservedArmorSlotEnergy[armorSlotId] =
@@ -537,6 +530,8 @@ export const getMaxPossibleMetadata = ({
 					useZeroWastedStats: processArmorParams.useZeroWastedStats,
 					allClassItemMetadata: processArmorParams.allClassItemMetadata,
 					masterworkAssumption: processArmorParams.masterworkAssumption,
+					intrinsicArmorPerkOrAttributeIds:
+						processArmorParams.intrinsicArmorPerkOrAttributeIds,
 				});
 				if (combos !== null) {
 					maxStatTiers[armorStatId] = desiredStat;
@@ -580,14 +575,12 @@ export const preProcessArmor = (
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
 		dimLoadouts.forEach((loadout) =>
 			loadout.equipped.forEach((equipped) => {
-				console.log('DIM', equipped.id);
 				excludedItemIds[equipped.id] = true;
 			})
 		);
 	}
 	if (inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None) {
 		inGameLoadoutItemIdList.forEach((id) => {
-			console.log('D2', id);
 			excludedItemIds[id] = true;
 		});
 	}

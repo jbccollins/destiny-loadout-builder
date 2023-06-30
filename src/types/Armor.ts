@@ -322,6 +322,10 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 				getDefaultArmorSlotMetadata(),
 			[EIntrinsicArmorPerkOrAttributeId.UniformedOfficer]:
 				getDefaultArmorSlotMetadata(),
+			[EIntrinsicArmorPerkOrAttributeId.VisageOfTheReaper]:
+				getDefaultArmorSlotMetadata(),
+			[EIntrinsicArmorPerkOrAttributeId.SonarAmplifier]:
+				getDefaultArmorSlotMetadata(),
 		},
 	},
 };
@@ -338,6 +342,10 @@ const allClassItemMetadata: AllClassItemMetadata = {
 	[EIntrinsicArmorPerkOrAttributeId.SeraphSensorArray]:
 		getDefaultClassItemMetadata(),
 	[EIntrinsicArmorPerkOrAttributeId.UniformedOfficer]:
+		getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.VisageOfTheReaper]:
+		getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.SonarAmplifier]:
 		getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.LastWish]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.GardenOfSalvation]: getDefaultClassItemMetadata(),
@@ -387,6 +395,8 @@ const defaultItemCounts: ItemCounts = {
 	[EIntrinsicArmorPerkOrAttributeId.QueensFavor]: 0,
 	[EIntrinsicArmorPerkOrAttributeId.SeraphSensorArray]: 0,
 	[EIntrinsicArmorPerkOrAttributeId.UniformedOfficer]: 0,
+	[EIntrinsicArmorPerkOrAttributeId.VisageOfTheReaper]: 0,
+	[EIntrinsicArmorPerkOrAttributeId.SonarAmplifier]: 0,
 	Artifice: 0,
 	Legendary: 0,
 };

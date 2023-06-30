@@ -11,6 +11,22 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-06-30',
+		version: '2.2.0',
+		title: 'Add Armor Attributes',
+		sections: [
+			{
+				items: [
+					'Add the ability to select armor attributes like "Iron Banner", "Guardian Games Class Item", and "Festival of the Lost Mask" as well as perks like "Sonar Amplifier"',
+					'Remove armor stats from the "Order By" dropdown as they were kinda confusing',
+					'Move Raid Mods to their own section, separate from armor mods',
+					'Rename "Mods" section to "Armor Mods"',
+					'Allow mobile users to view the "No Results" troubleshooting section',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-06-20',
 		version: '2.1.9',
 		title: 'Consider items in postmaster',

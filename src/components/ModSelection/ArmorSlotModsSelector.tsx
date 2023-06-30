@@ -17,10 +17,10 @@ import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
+import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdToArmorSlotModIdListMapping, getMod } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
-import { IMod } from '@dlb/types/generation';
 import {
 	Box,
 	FormControl,
@@ -241,7 +241,7 @@ function ArmorSlotModSelector() {
 														height={'30px'}
 														src={getArmorSlot(armorSlotId).icon}
 													/>
-													{`(${usedArmorEnergy}/10)`}
+													{/* {`(${usedArmorEnergy}/10)`} */}
 												</Box>
 											</Box>
 											<Box

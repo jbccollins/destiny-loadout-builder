@@ -3,8 +3,8 @@ import {
 	Box,
 	FormControl,
 	PopperProps,
-	TextField,
 	styled,
+	TextField,
 } from '@mui/material';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
@@ -33,22 +33,23 @@ const Container = styled('div')(({ theme }) => ({
 		},
 	},
 
-	['.raid-mod-selector-text-field, .armor-slot-mod-selector-text-field']: {
-		//borderRadius: '0px',
-		['fieldset']: {
-			marginTop: '-1px',
-			borderRadius: '0px',
+	['.raid-mod-selector-text-field, .armor-slot-mod-selector-text-field, .intrinsic-armor-perk-or-attribute-selector-text-field']:
+		{
+			//borderRadius: '0px',
+			['fieldset']: {
+				marginTop: '-1px',
+				borderRadius: '0px',
+			},
+			['&.first fieldset']: {
+				marginTop: 0,
+				borderTopLeftRadius: 'inherit',
+				borderTopRightRadius: 'inherit',
+			},
+			['&.last fieldset']: {
+				borderBottomRightRadius: 'inherit',
+				borderBottomLeftRadius: 'inherit',
+			},
 		},
-		['&.first fieldset']: {
-			marginTop: 0,
-			borderTopLeftRadius: 'inherit',
-			borderTopRightRadius: 'inherit',
-		},
-		['&.last fieldset']: {
-			borderBottomRightRadius: 'inherit',
-			borderBottomLeftRadius: 'inherit',
-		},
-	},
 }));
 
 const ExtraContentWrapper = styled(Box)(({ theme }) => ({}));
@@ -80,6 +81,7 @@ type IconAutocompleteDropdownProps = {
 	id?: string;
 	showIcon?: boolean;
 	popperComponent?: JSXElementConstructor<PopperProps>;
+	disabled?: boolean;
 };
 
 function IconAutocompleteDropdown({
@@ -101,6 +103,7 @@ function IconAutocompleteDropdown({
 	id,
 	showIcon,
 	popperComponent,
+	disabled,
 }: IconAutocompleteDropdownProps) {
 	const textInputClass = uuid();
 
@@ -152,6 +155,7 @@ function IconAutocompleteDropdown({
 					{...controlledProps}
 					{...mobileProps}
 					{...popperProps}
+					disabled={disabled}
 					onOpen={handleOpen}
 					forcePopupIcon={_showIcon ? true : false}
 					id={`${id ?? ''}`}

@@ -19,6 +19,7 @@ import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
+import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
 import Logout from '@dlb/components/LogOutButton';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
@@ -63,6 +64,10 @@ import {
 	selectSelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import {
+	defaultIntrinsicArmorPerkOrAttributeIds,
+	setSelectedIntrinsicArmorPerkOrAttributeIds,
+} from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
 	selectSelectedJump,
 	setSelectedJump,
@@ -152,6 +157,12 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 	const [subclassSelectionOpen, setSubclassSelectionOpen] =
 		React.useState(true);
 	const [modsSelectionOpen, setModsSelectionOpen] = React.useState(true);
+	const [raidModsSelectionOpen, setRaidModsSelectionOpen] =
+		React.useState(true);
+	const [
+		intrinsicArmorPerkOrAttributesSelectionOpen,
+		setIntrinsicArmorPerkOrAttributesSelectionOpen,
+	] = React.useState(true);
 
 	const dispatch = useAppDispatch();
 	const clearDesiredStatTiers = () => {
@@ -162,8 +173,19 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 		dispatch(
 			setSelectedArmorSlotMods(getDefaultArmorSlotIdToModIdListMapping())
 		);
-		dispatch(setSelectedRaidMods(defaultRaidMods));
 		dispatch(setReservedArmorSlotEnergy(getDefaultArmorSlotEnergyMapping()));
+	};
+
+	const clearRaidMods = () => {
+		dispatch(setSelectedRaidMods(defaultRaidMods));
+	};
+
+	const clearIntrinsicArmorPerkOrAttributes = () => {
+		dispatch(
+			setSelectedIntrinsicArmorPerkOrAttributeIds(
+				defaultIntrinsicArmorPerkOrAttributeIds
+			)
+		);
 	};
 
 	const clearSubclassOptions = () => {
@@ -220,8 +242,18 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 		setSubclassSelectionOpen(!subclassSelectionOpen);
 	};
 
-	const toggleModsSelectionOpen = () => {
+	const toggleArmorModsSelectionOpen = () => {
 		setModsSelectionOpen(!modsSelectionOpen);
+	};
+
+	const toggleRaidModsSelectionOpen = () => {
+		setRaidModsSelectionOpen(!raidModsSelectionOpen);
+	};
+
+	const toggleIntrinsicArmorPerkOrAttributesSelectionOpen = () => {
+		setIntrinsicArmorPerkOrAttributesSelectionOpen(
+			!intrinsicArmorPerkOrAttributesSelectionOpen
+		);
 	};
 
 	const handleTabChange = (index: number) => {
@@ -268,15 +300,46 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 									</Collapse>
 								</SelectionControlGroup>
 								<SelectionControlGroup
-									title="Mods"
+									title="Armor Mods"
 									clearHandler={clearArmorSlotMods}
 									withCollapse={true}
-									handleCollapseToggle={toggleModsSelectionOpen}
+									handleCollapseToggle={toggleArmorModsSelectionOpen}
 									open={modsSelectionOpen}
 								>
 									<Collapse in={modsSelectionOpen} timeout="auto" unmountOnExit>
 										<ArmorSlotModSelector />
+									</Collapse>
+								</SelectionControlGroup>
+								<SelectionControlGroup
+									title="Raid Mods"
+									clearHandler={clearRaidMods}
+									withCollapse={true}
+									handleCollapseToggle={toggleRaidModsSelectionOpen}
+									open={raidModsSelectionOpen}
+								>
+									<Collapse
+										in={raidModsSelectionOpen}
+										timeout="auto"
+										unmountOnExit
+									>
 										<RaidModSelector />
+									</Collapse>
+								</SelectionControlGroup>
+								<SelectionControlGroup
+									title="Armor Attributes"
+									clearHandler={clearIntrinsicArmorPerkOrAttributes}
+									withCollapse={true}
+									handleCollapseToggle={
+										toggleIntrinsicArmorPerkOrAttributesSelectionOpen
+									}
+									open={intrinsicArmorPerkOrAttributesSelectionOpen}
+								>
+									<Collapse
+										in={intrinsicArmorPerkOrAttributesSelectionOpen}
+										timeout="auto"
+										unmountOnExit
+									>
+										<IntrinsicArmorPerkOrAttributeSelector />
 									</Collapse>
 								</SelectionControlGroup>
 								<ShareLoadout />
@@ -371,7 +434,10 @@ const Home: NextPage = () => {
 								)}
 								{!smallScreenResultsOpen && tabIndex === 0 && (
 									<SmallScreenResultsViewToggle
-										disabled={processedArmor.items.length === 0}
+										sx={{
+											background:
+												processedArmor.items.length === 0 ? 'orange' : '',
+										}}
 										className="small-screen-results-view-toggle"
 										variant="contained"
 										onClick={() =>
@@ -381,7 +447,7 @@ const Home: NextPage = () => {
 										<Box>
 											{processedArmor.items.length > 0
 												? `Show Results (${processedArmor.items.length})`
-												: 'No Results'}
+												: 'No Results (Help)'}
 										</Box>
 									</SmallScreenResultsViewToggle>
 								)}

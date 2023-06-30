@@ -1,9 +1,16 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { ARTIFICE } from '@dlb/services/processArmor/constants';
-import { isRaidOrNightmareRequiredClassItem } from '@dlb/services/processArmor/utils';
+import {
+	isIntrinsicArmorPerkOrAttributeRequiredClassItem,
+	isRaidOrNightmareRequiredClassItem,
+} from '@dlb/services/processArmor/utils';
 import { ArmorItem } from '@dlb/types/Armor';
-import { ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
+import {
+	EIntrinsicArmorPerkOrAttributeId,
+	ERaidAndNightMareModTypeId,
+} from '@dlb/types/IdEnums';
+import { getIntrinsicArmorPerkOrAttribute } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
 import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
 
 export type SortableFields = {
@@ -40,6 +47,18 @@ export const getClassItemText = (item: ResultsTableLoadout): string => {
 			getRaidAndNightmareModType(
 				item.classItem
 					.requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
+			).abbreviation
+		} Class Item`;
+	} else if (
+		item.classItem.requiredClassItemMetadataKey !== null &&
+		isIntrinsicArmorPerkOrAttributeRequiredClassItem(
+			item.classItem.requiredClassItemMetadataKey
+		)
+	) {
+		result = `${
+			getIntrinsicArmorPerkOrAttribute(
+				item.classItem
+					.requiredClassItemMetadataKey as EIntrinsicArmorPerkOrAttributeId
 			).abbreviation
 		} Class Item`;
 	} else if (item.classItem.requiredClassItemMetadataKey === ARTIFICE) {

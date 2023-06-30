@@ -7,7 +7,9 @@ import { selectDimLoadoutsFilter } from '@dlb/redux/features/dimLoadoutsFilter/d
 import { selectInGameLoadoutsFilter } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { selectSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { selectUseZeroWastedStats } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
@@ -15,18 +17,20 @@ import { ArmorStatIdList } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
 import {
+	EArmorSlotId,
 	EDimLoadoutsFilterId,
 	EInGameLoadoutsFilterId,
+	EIntrinsicArmorPerkOrAttributeId,
 } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
 
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',
-	width: '50%',
-	minWidth: '300px',
-	maxWidth: '550px',
+	width: '100%',
+	// minWidth: '300px',
+	maxWidth: '475px',
 	//border: '3px solid green',
-	padding: theme.spacing(3),
+	//padding: theme.spacing(3),
 	height: `calc(100% - 160px)`,
 	position: 'relative',
 }));
@@ -48,6 +52,7 @@ const Subtitle = styled(Box)(({ theme }) => ({
 }));
 
 function NoResults() {
+	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
@@ -56,9 +61,19 @@ function NoResults() {
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const dimLoadoutsFilterId = useAppSelector(selectDimLoadoutsFilter);
 	const inGameLoadoutsFilterId = useAppSelector(selectInGameLoadoutsFilter);
+	const selectedIntrinsicArmorPerkOrAttributeIds = useAppSelector(
+		selectSelectedIntrinsicArmorPerkOrAttributeIds
+	);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
 	const hasRaidMods = selectedRaidMods.some((modId) => modId !== null);
+	const hasIntrinsicArmorPerkOrAttributes =
+		selectedIntrinsicArmorPerkOrAttributeIds.some((id) => id !== null);
+	const hasFotlMaskAndExoticHelmet =
+		selectedIntrinsicArmorPerkOrAttributeIds.includes(
+			EIntrinsicArmorPerkOrAttributeId.HalloweenMask
+		) &&
+		selectedExoticArmor[selectedDestinyClass].armorSlot === EArmorSlotId.Head;
 	let hasDesiredArmorStats = false;
 	for (let i = 0; i < ArmorStatIdList.length; i++) {
 		const statId = ArmorStatIdList[i];
@@ -79,7 +94,10 @@ function NoResults() {
 	}
 
 	const hasOptionsToModify =
-		hasDesiredArmorStats || hasRaidMods || hasFragmentsWithStatPenalties;
+		hasDesiredArmorStats ||
+		hasRaidMods ||
+		hasFragmentsWithStatPenalties ||
+		hasIntrinsicArmorPerkOrAttributes;
 
 	const hasSettingsToModify =
 		useZeroWastedStats ||
@@ -101,8 +119,19 @@ function NoResults() {
 								{hasFragmentsWithStatPenalties && (
 									<li>Remove fragments with stat penalties</li>
 								)}
-								{hasRaidMods && <li>Remove raid mods</li>}
+								{hasRaidMods && <li>Remove Raid Mods</li>}
+								{hasIntrinsicArmorPerkOrAttributes && (
+									<li>Remove Armor Attributes</li>
+								)}
 							</ul>
+							{hasFotlMaskAndExoticHelmet && (
+								<Box sx={{ color: '#ff4f2b' }}>
+									{`You have selected the "Festival of the Lost Mask" armor
+										attribute and an exotic helmet. This is not supported. Either
+										select a different exotic armor slot or clear the
+										"Festival of the Lost Mask" armor attribute selection.`}
+								</Box>
+							)}
 						</>
 					)}
 					{hasSettingsToModify && (

@@ -1,14 +1,15 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { selectSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
 	selectSelectedRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { IMod } from '@dlb/types/generation';
 import { RaidModIdList } from '@dlb/types/Mod';
 import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
-import { IMod } from '@dlb/types/generation';
 import { styled } from '@mui/material';
 import ModSelector from './ModSelection/ModSelector';
 const Container = styled('div')(({ theme }) => ({
@@ -19,6 +20,20 @@ function RaidModSelector() {
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const disabledMods = useAppSelector(selectDisabledRaidMods);
 	const dispatch = useAppDispatch();
+
+	const selectedIntrinsicArmorPerkOrAttributeIds = useAppSelector(
+		selectSelectedIntrinsicArmorPerkOrAttributeIds
+	);
+
+	const numSelectedIntrinsicArmorPerkOrAttributeIds =
+		selectedIntrinsicArmorPerkOrAttributeIds.filter((x) => x !== null).length;
+	const disabledIndices =
+		numSelectedIntrinsicArmorPerkOrAttributeIds > 0
+			? selectedRaidMods
+					.map((x, i) => (x === null ? i : null))
+					.filter((x) => x !== null)
+					.slice(-1 * numSelectedIntrinsicArmorPerkOrAttributeIds)
+			: [];
 
 	const getLabel = (option: IMod) => option.name;
 	const getDescription = (option: IMod) => option.description;
@@ -69,7 +84,7 @@ function RaidModSelector() {
 					key={index}
 					selectedDestinyClass={selectedDestinyClass}
 					availableMods={RaidModIdList}
-					getTitle={index === 0 ? () => 'Raid and Nightmare Mods' : null}
+					// getTitle={index === 0 ? () => 'Raid and Nightmare Mods' : null}
 					selectedMods={selectedRaidMods}
 					handleChange={handleChange}
 					getLabel={getLabel}
@@ -80,6 +95,7 @@ function RaidModSelector() {
 					last={index === dropdownIndices.length - 1}
 					textFieldClassName={'raid-mod-selector-text-field'}
 					compact={false}
+					disabled={disabledIndices.includes(index)}
 				/>
 			))}
 		</Container>

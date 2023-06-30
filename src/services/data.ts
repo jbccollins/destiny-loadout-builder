@@ -11,12 +11,12 @@ import {
 	AvailableExoticArmorItem,
 	DestinyClassToAllClassItemMetadataMapping,
 	ExoticPerk,
-	StatList,
 	generateArmorGroup,
 	generateAvailableExoticArmorGroup,
 	getDefaultArmorCountMaxStatsMetadata,
 	getDefaultArmorMetadata,
 	getDefaultDestinyClassToAllClassItemMetadataMapping,
+	StatList,
 } from '@dlb/types/Armor';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
@@ -115,10 +115,6 @@ export const extractArmor = (
 
 	stores.forEach(({ items }) => {
 		items.forEach((item) => {
-			if (item.location.inPostmaster && item.name === "Liar's Handshake") {
-				// 21, 47, 20
-				console.log('inPostmaster');
-			}
 			// Filter out all items that don't have an element. These are really old armor
 			// TODO: Is this element filter really safe now that armor affinity is gone?
 			if (
@@ -446,11 +442,14 @@ const getExtraSocketModCategoryId = (
 	return null;
 };
 
+// These come from the "Item Intrinsic" types on https://data.destinysets.com/
 const IronBannerSocketHash = 2472875850;
 const UniformedOfficerSocketHash = 2392155347;
 const PlunderersTrappingsSocketHash = 400659041;
 const SeraphSensorArraySocketHash = 3525583702;
 const QueensFavoriteSocketHash = 1101259514;
+const VisageOfTheReaperSocketHash = 2271511880;
+const SonarAmplifierSocketHash = 2779380852;
 
 // From: https://github.com/DestinyItemManager/DIM/blob/4be7854f229d76108e3ebbff41545bc6f9abeaf4/src/data/d2/source-info.ts#LL552C11-L552C11
 const GuardianGamesSourceHashes = [
@@ -488,6 +487,12 @@ const getIntrinsicArmorPerkOrAttributeId = (
 	}
 	if (hasSocketHash(item, QueensFavoriteSocketHash)) {
 		return EIntrinsicArmorPerkOrAttributeId.QueensFavor;
+	}
+	if (hasSocketHash(item, SonarAmplifierSocketHash)) {
+		return EIntrinsicArmorPerkOrAttributeId.SonarAmplifier;
+	}
+	if (hasSocketHash(item, VisageOfTheReaperSocketHash)) {
+		return EIntrinsicArmorPerkOrAttributeId.VisageOfTheReaper;
 	}
 	if (item.typeName === 'Festival Mask') {
 		return EIntrinsicArmorPerkOrAttributeId.HalloweenMask;

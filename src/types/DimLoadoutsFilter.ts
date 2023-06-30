@@ -19,7 +19,7 @@ const DimLoadoutsFilterIdToDimLoadoutsFilterMapping: EnumDictionary<
 	[EDimLoadoutsFilterId.None]: {
 		id: EDimLoadoutsFilterId.None,
 		name: 'None',
-		description: 'Exclude all items in DIM loadouts',
+		description: 'Exclude items in DIM loadouts',
 	},
 };
 

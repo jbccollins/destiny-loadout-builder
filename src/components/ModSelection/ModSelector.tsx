@@ -2,10 +2,10 @@ import CompactIconAutocompleteDropdown from '@dlb/components/CompactIconAutocomp
 import IconAutocompleteDropdown from '@dlb/components/IconAutocompleteDropdown';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getStat } from '@dlb/types/ArmorStat';
-import { EDestinyClassId } from '@dlb/types/IdEnums';
-import { getMod } from '@dlb/types/Mod';
 import { IMod } from '@dlb/types/generation';
 import { MISSING_ICON, StatBonusStat } from '@dlb/types/globals';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
+import { getMod } from '@dlb/types/Mod';
 import { Avatar, Box, Chip } from '@mui/material';
 
 const placeholderOption: IMod = {
@@ -106,6 +106,7 @@ const ModSelector = ({
 	idPrefix,
 	textFieldClassName,
 	compact,
+	disabled,
 }: {
 	selectedMods: EModId[];
 	availableMods: EModId[];
@@ -124,6 +125,7 @@ const ModSelector = ({
 	idPrefix: string;
 	textFieldClassName: string;
 	compact: boolean;
+	disabled?: boolean;
 }) => {
 	const selectedMod = getMod(selectedMods[index]);
 	const options: IMod[] = [
@@ -169,6 +171,7 @@ const ModSelector = ({
 			textFieldClassName={`${textFieldClassName} ${
 				first ? 'first' : last ? 'last' : ''
 			}`}
+			disabled={disabled}
 		/>
 	);
 };

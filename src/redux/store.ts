@@ -1,4 +1,4 @@
-import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
+import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 import allClassItemMetadataReducer from './features/allClassItemMetadata/allClassItemMetadataSlice';
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
@@ -72,8 +72,8 @@ import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWast
 
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	DoProcessArmorOutput,
 	doProcessArmor,
+	DoProcessArmorOutput,
 	preProcessArmor,
 } from '@dlb/services/processArmor/index';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
@@ -91,9 +91,9 @@ import { EElementId } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToArmorSlotModIdListMapping,
 	ArmorSlotIdToModIdListMapping,
-	RaidModIdList,
 	getValidRaidModArmorSlotPlacements,
 	hasValidRaidModPermutation,
+	RaidModIdList,
 } from '@dlb/types/Mod';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import isEqual from 'lodash/isEqual';
@@ -436,6 +436,8 @@ function handleChange() {
 		potentialRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
 		armorSlotMods: selectedArmorSlotMods,
 		raidMods: selectedRaidMods.filter((x) => x !== null),
+		intrinsicArmorPerkOrAttributeIds:
+			selectedIntrinsicArmorPerkOrAttributeIds.filter((x) => x !== null),
 		destinyClassId: selectedDestinyClass,
 		armorMetadataItem: armorMetadata[selectedDestinyClass],
 		selectedExotic: selectedExoticArmor[selectedDestinyClass],

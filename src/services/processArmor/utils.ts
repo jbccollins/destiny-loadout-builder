@@ -4,11 +4,11 @@ import {
 	ArmorItem,
 	ArmorMetadataItem,
 	AvailableExoticArmorItem,
-	ItemCounts,
-	StatList,
 	getDefaultAllClassItemMetadata,
 	getDefaultItemCounts,
 	getExtraMasterworkedStats,
+	ItemCounts,
+	StatList,
 } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import {
@@ -22,10 +22,12 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
+	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
 	EModCategoryId,
 	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
+import { intrinsicArmorPerkOrAttributeIdList } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
 import { getMod } from '@dlb/types/Mod';
 import { RaidAndNightmareModTypeIdList } from '@dlb/types/RaidAndNightmareModType';
 import { ARTIFICE_MOD_BONUS_VALUE } from '@dlb/utils/item-utils';
@@ -375,6 +377,14 @@ export const isRaidOrNightmareRequiredClassItem = (
 ): boolean => {
 	return RaidAndNightmareModTypeIdList.includes(
 		requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
+	);
+};
+
+export const isIntrinsicArmorPerkOrAttributeRequiredClassItem = (
+	requiredClassItemMetadataKey: RequiredClassItemMetadataKey
+): boolean => {
+	return intrinsicArmorPerkOrAttributeIdList.includes(
+		requiredClassItemMetadataKey as EIntrinsicArmorPerkOrAttributeId
 	);
 };
 

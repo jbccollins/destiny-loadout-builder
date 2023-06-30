@@ -33,6 +33,7 @@ const getDefaultTestCaseInput = () => ({
 	potentialRaidModArmorSlotPlacements: [],
 	armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 	raidMods: [],
+	intrinsicArmorPerkOrAttributeIds: [],
 	destinyClassId: EDestinyClassId.Warlock,
 	specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 	reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
@@ -64,6 +65,7 @@ const testCases: TestCase[] = [
 				potentialRaidModArmorSlotPlacements: [],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
+				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: EDestinyClassId.Warlock,
 				specialSeenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
@@ -126,6 +128,7 @@ const testCases: TestCase[] = [
 				potentialRaidModArmorSlotPlacements: [],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 				raidMods: [],
+				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: EDestinyClassId.Warlock,
 				masterworkAssumption: EMasterworkAssumption.None,
 				specialSeenArmorSlotItems: {

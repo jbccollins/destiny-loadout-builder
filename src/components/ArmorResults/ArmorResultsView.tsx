@@ -19,8 +19,8 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
-	TablePagination,
 	styled,
+	TablePagination,
 } from '@mui/material';
 import React, { useCallback, useMemo, useState } from 'react';
 import ArmorResultsList from './ArmorResultsList';
@@ -130,12 +130,12 @@ export const getSortableFieldDisplayName = (key: SortableFieldsKey) => {
 };
 
 export const SortableFieldsDisplayOrder: SortableFieldsKey[] = [
-	EArmorStatId.Mobility,
-	EArmorStatId.Resilience,
-	EArmorStatId.Recovery,
-	EArmorStatId.Discipline,
-	EArmorStatId.Intellect,
-	EArmorStatId.Strength,
+	// EArmorStatId.Mobility,
+	// EArmorStatId.Resilience,
+	// EArmorStatId.Recovery,
+	// EArmorStatId.Discipline,
+	// EArmorStatId.Intellect,
+	// EArmorStatId.Strength,
 	'totalModCost',
 	'totalStatTiers',
 	'wastedStats',

@@ -1,5 +1,5 @@
-import { EArmorSlotId, EIntrinsicArmorPerkOrAttributeId } from './IdEnums';
 import { EnumDictionary } from './globals';
+import { EArmorSlotId, EIntrinsicArmorPerkOrAttributeId } from './IdEnums';
 
 export enum EIntrinsicArmorPerkOrAttributeGroupName {
 	Event = 'Event',
@@ -15,6 +15,7 @@ export interface IIntrinsicArmorPerkOrAttribute {
 	icon: string;
 	description?: string;
 	season?: number;
+	abbreviation: string;
 }
 
 const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: EnumDictionary<
@@ -27,6 +28,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyEventCardDefinition_ce6c2cf855dce694bcc89803b6bc44b7.png',
 		armorSlotId: EArmorSlotId.ClassItem,
 		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Event,
+		abbreviation: 'GG',
 	},
 	[EIntrinsicArmorPerkOrAttributeId.HalloweenMask]: {
 		id: EIntrinsicArmorPerkOrAttributeId.HalloweenMask,
@@ -34,6 +36,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyEventCardDefinition_1a1e3f8074c98241af80f4bee77084c3.png',
 		armorSlotId: EArmorSlotId.Head,
 		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Event,
+		abbreviation: 'FotL',
 	},
 	[EIntrinsicArmorPerkOrAttributeId.IronBanner]: {
 		id: EIntrinsicArmorPerkOrAttributeId.IronBanner,
@@ -41,6 +44,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		icon: 'https://bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_fe57052d7cf971f7502daa75a2ca2437.png',
 		armorSlotId: null,
 		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Event,
+		abbreviation: 'IB',
 	},
 	[EIntrinsicArmorPerkOrAttributeId.SonarAmplifier]: {
 		id: EIntrinsicArmorPerkOrAttributeId.SonarAmplifier,
@@ -51,6 +55,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		season: 21,
 		description:
 			'Grants 3% additional Sonar Station vendor reputation from all sources. For each piece of armor you are wearing with this perk on it, this bonus increases to a maximum of 12% (4 items).',
+		abbreviation: 'S21',
 	},
 	[EIntrinsicArmorPerkOrAttributeId.QueensFavor]: {
 		id: EIntrinsicArmorPerkOrAttributeId.QueensFavor,
@@ -61,6 +66,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		season: 20,
 		description:
 			'Generate Awoken Favors with fewer final blows. Each piece of armor you are wearing with this perk on it increases this bonus, to a maximum of 4 items.',
+		abbreviation: 'S20',
 	},
 	[EIntrinsicArmorPerkOrAttributeId.SeraphSensorArray]: {
 		id: EIntrinsicArmorPerkOrAttributeId.SeraphSensorArray,
@@ -71,6 +77,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		season: 19,
 		description:
 			'Grants 5% reputation gains with the Exo Frame. Each piece of armor you are wearing with this perk increases this bonus, to a maximum of 4 items (20%).',
+		abbreviation: 'S19',
 	},
 	[EIntrinsicArmorPerkOrAttributeId.PlunderersTrappings]: {
 		id: EIntrinsicArmorPerkOrAttributeId.PlunderersTrappings,
@@ -81,6 +88,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		season: 18, // TODO: Is this the right season?
 		description:
 			'Grants 5% additional Treasure Coordinates from all sources. Each piece of armor you are wearing with this perk on it increases this bonus, to a maximum of 4 items (20%).',
+		abbreviation: 'S18',
 	},
 	[EIntrinsicArmorPerkOrAttributeId.VisageOfTheReaper]: {
 		id: EIntrinsicArmorPerkOrAttributeId.VisageOfTheReaper,
@@ -91,6 +99,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		season: 17,
 		description:
 			'Grants 5% additional Vestiges of Dread from all sources. Each piece of armor you are wearing with this perk on it increases this bonus, to a maximum of 4 items (20%).',
+		abbreviation: 'S17',
 	},
 	[EIntrinsicArmorPerkOrAttributeId.UniformedOfficer]: {
 		id: EIntrinsicArmorPerkOrAttributeId.UniformedOfficer,
@@ -101,6 +110,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		season: 16, // TODO: Is this the right season?
 		description:
 			'Grants additional Psychogenic Intel when completing activities.', // TODO: Is this the right description?
+		abbreviation: 'S16',
 	},
 };
 

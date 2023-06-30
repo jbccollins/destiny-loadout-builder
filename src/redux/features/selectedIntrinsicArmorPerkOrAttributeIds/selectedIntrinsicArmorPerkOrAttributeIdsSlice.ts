@@ -5,13 +5,15 @@ import { AppState } from '@dlb/redux/store';
 import { EIntrinsicArmorPerkOrAttributeId } from '@dlb/types/IdEnums';
 import { NIL, v4 as uuid } from 'uuid';
 
+export const defaultIntrinsicArmorPerkOrAttributeIds = [null, null, null, null];
+
 export interface SelectedIntrinsicArmorPerkOrAttributeIdsState {
 	value: EIntrinsicArmorPerkOrAttributeId[];
 	uuid: string;
 }
 
 const initialState: SelectedIntrinsicArmorPerkOrAttributeIdsState = {
-	value: [null, null, null, null],
+	value: defaultIntrinsicArmorPerkOrAttributeIds,
 	uuid: NIL,
 };
 

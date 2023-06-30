@@ -10,13 +10,13 @@ import {
 	getDescription,
 } from '@dlb/scripts/generation/utils';
 import { getArmorSlotIdByHash } from '@dlb/types/ArmorSlot';
+import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import {
 	getModCategoryId,
 	getRaidAndNightmareModTypeId,
 } from '@dlb/types/ModCategory';
 import { getModSocketCategoryIdByModDisplayNameId } from '@dlb/types/ModSocketCategory';
-import { IMod } from '@dlb/types/generation';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	DestinyEnergyTypeDefinition,

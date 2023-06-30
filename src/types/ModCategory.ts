@@ -1,12 +1,12 @@
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
 import { EModId } from '@dlb/generated/mod/EModId';
+import { EnumDictionary, IIdentifiableName } from './globals';
 import {
 	EElementId,
 	EModCategoryId,
 	ERaidAndNightMareModTypeId,
 } from './IdEnums';
-import { EnumDictionary, IIdentifiableName } from './globals';
 
 enum EAuthorizedAbility {
 	Melee = 'Melee',
@@ -245,10 +245,6 @@ export const getModCategoryId = (
 		case findTerm(name, 'Concussive Dampener'):
 			termModCategory = EModCategoryId.Resistance;
 			break;
-	}
-
-	if (modId === EModId.ArtifactMeleeDamageResistance) {
-		console.log('derp');
 	}
 	let isInCurrentSeasonArtifact = false;
 	// Hacky check to see if the element is in the mod id

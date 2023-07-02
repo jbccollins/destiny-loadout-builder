@@ -62,7 +62,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		name: "Queen's Favor",
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/8d844c97fa13f4cb649358404d011be7.png',
 		armorSlotId: null,
-		groupName: EIntrinsicArmorPerkOrAttributeGroupName.LegacyPerk,
+		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Perk,
 		season: 20,
 		description:
 			'Generate Awoken Favors with fewer final blows. Each piece of armor you are wearing with this perk on it increases this bonus, to a maximum of 4 items.',

@@ -421,7 +421,7 @@ const Home: NextPage = () => {
 					name="description"
 					content="Build optimized loadouts for the video game Destiny 2"
 				/>
-				<meta property="og:image" content="/image/logo-with-padding.png" />
+				<meta property="og:image" content="/image/logo-with-padding_16x9.png" />
 				<meta
 					property="og:description"
 					content="Build optimized loadouts for the video game Destiny 2"

@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-07-03',
+		version: '2.2.1',
+		title: 'Add Favicon',
+		sections: [
+			{
+				items: [
+					'Add a favicon and other meta tags to improve the look of the site when shared on social media',
+					'Add link to d2exotic.com',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-06-30',
 		version: '2.2.0',
 		title: 'Add Armor Attributes',

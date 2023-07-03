@@ -123,6 +123,20 @@ function PatchNotes() {
 						iconUrl={twitter_image}
 						text="Twitter"
 					/>
+					<Box
+						sx={{
+							background: '#2b2b2b',
+							padding: 2,
+							borderRadius: '4px',
+							fontSize: '20px',
+							marginTop: 1,
+						}}
+					>
+						Check out my other Destiny project:{' '}
+						<Link target="_blank" href="https://www.d2exotic.com">
+							d2exotic.com
+						</Link>
+					</Box>
 				</Box>
 				<SectionTitle sx={{ marginTop: '16px' }}>Patch Notes</SectionTitle>
 				{patchNotes.map((patchNote) => (

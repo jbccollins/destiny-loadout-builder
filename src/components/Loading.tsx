@@ -549,14 +549,14 @@ function Loading() {
 					);
 					dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
 					dispatch(setSelectedRaidMods(selectedRaidMods));
-					dispatch(
-						setSelectedIntrinsicArmorPerkOrAttributeIds(
-							selectedIntrisicArmorPerkOrAttributeIds
-						)
-					);
+
 					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
 				}
-
+				dispatch(
+					setSelectedIntrinsicArmorPerkOrAttributeIds(
+						selectedIntrisicArmorPerkOrAttributeIds
+					)
+				);
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
 

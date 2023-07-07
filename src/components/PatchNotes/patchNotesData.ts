@@ -11,6 +11,21 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-07-07',
+		version: '2.2.2',
+		title: 'Add better default sort',
+		sections: [
+			{
+				items: [
+					`Add a secondary and tertiary sort to the default sort order for results.
+					Results are now sorted by Total Mod Cost → Total Stat Tiers → Total Wasted Stats`,
+					`Fix a bug introduced in 2.2.0 that broke shared loadout links`,
+					'Update login page text a bit',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-07-03',
 		version: '2.2.1',
 		title: 'Add Favicon',

@@ -412,7 +412,17 @@ export const doProcessArmor = ({
 		allClassItemMetadata,
 	};
 
-	const processedArmor: ProcessArmorOutput = processArmor(processArmorParams);
+	const processedArmor: ProcessArmorOutput = processArmor(
+		processArmorParams
+	).sort(
+		(a, b) =>
+			// Lowest cost
+			a.metadata.totalModCost - b.metadata.totalModCost ||
+			// Highest stat tiers
+			b.metadata.totalStatTiers - a.metadata.totalStatTiers ||
+			// Lowest wasted stats
+			a.metadata.wastedStats - b.metadata.wastedStats
+	);
 
 	const {
 		maxReservedArmorSlotEnergy: maxPossibleReservedArmorSlotEnergy,

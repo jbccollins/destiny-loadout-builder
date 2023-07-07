@@ -7,13 +7,10 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 const Container = styled(Box)(({ theme }) => ({
-	position: 'fixed',
-	top: '60px',
-	left: '50%',
-	transform: 'translate(-50%, 0%)',
-	width: '100%',
-	maxWidth: '300px',
-
+	position: 'absolute',
+	height: '100vh',
+	width: '100vw',
+	overflowY: 'auto',
 	textAlign: 'center',
 }));
 
@@ -23,54 +20,79 @@ function Login() {
 		<Container>
 			<Box
 				sx={{
-					// transform: 'translate(50%, 0%)',
-					margin: 'auto',
-					marginBottom: '8px',
-					width: 120,
-					height: 120,
-					borderRadius: '50%',
-					background: 'rgb(50,50,50)',
-					padding: '10px',
-					paddingTop: '14px',
-					paddingBottom: '6px',
+					position: 'absolute',
+					maxWidth: '300px',
+					width: '100%',
+					paddingTop: '60px',
+					paddingBottom: '20px',
+					left: '50%',
+					transform: 'translate(-50%, 0%)',
 				}}
 			>
-				<Image
-					src={logo_with_padding}
-					alt="me"
-					height="100"
-					width="100"
-					objectFit="contain"
-					objectPosition="left"
-				/>
-			</Box>
-			<Box sx={{ fontSize: '26px', fontWeight: 'bold', marginBottom: '16px' }}>
-				Permission Required
-			</Box>
-			<Box sx={{ fontSize: '16px', marginBottom: '32px' }}>
-				Allow destinyloadoutbuilder.com to view your Destiny inventory and vault
-			</Box>
-			<LoginButton />
-
-			<Box
-				onClick={() => setOpen(!open)}
-				sx={{ cursor: 'pointer', marginTop: '24px' }}
-			>
-				Learn more
-				<IconButton aria-label="expand row" size="small">
-					{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-				</IconButton>
-			</Box>
-			<Collapse in={open} timeout="auto" unmountOnExit>
-				<Box sx={{ textAlign: 'left' }}>
-					Bungie requires third party applications (like this one) to ask you
-					for permission to view items in your Destiny inventory and vault. With
-					your consent, Bungie will give this application read-only access to
-					your items. Bungie does not share any of your personal information or
-					account credentials with this application. Nor does any third party
-					service like XBox, Playstation, or Steam.
+				<Box
+					sx={{
+						// transform: 'translate(50%, 0%)',
+						margin: 'auto',
+						marginBottom: '8px',
+						width: 120,
+						height: 120,
+						borderRadius: '50%',
+						background: 'rgb(50,50,50)',
+						padding: '10px',
+						paddingTop: '14px',
+						paddingBottom: '6px',
+					}}
+				>
+					<Image
+						src={logo_with_padding}
+						alt="me"
+						height="100"
+						width="100"
+						objectFit="contain"
+						objectPosition="left"
+					/>
 				</Box>
-			</Collapse>
+				<Box
+					sx={{
+						fontSize: '24px',
+						fontWeight: 'bold',
+						marginBottom: '32px',
+						marginTop: '32px',
+					}}
+				>
+					Build optimized loadouts for Destiny 2!
+				</Box>
+				{/* <Box
+					sx={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px' }}
+				>
+					Permission Required
+				</Box>
+				<Box sx={{ fontSize: '16px', marginBottom: '32px' }}>
+					Allow destinyloadoutbuilder.com to view your Destiny inventory and
+					vault
+				</Box> */}
+				<LoginButton />
+
+				<Box
+					onClick={() => setOpen(!open)}
+					sx={{ cursor: 'pointer', marginTop: '24px' }}
+				>
+					Learn more
+					<IconButton aria-label="expand row" size="small">
+						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+					</IconButton>
+				</Box>
+				<Collapse in={open} timeout="auto" unmountOnExit>
+					<Box sx={{ textAlign: 'left' }}>
+						Bungie requires third party applications (like this one) to ask you
+						for permission to view items in your Destiny inventory and vault.
+						With your consent, Bungie will give this application read-only
+						access to your items. Bungie does not share any of your personal
+						information or account credentials with this application. Nor does
+						any third party service like XBox, Playstation, or Steam.
+					</Box>
+				</Collapse>
+			</Box>
 		</Container>
 	);
 }

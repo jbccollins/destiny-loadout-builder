@@ -439,7 +439,6 @@ function handleChange() {
 		intrinsicArmorPerkOrAttributeIds:
 			selectedIntrinsicArmorPerkOrAttributeIds.filter((x) => x !== null),
 		destinyClassId: selectedDestinyClass,
-		armorMetadataItem: armorMetadata[selectedDestinyClass],
 		selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,

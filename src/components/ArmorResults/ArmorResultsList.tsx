@@ -166,7 +166,7 @@ const StatsBreakdownItem = styled(Box, {
 
 const LoadoutDetails = styled(Box)(({ theme }) => ({
 	display: 'flex',
-	height: '340px',
+	height: '350px',
 	marginLeft: '80px',
 	// overflowX: 'auto',
 }));

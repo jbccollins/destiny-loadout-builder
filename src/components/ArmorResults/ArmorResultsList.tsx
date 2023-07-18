@@ -46,6 +46,7 @@ import {
 } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
+import { MISSING_ICON } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
 	EArmorStatId,
@@ -54,16 +55,16 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
-import { MISSING_ICON } from '@dlb/types/globals';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
 import React from 'react';
-import { ResultsTableLoadout, getClassItemText } from './ArmorResultsTypes';
+import ModPlacement from '../ModPlacement';
+import { getClassItemText, ResultsTableLoadout } from './ArmorResultsTypes';
 import {
-	SortableFieldsDisplayOrder,
 	getSortableFieldDisplayName,
+	SortableFieldsDisplayOrder,
 } from './ArmorResultsView';
 
 type ArmorResultsListProps = {
@@ -165,7 +166,7 @@ const StatsBreakdownItem = styled(Box, {
 
 const LoadoutDetails = styled(Box)(({ theme }) => ({
 	display: 'flex',
-	height: '340px',
+	height: '350px',
 	marginLeft: '80px',
 	// overflowX: 'auto',
 }));
@@ -218,7 +219,9 @@ function ResultsItem({
 	dimQuery,
 	isRecommendedLoadout,
 }: ResultsItemProps) {
-	const [open, setOpen] = React.useState(false);
+	const [showDetailedStatBreakdown, setShowDetailedStatBreakdown] =
+		React.useState(false);
+	const [showModPlacement, setShowModPlacement] = React.useState(false);
 	const totalStatMapping = getDefaultArmorStatMapping();
 	ArmorStatIdList.forEach((armorStatId) => {
 		totalStatMapping[armorStatId] += item.sortableFields[armorStatId];
@@ -353,45 +356,47 @@ function ResultsItem({
 					);
 				})}
 			</ResultsSection> */}
+			<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+				{item.requiredStatModIdList.length > 0 && (
+					<ResultsSection>
+						<Title>Required Stat Mods</Title>
+						{Object.keys(modCounts).map((modId) => {
+							const mod = getMod(modId as EModId);
+							return (
+								// Extra margin to account for masterworkedbungieImage border
+								<IconTextContainer key={modId} sx={{ margin: '1px' }}>
+									<BungieImage width={40} height={40} src={mod.icon} />
+									<IconText>
+										{mod.name}
+										{modCounts[modId] > 1 ? ` (x${modCounts[modId]})` : ''}
+									</IconText>
+								</IconTextContainer>
+							);
+						})}
+					</ResultsSection>
+				)}
+				{item.requiredArtificeModIdList.length > 0 && (
+					<ResultsSection>
+						<Title>Required Artifice Mods</Title>
+						{Object.keys(artificeModCounts).map((artificeModId) => {
+							const armorStat = getMod(artificeModId as EModId);
+							return (
+								// Extra margin to account for masterworkedbungieImage border
+								<IconTextContainer key={artificeModId} sx={{ margin: '1px' }}>
+									<BungieImage width={40} height={40} src={armorStat.icon} />
+									<IconText>
+										{armorStat.name} Mod
+										{artificeModCounts[artificeModId] > 1
+											? ` (x${artificeModCounts[artificeModId]})`
+											: ''}
+									</IconText>
+								</IconTextContainer>
+							);
+						})}
+					</ResultsSection>
+				)}
+			</Box>
 
-			{item.requiredStatModIdList.length > 0 && (
-				<ResultsSection>
-					<Title>Required Stat Mods</Title>
-					{Object.keys(modCounts).map((modId) => {
-						const mod = getMod(modId as EModId);
-						return (
-							// Extra margin to account for masterworkedbungieImage border
-							<IconTextContainer key={modId} sx={{ margin: '1px' }}>
-								<BungieImage width={40} height={40} src={mod.icon} />
-								<IconText>
-									{mod.name}
-									{modCounts[modId] > 1 ? ` (x${modCounts[modId]})` : ''}
-								</IconText>
-							</IconTextContainer>
-						);
-					})}
-				</ResultsSection>
-			)}
-			{item.requiredArtificeModIdList.length > 0 && (
-				<ResultsSection>
-					<Title>Required Artifice Mods</Title>
-					{Object.keys(artificeModCounts).map((artificeModId) => {
-						const armorStat = getMod(artificeModId as EModId);
-						return (
-							// Extra margin to account for masterworkedbungieImage border
-							<IconTextContainer key={artificeModId} sx={{ margin: '1px' }}>
-								<BungieImage width={40} height={40} src={armorStat.icon} />
-								<IconText>
-									{armorStat.name} Mod
-									{artificeModCounts[artificeModId] > 1
-										? ` (x${artificeModCounts[artificeModId]})`
-										: ''}
-								</IconText>
-							</IconTextContainer>
-						);
-					})}
-				</ResultsSection>
-			)}
 			<ResultsSection fullWidth>
 				<Box
 					sx={{
@@ -419,18 +424,55 @@ function ResultsItem({
 						Copy DIM Query
 					</Button>
 				</Box>
+			</ResultsSection>
+
+			<ResultsSection fullWidth>
 				<Box
-					onClick={() => setOpen(!open)}
-					sx={{ cursor: 'pointer', marginTop: '16px' }}
+					onClick={() => setShowModPlacement(!showModPlacement)}
+					sx={{ cursor: 'pointer' }}
 				>
-					Show Detailed Stat Breakdown
+					Show Mod Placement
 					<IconButton aria-label="expand row" size="small">
-						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+						{showModPlacement ? (
+							<KeyboardArrowUpIcon />
+						) : (
+							<KeyboardArrowDownIcon />
+						)}
 					</IconButton>
 				</Box>
 			</ResultsSection>
-			<ResultsSection fullWidth sx={{ overflowX: 'auto' }}>
-				<Collapse in={open} timeout="auto" unmountOnExit>
+			<ResultsSection fullWidth sx={{ overflowX: 'auto', padding: 0 }}>
+				<Collapse in={showModPlacement} timeout="auto" unmountOnExit>
+					<ModPlacement
+						modPlacement={item.modPlacement}
+						artificeModIdList={item.requiredArtificeModIdList}
+						armorItems={item.armorItems}
+						classItem={item.classItem}
+					/>
+				</Collapse>
+			</ResultsSection>
+			<ResultsSection
+				fullWidth
+				// sx={{ marginTop: showModPlacement ? '8px' : '0px' }}
+			>
+				<Box
+					onClick={() =>
+						setShowDetailedStatBreakdown(!showDetailedStatBreakdown)
+					}
+					sx={{ cursor: 'pointer' }}
+				>
+					Show Detailed Stat Breakdown
+					<IconButton aria-label="expand row" size="small">
+						{showDetailedStatBreakdown ? (
+							<KeyboardArrowUpIcon />
+						) : (
+							<KeyboardArrowDownIcon />
+						)}
+					</IconButton>
+				</Box>
+			</ResultsSection>
+			<ResultsSection fullWidth sx={{ overflowX: 'auto', padding: 0 }}>
+				<Collapse in={showDetailedStatBreakdown} timeout="auto" unmountOnExit>
 					<LoadoutDetails className="loadout-details">
 						<StatsBreakdown className="stats-breakdown">
 							<StatsBreakdownItem first>Total</StatsBreakdownItem>

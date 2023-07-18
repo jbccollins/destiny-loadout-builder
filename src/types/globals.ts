@@ -95,6 +95,9 @@ export type StatBonus = {
 export const MISSING_ICON =
 	'https://www.bungie.net/img/misc/missing_icon_d2.png';
 
+export const ARTIFICE_ICON =
+	'https://www.bungie.net/common/destiny2_content/icons/46eec78bb7864641bbd7ba1fd4f9f248.png';
+
 export function copyToClipboard(text: string) {
 	navigator.clipboard.writeText(text);
 }

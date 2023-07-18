@@ -1,6 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { ARTIFICE } from '@dlb/services/processArmor/constants';
+import { ArmorStatAndRaidModComboPlacement } from '@dlb/services/processArmor/getModCombos';
 import {
 	isIntrinsicArmorPerkOrAttributeRequiredClassItem,
 	isRaidOrNightmareRequiredClassItem,
@@ -32,6 +33,7 @@ export type ResultsTableLoadout = {
 	requiredStatModIdList: EModId[];
 	requiredArtificeModIdList: EModId[];
 	classItem: ProcessedArmorItemMetadataClassItem;
+	modPlacement: ArmorStatAndRaidModComboPlacement;
 };
 
 export const getClassItemText = (item: ResultsTableLoadout): string => {

@@ -11,9 +11,6 @@ import {
 	AllClassItemMetadata,
 	ArmorItem,
 	getDefaultAllClassItemMetadata,
-	getDefaultArmorMetadata,
-	getDefaultArmorMetadataItem,
-	getDefaultAvailableExoticArmorItem,
 } from '@dlb/types/Armor';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import {
@@ -161,8 +158,6 @@ const testCases: TestCase[] = [
 				raidMods: [],
 				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: EDestinyClassId.Warlock,
-				armorMetadataItem: getDefaultArmorMetadata().Warlock,
-				selectedExotic: getDefaultAvailableExoticArmorItem(),
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
 				allClassItemMetadata: getDefaultAllClassItemMetadata(),
@@ -292,8 +287,6 @@ const testCases: TestCase[] = [
 				raidMods: [],
 				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: EDestinyClassId.Warlock,
-				armorMetadataItem: getDefaultArmorMetadata().Warlock,
-				selectedExotic: getDefaultAvailableExoticArmorItem(),
 				armorItems: [
 					// Res x3, [helmet, arms, chest]
 					[
@@ -448,8 +441,6 @@ const testCases: TestCase[] = [
 				raidMods: [],
 				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: EDestinyClassId.Warlock,
-				armorMetadataItem: getDefaultArmorMetadata().Warlock,
-				selectedExotic: getDefaultAvailableExoticArmorItem(),
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
 				allClassItemMetadata: getDefaultAllClassItemMetadata(),
@@ -582,11 +573,6 @@ const testCases: TestCase[] = [
 				raidMods: [],
 				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: EDestinyClassId.Warlock,
-				armorMetadataItem: getDefaultArmorMetadata().Warlock,
-				selectedExotic: {
-					...getDefaultAvailableExoticArmorItem(),
-					armorSlot: EArmorSlotId.Chest,
-				},
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
 				allClassItemMetadata: defaultClassItemMetadataWithMasterworkedArtifice,
@@ -732,8 +718,6 @@ const testCases: TestCase[] = [
 				raidMods: [],
 				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: EDestinyClassId.Warlock,
-				armorMetadataItem: getDefaultArmorMetadataItem(),
-				selectedExotic: getDefaultAvailableExoticArmorItem(),
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
 				allClassItemMetadata: defaultClassItemMetadataWithMasterworkedArtifice,
@@ -910,8 +894,6 @@ const testCases: TestCase[] = [
 				raidMods: [EModId.ReleaseRecover],
 				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: EDestinyClassId.Warlock,
-				armorMetadataItem: getDefaultArmorMetadata().Warlock,
-				selectedExotic: getDefaultAvailableExoticArmorItem(),
 				reservedArmorSlotEnergy: {
 					...getDefaultArmorSlotEnergyMapping(),
 					[EArmorSlotId.Chest]: 10,

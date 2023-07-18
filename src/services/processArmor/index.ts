@@ -9,8 +9,6 @@ import {
 	ArmorGroup,
 	ArmorIdList,
 	ArmorItems,
-	ArmorMetadataItem,
-	AvailableExoticArmorItem,
 	getDefaultAllClassItemMetadata,
 	ISelectedExoticArmor,
 	StatList,
@@ -75,7 +73,6 @@ const _processArmorRecursiveCase = ({
 	intrinsicArmorPerkOrAttributeIds,
 	destinyClassId,
 	specialSeenArmorSlotItems,
-	selectedExotic,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
 	allClassItemMetadata,
@@ -107,7 +104,6 @@ const _processArmorRecursiveCase = ({
 				intrinsicArmorPerkOrAttributeIds,
 				destinyClassId,
 				specialSeenArmorSlotItems: nextSpecialSeenArmorSlotItems,
-				selectedExotic,
 				reservedArmorSlotEnergy,
 				useZeroWastedStats,
 				allClassItemMetadata,
@@ -130,7 +126,6 @@ const _processArmorBaseCase = ({
 	intrinsicArmorPerkOrAttributeIds,
 	destinyClassId,
 	specialSeenArmorSlotItems,
-	selectedExotic,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
 	allClassItemMetadata,
@@ -239,6 +234,7 @@ const _processArmorBaseCase = ({
 			armorIdList,
 			armorStatModIdList: requiredArmorStatModIdList,
 			artificeModIdList: requiredArtificeModIdList,
+			modPlacement: placement.placement,
 			metadata: {
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
@@ -268,7 +264,6 @@ type ProcessArmorParams = {
 	intrinsicArmorPerkOrAttributeIds: EIntrinsicArmorPerkOrAttributeId[];
 	destinyClassId: EDestinyClassId;
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
-	selectedExotic: AvailableExoticArmorItem;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	useZeroWastedStats: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
@@ -286,7 +281,6 @@ const processArmor = ({
 	intrinsicArmorPerkOrAttributeIds,
 	destinyClassId,
 	specialSeenArmorSlotItems,
-	selectedExotic,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
 	allClassItemMetadata,
@@ -307,7 +301,6 @@ const processArmor = ({
 		intrinsicArmorPerkOrAttributeIds,
 		destinyClassId,
 		specialSeenArmorSlotItems,
-		selectedExotic,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
 		allClassItemMetadata,
@@ -338,6 +331,7 @@ type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
+	modPlacement: ArmorStatAndRaidModComboPlacement;
 	metadata: ProcessedArmorItemMetadata;
 };
 export type ProcessArmorOutput = ProcessArmorOutputItem[];
@@ -359,14 +353,12 @@ export type DoProcessArmorParams = {
 	raidMods: EModId[];
 	intrinsicArmorPerkOrAttributeIds: EIntrinsicArmorPerkOrAttributeId[];
 	destinyClassId: EDestinyClassId;
-	armorMetadataItem: ArmorMetadataItem;
-	selectedExotic: AvailableExoticArmorItem;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	useZeroWastedStats: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
 };
 /**
- * @param {ArmorItems2} armorItems - [heads, arms, chests, legs]
+ * @param {StrictArmorItems} armorItems - [heads, arms, chests, legs]
  * @returns {ProcessArmorOutput} All the combinations of armor ids that meet the required specs
  * @description This function expects that every combination of [heads, arms, chests, legs]
  * is valid.
@@ -382,8 +374,6 @@ export const doProcessArmor = ({
 	raidMods,
 	intrinsicArmorPerkOrAttributeIds,
 	destinyClassId,
-	armorMetadataItem,
-	selectedExotic,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
 	allClassItemMetadata,
@@ -406,7 +396,6 @@ export const doProcessArmor = ({
 		intrinsicArmorPerkOrAttributeIds,
 		destinyClassId,
 		specialSeenArmorSlotItems: seenArmorSlotItems,
-		selectedExotic,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
 		allClassItemMetadata,

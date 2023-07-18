@@ -2,7 +2,6 @@ import {
 	EnumDictionary,
 	IIcon,
 	IIdentifiableName,
-	MISSING_ICON,
 	ValidateEnumList,
 } from './globals';
 import { ERaidAndNightMareModTypeId } from './IdEnums';
@@ -19,49 +18,49 @@ const RaidAndNightMareModTypeIdToRaidAndNightMareModTypeMapping: EnumDictionary<
 		id: ERaidAndNightMareModTypeId.DeepStoneCrypt,
 		name: 'Deep Stone Crypt',
 		abbreviation: 'DSC',
-		icon: MISSING_ICON,
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_427561ad3d02d80a76a9cce7802c1323.png',
 	},
 	[ERaidAndNightMareModTypeId.GardenOfSalvation]: {
 		id: ERaidAndNightMareModTypeId.GardenOfSalvation,
 		name: 'Garden of Salvation',
 		abbreviation: 'GoS',
-		icon: MISSING_ICON,
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_eb9f4e265e29cb5e50559b6bf814a9c9.png',
 	},
 	[ERaidAndNightMareModTypeId.KingsFall]: {
 		id: ERaidAndNightMareModTypeId.KingsFall,
 		name: "King's Fall",
 		abbreviation: 'KF',
-		icon: MISSING_ICON,
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_58109af839b023d7bf44c7b734818e47.png',
 	},
 	[ERaidAndNightMareModTypeId.LastWish]: {
 		id: ERaidAndNightMareModTypeId.LastWish,
 		name: 'Last Wish',
 		abbreviation: 'LW',
-		icon: MISSING_ICON,
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_56d1f52f0cb40248a990408d7ac84bd3.png',
 	},
 	[ERaidAndNightMareModTypeId.NightmareHunt]: {
 		id: ERaidAndNightMareModTypeId.NightmareHunt,
 		name: 'Nightmare Hunt',
 		abbreviation: 'NH',
-		icon: MISSING_ICON,
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_48ad57129cd0c46a355ef8bcaa1acd04.png',
 	},
 	[ERaidAndNightMareModTypeId.VaultOfGlass]: {
 		id: ERaidAndNightMareModTypeId.VaultOfGlass,
 		name: 'Vault of Glass',
 		abbreviation: 'VoG',
-		icon: MISSING_ICON,
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_44a010ae763cd975d56c632ff72c48a1.png',
 	},
 	[ERaidAndNightMareModTypeId.VowOfTheDisciple]: {
 		id: ERaidAndNightMareModTypeId.VowOfTheDisciple,
 		name: 'Vow of the Disciple',
 		abbreviation: 'VotD',
-		icon: MISSING_ICON,
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_bc5d4a8377955b809dbbe0fb71645e6e.png',
 	},
 	[ERaidAndNightMareModTypeId.RootOfNightmares]: {
 		id: ERaidAndNightMareModTypeId.RootOfNightmares,
 		name: 'Root of Nightmares',
 		abbreviation: 'RoN',
-		icon: MISSING_ICON,
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_d3dc8747ee63f991c6a56ac7908047ba.png',
 	},
 };
 

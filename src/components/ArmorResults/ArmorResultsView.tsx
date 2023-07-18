@@ -8,6 +8,7 @@ import {
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { getDefaultModPlacements } from '@dlb/services/processArmor/getModCombos';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
@@ -347,7 +348,13 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		const res: ResultsTableLoadout[] = [];
 
 		processedArmor.items.forEach(
-			({ armorIdList, armorStatModIdList, artificeModIdList, metadata }) => {
+			({
+				armorIdList,
+				armorStatModIdList,
+				artificeModIdList,
+				metadata,
+				modPlacement,
+			}) => {
 				const resultLoadout: ResultsTableLoadout = {
 					id: '',
 					armorItems: [],
@@ -365,26 +372,29 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 						totalStatTiers: 0,
 						wastedStats: 0,
 					},
+					modPlacement: getDefaultModPlacements().placement,
 				};
+				resultLoadout.modPlacement = modPlacement;
+				resultLoadout.sortableFields.totalModCost = metadata.totalModCost;
+				resultLoadout.sortableFields.totalStatTiers = metadata.totalStatTiers;
+				resultLoadout.sortableFields.wastedStats = metadata.wastedStats;
+				resultLoadout.sortableFields.Mobility =
+					metadata.totalArmorStatMapping.Mobility;
+				resultLoadout.sortableFields.Resilience =
+					metadata.totalArmorStatMapping.Resilience;
+				resultLoadout.sortableFields.Recovery =
+					metadata.totalArmorStatMapping.Recovery;
+				resultLoadout.sortableFields.Discipline =
+					metadata.totalArmorStatMapping.Discipline;
+				resultLoadout.sortableFields.Intellect =
+					metadata.totalArmorStatMapping.Intellect;
+				resultLoadout.sortableFields.Strength =
+					metadata.totalArmorStatMapping.Strength;
+
 				ArmorSlotIdList.forEach((armorSlot, i) => {
 					const armorItem = getArmorItem(armorIdList[i], armorSlot);
 					resultLoadout.id += `[${armorItem.id}]`;
 					resultLoadout.armorItems.push(armorItem);
-					resultLoadout.sortableFields.totalModCost = metadata.totalModCost;
-					resultLoadout.sortableFields.totalStatTiers = metadata.totalStatTiers;
-					resultLoadout.sortableFields.wastedStats = metadata.wastedStats;
-					resultLoadout.sortableFields.Mobility =
-						metadata.totalArmorStatMapping.Mobility;
-					resultLoadout.sortableFields.Resilience =
-						metadata.totalArmorStatMapping.Resilience;
-					resultLoadout.sortableFields.Recovery =
-						metadata.totalArmorStatMapping.Recovery;
-					resultLoadout.sortableFields.Discipline =
-						metadata.totalArmorStatMapping.Discipline;
-					resultLoadout.sortableFields.Intellect =
-						metadata.totalArmorStatMapping.Intellect;
-					resultLoadout.sortableFields.Strength =
-						metadata.totalArmorStatMapping.Strength;
 				});
 				// if (metadata.artificeClassItemArmorStatId) {
 				// 	resultLoadout.id += `[ArtificeClassItem-${metadata.artificeClassItemArmorStatId}]`;

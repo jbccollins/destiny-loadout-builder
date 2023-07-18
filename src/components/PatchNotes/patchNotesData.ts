@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-07-17',
+		version: '2.2.3',
+		title: 'Add "Show Mod Placement" breakdown',
+		sections: [
+			{
+				items: [
+					`Add a new section to the results table that shows the mod placement for each armor item`,
+					'Minor behind the scenes code refactoring',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-07-07',
 		version: '2.2.2',
 		title: 'Add better default sort',

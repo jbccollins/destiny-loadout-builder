@@ -17,20 +17,18 @@ export interface DesiredArmorStatsState {
 
 const initialState: DesiredArmorStatsState = {
 	value: {
-		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 0,
-		[EArmorStatId.Recovery]: 0,
-		[EArmorStatId.Discipline]: 0,
-		[EArmorStatId.Intellect]: 0,
-		[EArmorStatId.Strength]: 0,
-		// For testing these will give me a single combo of armor
-		// when getDefaultArmorSlotEnergyMapping Head is 9
-		// [EArmorStatId.Mobility]: 80,
-		// [EArmorStatId.Resilience]: 80,
-		// [EArmorStatId.Recovery]: 40,
-		// [EArmorStatId.Discipline]: 80,
-		// [EArmorStatId.Intellect]: 30,
-		// [EArmorStatId.Strength]: 40,
+		// [EArmorStatId.Mobility]: 0,
+		// [EArmorStatId.Resilience]: 0,
+		// [EArmorStatId.Recovery]: 0,
+		// [EArmorStatId.Discipline]: 0,
+		// [EArmorStatId.Intellect]: 0,
+		// [EArmorStatId.Strength]: 0,
+		[EArmorStatId.Mobility]: 20,
+		[EArmorStatId.Resilience]: 100,
+		[EArmorStatId.Recovery]: 50,
+		[EArmorStatId.Discipline]: 80,
+		[EArmorStatId.Intellect]: 30,
+		[EArmorStatId.Strength]: 30,
 	},
 	uuid: NIL,
 };

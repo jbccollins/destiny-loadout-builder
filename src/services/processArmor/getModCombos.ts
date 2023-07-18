@@ -22,6 +22,7 @@ import {
 	getMod,
 	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
+import { cloneDeep } from 'lodash';
 import { ARTIFICE, EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
@@ -285,7 +286,7 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		const lowestCostPlacement =
 			getDefaultArmorSlotModComboPlacementWithArtificeMods();
 
-		const { isValid, combo } = isValidModCombo({
+		const { isValid, combo, placementCapacity } = isValidModCombo({
 			statModComboList: statModCombos,
 			potentialRaidModArmorSlotPlacement: placement,
 			armorSlotMods,
@@ -297,18 +298,14 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		}
 
 		if (combo) {
+			// TODO: This is a bit weird/inefficient. Can we not have to do this conversion?
 			const expandedCombo = convertStatModComboToExpandedStatModCombo(combo);
-			// TODO: This is wrong logic. It's just placing mods with no regard for capacity
-			expandedCombo.armorStatModIdList.forEach((modId, i) => {
-				lowestCostPlacement.placement[
-					ArmorSlotWithClassItemIdList[i]
-				].armorStatModId = modId;
+			placementCapacity.forEach((placement, i) => {
+				lowestCostPlacement.placement[placement.armorSlotId].armorStatModId =
+					placement.armorStatModId;
+				lowestCostPlacement.placement[placement.armorSlotId].raidModId =
+					placement.raidModId;
 			});
-			// placementCapacity.forEach((placement, i) => {
-			// 	lowestCostPlacement.placement[
-			// 		placement.armorSlotId
-			// 	].armorStatModId = placement.;
-			// })
 			lowestCostPlacement.artificeModIdList = expandedCombo.artificeModIdList;
 		}
 		const seenArtificeCount = isSpecialArtificeClassItemCheck
@@ -513,7 +510,7 @@ type IsValidModComboParams = {
 type IsValidModComboResult = {
 	isValid: boolean;
 	combo: StatModCombo;
-	// placementCapacity: ArmorSlotCapacity[];
+	placementCapacity: ArmorSlotCapacity[];
 };
 
 // Pick the first combo that has a valid placement
@@ -523,12 +520,13 @@ const isValidModCombo = ({
 	armorSlotMods,
 	reservedArmorSlotEnergy,
 }: IsValidModComboParams): IsValidModComboResult => {
-	// TODO: This is wrong logic I think. potentialRaidModArmorSlotPlacement is never null...
+	// If we don't need any mods and don't have any raid mods then we're done
 	if (
 		statModComboList.length === 0 &&
-		potentialRaidModArmorSlotPlacement === null
+		Object.values(potentialRaidModArmorSlotPlacement).filter((x) => x !== null)
+			.length === 0
 	) {
-		return { isValid: true, combo: null };
+		return { isValid: true, combo: null, placementCapacity: null };
 	}
 
 	const armorSlotCapacities = getArmorSlotCapacities({
@@ -570,19 +568,20 @@ const isValidModCombo = ({
 					sortedArmorSlotCapacities: capacity,
 				})
 			) {
-				// const placementCapacity = cloneDeep(capacity);
-				// sortedArmorStatMods.forEach((modId, k) => {
-				// 	placementCapacity[k].armorStatModId = modId;
-				// });
+				const placementCapacity = cloneDeep(capacity);
+				sortedArmorStatMods.forEach((modId, k) => {
+					placementCapacity[k].armorStatModId = modId;
+					placementCapacity[k].capacity -= getMod(modId).cost;
+				});
 				return {
 					isValid: true,
 					combo: _statModComboList[i],
-					// placementCapacity,
+					placementCapacity,
 				};
 			}
 		}
 	}
-	return { isValid: false, combo: null };
+	return { isValid: false, combo: null, placementCapacity: null };
 };
 
 export type ExpandedStatModCombo = {

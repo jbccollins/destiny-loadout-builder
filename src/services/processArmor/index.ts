@@ -234,6 +234,7 @@ const _processArmorBaseCase = ({
 			armorIdList,
 			armorStatModIdList: requiredArmorStatModIdList,
 			artificeModIdList: requiredArtificeModIdList,
+			modPlacement: placement.placement,
 			metadata: {
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
@@ -330,6 +331,7 @@ type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];
+	modPlacement: ArmorStatAndRaidModComboPlacement;
 	metadata: ProcessedArmorItemMetadata;
 };
 export type ProcessArmorOutput = ProcessArmorOutputItem[];

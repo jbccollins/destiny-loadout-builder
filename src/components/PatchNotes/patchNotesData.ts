@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-08-25',
+		version: '2.2.4',
+		title: 'Season of the Witch Update',
+		sections: [
+			{
+				items: [
+					`Update Aspects, Fragments and Mods that were changed in Season of the Witch`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-07-17',
 		version: '2.2.3',
 		title: 'Add "Show Mod Placement" breakdown',

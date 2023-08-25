@@ -1,9 +1,9 @@
 import { AspectIdToAspectMapping } from '@dlb/generated/aspect/AspectMapping';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 import combinations from '@dlb/utils/combinations';
-import { EDestinySubclassId } from './IdEnums';
 import { IAspect } from './generation';
 import { EnumDictionary } from './globals';
+import { EDestinySubclassId } from './IdEnums';
 
 export const AspectIdList = Object.values(EAspectId);
 
@@ -43,6 +43,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.EnsnaringSlam,
 		EAspectId.ThreadedSpecter,
 		EAspectId.WidowsSilk,
+		EAspectId.WhirlingMaelstrom,
 	],
 
 	//Warlock
@@ -71,6 +72,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.MindspunInvocation,
 		EAspectId.TheWanderer,
 		EAspectId.WeaversCall,
+		EAspectId.Weavewalk,
 	],
 
 	// Titan
@@ -99,6 +101,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.DrengrsLash,
 		EAspectId.FlechetteStorm,
 		EAspectId.IntoTheFray,
+		EAspectId.BannerOfWar,
 	],
 };
 

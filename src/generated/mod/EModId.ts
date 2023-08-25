@@ -209,7 +209,7 @@ export enum EModId {
   ArtifactStasisHolster = "ArtifactStasisHolster",
   UmbralSharpening = "UmbralSharpening",
   ArtifactStrandHolster = "ArtifactStrandHolster",
-  ArtifactDualCurrentSiphon = "ArtifactDualCurrentSiphon",
+  ArtifactArcStrandSiphonCombo = "ArtifactArcStrandSiphonCombo",
   ArtifactVoidScavenger = "ArtifactVoidScavenger",
   ArtifactSolarStrandDualSiphon = "ArtifactSolarStrandDualSiphon",
   SmolderingGlyphkeeper = "SmolderingGlyphkeeper",

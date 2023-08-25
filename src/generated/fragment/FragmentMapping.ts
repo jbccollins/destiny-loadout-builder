@@ -645,12 +645,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
       "Suspend, unravel, and sever effects applied to targets have increased duration.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/2d629d0adbf1d1cab255f087caaafeae.jpg",
     hash: 3192552690,
-    bonuses: [
-      {
-        stat: EArmorStatId.Strength,
-        value: 10,
-      },
-    ],
+    bonuses: [],
     elementId: EElementId.Strand,
   },
   [EFragmentId.ThreadOfGeneration]: {
@@ -735,7 +730,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     name: "Whisper of Durance",
     id: EFragmentId.WhisperOfDurance,
     description:
-      "Slow from your abilities lasts longer. For those abilities that linger, their duration will also increase.",
+      "Slow that you apply to targets lasts longer. For those abilities that linger, their duration will also increase.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/263713a8639fb73350c13b5b520fefa2.png",
     hash: 3469412969,
     bonuses: [
@@ -774,7 +769,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
   [EFragmentId.WhisperOfBonds]: {
     name: "Whisper of Bonds",
     id: EFragmentId.WhisperOfBonds,
-    description: "Defeating frozen targets grants you Super energy.",
+    description: "Defeating frozen targets generates an Orb of Power.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/12b591b2720cc265d800e870484f6d5b.png",
     hash: 3469412974,
     bonuses: [
@@ -880,7 +875,12 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
       "Powered melee final blows grant your [Strand] Strand weapons Unraveling Rounds.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/4b78910e8b8b684d7dfca716eaea4616.jpg",
     hash: 4208512210,
-    bonuses: [],
+    bonuses: [
+      {
+        stat: EArmorStatId.Strength,
+        value: 10,
+      },
+    ],
     elementId: EElementId.Strand,
   },
   [EFragmentId.ThreadOfEvolution]: {
@@ -991,8 +991,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
   [EFragmentId.ThreadOfWisdom]: {
     name: "Thread of Wisdom",
     id: EFragmentId.ThreadOfWisdom,
-    description:
-      "Defeating suspended targets with precision final blows creates an Orb of Power.",
+    description: "Defeating suspended targets creates an Orb of Power.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/6f5d43447ee7de28bb94ac949f3fac44.jpg",
     hash: 4208512223,
     bonuses: [],

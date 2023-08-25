@@ -10,7 +10,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Touch of Flame",
     id: EAspectId.TouchOfFlame,
     description:
-      "Your Healing, Solar, Firebolt, and Fusion Grenades have enhanced functionality.\n\nHealing Grenade: Improves the strength of cure and restoration effects applied.\n\nSolar Grenade: Increases linger duration. Periodically emits blobs of lava around its perimeter.\n\nFirebolt Grenade: Increases target search radius and maximum target count.\n\nFusion Grenade: Explodes twice.",
+      "Your Healing, Solar, Firebolt, and Fusion Grenades have enhanced functionality.\n\nHealing Grenade: Improves the strength of cure and restoration effects applied. Consuming a Healing Grenade with Heat Rises also applies restoration to nearby allies.\n\nSolar Grenade: Increases linger duration. Periodically emits blobs of lava around its perimeter.\n\nFirebolt Grenade: Increases target search radius and maximum target count.\n\nFusion Grenade: Explodes twice.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/d6b44fe69ff876449e732b52b7d9d334.jpg",
     hash: 83039193,
     fragmentSlots: 2,
@@ -19,7 +19,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Heat Rises",
     id: EAspectId.HeatRises,
     description:
-      "You can fire weapons, melee, and throw grenades while gliding.\n\n[Grenade]  : Hold to activate Heat Rises, consuming your grenade.\n\nFinal blows while airborne increase the duration of Heat Rises and grant melee energy.",
+      "You can fire weapons, melee, and throw grenades while gliding.\n\n[Grenade]  : Hold to consume your grenade, gaining Heat Rises and releasing a burst of healing energy that cures nearby allies. The strength of the burst is increased when a Healing Grenade is consumed.\n\nFinal blows while airborne increase the duration of Heat Rises and grant melee energy.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/d647fd2019707f044ce97b52f802e465.jpg",
     hash: 83039194,
     fragmentSlots: 2,
@@ -28,7 +28,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Icarus Dash",
     id: EAspectId.IcarusDash,
     description:
-      "[Air Move]  : Dodge quickly while airborne.\n\nWhile Heat Rises is active, you have an additional dodge.\n\nWhile airborne, rapidly defeating targets with your Super or weapon grants Cure to you.",
+      "[###DestinyNamedSubstitutions.ui_player_action_air_dodge_button###] [###DestinyNamedSubstitutions.ui_player_action_air_dodge_verb###] : Dodge quickly while airborne.\n\nWhile Heat Rises is active, you have an additional dodge.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/55a690bbd9cd53777df674a279422865.jpg",
     hash: 83039195,
     fragmentSlots: 2,
@@ -59,6 +59,15 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     hash: 187655374,
     fragmentSlots: 2,
   },
+  [EAspectId.Weavewalk]: {
+    name: "Weavewalk",
+    id: EAspectId.Weavewalk,
+    description:
+      "[###DestinyNamedSubstitutions.ui_player_action_air_dodge_button###] [###DestinyNamedSubstitutions.ui_player_action_air_dodge_verb###] : Dodge while airborne to enter the weave, gaining damage resistance from combatants and players. Reactivate your air dodge or cast your Rift to exit the weave.\n\nWhile in the weave, you generate perched Threadlings over time.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/dbf533cafaa43fd6e02bb58327859fb9.jpg",
+    hash: 262821312,
+    fragmentSlots: 1,
+  },
   [EAspectId.WeaversCall]: {
     name: "Weaver's Call",
     id: EAspectId.WeaversCall,
@@ -81,7 +90,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "The Wanderer",
     id: EAspectId.TheWanderer,
     description:
-      "Tangles that you throw attach to targets and detonate into a suspending burst.\n\nThreadling final blows create a Tangle.",
+      "Tangles you throw attach to targets and detonate into a suspending burst. Destroying a Tangle creates a suspending burst after a short delay.\n\nThreadling final blows create a Tangle.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/9b8da38f8082a905b2e8d54a315a8b3b.jpg",
     hash: 262821319,
     fragmentSlots: 2,
@@ -120,6 +129,15 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
       "Destroying a Tangle or casting your Super grants Woven Mail for nearby allies.\n\nWhile you have Woven Mail, your melee regeneration rate is increased.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/4c5a1a04e73dbce39ba0a253773e126e.jpg",
     hash: 988980153,
+    fragmentSlots: 2,
+  },
+  [EAspectId.BannerOfWar]: {
+    name: "Banner of War",
+    id: EAspectId.BannerOfWar,
+    description:
+      "Defeat a target with a melee attack, finisher, or Sword to raise a Banner of War that pulses with energy, periodically healing nearby allies and increasing melee and Sword damage. \n\nTargets defeated by you and nearby allies charge the banner, increasing the speed of its pulses.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0b3bb9462bfe4b2c2382be8979f384f2.jpg",
+    hash: 988980154,
     fragmentSlots: 2,
   },
   [EAspectId.FlechetteStorm]: {
@@ -341,7 +359,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Gunpowder Gamble",
     id: EAspectId.GunpowderGamble,
     description:
-      "Defeat targets with abilities, Solar debuffs, or Solar weapons to charge up an improvised Solar explosive.\n\n[Grenade]  : Throw a solar explosive that can be shot in mid-air to cause an ignition.",
+      "Defeat targets with Solar abilities, Solar debuffs, or Solar weapons to charge up an improvised Solar explosive.\n\n[Grenade]  : Throw a Solar explosive that can be shot in mid-air to cause an ignition.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/765402ea0cdaa799f62fe46b57ad8437.jpg",
     hash: 3066103996,
     fragmentSlots: 2,
@@ -407,6 +425,15 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
       "After dodging, your next melee attack has increased lunge range, jolts the target, and creates a damaging aftershock.\n\nDamaging any jolted target with melee attacks also blinds them.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/6a3e6a42ba1ebbd55714f64f26e0d63e.jpg",
     hash: 4194622038,
+    fragmentSlots: 2,
+  },
+  [EAspectId.WhirlingMaelstrom]: {
+    name: "Whirling Maelstrom",
+    id: EAspectId.WhirlingMaelstrom,
+    description:
+      "Destroying a Tangle will weave a violent, writhing mass of [Strand] Strand fibers. The Strand mass seeks out and damages targets, emitting Unraveling projectiles when it defeats them.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/838134e7e3d13bb5b74ae995653715fc.jpg",
+    hash: 4249729124,
     fragmentSlots: 2,
   },
   [EAspectId.ThreadedSpecter]: {

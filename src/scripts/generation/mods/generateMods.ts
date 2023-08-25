@@ -105,6 +105,11 @@ const buildModData = (
 		}`
 	) as EModId;
 
+	if ((modId as string) === 'Unknown') {
+		console.warn('Skipping unknown modId');
+		return null;
+	}
+
 	let displayNameId = generateId(mod.itemTypeDisplayName) as EModDisplayNameId;
 
 	//TODO: Get rid of this when the manifest returns proper 'itemTypeDisplayNames' for these mods
@@ -215,15 +220,16 @@ export async function run() {
 				console.log('bad', mod.displayProperties.name);
 			}
 			modDisplayNames.add(generateId(mod.itemTypeDisplayName));
-			mods.push(
-				buildModData(
-					mod,
-					sandboxPerkDefinitions,
-					energyTypeDefinitions,
-					statDefinitions,
-					artifactMods
-				)
+			const m = buildModData(
+				mod,
+				sandboxPerkDefinitions,
+				energyTypeDefinitions,
+				statDefinitions,
+				artifactMods
 			);
+			if (m) {
+				mods.push(m);
+			}
 		});
 
 	const modsPath = ['.', 'src', 'generated', 'mod'];

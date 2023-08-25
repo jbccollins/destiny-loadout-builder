@@ -16,12 +16,16 @@ enum EAuthorizedAbility {
 
 // TODO: Figure out how to generate these programatically
 const currentSeasonAuthorizedElements: EElementId[] = [
-	EElementId.Arc,
-	EElementId.Void,
-	EElementId.Strand,
+	// EElementId.Arc,
+	// EElementId.Void,
+	// EElementId.Strand,
 ];
 const currentSeasonAuthorizedAbilities: EAuthorizedAbility[] = [
-	EAuthorizedAbility.Melee,
+	// EAuthorizedAbility.Melee,
+];
+
+const currentSeasonAuthorizedModCategories: EModCategoryId[] = [
+	EModCategoryId.Scavenger,
 ];
 
 const AuthorizedAbilityMapping: Record<EAuthorizedAbility, EModId[]> = {
@@ -247,8 +251,15 @@ export const getModCategoryId = (
 			break;
 	}
 	let isInCurrentSeasonArtifact = false;
-	// Hacky check to see if the element is in the mod id
+
 	if (termModCategory) {
+		if (
+			isArtifactMod &&
+			currentSeasonAuthorizedModCategories.includes(termModCategory)
+		) {
+			return termModCategory;
+		}
+		// Hacky check to see if the element is in the mod id
 		if (
 			isArtifactMod &&
 			AuthorizedElementalModCategories.includes(termModCategory)

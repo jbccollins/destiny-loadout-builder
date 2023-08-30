@@ -9,6 +9,12 @@ export const FragmentIdList = Object.values(EFragmentId);
 export const getFragment = (id: EFragmentId): IFragment =>
 	FragmentIdToFragmentMapping[id];
 
+export const getFragmentByHash = (hash: number): IFragment => {
+	return Object.values(FragmentIdToFragmentMapping).find(
+		(x) => x.hash === hash
+	);
+};
+
 /****** Extra *****/
 const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 	{

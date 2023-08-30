@@ -86,7 +86,7 @@ const testCases: TestCase[] = [
 							...getDefaultModCombos().lowestCostPlacement.placement[
 								EArmorSlotId.Head
 							],
-							armorStatModId: EModId.ResilienceMod,
+							armorStatModId: EModId.IntellectMod,
 						},
 						[EArmorSlotId.Arm]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
@@ -100,11 +100,11 @@ const testCases: TestCase[] = [
 							],
 							armorStatModId: EModId.ResilienceMod,
 						},
-						[EArmorSlotId.Leg]: {
+						[EArmorSlotId.ClassItem]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-								EArmorSlotId.Leg
+								EArmorSlotId.ClassItem
 							],
-							armorStatModId: EModId.IntellectMod,
+							armorStatModId: EModId.ResilienceMod,
 						},
 					},
 				},
@@ -187,31 +187,31 @@ const testCases: TestCase[] = [
 							...getDefaultModCombos().lowestCostPlacement.placement[
 								EArmorSlotId.Head
 							],
-							armorStatModId: EModId.MobilityMod,
+							armorStatModId: EModId.MinorDisciplineMod,
 						},
 						[EArmorSlotId.Arm]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
 								EArmorSlotId.Arm
 							],
-							armorStatModId: EModId.DisciplineMod,
+							armorStatModId: EModId.MobilityMod,
 						},
 						[EArmorSlotId.Chest]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
 								EArmorSlotId.Chest
 							],
-							armorStatModId: EModId.MinorDisciplineMod,
+							armorStatModId: EModId.DisciplineMod,
 						},
 						[EArmorSlotId.Leg]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
 								EArmorSlotId.Leg
 							],
-							armorStatModId: EModId.StrengthMod,
+							armorStatModId: EModId.MinorStrengthMod,
 						},
 						[EArmorSlotId.ClassItem]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
 								EArmorSlotId.ClassItem
 							],
-							armorStatModId: EModId.MinorStrengthMod,
+							armorStatModId: EModId.StrengthMod,
 						},
 					},
 				},

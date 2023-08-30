@@ -34,6 +34,7 @@ import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAs
 import selectedMeleeReducer from './features/selectedMelee/selectedMeleeSlice';
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
 import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
+import tabIndexReducer from './features/tabIndex/tabIndexSlice';
 
 import sharedLoadoutConfigStatPriorityOrderReducer, {
 	defaultOrder,
@@ -74,6 +75,7 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	doProcessArmor,
 	DoProcessArmorOutput,
+	DoProcessArmorParams,
 	preProcessArmor,
 } from '@dlb/services/processArmor/index';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
@@ -167,6 +169,7 @@ export function makeStore() {
 			sharedLoadoutConfigStatPriorityOrder:
 				sharedLoadoutConfigStatPriorityOrderReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
+			tabIndex: tabIndexReducer,
 			useZeroWastedStats: useZeroWastedStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
 		},
@@ -427,7 +430,7 @@ function handleChange() {
 		preProcessedArmor
 	);
 
-	const doProcessArmorParams = {
+	const doProcessArmorParams: DoProcessArmorParams = {
 		masterworkAssumption,
 		desiredArmorStats,
 		armorItems: preProcessedArmor,
@@ -439,7 +442,6 @@ function handleChange() {
 		intrinsicArmorPerkOrAttributeIds:
 			selectedIntrinsicArmorPerkOrAttributeIds.filter((x) => x !== null),
 		destinyClassId: selectedDestinyClass,
-		selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
 		allClassItemMetadata: _allClassItemMetadata,

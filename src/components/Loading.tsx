@@ -447,6 +447,10 @@ function Loading() {
 					armorMetadata,
 					allClassItemMetadata,
 				] = extractArmor(stores, manifest);
+				console.log(
+					'>>>>>>>>>>> [LOAD] allClassItemMetadata <<<<<<<<<<<',
+					allClassItemMetadata
+				);
 
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));

@@ -2,11 +2,14 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
 import { permute } from '@dlb/utils/permutations';
 import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
-import { EArmorSlotId, EArmorStatId, EModSocketCategoryId } from './IdEnums';
 import { IMod } from './generation';
 import { EnumDictionary } from './globals';
+import { EArmorSlotId, EArmorStatId, EModSocketCategoryId } from './IdEnums';
 
 export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
+
+export const getModByHash = (hash: number): IMod =>
+	Object.values(ModIdToModMapping).find((x) => x.hash === hash);
 
 export const ModIdList = Object.values(EModId);
 
@@ -71,6 +74,11 @@ export const ArtifactMinorStatModIdList = ArtifactStatModIdList.filter((id) =>
 export const ArtificeStatModIdList = ModIdList.filter(
 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.ArtificeStat
 );
+
+export const AllStatModHashes = [
+	...ArtificeStatModIdList,
+	...StatModIdList,
+].map((id) => getMod(id)?.hash);
 
 const ArmorStatIdToArtificeStatModIdMapping: EnumDictionary<
 	EArmorStatId,

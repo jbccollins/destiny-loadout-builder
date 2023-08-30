@@ -1,3 +1,4 @@
+import Head from '@dlb/components/Meta/Head';
 import { selectLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { Box, Button, styled } from '@mui/material';
@@ -72,31 +73,36 @@ function Error() {
 	};
 
 	return (
-		<Container>
-			<Title>A fatal error occured while loading your Destiny inventory</Title>
-			<Subtitle>
-				Click the RESET button to hard refresh the application
-			</Subtitle>
-			<Content>
-				<Button
-					sx={{ margin: '8px' }}
-					variant="contained"
-					onClick={() => handleReset()}
-				>
-					Reset
-				</Button>
-				{!showError && (
+		<>
+			<Head />
+			<Container>
+				<Title>
+					A fatal error occured while loading your Destiny inventory
+				</Title>
+				<Subtitle>
+					Click the RESET button to hard refresh the application
+				</Subtitle>
+				<Content>
 					<Button
 						sx={{ margin: '8px' }}
-						variant="text"
-						onClick={() => setShowError(true)}
+						variant="contained"
+						onClick={() => handleReset()}
 					>
-						Show Error
+						Reset
 					</Button>
-				)}
-				{showError && <ErrorWrapper>{loadError}</ErrorWrapper>}
-			</Content>
-		</Container>
+					{!showError && (
+						<Button
+							sx={{ margin: '8px' }}
+							variant="text"
+							onClick={() => setShowError(true)}
+						>
+							Show Error
+						</Button>
+					)}
+					{showError && <ErrorWrapper>{loadError}</ErrorWrapper>}
+				</Content>
+			</Container>
+		</>
 	);
 }
 

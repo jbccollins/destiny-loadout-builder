@@ -36,40 +36,43 @@ interface TabContainerItem {
 	content: React.ReactNode;
 	index: number;
 	title: React.ReactNode;
+	icon?: React.ReactElement;
 }
 
 interface TabContainerProps {
 	tabs: TabContainerItem[];
 	onChange: (value: number) => void;
+	tabIndex: number;
 }
 
 export default function BasicTabs(props: TabContainerProps) {
-	const { tabs, onChange } = props;
-	const [value, setValue] = React.useState(tabs[0].index);
+	const { tabs, onChange, tabIndex } = props;
 
 	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
 		onChange(newValue);
-		setValue(newValue);
 	};
 
 	return (
 		<Box sx={{ width: '100%' }}>
 			<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 				<Tabs
-					value={value}
+					value={tabIndex}
 					onChange={handleChange}
 					aria-label="basic tabs example"
 				>
-					{/* <Tab label="Item One" {...a11yProps(0)} />
-					<Tab label="Item Two" {...a11yProps(1)} />
-					<Tab label="Item Three" {...a11yProps(2)} /> */}
-					{tabs.map(({ index, title }) => (
-						<Tab key={index} label={title} {...a11yProps(index)} />
+					{tabs.map(({ index, title, icon }) => (
+						<Tab
+							key={index}
+							// label={title}
+							icon={icon}
+							iconPosition="start"
+							{...a11yProps(index)}
+						/>
 					))}
 				</Tabs>
 			</Box>
 			{tabs.map(({ content, index }) => (
-				<TabPanel key={index} value={value} index={index}>
+				<TabPanel key={index} value={tabIndex} index={index}>
 					{content}
 				</TabPanel>
 			))}

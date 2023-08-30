@@ -7,6 +7,9 @@ import { EDestinySubclassId } from './IdEnums';
 export const MeleeIdList = Object.values(EMeleeId);
 
 export const getMelee = (id: EMeleeId): IMelee => MeleeIdToMeleeMapping[id];
+export const getMeleeByHash = (hash: number): IMelee => {
+	return Object.values(MeleeIdToMeleeMapping).find((x) => x.hash === hash);
+};
 
 /****** Extra *****/
 const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<

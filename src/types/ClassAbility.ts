@@ -9,6 +9,12 @@ export const ClassAbilityIdList = Object.values(EClassAbilityId);
 export const getClassAbility = (id: EClassAbilityId): IClassAbility =>
 	ClassAbilityIdToClassAbilityMapping[id];
 
+export const getClassAbilityByHash = (hash: number): IClassAbility => {
+	return Object.values(ClassAbilityIdToClassAbilityMapping).find(
+		(x) => x.hash === hash
+	);
+};
+
 /****** Extra *****/
 // TODO: Move this into the actual subclass defs like super is
 const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<

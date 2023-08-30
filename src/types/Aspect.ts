@@ -10,6 +10,10 @@ export const AspectIdList = Object.values(EAspectId);
 export const getAspect = (aspectId: EAspectId): IAspect =>
 	AspectIdToAspectMapping[aspectId];
 
+export const getAspectByHash = (hash: number): IAspect => {
+	return Object.values(AspectIdToAspectMapping).find((x) => x.hash === hash);
+};
+
 /***** Extra *****/
 
 // TODO: Move this right into the subclass file

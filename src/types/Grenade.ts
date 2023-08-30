@@ -9,6 +9,10 @@ export const GrenadeIdList = Object.values(EGrenadeId);
 export const getGrenade = (id: EGrenadeId): IGrenade =>
 	GrenadeIdToGrenadeMapping[id];
 
+export const getGrenadeByHash = (hash: number): IGrenade => {
+	return Object.values(GrenadeIdToGrenadeMapping).find((x) => x.hash === hash);
+};
+
 /****** Extra *****/
 const ElementIdToGrenadeIdListMapping: EnumDictionary<
 	EElementId,

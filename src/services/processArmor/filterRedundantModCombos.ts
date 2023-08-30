@@ -2,9 +2,9 @@ import {
 	ArmorStatIdList,
 	getArmorStatModSpitFromArmorStatId,
 } from '@dlb/types/ArmorStat';
-import { StatModCombo } from './getStatModCombosFromDesiredStats';
 import { getMod } from '@dlb/types/Mod';
 import { isEqual } from 'lodash';
+import { StatModCombo } from './getStatModCombosFromDesiredStats';
 
 // Filter out mod combos that have the same costs but different mods
 export const filterRedundantStatModCombos = (
@@ -58,16 +58,16 @@ export const filterRedundantStatModCombos = (
 			}
 
 			if (redundant) {
-				console.log('>>>>>> filtered redundant combo');
+				// console.log('>>>>>> filtered redundant combo');
 				_combos.splice(j, 1);
 				j--;
 			}
 		}
 	}
-	console.log(
-		`Removed ${combos.length - _combos.length} redundant combos out of ${
-			combos.length
-		} total combos`
-	);
+	// console.log(
+	// 	`Removed ${combos.length - _combos.length} redundant combos out of ${
+	// 		combos.length
+	// 	} total combos`
+	// );
 	return _combos;
 };

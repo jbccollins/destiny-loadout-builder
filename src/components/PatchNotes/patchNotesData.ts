@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-09-01',
+		version: '2.2.5',
+		title: 'Prioritize higher power class items',
+		sections: [
+			{
+				items: [
+					`DIM Links now prefer class items with higher power levels when multiple class items are available`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-08-25',
 		version: '2.2.4',
 		title: 'Season of the Witch Update',

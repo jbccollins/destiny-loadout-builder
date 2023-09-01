@@ -177,18 +177,20 @@ export const generateDimLink = (
 		clearSpace: false,
 	};
 
+	let potentialClassItems: ArmorItem[] = [];
 	if (classItem.requiredClassItemMetadataKey !== null) {
-		loadout.equipped.push({
-			id: classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id,
-			hash: classItemMetadata[classItem.requiredClassItemMetadataKey].items[0]
-				.hash,
-		});
+		potentialClassItems =
+			classItemMetadata[classItem.requiredClassItemMetadataKey].items;
 	} else {
-		loadout.equipped.push({
-			id: classItemMetadata.Legendary.items[0].id,
-			hash: classItemMetadata.Legendary.items[0].hash,
-		});
+		potentialClassItems = classItemMetadata.Legendary.items;
 	}
+
+	// Select the highest power class item that meets our requirements
+	const ci = [...potentialClassItems].sort((a, b) => b.power - a.power)[0];
+	loadout.equipped.push({
+		id: ci.id,
+		hash: ci.hash,
+	});
 
 	// Configure subclass
 	const socketOverrides: Record<number, number> = {};

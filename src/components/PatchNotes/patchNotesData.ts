@@ -12,6 +12,16 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-09-01',
+		version: '2.2.6',
+		title: 'Add S22 Intrinsic Armor Perk: Exhumed Excess',
+		sections: [
+			{
+				items: [`Add the Exhumed Excess perk to the Armor Attributes section`],
+			},
+		],
+	},
+	{
+		date: '2023-09-01',
 		version: '2.2.5',
 		title: 'Prioritize higher power class items',
 		sections: [

@@ -109,6 +109,7 @@ export enum ERaidAndNightMareModTypeId {
 
 export enum EIntrinsicArmorPerkOrAttributeId {
 	// Perks
+	ExhumedExcess = 'ExhumedExcess',
 	QueensFavor = 'QueensFavor',
 	UniformedOfficer = 'UniformedOfficer',
 	PlunderersTrappings = 'PlunderersTrappings',

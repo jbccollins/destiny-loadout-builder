@@ -46,6 +46,17 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Event,
 		abbreviation: 'IB',
 	},
+	[EIntrinsicArmorPerkOrAttributeId.ExhumedExcess]: {
+		id: EIntrinsicArmorPerkOrAttributeId.ExhumedExcess,
+		name: 'Exhumed Excess',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/e083d8a85c2c60825204d14b9e9263b7.png',
+		armorSlotId: null,
+		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Perk,
+		season: 22,
+		description:
+			'Increases your chances of creating an additional offering during activities. Each piece of armor you are wearing with this perk increases this bonus, to a maximum of 4 items.',
+		abbreviation: 'S22',
+	},
 	[EIntrinsicArmorPerkOrAttributeId.SonarAmplifier]: {
 		id: EIntrinsicArmorPerkOrAttributeId.SonarAmplifier,
 		name: 'Sonar Amplifier',

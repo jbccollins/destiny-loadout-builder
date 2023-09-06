@@ -7,15 +7,6 @@ import {
 } from './globals';
 import { EArmorStatId, EDestinyClassId, EDestinySubclassId } from './IdEnums';
 
-export const ApiDestinyClassTypeToDestinyClassId: Record<
-	number,
-	EDestinyClassId
-> = {
-	0: EDestinyClassId.Titan,
-	1: EDestinyClassId.Hunter,
-	2: EDestinyClassId.Warlock,
-};
-
 export const DestinyClassIdList = ValidateEnumList(
 	Object.values(EDestinyClassId),
 	[EDestinyClassId.Titan, EDestinyClassId.Warlock, EDestinyClassId.Hunter]

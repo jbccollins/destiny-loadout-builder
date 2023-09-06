@@ -2,6 +2,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 import allClassItemMetadataReducer from './features/allClassItemMetadata/allClassItemMetadataSlice';
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
+import analyzableLoadoutsReducer from './features/analyzableLoadouts/analyzableLoadoutsSlice';
 import armorReducer from './features/armor/armorSlice';
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
 import charactersReducer from './features/characters/charactersSlice';
@@ -129,7 +130,7 @@ export function makeStore() {
 		reducer: {
 			allClassItemMetadata: allClassItemMetadataReducer,
 			allDataLoaded: allDataLoadedReducer,
-			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
+			analyzableLoadouts: analyzableLoadoutsReducer,
 			armor: armorReducer,
 			armorMetadata: armorMetadataReducer,
 			armorSlotModViolations: armorSlotModViolationsReducer,
@@ -141,6 +142,7 @@ export function makeStore() {
 			dimLoadoutsFilter: dimLoadoutsFilterReducer,
 			disabledArmorSlotMods: disabledArmorSlotModsReducer,
 			disabledRaidMods: disabledRaidModsReducer,
+			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
 			inGameLoadouts: inGameLoadoutsReducer,
 			inGameLoadoutsFilter: inGameLoadoutsFilterReducer,
 			loadError: loadErrorReducer,

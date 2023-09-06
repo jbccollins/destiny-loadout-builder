@@ -139,8 +139,8 @@ function PatchNotes() {
 					</Box>
 				</Box>
 				<SectionTitle sx={{ marginTop: '16px' }}>Patch Notes</SectionTitle>
-				{patchNotes.map((patchNote) => (
-					<PatchNoteContainer key={patchNote.version}>
+				{patchNotes.map((patchNote, k) => (
+					<PatchNoteContainer key={k}>
 						<Header>
 							<Title>{patchNote.title}</Title>
 
@@ -148,10 +148,10 @@ function PatchNotes() {
 							<Subtitle>{patchNote.date}</Subtitle>
 						</Header>
 						<Content>
-							{patchNote.sections.map((section) => (
-								<Section key={section.title}>
-									{section.items.map((item) => (
-										<Item key={item}>
+							{patchNote.sections.map((section, i) => (
+								<Section key={i}>
+									{section.items.map((item, j) => (
+										<Item key={j}>
 											<Bullet>◦</Bullet>
 											{item}
 										</Item>

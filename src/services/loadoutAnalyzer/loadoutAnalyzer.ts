@@ -5,7 +5,6 @@ import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
-import { EModId } from '@dlb/generated/mod/EModId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import {
@@ -14,6 +13,12 @@ import {
 	preProcessArmor,
 } from '@dlb/services/processArmor';
 import { roundDown10 } from '@dlb/services/processArmor/utils';
+import {
+	AnalyzableLoadout,
+	AnalyzableLoadoutMapping,
+	ELoadoutType,
+	getDefaultAnalyzableLoadout,
+} from '@dlb/types/AnalyzableLoadout';
 import {
 	AllClassItemMetadata,
 	Armor,
@@ -34,15 +39,14 @@ import {
 import { getAspectByHash } from '@dlb/types/Aspect';
 import { getClassAbilityByHash } from '@dlb/types/ClassAbility';
 import {
-	ApiDestinyClassTypeToDestinyClassId,
 	DestinyClassIdList,
 	getDestinyClassIdByDestinySubclassId,
 } from '@dlb/types/DestinyClass';
 import { getDestinySubclassByHash } from '@dlb/types/DestinySubclass';
+import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 import { getFragmentByHash } from '@dlb/types/Fragment';
 import { getGrenadeByHash } from '@dlb/types/Grenade';
 import {
-	EDestinyClassId,
 	EDestinySubclassId,
 	EDimLoadoutsFilterId,
 	EGearTierId,
@@ -57,36 +61,6 @@ import {
 	getModByHash,
 } from '@dlb/types/Mod';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
-
-export enum ELoadoutType {
-	DIM = 'DIM',
-	InGame = 'InGame',
-}
-
-// We should be able to completely populate the redux store from this config
-// such that using the tool "just works"
-export type DLBConfig = {
-	classAbilityId: EClassAbilityId;
-	jumpId: EJumpId;
-	superAbilityId: ESuperAbilityId;
-	meleeId: EMeleeId;
-	grenadeId: EGrenadeId;
-	aspectIdList: EAspectId[];
-	fragmentIdList: EFragmentId[];
-	desiredStatTiers: ArmorStatMapping;
-	destinyClassId: EDestinyClassId;
-	destinySubclassId: EDestinySubclassId;
-	exoticHash: number;
-};
-
-export type AnalyzableLoadout = {
-	armor: ArmorItem[];
-	modIdList: EModId[];
-	id: string;
-	loadoutType: ELoadoutType;
-	icon: string;
-	name?: string;
-} & DLBConfig;
 
 const flattenArmor = (
 	armor: Armor,
@@ -115,30 +89,17 @@ export const buildLoadouts = (
 	armor: Armor,
 	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping,
 	masterworkAssumption: EMasterworkAssumption
-): Record<string, AnalyzableLoadout> => {
+): AnalyzableLoadoutMapping => {
 	const loadouts: AnalyzableLoadout[] = [];
 	const armorItems = flattenArmor(armor, allClassItemMetadata);
 	dimLoadouts.forEach((dimLoadout) => {
 		const loadout: AnalyzableLoadout = {
-			exoticHash: 0,
-			armor: [],
-			desiredStatTiers: null,
-			modIdList: [],
+			...getDefaultAnalyzableLoadout(),
 			id: dimLoadout.id,
 			name: dimLoadout.name,
 			loadoutType: ELoadoutType.DIM,
-			icon: null,
-			destinyClassId: ApiDestinyClassTypeToDestinyClassId[dimLoadout.classType],
-			destinySubclassId: null,
-			classAbilityId: null,
-			jumpId: null,
-			superAbilityId: null,
-			meleeId: null,
-			grenadeId: null,
-			aspectIdList: [],
-			fragmentIdList: [],
+			destinyClassId: DestinyClassHashToDestinyClass[dimLoadout.classType],
 		};
-
 		const desiredStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
 
 		// TODO: Stat constraints may not respect fragment bonus changes
@@ -455,3 +416,9 @@ export interface GetLoadoutsThatCanBeOptimizedWorker
 	extends Omit<Worker, 'postMessage'> {
 	postMessage(data: PostMessageParams): void;
 }
+
+/* Just some notes here: 
+- DIM Loadouts have a set class item. If we can still use that to achieve the same or higher stat tiers then we should.
+  If that's not possible then c'est la vie. This can happen if the user gets an artifice class item or something.
+
+*/

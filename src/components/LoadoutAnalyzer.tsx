@@ -1,4 +1,5 @@
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
+import { selectAnalyzableLoadouts } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
@@ -16,8 +17,6 @@ import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selected
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
-	AnalyzableLoadout,
-	buildLoadouts,
 	EGetLoadoutsThatCanBeOptimizedProgresstype,
 	EMessageType,
 	GetLoadoutsThatCanBeOptimizedOutputItem,
@@ -25,6 +24,7 @@ import {
 	GetLoadoutsThatCanBeOptimizedWorker,
 	Message,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { AnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 import EditIcon from '@mui/icons-material/Edit';
@@ -60,12 +60,9 @@ export default function LoadoutAnalyzer() {
 
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 
-	const loadouts = buildLoadouts(
-		dimLoadouts,
-		armor,
-		allClassItemMetadata,
-		masterworkAssumption
-	);
+	const analyzeableLoadouts = useAppSelector(
+		selectAnalyzableLoadouts
+	).validLoadouts;
 	const dispatch = useAppDispatch();
 
 	const getLoadoutsThatCanBeOptimizedWorker: GetLoadoutsThatCanBeOptimizedWorker =
@@ -92,15 +89,11 @@ export default function LoadoutAnalyzer() {
 	}, [availableExoticArmor]);
 
 	const numValidDimLoadouts = useMemo(
-		() => Object.entries(loadouts).length,
-		[loadouts]
+		() => Object.entries(analyzeableLoadouts).length,
+		[analyzeableLoadouts]
 	);
 
-	// This is such a fucking hack but I can't
-	// figure out how to properly read state inside the
-	// onmessage handler so I can't do state = currentState + 1
-
-	const handleClick = () => {
+	const analyzeLoadouts = () => {
 		setProgressCompletionCount(0);
 		setProgressCanBeOptimizedCount(0);
 		setProgressErroredCount(0);
@@ -108,7 +101,7 @@ export default function LoadoutAnalyzer() {
 		setAnalyzed(false);
 		setAnalyzing(true);
 		getLoadoutsThatCanBeOptimizedWorker.postMessage({
-			loadouts,
+			loadouts: analyzeableLoadouts,
 			armor,
 			masterworkAssumption,
 			allClassItemMetadata,
@@ -152,48 +145,42 @@ export default function LoadoutAnalyzer() {
 	};
 
 	useEffect(() => {
-		let _progressCompletionCount = 0;
-		let _progressCanBeOptimizedCount = 0;
-		let _progressErroredCount = 0;
 		if (window.Worker) {
 			getLoadoutsThatCanBeOptimizedWorker.onmessage = (
 				e: MessageEvent<Message>
 			) => {
 				switch (e.data.type) {
 					case EMessageType.Progress:
-						_progressCompletionCount++;
-						setProgressCompletionCount(_progressCompletionCount);
+						setProgressCompletionCount((count) => count + 1);
 						const payload = e.data
 							.payload as GetLoadoutsThatCanBeOptimizedProgress;
-						console.log('progress', e.data, _progressCompletionCount);
+						console.log('progress', e.data);
 						if (payload.canBeOptimized) {
-							_progressCanBeOptimizedCount++;
-							setProgressCanBeOptimizedCount(_progressCanBeOptimizedCount);
+							setProgressCanBeOptimizedCount((count) => count + 1);
 						}
 						if (
 							payload.type === EGetLoadoutsThatCanBeOptimizedProgresstype.Error
 						) {
-							_progressErroredCount++;
-							setProgressErroredCount(_progressErroredCount);
+							setProgressErroredCount((count) => count + 1);
 						}
 						break;
 					case EMessageType.Results:
 						console.log('results', e.data);
 						setAnalyzing(false);
 						setAnalyzed(true);
-						_progressCompletionCount = 0;
-						_progressCanBeOptimizedCount = 0;
-						_progressErroredCount = 0;
+						setProgressCompletionCount(0);
+						setProgressCanBeOptimizedCount(0);
+						setProgressErroredCount(0);
 						setAnalysisResults(
 							(e.data.payload as GetLoadoutsThatCanBeOptimizedOutputItem[]).map(
-								(x) => loadouts[x.loadoutId]
+								(x) => analyzeableLoadouts[x.loadoutId]
 							)
 						);
 						break;
 					case EMessageType.Error:
-						_progressCompletionCount = 0;
-						_progressCanBeOptimizedCount = 0;
-						_progressErroredCount = 0;
+						setProgressCompletionCount(0);
+						setProgressCanBeOptimizedCount(0);
+						setProgressErroredCount(0);
 						console.error('error', e.data);
 						setFatalError(true);
 						break;
@@ -201,8 +188,11 @@ export default function LoadoutAnalyzer() {
 						break;
 				}
 			};
+			analyzeLoadouts();
 		}
 	}, []);
+
+	return <></>;
 
 	if (dimLoadouts.length === 0) {
 		return (
@@ -251,7 +241,7 @@ export default function LoadoutAnalyzer() {
 				</>
 			)}
 			{!analyzing && (
-				<Button variant="contained" onClick={handleClick}>
+				<Button variant="contained" onClick={analyzeLoadouts}>
 					{analyzed ? 'Re-Run Analysis' : 'Analyze'}
 				</Button>
 			)}
@@ -269,10 +259,11 @@ export default function LoadoutAnalyzer() {
 								}}
 							>
 								<IconButton
+									onClick={() => setApplicationState(result)}
 									size="small"
 									sx={{ marginRight: theme.spacing(0.5) }}
 								>
-									<EditIcon onClick={() => setApplicationState(result)} />
+									<EditIcon />
 								</IconButton>
 								<Box>{result.name}</Box>
 							</Box>

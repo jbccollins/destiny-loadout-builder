@@ -31,6 +31,10 @@ import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
+import {
+	selectAnalyzableLoadouts,
+	setAnalyzableLoadouts,
+} from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
@@ -115,6 +119,7 @@ import {
 } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
+import { buildLoadouts } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import {
 	EDestinyClassId,
@@ -177,6 +182,7 @@ function Loading() {
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
 	const inGameLoadoutsFilter = useAppSelector(selectInGameLoadoutsFilter);
+	const analyzableLoadouts = useAppSelector(selectAnalyzableLoadouts);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
@@ -411,9 +417,10 @@ function Loading() {
 				console.log('>>>>>>>>>>> [LOAD] platform <<<<<<<<<<<', membershipData);
 
 				let hasDimLoadoutsError = false;
+				let dimProfile = null;
 				try {
 					// throw 'heck';
-					const dimProfile = await getDimApiProfile(mostRecentPlatform);
+					dimProfile = await getDimApiProfile(mostRecentPlatform);
 					dispatch(setDimLoadouts(dimProfile.loadouts));
 					console.log('>>>>>>>>>>> [LOAD] DIM profile <<<<<<<<<<<', dimProfile);
 				} catch (e) {
@@ -563,16 +570,36 @@ function Loading() {
 				);
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
-
-				if (hasDimLoadoutsError) {
-					dispatch(setDimLoadouts(dimLoadouts));
-				}
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
 				dispatch(setInGameLoadouts(inGameLoadoutItemIdList));
 				dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
 				dispatch(setUseZeroWastedStats(useZeroWastedStats));
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
 				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
+				if (hasDimLoadoutsError) {
+					dispatch(setDimLoadouts([]));
+				}
+				if (!hasDimLoadoutsError && dimProfile) {
+					const analyzableDimLoadouts = buildLoadouts(
+						dimProfile.loadouts,
+						armor,
+						allClassItemMetadata,
+						selectedMasterworkAssumption
+					);
+					console.log(
+						'>>>>>>>>>>> [LOAD] analyzableDimLoadouts <<<<<<<<<<<',
+						analyzableDimLoadouts
+					);
+					dispatch(
+						setAnalyzableLoadouts({
+							...analyzableLoadouts,
+							validLoadouts: {
+								...analyzableLoadouts.validLoadouts,
+								...analyzableDimLoadouts,
+							},
+						})
+					);
+				}
 				localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));

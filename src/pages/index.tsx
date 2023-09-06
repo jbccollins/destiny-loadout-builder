@@ -448,6 +448,7 @@ const Home: NextPage = () => {
 				{!allDataLoaded && <Loading />}
 				{allDataLoaded && (
 					<>
+						<LoadoutAnalyzer />
 						{isSmallScreen && (
 							<>
 								{smallScreenResultsOpen && (

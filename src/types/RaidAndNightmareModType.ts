@@ -62,6 +62,12 @@ const RaidAndNightMareModTypeIdToRaidAndNightMareModTypeMapping: EnumDictionary<
 		abbreviation: 'RoN',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_d3dc8747ee63f991c6a56ac7908047ba.png',
 	},
+	[ERaidAndNightMareModTypeId.CrotasEnd]: {
+		id: ERaidAndNightMareModTypeId.CrotasEnd,
+		name: "Crota's End",
+		abbreviation: 'CE',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_2c5b645accc12584f882c472deb30017.png',
+	},
 };
 
 export const getRaidAndNightmareModType = (
@@ -80,6 +86,7 @@ export const RaidAndNightmareModTypeIdList = ValidateEnumList(
 		ERaidAndNightMareModTypeId.VaultOfGlass,
 		ERaidAndNightMareModTypeId.VowOfTheDisciple,
 		ERaidAndNightMareModTypeId.RootOfNightmares,
+		ERaidAndNightMareModTypeId.CrotasEnd,
 	]
 );
 

@@ -207,6 +207,9 @@ export const getModCategoryId = (
 	if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
 		return EModCategoryId.RaidAndNightmare;
 	}
+	if (displayNameId === EModDisplayNameId.CrotasEndMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
 	if (displayNameId === EModDisplayNameId.NightmareMod) {
 		return EModCategoryId.RaidAndNightmare;
 	}
@@ -323,6 +326,9 @@ export const getRaidAndNightmareModTypeId = (
 	}
 	if (displayNameId === EModDisplayNameId.KingsFallMod) {
 		return ERaidAndNightMareModTypeId.KingsFall;
+	}
+	if (displayNameId === EModDisplayNameId.CrotasEndMod) {
+		return ERaidAndNightMareModTypeId.CrotasEnd;
 	}
 	if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
 		return ERaidAndNightMareModTypeId.RootOfNightmares;

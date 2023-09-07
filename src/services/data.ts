@@ -399,6 +399,7 @@ const GARDEN_OF_SALVATION_SOCKET_HASH = 706611068;
 const DEEP_STONE_CRYPT_SOCKET_HASH = 4055462131;
 const VOW_OF_THE_DISCIPLE_SOCKET_HASH = 2447143568;
 const ROOT_OF_NIGHTMARES_SOCKET_HASH = 4144354978;
+const CROTAS_END_SOCKET_HASH = 717667840;
 const NIGHTMARE_SOCKET_HASH = 1180997867;
 
 const hasSocket = (item: DimItem, hash: number): boolean =>
@@ -428,6 +429,9 @@ const getExtraSocketModCategoryId = (
 	}
 	if (hasSocket(item, ROOT_OF_NIGHTMARES_SOCKET_HASH)) {
 		return ERaidAndNightMareModTypeId.RootOfNightmares;
+	}
+	if (hasSocket(item, CROTAS_END_SOCKET_HASH)) {
+		return ERaidAndNightMareModTypeId.CrotasEnd;
 	}
 	if (hasSocket(item, NIGHTMARE_SOCKET_HASH)) {
 		return ERaidAndNightMareModTypeId.NightmareHunt;

@@ -28,7 +28,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Icarus Dash",
     id: EAspectId.IcarusDash,
     description:
-      "[###DestinyNamedSubstitutions.ui_player_action_air_dodge_button###] [###DestinyNamedSubstitutions.ui_player_action_air_dodge_verb###] : Dodge quickly while airborne.\n\nWhile Heat Rises is active, you have an additional dodge.",
+      "[Air Dodge]  : Dodge quickly while airborne.\n\nWhile Heat Rises is active, you have an additional dodge.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/55a690bbd9cd53777df674a279422865.jpg",
     hash: 83039195,
     fragmentSlots: 2,
@@ -63,7 +63,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Weavewalk",
     id: EAspectId.Weavewalk,
     description:
-      "[###DestinyNamedSubstitutions.ui_player_action_air_dodge_button###] [###DestinyNamedSubstitutions.ui_player_action_air_dodge_verb###] : Dodge while airborne to enter the weave, gaining damage resistance from combatants and players. Reactivate your air dodge or cast your Rift to exit the weave.\n\nWhile in the weave, you generate perched Threadlings over time.",
+      "[Air Dodge]  : Dodge while airborne to consume your melee energy and enter the weave, gaining damage resistance from combatants and players. Reactivate your air dodge or cast your Rift to exit the weave.\n\nWhile in the weave, your melee energy is drained and you generate perched Threadlings over time.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/dbf533cafaa43fd6e02bb58327859fb9.jpg",
     hash: 262821312,
     fragmentSlots: 1,

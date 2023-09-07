@@ -302,6 +302,7 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 			[ERaidAndNightMareModTypeId.KingsFall]: getDefaultArmorSlotMetadata(),
 			[ERaidAndNightMareModTypeId.RootOfNightmares]:
 				getDefaultArmorSlotMetadata(),
+			[ERaidAndNightMareModTypeId.CrotasEnd]: getDefaultArmorSlotMetadata(),
 			[ERaidAndNightMareModTypeId.NightmareHunt]: getDefaultArmorSlotMetadata(),
 		},
 	},
@@ -358,6 +359,7 @@ const allClassItemMetadata: AllClassItemMetadata = {
 	[ERaidAndNightMareModTypeId.VowOfTheDisciple]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.KingsFall]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.RootOfNightmares]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.CrotasEnd]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.NightmareHunt]: getDefaultClassItemMetadata(),
 	Legendary: getDefaultClassItemMetadata(),
 	Artifice: getDefaultClassItemMetadata(),
@@ -391,6 +393,7 @@ const defaultItemCounts: ItemCounts = {
 	[ERaidAndNightMareModTypeId.VowOfTheDisciple]: 0,
 	[ERaidAndNightMareModTypeId.KingsFall]: 0,
 	[ERaidAndNightMareModTypeId.RootOfNightmares]: 0,
+	[ERaidAndNightMareModTypeId.CrotasEnd]: 0,
 	[ERaidAndNightMareModTypeId.NightmareHunt]: 0,
 	[EIntrinsicArmorPerkOrAttributeId.GuardianGames]: 0,
 	[EIntrinsicArmorPerkOrAttributeId.HalloweenMask]: 0,

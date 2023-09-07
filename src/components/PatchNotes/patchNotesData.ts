@@ -11,6 +11,16 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-09-07',
+		version: '2.2.7',
+		title: "Add Crota's End Raid Mods",
+		sections: [
+			{
+				items: [`Add Crota's End Raid Mods to the Raid Mods section`],
+			},
+		],
+	},
+	{
 		date: '2023-09-01',
 		version: '2.2.6',
 		title: 'Add S22 Intrinsic Armor Perk: Exhumed Excess',

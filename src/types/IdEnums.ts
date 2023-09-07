@@ -104,6 +104,7 @@ export enum ERaidAndNightMareModTypeId {
 	VowOfTheDisciple = 'VowOfTheDisciple',
 	KingsFall = 'KingsFall',
 	RootOfNightmares = 'RootOfNightmares',
+	CrotasEnd = 'CrotasEnd',
 	NightmareHunt = 'NightmareHunt',
 }
 

@@ -1,21 +1,19 @@
 /*
 USAGE: From the root directory run "npm run generate"
 */
-import lodash from 'lodash';
-import path from 'path';
-import { EArmorSlotId, EElementId } from '@dlb/types/IdEnums';
-import { getArmorSlotIdByHash } from '@dlb/types/ArmorSlot';
+import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
+import { IGrenade } from '@dlb/types/generation';
+import { EElementId } from '@dlb/types/IdEnums';
+import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	DestinyInventoryItemDefinition,
 	DestinySandboxPerkDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
-import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
-import { IGrenade } from '@dlb/types/generation';
+import lodash from 'lodash';
+import path from 'path';
 import { generateGrenadeIdEnumFileString } from './generateGrenadeIdEnum';
 import { generateGrenadeMapping } from './generateGrenadeMapping';
-import { bungieNetPath } from '@dlb/utils/item-utils';
-import { getElementIdByHash } from '@dlb/types/Element';
 
 const buildGrenadeData = (
 	grenade: DestinyInventoryItemDefinition,

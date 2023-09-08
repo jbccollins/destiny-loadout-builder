@@ -1,4 +1,5 @@
-import { styled, Box } from '@mui/material';
+import Head from '@dlb/components/Meta/Head';
+import { Box, styled } from '@mui/material';
 
 const Container = styled(Box)(({ theme }) => ({
 	position: 'fixed',
@@ -29,25 +30,28 @@ const Content = styled(Box)(({ theme }) => ({}));
 
 function NotEnoughArmor() {
 	return (
-		<Container>
-			<Title>Not enough armor</Title>
-			<Subtitle>
-				You do not have enough armor for destinyloadoutbuilder.com to make a
-				loadout.
-			</Subtitle>
-			<Content>
-				To create a loadout you must have
-				<ul>
-					<li>At least one character created</li>
-					<li>At least one exotic armor piece for that character</li>
-					<li>
-						At least one legendary armor piece for every armor slot for that
-						character. So a legendary helmet, arms, chestpiece, legs and class
-						item.
-					</li>
-				</ul>
-			</Content>
-		</Container>
+		<>
+			<Head />
+			<Container>
+				<Title>Not enough armor</Title>
+				<Subtitle>
+					You do not have enough armor for destinyloadoutbuilder.com to make a
+					loadout.
+				</Subtitle>
+				<Content>
+					To create a loadout you must have
+					<ul>
+						<li>At least one character created</li>
+						<li>At least one exotic armor piece for that character</li>
+						<li>
+							At least one legendary armor piece for every armor slot for that
+							character. So a legendary helmet, arms, chestpiece, legs and class
+							item.
+						</li>
+					</ul>
+				</Content>
+			</Container>
+		</>
 	);
 }
 

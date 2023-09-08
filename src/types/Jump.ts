@@ -1,5 +1,6 @@
-import { JumpIdToJumpMapping } from '@dlb/generated/jump/JumpMapping';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
+import { JumpIdToJumpMapping } from '@dlb/generated/jump/JumpMapping';
+import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { IJump } from './generation';
 import { EnumDictionary } from './globals';
 import { EDestinySubclassId } from './IdEnums';
@@ -7,6 +8,12 @@ import { EDestinySubclassId } from './IdEnums';
 export const JumpIdList = Object.values(EJumpId);
 
 export const getJump = (id: EJumpId): IJump => JumpIdToJumpMapping[id];
+
+const JumpHashToJumpIdMapping = generateHashToIdMapping(JumpIdToJumpMapping);
+
+export const getJumpByHash = (hash: number): IJump => {
+	return JumpIdToJumpMapping[JumpHashToJumpIdMapping[hash]];
+};
 
 /****** Extra *****/
 // TODO: Move this right on to the subclass object

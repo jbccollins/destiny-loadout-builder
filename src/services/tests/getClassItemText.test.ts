@@ -1,11 +1,12 @@
 import {
-	ResultsTableLoadout,
 	getClassItemText,
+	ResultsTableLoadout,
 } from '@dlb/components/ArmorResults/ArmorResultsTypes';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { ARTIFICE } from '@dlb/services/processArmor/constants';
 import { ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
+import { getDefaultModPlacements } from '../processArmor/getModCombos';
 
 const testFunction = getClassItemText;
 
@@ -21,6 +22,7 @@ const getDefaultResultsTableLoadout = (): ResultsTableLoadout => ({
 	requiredArtificeModIdList: [],
 	requiredStatModIdList: [],
 	classItem: getDefaultProcessedArmorItemMetadataClassItem(),
+	modPlacement: getDefaultModPlacements().placement,
 });
 
 const testCases: TestCase[] = [

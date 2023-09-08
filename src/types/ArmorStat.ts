@@ -2,8 +2,6 @@ import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDestinyClassAbilityStat } from './DestinyClass';
 import { getFragment } from './Fragment';
-import { EArmorStatId, EDestinyClassId } from './IdEnums';
-import { getMod } from './Mod';
 import {
 	EnumDictionary,
 	IHash,
@@ -12,6 +10,8 @@ import {
 	StatBonusStat,
 	ValidateEnumList,
 } from './globals';
+import { EArmorStatId, EDestinyClassId } from './IdEnums';
+import { getMod } from './Mod';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 	EArmorStatId.Mobility,
@@ -27,6 +27,16 @@ export interface IArmorStat extends IIdentifiableName, IIcon, IHash {
 	index: number;
 }
 
+export const ArmorStatIndices: Record<EArmorStatId, number> = {
+	[EArmorStatId.Mobility]: 0,
+	[EArmorStatId.Resilience]: 1,
+	[EArmorStatId.Recovery]: 2,
+	[EArmorStatId.Discipline]: 3,
+	[EArmorStatId.Intellect]: 4,
+	[EArmorStatId.Strength]: 5,
+};
+
+// TODO: Remove the index from these items and just rely on the ArmorStatIndices
 const ArmorStatIdToArmorStatMapping: EnumDictionary<EArmorStatId, IArmorStat> =
 	{
 		[EArmorStatId.Mobility]: {
@@ -219,7 +229,6 @@ export const sumArmorStatMappings = (
 	return res;
 };
 
-// This should only be used by generation. If it's needed somewhere else then refactor this
 export const getArmorStatIdFromBungieHash = (hash: number): EArmorStatId => {
 	const armorStatId = ArmorStatIdList.find(
 		(id) => getArmorStat(id).hash === hash

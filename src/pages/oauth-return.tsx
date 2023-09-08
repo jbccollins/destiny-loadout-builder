@@ -1,22 +1,22 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import Head from '@dlb/components/Meta/Head';
 import { getAccessTokenFromCode } from '@dlb/dim/bungie-api/oauth';
 import { Box, CircularProgress, styled } from '@mui/material';
-import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const Container = styled(Box)(({ theme }) => ({
 	position: 'fixed',
 	top: '50%',
 	left: '50%',
-	transform: 'translate(-50%, -50%)'
+	transform: 'translate(-50%, -50%)',
 }));
 const Text = styled(Box)(({ theme }) => ({
-	marginBottom: theme.spacing(4)
+	marginBottom: theme.spacing(4),
 }));
 
 const CircularProgressWrapper = styled(Box)(({ theme }) => ({
 	margin: 'auto',
-	width: '50%'
+	width: '50%',
 }));
 
 function OauthReturn() {
@@ -48,12 +48,15 @@ function OauthReturn() {
 	}, [code, router, router.query]);
 
 	return (
-		<Container>
-			<Text>Authenticating...</Text>
-			<CircularProgressWrapper>
-				<CircularProgress />
-			</CircularProgressWrapper>
-		</Container>
+		<>
+			<Head />
+			<Container>
+				<Text>Authenticating...</Text>
+				<CircularProgressWrapper>
+					<CircularProgress />
+				</CircularProgressWrapper>
+			</Container>
+		</>
 	);
 }
 

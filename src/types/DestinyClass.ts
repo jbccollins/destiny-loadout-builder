@@ -2,8 +2,8 @@ import {
 	EnumDictionary,
 	IIcon,
 	IIdentifiableName,
-	ValidateEnumList,
 	Mapping,
+	ValidateEnumList,
 } from './globals';
 import { EArmorStatId, EDestinyClassId, EDestinySubclassId } from './IdEnums';
 
@@ -89,3 +89,15 @@ const DestinyClassIdToClassAbilityStat: EnumDictionary<
 
 export const getDestinyClassAbilityStat = (id: EDestinyClassId): EArmorStatId =>
 	DestinyClassIdToClassAbilityStat[id];
+
+export const getDestinyClassIdByDestinySubclassId = (
+	id: EDestinySubclassId
+): EDestinyClassId => {
+	for (const [destinyClassId, destinySubclassIdList] of Object.entries(
+		DestinyClassIdToDestinySubclassesMapping
+	)) {
+		if (destinySubclassIdList.includes(id)) {
+			return destinyClassId as EDestinyClassId;
+		}
+	}
+};

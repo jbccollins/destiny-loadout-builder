@@ -1,5 +1,6 @@
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { MeleeIdToMeleeMapping } from '@dlb/generated/melee/MeleeMapping';
+import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { IMelee } from './generation';
 import { EnumDictionary } from './globals';
 import { EDestinySubclassId } from './IdEnums';
@@ -7,6 +8,13 @@ import { EDestinySubclassId } from './IdEnums';
 export const MeleeIdList = Object.values(EMeleeId);
 
 export const getMelee = (id: EMeleeId): IMelee => MeleeIdToMeleeMapping[id];
+const MeleeHashToMeleeIdMapping = generateHashToIdMapping(
+	MeleeIdToMeleeMapping
+);
+
+export const getMeleeByHash = (hash: number): IMelee => {
+	return MeleeIdToMeleeMapping[MeleeHashToMeleeIdMapping[hash]];
+};
 
 /****** Extra *****/
 const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<

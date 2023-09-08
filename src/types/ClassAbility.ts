@@ -1,5 +1,6 @@
 import { ClassAbilityIdToClassAbilityMapping } from '@dlb/generated/classAbility/ClassAbilityMapping';
 import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
+import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { IClassAbility } from './generation';
 import { EnumDictionary } from './globals';
 import { EDestinySubclassId } from './IdEnums';
@@ -8,6 +9,16 @@ export const ClassAbilityIdList = Object.values(EClassAbilityId);
 
 export const getClassAbility = (id: EClassAbilityId): IClassAbility =>
 	ClassAbilityIdToClassAbilityMapping[id];
+
+const ClassAbilityHashToClassAbilityIdMapping = generateHashToIdMapping(
+	ClassAbilityIdToClassAbilityMapping
+);
+
+export const getClassAbilityByHash = (hash: number): IClassAbility => {
+	return ClassAbilityIdToClassAbilityMapping[
+		ClassAbilityHashToClassAbilityIdMapping[hash]
+	];
+};
 
 /****** Extra *****/
 // TODO: Move this into the actual subclass defs like super is

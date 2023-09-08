@@ -2,6 +2,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 import allClassItemMetadataReducer from './features/allClassItemMetadata/allClassItemMetadataSlice';
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
+import analyzableLoadoutsReducer from './features/analyzableLoadouts/analyzableLoadoutsSlice';
 import armorReducer from './features/armor/armorSlice';
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
 import charactersReducer from './features/characters/charactersSlice';
@@ -34,6 +35,7 @@ import selectedMasterworkAssumptionReducer from './features/selectedMasterworkAs
 import selectedMeleeReducer from './features/selectedMelee/selectedMeleeSlice';
 import selectedRaidModsReducer from './features/selectedRaidMods/selectedRaidModsSlice';
 import selectedSuperAbilityReducer from './features/selectedSuperAbility/selectedSuperAbilitySlice';
+import tabIndexReducer from './features/tabIndex/tabIndexSlice';
 
 import sharedLoadoutConfigStatPriorityOrderReducer, {
 	defaultOrder,
@@ -50,31 +52,12 @@ import resultsPaginationReducer, {
 	setResultsPagination,
 } from './features/resultsPagination/resultsPaginationSlice';
 
-import { NIL } from 'uuid';
-import armorSlotModViolationsReducer, {
-	setArmorSlotModViolations,
-} from './features/armorSlotModViolations/armorSlotModViolationsSlice';
-import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
-import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
-import disabledArmorSlotModsReducer, {
-	setDisabledArmorSlotMods,
-} from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
-import disabledRaidModsReducer, {
-	setDisabledRaidMods,
-} from './features/disabledRaidMods/disabledRaidModsSlice';
-import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
-import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
-import processedArmorReducer, {
-	setProcessedArmor,
-} from './features/processedArmor/processedArmorSlice';
-import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
-import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
-
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	doProcessArmor,
 	DoProcessArmorOutput,
+	DoProcessArmorParams,
 	preProcessArmor,
+	truncatedDoProcessArmor,
 } from '@dlb/services/processArmor/index';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
@@ -97,6 +80,26 @@ import {
 } from '@dlb/types/Mod';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import isEqual from 'lodash/isEqual';
+import { NIL } from 'uuid';
+import armorSlotModViolationsReducer, {
+	setArmorSlotModViolations,
+} from './features/armorSlotModViolations/armorSlotModViolationsSlice';
+import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
+import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import disabledArmorSlotModsReducer, {
+	setDisabledArmorSlotMods,
+} from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
+import disabledRaidModsReducer, {
+	setDisabledRaidMods,
+} from './features/disabledRaidMods/disabledRaidModsSlice';
+import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
+import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import performingBatchUpdateReducer from './features/performingBatchUpdate/performingBatchUpdateSlice';
+import processedArmorReducer, {
+	setProcessedArmor,
+} from './features/processedArmor/processedArmorSlice';
+import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
 
 function getChangedProperties(previousObj, currentObj, changes) {
 	// Loop through the properties of the current object
@@ -127,7 +130,7 @@ export function makeStore() {
 		reducer: {
 			allClassItemMetadata: allClassItemMetadataReducer,
 			allDataLoaded: allDataLoadedReducer,
-			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
+			analyzableLoadouts: analyzableLoadoutsReducer,
 			armor: armorReducer,
 			armorMetadata: armorMetadataReducer,
 			armorSlotModViolations: armorSlotModViolationsReducer,
@@ -139,12 +142,14 @@ export function makeStore() {
 			dimLoadoutsFilter: dimLoadoutsFilterReducer,
 			disabledArmorSlotMods: disabledArmorSlotModsReducer,
 			disabledRaidMods: disabledRaidModsReducer,
+			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
 			inGameLoadouts: inGameLoadoutsReducer,
 			inGameLoadoutsFilter: inGameLoadoutsFilterReducer,
 			loadError: loadErrorReducer,
 			maxPossibleReservedArmorSlotEnergy:
 				maxPossibleReservedArmorSlotEnergyReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
+			performingBatchUpdate: performingBatchUpdateReducer,
 			processedArmor: processedArmorReducer,
 			reservedArmorSlotEnergy: reservedArmorSlotEnergyReducer,
 			resultsPagination: resultsPaginationReducer,
@@ -167,6 +172,7 @@ export function makeStore() {
 			sharedLoadoutConfigStatPriorityOrder:
 				sharedLoadoutConfigStatPriorityOrderReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
+			tabIndex: tabIndexReducer,
 			useZeroWastedStats: useZeroWastedStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
 		},
@@ -240,6 +246,7 @@ function handleChange() {
 		selectedIntrinsicArmorPerkOrAttributeIds: {
 			uuid: nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid,
 		},
+		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -285,7 +292,10 @@ function handleChange() {
 		nextInGameLoadoutsUuid !== NIL &&
 		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid !== NIL;
 
-	if (!(hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids)) {
+	if (
+		!(hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) ||
+		performingBatchUpdate
+	) {
 		return;
 	}
 
@@ -427,7 +437,7 @@ function handleChange() {
 		preProcessedArmor
 	);
 
-	const doProcessArmorParams = {
+	const doProcessArmorParams: DoProcessArmorParams = {
 		masterworkAssumption,
 		desiredArmorStats,
 		armorItems: preProcessedArmor,
@@ -439,14 +449,13 @@ function handleChange() {
 		intrinsicArmorPerkOrAttributeIds:
 			selectedIntrinsicArmorPerkOrAttributeIds.filter((x) => x !== null),
 		destinyClassId: selectedDestinyClass,
-		selectedExotic: selectedExoticArmor[selectedDestinyClass],
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
 		allClassItemMetadata: _allClassItemMetadata,
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {
-		const results = doProcessArmor(doProcessArmorParams);
+		const results = truncatedDoProcessArmor(doProcessArmorParams);
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
 		store.dispatch(
@@ -474,7 +483,7 @@ function handleChange() {
 			'>>>>>>>>>>> [STORE] Checking loadout shared desired stat tiers <<<<<<<<<<<'
 		);
 		// Try to hit exactly the stats that the creator of the shared link wanted
-		const sharedLoadoutDesiredStatsResults = doProcessArmor({
+		const sharedLoadoutDesiredStatsResults = truncatedDoProcessArmor({
 			...doProcessArmorParams,
 			desiredArmorStats: sharedLoadoutDesiredStats.desiredArmorStats,
 		});
@@ -534,7 +543,7 @@ function handleChange() {
 					sharedLoadoutDesiredStats.desiredArmorStats[armorStatId];
 				for (let i = desiredStatValue; i > 0; i -= 10) {
 					bestFitDesiredArmorStats[armorStatId] = i;
-					bestFitResults = doProcessArmor({
+					bestFitResults = truncatedDoProcessArmor({
 						...doProcessArmorParams,
 						desiredArmorStats: bestFitDesiredArmorStats,
 					});

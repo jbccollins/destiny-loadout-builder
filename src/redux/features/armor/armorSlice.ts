@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { Armor, generateArmorGroup } from '@dlb/types/Armor';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
 
 export interface ArmorState {
 	value: Armor;

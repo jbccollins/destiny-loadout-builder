@@ -27,6 +27,7 @@ import {
 } from '@dlb/types/Mod';
 import { describe, expect, test } from '@jest/globals';
 import { cloneDeep } from 'lodash';
+import { getDefaultModPlacements } from '../processArmor/getModCombos';
 
 const testFunction = doProcessArmor;
 
@@ -215,6 +216,7 @@ const testCases: TestCase[] = [
 					armorIdList: ['0', '1', '2', '3'],
 					armorStatModIdList: [],
 					artificeModIdList: [],
+					modPlacement: getDefaultModPlacements().placement,
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
@@ -348,14 +350,37 @@ const testCases: TestCase[] = [
 						EModId.ResilienceMod,
 						EModId.ResilienceMod,
 						EModId.ResilienceMod,
-						EModId.ResilienceMod,
 						EModId.MinorResilienceMod,
+						EModId.ResilienceMod,
 					],
 					artificeModIdList: [
 						EModId.ResilienceForged,
 						EModId.ResilienceForged,
 						EModId.ResilienceForged,
 					],
+					modPlacement: {
+						...getDefaultModPlacements().placement,
+						[EArmorSlotId.Arm]: {
+							...getDefaultModPlacements().placement.Arm,
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.Chest]: {
+							...getDefaultModPlacements().placement.Chest,
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.ClassItem]: {
+							...getDefaultModPlacements().placement.ClassItem,
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.Head]: {
+							...getDefaultModPlacements().placement.Head,
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.Leg]: {
+							...getDefaultModPlacements().placement.Leg,
+							armorStatModId: EModId.MinorResilienceMod,
+						},
+					},
 					metadata: {
 						totalModCost: 18,
 						totalStatTiers: 35,
@@ -504,6 +529,29 @@ const testCases: TestCase[] = [
 						EModId.MobilityMod,
 					],
 					artificeModIdList: [],
+					modPlacement: {
+						...getDefaultModPlacements().placement,
+						[EArmorSlotId.Arm]: {
+							...getDefaultModPlacements().placement.Arm,
+							armorStatModId: EModId.MobilityMod,
+						},
+						[EArmorSlotId.Chest]: {
+							...getDefaultModPlacements().placement.Chest,
+							armorStatModId: EModId.MobilityMod,
+						},
+						[EArmorSlotId.ClassItem]: {
+							...getDefaultModPlacements().placement.ClassItem,
+							armorStatModId: EModId.MobilityMod,
+						},
+						[EArmorSlotId.Head]: {
+							...getDefaultModPlacements().placement.Head,
+							armorStatModId: EModId.MobilityMod,
+						},
+						[EArmorSlotId.Leg]: {
+							...getDefaultModPlacements().placement.Leg,
+							armorStatModId: EModId.MobilityMod,
+						},
+					},
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
@@ -633,13 +681,36 @@ const testCases: TestCase[] = [
 				{
 					armorIdList: ['0', '1', '2', '3'],
 					armorStatModIdList: [
-						EModId.ResilienceMod,
-						EModId.ResilienceMod,
 						EModId.RecoveryMod,
+						EModId.ResilienceMod,
+						EModId.ResilienceMod,
 						EModId.RecoveryMod,
 						EModId.RecoveryMod,
 					],
 					artificeModIdList: [EModId.ResilienceForged, EModId.RecoveryForged],
+					modPlacement: {
+						...getDefaultModPlacements().placement,
+						[EArmorSlotId.Arm]: {
+							...getDefaultModPlacements().placement.Arm,
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.Chest]: {
+							...getDefaultModPlacements().placement.Chest,
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.ClassItem]: {
+							...getDefaultModPlacements().placement.ClassItem,
+							armorStatModId: EModId.RecoveryMod,
+						},
+						[EArmorSlotId.Head]: {
+							...getDefaultModPlacements().placement.Head,
+							armorStatModId: EModId.RecoveryMod,
+						},
+						[EArmorSlotId.Leg]: {
+							...getDefaultModPlacements().placement.Leg,
+							armorStatModId: EModId.RecoveryMod,
+						},
+					},
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
@@ -778,8 +849,8 @@ const testCases: TestCase[] = [
 				{
 					armorIdList: ['0', '1', '2', '3'],
 					armorStatModIdList: [
-						EModId.ResilienceMod,
 						EModId.RecoveryMod,
+						EModId.ResilienceMod,
 						EModId.RecoveryMod,
 						EModId.RecoveryMod,
 						EModId.RecoveryMod,
@@ -790,6 +861,29 @@ const testCases: TestCase[] = [
 						EModId.DisciplineForged,
 						EModId.DisciplineForged,
 					],
+					modPlacement: {
+						...getDefaultModPlacements().placement,
+						[EArmorSlotId.Arm]: {
+							...getDefaultModPlacements().placement.Arm,
+							armorStatModId: EModId.ResilienceMod,
+						},
+						[EArmorSlotId.Chest]: {
+							...getDefaultModPlacements().placement.Chest,
+							armorStatModId: EModId.RecoveryMod,
+						},
+						[EArmorSlotId.ClassItem]: {
+							...getDefaultModPlacements().placement.ClassItem,
+							armorStatModId: EModId.RecoveryMod,
+						},
+						[EArmorSlotId.Head]: {
+							...getDefaultModPlacements().placement.Head,
+							armorStatModId: EModId.RecoveryMod,
+						},
+						[EArmorSlotId.Leg]: {
+							...getDefaultModPlacements().placement.Leg,
+							armorStatModId: EModId.RecoveryMod,
+						},
+					},
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
@@ -957,6 +1051,13 @@ const testCases: TestCase[] = [
 					armorIdList: ['0', '1', '2', '3'],
 					armorStatModIdList: [],
 					artificeModIdList: [],
+					modPlacement: {
+						...getDefaultModPlacements().placement,
+						ClassItem: {
+							armorStatModId: null,
+							raidModId: EModId.ReleaseRecover,
+						},
+					},
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {

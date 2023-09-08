@@ -4,6 +4,10 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import InfoIcon from '@mui/icons-material/Info';
+import AnalyzeIcon from '@mui/icons-material/QueryStats';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ShieldIcon from '@mui/icons-material/Shield';
 import {
 	Box,
 	Button,
@@ -13,15 +17,16 @@ import {
 	useTheme,
 } from '@mui/material';
 import type { NextPage } from 'next';
-import Head from 'next/head';
 
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
+import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer';
 import Logout from '@dlb/components/LogOutButton';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
+import Head from '@dlb/components/Meta/Head';
 import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
 import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
@@ -64,10 +69,7 @@ import {
 	selectSelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
-import {
-	defaultIntrinsicArmorPerkOrAttributeIds,
-	setSelectedIntrinsicArmorPerkOrAttributeIds,
-} from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
+import { clearSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
 	selectSelectedJump,
 	setSelectedJump,
@@ -76,14 +78,15 @@ import {
 	selectSelectedMelee,
 	setSelectedMelee,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
-import {
-	defaultRaidMods,
-	setSelectedRaidMods,
-} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import { clearSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import {
 	selectSelectedSuperAbility,
 	setSelectedSuperAbility,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import {
+	selectTabIndex,
+	setTabIndex,
+} from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
@@ -142,6 +145,7 @@ const SmallScreenResultsViewToggle = styled(Button)(({ theme }) => ({
 
 type LeftSectionComponentProps = {
 	onTabChange: (value: number) => void;
+	tabIndex: number;
 };
 
 const LeftSectionComponent = (props: LeftSectionComponentProps) => {
@@ -177,15 +181,11 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 	};
 
 	const clearRaidMods = () => {
-		dispatch(setSelectedRaidMods(defaultRaidMods));
+		dispatch(clearSelectedRaidMods());
 	};
 
 	const clearIntrinsicArmorPerkOrAttributes = () => {
-		dispatch(
-			setSelectedIntrinsicArmorPerkOrAttributeIds(
-				defaultIntrinsicArmorPerkOrAttributeIds
-			)
-		);
+		dispatch(clearSelectedIntrinsicArmorPerkOrAttributeIds());
 	};
 
 	const clearSubclassOptions = () => {
@@ -263,6 +263,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 	return (
 		<LeftSection className="left-section">
 			<TabContainer
+				tabIndex={props.tabIndex}
 				onChange={handleTabChange}
 				tabs={[
 					{
@@ -347,6 +348,17 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 						),
 						index: 0,
 						title: 'Loadout',
+						icon: <ShieldIcon />,
+					},
+					{
+						content: (
+							<>
+								<LoadoutAnalyzer />
+							</>
+						),
+						index: 1,
+						title: 'Analyze',
+						icon: <AnalyzeIcon />,
 					},
 					{
 						content: (
@@ -359,8 +371,9 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<Logout />
 							</>
 						),
-						index: 1,
+						index: 2,
 						title: 'Settings',
+						icon: <SettingsIcon />,
 					},
 					{
 						content: (
@@ -368,8 +381,9 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<PatchNotes />
 							</>
 						),
-						index: 2,
+						index: 3,
 						title: 'About',
+						icon: <InfoIcon />,
 					},
 				]}
 			/>
@@ -399,9 +413,11 @@ const Home: NextPage = () => {
 	const [smallScreenResultsOpen, setSmallScreenResultsOpen] =
 		React.useState(false);
 	const allDataLoaded = useAppSelector(selectAllDataLoaded);
+	const tabIndex = useAppSelector(selectTabIndex);
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const theme = useTheme();
 	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+	const dispatch = useAppDispatch();
 
 	const smallScreenData: SmallScreenData = {
 		isSmallScreen,
@@ -410,55 +426,29 @@ const Home: NextPage = () => {
 			setSmallScreenResultsOpen(!smallScreenResultsOpen),
 	};
 
-	const [tabIndex, setTabIndex] = React.useState(0);
+	const handleTabChange = (index: number) => {
+		dispatch(setTabIndex(index));
+	};
 
 	return (
 		<>
-			<Head>
-				<title>Destiny Loadout Builder</title>
-				<meta name="viewport" content="initial-scale=1.0, width=device-width" />
-				<meta
-					name="description"
-					content="Build optimized loadouts for the video game Destiny 2"
-				/>
-				<meta property="og:image" content="/image/logo-with-padding_16x9.png" />
-				<meta
-					property="og:description"
-					content="Build optimized loadouts for the video game Destiny 2"
-				/>
-				<meta property="og:title" content="Destiny Loadout Builder" />
-				<meta name="twitter:title" content="Destiny Loadout Builder" />
-				<link rel="shortcut icon" href="/image/favicon.ico" />
-				<link
-					rel="apple-touch-icon"
-					sizes="180x180"
-					href="/image/apple-touch-icon.png"
-				/>
-				<link
-					rel="icon"
-					type="image/png"
-					sizes="32x32"
-					href="/images/favicon-32x32.png"
-				/>
-				<link
-					rel="icon"
-					type="image/png"
-					sizes="16x16"
-					href="/images/favicon-16x16.png"
-				/>
-			</Head>
+			<Head />
 			{/* <WebWorkerTest derp={true} /> */}
 			<Container className="application-container">
 				{!allDataLoaded && <Loading />}
 				{allDataLoaded && (
 					<>
+						<LoadoutAnalyzer isHidden />
 						{isSmallScreen && (
 							<>
 								{smallScreenResultsOpen && (
 									<RightSectionComponent smallScreenData={smallScreenData} />
 								)}
 								{!smallScreenResultsOpen && (
-									<LeftSectionComponent onTabChange={setTabIndex} />
+									<LeftSectionComponent
+										onTabChange={handleTabChange}
+										tabIndex={tabIndex}
+									/>
 								)}
 								{!smallScreenResultsOpen && tabIndex === 0 && (
 									<SmallScreenResultsViewToggle
@@ -483,7 +473,10 @@ const Home: NextPage = () => {
 						)}
 						{!isSmallScreen && (
 							<>
-								<LeftSectionComponent onTabChange={setTabIndex} />
+								<LeftSectionComponent
+									onTabChange={handleTabChange}
+									tabIndex={tabIndex}
+								/>
 								<RightSectionComponent smallScreenData={smallScreenData} />
 							</>
 						)}

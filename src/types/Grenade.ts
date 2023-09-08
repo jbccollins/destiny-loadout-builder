@@ -1,5 +1,6 @@
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import { GrenadeIdToGrenadeMapping } from '@dlb/generated/grenade/GrenadeMapping';
+import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { IGrenade } from './generation';
 import { EnumDictionary } from './globals';
 import { EElementId } from './IdEnums';
@@ -9,6 +10,13 @@ export const GrenadeIdList = Object.values(EGrenadeId);
 export const getGrenade = (id: EGrenadeId): IGrenade =>
 	GrenadeIdToGrenadeMapping[id];
 
+const GrenadeHashToGrenadeIdMapping = generateHashToIdMapping(
+	GrenadeIdToGrenadeMapping
+);
+
+export const getGrenadeByHash = (hash: number): IGrenade => {
+	return GrenadeIdToGrenadeMapping[GrenadeHashToGrenadeIdMapping[hash]];
+};
 /****** Extra *****/
 const ElementIdToGrenadeIdListMapping: EnumDictionary<
 	EElementId,

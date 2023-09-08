@@ -17,28 +17,6 @@ const initialState: SelectedArmorSlotModsState = {
 	value: getDefaultArmorSlotIdToModIdListMapping(),
 	uuid: NIL,
 };
-// const initialState: SelectedArmorSlotModsState = {
-// 	value: {
-// 		...getDefaultArmorSlotIdToModIdListMapping(),
-// 		[EArmorSlotId.Head]: [
-// 			EModId.HeavyAmmoFinder,
-// 			EModId.HeavyAmmoFinder,
-// 			EModId.HeavyAmmoFinder,
-// 		],
-// 		[EArmorSlotId.Arm]: [
-// 			EModId.SolarLoader,
-// 			EModId.SolarLoader,
-// 			EModId.SolarLoader,
-// 		],
-// 		[EArmorSlotId.Chest]: [
-// 			EModId.SolarReserves,
-// 			EModId.SolarReserves,
-// 			null,
-// 			// EModId.SolarReserves,
-// 		],
-// 	},
-// 	uuid: NIL,
-// };
 
 export const selectedArmorSlotModsSlice = createSlice({
 	name: 'selectedArmorSlotMods',
@@ -51,10 +29,15 @@ export const selectedArmorSlotModsSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		clearArmorSlotMods: (state) => {
+			state.value = getDefaultArmorSlotIdToModIdListMapping();
+			state.uuid = uuid();
+		},
 	},
 });
 
-export const { setSelectedArmorSlotMods } = selectedArmorSlotModsSlice.actions;
+export const { setSelectedArmorSlotMods, clearArmorSlotMods } =
+	selectedArmorSlotModsSlice.actions;
 
 export const selectSelectedArmorSlotMods = (state: AppState) =>
 	state.selectedArmorSlotMods.value;

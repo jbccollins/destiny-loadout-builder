@@ -63,9 +63,13 @@ export default function BasicTabs(props: TabContainerProps) {
 					{tabs.map(({ index, title, icon }) => (
 						<Tab
 							key={index}
-							// label={title}
+							label={title}
 							icon={icon}
-							iconPosition="start"
+							iconPosition="top"
+							sx={{
+								fontSize: '12px',
+								minWidth: '64px',
+							}}
 							{...a11yProps(index)}
 						/>
 					))}
@@ -76,15 +80,6 @@ export default function BasicTabs(props: TabContainerProps) {
 					{content}
 				</TabPanel>
 			))}
-			{/* <TabPanel value={value} index={0}>
-				Item One
-			</TabPanel>
-			<TabPanel value={value} index={1}>
-				Item Two
-			</TabPanel>
-			<TabPanel value={value} index={2}>
-				Item Three
-			</TabPanel> */}
 		</Box>
 	);
 }

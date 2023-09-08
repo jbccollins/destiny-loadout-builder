@@ -1,5 +1,6 @@
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { FragmentIdToFragmentMapping } from '@dlb/generated/fragment/FragmentMapping';
+import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { IFragment } from './generation';
 import { EnumDictionary } from './globals';
 import { EElementId } from './IdEnums';
@@ -9,10 +10,12 @@ export const FragmentIdList = Object.values(EFragmentId);
 export const getFragment = (id: EFragmentId): IFragment =>
 	FragmentIdToFragmentMapping[id];
 
+const FragmentHashToFragmentIdMapping = generateHashToIdMapping(
+	FragmentIdToFragmentMapping
+);
+
 export const getFragmentByHash = (hash: number): IFragment => {
-	return Object.values(FragmentIdToFragmentMapping).find(
-		(x) => x.hash === hash
-	);
+	return FragmentIdToFragmentMapping[FragmentHashToFragmentIdMapping[hash]];
 };
 
 /****** Extra *****/

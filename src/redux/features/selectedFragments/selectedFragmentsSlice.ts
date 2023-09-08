@@ -26,15 +26,16 @@ export interface SelectedFragmentsState {
 	value: SelectedFragments;
 	uuid: string;
 }
+export const getSelectedFragmentsInitialValue = (): SelectedFragments => ({
+	[EElementId.Stasis]: [],
+	[EElementId.Void]: [],
+	[EElementId.Solar]: [],
+	[EElementId.Arc]: [],
+	[EElementId.Strand]: [],
+});
 
 const initialState: SelectedFragmentsState = {
-	value: {
-		[EElementId.Stasis]: [],
-		[EElementId.Void]: [],
-		[EElementId.Solar]: [],
-		[EElementId.Arc]: [],
-		[EElementId.Strand]: [],
-	},
+	value: getSelectedFragmentsInitialValue(),
 	uuid: NIL,
 };
 
@@ -52,10 +53,15 @@ export const selectedFragmentsSlice = createSlice({
 			};
 			state.uuid = uuid();
 		},
+		clearSelectedFragments: (state) => {
+			state.value = getSelectedFragmentsInitialValue();
+			state.uuid = uuid();
+		},
 	},
 });
 
-export const { setSelectedFragments } = selectedFragmentsSlice.actions;
+export const { setSelectedFragments, clearSelectedFragments } =
+	selectedFragmentsSlice.actions;
 
 export const selectSelectedFragments = (state: AppState) =>
 	state.selectedFragments.value;

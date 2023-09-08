@@ -33,7 +33,7 @@ import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import {
 	selectAnalyzableLoadouts,
-	setAnalyzableLoadouts,
+	setAnalyzableLoadoutsBreakdown,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
@@ -580,24 +580,18 @@ function Loading() {
 					dispatch(setDimLoadouts([]));
 				}
 				if (!hasDimLoadoutsError && dimProfile) {
-					const analyzableDimLoadouts = buildLoadouts(
+					const analyzableDimLoadoutsBreakdown = buildLoadouts(
 						dimProfile.loadouts,
 						armor,
 						allClassItemMetadata,
 						selectedMasterworkAssumption
 					);
 					console.log(
-						'>>>>>>>>>>> [LOAD] analyzableDimLoadouts <<<<<<<<<<<',
-						analyzableDimLoadouts
+						'>>>>>>>>>>> [LOAD] analyzableDimLoadoutsBreakdown <<<<<<<<<<<',
+						analyzableDimLoadoutsBreakdown
 					);
 					dispatch(
-						setAnalyzableLoadouts({
-							...analyzableLoadouts,
-							validLoadouts: {
-								...analyzableLoadouts.validLoadouts,
-								...analyzableDimLoadouts,
-							},
-						})
+						setAnalyzableLoadoutsBreakdown(analyzableDimLoadoutsBreakdown)
 					);
 				}
 				localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);

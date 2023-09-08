@@ -363,6 +363,16 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					{
 						content: (
 							<>
+								<LoadoutAnalyzer />
+							</>
+						),
+						index: 1,
+						title: 'Analyze',
+						icon: <AnalyzeIcon />,
+					},
+					{
+						content: (
+							<>
 								<MasterworkAssumptionSelector />
 								<MinimumGearTierSelector />
 								<DimLoadoutsFilterSelector />
@@ -371,7 +381,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<Logout />
 							</>
 						),
-						index: 1,
+						index: 2,
 						title: 'Settings',
 						icon: <SettingsIcon />,
 					},
@@ -381,19 +391,9 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<PatchNotes />
 							</>
 						),
-						index: 2,
+						index: 3,
 						title: 'About',
 						icon: <InfoIcon />,
-					},
-					{
-						content: (
-							<>
-								<LoadoutAnalyzer />
-							</>
-						),
-						index: 3,
-						title: 'Analyze',
-						icon: <AnalyzeIcon />,
 					},
 				]}
 			/>
@@ -448,7 +448,7 @@ const Home: NextPage = () => {
 				{!allDataLoaded && <Loading />}
 				{allDataLoaded && (
 					<>
-						<LoadoutAnalyzer />
+						<LoadoutAnalyzer isHidden />
 						{isSmallScreen && (
 							<>
 								{smallScreenResultsOpen && (

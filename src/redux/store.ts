@@ -74,10 +74,10 @@ import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWast
 
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	doProcessArmor,
 	DoProcessArmorOutput,
 	DoProcessArmorParams,
 	preProcessArmor,
+	truncatedDoProcessArmor,
 } from '@dlb/services/processArmor/index';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
@@ -450,7 +450,7 @@ function handleChange() {
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {
-		const results = doProcessArmor(doProcessArmorParams);
+		const results = truncatedDoProcessArmor(doProcessArmorParams);
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
 		store.dispatch(
@@ -478,7 +478,7 @@ function handleChange() {
 			'>>>>>>>>>>> [STORE] Checking loadout shared desired stat tiers <<<<<<<<<<<'
 		);
 		// Try to hit exactly the stats that the creator of the shared link wanted
-		const sharedLoadoutDesiredStatsResults = doProcessArmor({
+		const sharedLoadoutDesiredStatsResults = truncatedDoProcessArmor({
 			...doProcessArmorParams,
 			desiredArmorStats: sharedLoadoutDesiredStats.desiredArmorStats,
 		});
@@ -538,7 +538,7 @@ function handleChange() {
 					sharedLoadoutDesiredStats.desiredArmorStats[armorStatId];
 				for (let i = desiredStatValue; i > 0; i -= 10) {
 					bestFitDesiredArmorStats[armorStatId] = i;
-					bestFitResults = doProcessArmor({
+					bestFitResults = truncatedDoProcessArmor({
 						...doProcessArmorParams,
 						desiredArmorStats: bestFitDesiredArmorStats,
 					});

@@ -1,5 +1,6 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
+import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { permute } from '@dlb/utils/permutations';
 import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
 import { IMod } from './generation';
@@ -8,8 +9,11 @@ import { EArmorSlotId, EArmorStatId, EModSocketCategoryId } from './IdEnums';
 
 export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 
-export const getModByHash = (hash: number): IMod =>
-	Object.values(ModIdToModMapping).find((x) => x.hash === hash);
+const ModHashToModIdMapping = generateHashToIdMapping(ModIdToModMapping);
+
+export const getModByHash = (hash: number): IMod => {
+	return ModIdToModMapping[ModHashToModIdMapping[hash]];
+};
 
 export const ModIdList = Object.values(EModId);
 

@@ -16,7 +16,7 @@ export interface SelectedAspectsState {
 	uuid: string;
 }
 
-const generateIntitalState = (): SelectedAspects => {
+export const getInitialStateValue = (): SelectedAspects => {
 	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
 		accumulator[currentValue] = [null, null]; // getAspectIdsByDestinySubclassId(
 		// 	currentValue
@@ -26,7 +26,7 @@ const generateIntitalState = (): SelectedAspects => {
 };
 
 const initialState: SelectedAspectsState = {
-	value: generateIntitalState(),
+	value: getInitialStateValue(),
 	uuid: NIL,
 };
 
@@ -38,10 +38,15 @@ export const selectedAspectsSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		clearSelectedAspects: (state) => {
+			state.value = getInitialStateValue();
+			state.uuid = uuid();
+		},
 	},
 });
 
-export const { setSelectedAspects } = selectedAspectsSlice.actions;
+export const { setSelectedAspects, clearSelectedAspects } =
+	selectedAspectsSlice.actions;
 
 export const selectSelectedAspects = (state: AppState) =>
 	state.selectedAspects.value;

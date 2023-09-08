@@ -422,10 +422,6 @@ export const doProcessArmor = ({
 	});
 
 	const totalItemCount = processedArmor.length;
-	// Pick the first 1k items. Keeps the storage in redux lower
-	// and speeds up the app
-	const elemsToDelete = Math.max(processedArmor.length - 1000, 0);
-	processedArmor.splice(processedArmor.length - elemsToDelete, elemsToDelete);
 
 	return {
 		items: processedArmor,
@@ -433,6 +429,18 @@ export const doProcessArmor = ({
 		maxPossibleDesiredStatTiers,
 		maxPossibleReservedArmorSlotEnergy,
 	};
+};
+
+// Pick the first 1k items. Keeps the storage in redux lower
+// and speeds up the app
+export const truncatedDoProcessArmor = (
+	params: DoProcessArmorParams
+): DoProcessArmorOutput => {
+	const output = doProcessArmor(params);
+	const { items } = output;
+	const elemsToDelete = Math.max(items.length - 1000, 0);
+	items.splice(items.length - elemsToDelete, elemsToDelete);
+	return output;
 };
 
 export type GetMaxPossibleDesiredStatTiersParams = {

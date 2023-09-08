@@ -36,10 +36,15 @@ export const selectedMeleeSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		clearSelectedMelee: (state) => {
+			state.value = generateIntitalState();
+			state.uuid = uuid();
+		},
 	},
 });
 
-export const { setSelectedMelee } = selectedMeleeSlice.actions;
+export const { setSelectedMelee, clearSelectedMelee } =
+	selectedMeleeSlice.actions;
 
 export const selectSelectedMelee = (state: AppState) =>
 	state.selectedMelee.value;

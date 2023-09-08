@@ -36,10 +36,14 @@ export const selectedJumpSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		clearSelectedJump: (state) => {
+			state.value = generateIntitalState();
+			state.uuid = uuid();
+		},
 	},
 });
 
-export const { setSelectedJump } = selectedJumpSlice.actions;
+export const { setSelectedJump, clearSelectedJump } = selectedJumpSlice.actions;
 
 export const selectSelectedJump = (state: AppState) => state.selectedJump.value;
 

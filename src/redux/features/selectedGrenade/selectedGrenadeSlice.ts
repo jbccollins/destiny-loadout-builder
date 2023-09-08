@@ -36,10 +36,15 @@ export const selectedGrenadeSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		clearSelectedGrenade: (state) => {
+			state.value = generateIntitalState();
+			state.uuid = uuid();
+		},
 	},
 });
 
-export const { setSelectedGrenade } = selectedGrenadeSlice.actions;
+export const { setSelectedGrenade, clearSelectedGrenade } =
+	selectedGrenadeSlice.actions;
 
 export const selectSelectedGrenade = (state: AppState) =>
 	state.selectedGrenade.value;

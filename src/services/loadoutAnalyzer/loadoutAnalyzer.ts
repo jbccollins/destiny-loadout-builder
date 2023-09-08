@@ -7,15 +7,16 @@ import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+
 import {
 	doProcessArmor,
 	DoProcessArmorParams,
 	preProcessArmor,
 } from '@dlb/services/processArmor';
-import { roundDown10 } from '@dlb/services/processArmor/utils';
+import { roundDown10, sumModCosts } from '@dlb/services/processArmor/utils';
 import {
 	AnalyzableLoadout,
-	AnalyzableLoadoutMapping,
+	AnalyzableLoadoutBreakdown,
 	ELoadoutType,
 	getDefaultAnalyzableLoadout,
 } from '@dlb/types/AnalyzableLoadout';
@@ -45,6 +46,7 @@ import {
 import { getDestinySubclassByHash } from '@dlb/types/DestinySubclass';
 import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 import { getFragmentByHash } from '@dlb/types/Fragment';
+import { EnumDictionary } from '@dlb/types/globals';
 import { getGrenadeByHash } from '@dlb/types/Grenade';
 import {
 	EDestinySubclassId,
@@ -52,11 +54,11 @@ import {
 	EGearTierId,
 	EInGameLoadoutsFilterId,
 	EMasterworkAssumption,
+	EModSocketCategoryId,
 } from '@dlb/types/IdEnums';
 import { getJumpByHash } from '@dlb/types/Jump';
 import { getMeleeByHash } from '@dlb/types/Melee';
 import {
-	AllStatModHashes,
 	getDefaultArmorSlotIdToModIdListMapping,
 	getModByHash,
 } from '@dlb/types/Mod';
@@ -89,7 +91,7 @@ export const buildLoadouts = (
 	armor: Armor,
 	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping,
 	masterworkAssumption: EMasterworkAssumption
-): AnalyzableLoadoutMapping => {
+): AnalyzableLoadoutBreakdown => {
 	const loadouts: AnalyzableLoadout[] = [];
 	const armorItems = flattenArmor(armor, allClassItemMetadata);
 	dimLoadouts.forEach((dimLoadout) => {
@@ -205,11 +207,38 @@ export const buildLoadouts = (
 			}
 		});
 		dimLoadout.parameters?.mods?.forEach((hash) => {
-			// Add all the stat mods to the desired stat tiers
-			if (!AllStatModHashes.includes(hash)) {
+			const mod = getModByHash(hash);
+			if (!mod) {
+				console.warn({
+					message: 'Could not find mod',
+					loadoutId: loadout.id,
+					modHash: hash,
+				});
 				return;
 			}
-			const mod = getModByHash(hash);
+			if (mod.modSocketCategoryId === EModSocketCategoryId.ArmorSlot) {
+				// Repace first null value with this mod id
+				const idx = loadout.armorSlotMods[mod.armorSlotId].findIndex(
+					(x) => x === null
+				);
+				if (idx === -1) {
+					console.warn({
+						message: 'Could not find null value in armorSlotMods',
+						loadoutId: loadout.id,
+						modId: mod.id,
+						armorSlotId: mod.armorSlotId,
+					});
+					return;
+				}
+				loadout.armorSlotMods[mod.armorSlotId][idx] = mod.id;
+			} else if (mod.modSocketCategoryId === EModSocketCategoryId.Stat) {
+				loadout.armorStatMods.push(mod.id);
+			}
+			// TODO: Currently no armor slot mods give bonuses so this is safe.
+			// But there have been mods in the past that did give bonuses.
+			// We should handle those in the future...
+			// Specifically, handle the case where we are not considering mods
+			// when processing armor so that mod cost doesn't limit the stat mod availability
 			mod.bonuses.forEach((bonus) => {
 				desiredStatTiers[bonus.stat] += bonus.value;
 			});
@@ -221,24 +250,36 @@ export const buildLoadouts = (
 		ArmorStatIdList.forEach((armorStatId) => {
 			desiredStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
 		});
-
+		ArmorStatIdList.forEach((armorStatId) => {
+			desiredStatTiers[armorStatId] = roundDown10(
+				desiredStatTiers[armorStatId]
+			);
+		});
 		loadout.desiredStatTiers = desiredStatTiers;
 		loadouts.push(loadout);
 	});
-	const result: Record<string, AnalyzableLoadout> = {};
-	loadouts
-		.filter(
-			(x) =>
-				// TODO: Is this "5" check safe? Does DIM just assume "any legendary class item" if none is provided?
-				// TODO: Handle deleted exotic armor. Right now this check assumes that your loadout
-				// has a non-deleted exotic armor piece. But we don't care about that. As long as you have ANY
-				// exotic armor that matches the type of exotic armor that was deleted we can still process this
-				// (assuming that we also have stat constraints I think)
-				x.armor.length === 5 &&
-				x.armor.some((x) => x.gearTierId === EGearTierId.Exotic)
-		)
-		.forEach((x) => (result[x.id] = x));
-	return result;
+	const validLoadouts: Record<string, AnalyzableLoadout> = {};
+	const invalidLoadouts: Record<string, AnalyzableLoadout> = {};
+
+	// TODO: Is this "5" check safe? Does DIM just assume "any legendary class item" if none is provided?
+	// TODO: Handle deleted exotic armor. Right now this check assumes that your loadout
+	// has a non-deleted exotic armor piece. But we don't care about that. As long as you have ANY
+	// exotic armor that matches the type of exotic armor that was deleted we can still process this
+	// (assuming that we also have stat constraints I think)
+	loadouts.forEach((x) => {
+		if (
+			x.armor.length === 5 &&
+			x.armor.some((x) => x.gearTierId === EGearTierId.Exotic)
+		) {
+			validLoadouts[x.id] = x;
+		} else {
+			invalidLoadouts[x.id] = x;
+		}
+	});
+	return {
+		validLoadouts,
+		invalidLoadouts,
+	};
 };
 
 type GeneratePreProcessedArmorParams = {
@@ -274,10 +315,39 @@ const generatePreProcessedArmor = (
 	};
 };
 
-enum ELoadoutOptimizationType {
+export enum ELoadoutOptimizationType {
 	HigherStatTier = 'HigherStatTier',
 	LowerCost = 'LowerCost',
 }
+
+export interface ILoadoutOptimization {
+	id: ELoadoutOptimizationType;
+	name: string;
+	iconColors: string[];
+}
+
+const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
+	ELoadoutOptimizationType,
+	ILoadoutOptimization
+> = {
+	[ELoadoutOptimizationType.HigherStatTier]: {
+		id: ELoadoutOptimizationType.HigherStatTier,
+		name: 'Higher Stat Tier',
+		iconColors: ['green', 'green'],
+	},
+	[ELoadoutOptimizationType.LowerCost]: {
+		id: ELoadoutOptimizationType.LowerCost,
+		name: 'Lower Cost',
+		iconColors: ['green', 'green'],
+	},
+};
+
+export const getLoadoutOptimization = (
+	id: ELoadoutOptimizationType
+): ILoadoutOptimization => {
+	return LoadoutOptimizationTypeToLoadoutOptimizationMapping[id];
+};
+
 // Return all AnalyzableLoadouts that can reach higher stat tiers or that
 // can reach the same stat tiers, but for cheaper.
 // TODO: Possibly in the future make this also return loadouts with fewer
@@ -350,8 +420,9 @@ export const getLoadoutsThatCanBeOptimized = (
 				useZeroWastedStats: false,
 				allClassItemMetadata: _allClassItemMetadata,
 			};
+			const sumOfCurrentStatModsCost = sumModCosts(loadout.armorStatMods);
 			const processedArmor = doProcessArmor(doProcessArmorParams);
-			let maxDiff = 0;
+			let maxDiff = -1;
 			let hasHigherStatTiers = false;
 			ArmorStatIdList.forEach((armorStatId) => {
 				const processedArmorVal =
@@ -362,21 +433,51 @@ export const getLoadoutsThatCanBeOptimized = (
 					hasHigherStatTiers = true;
 				}
 			});
+			// If the tiers are the same then we might still be able to optimize
+			// by achieving the same tiers, but for a lower cost.
+			const hasLowerCost =
+				maxDiff >= 0 &&
+				processedArmor.items.some(
+					(x) => x.metadata.totalModCost < sumOfCurrentStatModsCost
+				);
+			if (loadout.name === 'Unoptimized Loadout') {
+				console.log('>>>> loadout', loadout);
+				console.log(
+					'>>>> minFoundCost',
+					Math.min(...processedArmor.items.map((x) => x.metadata.totalModCost))
+				);
+				console.log('>>>> maxDiff', maxDiff);
+				console.log('>>>> sumOfCurrentStatModsCost', sumOfCurrentStatModsCost);
+				console.log('>>>> hasHigherStatTiers', hasHigherStatTiers);
+				console.log('>>>> desiredStatTiers', loadout.desiredStatTiers);
+			}
+			let canBeOptimized = false;
+			const optimizationTypes: ELoadoutOptimizationType[] = [];
 			if (hasHigherStatTiers) {
+				canBeOptimized = true;
+				optimizationTypes.push(ELoadoutOptimizationType.HigherStatTier);
+			}
+			if (hasLowerCost) {
+				canBeOptimized = true;
+				optimizationTypes.push(ELoadoutOptimizationType.LowerCost);
+			}
+			if (canBeOptimized) {
 				result.push({
 					tierDiff: maxDiff,
-					optimizationTypes: [ELoadoutOptimizationType.HigherStatTier],
+					optimizationTypes,
 					loadoutId: loadout.id,
 				});
 				progressCallback({
 					type: EGetLoadoutsThatCanBeOptimizedProgresstype.Progress,
 					canBeOptimized: true,
 				});
+				return;
 			} else {
 				progressCallback({
 					type: EGetLoadoutsThatCanBeOptimizedProgresstype.Progress,
 					canBeOptimized: false,
 				});
+				return;
 			}
 		} catch (e) {
 			progressCallback({

@@ -18,7 +18,7 @@ export interface SelectedSuperAbilityState {
 	uuid: string;
 }
 
-const generateIntitalState = (): SelectedSuperAbility => {
+const getInitialStateValue = (): SelectedSuperAbility => {
 	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
 		const { superAbilityIdList } = getDestinySubclass(currentValue);
 		accumulator[currentValue] = null; // superAbilityIdList[0];
@@ -27,7 +27,7 @@ const generateIntitalState = (): SelectedSuperAbility => {
 };
 
 const initialState: SelectedSuperAbilityState = {
-	value: generateIntitalState(),
+	value: getInitialStateValue(),
 	uuid: NIL,
 };
 
@@ -42,10 +42,15 @@ export const selectedSuperAbilitySlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		clearSelectedSuperAbility: (state) => {
+			state.value = getInitialStateValue();
+			state.uuid = uuid();
+		},
 	},
 });
 
-export const { setSelectedSuperAbility } = selectedSuperAbilitySlice.actions;
+export const { setSelectedSuperAbility, clearSelectedSuperAbility } =
+	selectedSuperAbilitySlice.actions;
 
 export const selectSelectedSuperAbility = (state: AppState) =>
 	state.selectedSuperAbility.value;

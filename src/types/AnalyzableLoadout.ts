@@ -6,9 +6,14 @@ import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { ELoadoutOptimizationType } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { ArmorItem } from './Armor';
-import { ArmorStatMapping } from './ArmorStat';
+import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
 import { EDestinyClassId, EDestinySubclassId } from './IdEnums';
+import {
+	ArmorSlotIdToModIdListMapping,
+	getDefaultArmorSlotIdToModIdListMapping,
+} from './Mod';
 
 export enum ELoadoutType {
 	DIM = 'DIM',
@@ -29,15 +34,23 @@ export type DLBConfig = {
 	destinyClassId: EDestinyClassId;
 	destinySubclassId: EDestinySubclassId;
 	exoticHash: number;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
 };
+
+export type AnalysisResults = Record<
+	string,
+	{
+		optimizationTypes: ELoadoutOptimizationType[];
+	}
+>;
 
 export type AnalyzableLoadout = {
 	armor: ArmorItem[];
-	modIdList: EModId[];
 	id: string;
 	loadoutType: ELoadoutType;
 	icon: string;
 	name?: string;
+	armorStatMods: EModId[];
 } & DLBConfig;
 
 export type AnalyzableLoadoutMapping = Record<string, AnalyzableLoadout>;
@@ -50,8 +63,8 @@ export type AnalyzableLoadoutBreakdown = {
 export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	exoticHash: 0,
 	armor: [],
-	desiredStatTiers: null,
-	modIdList: [],
+	desiredStatTiers: getDefaultArmorStatMapping(),
+	armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
 	id: null,
 	name: null,
 	loadoutType: ELoadoutType.DIM,
@@ -65,6 +78,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	grenadeId: null,
 	aspectIdList: [],
 	fragmentIdList: [],
+	armorStatMods: [],
 });
 
 export const getDefaultAnalyzableLoadoutBreakdown =

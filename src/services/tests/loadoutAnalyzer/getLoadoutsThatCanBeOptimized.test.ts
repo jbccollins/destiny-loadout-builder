@@ -1,7 +1,7 @@
 import { Loadout } from '@destinyitemmanager/dim-api-types';
 import {
 	buildLoadouts,
-	_getLoadoutsThatCanBeOptimized,
+	getLoadoutsThatCanBeOptimized,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
 import armor from '@dlb/services/tests/fixtures/armor.json';
@@ -11,7 +11,7 @@ import {
 	DestinyClassToAllClassItemMetadataMapping,
 } from '@dlb/types/Armor';
 import { EMasterworkAssumption } from '@dlb/types/IdEnums';
-const testFunction = _getLoadoutsThatCanBeOptimized;
+const testFunction = getLoadoutsThatCanBeOptimized;
 
 type TestCaseInput = Parameters<typeof testFunction>;
 type TestCaseOutput = ReturnType<typeof testFunction>;
@@ -29,11 +29,12 @@ const testCases: TestCase[] = [
 		'Base',
 		[
 			{
-				loadouts,
+				loadouts: loadouts.validLoadouts,
 				armor: armor as unknown as Armor,
 				masterworkAssumption: EMasterworkAssumption.All,
 				allClassItemMetadata:
 					allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
+				progressCallback: () => null,
 			},
 		],
 		15,

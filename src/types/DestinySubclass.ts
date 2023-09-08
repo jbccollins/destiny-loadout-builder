@@ -1,4 +1,5 @@
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import {
 	EnumDictionary,
 	IHash,
@@ -208,14 +209,17 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 	},
 };
 
+const DestinySubclassHashToDestinySubclassIdMapping = generateHashToIdMapping(
+	DestinySubclassIdToDestinySubclassMapping
+);
+export const getDestinySubclassByHash = (hash: number): IDestinySubclass => {
+	return DestinySubclassIdToDestinySubclassMapping[
+		DestinySubclassHashToDestinySubclassIdMapping[hash]
+	];
+};
+
 export const getDestinySubclass = (id: EDestinySubclassId): IDestinySubclass =>
 	DestinySubclassIdToDestinySubclassMapping[id];
-
-export const getDestinySubclassByHash = (hash: number): IDestinySubclass => {
-	return Object.values(DestinySubclassIdToDestinySubclassMapping).find(
-		(x) => x.hash === hash
-	);
-};
 
 /******* Extra *******/
 

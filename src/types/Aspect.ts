@@ -1,6 +1,7 @@
 import { AspectIdToAspectMapping } from '@dlb/generated/aspect/AspectMapping';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 import combinations from '@dlb/utils/combinations';
+import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { IAspect } from './generation';
 import { EnumDictionary } from './globals';
 import { EDestinySubclassId } from './IdEnums';
@@ -10,8 +11,12 @@ export const AspectIdList = Object.values(EAspectId);
 export const getAspect = (aspectId: EAspectId): IAspect =>
 	AspectIdToAspectMapping[aspectId];
 
+const AspectHashToAspectIdMapping = generateHashToIdMapping(
+	AspectIdToAspectMapping
+);
+
 export const getAspectByHash = (hash: number): IAspect => {
-	return Object.values(AspectIdToAspectMapping).find((x) => x.hash === hash);
+	return AspectIdToAspectMapping[AspectHashToAspectIdMapping[hash]];
 };
 
 /***** Extra *****/

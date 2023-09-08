@@ -6,6 +6,7 @@ import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { getDefaultRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { ELoadoutOptimizationType } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { ArmorItem } from './Armor';
 import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
@@ -35,6 +36,7 @@ export type DLBConfig = {
 	destinySubclassId: EDestinySubclassId;
 	exoticHash: number;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	raidMods: [EModId, EModId, EModId, EModId];
 };
 
 export type AnalysisResults = Record<
@@ -65,6 +67,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	armor: [],
 	desiredStatTiers: getDefaultArmorStatMapping(),
 	armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
+	raidMods: getDefaultRaidMods(),
 	id: null,
 	name: null,
 	loadoutType: ELoadoutType.DIM,

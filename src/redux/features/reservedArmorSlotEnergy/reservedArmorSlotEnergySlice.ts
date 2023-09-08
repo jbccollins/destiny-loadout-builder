@@ -36,10 +36,14 @@ export const reservedArmorSlotEnergySlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		clearReservedArmorSlotEnergy: (state) => {
+			state.value = getDefaultArmorSlotEnergyMapping();
+			state.uuid = uuid();
+		},
 	},
 });
 
-export const { setReservedArmorSlotEnergy } =
+export const { setReservedArmorSlotEnergy, clearReservedArmorSlotEnergy } =
 	reservedArmorSlotEnergySlice.actions;
 
 export const selectReservedArmorSlotEnergy = (state: AppState) =>

@@ -52,26 +52,6 @@ import resultsPaginationReducer, {
 	setResultsPagination,
 } from './features/resultsPagination/resultsPaginationSlice';
 
-import { NIL } from 'uuid';
-import armorSlotModViolationsReducer, {
-	setArmorSlotModViolations,
-} from './features/armorSlotModViolations/armorSlotModViolationsSlice';
-import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
-import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
-import disabledArmorSlotModsReducer, {
-	setDisabledArmorSlotMods,
-} from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
-import disabledRaidModsReducer, {
-	setDisabledRaidMods,
-} from './features/disabledRaidMods/disabledRaidModsSlice';
-import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
-import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
-import processedArmorReducer, {
-	setProcessedArmor,
-} from './features/processedArmor/processedArmorSlice';
-import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
-import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
-
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	DoProcessArmorOutput,
@@ -100,6 +80,26 @@ import {
 } from '@dlb/types/Mod';
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import isEqual from 'lodash/isEqual';
+import { NIL } from 'uuid';
+import armorSlotModViolationsReducer, {
+	setArmorSlotModViolations,
+} from './features/armorSlotModViolations/armorSlotModViolationsSlice';
+import dimLoadoutsReducer from './features/dimLoadouts/dimLoadoutsSlice';
+import dimLoadoutsFilterReducer from './features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import disabledArmorSlotModsReducer, {
+	setDisabledArmorSlotMods,
+} from './features/disabledArmorSlotMods/disabledArmorSlotModsSlice';
+import disabledRaidModsReducer, {
+	setDisabledRaidMods,
+} from './features/disabledRaidMods/disabledRaidModsSlice';
+import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
+import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import performingBatchUpdateReducer from './features/performingBatchUpdate/performingBatchUpdateSlice';
+import processedArmorReducer, {
+	setProcessedArmor,
+} from './features/processedArmor/processedArmorSlice';
+import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
 
 function getChangedProperties(previousObj, currentObj, changes) {
 	// Loop through the properties of the current object
@@ -149,6 +149,7 @@ export function makeStore() {
 			maxPossibleReservedArmorSlotEnergy:
 				maxPossibleReservedArmorSlotEnergyReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
+			performingBatchUpdate: performingBatchUpdateReducer,
 			processedArmor: processedArmorReducer,
 			reservedArmorSlotEnergy: reservedArmorSlotEnergyReducer,
 			resultsPagination: resultsPaginationReducer,
@@ -245,6 +246,7 @@ function handleChange() {
 		selectedIntrinsicArmorPerkOrAttributeIds: {
 			uuid: nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid,
 		},
+		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
 
 	const hasMismatchedUuids =
@@ -290,7 +292,10 @@ function handleChange() {
 		nextInGameLoadoutsUuid !== NIL &&
 		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid !== NIL;
 
-	if (!(hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids)) {
+	if (
+		!(hasAllDataLoaded && hasMismatchedUuids && hasNonDefaultUuids) ||
+		performingBatchUpdate
+	) {
 		return;
 	}
 

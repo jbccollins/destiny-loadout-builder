@@ -100,7 +100,7 @@ import {
 	setSelectedMinimumGearTier,
 } from '@dlb/redux/features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
 import {
-	defaultRaidMods,
+	clearSelectedRaidMods,
 	selectSelectedRaidMods,
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
@@ -346,7 +346,7 @@ function Loading() {
 		if (loadoutConfig.rml) {
 			dispatch(setSelectedRaidMods(loadoutConfig.rml));
 		} else {
-			dispatch(setSelectedRaidMods(defaultRaidMods));
+			dispatch(clearSelectedRaidMods());
 		}
 
 		if (loadoutConfig.das) {

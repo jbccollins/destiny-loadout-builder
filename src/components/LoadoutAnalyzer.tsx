@@ -18,6 +18,12 @@ import {
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectDimLoadouts } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import { setPerformingBatchUpdate } from '@dlb/redux/features/performingBatchUpdate/performingBatchUpdateSlice';
+import { clearReservedArmorSlotEnergy } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import {
+	clearArmorSlotMods,
+	setSelectedArmorSlotMods,
+} from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import {
 	clearSelectedAspects,
 	selectSelectedAspects,
@@ -47,6 +53,7 @@ import {
 	selectSelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import { clearSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
 	clearSelectedJump,
 	selectSelectedJump,
@@ -58,6 +65,10 @@ import {
 	selectSelectedMelee,
 	setSelectedMelee,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+import {
+	clearSelectedRaidMods,
+	setSelectedRaidMods,
+} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import {
 	clearSelectedSuperAbility,
 	selectSelectedSuperAbility,
@@ -210,9 +221,12 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		});
 	};
 
-	// TODO: Change some of these setSelected to clear
 	const clearApplicationState = () => {
 		dispatch(clearDesiredArmorStats());
+		dispatch(clearArmorSlotMods());
+		dispatch(clearSelectedRaidMods());
+		dispatch(clearSelectedIntrinsicArmorPerkOrAttributeIds());
+		dispatch(clearReservedArmorSlotEnergy());
 		dispatch(clearSelectedDestinySubclass());
 		dispatch(clearSelectedSuperAbility());
 		dispatch(clearSelectedAspects());
@@ -228,6 +242,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		if (!loadout) {
 			throw new Error('wtf');
 		}
+		dispatch(setPerformingBatchUpdate(true));
 		clearApplicationState();
 		const {
 			exoticHash,
@@ -241,6 +256,8 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 			grenadeId,
 			meleeId,
 			desiredStatTiers,
+			armorSlotMods,
+			raidMods,
 		} = loadout;
 
 		const newSelectedExoticArmor = { ...selectedExoticArmor };
@@ -251,6 +268,8 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
 		dispatch(setSelectedDestinyClass(destinyClassId));
 		dispatch(setDesiredArmorStats(desiredStatTiers));
+		dispatch(setSelectedArmorSlotMods(armorSlotMods));
+		dispatch(setSelectedRaidMods(raidMods));
 
 		if (destinySubclassId) {
 			dispatch(
@@ -315,6 +334,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 			}
 		}
 		dispatch(setTabIndex(0));
+		dispatch(setPerformingBatchUpdate(false));
 	};
 
 	useEffect(() => {

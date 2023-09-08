@@ -28,13 +28,17 @@ import {
 	getExtraMasterworkedStats,
 	StrictArmorItems,
 } from '@dlb/types/Armor';
-import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
+import {
+	ArmorSlotIdList,
+	ArmorSlotWithClassItemIdList,
+} from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
 	ArmorStatIndices,
 	ArmorStatMapping,
 	getArmorStatIdFromBungieHash,
 	getArmorStatMappingFromFragments,
+	getArmorStatMappingFromMods,
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { getAspectByHash } from '@dlb/types/Aspect';
@@ -59,8 +63,8 @@ import {
 import { getJumpByHash } from '@dlb/types/Jump';
 import { getMeleeByHash } from '@dlb/types/Melee';
 import {
-	getDefaultArmorSlotIdToModIdListMapping,
 	getModByHash,
+	getValidRaidModArmorSlotPlacements,
 } from '@dlb/types/Mod';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 
@@ -233,6 +237,17 @@ export const buildLoadouts = (
 				loadout.armorSlotMods[mod.armorSlotId][idx] = mod.id;
 			} else if (mod.modSocketCategoryId === EModSocketCategoryId.Stat) {
 				loadout.armorStatMods.push(mod.id);
+			} else if (mod.modSocketCategoryId === EModSocketCategoryId.Raid) {
+				const idx = loadout.raidMods.findIndex((x) => x === null);
+				if (idx === -1) {
+					console.warn({
+						message: 'Could not find null value in raidMods',
+						loadoutId: loadout.id,
+						modId: mod.id,
+					});
+					return;
+				}
+				loadout.raidMods[idx] = mod.id;
 			}
 			// TODO: Currently no armor slot mods give bonuses so this is safe.
 			// But there have been mods in the past that did give bonuses.
@@ -402,6 +417,20 @@ export const getLoadoutsThatCanBeOptimized = (
 				loadout.fragmentIdList,
 				loadout.destinyClassId
 			);
+			const validRaidModArmorSlotPlacements =
+				getValidRaidModArmorSlotPlacements(
+					loadout.armorSlotMods,
+					loadout.raidMods
+				);
+
+			let mods = [...loadout.raidMods];
+			ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+				mods = [...mods, ...loadout.armorSlotMods[armorSlotId]];
+			});
+			const modsArmorStatMapping = getArmorStatMappingFromMods(
+				mods,
+				loadout.destinyClassId
+			);
 
 			// TODO: Flesh out the non-default stuff like
 			// raid mods, placements, armor slot mods,
@@ -410,10 +439,10 @@ export const getLoadoutsThatCanBeOptimized = (
 				desiredArmorStats: loadout.desiredStatTiers,
 				armorItems: preProcessedArmor,
 				fragmentArmorStatMapping,
-				modArmorStatMapping: getDefaultArmorStatMapping(),
-				potentialRaidModArmorSlotPlacements: null,
-				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
-				raidMods: [],
+				modArmorStatMapping: modsArmorStatMapping,
+				potentialRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
+				armorSlotMods: loadout.armorSlotMods,
+				raidMods: loadout.raidMods.filter((x) => x !== null),
 				intrinsicArmorPerkOrAttributeIds: [],
 				destinyClassId: loadout.destinyClassId,
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),

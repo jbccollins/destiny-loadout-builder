@@ -69,10 +69,7 @@ import {
 	selectSelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
-import {
-	defaultIntrinsicArmorPerkOrAttributeIds,
-	setSelectedIntrinsicArmorPerkOrAttributeIds,
-} from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
+import { clearSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
 	selectSelectedJump,
 	setSelectedJump,
@@ -81,10 +78,7 @@ import {
 	selectSelectedMelee,
 	setSelectedMelee,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
-import {
-	defaultRaidMods,
-	setSelectedRaidMods,
-} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import { clearSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import {
 	selectSelectedSuperAbility,
 	setSelectedSuperAbility,
@@ -187,15 +181,11 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 	};
 
 	const clearRaidMods = () => {
-		dispatch(setSelectedRaidMods(defaultRaidMods));
+		dispatch(clearSelectedRaidMods());
 	};
 
 	const clearIntrinsicArmorPerkOrAttributes = () => {
-		dispatch(
-			setSelectedIntrinsicArmorPerkOrAttributeIds(
-				defaultIntrinsicArmorPerkOrAttributeIds
-			)
-		);
+		dispatch(clearSelectedIntrinsicArmorPerkOrAttributeIds());
 	};
 
 	const clearSubclassOptions = () => {

@@ -16,10 +16,17 @@ export const PatchNotes: PatchNote[] = [
 		title: 'Alpha Loadout Analyzer',
 		sections: [
 			{
+				title: 'Alpha Loadout Analyzer',
 				items: [
 					`Add a new "Loadout Analyzer" tool. This tool checks all of your existing DIM loadouts to see if any could reach higher stat tiers while using the same Aspects, Fragments, Mods, etc...`,
-					`Fixed a bug where the website favicon was not showing up on all pages`,
 					`Changed the left panel tab navigator to use icons now that there is a fourth tab for the Loadout Analyzer.`,
+					`Note that this currently only supports DIM loadouts but will support in-game loadouts in the future.`,
+				],
+			},
+			{
+				title: 'Other Changes',
+				items: [
+					`Fixed a bug where the website favicon was not showing up on all pages`,
 				],
 			},
 		],

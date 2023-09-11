@@ -47,7 +47,10 @@ import {
 	DestinyClassIdList,
 	getDestinyClassIdByDestinySubclassId,
 } from '@dlb/types/DestinyClass';
-import { getDestinySubclassByHash } from '@dlb/types/DestinySubclass';
+import {
+	getDestinySubclassByHash,
+	oldToNewSubclassHashes,
+} from '@dlb/types/DestinySubclass';
 import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 import { getFragmentByHash } from '@dlb/types/Fragment';
 import { EnumDictionary } from '@dlb/types/globals';
@@ -165,7 +168,7 @@ export const buildLoadouts = (
 			// TODO: Is this safe? Will this always be a subclass?
 			// can other things have socketOverrides?
 			if (equippedItem.socketOverrides) {
-				const subclassHash = equippedItem.hash;
+				let subclassHash = equippedItem.hash;
 				const classAbilityHash = equippedItem.socketOverrides[0] || null;
 				const jumpHash = equippedItem.socketOverrides[1] || null;
 				if (debugging) {
@@ -185,6 +188,14 @@ export const buildLoadouts = (
 					equippedItem.socketOverrides[10],
 					equippedItem.socketOverrides[11],
 				].filter((x) => !!x);
+
+				// Ensure that loadouts that were created with old 2.0 subclasses
+				// are still processed correctly with 3.0 versions
+				const newSubclassHash = oldToNewSubclassHashes[subclassHash];
+				if (newSubclassHash) {
+					subclassHash = newSubclassHash;
+				}
+
 				// TODO: Refactor all these get by hash functions.
 				// They all iterate over the Object.values of the id mapping
 				// Just make a second mapping for quick hash lookups

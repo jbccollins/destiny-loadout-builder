@@ -2,6 +2,7 @@ import { Loadout } from '@destinyitemmanager/dim-api-types';
 import { buildLoadouts } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
 import armor from '@dlb/services/tests/fixtures/armor.json';
+import dimLoadouts2 from '@dlb/services/tests/fixtures/dim-loadouts-2.json';
 import dimLoadouts from '@dlb/services/tests/fixtures/dim-loadouts.json';
 import {
 	Armor,
@@ -27,16 +28,26 @@ const testCases: TestCase[] = [
 		],
 		53,
 	],
+	[
+		'Base 2',
+		[
+			dimLoadouts2 as Loadout[],
+			armor as unknown as Armor,
+			allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
+			EMasterworkAssumption.All,
+		],
+		53,
+	],
 ];
 
-/// const nameOfTestToDebug = 'Simple redundant mobility and disipline';
-const nameOfTestToDebug = null;
+const nameOfTestToDebug = 'Base 2';
+// const nameOfTestToDebug = null;
 describe('buildLoadouts', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)
 		: testCases;
 	test.each(filteredTestCases)('%p', (_name, input, output) => {
 		const result = testFunction(...input);
-		expect(result.length).toEqual(output);
+		expect(Object.keys(result.validLoadouts).length).toEqual(output);
 	});
 });

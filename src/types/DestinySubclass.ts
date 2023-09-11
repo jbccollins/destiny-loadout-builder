@@ -230,3 +230,29 @@ export const DestinySubclassElementIds = [
 	EElementId.Stasis,
 	EElementId.Strand,
 ];
+
+/**
+ * Some items have been replaced with equivalent new items. So far that's been
+ * true of the "Light 2.0" subclasses which are an entirely different item from
+ * the old one. When loading loadouts we'd like to just use the new version.
+ */
+export const oldToNewSubclassHashes: Record<number, number> = {
+	// Arcstrider
+	1334959255: 2328211300,
+	// Striker
+	2958378809: 2932390016,
+	// Stormcaller
+	1751782730: 3168997075,
+	// Gunslinger
+	3635991036: 2240888816,
+	// Sunbreaker
+	3105935002: 2550323932,
+	// Dawnblade
+	3481861797: 3941205951,
+	// Nightstalker
+	3225959819: 2453351420,
+	// Sentinel
+	3382391785: 2842471112,
+	// Voidwalker
+	3887892656: 2849050827,
+};

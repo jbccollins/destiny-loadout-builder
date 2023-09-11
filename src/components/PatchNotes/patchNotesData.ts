@@ -11,7 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2023-09-1',
+		date: '2023-09-12',
+		version: '2.3.2',
+		title: 'Fix Old DIM Loadouts',
+		sections: [
+			{
+				items: [
+					`Fix a bug where old DIM loadouts would cause the app to crash`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-09-11',
 		version: '2.3.1',
 		title: 'Better Error Reporting',
 		sections: [

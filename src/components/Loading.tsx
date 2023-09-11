@@ -575,16 +575,23 @@ function Loading() {
 				}
 				if (!hasDimLoadoutsError && dimProfile) {
 					log('hasDimProfile', null, false);
-					const analyzableDimLoadoutsBreakdown = buildLoadouts(
-						dimProfile.loadouts,
-						armor,
-						allClassItemMetadata,
-						EMasterworkAssumption.All
-					);
-					log('analyzableDimLoadoutsBreakdown', analyzableDimLoadoutsBreakdown);
-					dispatch(
-						setAnalyzableLoadoutsBreakdown(analyzableDimLoadoutsBreakdown)
-					);
+					try {
+						const analyzableDimLoadoutsBreakdown = buildLoadouts(
+							dimProfile.loadouts,
+							armor,
+							allClassItemMetadata,
+							EMasterworkAssumption.All
+						);
+						log(
+							'analyzableDimLoadoutsBreakdown',
+							analyzableDimLoadoutsBreakdown
+						);
+						dispatch(
+							setAnalyzableLoadoutsBreakdown(analyzableDimLoadoutsBreakdown)
+						);
+					} catch (e) {
+						log('buildLoadoutsError', e);
+					}
 				}
 				localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 				// Finally we notify the store that we are done loading

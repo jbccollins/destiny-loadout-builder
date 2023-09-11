@@ -11,7 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2023-09-14',
+		date: '2023-09-1',
+		version: '2.3.1',
+		title: 'Better Error Reporting',
+		sections: [
+			{
+				items: [
+					`Add better error reporting when fatal errors occur on while loading the app`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-09-08',
 		version: '2.3.0',
 		title: 'Alpha Loadout Analyzer',
 		sections: [

@@ -11,10 +11,7 @@ import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmo
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { setSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import {
-	selectSelectedExoticArmor,
-	setSelectedExoticArmor,
-} from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
@@ -31,19 +28,13 @@ import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
-import {
-	selectAnalyzableLoadouts,
-	setAnalyzableLoadoutsBreakdown,
-} from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
+import { setAnalyzableLoadoutsBreakdown } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
-import {
-	selectDimLoadouts,
-	setDimLoadouts,
-} from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import { setDimLoadouts } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
@@ -54,7 +45,10 @@ import {
 	selectInGameLoadoutsFilter,
 	setInGameLoadoutsFilter,
 } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
-import { setLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
+import {
+	LoadLog,
+	setLoadError,
+} from '@dlb/redux/features/loadError/loadErrorSlice';
 import {
 	selectReservedArmorSlotEnergy,
 	setReservedArmorSlotEnergy,
@@ -125,6 +119,7 @@ import {
 	EDestinyClassId,
 	EDestinySubclassId,
 	EElementId,
+	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, Card, CircularProgress, styled } from '@mui/material';
@@ -169,6 +164,17 @@ const LoadingSpinnerContainer = styled(Box)(() => ({
 const LOCAL_STORAGE_SHARED_LOADOUT_URL = 'sharedLoadoutString';
 
 function Loading() {
+	const logs: LoadLog[] = [];
+	const log = (name: string, message: unknown, withMessage = true) => {
+		if (withMessage) {
+			logs.push({ name, message });
+		} else {
+			logs.push({ name, message: 'not-logged' });
+		}
+
+		console.log(`>>>>>>>>>>> [LOAD] ${name} <<<<<<<<<<<`, message);
+	};
+
 	const [hasMembershipData, setHasMembershipData] = useState(false);
 	const [hasPlatformData, setHasPlatformData] = useState(false);
 	const [hasManifest, setHasManifest] = useState(false);
@@ -179,10 +185,8 @@ function Loading() {
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
-	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
 	const inGameLoadoutsFilter = useAppSelector(selectInGameLoadoutsFilter);
-	const analyzableLoadouts = useAppSelector(selectAnalyzableLoadouts);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
@@ -195,7 +199,6 @@ function Loading() {
 		selectSelectedMasterworkAssumption
 	);
 	// const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
-	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
 	const selectedGrenade = useAppSelector(selectSelectedGrenade);
@@ -366,25 +369,23 @@ function Loading() {
 
 	useEffect(() => {
 		(async () => {
+			log('begin', null, false);
 			const urlParams = new URLSearchParams(window.location.search);
+			log('urlParams', urlParams);
 			let sharedLoadoutString = urlParams.get('loadout');
-			console.log(
-				'>>>>>>>>>>> [LOAD] sharedLoadoutString <<<<<<<<<<<',
-				sharedLoadoutString
-			);
+			log('sharedLoadoutString', sharedLoadoutString);
 			if (sharedLoadoutString) {
 				localStorage.setItem(
 					LOCAL_STORAGE_SHARED_LOADOUT_URL,
 					sharedLoadoutString
 				);
-				console.log(
-					'>>>>>>>>>>> [LOAD] sharedLoadoutString cached <<<<<<<<<<<',
+				log(
+					'sharedLoadoutString cached',
 					localStorage.getItem(LOCAL_STORAGE_SHARED_LOADOUT_URL)
 				);
 			}
 
 			try {
-				console.log('>>>>>>>>>>> [LOAD] begin <<<<<<<<<<<');
 				dispatch(setAllDataLoaded(false));
 				// TODO can any of these requests be paralellized? Like a Promise.All or whatever?
 				const membershipData = await getMembershipData();
@@ -403,10 +404,7 @@ function Loading() {
 
 				let hasLoadout = sharedLoadoutString ? true : false;
 
-				console.log(
-					'>>>>>>>>>>> [LOAD] membership <<<<<<<<<<<',
-					membershipData
-				);
+				log('membership', membershipData);
 				const platformData = await getDestinyAccountsForBungieAccount(
 					membershipData.membershipId
 				);
@@ -414,7 +412,7 @@ function Loading() {
 					(platform) => platform.membershipId === membershipData.membershipId
 				);
 				setHasPlatformData(true);
-				console.log('>>>>>>>>>>> [LOAD] platform <<<<<<<<<<<', membershipData);
+				log('platform', membershipData);
 
 				let hasDimLoadoutsError = false;
 				let dimProfile = null;
@@ -422,7 +420,6 @@ function Loading() {
 					// throw 'heck';
 					dimProfile = await getDimApiProfile(mostRecentPlatform);
 					dispatch(setDimLoadouts(dimProfile.loadouts));
-					console.log('>>>>>>>>>>> [LOAD] DIM profile <<<<<<<<<<<', dimProfile);
 				} catch (e) {
 					console.warn(
 						'Unable to load DIM loadouts. Error:',
@@ -431,17 +428,16 @@ function Loading() {
 						process.env.NEXT_PUBLIC_DIM_API_KEY
 					);
 					hasDimLoadoutsError = true;
+					log('dimProfileError', e);
 				}
+				log('dimProfile', dimProfile);
 
 				const manifest = await getDefinitions();
-				console.log('>>>>>>>>>>> [LOAD] manifest <<<<<<<<<<<', manifest);
+				log('manifest', manifest, false);
 				setHasManifest(true);
 
 				const rawCharacters = await getCharacters(mostRecentPlatform);
-				console.log(
-					'>>>>>>>>>>> [LOAD] raw characters <<<<<<<<<<<',
-					rawCharacters
-				);
+				log('raw characters', rawCharacters);
 				setHasRawCharacters(true);
 
 				const { stores, inGameLoadoutItemIdList } = await loadStoresData(
@@ -454,10 +450,7 @@ function Loading() {
 					armorMetadata,
 					allClassItemMetadata,
 				] = extractArmor(stores, manifest);
-				console.log(
-					'>>>>>>>>>>> [LOAD] allClassItemMetadata <<<<<<<<<<<',
-					allClassItemMetadata
-				);
+				log('allClassItemMetadata', allClassItemMetadata, false);
 
 				dispatch(setArmor({ ...armor }));
 				dispatch(setAvailableExoticArmor({ ...availableExoticArmor }));
@@ -465,10 +458,7 @@ function Loading() {
 				dispatch(setAllClassItemMetadata(allClassItemMetadata));
 
 				const validDestinyClassIds = getValidDestinyClassIds(armorMetadata);
-				console.log(
-					'>>>>>>>>>>> [LOAD] validDestinyClassIds <<<<<<<<<<<',
-					validDestinyClassIds
-				);
+				log('validDestinyClassIds', validDestinyClassIds);
 				if (validDestinyClassIds.length === 0) {
 					// TODO: Throw error
 					console.error('No valid Destiny Class IDs found');
@@ -476,11 +466,8 @@ function Loading() {
 					return;
 				}
 				dispatch(setValidDestinyClassIds(validDestinyClassIds));
-				console.log('>>>>>>>>>>> [LOAD] armor <<<<<<<<<<<', armor);
-				console.log(
-					'>>>>>>>>>>> [LOAD] availableExoticArmor <<<<<<<<<<<',
-					availableExoticArmor
-				);
+				log('armor', armor, false);
+				log('availableExoticArmor', availableExoticArmor, false);
 				const characters = extractCharacters(stores);
 				dispatch(setCharacters([...characters]));
 
@@ -521,18 +508,12 @@ function Loading() {
 				}
 				if (!successfullyParsedSharedLoadoutUrl) {
 					dispatch(setSelectedDestinyClass(validDestinyClassIds[0]));
-					console.log('>>>>>>>>>>> [LOAD] characters <<<<<<<<<<<', characters);
+					log('characters', characters);
 
-					console.log(
-						'>>>>>>>>>>> [LOAD] defaultSelectedExoticArmor <<<<<<<<<<<',
-						defaultSelectedExoticArmor
-					);
+					log('defaultSelectedExoticArmor', defaultSelectedExoticArmor);
 
 					dispatch(setSelectedDestinySubclass(defaultSelectedDestinySubclass));
-					console.log(
-						'>>>>>>>>>>> [LOAD] defaultSelectedDestinySubclass <<<<<<<<<<<',
-						defaultSelectedDestinySubclass
-					);
+					log('defaultSelectedDestinySubclass', defaultSelectedDestinySubclass);
 
 					// This is kinda hacky but by triggering a dispatch of the existing
 					// default values for
@@ -558,38 +539,49 @@ function Loading() {
 							fragments: selectedFragments[EElementId.Stasis],
 						})
 					);
+					log('dirtySelectedFragments', null, false);
 					dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
+					log('dirtySelectedArmorSlotMods', null, false);
 					dispatch(setSelectedRaidMods(selectedRaidMods));
-
+					log('dirtySelectedRaidMods', null, false);
 					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
+					log('dirtySharedLoadoutDesiredStats', null, false);
 				}
 				dispatch(
 					setSelectedIntrinsicArmorPerkOrAttributeIds(
 						selectedIntrisicArmorPerkOrAttributeIds
 					)
 				);
+				log('dirtySelectedIntrinsicArmorPerkOrAttributeIds', null, false);
 				dispatch(setDesiredArmorStats(desiredArmorStats));
+				log('dirtyDesiredArmorStats', null, false);
 				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
+				log('dirtySelectedMasterworkAssumption', null, false);
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
+				log('dirtyDimLoadoutsFilter', null, false);
 				dispatch(setInGameLoadouts(inGameLoadoutItemIdList));
+				log('dirtyInGameLoadouts', null, false);
 				dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
+				log('dirtyInGameLoadoutsFilter', null, false);
 				dispatch(setUseZeroWastedStats(useZeroWastedStats));
+				log('dirtyUseZeroWastedStats', null, false);
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
+				log('dirtySelectedMinimumGearTier', null, false);
 				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
+				log('dirtyReservedArmorSlotEnergy', null, false);
 				if (hasDimLoadoutsError) {
 					dispatch(setDimLoadouts([]));
+					log('hasDimLoadoutsError', null, false);
 				}
 				if (!hasDimLoadoutsError && dimProfile) {
+					log('hasDimProfile', null, false);
 					const analyzableDimLoadoutsBreakdown = buildLoadouts(
 						dimProfile.loadouts,
 						armor,
 						allClassItemMetadata,
-						selectedMasterworkAssumption
+						EMasterworkAssumption.All
 					);
-					console.log(
-						'>>>>>>>>>>> [LOAD] analyzableDimLoadoutsBreakdown <<<<<<<<<<<',
-						analyzableDimLoadoutsBreakdown
-					);
+					log('analyzableDimLoadoutsBreakdown', analyzableDimLoadoutsBreakdown);
 					dispatch(
 						setAnalyzableLoadoutsBreakdown(analyzableDimLoadoutsBreakdown)
 					);
@@ -597,6 +589,7 @@ function Loading() {
 				localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 				// Finally we notify the store that we are done loading
 				dispatch(setAllDataLoaded(true));
+				log('end', null, false);
 			} catch (error) {
 				// TODO redirect only on the right kind of error
 				// Test by deleting 'authorization' from localStorage
@@ -612,7 +605,12 @@ function Loading() {
 				} else {
 					const err = error as Error;
 					const errMessage = `message: ${err.message}\nstack: ${err.stack}`;
-					dispatch(setLoadError(errMessage));
+					dispatch(
+						setLoadError({
+							err: errMessage,
+							logs,
+						})
+					);
 					router.push('/error');
 				}
 			}

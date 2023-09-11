@@ -1,4 +1,7 @@
 import Head from '@dlb/components/Meta/Head';
+import SocialIcon from '@dlb/components/SocialIcon';
+import { DISCORD_LINK } from '@dlb/dim/utils/constants';
+import discord_image from '@dlb/public/discord-mark-white.png';
 import { selectLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { Box, Button, styled } from '@mui/material';
@@ -57,7 +60,7 @@ function Error() {
 	useEffect(() => {
 		(async () => {
 			if (loadError) {
-				await sendErrorEmail(loadError);
+				await sendErrorEmail(JSON.stringify(loadError, null, 2));
 			}
 		})();
 
@@ -82,6 +85,23 @@ function Error() {
 				<Subtitle>
 					Click the RESET button to hard refresh the application
 				</Subtitle>
+				<Box
+					sx={{
+						marginY: '16px',
+						background: '#2b2b2b',
+						padding: '8px',
+						borderRadius: '8px',
+					}}
+				>
+					<Box sx={{ marginBottom: '8px' }}>
+						Still having trouble? Reach out to me on Discord:{' '}
+					</Box>
+					<SocialIcon
+						linkUrl={DISCORD_LINK}
+						iconUrl={discord_image}
+						text="Discord"
+					/>
+				</Box>
 				<Content>
 					<Button
 						sx={{ margin: '8px' }}
@@ -99,7 +119,21 @@ function Error() {
 							Show Error
 						</Button>
 					)}
-					{showError && <ErrorWrapper>{loadError}</ErrorWrapper>}
+					{showError && (
+						<ErrorWrapper>
+							{loadError && loadError.err && (
+								<>
+									<Box>Error:</Box> {loadError.err}
+								</>
+							)}
+							{loadError && loadError.err && (
+								<>
+									<Box>Logs:</Box>
+									<pre>{JSON.stringify(loadError.logs, null, 2)}</pre>
+								</>
+							)}
+						</ErrorWrapper>
+					)}
 				</Content>
 			</Container>
 		</>

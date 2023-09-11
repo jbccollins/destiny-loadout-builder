@@ -97,8 +97,18 @@ export const buildLoadouts = (
 	masterworkAssumption: EMasterworkAssumption
 ): AnalyzableLoadoutBreakdown => {
 	const loadouts: AnalyzableLoadout[] = [];
+	if (!dimLoadouts || !dimLoadouts.length) {
+		return {
+			validLoadouts: {},
+			invalidLoadouts: {},
+		};
+	}
 	const armorItems = flattenArmor(armor, allClassItemMetadata);
 	dimLoadouts.forEach((dimLoadout) => {
+		const debugging = false; // dimLoadout.name.includes('IDFK');
+		if (debugging) {
+			console.log('>>>> dimLoadout', JSON.stringify(dimLoadout, null, 2));
+		}
 		const loadout: AnalyzableLoadout = {
 			...getDefaultAnalyzableLoadout(),
 			id: dimLoadout.id,
@@ -158,6 +168,9 @@ export const buildLoadouts = (
 				const subclassHash = equippedItem.hash;
 				const classAbilityHash = equippedItem.socketOverrides[0] || null;
 				const jumpHash = equippedItem.socketOverrides[1] || null;
+				if (debugging) {
+					console.log('>>>> jumpHash', jumpHash);
+				}
 				const superAbilityHash = equippedItem.socketOverrides[2] || null;
 				const meleeHash = equippedItem.socketOverrides[3] || null;
 				const grenadeHash = equippedItem.socketOverrides[4] || null;
@@ -469,17 +482,6 @@ export const getLoadoutsThatCanBeOptimized = (
 				processedArmor.items.some(
 					(x) => x.metadata.totalModCost < sumOfCurrentStatModsCost
 				);
-			if (loadout.name === 'Unoptimized Loadout') {
-				console.log('>>>> loadout', loadout);
-				console.log(
-					'>>>> minFoundCost',
-					Math.min(...processedArmor.items.map((x) => x.metadata.totalModCost))
-				);
-				console.log('>>>> maxDiff', maxDiff);
-				console.log('>>>> sumOfCurrentStatModsCost', sumOfCurrentStatModsCost);
-				console.log('>>>> hasHigherStatTiers', hasHigherStatTiers);
-				console.log('>>>> desiredStatTiers', loadout.desiredStatTiers);
-			}
 			let canBeOptimized = false;
 			const optimizationTypes: ELoadoutOptimizationType[] = [];
 			if (hasHigherStatTiers) {

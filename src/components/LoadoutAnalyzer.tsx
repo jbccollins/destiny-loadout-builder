@@ -89,6 +89,7 @@ import {
 import {
 	AnalysisResults,
 	AnalyzableLoadout,
+	AnalyzableLoadoutMapping,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
@@ -213,8 +214,19 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 
 		dispatch(setIsAnalyzed(false));
 		dispatch(setIsAnalyzing(true));
+		// TODO: This is just for testing. Remove this.
+		const debugging = false;
+		const _validLoadouts = debugging
+			? Object.keys(validLoadouts)
+					.slice(0, 10)
+					.reduce((obj, key) => {
+						obj[key] = validLoadouts[key];
+						return obj;
+					}, {} as AnalyzableLoadoutMapping)
+			: validLoadouts;
+
 		getLoadoutsThatCanBeOptimizedWorker.postMessage({
-			loadouts: validLoadouts,
+			loadouts: _validLoadouts,
 			armor,
 			masterworkAssumption,
 			allClassItemMetadata,

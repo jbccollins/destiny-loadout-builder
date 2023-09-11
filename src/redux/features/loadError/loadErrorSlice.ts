@@ -2,11 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
-import { EModId } from '@dlb/generated/mod/EModId';
+import { NIL, v4 as uuid } from 'uuid';
+
+export type LoadLog = { name: string; message: unknown };
+type LoadError = {
+	err: string;
+	logs: LoadLog[];
+};
 
 export interface LoadErrorState {
-	value: string;
+	value: LoadError;
 	uuid: string;
 }
 
@@ -19,7 +24,7 @@ export const loadErrorSlice = createSlice({
 	name: 'loadError',
 	initialState,
 	reducers: {
-		setLoadError: (state, action: PayloadAction<string>) => {
+		setLoadError: (state, action: PayloadAction<LoadError>) => {
 			state.value = action.payload;
 			state.uuid = uuid();
 		},

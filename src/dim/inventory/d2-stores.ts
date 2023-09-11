@@ -229,6 +229,7 @@ export const processInGameLoadouts = (
 	const results: string[] = [];
 	if (characterLoadouts) {
 		Object.values(characterLoadouts).forEach((value) => {
+			console.log('>>>>>> characterLoadout: ', value);
 			value.loadouts.forEach((loadout) => {
 				loadout.items.forEach((item) => {
 					results.push(item.itemInstanceId);

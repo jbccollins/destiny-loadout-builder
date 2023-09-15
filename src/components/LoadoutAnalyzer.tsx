@@ -1,3 +1,5 @@
+import d2Logo from '@dlb/public/d2-logo.png';
+import dimLogo from '@dlb/public/dim-logo.png';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import {
 	clearProgressCanBeOptimizedCount,
@@ -90,28 +92,27 @@ import {
 	AnalysisResults,
 	AnalyzableLoadout,
 	AnalyzableLoadoutMapping,
+	ELoadoutType,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { EnumDictionary } from '@dlb/types/globals';
-import {
-	AlignHorizontalLeft,
-	AttachMoney,
-	KeyboardDoubleArrowDown,
-	KeyboardDoubleArrowUp,
-} from '@mui/icons-material';
+import { AttachMoney, Help, KeyboardDoubleArrowUp } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
+import ReportIcon from '@mui/icons-material/Report';
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
+import RuleIcon from '@mui/icons-material/Rule';
 import {
 	Box,
-	Button,
 	IconButton,
 	LinearProgress,
 	SxProps,
 	useTheme,
 } from '@mui/material';
+import Image from 'next/image';
 import { ReactElement, useEffect, useMemo, useState } from 'react';
-
+import CustomTooltip from './CustomTooltip';
 export type LoadoutAnalyzerProps = {
 	isHidden?: boolean;
 };
@@ -121,19 +122,65 @@ const iconStyle: SxProps = {
 	width: '20px',
 };
 
-const loadoutOptimizationIcons: EnumDictionary<
+const loadoutOptimizationIconMapping: EnumDictionary<
 	ELoadoutOptimizationType,
-	ReactElement[]
+	ReactElement
 > = {
-	[ELoadoutOptimizationType.HigherStatTier]: [
-		<AlignHorizontalLeft sx={iconStyle} key={0} />,
-		<KeyboardDoubleArrowUp key={1} sx={iconStyle} />,
-	],
-	[ELoadoutOptimizationType.LowerCost]: [
-		<AttachMoney key={0} sx={iconStyle} />,
-		<KeyboardDoubleArrowDown key={1} sx={iconStyle} />,
-	],
+	[ELoadoutOptimizationType.HigherStatTier]: (
+		<KeyboardDoubleArrowUp key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.LowerCost]: <AttachMoney key={0} sx={iconStyle} />,
+	[ELoadoutOptimizationType.MissingArmor]: <RuleIcon key={0} sx={iconStyle} />,
+	[ELoadoutOptimizationType.NoExoticArmor]: (
+		<AttachMoney key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.UnavailableMods]: (
+		<ReportIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.StatsOver100]: (
+		<RestoreFromTrashIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.UnusedFragmentSlots]: (
+		<AttachMoney key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.LowerTargetDIMStatTiers]: (
+		<AttachMoney key={0} sx={iconStyle} />
+	),
 };
+
+function IconPill({
+	children,
+	color,
+
+	tooltipText,
+}: {
+	children: ReactElement;
+	color: string;
+	tooltipText: string;
+}) {
+	const theme = useTheme();
+	return (
+		<CustomTooltip title={tooltipText}>
+			<Box
+				sx={{
+					color: 'red',
+					background: '#585858',
+					display: 'inline-flex',
+					padding: theme.spacing(0.5),
+					borderRadius: '16px',
+					paddingTop: '10px',
+					height: '32px',
+					width: '32px',
+					alignItems: 'center',
+					justifyContent: 'center',
+					textAlign: 'center',
+				}}
+			>
+				<Box sx={{ color: color || 'white' }}>{children}</Box>
+			</Box>
+		</CustomTooltip>
+	);
+}
 
 export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 	const { isHidden } = props;
@@ -442,7 +489,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 					marginBottom: theme.spacing(2),
 				}}
 			>
-				Loadout Analyzer
+				Saved Loadouts
 			</Box>
 			{!isAnalyzed && !isAnalyzing && (
 				<>
@@ -452,11 +499,11 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 					</p>
 				</>
 			)}
-			{!isAnalyzing && (
+			{/* {!isAnalyzing && (
 				<Button variant="contained" onClick={analyzeLoadouts}>
 					{isAnalyzed ? 'Re-Run Analysis' : 'Analyze'}
 				</Button>
-			)}
+			)} */}
 			{isAnalyzing && <LinearProgress variant="determinate" value={value} />}
 			{isAnalyzed && (
 				<Box sx={{ marginTop: theme.spacing(1) }}>
@@ -465,12 +512,31 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 							<Box
 								key={value.id}
 								sx={{
-									padding: theme.spacing(0.5),
+									padding: theme.spacing(1),
 									marginBottom: theme.spacing(1),
 									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
 								}}
 							>
-								<Box sx={{ display: 'flex', alignItems: 'center' }}>
+								<Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+									<Box
+										sx={{
+											height: '20px',
+											width: '20px',
+											minWidth: '20px',
+											minHeight: '20px',
+										}}
+									>
+										<Image
+											src={
+												value.loadoutType === ELoadoutType.DIM
+													? dimLogo
+													: d2Logo
+											}
+											alt="Loadout Logo"
+											height="20px"
+											width="20px"
+										/>
+									</Box>
 									<IconButton
 										onClick={() => setApplicationState(value)}
 										size="small"
@@ -480,34 +546,18 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 									</IconButton>
 									<Box>{value.name}</Box>
 								</Box>
-								<Box sx={{ marginTop: '8px' }}>
-									{value.optimizationTypes?.map((x, i) => {
-										const { iconColors } = getLoadoutOptimization(x);
-										return (
-											<Box
-												sx={{
-													color: 'red',
-													background: '#2b2b2b',
-													display: 'inline-flex',
-													padding: theme.spacing(0.5),
-													borderRadius: '16px',
-													paddingTop: '10px',
-													height: '32px',
-													alignItems: 'center',
-													paddingLeft: theme.spacing(2),
-													paddingRight: theme.spacing(1.5),
-												}}
-												key={x}
-											>
-												{loadoutOptimizationIcons[x].map((x, i) => (
-													<Box key={i} sx={{ color: iconColors[i] || 'white' }}>
-														{x}
-													</Box>
-												))}
-											</Box>
-										);
-									})}
-								</Box>
+								{value.optimizationTypes?.length > 0 && (
+									<Box sx={{ marginTop: '8px', display: 'flex', gap: '4px' }}>
+										{value.optimizationTypes?.map((x, i) => {
+											const { iconColor, name } = getLoadoutOptimization(x);
+											return (
+												<IconPill key={x} color={iconColor} tooltipText={name}>
+													{loadoutOptimizationIconMapping[x]}
+												</IconPill>
+											);
+										})}
+									</Box>
+								)}
 							</Box>
 						))}
 					</Box>
@@ -520,10 +570,58 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 							{dimLoadouts.length - numValidDimLoadouts} of your DIM loadouts
 							were not analyzed because they did not meet the criteria for
 							analysis.
+							<CustomTooltip
+								title={
+									<Box>
+										<Box>
+											In order to be analyzed a loadout must meet the following
+											criteria:
+										</Box>
+										<ul>
+											<li>Include armor, mods or subclass options</li>
+											<li>It must NOT contain five legendary armor pieces</li>
+										</ul>
+									</Box>
+								}
+							>
+								<Help />
+							</CustomTooltip>
 						</Box>
 					)}
 					{Object.values(invalidLoadouts).map((value) => {
-						return <Box key={value.id}>{value.name}</Box>;
+						return (
+							<Box
+								sx={{
+									padding: theme.spacing(1),
+									marginBottom: theme.spacing(1),
+									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+								}}
+								key={value.id}
+							>
+								<Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+									<Box
+										sx={{
+											height: '20px',
+											width: '20px',
+											minWidth: '20px',
+											minHeight: '20px',
+										}}
+									>
+										<Image
+											src={
+												value.loadoutType === ELoadoutType.DIM
+													? dimLogo
+													: d2Logo
+											}
+											alt="Loadout Logo"
+											height="20px"
+											width="20px"
+										/>
+									</Box>
+									<Box>{value.name}</Box>
+								</Box>
+							</Box>
+						);
 					})}
 				</Box>
 			)}

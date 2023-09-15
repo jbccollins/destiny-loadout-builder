@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-09-15',
+		version: '2.3.3',
+		title: 'Add more analyzer optimization checks',
+		sections: [
+			{
+				items: [
+					`Add checks for missing armor, old mods and unused stat tiers to the loadout analyzer`,
+					`Improve the usability of tooltips on mobile devices`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-09-12',
 		version: '2.3.2',
 		title: 'Fix Old DIM Loadouts',

@@ -347,7 +347,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 							</>
 						),
 						index: 0,
-						title: 'Loadout',
+						title: 'Build',
 						icon: <ShieldIcon />,
 					},
 					{

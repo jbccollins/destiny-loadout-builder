@@ -53,6 +53,7 @@ export type AnalyzableLoadout = {
 	icon: string;
 	name?: string;
 	armorStatMods: EModId[];
+	achievedStatTiers: ArmorStatMapping;
 } & DLBConfig;
 
 export type AnalyzableLoadoutMapping = Record<string, AnalyzableLoadout>;
@@ -82,6 +83,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	aspectIdList: [],
 	fragmentIdList: [],
 	armorStatMods: [],
+	achievedStatTiers: getDefaultArmorStatMapping(),
 });
 
 export const getDefaultAnalyzableLoadoutBreakdown =

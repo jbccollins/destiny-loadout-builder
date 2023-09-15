@@ -56,20 +56,49 @@ import { getFragmentByHash } from '@dlb/types/Fragment';
 import { EnumDictionary } from '@dlb/types/globals';
 import { getGrenadeByHash } from '@dlb/types/Grenade';
 import {
+	EArmorSlotId,
 	EDestinySubclassId,
 	EDimLoadoutsFilterId,
 	EGearTierId,
 	EInGameLoadoutsFilterId,
 	EMasterworkAssumption,
+	EModCategoryId,
 	EModSocketCategoryId,
 } from '@dlb/types/IdEnums';
 import { getJumpByHash } from '@dlb/types/Jump';
 import { getMeleeByHash } from '@dlb/types/Melee';
 import {
+	getMod,
 	getModByHash,
 	getValidRaidModArmorSlotPlacements,
 } from '@dlb/types/Mod';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
+
+// A loadout that has some armor, mods or subclass options selected is considered valid
+// If a loadout just contains weapons, shaders, etc. then it is considered invalid
+// TODO: Handle the case where the exotic armor piece was deleted
+const isEditableLoadout = (loadout: AnalyzableLoadout): boolean => {
+	const nonClassItemArmor = loadout.armor.filter(
+		(x) => x.armorSlot !== EArmorSlotId.ClassItem
+	);
+	const hasOnlyLegendaryArmor =
+		nonClassItemArmor.length === 4 &&
+		nonClassItemArmor.every((x) => x.gearTierId === EGearTierId.Legendary);
+
+	const hasExoticArmor = nonClassItemArmor.some(
+		(x) => x.gearTierId === EGearTierId.Exotic
+	);
+	return (
+		hasExoticArmor &&
+		!hasOnlyLegendaryArmor &&
+		(loadout.armor.length > 0 ||
+			Object.values(loadout.armorSlotMods).some((x) =>
+				x.some((y) => y !== null)
+			) ||
+			loadout.raidMods.some((x) => x !== null) ||
+			loadout.destinySubclassId !== null)
+	);
+};
 
 const flattenArmor = (
 	armor: Armor,
@@ -120,6 +149,7 @@ export const buildLoadouts = (
 			destinyClassId: DestinyClassHashToDestinyClass[dimLoadout.classType],
 		};
 		const desiredStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
+		const achievedStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
 
 		// TODO: Stat constraints may not respect fragment bonus changes
 		// If a loadout was created, then later bungie adds a penalty to a fragment
@@ -135,6 +165,7 @@ export const buildLoadouts = (
 					statConstraint.statHash
 				);
 				desiredStatTiers[armorStatId] += minTier;
+				achievedStatTiers[armorStatId] += minTier;
 			});
 		}
 		dimLoadout.equipped.forEach((equippedItem) => {
@@ -159,6 +190,9 @@ export const buildLoadouts = (
 					);
 					ArmorStatIdList.forEach((armorStatId) => {
 						desiredStatTiers[armorStatId] +=
+							armorItem.stats[ArmorStatIndices[armorStatId]] +
+							extraMasterworkedStats;
+						achievedStatTiers[armorStatId] +=
 							armorItem.stats[ArmorStatIndices[armorStatId]] +
 							extraMasterworkedStats;
 					});
@@ -280,6 +314,7 @@ export const buildLoadouts = (
 			// when processing armor so that mod cost doesn't limit the stat mod availability
 			mod.bonuses.forEach((bonus) => {
 				desiredStatTiers[bonus.stat] += bonus.value;
+				achievedStatTiers[bonus.stat] += bonus.value;
 			});
 		});
 		const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
@@ -288,28 +323,31 @@ export const buildLoadouts = (
 		);
 		ArmorStatIdList.forEach((armorStatId) => {
 			desiredStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
+			achievedStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
 		});
 		ArmorStatIdList.forEach((armorStatId) => {
 			desiredStatTiers[armorStatId] = roundDown10(
 				desiredStatTiers[armorStatId]
 			);
+			// Clamp desired stat tiers to 100
+			desiredStatTiers[armorStatId] = Math.min(
+				desiredStatTiers[armorStatId],
+				100
+			);
+			// achievedStatTiers are not clamped
+			achievedStatTiers[armorStatId] = roundDown10(
+				achievedStatTiers[armorStatId]
+			);
 		});
 		loadout.desiredStatTiers = desiredStatTiers;
+		loadout.achievedStatTiers = achievedStatTiers;
 		loadouts.push(loadout);
 	});
 	const validLoadouts: Record<string, AnalyzableLoadout> = {};
 	const invalidLoadouts: Record<string, AnalyzableLoadout> = {};
 
-	// TODO: Is this "5" check safe? Does DIM just assume "any legendary class item" if none is provided?
-	// TODO: Handle deleted exotic armor. Right now this check assumes that your loadout
-	// has a non-deleted exotic armor piece. But we don't care about that. As long as you have ANY
-	// exotic armor that matches the type of exotic armor that was deleted we can still process this
-	// (assuming that we also have stat constraints I think)
 	loadouts.forEach((x) => {
-		if (
-			x.armor.length === 5 &&
-			x.armor.some((x) => x.gearTierId === EGearTierId.Exotic)
-		) {
+		if (isEditableLoadout(x)) {
 			validLoadouts[x.id] = x;
 		} else {
 			invalidLoadouts[x.id] = x;
@@ -357,12 +395,18 @@ const generatePreProcessedArmor = (
 export enum ELoadoutOptimizationType {
 	HigherStatTier = 'HigherStatTier',
 	LowerCost = 'LowerCost',
+	MissingArmor = 'MissingArmor',
+	NoExoticArmor = 'NoExoticArmor',
+	UnavailableMods = 'UnavailableMods',
+	StatsOver100 = 'StatsOver100',
+	UnusedFragmentSlots = 'UnusedFragmentSlots',
+	LowerTargetDIMStatTiers = 'LowerTargetDIMStatTiers',
 }
 
 export interface ILoadoutOptimization {
 	id: ELoadoutOptimizationType;
 	name: string;
-	iconColors: string[];
+	iconColor: string;
 }
 
 const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
@@ -372,12 +416,42 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 	[ELoadoutOptimizationType.HigherStatTier]: {
 		id: ELoadoutOptimizationType.HigherStatTier,
 		name: 'Higher Stat Tier',
-		iconColors: ['green', 'green'],
+		iconColor: 'lightgreen',
 	},
 	[ELoadoutOptimizationType.LowerCost]: {
 		id: ELoadoutOptimizationType.LowerCost,
 		name: 'Lower Cost',
-		iconColors: ['green', 'green'],
+		iconColor: 'lightgreen',
+	},
+	[ELoadoutOptimizationType.MissingArmor]: {
+		id: ELoadoutOptimizationType.MissingArmor,
+		name: 'Missing Armor',
+		iconColor: 'yellow',
+	},
+	[ELoadoutOptimizationType.NoExoticArmor]: {
+		id: ELoadoutOptimizationType.NoExoticArmor,
+		name: 'No Exotic Armor',
+		iconColor: 'yellow',
+	},
+	[ELoadoutOptimizationType.UnavailableMods]: {
+		id: ELoadoutOptimizationType.UnavailableMods,
+		name: 'Unavailable Mods',
+		iconColor: 'yellow',
+	},
+	[ELoadoutOptimizationType.StatsOver100]: {
+		id: ELoadoutOptimizationType.StatsOver100,
+		name: 'Stats Over 100',
+		iconColor: 'yellow',
+	},
+	[ELoadoutOptimizationType.UnusedFragmentSlots]: {
+		id: ELoadoutOptimizationType.UnusedFragmentSlots,
+		name: 'Missing Fragments',
+		iconColor: 'yellow',
+	},
+	[ELoadoutOptimizationType.LowerTargetDIMStatTiers]: {
+		id: ELoadoutOptimizationType.LowerTargetDIMStatTiers,
+		name: 'Lower Target DIM Stat Tiers',
+		iconColor: 'yellow',
 	},
 };
 
@@ -493,6 +567,35 @@ export const getLoadoutsThatCanBeOptimized = (
 				processedArmor.items.some(
 					(x) => x.metadata.totalModCost < sumOfCurrentStatModsCost
 				);
+
+			let hasUnavailableMods = false;
+			Object.values(loadout.armorSlotMods).forEach((modIdList) => {
+				modIdList
+					.filter((x) => x !== null)
+					.forEach((modId) => {
+						const mod = getMod(modId);
+						if (
+							!mod ||
+							mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact
+						) {
+							hasUnavailableMods = true;
+						}
+					});
+			});
+			const missingArmor = loadout.armor.length < 5;
+			const noExoticArmor =
+				loadout.armor.findIndex((x) => x.gearTierId === EGearTierId.Exotic) ===
+				-1;
+			if (loadout.name.includes('Missing Exotic')) {
+				console.log('>>>>>>> missingExotic', {
+					loadout,
+					noExoticArmor,
+				});
+			}
+
+			const hasStatOver100 = Object.values(loadout.achievedStatTiers).some(
+				(x) => x > 100
+			);
 			let canBeOptimized = false;
 			const optimizationTypes: ELoadoutOptimizationType[] = [];
 			if (hasHigherStatTiers) {
@@ -503,6 +606,23 @@ export const getLoadoutsThatCanBeOptimized = (
 				canBeOptimized = true;
 				optimizationTypes.push(ELoadoutOptimizationType.LowerCost);
 			}
+			if (missingArmor) {
+				canBeOptimized = true;
+				optimizationTypes.push(ELoadoutOptimizationType.MissingArmor);
+			}
+			if (noExoticArmor) {
+				canBeOptimized = true;
+				optimizationTypes.push(ELoadoutOptimizationType.NoExoticArmor);
+			}
+			if (hasUnavailableMods) {
+				canBeOptimized = true;
+				optimizationTypes.push(ELoadoutOptimizationType.UnavailableMods);
+			}
+			if (hasStatOver100) {
+				canBeOptimized = true;
+				optimizationTypes.push(ELoadoutOptimizationType.StatsOver100);
+			}
+
 			if (canBeOptimized) {
 				result.push({
 					tierDiff: maxDiff,

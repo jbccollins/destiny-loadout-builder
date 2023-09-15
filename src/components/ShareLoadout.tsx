@@ -34,10 +34,10 @@ import {
 	Slide,
 	SlideProps,
 	Snackbar,
-	Tooltip,
 	styled,
 } from '@mui/material';
 import { useState } from 'react';
+import CustomTooltip from './CustomTooltip';
 import { SortableList, SortableOption } from './SortableList/SortableList';
 
 const AdvanceShareSortableOptions: SortableOption[] = ArmorStatIdList.map(
@@ -73,17 +73,16 @@ const AdvancedShareOptions = () => {
 					<Box sx={{ marginRight: '8px', fontWeight: 'bold' }}>
 						Shared Stat Priority Order
 					</Box>
-					<Tooltip
+					<CustomTooltip
 						title="If the user who receives your shared loadout link is unable to
 						achieve the desired stat tiers, the stats will be prioritized in the
 						order below. So if you have a loadout with tier 10 in Recovery, and
 						Discipline, but you think that achieving tier 10 Discipline is more
 						important than tier 10 Recovery, you can drag Discipline above
 						Recovery."
-						arrow
 					>
 						<Help />
-					</Tooltip>
+					</CustomTooltip>
 				</Box>
 				<Box></Box>
 			</Box>

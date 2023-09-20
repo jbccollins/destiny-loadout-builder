@@ -440,16 +440,16 @@ function Loading() {
 				log('raw characters', rawCharacters);
 				setHasRawCharacters(true);
 
-				const { stores, inGameLoadoutItemIdList } = await loadStoresData(
-					mostRecentPlatform
-				);
+				const { stores, inGameLoadoutItemIdList, exoticArmorCollectibles } =
+					await loadStoresData(mostRecentPlatform);
+				log('exoticArmorCollectibles', exoticArmorCollectibles, false);
 				setHasStores(true);
 				const [
 					armor,
 					availableExoticArmor,
 					armorMetadata,
 					allClassItemMetadata,
-				] = extractArmor(stores, manifest);
+				] = extractArmor(stores, exoticArmorCollectibles, manifest);
 				log('allClassItemMetadata', allClassItemMetadata, false);
 
 				dispatch(setArmor({ ...armor }));

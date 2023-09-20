@@ -1,3 +1,4 @@
+import ModPlacement from '@dlb/components//ModPlacement';
 import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
 import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
@@ -58,9 +59,9 @@ import { getMod } from '@dlb/types/Mod';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
 import React from 'react';
-import ModPlacement from '../ModPlacement';
 import { getClassItemText, ResultsTableLoadout } from './ArmorResultsTypes';
 import {
 	getSortableFieldDisplayName,
@@ -294,6 +295,7 @@ function ResultsItem({
 			)
 		);
 	};
+	const hasCollectibleArmor = item.armorItems.some((x) => x.isCollectible);
 	return (
 		<ResultsItemContainer
 			sx={{
@@ -396,7 +398,6 @@ function ResultsItem({
 					</ResultsSection>
 				)}
 			</Box>
-
 			<ResultsSection fullWidth>
 				<Box
 					sx={{
@@ -407,6 +408,7 @@ function ResultsItem({
 					}}
 				>
 					<Button
+						disabled={hasCollectibleArmor}
 						sx={{ marginRight: '8px', marginBottom: '8px', width: 215 }}
 						variant="contained"
 						target={'_blank'}
@@ -416,6 +418,7 @@ function ResultsItem({
 						Open loadout in DIM
 					</Button>
 					<Button
+						disabled={hasCollectibleArmor}
 						sx={{ width: 180, marginBottom: '8px' }}
 						variant="contained"
 						onClick={() => handleCopyDimQueryClick(dimQuery)}
@@ -424,6 +427,23 @@ function ResultsItem({
 						Copy DIM Query
 					</Button>
 				</Box>
+				{hasCollectibleArmor && (
+					<Box
+						sx={{
+							fontSize: '14px',
+							color: 'orange',
+							display: 'flex',
+							marginTop: '16px',
+						}}
+					>
+						<WarningIcon sx={{ fontSize: '20px' }} />
+						<Box sx={{ marginLeft: '4px' }}>
+							This is loadout is using the exotic armor roll from collections.
+							In order to open this loadout in DIM, you must first acquire this
+							exotic.
+						</Box>
+					</Box>
+				)}
 			</ResultsSection>
 
 			<ResultsSection fullWidth>

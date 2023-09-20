@@ -11,6 +11,7 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
 import { MISSING_ICON } from '@dlb/types/globals';
+import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Popper, styled } from '@mui/material';
 import { useMemo } from 'react';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
@@ -51,6 +52,22 @@ const getExtraContent = (option: AvailableExoticArmorItem) => {
 					</Box>
 					<Box sx={{ fontSize: '12px' }}>
 						{'Aeon exotics have no intrinsic exotic perk.'}
+					</Box>
+				</Box>
+			)}
+			{option.count === 1 && (
+				<Box
+					sx={{
+						fontSize: '12px',
+						color: 'orange',
+						display: 'flex',
+						marginTop: '16px',
+					}}
+				>
+					<WarningIcon sx={{ fontSize: '20px' }} />
+					<Box sx={{ marginLeft: '4px' }}>
+						You do not own a copy of this exotic. Selecting this option will
+						only use the collections roll.
 					</Box>
 				</Box>
 			)}

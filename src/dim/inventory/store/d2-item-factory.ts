@@ -21,6 +21,7 @@ import {
 	DestinyItemType,
 	DestinyObjectiveProgress,
 	DestinyProfileRecordsComponent,
+	ItemBindStatus,
 	ItemLocation,
 	ItemState,
 	TransferStatuses,
@@ -151,51 +152,51 @@ const getClassTypeNameLocalized = _.memoize(
 	}
 );
 
-// /** Make a "fake" item from other information - used for Collectibles, etc. */
-// export function makeFakeItem(
-//   defs: D2ManifestDefinitions,
-//   buckets: InventoryBuckets,
-//   itemComponents: DestinyItemComponentSetOfint64 | undefined,
-//   itemHash: number,
-//   itemInstanceId?: string,
-//   quantity?: number,
-//   mergedCollectibles?: {
-//     [hash: number]: DestinyCollectibleComponent;
-//   },
-//   profileRecords?: DestinyProfileRecordsComponent,
-//   allowWishList?: boolean
-// ): DimItem | null {
-//   const item = makeItem(
-//     defs,
-//     buckets,
-//     itemComponents,
-//     {
-//       itemHash,
-//       itemInstanceId: itemInstanceId ?? '0',
-//       quantity: quantity ?? 1,
-//       bindStatus: ItemBindStatus.NotBound,
-//       location: ItemLocation.Vendor,
-//       bucketHash: 0,
-//       transferStatus: TransferStatuses.NotTransferrable,
-//       itemValueVisibility: [],
-//       lockable: false,
-//       state: ItemState.None,
-//       isWrapper: false,
-//       tooltipNotificationIndexes: [],
-//       metricObjective: {} as DestinyObjectiveProgress,
-//       versionNumber: defs.InventoryItem.get(itemHash)?.quality?.currentVersion,
-//     },
-//     undefined,
-//     mergedCollectibles,
-//     undefined,
-//     profileRecords
-//   );
+/** Make a "fake" item from other information - used for Collectibles, etc. */
+export function makeFakeItem(
+	defs: D2ManifestDefinitions,
+	buckets: InventoryBuckets,
+	itemComponents: DestinyItemComponentSetOfint64 | undefined,
+	itemHash: number,
+	itemInstanceId?: string,
+	quantity?: number,
+	mergedCollectibles?: {
+		[hash: number]: DestinyCollectibleComponent;
+	},
+	profileRecords?: DestinyProfileRecordsComponent,
+	allowWishList?: boolean
+): DimItem | null {
+	const item = makeItem(
+		defs,
+		buckets,
+		itemComponents,
+		{
+			itemHash,
+			itemInstanceId: itemInstanceId ?? '0',
+			quantity: quantity ?? 1,
+			bindStatus: ItemBindStatus.NotBound,
+			location: ItemLocation.Vendor,
+			bucketHash: 0,
+			transferStatus: TransferStatuses.NotTransferrable,
+			itemValueVisibility: [],
+			lockable: false,
+			state: ItemState.None,
+			isWrapper: false,
+			tooltipNotificationIndexes: [],
+			metricObjective: {} as DestinyObjectiveProgress,
+			versionNumber: defs.InventoryItem.get(itemHash)?.quality?.currentVersion,
+		},
+		undefined,
+		mergedCollectibles,
+		undefined,
+		profileRecords
+	);
 
-//   if (item && !allowWishList) {
-//     item.wishListEnabled = false;
-//   }
-//   return item;
-// }
+	if (item && !allowWishList) {
+		item.wishListEnabled = false;
+	}
+	return item;
+}
 
 // /**
 //  * Create a single item from a DestinyItemResponse, either from getItemDetails or an AWA result.

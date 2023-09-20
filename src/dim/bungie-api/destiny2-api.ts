@@ -10,7 +10,6 @@ import {
 	DestinyProfileUserInfoCard,
 	DestinyVendorResponse,
 	DestinyVendorsResponse,
-	ServerResponse,
 	getCharacter as getCharacterApi,
 	getDestinyManifest,
 	getItem,
@@ -18,10 +17,11 @@ import {
 	getProfile as getProfileApi,
 	getVendor as getVendorApi,
 	getVendors as getVendorsApi,
+	ServerResponse,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import {
-	UserInfoCard,
 	getMembershipDataForCurrentUser,
+	UserInfoCard,
 } from 'bungie-api-ts-no-const-enum/user';
 import _ from 'lodash';
 import {

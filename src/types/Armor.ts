@@ -74,6 +74,8 @@ export type ArmorItem = {
 	socketableRaidAndNightmareModTypeId: ERaidAndNightMareModTypeId;
 	// Special traits like "is iron banner", "is guardian games", etc...
 	intrinsicArmorPerkOrAttributeId: EIntrinsicArmorPerkOrAttributeId;
+	// Is this piece of armor the collections version
+	isCollectible: boolean;
 };
 
 export const getDefaultArmorItem = (): ArmorItem => ({
@@ -91,6 +93,7 @@ export const getDefaultArmorItem = (): ArmorItem => ({
 	isArtifice: false,
 	socketableRaidAndNightmareModTypeId: null,
 	intrinsicArmorPerkOrAttributeId: null,
+	isCollectible: false,
 });
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/

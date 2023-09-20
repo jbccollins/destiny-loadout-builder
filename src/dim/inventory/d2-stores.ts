@@ -18,8 +18,12 @@ import {
 	getDefinitions,
 } from '@dlb/dim/destiny2/d2-definitions';
 import { DimStore } from '@dlb/dim/inventory/store-types';
-import { processItems } from '@dlb/dim/inventory/store/d2-item-factory';
+import {
+	makeFakeItem,
+	processItems,
+} from '@dlb/dim/inventory/store/d2-item-factory';
 import { InventoryBuckets } from './inventory-buckets';
+import { DimItem } from './item-types';
 import { makeCharacter, makeVault } from './store/d2-store-factory';
 
 export function mergeCollectibles(
@@ -40,6 +44,7 @@ export function mergeCollectibles(
 export type LoadStoresDataResult = {
 	stores: DimStore[];
 	inGameLoadoutItemIdList: string[];
+	exoticArmorCollectibles: DimItem[];
 };
 
 export const loadStoresData = (
@@ -67,10 +72,18 @@ export const loadStoresData = (
 
 			const currencies = processCurrencies(profileInfo, defs);
 
+			// This was not in DIM. It was written for DLB
+			const exoticArmorCollectibles = processExoticArmorCollectibles(
+				defs,
+				buckets,
+				profileInfo
+			);
+			// This was not in DIM. It was written for DLB
 			const inGameLoadoutItemIdList = processInGameLoadouts(profileInfo);
 			const result: LoadStoresDataResult = {
 				stores,
 				inGameLoadoutItemIdList,
+				exoticArmorCollectibles,
 			};
 
 			return result;
@@ -282,6 +295,38 @@ function processVault(
 	store.items = processedItems;
 
 	return store;
+}
+
+// This function is not in DIM. It was written for DLB
+// to pull the default collections rolls for every exotic
+// armor piece in the game.
+function processExoticArmorCollectibles(
+	defs: D2ManifestDefinitions,
+	buckets: InventoryBuckets,
+	profileInfo: DestinyProfileResponse
+): DimItem[] {
+	const exoticArmorCollectibles: DimItem[] = [];
+	Object.values(defs.Collectible.getAll()).forEach((collectible) => {
+		const { itemHash } = collectible;
+		const inventoryItem = defs.InventoryItem.get(itemHash);
+		if (!inventoryItem) {
+			return;
+		}
+		// If this is an exotic armor piece
+		if (
+			inventoryItem.itemType === 2 &&
+			inventoryItem.inventory?.tierType === 6
+		) {
+			const item = makeFakeItem(
+				defs,
+				buckets,
+				profileInfo.itemComponents,
+				itemHash
+			);
+			exoticArmorCollectibles.push(item);
+		}
+	});
+	return exoticArmorCollectibles;
 }
 
 /**

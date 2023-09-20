@@ -1,6 +1,7 @@
 import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
+import { v4 as uuid } from 'uuid';
 
 import {
 	Armor,
@@ -88,6 +89,7 @@ export const getValidDestinyClassIds = (
 // Convert a DimStore into our own, smaller, types and transform the data into the desired shape.
 export const extractArmor = (
 	stores: DimStore<DimItem>[],
+	exoticArmorCollectibles: DimItem[],
 	manifest: D2ManifestDefinitions
 ): [
 	Armor,
@@ -113,215 +115,214 @@ export const extractArmor = (
 
 	const seenExotics: Record<number, AvailableExoticArmorItem> = {};
 
-	stores.forEach(({ items }) => {
-		items.forEach((item) => {
-			// Filter out all items that don't have an element. These are really old armor
-			// TODO: Is this element filter really safe now that armor affinity is gone?
-			if (
-				(item.location.inArmor ||
-					// Include postmaster armor. 20 is the category hash for armor.
-					(item.location.inPostmaster &&
-						item.itemCategoryHashes.includes(20))) &&
-				item.element?.enumValue &&
-				!item.classified // Classified armor has no stats
-			) {
-				const destinyClassName = DestinyClassHashToDestinyClass[
-					item.classType
-				] as EDestinyClassId;
-				const armorSlot = BucketHashToArmorSlot[
-					item.bucket.hash
-				] as EArmorSlotId;
+	const processDimItem = (item: DimItem, isCollectible: boolean) => {
+		if (isCollectible) {
+			console.log('collectible');
+		}
+		// Filter out all items that don't have an element. These are really old armor
+		// TODO: Is this element filter really safe now that armor affinity is gone?
+		// I'm worried to take out that check since I don't have any Armor 1.0 exotics
+		// But this does seem to work for white armor 1.0 which I do have.
+		if (
+			// 20 is the category hash for armor.
+			item.itemCategoryHashes.includes(20) &&
+			(item.element?.enumValue || isCollectible) && // Collectibles don't have an element
+			!item.classified // Classified armor has no stats
+		) {
+			const destinyClassName = DestinyClassHashToDestinyClass[
+				item.classType
+			] as EDestinyClassId;
+			const armorSlot = BucketHashToArmorSlot[item.bucket.hash] as EArmorSlotId;
 
-				if (item.isExotic) {
-					if (seenExotics[item.hash]) {
-						seenExotics[item.hash].count++;
-					} else {
-						const exoticPerkHash = item.sockets.allSockets.find((socket) => {
-							return socket.socketDefinition.socketTypeHash === 965959289;
-						})?.socketDefinition?.singleInitialItemHash;
+			if (item.isExotic) {
+				if (seenExotics[item.hash]) {
+					seenExotics[item.hash].count++;
+				} else {
+					const exoticPerkHash = item.sockets.allSockets.find((socket) => {
+						return socket.socketDefinition.socketTypeHash === 965959289;
+					})?.socketDefinition?.singleInitialItemHash;
 
-						let exoticPerk: ExoticPerk = null;
-						// Aeon Exotics have no exotic perk. They have mod sockets instead
-						if (exoticPerkHash) {
-							const _exoticPerk = manifest.InventoryItem.get(exoticPerkHash);
-							exoticPerk = {
-								name: _exoticPerk.displayProperties.name,
-								description: _exoticPerk.displayProperties.description,
-								icon: bungieNetPath(_exoticPerk.displayProperties.icon),
-								hash: exoticPerkHash,
-							};
-						}
-						armorMetadata[destinyClassName].exotic.items[armorSlot][item.name] =
-							getDefaultArmorCountMaxStatsMetadata();
-						seenExotics[item.hash] = {
-							hash: item.hash,
-							name: item.name,
-							icon: bungieNetPath(item.icon),
-							armorSlot: DestinyArmorTypeToArmorSlotId[item.type],
-							destinyClassName:
-								DestinyClassStringToDestinyClassId[item.classTypeNameLocalized],
-							count: 1,
-							exoticPerk,
+					let exoticPerk: ExoticPerk = null;
+					// Aeon Exotics have no exotic perk. They have mod sockets instead
+					if (exoticPerkHash) {
+						const _exoticPerk = manifest.InventoryItem.get(exoticPerkHash);
+						exoticPerk = {
+							name: _exoticPerk.displayProperties.name,
+							description: _exoticPerk.displayProperties.description,
+							icon: bungieNetPath(_exoticPerk.displayProperties.icon),
+							hash: exoticPerkHash,
 						};
 					}
+					armorMetadata[destinyClassName].exotic.items[armorSlot][item.name] =
+						getDefaultArmorCountMaxStatsMetadata();
+					seenExotics[item.hash] = {
+						hash: item.hash,
+						name: item.name,
+						icon: bungieNetPath(item.icon),
+						armorSlot: DestinyArmorTypeToArmorSlotId[item.type],
+						destinyClassName:
+							DestinyClassStringToDestinyClassId[item.classTypeNameLocalized],
+						count: 1,
+						exoticPerk,
+					};
 				}
-				const armorItem: ArmorItem = {
-					name: item.name,
-					icon: bungieNetPath(item.icon),
-					id: item.id,
-					// TODO: checking 'Stats.Total' is jank
-					baseStatTotal: item.stats.find(
-						(x) => x.displayProperties.name === 'Stats.Total'
-					).base,
-					power: item.power,
-					// TODO: checking 'Stats.Total' is jank
-					stats: item.stats
-						.filter((x) => x.displayProperties.name !== 'Stats.Total')
-						.map((x) => x.base) as StatList,
-					armorSlot: DestinyArmorTypeToArmorSlotId[item.type],
-					hash: item.hash,
-					destinyClassName:
-						DestinyClassStringToDestinyClassId[item.classTypeNameLocalized],
-					isMasterworked: item.masterwork,
-					gearTierId: item?.tier
-						? ItemTierNameToEGearTierId[item.tier]
-						: EGearTierId.Unknown,
-					isArtifice: isArtificeArmor(item),
-					socketableRaidAndNightmareModTypeId:
-						getExtraSocketModCategoryId(item),
-					intrinsicArmorPerkOrAttributeId:
-						getIntrinsicArmorPerkOrAttributeId(item),
-				};
+			}
+			const armorItem: ArmorItem = {
+				name: item.name,
+				icon: bungieNetPath(item.icon),
+				// Collectibles all have an id of '0' so we need to create a unique one
+				id: isCollectible ? uuid() : item.id,
+				// TODO: checking 'Stats.Total' is jank
+				baseStatTotal: item.stats.find(
+					(x) => x.displayProperties.name === 'Stats.Total'
+				).base,
+				power: item.power,
+				// TODO: checking 'Stats.Total' is jank
+				stats: item.stats
+					.filter((x) => x.displayProperties.name !== 'Stats.Total')
+					.map((x) => x.base) as StatList,
+				armorSlot: DestinyArmorTypeToArmorSlotId[item.type],
+				hash: item.hash,
+				destinyClassName:
+					DestinyClassStringToDestinyClassId[item.classTypeNameLocalized],
+				isMasterworked: item.masterwork,
+				gearTierId: item?.tier
+					? ItemTierNameToEGearTierId[item.tier]
+					: EGearTierId.Unknown,
+				isArtifice: isArtificeArmor(item),
+				socketableRaidAndNightmareModTypeId: getExtraSocketModCategoryId(item),
+				intrinsicArmorPerkOrAttributeId:
+					getIntrinsicArmorPerkOrAttributeId(item),
+				isCollectible,
+			};
 
-				if (armorItem.gearTierId === EGearTierId.Exotic) {
-					updateMaxStatsMetadata(
-						armorItem,
-						armorMetadata[destinyClassName].exotic.items[armorSlot][item.name]
-							.maxStats
-					);
+			if (armorItem.gearTierId === EGearTierId.Exotic) {
+				updateMaxStatsMetadata(
+					armorItem,
 					armorMetadata[destinyClassName].exotic.items[armorSlot][item.name]
-						.count++;
-					armorMetadata[destinyClassName].exotic.count++;
-					armor[destinyClassName][armorSlot].exotic[item.id] = armorItem;
-				} else {
-					// TODO: This would need to change if there are ever more Gear Tiers than just Legendary and Rare supported
-					const nonExoticTier =
-						armorItem.gearTierId === EGearTierId.Legendary
-							? 'legendary'
-							: 'rare';
-					updateMaxStatsMetadata(
-						armorItem,
-						armorMetadata[destinyClassName].nonExotic[nonExoticTier].items[
-							armorItem.armorSlot
-						].maxStats
-					);
-					armorMetadata[destinyClassName].nonExotic.count++;
-					armorMetadata[destinyClassName].nonExotic[nonExoticTier].count++;
+						.maxStats
+				);
+				armorMetadata[destinyClassName].exotic.items[armorSlot][item.name]
+					.count++;
+				armorMetadata[destinyClassName].exotic.count++;
+				armor[destinyClassName][armorSlot].exotic[armorItem.id] = armorItem;
+			} else {
+				// TODO: This would need to change if there are ever more Gear Tiers than just Legendary and Rare supported
+				const nonExoticTier =
+					armorItem.gearTierId === EGearTierId.Legendary ? 'legendary' : 'rare';
+				updateMaxStatsMetadata(
+					armorItem,
 					armorMetadata[destinyClassName].nonExotic[nonExoticTier].items[
 						armorItem.armorSlot
-					].count++;
-					// Set the class item metadata. Class items are all interchangeable
-					if (armorItem.armorSlot === EArmorSlotId.ClassItem) {
-						if (armorItem.gearTierId === EGearTierId.Legendary) {
-							// TODO: This is storing duplicates of the raid, artifice and intrinsic class items
+					].maxStats
+				);
+				armorMetadata[destinyClassName].nonExotic.count++;
+				armorMetadata[destinyClassName].nonExotic[nonExoticTier].count++;
+				armorMetadata[destinyClassName].nonExotic[nonExoticTier].items[
+					armorItem.armorSlot
+				].count++;
+				// Set the class item metadata. Class items are all interchangeable
+				if (armorItem.armorSlot === EArmorSlotId.ClassItem) {
+					if (armorItem.gearTierId === EGearTierId.Legendary) {
+						// TODO: This is storing duplicates of the raid, artifice and intrinsic class items
+						allClassItemMetadataMapping[destinyClassName].Legendary.items.push(
+							armorItem
+						);
+						// Set the masterworked legendary class item existence
+						if (armorItem.isMasterworked) {
 							allClassItemMetadataMapping[
 								destinyClassName
-							].Legendary.items.push(armorItem);
-							// Set the masterworked legendary class item existence
+							].Legendary.hasMasterworkedVariant = true;
+						}
+
+						// Artifice class items
+						if (armorItem.isArtifice) {
+							allClassItemMetadataMapping[destinyClassName].Artifice.items.push(
+								armorItem
+							);
 							if (armorItem.isMasterworked) {
 								allClassItemMetadataMapping[
 									destinyClassName
-								].Legendary.hasMasterworkedVariant = true;
+								].Artifice.hasMasterworkedVariant = true;
 							}
+						}
 
-							// Artifice class items
-							if (armorItem.isArtifice) {
-								allClassItemMetadataMapping[
-									destinyClassName
-								].Artifice.items.push(armorItem);
-								if (armorItem.isMasterworked) {
-									allClassItemMetadataMapping[
-										destinyClassName
-									].Artifice.hasMasterworkedVariant = true;
-								}
-							}
-
-							// Raid and nightmare class items
-							if (armorItem.socketableRaidAndNightmareModTypeId !== null) {
+						// Raid and nightmare class items
+						if (armorItem.socketableRaidAndNightmareModTypeId !== null) {
+							allClassItemMetadataMapping[destinyClassName][
+								armorItem.socketableRaidAndNightmareModTypeId
+							].items.push(armorItem);
+							if (armorItem.isMasterworked) {
 								allClassItemMetadataMapping[destinyClassName][
 									armorItem.socketableRaidAndNightmareModTypeId
-								].items.push(armorItem);
-								if (armorItem.isMasterworked) {
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.socketableRaidAndNightmareModTypeId
-									].hasMasterworkedVariant = true;
-								}
+								].hasMasterworkedVariant = true;
 							}
+						}
 
-							// Intrinsic perk or attribute class items
-							if (armorItem.intrinsicArmorPerkOrAttributeId !== null) {
+						// Intrinsic perk or attribute class items
+						if (armorItem.intrinsicArmorPerkOrAttributeId !== null) {
+							allClassItemMetadataMapping[destinyClassName][
+								armorItem.intrinsicArmorPerkOrAttributeId
+							].items.push(armorItem);
+							if (armorItem.isMasterworked) {
 								allClassItemMetadataMapping[destinyClassName][
 									armorItem.intrinsicArmorPerkOrAttributeId
-								].items.push(armorItem);
-								if (armorItem.isMasterworked) {
-									allClassItemMetadataMapping[destinyClassName][
-										armorItem.intrinsicArmorPerkOrAttributeId
-									].hasMasterworkedVariant = true;
-								}
+								].hasMasterworkedVariant = true;
 							}
 						}
 					}
-					if (armorItem.isArtifice) {
-						updateMaxStatsMetadata(
-							armorItem,
-							armorMetadata[destinyClassName].artifice.items[
-								armorItem.armorSlot
-							].maxStats
-						);
-						armorMetadata[destinyClassName].artifice.count++;
-						armorMetadata[destinyClassName].artifice.items[armorItem.armorSlot]
-							.count++;
-					}
-					if (armorItem.socketableRaidAndNightmareModTypeId !== null) {
-						updateMaxStatsMetadata(
-							armorItem,
-							armorMetadata[destinyClassName].raidAndNightmare.items[
-								armorItem.socketableRaidAndNightmareModTypeId
-							].items[armorItem.armorSlot].maxStats
-						);
-						armorMetadata[destinyClassName].raidAndNightmare.count++;
-						armorMetadata[destinyClassName].raidAndNightmare.items[
-							armorItem.socketableRaidAndNightmareModTypeId
-						].count++;
-						armorMetadata[destinyClassName].raidAndNightmare.items[
-							armorItem.socketableRaidAndNightmareModTypeId
-						].items[armorItem.armorSlot].count++;
-					}
-
-					if (armorItem.intrinsicArmorPerkOrAttributeId !== null) {
-						updateMaxStatsMetadata(
-							armorItem,
-							armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute
-								.items[armorItem.intrinsicArmorPerkOrAttributeId].items[
-								armorItem.armorSlot
-							].maxStats
-						);
-						armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute
-							.count++;
-						armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute.items[
-							armorItem.intrinsicArmorPerkOrAttributeId
-						].count++;
-						armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute.items[
-							armorItem.intrinsicArmorPerkOrAttributeId
-						].items[armorItem.armorSlot].count++;
-					}
-
-					armor[destinyClassName][armorSlot].nonExotic[armorItem.id] =
-						armorItem;
 				}
+				if (armorItem.isArtifice) {
+					updateMaxStatsMetadata(
+						armorItem,
+						armorMetadata[destinyClassName].artifice.items[armorItem.armorSlot]
+							.maxStats
+					);
+					armorMetadata[destinyClassName].artifice.count++;
+					armorMetadata[destinyClassName].artifice.items[armorItem.armorSlot]
+						.count++;
+				}
+				if (armorItem.socketableRaidAndNightmareModTypeId !== null) {
+					updateMaxStatsMetadata(
+						armorItem,
+						armorMetadata[destinyClassName].raidAndNightmare.items[
+							armorItem.socketableRaidAndNightmareModTypeId
+						].items[armorItem.armorSlot].maxStats
+					);
+					armorMetadata[destinyClassName].raidAndNightmare.count++;
+					armorMetadata[destinyClassName].raidAndNightmare.items[
+						armorItem.socketableRaidAndNightmareModTypeId
+					].count++;
+					armorMetadata[destinyClassName].raidAndNightmare.items[
+						armorItem.socketableRaidAndNightmareModTypeId
+					].items[armorItem.armorSlot].count++;
+				}
+
+				if (armorItem.intrinsicArmorPerkOrAttributeId !== null) {
+					updateMaxStatsMetadata(
+						armorItem,
+						armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute.items[
+							armorItem.intrinsicArmorPerkOrAttributeId
+						].items[armorItem.armorSlot].maxStats
+					);
+					armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute.count++;
+					armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute.items[
+						armorItem.intrinsicArmorPerkOrAttributeId
+					].count++;
+					armorMetadata[destinyClassName].intrinsicArmorPerkOrAttribute.items[
+						armorItem.intrinsicArmorPerkOrAttributeId
+					].items[armorItem.armorSlot].count++;
+				}
+
+				armor[destinyClassName][armorSlot].nonExotic[armorItem.id] = armorItem;
 			}
-		});
+		}
+	};
+
+	stores.forEach(({ items }) => {
+		items.forEach((item) => processDimItem(item, false));
 	});
+	exoticArmorCollectibles.forEach((item) => processDimItem(item, true));
 
 	console.log('>>>>>>>>>>> [Armor] <<<<<<<<<<<', armor);
 	console.log('>>>>>>>>>>> [ArmorMetadata] <<<<<<<<<<<', armorMetadata);

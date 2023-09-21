@@ -5,9 +5,11 @@ import {
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
 import armor from '@dlb/services/tests/fixtures/armor.json';
+import availableExoticArmor from '@dlb/services/tests/fixtures/available-exotic-armor.json';
 import dimLoadouts from '@dlb/services/tests/fixtures/dim-loadouts.json';
 import {
 	Armor,
+	AvailableExoticArmor,
 	DestinyClassToAllClassItemMetadataMapping,
 } from '@dlb/types/Armor';
 import { EMasterworkAssumption } from '@dlb/types/IdEnums';
@@ -21,7 +23,8 @@ const loadouts = buildLoadouts(
 	dimLoadouts as Loadout[],
 	armor as unknown as Armor,
 	allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
-	EMasterworkAssumption.All
+	EMasterworkAssumption.All,
+	availableExoticArmor as unknown as AvailableExoticArmor
 );
 
 const testCases: TestCase[] = [
@@ -35,13 +38,15 @@ const testCases: TestCase[] = [
 				allClassItemMetadata:
 					allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
 				progressCallback: () => null,
+				availableExoticArmor:
+					availableExoticArmor as unknown as AvailableExoticArmor,
 			},
 		],
-		15,
+		42,
 	],
 ];
 
-/// const nameOfTestToDebug = 'Simple redundant mobility and disipline';
+// const nameOfTestToDebug = 'Base';
 const nameOfTestToDebug = null;
 describe('getLoadoutsThatCanBeOptimized', () => {
 	const filteredTestCases = nameOfTestToDebug

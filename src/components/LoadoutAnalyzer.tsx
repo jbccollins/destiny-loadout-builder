@@ -98,13 +98,24 @@ import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { EnumDictionary } from '@dlb/types/globals';
-import { AttachMoney, Help, KeyboardDoubleArrowUp } from '@mui/icons-material';
+import { isDebugging } from '@dlb/utils/debugging';
+import { Help } from '@mui/icons-material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import DiamondIcon from '@mui/icons-material/Diamond';
 import EditIcon from '@mui/icons-material/Edit';
-import ReportIcon from '@mui/icons-material/Report';
+import HourglassDisabledIcon from '@mui/icons-material/HourglassDisabled';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RuleIcon from '@mui/icons-material/Rule';
+import WbTwilightIcon from '@mui/icons-material/WbTwilight';
 import {
 	Box,
+	Collapse,
 	IconButton,
 	LinearProgress,
 	SxProps,
@@ -127,25 +138,91 @@ const loadoutOptimizationIconMapping: EnumDictionary<
 	ReactElement
 > = {
 	[ELoadoutOptimizationType.HigherStatTier]: (
-		<KeyboardDoubleArrowUp key={0} sx={iconStyle} />
+		<KeyboardDoubleArrowUpIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationType.LowerCost]: <AttachMoney key={0} sx={iconStyle} />,
+	[ELoadoutOptimizationType.LowerCost]: (
+		<AttachMoneyIcon key={0} sx={iconStyle} />
+	),
 	[ELoadoutOptimizationType.MissingArmor]: <RuleIcon key={0} sx={iconStyle} />,
 	[ELoadoutOptimizationType.NoExoticArmor]: (
-		<AttachMoney key={0} sx={iconStyle} />
+		<DiamondIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationType.UnavailableMods]: (
-		<ReportIcon key={0} sx={iconStyle} />
+		<HourglassEmptyIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.DeprecatedMods]: (
+		<WbTwilightIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationType.StatsOver100]: (
 		<RestoreFromTrashIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationType.UnusedFragmentSlots]: (
-		<AttachMoney key={0} sx={iconStyle} />
+		<PlaylistAddIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationType.LowerTargetDIMStatTiers]: (
-		<AttachMoney key={0} sx={iconStyle} />
+		<KeyboardDoubleArrowDownIcon key={0} sx={iconStyle} />
 	),
+	[ELoadoutOptimizationType.UncorrectableMods]: (
+		<HourglassDisabledIcon key={0} sx={iconStyle} />
+	),
+};
+
+const Legend = () => {
+	const [legendOpen, setLegendOpen] = useState(false);
+	return (
+		<>
+			<Box
+				onClick={() => setLegendOpen(!legendOpen)}
+				sx={{ cursor: 'pointer', marginBottom: '8px', fontSize: '18px' }}
+			>
+				Show Icon Legend
+				<IconButton aria-label="expand row" size="small">
+					{legendOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+				</IconButton>
+			</Box>
+			<Collapse in={legendOpen} timeout="auto" unmountOnExit>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: '16px',
+					}}
+				>
+					{Object.keys(loadoutOptimizationIconMapping).map((key) => {
+						const { iconColor, name, description } = getLoadoutOptimization(
+							key as ELoadoutOptimizationType
+						);
+						return (
+							<Box
+								key={key}
+								sx={{
+									display: 'flex',
+									flexDirection: 'column',
+									gap: '8px',
+									padding: '8px',
+									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+								}}
+							>
+								<Box
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+										gap: '8px',
+									}}
+								>
+									<IconPill key={key} color={iconColor} tooltipText={name}>
+										{loadoutOptimizationIconMapping[key]}
+									</IconPill>
+									<Box>{name}</Box>
+								</Box>
+								<Box>{description}</Box>
+							</Box>
+						);
+					})}
+				</Box>
+			</Collapse>
+		</>
+	);
 };
 
 function IconPill({
@@ -262,7 +339,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		dispatch(setIsAnalyzed(false));
 		dispatch(setIsAnalyzing(true));
 		// TODO: This is just for testing. Remove this.
-		const debugging = false;
+		const debugging = isDebugging();
 		const _validLoadouts = debugging
 			? Object.keys(validLoadouts)
 					.slice(0, 10)
@@ -277,6 +354,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 			armor,
 			masterworkAssumption,
 			allClassItemMetadata,
+			availableExoticArmor,
 		});
 	};
 
@@ -320,11 +398,12 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		} = loadout;
 
 		const newSelectedExoticArmor = { ...selectedExoticArmor };
-		newSelectedExoticArmor[destinyClassId] = flatAvailableExoticArmor.find(
-			(x) => x.hash === exoticHash
-		);
-
-		dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
+		if (exoticHash) {
+			newSelectedExoticArmor[destinyClassId] = flatAvailableExoticArmor.find(
+				(x) => x.hash === exoticHash
+			);
+			dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
+		}
 		dispatch(setSelectedDestinyClass(destinyClassId));
 		dispatch(setDesiredArmorStats(desiredStatTiers));
 		dispatch(setSelectedArmorSlotMods(armorSlotMods));
@@ -486,11 +565,18 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 				sx={{
 					fontWeight: 'bold',
 					fontSize: '1.5rem',
-					marginBottom: theme.spacing(2),
+					marginBottom: theme.spacing(1),
+					display: 'flex',
+					alignItems: 'center',
+					gap: '8px',
 				}}
 			>
 				Saved Loadouts
+				<CustomTooltip title="The Loadout Analyzer tool checks all of your DIM and In-Game Loadouts to see if there are any optimizations that can be made and if there are any issues with your loadouts. Take a look at the legend to see all of the possible optimizations and issues that this tool checks for.">
+					<Help />
+				</CustomTooltip>
 			</Box>
+			<Legend />
 			{!isAnalyzed && !isAnalyzing && (
 				<>
 					<p>

@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import type { NextPage } from 'next';
 
+import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
@@ -368,6 +369,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<DimLoadoutsFilterSelector />
 								<InGameLoadoutsFilterSelector />
 								<UseZeroWastedStatsToggleSwitch />
+								<AlwaysConsiderCollectionsRollsToggleSwitch />
 								<Logout />
 							</>
 						),

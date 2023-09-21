@@ -2,6 +2,7 @@ import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { selectAlwaysConsiderCollectionsRolls } from '@dlb/redux/features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectDimLoadoutsFilter } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import { selectInGameLoadoutsFilter } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
@@ -23,6 +24,7 @@ import {
 	EIntrinsicArmorPerkOrAttributeId,
 } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
+import AlwaysConsiderCollectionsRollsToggleSwitch from '../AlwaysConsiderCollectionsRollsToggleSwitch';
 
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',
@@ -54,6 +56,9 @@ const Subtitle = styled(Box)(({ theme }) => ({
 function NoResults() {
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
+	const alwaysConsiderCollectionsRolls = useAppSelector(
+		selectAlwaysConsiderCollectionsRolls
+	);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
@@ -102,7 +107,8 @@ function NoResults() {
 	const hasSettingsToModify =
 		useZeroWastedStats ||
 		dimLoadoutsFilterId === EDimLoadoutsFilterId.None ||
-		inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None;
+		inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None ||
+		!alwaysConsiderCollectionsRolls;
 
 	return (
 		<>
@@ -141,6 +147,11 @@ function NoResults() {
 								{useZeroWastedStats && (
 									<li>
 										<UseZeroWastedStatsToggleSwitch />
+									</li>
+								)}
+								{!alwaysConsiderCollectionsRolls && (
+									<li>
+										<AlwaysConsiderCollectionsRollsToggleSwitch />
 									</li>
 								)}
 								{dimLoadoutsFilterId === EDimLoadoutsFilterId.None && (

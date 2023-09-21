@@ -5,8 +5,8 @@ import {
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { ARTIFICE } from '@dlb/services/processArmor/constants';
+import { getDefaultModPlacements } from '@dlb/services/processArmor/getModCombos';
 import { ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
-import { getDefaultModPlacements } from '../processArmor/getModCombos';
 
 const testFunction = getClassItemText;
 

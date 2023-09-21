@@ -54,6 +54,7 @@ export type AnalyzableLoadout = {
 	name?: string;
 	armorStatMods: EModId[];
 	achievedStatTiers: ArmorStatMapping;
+	optimizationTypeList: ELoadoutOptimizationType[];
 } & DLBConfig;
 
 export type AnalyzableLoadoutMapping = Record<string, AnalyzableLoadout>;
@@ -64,7 +65,7 @@ export type AnalyzableLoadoutBreakdown = {
 };
 
 export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
-	exoticHash: 0,
+	exoticHash: null,
 	armor: [],
 	desiredStatTiers: getDefaultArmorStatMapping(),
 	armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
@@ -84,6 +85,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	fragmentIdList: [],
 	armorStatMods: [],
 	achievedStatTiers: getDefaultArmorStatMapping(),
+	optimizationTypeList: [],
 });
 
 export const getDefaultAnalyzableLoadoutBreakdown =

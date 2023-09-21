@@ -7,7 +7,10 @@ import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
 import { setAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setArmor } from '@dlb/redux/features/armor/armorSlice';
-import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
+import {
+	selectAvailableExoticArmor,
+	setAvailableExoticArmor,
+} from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { setSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
@@ -208,6 +211,7 @@ function Loading() {
 	const sharedLoadoutDesiredStats = useAppSelector(
 		selectSharedLoadoutDesiredStats
 	);
+	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 
 	const defaultSelectedDestinySubclass: Record<
 		EDestinyClassId,
@@ -580,7 +584,8 @@ function Loading() {
 							dimProfile.loadouts,
 							armor,
 							allClassItemMetadata,
-							EMasterworkAssumption.All
+							EMasterworkAssumption.All,
+							availableExoticArmor
 						);
 						log(
 							'analyzableDimLoadoutsBreakdown',

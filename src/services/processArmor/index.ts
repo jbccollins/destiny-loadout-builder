@@ -75,6 +75,7 @@ const _processArmorRecursiveCase = ({
 	specialSeenArmorSlotItems,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
+	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
@@ -106,6 +107,7 @@ const _processArmorRecursiveCase = ({
 				specialSeenArmorSlotItems: nextSpecialSeenArmorSlotItems,
 				reservedArmorSlotEnergy,
 				useZeroWastedStats,
+				alwaysConsiderCollectionsRolls,
 				allClassItemMetadata,
 			})
 		);
@@ -266,6 +268,7 @@ type ProcessArmorParams = {
 	specialSeenArmorSlotItems: SeenArmorSlotItems;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	useZeroWastedStats: boolean;
+	alwaysConsiderCollectionsRolls: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
 };
 
@@ -283,6 +286,7 @@ const processArmor = ({
 	specialSeenArmorSlotItems,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
+	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const func =
@@ -303,6 +307,7 @@ const processArmor = ({
 		specialSeenArmorSlotItems,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
+		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata,
 	});
 };
@@ -355,6 +360,7 @@ export type DoProcessArmorParams = {
 	destinyClassId: EDestinyClassId;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	useZeroWastedStats: boolean;
+	alwaysConsiderCollectionsRolls: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
 };
 /**
@@ -376,6 +382,7 @@ export const doProcessArmor = ({
 	destinyClassId,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
+	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
 }: DoProcessArmorParams): DoProcessArmorOutput => {
 	const sumOfSeenStats = getExtraSumOfSeenStats(
@@ -398,6 +405,7 @@ export const doProcessArmor = ({
 		specialSeenArmorSlotItems: seenArmorSlotItems,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
+		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata,
 	};
 
@@ -576,7 +584,8 @@ export const preProcessArmor = (
 	inGameLoadoutItemIdList: string[],
 	inGameLoadoutsFilterId: EInGameLoadoutsFilterId,
 	minimumGearTier: EGearTierId,
-	allClassItemMetadata: AllClassItemMetadata
+	allClassItemMetadata: AllClassItemMetadata,
+	alwaysConsiderCollectionsRolls: boolean
 ): [StrictArmorItems, AllClassItemMetadata] => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
@@ -599,6 +608,14 @@ export const preProcessArmor = (
 				(item) =>
 					!excludedItemIds[item.id] && item.hash === selectedExoticArmor.hash
 			);
+			// If we have more than one item in the exotic slot, that means we have at least
+			// one roll that is not from collections. If the user prefers to not use collections
+			// rolls, we filter out the collections rolls.
+			if (!alwaysConsiderCollectionsRolls && strictArmorItems[i].length > 1) {
+				strictArmorItems[i] = strictArmorItems[i].filter(
+					(item) => !item.isCollectible
+				);
+			}
 			return;
 		}
 		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic).filter(

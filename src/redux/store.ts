@@ -81,6 +81,7 @@ import {
 import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import isEqual from 'lodash/isEqual';
 import { NIL } from 'uuid';
+import alwaysConsiderCollectionsRollsReducer from './features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
 import armorSlotModViolationsReducer, {
 	setArmorSlotModViolations,
 } from './features/armorSlotModViolations/armorSlotModViolationsSlice';
@@ -130,6 +131,7 @@ export function makeStore() {
 		reducer: {
 			allClassItemMetadata: allClassItemMetadataReducer,
 			allDataLoaded: allDataLoadedReducer,
+			alwaysConsiderCollectionsRolls: alwaysConsiderCollectionsRollsReducer,
 			analyzableLoadouts: analyzableLoadoutsReducer,
 			armor: armorReducer,
 			armorMetadata: armorMetadataReducer,
@@ -197,6 +199,7 @@ let dimLoadoutsFilterUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
 let useZeroWastedStatsUuid = NIL;
+let alwaysConsiderCollectionsRollsUuid = NIL;
 let inGameLoadoutsUuid = NIL;
 let inGameLoadoutsFilterUuid = NIL;
 let selectedIntrinsicArmorPerkOrAttributeIdsUuid = NIL;
@@ -241,6 +244,9 @@ function handleChange() {
 		reservedArmorSlotEnergy: { uuid: nextReservedArmorSlotEnergyUuid },
 		sharedLoadoutDesiredStats: { uuid: nextSharedLoadoutDesiredStatsUuid },
 		useZeroWastedStats: { uuid: nextUseZeroWastedStatsUuid },
+		alwaysConsiderCollectionsRolls: {
+			uuid: nextAlwaysConsiderCollectionsRollsUuid,
+		},
 		inGameLoadoutsFilter: { uuid: nextInGameLoadoutsFilterUuid },
 		inGameLoadouts: { uuid: nextInGameLoadoutsUuid },
 		selectedIntrinsicArmorPerkOrAttributeIds: {
@@ -268,6 +274,8 @@ function handleChange() {
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
 		sharedLoadoutDesiredStatsUuid !== nextSharedLoadoutDesiredStatsUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
+		alwaysConsiderCollectionsRollsUuid !==
+			nextAlwaysConsiderCollectionsRollsUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
 		inGameLoadoutsUuid !== nextInGameLoadoutsUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
@@ -315,6 +323,7 @@ function handleChange() {
 	reservedArmorSlotEnergyUuid = nextReservedArmorSlotEnergyUuid;
 	sharedLoadoutDesiredStatsUuid = nextSharedLoadoutDesiredStatsUuid;
 	useZeroWastedStatsUuid = nextUseZeroWastedStatsUuid;
+	alwaysConsiderCollectionsRollsUuid = nextAlwaysConsiderCollectionsRollsUuid;
 	inGameLoadoutsFilterUuid = nextInGameLoadoutsFilterUuid;
 	inGameLoadoutsUuid = nextInGameLoadoutsUuid;
 	selectedIntrinsicArmorPerkOrAttributeIdsUuid =
@@ -348,6 +357,7 @@ function handleChange() {
 		selectedGrenade: { value: selectedGrenade },
 		selectedAspects: { value: selectedAspects },
 		useZeroWastedStats: { value: useZeroWastedStats },
+		alwaysConsiderCollectionsRolls: { value: alwaysConsiderCollectionsRolls },
 		inGameLoadoutsFilter: { value: inGameLoadoutsFilter },
 		inGameLoadouts: { value: inGameLoadouts },
 		selectedIntrinsicArmorPerkOrAttributeIds: {
@@ -430,7 +440,8 @@ function handleChange() {
 		inGameLoadouts,
 		inGameLoadoutsFilter,
 		selectedMinimumGearTier,
-		allClassItemMetadata[selectedDestinyClass]
+		allClassItemMetadata[selectedDestinyClass],
+		alwaysConsiderCollectionsRolls
 	);
 	console.log(
 		'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',
@@ -451,6 +462,7 @@ function handleChange() {
 		destinyClassId: selectedDestinyClass,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
+		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata: _allClassItemMetadata,
 	};
 

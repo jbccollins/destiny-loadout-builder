@@ -2,10 +2,12 @@ import { Loadout } from '@destinyitemmanager/dim-api-types';
 import { buildLoadouts } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
 import armor from '@dlb/services/tests/fixtures/armor.json';
+import availableExoticArmor from '@dlb/services/tests/fixtures/available-exotic-armor.json';
 import dimLoadouts2 from '@dlb/services/tests/fixtures/dim-loadouts-2.json';
 import dimLoadouts from '@dlb/services/tests/fixtures/dim-loadouts.json';
 import {
 	Armor,
+	AvailableExoticArmor,
 	DestinyClassToAllClassItemMetadataMapping,
 } from '@dlb/types/Armor';
 import { EMasterworkAssumption } from '@dlb/types/IdEnums';
@@ -25,8 +27,9 @@ const testCases: TestCase[] = [
 			armor as unknown as Armor,
 			allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
 			EMasterworkAssumption.All,
+			availableExoticArmor as unknown as AvailableExoticArmor,
 		],
-		53,
+		65,
 	],
 	[
 		'Base 2',
@@ -35,13 +38,14 @@ const testCases: TestCase[] = [
 			armor as unknown as Armor,
 			allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
 			EMasterworkAssumption.All,
+			availableExoticArmor as unknown as AvailableExoticArmor,
 		],
-		53,
+		22,
 	],
 ];
 
-const nameOfTestToDebug = 'Base 2';
-// const nameOfTestToDebug = null;
+// const nameOfTestToDebug = 'Base 2';
+const nameOfTestToDebug = null;
 describe('buildLoadouts', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

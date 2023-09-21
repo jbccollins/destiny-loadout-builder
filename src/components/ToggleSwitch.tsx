@@ -1,7 +1,9 @@
-import { Box, alpha, styled } from '@mui/material';
-import Switch from '@mui/material/Switch';
+import { Help } from '@mui/icons-material';
+import { alpha, Box, styled } from '@mui/material';
 import { blue } from '@mui/material/colors';
+import Switch from '@mui/material/Switch';
 import * as React from 'react';
+import CustomTooltip from './CustomTooltip';
 
 const ColoredSwitch = styled(Switch)(({ theme }) => ({
 	'& .MuiSwitch-switchBase.Mui-checked': {
@@ -19,11 +21,13 @@ type ToggleSwitchProps = {
 	onChange: (value: boolean) => void;
 	value: boolean;
 	title: string;
+	helpText?: string;
 };
 export default function ToggleSwitch({
 	onChange,
 	value,
 	title,
+	helpText,
 }: ToggleSwitchProps) {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		onChange(event.target.checked);
@@ -36,6 +40,11 @@ export default function ToggleSwitch({
 				onChange={handleChange}
 				checked={value}
 			/>
+			{helpText && (
+				<CustomTooltip title={helpText}>
+					<Help />
+				</CustomTooltip>
+			)}
 		</Box>
 	);
 }

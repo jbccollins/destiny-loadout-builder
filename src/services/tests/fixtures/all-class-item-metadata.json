@@ -107,6 +107,10 @@
       "hasMasterworkedVariant": false,
       "items": []
     },
+    "ExhumedExcess": {
+      "hasMasterworkedVariant": false,
+      "items": []
+    },
     "LastWish": {
       "hasMasterworkedVariant": false,
       "items": [
@@ -302,6 +306,10 @@
           "intrinsicArmorPerkOrAttributeId": null
         }
       ]
+    },
+    "CrotasEnd" : {
+      "hasMasterworkedVariant": false,
+      "items": []
     },
     "NightmareHunt": {
       "hasMasterworkedVariant": false,
@@ -725,6 +733,10 @@
       "hasMasterworkedVariant": false,
       "items": []
     },
+    "ExhumedExcess": {
+      "hasMasterworkedVariant": false,
+      "items": []
+    },
     "LastWish": {
       "hasMasterworkedVariant": false,
       "items": [
@@ -920,6 +932,10 @@
           "intrinsicArmorPerkOrAttributeId": null
         }
       ]
+    },
+    "CrotasEnd" : {
+      "hasMasterworkedVariant": false,
+      "items": []
     },
     "NightmareHunt": {
       "hasMasterworkedVariant": false,
@@ -1389,6 +1405,10 @@
       "hasMasterworkedVariant": false,
       "items": []
     },
+    "ExhumedExcess": {
+      "hasMasterworkedVariant": false,
+      "items": []
+    },
     "LastWish": {
       "hasMasterworkedVariant": false,
       "items": [
@@ -1558,6 +1578,10 @@
       ]
     },
     "RootOfNightmares": {
+      "hasMasterworkedVariant": false,
+      "items": []
+    },
+    "CrotasEnd" : {
       "hasMasterworkedVariant": false,
       "items": []
     },

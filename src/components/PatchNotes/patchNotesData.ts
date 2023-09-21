@@ -12,6 +12,19 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-09-19',
+		version: '2.4.1',
+		title: 'Collections Rolls Settings and More Analyzer Updates',
+		sections: [
+			{
+				items: [
+					`Add a setting to avoid considering collections exotic rolls when the user already owns a copy of the exotic armor piece`,
+					`Updates to the loadout analyzer, adding a legend and more checks for more optimizations`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-09-19',
 		version: '2.4.0',
 		title: 'Add Collections Exotic Rolls',
 		sections: [

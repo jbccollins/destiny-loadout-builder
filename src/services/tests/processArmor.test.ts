@@ -51,6 +51,7 @@ const defaultArmorItem: ArmorItem = {
 	isArtifice: false,
 	socketableRaidAndNightmareModTypeId: null,
 	intrinsicArmorPerkOrAttributeId: null,
+	isCollectible: false,
 };
 
 const getDefaultArmorItem = () => cloneDeep(defaultArmorItem);
@@ -161,6 +162,7 @@ const testCases: TestCase[] = [
 				destinyClassId: EDestinyClassId.Warlock,
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
+				alwaysConsiderCollectionsRolls: false,
 				allClassItemMetadata: getDefaultAllClassItemMetadata(),
 				armorItems: [
 					[
@@ -269,6 +271,7 @@ const testCases: TestCase[] = [
 		[
 			{
 				useZeroWastedStats: false,
+				alwaysConsiderCollectionsRolls: false,
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				allClassItemMetadata: defaultClassItemMetadataWithMasterworkedArtifice,
 				masterworkAssumption: EMasterworkAssumption.All,
@@ -468,6 +471,7 @@ const testCases: TestCase[] = [
 				destinyClassId: EDestinyClassId.Warlock,
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
+				alwaysConsiderCollectionsRolls: false,
 				allClassItemMetadata: getDefaultAllClassItemMetadata(),
 				armorItems: [
 					[
@@ -623,6 +627,7 @@ const testCases: TestCase[] = [
 				destinyClassId: EDestinyClassId.Warlock,
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
+				alwaysConsiderCollectionsRolls: false,
 				allClassItemMetadata: defaultClassItemMetadataWithMasterworkedArtifice,
 				armorItems: [
 					[
@@ -791,6 +796,7 @@ const testCases: TestCase[] = [
 				destinyClassId: EDestinyClassId.Warlock,
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
+				alwaysConsiderCollectionsRolls: false,
 				allClassItemMetadata: defaultClassItemMetadataWithMasterworkedArtifice,
 				armorItems: [
 					[
@@ -993,6 +999,7 @@ const testCases: TestCase[] = [
 					[EArmorSlotId.Chest]: 10,
 				},
 				useZeroWastedStats: false,
+				alwaysConsiderCollectionsRolls: false,
 				allClassItemMetadata:
 					defaultClassItemMetadataWithUnMasterworkedRaidClassItem,
 				armorItems: [

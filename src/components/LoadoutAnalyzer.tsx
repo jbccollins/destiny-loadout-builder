@@ -365,15 +365,7 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 		selectedJump,
 		analyzeableLoadouts,
 	} = props;
-	const {
-		isAnalyzed,
-		isAnalyzing,
-		progressCompletionCount,
-		analysisResults,
-		analyzableLoadoutBreakdown,
-		hiddenLoadoutIdList,
-	} = analyzeableLoadouts;
-	const { validLoadouts, invalidLoadouts } = analyzableLoadoutBreakdown;
+	const { analysisResults, hiddenLoadoutIdList } = analyzeableLoadouts;
 	const theme = useTheme();
 	const dispatch = useAppDispatch();
 	const clearApplicationState = () => {
@@ -808,7 +800,6 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 	}
 
 	const value = (progressCompletionCount / numValidDimLoadouts) * 100;
-
 	const getTabs = (): TabContainerItem[] => {
 		const tabs: TabContainerItem[] = [];
 		const defaultLoadoutItemProps: LoadoutItemProps = {

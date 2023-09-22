@@ -71,7 +71,15 @@ function Error() {
 	const [showError, setShowError] = useState(false);
 
 	const handleReset = () => {
+		const hiddenLoadoutIdListString = localStorage.getItem(
+			'hiddenLoadoutIdList'
+		);
 		localStorage.clear();
+		// This is separately caught and cleared in Loading.tsx
+		// We want this to persist through errors if possible
+		if (hiddenLoadoutIdListString) {
+			localStorage.setItem('hiddenLoadoutIdList', hiddenLoadoutIdListString);
+		}
 		router.push('/login');
 	};
 

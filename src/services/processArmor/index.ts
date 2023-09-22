@@ -581,7 +581,7 @@ export const preProcessArmor = (
 	selectedExoticArmor: ISelectedExoticArmor,
 	dimLoadouts: Loadout[],
 	dimLoadoutsFilterId: EDimLoadoutsFilterId,
-	inGameLoadoutItemIdList: string[],
+	inGameLoadoutsFlatItemIdList: string[],
 	inGameLoadoutsFilterId: EInGameLoadoutsFilterId,
 	minimumGearTier: EGearTierId,
 	allClassItemMetadata: AllClassItemMetadata,
@@ -596,7 +596,7 @@ export const preProcessArmor = (
 		);
 	}
 	if (inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None) {
-		inGameLoadoutItemIdList.forEach((id) => {
+		inGameLoadoutsFlatItemIdList.forEach((id) => {
 			excludedItemIds[id] = true;
 		});
 	}

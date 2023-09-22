@@ -116,9 +116,6 @@ export const extractArmor = (
 	const seenExotics: Record<number, AvailableExoticArmorItem> = {};
 
 	const processDimItem = (item: DimItem, isCollectible: boolean) => {
-		if (isCollectible) {
-			console.log('collectible');
-		}
 		// Filter out all items that don't have an element. These are really old armor
 		// TODO: Is this element filter really safe now that armor affinity is gone?
 		// I'm worried to take out that check since I don't have any Armor 1.0 exotics

@@ -733,6 +733,7 @@ export const getLoadoutsThatCanBeOptimized = (
 					replaceAlternateSeasonArtifactMods(loadout.armorSlotMods)
 				);
 			}
+			let earlyProgressCallback = false;
 			armorSlotModsVariants.forEach(
 				(armorSlotMods, armorSlotModsVariantsIndex) => {
 					// Don't even try to process without an exotic
@@ -742,6 +743,7 @@ export const getLoadoutsThatCanBeOptimized = (
 							optimizationTypeList: optimizationTypeList,
 							loadoutId: loadout.id,
 						});
+						earlyProgressCallback = true;
 						progressCallback({
 							type: EGetLoadoutsThatCanBeOptimizedProgresstype.Progress,
 							canBeOptimized: true,
@@ -893,6 +895,9 @@ export const getLoadoutsThatCanBeOptimized = (
 					}
 				}
 			);
+			if (earlyProgressCallback) {
+				return;
+			}
 
 			const humanizedOptimizationTypes =
 				humanizeOptimizationTypes(optimizationTypeList);

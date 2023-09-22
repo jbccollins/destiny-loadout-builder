@@ -51,6 +51,7 @@ import {
 	selectInGameLoadoutsFilter,
 	setInGameLoadoutsFilter,
 } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import { setInGameLoadoutsFlatItemIdList } from '@dlb/redux/features/inGameLoadoutsFlatItemIdList/inGameLoadoutsFlatItemIdListSlice';
 import {
 	LoadLog,
 	setLoadError,
@@ -466,9 +467,16 @@ function Loading() {
 				log('raw characters', rawCharacters);
 				setHasRawCharacters(true);
 
-				const { stores, inGameLoadoutItemIdList, exoticArmorCollectibles } =
-					await loadStoresData(mostRecentPlatform);
+				const {
+					stores,
+					inGameLoadoutsFlatItemIdList,
+					inGameLoadouts,
+					exoticArmorCollectibles,
+				} = await loadStoresData(mostRecentPlatform);
 				log('exoticArmorCollectibles', exoticArmorCollectibles, false);
+				log('inGameLoadouts', inGameLoadouts, true);
+				dispatch(setInGameLoadoutsFlatItemIdList(inGameLoadoutsFlatItemIdList));
+				dispatch(setInGameLoadouts(inGameLoadouts));
 				setHasStores(true);
 				const [
 					armor,
@@ -585,8 +593,6 @@ function Loading() {
 				log('dirtySelectedMasterworkAssumption', null, false);
 				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
 				log('dirtyDimLoadoutsFilter', null, false);
-				dispatch(setInGameLoadouts(inGameLoadoutItemIdList));
-				log('dirtyInGameLoadouts', null, false);
 				dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
 				log('dirtyInGameLoadoutsFilter', null, false);
 				dispatch(setUseZeroWastedStats(useZeroWastedStats));

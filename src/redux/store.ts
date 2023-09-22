@@ -96,6 +96,7 @@ import disabledRaidModsReducer, {
 } from './features/disabledRaidMods/disabledRaidModsSlice';
 import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
 import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import inGameLoadoutsFlatItemIdListReducer from './features/inGameLoadoutsFlatItemIdList/inGameLoadoutsFlatItemIdListSlice';
 import optimizationTypeFilterReducer from './features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import performingBatchUpdateReducer from './features/performingBatchUpdate/performingBatchUpdateSlice';
 import processedArmorReducer, {
@@ -149,6 +150,7 @@ export function makeStore() {
 			disabledRaidMods: disabledRaidModsReducer,
 			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
 			inGameLoadouts: inGameLoadoutsReducer,
+			inGameLoadoutsFlatItemIdList: inGameLoadoutsFlatItemIdListReducer,
 			inGameLoadoutsFilter: inGameLoadoutsFilterReducer,
 			loadError: loadErrorReducer,
 			maxPossibleReservedArmorSlotEnergy:
@@ -204,7 +206,7 @@ let reservedArmorSlotEnergyUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
 let useZeroWastedStatsUuid = NIL;
 let alwaysConsiderCollectionsRollsUuid = NIL;
-let inGameLoadoutsUuid = NIL;
+let inGameLoadoutsFlatItemIdListUuid = NIL;
 let inGameLoadoutsFilterUuid = NIL;
 let selectedIntrinsicArmorPerkOrAttributeIdsUuid = NIL;
 const debugStoreLoop = false;
@@ -252,7 +254,9 @@ function handleChange() {
 			uuid: nextAlwaysConsiderCollectionsRollsUuid,
 		},
 		inGameLoadoutsFilter: { uuid: nextInGameLoadoutsFilterUuid },
-		inGameLoadouts: { uuid: nextInGameLoadoutsUuid },
+		inGameLoadoutsFlatItemIdList: {
+			uuid: nextInGameLoadoutsFlatItemIdListUuid,
+		},
 		selectedIntrinsicArmorPerkOrAttributeIds: {
 			uuid: nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid,
 		},
@@ -281,7 +285,7 @@ function handleChange() {
 		alwaysConsiderCollectionsRollsUuid !==
 			nextAlwaysConsiderCollectionsRollsUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
-		inGameLoadoutsUuid !== nextInGameLoadoutsUuid ||
+		inGameLoadoutsFlatItemIdListUuid !== nextInGameLoadoutsFlatItemIdListUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
 			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid;
 	const hasNonDefaultUuids =
@@ -301,7 +305,7 @@ function handleChange() {
 		nextSharedLoadoutDesiredStatsUuid !== NIL &&
 		nextUseZeroWastedStatsUuid !== NIL &&
 		nextInGameLoadoutsFilterUuid !== NIL &&
-		nextInGameLoadoutsUuid !== NIL &&
+		nextInGameLoadoutsFlatItemIdListUuid !== NIL &&
 		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid !== NIL;
 
 	if (
@@ -329,7 +333,7 @@ function handleChange() {
 	useZeroWastedStatsUuid = nextUseZeroWastedStatsUuid;
 	alwaysConsiderCollectionsRollsUuid = nextAlwaysConsiderCollectionsRollsUuid;
 	inGameLoadoutsFilterUuid = nextInGameLoadoutsFilterUuid;
-	inGameLoadoutsUuid = nextInGameLoadoutsUuid;
+	inGameLoadoutsFlatItemIdListUuid = nextInGameLoadoutsFlatItemIdListUuid;
 	selectedIntrinsicArmorPerkOrAttributeIdsUuid =
 		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid;
 
@@ -363,7 +367,7 @@ function handleChange() {
 		useZeroWastedStats: { value: useZeroWastedStats },
 		alwaysConsiderCollectionsRolls: { value: alwaysConsiderCollectionsRolls },
 		inGameLoadoutsFilter: { value: inGameLoadoutsFilter },
-		inGameLoadouts: { value: inGameLoadouts },
+		inGameLoadoutsFlatItemIdList: { value: inGameLoadoutsFlatItemIdList },
 		selectedIntrinsicArmorPerkOrAttributeIds: {
 			value: selectedIntrinsicArmorPerkOrAttributeIds,
 		},
@@ -441,7 +445,7 @@ function handleChange() {
 				DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
 		),
 		dimLoadoutsFilter,
-		inGameLoadouts,
+		inGameLoadoutsFlatItemIdList,
 		inGameLoadoutsFilter,
 		selectedMinimumGearTier,
 		allClassItemMetadata[selectedDestinyClass],

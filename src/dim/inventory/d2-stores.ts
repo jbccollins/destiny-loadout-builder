@@ -22,6 +22,7 @@ import {
 	makeFakeItem,
 	processItems,
 } from '@dlb/dim/inventory/store/d2-item-factory';
+import { InGameLoadoutsMapping } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import { InventoryBuckets } from './inventory-buckets';
 import { DimItem } from './item-types';
 import { makeCharacter, makeVault } from './store/d2-store-factory';
@@ -43,7 +44,8 @@ export function mergeCollectibles(
 
 export type LoadStoresDataResult = {
 	stores: DimStore[];
-	inGameLoadoutItemIdList: string[];
+	inGameLoadoutsFlatItemIdList: string[];
+	inGameLoadouts: InGameLoadoutsMapping;
 	exoticArmorCollectibles: DimItem[];
 };
 
@@ -79,10 +81,12 @@ export const loadStoresData = (
 				profileInfo
 			);
 			// This was not in DIM. It was written for DLB
-			const inGameLoadoutItemIdList = processInGameLoadouts(profileInfo);
+			const { inGameLoadoutsFlatItemIdList, inGameLoadouts } =
+				processInGameLoadouts(profileInfo);
 			const result: LoadStoresDataResult = {
 				stores,
-				inGameLoadoutItemIdList,
+				inGameLoadoutsFlatItemIdList,
+				inGameLoadouts,
 				exoticArmorCollectibles,
 			};
 
@@ -237,12 +241,14 @@ function processCharacter(
 
 export const processInGameLoadouts = (
 	profileResponse: DestinyProfileResponse
-): string[] => {
+): {
+	inGameLoadoutsFlatItemIdList: string[];
+	inGameLoadouts: InGameLoadoutsMapping;
+} => {
 	const characterLoadouts = profileResponse?.characterLoadouts?.data;
 	const results: string[] = [];
 	if (characterLoadouts) {
-		Object.values(characterLoadouts).forEach((value) => {
-			console.log('>>>>>> characterLoadout: ', value);
+		Object.entries(characterLoadouts).forEach(([key, value]) => {
 			value.loadouts.forEach((loadout) => {
 				loadout.items.forEach((item) => {
 					results.push(item.itemInstanceId);
@@ -250,7 +256,10 @@ export const processInGameLoadouts = (
 			});
 		});
 	}
-	return uniqWith(results, isEqual);
+	return {
+		inGameLoadoutsFlatItemIdList: uniqWith(results, isEqual),
+		inGameLoadouts: characterLoadouts,
+	};
 };
 
 function processVault(

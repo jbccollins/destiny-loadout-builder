@@ -1,6 +1,6 @@
 import { Loadout } from '@destinyitemmanager/dim-api-types';
 import {
-	buildLoadouts,
+	buildAnalyzableLoadoutsBreakdown,
 	getLoadoutsThatCanBeOptimized,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
@@ -19,13 +19,14 @@ type TestCaseInput = Parameters<typeof testFunction>;
 type TestCaseOutput = ReturnType<typeof testFunction>;
 
 type TestCase = [name: string, input: TestCaseInput, output: number];
-const loadouts = buildLoadouts(
-	dimLoadouts as Loadout[],
-	armor as unknown as Armor,
-	allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
-	EMasterworkAssumption.All,
-	availableExoticArmor as unknown as AvailableExoticArmor
-);
+const loadouts = buildAnalyzableLoadoutsBreakdown({
+	dimLoadouts: dimLoadouts as Loadout[],
+	armor: armor as unknown as Armor,
+	allClassItemMetadata:
+		allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
+	masterworkAssumption: EMasterworkAssumption.All,
+	availableExoticArmor: availableExoticArmor as unknown as AvailableExoticArmor,
+});
 
 const testCases: TestCase[] = [
 	[

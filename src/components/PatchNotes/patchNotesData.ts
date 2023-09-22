@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-09-22',
+		version: '2.4.4',
+		title: 'Minor Analyzer UI Fixes',
+		sections: [
+			{
+				items: [
+					`Attempt to fix some minor UI issues that show up in production but not in local`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-09-22',
 		version: '2.4.3',
 		title: 'Prep for "in-game" loadout analysis',
 		sections: [

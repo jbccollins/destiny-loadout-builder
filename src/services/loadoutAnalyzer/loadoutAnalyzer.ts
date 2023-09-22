@@ -6,6 +6,7 @@ import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { InGameLoadoutsMapping } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 
 import {
@@ -44,6 +45,7 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { getAspect, getAspectByHash } from '@dlb/types/Aspect';
+import { Characters } from '@dlb/types/Character';
 import { getClassAbilityByHash } from '@dlb/types/ClassAbility';
 import {
 	DestinyClassIdList,
@@ -146,13 +148,51 @@ const findAvailableExoticArmorItem = (
 	return null;
 };
 
-export const buildLoadouts = (
-	dimLoadouts: Loadout[],
-	armor: Armor,
-	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping,
-	masterworkAssumption: EMasterworkAssumption,
-	availableExoticArmor: AvailableExoticArmor
+type BuildAnalyzableLoadoutsBreakdownParams = {
+	characters: Characters;
+	inGameLoadouts: InGameLoadoutsMapping;
+	dimLoadouts: Loadout[];
+	armor: Armor;
+	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
+	masterworkAssumption: EMasterworkAssumption;
+	availableExoticArmor: AvailableExoticArmor;
+};
+
+// In-Game Loadout Item Indices
+// THIS HASH IS NOTHING: 2166136261
+/*
+0: Kinetic
+1: Energy
+2: Heavy
+3: Helmet
+4: Arm
+5: Chest
+6: Leg
+7: Class Item
+8: Subclass
+  0: Class Ability
+	1: Jump
+	2: Super
+	3: Melee
+	4: Grenade
+	5: Aspect
+	6: Aspect
+	7: Fragment
+	8: Fragment
+	9: Fragment
+	10: Fragment
+	11: Fragment
+*/
+export const buildAnalyzableLoadoutsBreakdown = (
+	params: BuildAnalyzableLoadoutsBreakdownParams
 ): AnalyzableLoadoutBreakdown => {
+	const {
+		dimLoadouts,
+		armor,
+		allClassItemMetadata,
+		masterworkAssumption,
+		availableExoticArmor,
+	} = params;
 	const loadouts: AnalyzableLoadout[] = [];
 	if (!dimLoadouts || !dimLoadouts.length) {
 		return {

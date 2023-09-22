@@ -120,7 +120,7 @@ import {
 } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
-import { buildLoadouts } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import {
 	EDestinyClassId,
@@ -608,13 +608,16 @@ function Loading() {
 				if (!hasDimLoadoutsError && dimProfile) {
 					log('hasDimProfile', null, false);
 					try {
-						const analyzableDimLoadoutsBreakdown = buildLoadouts(
-							dimProfile.loadouts,
-							armor,
-							allClassItemMetadata,
-							EMasterworkAssumption.All,
-							availableExoticArmor
-						);
+						const analyzableDimLoadoutsBreakdown =
+							buildAnalyzableLoadoutsBreakdown({
+								characters,
+								inGameLoadouts,
+								dimLoadouts: dimProfile.loadouts,
+								armor,
+								allClassItemMetadata,
+								masterworkAssumption: EMasterworkAssumption.All,
+								availableExoticArmor,
+							});
 						log(
 							'analyzableDimLoadoutsBreakdown',
 							analyzableDimLoadoutsBreakdown

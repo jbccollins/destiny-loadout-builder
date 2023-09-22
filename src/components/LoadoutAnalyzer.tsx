@@ -273,12 +273,11 @@ function IconPill({
 		<CustomTooltip title={tooltipText}>
 			<Box
 				sx={{
-					color: 'red',
 					background: '#585858',
 					display: 'inline-flex',
-					padding: theme.spacing(0.5),
+					//padding: theme.spacing(0.5),
 					borderRadius: '16px',
-					paddingTop: '10px',
+					// paddingTop: '10px',
 					height: '32px',
 					width: '32px',
 					alignItems: 'center',
@@ -286,7 +285,7 @@ function IconPill({
 					textAlign: 'center',
 				}}
 			>
-				<Box sx={{ color: color || 'white' }}>{children}</Box>
+				<Box sx={{ color: color || 'white', marginTop: '6px' }}>{children}</Box>
 			</Box>
 		</CustomTooltip>
 	);

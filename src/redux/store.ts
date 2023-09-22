@@ -3,6 +3,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import allClassItemMetadataReducer from './features/allClassItemMetadata/allClassItemMetadataSlice';
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
 import analyzableLoadoutsReducer from './features/analyzableLoadouts/analyzableLoadoutsSlice';
+import analyzerTabIndexReducer from './features/analyzerTabIndex/analyzerTabIndexSlice';
 import armorReducer from './features/armor/armorSlice';
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
 import charactersReducer from './features/characters/charactersSlice';
@@ -95,6 +96,7 @@ import disabledRaidModsReducer, {
 } from './features/disabledRaidMods/disabledRaidModsSlice';
 import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
 import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import optimizationTypeFilterReducer from './features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import performingBatchUpdateReducer from './features/performingBatchUpdate/performingBatchUpdateSlice';
 import processedArmorReducer, {
 	setProcessedArmor,
@@ -133,6 +135,7 @@ export function makeStore() {
 			allDataLoaded: allDataLoadedReducer,
 			alwaysConsiderCollectionsRolls: alwaysConsiderCollectionsRollsReducer,
 			analyzableLoadouts: analyzableLoadoutsReducer,
+			analyzerTabIndex: analyzerTabIndexReducer,
 			armor: armorReducer,
 			armorMetadata: armorMetadataReducer,
 			armorSlotModViolations: armorSlotModViolationsReducer,
@@ -151,6 +154,7 @@ export function makeStore() {
 			maxPossibleReservedArmorSlotEnergy:
 				maxPossibleReservedArmorSlotEnergyReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
+			optimizationTypeFilter: optimizationTypeFilterReducer,
 			performingBatchUpdate: performingBatchUpdateReducer,
 			processedArmor: processedArmorReducer,
 			reservedArmorSlotEnergy: reservedArmorSlotEnergyReducer,

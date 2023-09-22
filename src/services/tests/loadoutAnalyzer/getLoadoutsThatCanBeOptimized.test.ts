@@ -42,7 +42,7 @@ const testCases: TestCase[] = [
 					availableExoticArmor as unknown as AvailableExoticArmor,
 			},
 		],
-		42,
+		44,
 	],
 ];
 

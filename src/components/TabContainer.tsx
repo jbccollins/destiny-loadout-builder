@@ -1,3 +1,4 @@
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -32,11 +33,11 @@ function a11yProps(index: number) {
 	};
 }
 
-interface TabContainerItem {
+export interface TabContainerItem {
 	content: React.ReactNode;
 	index: number;
 	title: React.ReactNode;
-	icon?: React.ReactElement;
+	icon?: React.ReactElement | string;
 }
 
 interface TabContainerProps {
@@ -45,7 +46,7 @@ interface TabContainerProps {
 	tabIndex: number;
 }
 
-export default function BasicTabs(props: TabContainerProps) {
+export default function TabContainer(props: TabContainerProps) {
 	const { tabs, onChange, tabIndex } = props;
 
 	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -55,24 +56,28 @@ export default function BasicTabs(props: TabContainerProps) {
 	return (
 		<Box sx={{ width: '100%' }}>
 			<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-				<Tabs
-					value={tabIndex}
-					onChange={handleChange}
-					aria-label="basic tabs example"
-				>
-					{tabs.map(({ index, title, icon }) => (
-						<Tab
-							key={index}
-							label={title}
-							icon={icon}
-							iconPosition="top"
-							sx={{
-								fontSize: '12px',
-								minWidth: '64px',
-							}}
-							{...a11yProps(index)}
-						/>
-					))}
+				<Tabs value={tabIndex} onChange={handleChange} aria-label="tabs">
+					{tabs.map(({ index, title, icon }) => {
+						const _icon =
+							typeof icon === 'string' ? (
+								<BungieImage width={40} height={40} src={icon} />
+							) : (
+								icon
+							);
+						return (
+							<Tab
+								key={index}
+								label={title}
+								icon={_icon}
+								iconPosition="top"
+								sx={{
+									fontSize: '12px',
+									minWidth: '64px',
+								}}
+								{...a11yProps(index)}
+							/>
+						);
+					})}
 				</Tabs>
 			</Box>
 			{tabs.map(({ content, index }) => (

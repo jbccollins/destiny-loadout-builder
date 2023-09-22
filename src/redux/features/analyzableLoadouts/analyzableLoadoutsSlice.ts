@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
+import { ELoadoutOptimizationType } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
 	AnalysisResults,
 	AnalyzableLoadoutBreakdown,
@@ -9,16 +10,19 @@ import {
 } from '@dlb/types/AnalyzableLoadout';
 import { NIL, v4 as uuid } from 'uuid';
 
+export type AnalyzableLoadoutsValueState = {
+	analyzableLoadoutBreakdown: AnalyzableLoadoutBreakdown;
+	isAnalyzing: boolean;
+	isAnalyzed: boolean;
+	progressCompletionCount: number;
+	progressCanBeOptimizedCount: number;
+	progressErroredCount: number;
+	analysisResults: AnalysisResults;
+	hiddenLoadoutIdList: string[];
+};
+
 export interface AnalyzableLoadoutsState {
-	value: {
-		analyzableLoadoutBreakdown: AnalyzableLoadoutBreakdown;
-		isAnalyzing: boolean;
-		isAnalyzed: boolean;
-		progressCompletionCount: number;
-		progressCanBeOptimizedCount: number;
-		progressErroredCount: number;
-		analysisResults: AnalysisResults;
-	};
+	value: AnalyzableLoadoutsValueState;
 	uuid: string;
 }
 
@@ -31,6 +35,7 @@ const initialState: AnalyzableLoadoutsState = {
 		progressCanBeOptimizedCount: 0,
 		progressErroredCount: 0,
 		analysisResults: {},
+		hiddenLoadoutIdList: [],
 	},
 	uuid: NIL,
 };
@@ -84,6 +89,43 @@ export const analyzableLoadoutsSlice = createSlice({
 			state.value.analysisResults = action.payload;
 			state.uuid = uuid();
 		},
+		addAnalysisResult: (
+			state,
+			action: PayloadAction<{
+				loadoutId: string;
+				optimizationTypeList: ELoadoutOptimizationType[];
+			}>
+		) => {
+			state.value.analysisResults[action.payload.loadoutId] = {
+				optimizationTypeList: action.payload.optimizationTypeList,
+			};
+			state.uuid = uuid();
+		},
+		setHiddenLoadoutIdList: (
+			state,
+			action: PayloadAction<{ loadoutIdList: string[]; validate: boolean }>
+		) => {
+			// On initial load, we don't want to validate the hidden loadout id list, just trust it from localStorage
+			const { loadoutIdList, validate } = action.payload;
+			// Deleted loadout ids get removed here
+			const validHiddenIdList = validate
+				? loadoutIdList.filter(
+						(loadoutId) =>
+							!!state.value.analyzableLoadoutBreakdown.validLoadouts[
+								loadoutId
+							] ||
+							!!state.value.analyzableLoadoutBreakdown.invalidLoadouts[
+								loadoutId
+							]
+				  )
+				: loadoutIdList;
+			localStorage.setItem(
+				'hiddenLoadoutIdList',
+				JSON.stringify(validHiddenIdList)
+			);
+			state.value.hiddenLoadoutIdList = validHiddenIdList;
+			state.uuid = uuid();
+		},
 	},
 });
 
@@ -98,6 +140,8 @@ export const {
 	clearProgressErroredCount,
 	incrementProgressErroredCount,
 	setAnalysisResults,
+	addAnalysisResult,
+	setHiddenLoadoutIdList,
 } = analyzableLoadoutsSlice.actions;
 
 export const selectAnalyzableLoadouts = (state: AppState) =>

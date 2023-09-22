@@ -43,6 +43,9 @@ export const DestinyClassIdToDestinyClass: Mapping<
 	get: (key: EDestinyClassId) => DestinyClassIdToDestinyClassMapping[key],
 };
 
+export const getDestinyClass = (id: EDestinyClassId): IDestinyClass =>
+	DestinyClassIdToDestinyClassMapping[id];
+
 /****** Related Mappings *****/
 const DestinyClassIdToDestinySubclassesMapping: EnumDictionary<
 	EDestinyClassId,

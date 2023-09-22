@@ -31,7 +31,10 @@ import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
-import { setAnalyzableLoadoutsBreakdown } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
+import {
+	setAnalyzableLoadoutsBreakdown,
+	setHiddenLoadoutIdList,
+} from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
@@ -404,6 +407,25 @@ function Loading() {
 				}
 				if (loadoutStringFromLocalStorage && sharedLoadoutString) {
 					router.push('/?loadout=' + encodeURIComponent(sharedLoadoutString));
+				}
+
+				const hiddenLoadoutIdListString = localStorage.getItem(
+					'hiddenLoadoutIdList'
+				);
+				if (hiddenLoadoutIdListString) {
+					log('hiddenLoadoutIdListString', hiddenLoadoutIdListString);
+					try {
+						const hiddenLoadoutIdList = JSON.parse(hiddenLoadoutIdListString);
+						dispatch(
+							setHiddenLoadoutIdList({
+								loadoutIdList: hiddenLoadoutIdList,
+								validate: false,
+							})
+						);
+						log('hiddenLoadoutIdList', hiddenLoadoutIdList);
+					} catch (e) {
+						localStorage.removeItem('hiddenLoadoutIdList');
+					}
 				}
 
 				let hasLoadout = sharedLoadoutString ? true : false;

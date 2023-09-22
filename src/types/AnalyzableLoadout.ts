@@ -42,7 +42,7 @@ export type DLBConfig = {
 export type AnalysisResults = Record<
 	string,
 	{
-		optimizationTypes: ELoadoutOptimizationType[];
+		optimizationTypeList: ELoadoutOptimizationType[];
 	}
 >;
 
@@ -55,6 +55,7 @@ export type AnalyzableLoadout = {
 	armorStatMods: EModId[];
 	achievedStatTiers: ArmorStatMapping;
 	optimizationTypeList: ELoadoutOptimizationType[];
+	dimStatTierConstraints: ArmorStatMapping;
 } & DLBConfig;
 
 export type AnalyzableLoadoutMapping = Record<string, AnalyzableLoadout>;
@@ -86,6 +87,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	armorStatMods: [],
 	achievedStatTiers: getDefaultArmorStatMapping(),
 	optimizationTypeList: [],
+	dimStatTierConstraints: getDefaultArmorStatMapping(),
 });
 
 export const getDefaultAnalyzableLoadoutBreakdown =

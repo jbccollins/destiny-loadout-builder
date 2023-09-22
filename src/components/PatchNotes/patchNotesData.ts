@@ -11,7 +11,23 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2023-09-19',
+		date: '2023-09-21',
+		version: '2.4.2',
+		title: 'Even More Analyzer Updates',
+		sections: [
+			{
+				items: [
+					`Completely reworked the loadout state for the analyzer`,
+					`Add more analyzer optimization checks`,
+					`Add the ability to filter by optimization type`,
+					`Add the ability to hide loadouts`,
+					`Loadouts are now grouped by class via tabs`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-09-20',
 		version: '2.4.1',
 		title: 'Collections Rolls Settings and More Analyzer Updates',
 		sections: [

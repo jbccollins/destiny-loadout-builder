@@ -1,4 +1,5 @@
 import { Loadout } from '@destinyitemmanager/dim-api-types';
+import { UNSET_PLUG_HASH } from '@dlb/dim/utils/constants';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
@@ -6,7 +7,10 @@ import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
-import { InGameLoadoutsMapping } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	InGameLoadoutsDefinitions,
+	InGameLoadoutsMapping,
+} from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 
 import {
@@ -45,7 +49,7 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { getAspect, getAspectByHash } from '@dlb/types/Aspect';
-import { Characters } from '@dlb/types/Character';
+import { Character, Characters } from '@dlb/types/Character';
 import { getClassAbilityByHash } from '@dlb/types/ClassAbility';
 import {
 	DestinyClassIdList,
@@ -148,59 +152,25 @@ const findAvailableExoticArmorItem = (
 	return null;
 };
 
-type BuildAnalyzableLoadoutsBreakdownParams = {
-	characters: Characters;
-	inGameLoadouts: InGameLoadoutsMapping;
+type ExtractDimLoadoutsParams = {
+	armorItems: ArmorItem[];
 	dimLoadouts: Loadout[];
-	armor: Armor;
-	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
 };
-
-// In-Game Loadout Item Indices
-// THIS HASH IS NOTHING: 2166136261
-/*
-0: Kinetic
-1: Energy
-2: Heavy
-3: Helmet
-4: Arm
-5: Chest
-6: Leg
-7: Class Item
-8: Subclass
-  0: Class Ability
-	1: Jump
-	2: Super
-	3: Melee
-	4: Grenade
-	5: Aspect
-	6: Aspect
-	7: Fragment
-	8: Fragment
-	9: Fragment
-	10: Fragment
-	11: Fragment
-*/
-export const buildAnalyzableLoadoutsBreakdown = (
-	params: BuildAnalyzableLoadoutsBreakdownParams
-): AnalyzableLoadoutBreakdown => {
+const extractDimLoadouts = (
+	params: ExtractDimLoadoutsParams
+): AnalyzableLoadout[] => {
 	const {
 		dimLoadouts,
-		armor,
-		allClassItemMetadata,
+		armorItems,
 		masterworkAssumption,
 		availableExoticArmor,
 	} = params;
 	const loadouts: AnalyzableLoadout[] = [];
 	if (!dimLoadouts || !dimLoadouts.length) {
-		return {
-			validLoadouts: {},
-			invalidLoadouts: {},
-		};
+		return [];
 	}
-	const armorItems = flattenArmor(armor, allClassItemMetadata);
 	dimLoadouts.forEach((dimLoadout) => {
 		const destinyClassId =
 			DestinyClassHashToDestinyClass[dimLoadout.classType] || null; // Loadouts with just weapons don't need to have a class type
@@ -424,10 +394,315 @@ export const buildAnalyzableLoadoutsBreakdown = (
 		loadout.achievedStatTiers = achievedStatTiers;
 		loadouts.push(loadout);
 	});
+	return loadouts;
+};
+
+// In-Game Loadout Item Indices
+// THIS HASH IS NOTHING: 2166136261
+/*
+0: Kinetic
+1: Energy
+2: Heavy
+3: Helmet
+4: Arm
+5: Chest
+6: Leg
+7: Class Item
+8: Subclass
+  0: Class Ability
+	1: Jump
+	2: Super
+	3: Melee
+	4: Grenade
+	5: Aspect
+	6: Aspect
+	7: Fragment
+	8: Fragment
+	9: Fragment
+	10: Fragment
+	11: Fragment
+*/
+enum EInGameLoadoutItemType {
+	WEAPON = 'WEAPON',
+	ARMOR = 'ARMOR',
+	SUBCLASS = 'SUBCLASS',
+}
+const getInGameLoadoutItemTypeFromIndex = (
+	index: number
+): EInGameLoadoutItemType => {
+	switch (index) {
+		case 0:
+		case 1:
+		case 2:
+			return EInGameLoadoutItemType.WEAPON;
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+			return EInGameLoadoutItemType.ARMOR;
+		case 8:
+			return EInGameLoadoutItemType.SUBCLASS;
+		default:
+			return null;
+	}
+};
+
+type ExtractInGameLoadoutsParams = {
+	armorItems: ArmorItem[];
+	inGameLoadouts: InGameLoadoutsMapping;
+	masterworkAssumption: EMasterworkAssumption;
+	characters: Characters;
+	inGameLoadoutsDefinitions: InGameLoadoutsDefinitions;
+};
+const extractInGameLoadouts = (
+	params: ExtractInGameLoadoutsParams
+): AnalyzableLoadout[] => {
+	const {
+		inGameLoadouts,
+		inGameLoadoutsDefinitions,
+		armorItems,
+		masterworkAssumption,
+		characters,
+	} = params;
+	const loadouts: AnalyzableLoadout[] = [];
+	if (!inGameLoadouts || Object.keys(inGameLoadouts).length === 0) {
+		return [];
+	}
+	Object.keys(inGameLoadouts).forEach((characterId) => {
+		const characterLoadouts = inGameLoadouts[characterId];
+		const character = characters.find((x) => x.id === characterId) as Character;
+		if (!character) {
+			return;
+		}
+		const destinyClassId = character.destinyClassId;
+		characterLoadouts.loadouts.forEach((inGameLoadout, index) => {
+			const loadout: AnalyzableLoadout = {
+				...getDefaultAnalyzableLoadout(),
+				id: `${characterId}-${index}`,
+				name: inGameLoadoutsDefinitions.LoadoutName[inGameLoadout.nameHash]
+					.name,
+				icon: inGameLoadoutsDefinitions.LoadoutIcon[inGameLoadout.iconHash]
+					.iconImagePath,
+				iconColorImage:
+					inGameLoadoutsDefinitions.LoadoutColor[inGameLoadout.colorHash]
+						.colorImagePath,
+				loadoutType: ELoadoutType.InGame,
+				destinyClassId,
+				characterId,
+				index: index + 1,
+			};
+
+			const desiredStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
+			const achievedStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
+
+			inGameLoadout.items.forEach((item, index) => {
+				switch (getInGameLoadoutItemTypeFromIndex(index)) {
+					case EInGameLoadoutItemType.ARMOR:
+						const armorItem = armorItems.find(
+							(armorItem) => armorItem.id === item.itemInstanceId
+						);
+						if (armorItem) {
+							if (armorItem.gearTierId === EGearTierId.Exotic) {
+								loadout.exoticHash = armorItem.hash;
+							}
+							loadout.armor.push(armorItem);
+
+							const extraMasterworkedStats = getExtraMasterworkedStats(
+								armorItem,
+								masterworkAssumption
+							);
+							ArmorStatIdList.forEach((armorStatId) => {
+								desiredStatTiers[armorStatId] +=
+									armorItem.stats[ArmorStatIndices[armorStatId]] +
+									extraMasterworkedStats;
+								achievedStatTiers[armorStatId] +=
+									armorItem.stats[ArmorStatIndices[armorStatId]] +
+									extraMasterworkedStats;
+							});
+
+							// This contains a bunch of stuff like the shader, mods, etc.
+							// TODO: This won't check for deprecated mods
+							item.plugItemHashes.forEach((hash) => {
+								const mod = getModByHash(hash);
+								if (!mod) {
+									return;
+								}
+								if (
+									mod.modSocketCategoryId === EModSocketCategoryId.ArmorSlot
+								) {
+									// Repace first null value with this mod id
+									const idx = loadout.armorSlotMods[mod.armorSlotId].findIndex(
+										(x) => x === null
+									);
+									if (idx === -1) {
+										console.warn({
+											message: 'Could not find null value in armorSlotMods',
+											loadoutId: loadout.id,
+											modId: mod.id,
+											armorSlotId: mod.armorSlotId,
+										});
+										return;
+									}
+									loadout.armorSlotMods[mod.armorSlotId][idx] = mod.id;
+								} else if (
+									mod.modSocketCategoryId === EModSocketCategoryId.Stat
+								) {
+									loadout.armorStatMods.push(mod.id);
+								} else if (
+									mod.modSocketCategoryId === EModSocketCategoryId.Raid
+								) {
+									const idx = loadout.raidMods.findIndex((x) => x === null);
+									if (idx === -1) {
+										console.warn({
+											message: 'Could not find null value in raidMods',
+											loadoutId: loadout.id,
+											modId: mod.id,
+										});
+										return;
+									}
+									loadout.raidMods[idx] = mod.id;
+								}
+								mod.bonuses.forEach((bonus) => {
+									desiredStatTiers[bonus.stat] += bonus.value;
+									achievedStatTiers[bonus.stat] += bonus.value;
+								});
+							});
+						}
+						break;
+					case EInGameLoadoutItemType.SUBCLASS:
+						item.plugItemHashes.forEach((hash, index) => {
+							if (hash === UNSET_PLUG_HASH) {
+								return;
+							}
+							switch (index) {
+								case 0:
+									loadout.classAbilityId = getClassAbilityByHash(hash)
+										.id as EClassAbilityId;
+									break;
+								case 1:
+									loadout.jumpId = getJumpByHash(hash).id as EJumpId;
+									break;
+								case 2:
+									const superAbility = getSuperAbilityByHash(hash);
+									loadout.superAbilityId = superAbility.id as ESuperAbilityId;
+									// This is a janky way to get the subclass id from the super ability id
+									loadout.destinySubclassId = superAbility.destinySubclassId;
+									break;
+								case 3:
+									loadout.meleeId = getMeleeByHash(hash).id as EMeleeId;
+									break;
+								case 4:
+									loadout.grenadeId = getGrenadeByHash(hash).id as EGrenadeId;
+									break;
+								case 5:
+								case 6:
+									loadout.aspectIdList.push(
+										getAspectByHash(hash).id as EAspectId
+									);
+									break;
+
+								case 7:
+								case 8:
+								case 9:
+								case 10:
+								case 11:
+								case 13:
+								case 14:
+								case 15:
+								case 16:
+								case 17:
+								case 18:
+									loadout.fragmentIdList.push(
+										getFragmentByHash(hash).id as EFragmentId
+									);
+									break;
+								default:
+									break;
+							}
+						});
+						break;
+					default:
+						break;
+				}
+			});
+			const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
+				loadout.fragmentIdList,
+				loadout.destinyClassId
+			);
+			ArmorStatIdList.forEach((armorStatId) => {
+				desiredStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
+				achievedStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
+			});
+			ArmorStatIdList.forEach((armorStatId) => {
+				desiredStatTiers[armorStatId] = roundDown10(
+					desiredStatTiers[armorStatId]
+				);
+				// Clamp desired stat tiers to 100
+				desiredStatTiers[armorStatId] = Math.min(
+					desiredStatTiers[armorStatId],
+					100
+				);
+				// achievedStatTiers are not clamped
+				achievedStatTiers[armorStatId] = roundDown10(
+					achievedStatTiers[armorStatId]
+				);
+			});
+			loadout.desiredStatTiers = desiredStatTiers;
+			loadout.achievedStatTiers = achievedStatTiers;
+			loadouts.push(loadout);
+		});
+	});
+	return loadouts;
+};
+
+type BuildAnalyzableLoadoutsBreakdownParams = {
+	characters: Characters;
+	inGameLoadouts: InGameLoadoutsMapping;
+	inGameLoadoutsDefinitions: InGameLoadoutsDefinitions;
+	dimLoadouts: Loadout[];
+	armor: Armor;
+	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
+	masterworkAssumption: EMasterworkAssumption;
+	availableExoticArmor: AvailableExoticArmor;
+};
+export const buildAnalyzableLoadoutsBreakdown = (
+	params: BuildAnalyzableLoadoutsBreakdownParams
+): AnalyzableLoadoutBreakdown => {
+	const {
+		dimLoadouts,
+		inGameLoadouts,
+		armor,
+		allClassItemMetadata,
+		masterworkAssumption,
+		availableExoticArmor,
+		characters,
+		inGameLoadoutsDefinitions,
+	} = params;
+	if (!dimLoadouts || !dimLoadouts.length) {
+		return {
+			validLoadouts: {},
+			invalidLoadouts: {},
+		};
+	}
+	const armorItems = flattenArmor(armor, allClassItemMetadata);
+	const analyzableDimLoadouts = extractDimLoadouts({
+		armorItems,
+		dimLoadouts,
+		masterworkAssumption,
+		availableExoticArmor,
+	});
+	const analyzableInGameLoadouts = extractInGameLoadouts({
+		armorItems,
+		inGameLoadouts,
+		masterworkAssumption,
+		characters,
+		inGameLoadoutsDefinitions,
+	});
 	const validLoadouts: Record<string, AnalyzableLoadout> = {};
 	const invalidLoadouts: Record<string, AnalyzableLoadout> = {};
 
-	loadouts.forEach((x) => {
+	[...analyzableInGameLoadouts, ...analyzableDimLoadouts].forEach((x) => {
 		if (isEditableLoadout(x)) {
 			validLoadouts[x.id] = x;
 		} else {
@@ -488,7 +763,7 @@ export enum ELoadoutOptimizationType {
 	StatsOver100 = 'StatsOver100',
 	UnusedFragmentSlots = 'UnusedFragmentSlots',
 	UnmetDIMStatConstraints = 'UnmetDIMStatConstraints',
-	UncorrectableMods = 'UncorrectableMods',
+	UnusableMods = 'UnusableMods',
 	None = 'None',
 }
 
@@ -523,9 +798,7 @@ export const humanizeOptimizationTypes = (
 	}
 	// Uncorrectable takes precedence over unavailable
 	if (
-		filteredOptimizationTypeList.includes(
-			ELoadoutOptimizationType.UncorrectableMods
-		)
+		filteredOptimizationTypeList.includes(ELoadoutOptimizationType.UnusableMods)
 	) {
 		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(
 			(x) => !(x === ELoadoutOptimizationType.UnavailableMods)
@@ -547,14 +820,14 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		name: 'Higher Stat Tier',
 		iconColor: 'lightgreen',
 		description:
-			'Recreating this loadout with a different combination of armor and stat boosting mods can reach higher stat tiers.',
+			'Recreating this loadout with a different combination of armor and/or stat boosting mods can reach higher stat tiers.',
 	},
 	[ELoadoutOptimizationType.LowerCost]: {
 		id: ELoadoutOptimizationType.LowerCost,
 		name: 'Lower Cost',
 		iconColor: 'lightgreen',
 		description:
-			'Recreating this loadout with a different combination of armor and stat boosting mods can reach the same stat tiers for a lower total stat mod cost.',
+			'Recreating this loadout with a different combination of armor and/or stat boosting mods can reach the same stat tiers for a lower total stat mod cost.',
 	},
 	[ELoadoutOptimizationType.MissingArmor]: {
 		id: ELoadoutOptimizationType.MissingArmor,
@@ -575,20 +848,21 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		name: 'Unavailable Mods',
 		iconColor: 'yellow',
 		description:
-			'This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks. DIM will attempt to correct this by swapping discounted mods with their full-cost versions but you may want to consider changing these anyway.',
+			'[DIM Loadout Specific] This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks. DIM is able to correct this by swapping discounted mods with their full-cost versions but you may want to consider changing these anyway.',
 	},
 	[ELoadoutOptimizationType.DeprecatedMods]: {
 		id: ELoadoutOptimizationType.DeprecatedMods,
 		name: 'Deprecated Mods',
 		iconColor: 'yellow',
 		description:
-			'This loadout uses mods that are no longer in the game. This usually means you had an old "Charged With Light", "Warmind Cell", or "Elemental Well" mod equipped; e.g. "Powerful Friends".',
+			'This loadout uses mods that are no longer in the game. This usually means you had an old "Charged With Light", "Warmind Cell", or "Elemental Well" mod equipped.',
 	},
 	[ELoadoutOptimizationType.StatsOver100]: {
 		id: ELoadoutOptimizationType.StatsOver100,
 		name: 'Stats Over 100',
 		iconColor: 'yellow',
-		description: 'This loadout has one or more stats of 110 or higher.',
+		description:
+			"This loadout has one or more stats of 110 or higher. It is likely that you can find a way to shuffle mods around to avoid wasting an entire stat tier's worth of stat points.",
 	},
 	[ELoadoutOptimizationType.UnusedFragmentSlots]: {
 		id: ELoadoutOptimizationType.UnusedFragmentSlots,
@@ -602,14 +876,14 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		name: 'Unmet DIM Stat Constraints',
 		iconColor: 'yellow',
 		description:
-			'This loadout was created using DIM\'s "Loadout Optimizer" tool, or another similar tool. At the time that this loadout was created, you were able to hit higher stat tiers that you can currently hit. This can happen when Bungie adds stat penalties to an existing fragment that is part of your loadout.',
+			'[DIM Loadout Specific] This loadout was created using DIM\'s "Loadout Optimizer" tool, or another similar tool. At the time that this loadout was created, you were able to hit higher stat tiers that you can currently hit. This can happen when Bungie adds stat penalties to an existing fragment that is part of your loadout.',
 	},
-	[ELoadoutOptimizationType.UncorrectableMods]: {
-		id: ELoadoutOptimizationType.UncorrectableMods,
-		name: 'Uncorrectable Mods',
+	[ELoadoutOptimizationType.UnusableMods]: {
+		id: ELoadoutOptimizationType.UnusableMods,
+		name: 'Unusable Mods',
 		iconColor: 'darkorange',
 		description:
-			'This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks. DIM will attempt to correct this by swapping discounted mods with their full-cost versions but given the cost of the full-cost mods, it is not possible for DIM to correct this loadout.',
+			'This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks. In the case of DIM loadouts, DIM will attempt to correct this by swapping discounted mods with their full-cost versions. In this case, given the cost of the full-cost mods, it is not possible for DIM to correct this loadout.',
 	},
 	[ELoadoutOptimizationType.None]: {
 		id: ELoadoutOptimizationType.None,
@@ -622,16 +896,16 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 
 export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationType[] =
 	ValidateEnumList(Object.values(ELoadoutOptimizationType), [
+		ELoadoutOptimizationType.HigherStatTier,
+		ELoadoutOptimizationType.LowerCost,
 		ELoadoutOptimizationType.MissingArmor,
-		ELoadoutOptimizationType.UncorrectableMods,
-		ELoadoutOptimizationType.UnmetDIMStatConstraints,
+		ELoadoutOptimizationType.UnusableMods,
 		ELoadoutOptimizationType.NoExoticArmor,
-		ELoadoutOptimizationType.UnavailableMods,
 		ELoadoutOptimizationType.DeprecatedMods,
 		ELoadoutOptimizationType.StatsOver100,
 		ELoadoutOptimizationType.UnusedFragmentSlots,
-		ELoadoutOptimizationType.HigherStatTier,
-		ELoadoutOptimizationType.LowerCost,
+		ELoadoutOptimizationType.UnavailableMods,
+		ELoadoutOptimizationType.UnmetDIMStatConstraints,
 		ELoadoutOptimizationType.None,
 	]);
 
@@ -895,7 +1169,7 @@ export const getLoadoutsThatCanBeOptimized = (
 					);
 
 					// If the first pass returned results
-					const hasUncorrectableMods =
+					const hasUnusableMods =
 						hasCorrectableMods && // The first pass returned results
 						armorSlotModsVariantsIndex === 1 && // We're on the second pass
 						processedArmor.items.length === 0; // We have no results on the second pass
@@ -913,7 +1187,15 @@ export const getLoadoutsThatCanBeOptimized = (
 						optimizationTypeList.push(ELoadoutOptimizationType.MissingArmor);
 					}
 					if (hasUnavailableMods) {
-						optimizationTypeList.push(ELoadoutOptimizationType.UnavailableMods);
+						// DIM can correct for unavailable mods, but only if there is enough armor energy
+						// InGame Loadouts cannot correct for unavailable mods
+						if (loadout.loadoutType === ELoadoutType.InGame) {
+							optimizationTypeList.push(ELoadoutOptimizationType.UnusableMods);
+						} else {
+							optimizationTypeList.push(
+								ELoadoutOptimizationType.UnavailableMods
+							);
+						}
 					}
 					if (hasStatOver100) {
 						optimizationTypeList.push(ELoadoutOptimizationType.StatsOver100);
@@ -923,10 +1205,8 @@ export const getLoadoutsThatCanBeOptimized = (
 							ELoadoutOptimizationType.UnusedFragmentSlots
 						);
 					}
-					if (hasUncorrectableMods) {
-						optimizationTypeList.push(
-							ELoadoutOptimizationType.UncorrectableMods
-						);
+					if (hasUnusableMods) {
+						optimizationTypeList.push(ELoadoutOptimizationType.UnusableMods);
 					}
 					if (hasUnmetDIMStatTierConstraints) {
 						optimizationTypeList.push(

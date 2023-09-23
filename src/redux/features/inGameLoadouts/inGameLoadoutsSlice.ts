@@ -2,19 +2,45 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { DestinyLoadoutsComponent } from 'bungie-api-ts-no-const-enum/destiny2';
+import {
+	DestinyLoadoutColorDefinition,
+	DestinyLoadoutIconDefinition,
+	DestinyLoadoutNameDefinition,
+	DestinyLoadoutsComponent,
+} from 'bungie-api-ts-no-const-enum/destiny2';
 import { NIL, v4 as uuid } from 'uuid';
 
 export type InGameLoadoutsMapping = {
 	[key: string]: DestinyLoadoutsComponent;
 };
+
+export type InGameLoadoutsDefinitions = {
+	LoadoutName: Record<number, DestinyLoadoutNameDefinition>;
+	LoadoutColor: Record<number, DestinyLoadoutColorDefinition>;
+	LoadoutIcon: Record<number, DestinyLoadoutIconDefinition>;
+};
+
+export type InGameLoadoutsContext = {
+	loadoutItems: InGameLoadoutsMapping;
+	definitions: InGameLoadoutsDefinitions;
+};
+
+export const getDefaultInGameLoadoutsContext = (): InGameLoadoutsContext => ({
+	loadoutItems: {},
+	definitions: {
+		LoadoutName: {},
+		LoadoutColor: {},
+		LoadoutIcon: {},
+	},
+});
+
 export interface InGameLoadoutsState {
-	value: InGameLoadoutsMapping;
+	value: InGameLoadoutsContext;
 	uuid: string;
 }
 
 const initialState: InGameLoadoutsState = {
-	value: {},
+	value: getDefaultInGameLoadoutsContext(),
 	uuid: NIL,
 };
 
@@ -22,17 +48,25 @@ export const inGameLoadoutsSlice = createSlice({
 	name: 'inGameLoadouts',
 	initialState,
 	reducers: {
-		setInGameLoadouts: (
+		setInGameLoadoutsLoadoutItems: (
 			state,
 			action: PayloadAction<InGameLoadoutsMapping>
 		) => {
-			state.value = action.payload;
+			state.value.loadoutItems = action.payload;
+			state.uuid = uuid();
+		},
+		setInGameLoadoutsDefinitions: (
+			state,
+			action: PayloadAction<InGameLoadoutsContext['definitions']>
+		) => {
+			state.value.definitions = action.payload;
 			state.uuid = uuid();
 		},
 	},
 });
 
-export const { setInGameLoadouts } = inGameLoadoutsSlice.actions;
+export const { setInGameLoadoutsLoadoutItems, setInGameLoadoutsDefinitions } =
+	inGameLoadoutsSlice.actions;
 
 export const selectInGameLoadouts = (state: AppState) =>
 	state.inGameLoadouts.value;

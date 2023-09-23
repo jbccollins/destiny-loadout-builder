@@ -51,11 +51,14 @@ export type AnalyzableLoadout = {
 	id: string;
 	loadoutType: ELoadoutType;
 	icon: string;
-	name?: string;
+	iconColorImage: string;
+	index: number;
+	name: string;
 	armorStatMods: EModId[];
 	achievedStatTiers: ArmorStatMapping;
 	optimizationTypeList: ELoadoutOptimizationType[];
 	dimStatTierConstraints: ArmorStatMapping;
+	characterId: string;
 } & DLBConfig;
 
 export type AnalyzableLoadoutMapping = Record<string, AnalyzableLoadout>;
@@ -88,6 +91,9 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	achievedStatTiers: getDefaultArmorStatMapping(),
 	optimizationTypeList: [],
 	dimStatTierConstraints: getDefaultArmorStatMapping(),
+	characterId: null, // Only applicable for InGame Loadouts
+	iconColorImage: null, // Only applicable for InGame Loadouts
+	index: -1, // Only applicable for InGame Loadouts
 });
 
 export const getDefaultAnalyzableLoadoutBreakdown =

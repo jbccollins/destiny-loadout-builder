@@ -46,7 +46,10 @@ import {
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import { setHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
-import { setInGameLoadouts } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	setInGameLoadoutsDefinitions,
+	setInGameLoadoutsLoadoutItems,
+} from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import {
 	selectInGameLoadoutsFilter,
 	setInGameLoadoutsFilter,
@@ -471,12 +474,14 @@ function Loading() {
 					stores,
 					inGameLoadoutsFlatItemIdList,
 					inGameLoadouts,
+					inGameLoadoutsDefinitions,
 					exoticArmorCollectibles,
 				} = await loadStoresData(mostRecentPlatform);
 				log('exoticArmorCollectibles', exoticArmorCollectibles, false);
 				log('inGameLoadouts', inGameLoadouts, true);
+				dispatch(setInGameLoadoutsDefinitions(inGameLoadoutsDefinitions));
 				dispatch(setInGameLoadoutsFlatItemIdList(inGameLoadoutsFlatItemIdList));
-				dispatch(setInGameLoadouts(inGameLoadouts));
+				dispatch(setInGameLoadoutsLoadoutItems(inGameLoadouts));
 				setHasStores(true);
 				const [
 					armor,
@@ -612,6 +617,7 @@ function Loading() {
 							buildAnalyzableLoadoutsBreakdown({
 								characters,
 								inGameLoadouts,
+								inGameLoadoutsDefinitions,
 								dimLoadouts: dimProfile.loadouts,
 								armor,
 								allClassItemMetadata,

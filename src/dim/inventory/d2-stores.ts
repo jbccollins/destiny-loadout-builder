@@ -22,7 +22,10 @@ import {
 	makeFakeItem,
 	processItems,
 } from '@dlb/dim/inventory/store/d2-item-factory';
-import { InGameLoadoutsMapping } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	InGameLoadoutsDefinitions,
+	InGameLoadoutsMapping,
+} from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import { InventoryBuckets } from './inventory-buckets';
 import { DimItem } from './item-types';
 import { makeCharacter, makeVault } from './store/d2-store-factory';
@@ -46,6 +49,7 @@ export type LoadStoresDataResult = {
 	stores: DimStore[];
 	inGameLoadoutsFlatItemIdList: string[];
 	inGameLoadouts: InGameLoadoutsMapping;
+	inGameLoadoutsDefinitions: InGameLoadoutsDefinitions;
 	exoticArmorCollectibles: DimItem[];
 };
 
@@ -83,11 +87,17 @@ export const loadStoresData = (
 			// This was not in DIM. It was written for DLB
 			const { inGameLoadoutsFlatItemIdList, inGameLoadouts } =
 				processInGameLoadouts(profileInfo);
+			const inGameLoadoutsDefinitions = {
+				LoadoutName: defs.LoadoutName.getAll(),
+				LoadoutColor: defs.LoadoutColor.getAll(),
+				LoadoutIcon: defs.LoadoutIcon.getAll(),
+			};
 			const result: LoadStoresDataResult = {
 				stores,
 				inGameLoadoutsFlatItemIdList,
 				inGameLoadouts,
 				exoticArmorCollectibles,
+				inGameLoadoutsDefinitions,
 			};
 
 			return result;

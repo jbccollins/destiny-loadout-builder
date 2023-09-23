@@ -1,3 +1,4 @@
+import BungieImage, { bungieNetPath } from '@dlb/dim/dim-ui/BungieImage';
 import d2Logo from '@dlb/public/d2-logo.png';
 import dimLogo from '@dlb/public/dim-logo.png';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
@@ -120,8 +121,10 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CheckIcon from '@mui/icons-material/Check';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import EditIcon from '@mui/icons-material/Edit';
+import FilterIcon from '@mui/icons-material/FilterAlt';
 import HourglassDisabledIcon from '@mui/icons-material/HourglassDisabled';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import InfoIcon from '@mui/icons-material/Info';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
@@ -144,6 +147,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { ReactElement, useEffect, useMemo, useState } from 'react';
+import CustomDialog from './CustomDialog';
 import CustomTooltip from './CustomTooltip';
 import IconMultiSelectDropdown, { IOption } from './IconMultiSelectDropdown';
 import TabContainer, { TabContainerItem } from './TabContainer';
@@ -185,36 +189,30 @@ const loadoutOptimizationIconMapping: EnumDictionary<
 	[ELoadoutOptimizationType.UnmetDIMStatConstraints]: (
 		<KeyboardDoubleArrowDownIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationType.UncorrectableMods]: (
+	[ELoadoutOptimizationType.UnusableMods]: (
 		<HourglassDisabledIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationType.None]: <CheckIcon key={0} sx={iconStyle} />,
 };
 
 const Legend = () => {
-	const [legendOpen, setLegendOpen] = useState(false);
+	const [open, setOpen] = useState(false);
+	const handleClose = () => {
+		setOpen(false);
+	};
 	return (
 		<>
-			<Box
-				onClick={() => setLegendOpen(!legendOpen)}
-				sx={{
-					cursor: 'pointer',
-					marginBottom: '8px',
-					fontSize: '14px',
-					display: 'flex',
-					alignItems: 'center',
-				}}
-			>
-				<Box>Legend</Box>
-				<IconButton
-					aria-label="expand row"
-					size="small"
-					sx={{ transform: 'scale(0.8)' }}
-				>
-					{legendOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+			<CustomTooltip title="Click to view legend">
+				<IconButton onClick={() => setOpen(!open)} size="small">
+					<InfoIcon />
 				</IconButton>
-			</Box>
-			<Collapse in={legendOpen} timeout="auto" unmountOnExit>
+			</CustomTooltip>
+
+			<CustomDialog
+				title={'Optimization Legend'}
+				open={open}
+				onClose={handleClose}
+			>
 				<Box
 					sx={{
 						display: 'flex',
@@ -253,7 +251,7 @@ const Legend = () => {
 						);
 					})}
 				</Box>
-			</Collapse>
+			</CustomDialog>
 		</>
 	);
 };
@@ -331,6 +329,20 @@ function OptimizationTypeFilter() {
 	);
 }
 
+function Filters() {
+	return (
+		<Box
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				gap: '16px',
+			}}
+		>
+			<OptimizationTypeFilter />
+		</Box>
+	);
+}
+
 const noneOptimizationType = getLoadoutOptimization(
 	ELoadoutOptimizationType.None
 );
@@ -364,6 +376,15 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 		selectedJump,
 		analyzeableLoadouts,
 	} = props;
+	const {
+		loadoutType,
+		id,
+		icon,
+		name,
+		optimizationTypeList,
+		iconColorImage,
+		index,
+	} = loadout;
 	const { analysisResults, hiddenLoadoutIdList } = analyzeableLoadouts;
 	const theme = useTheme();
 	const dispatch = useAppDispatch();
@@ -500,6 +521,8 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 			})
 		);
 	};
+
+	const inGameLoadoutIconSize = 40;
 	return (
 		<Box
 			sx={{
@@ -508,53 +531,62 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 				'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
 			}}
 		>
-			<Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-				<CustomTooltip title="This is a DIM loadout">
+			<Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+				{loadoutType === ELoadoutType.InGame && (
 					<Box
 						sx={{
-							height: '20px',
-							width: '20px',
-							minWidth: '20px',
-							minHeight: '20px',
+							width: inGameLoadoutIconSize,
+							height: inGameLoadoutIconSize,
+							position: 'relative',
 						}}
 					>
-						<Image
-							src={loadout.loadoutType === ELoadoutType.DIM ? dimLogo : d2Logo}
-							alt="Loadout Logo"
-							height="20px"
-							width="20px"
-						/>
+						<Box
+							sx={{
+								width: inGameLoadoutIconSize,
+								height: inGameLoadoutIconSize,
+								position: 'absolute',
+							}}
+						>
+							<BungieImage
+								src={bungieNetPath(iconColorImage)}
+								width={inGameLoadoutIconSize}
+								height={inGameLoadoutIconSize}
+								alt="Loadout Icon"
+							/>
+						</Box>
+						<Box
+							sx={{
+								width: inGameLoadoutIconSize,
+								height: inGameLoadoutIconSize,
+								position: 'absolute',
+							}}
+						>
+							<BungieImage
+								src={bungieNetPath(icon)}
+								width={inGameLoadoutIconSize}
+								height={inGameLoadoutIconSize}
+								alt="Loadout Icon"
+							/>
+						</Box>
+						<Box
+							sx={{
+								position: 'absolute',
+								bottom: 0,
+								right: 0,
+								fontSize: '12px',
+								height: '14px',
+								width: '14px',
+								background: 'rgba(0, 0, 0, 0.5)',
+								textAlign: 'right',
+							}}
+						>
+							{index}
+						</Box>
 					</Box>
-				</CustomTooltip>
-				<CustomTooltip title="Edit this loadout">
-					<IconButton onClick={() => setApplicationState(loadout)} size="small">
-						<EditIcon />
-					</IconButton>
-				</CustomTooltip>
-				{!isHidden && (
-					<CustomTooltip title="Hide this loadout from the list of loadouts that can be optimized.">
-						<IconButton
-							onClick={() => hideAnalyzableLoadout(loadout.id)}
-							size="small"
-							sx={{ marginRight: theme.spacing(0.5) }}
-						>
-							<HideIcon />
-						</IconButton>
-					</CustomTooltip>
 				)}
-				{isHidden && (
-					<CustomTooltip title="Show this loadout in the list of loadouts that can be optimized.">
-						<IconButton
-							onClick={() => unHideAnalyzableLoadout(loadout.id)}
-							size="small"
-							sx={{ marginRight: theme.spacing(0.5) }}
-						>
-							<ShowIcon />
-						</IconButton>
-					</CustomTooltip>
-				)}
+				<Box>{name}</Box>
 			</Box>
-			<Box>{loadout.name}</Box>
+
 			<Box
 				sx={{
 					marginTop: '8px',
@@ -564,10 +596,10 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 				}}
 			>
 				{/* This loadout has been analyzed and has optimizations */}
-				{!!analysisResults[loadout.id]?.optimizationTypeList &&
-					loadout.optimizationTypeList?.length > 0 && (
+				{!!analysisResults[id]?.optimizationTypeList &&
+					optimizationTypeList?.length > 0 && (
 						<>
-							{loadout.optimizationTypeList?.map((x, i) => {
+							{optimizationTypeList?.map((x, i) => {
 								const { iconColor, name } = getLoadoutOptimization(x);
 								return (
 									<IconPill key={x} color={iconColor} tooltipText={name}>
@@ -578,8 +610,8 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 						</>
 					)}
 				{/* This loadout has been analyzed and has NO optimizations */}
-				{!!analysisResults[loadout.id]?.optimizationTypeList &&
-					loadout.optimizationTypeList?.length === 0 && (
+				{!!analysisResults[id]?.optimizationTypeList &&
+					optimizationTypeList?.length === 0 && (
 						<IconPill
 							color={noneOptimizationType.iconColor}
 							tooltipText={noneOptimizationType.name}
@@ -588,7 +620,7 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 						</IconPill>
 					)}
 				{/* This loadout has not been analyzed yet */}
-				{!analysisResults[loadout.id]?.optimizationTypeList && (
+				{!analysisResults[id]?.optimizationTypeList && (
 					<>
 						<Box
 							sx={{
@@ -607,6 +639,63 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 					</>
 				)}
 			</Box>
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					gap: '4px',
+					marginTop: '4px',
+				}}
+			>
+				<CustomTooltip
+					title={`This is a ${
+						loadoutType === ELoadoutType.DIM ? 'DIM' : 'D2'
+					} loadout`}
+				>
+					<Box
+						sx={{
+							height: '20px',
+							width: '20px',
+							minWidth: '20px',
+							minHeight: '20px',
+						}}
+					>
+						<Image
+							src={loadoutType === ELoadoutType.DIM ? dimLogo : d2Logo}
+							alt="Loadout Logo"
+							height="20px"
+							width="20px"
+						/>
+					</Box>
+				</CustomTooltip>
+				<CustomTooltip title="Edit this loadout">
+					<IconButton onClick={() => setApplicationState(loadout)} size="small">
+						<EditIcon />
+					</IconButton>
+				</CustomTooltip>
+				{!isHidden && (
+					<CustomTooltip title="Hide this loadout from the list of loadouts that can be optimized.">
+						<IconButton
+							onClick={() => hideAnalyzableLoadout(id)}
+							size="small"
+							sx={{ marginRight: theme.spacing(0.5) }}
+						>
+							<HideIcon />
+						</IconButton>
+					</CustomTooltip>
+				)}
+				{isHidden && (
+					<CustomTooltip title="Show this loadout in the list of loadouts that can be optimized.">
+						<IconButton
+							onClick={() => unHideAnalyzableLoadout(id)}
+							size="small"
+							sx={{ marginRight: theme.spacing(0.5) }}
+						>
+							<ShowIcon />
+						</IconButton>
+					</CustomTooltip>
+				)}
+			</Box>
 		</Box>
 	);
 };
@@ -614,6 +703,7 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 	const { isHidden } = props;
 	const [hiddenLoadoutsOpen, setHiddenLoadoutsOpen] = useState(false);
+	const [showFilters, setShowFilters] = useState(false);
 	const theme = useTheme();
 	const [fatalError, setFatalError] = useState(true);
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
@@ -930,9 +1020,20 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 			>
 				<Box>Loadouts</Box>
 
-				<CustomTooltip title="The Loadout Analyzer tool checks all of your DIM and In-Game Loadouts to see if there are any optimizations that can be made and if there are any issues with your loadouts. Take a look at the legend to see all of the possible optimizations and issues that this tool checks for.">
+				<CustomTooltip title="The Loadout Analyzer tool checks all of your DIM and D2 Loadouts to see if there are any optimizations that can be made and if there are any issues with your loadouts. Take a look at the legend to see all of the possible optimizations and issues that this tool checks for.">
 					<Help />
 				</CustomTooltip>
+				<Legend />
+				<CustomTooltip title={`${showFilters ? 'Hide' : 'Show'} filters`}>
+					<IconButton
+						onClick={() => setShowFilters(!showFilters)}
+						size="small"
+						sx={{ background: showFilters ? 'rgba(255,255,255, 0.2)' : '' }}
+					>
+						<FilterIcon />
+					</IconButton>
+				</CustomTooltip>
+
 				{optimizationTypeFilterValue.length > 0 && (
 					<Button
 						size="small"
@@ -959,9 +1060,8 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 					</Box>
 				</Box>
 			)}
-			<OptimizationTypeFilter />
+			{showFilters && <Filters />}
 
-			<Legend />
 			{!isAnalyzed && !isAnalyzing && (
 				<>
 					<p>

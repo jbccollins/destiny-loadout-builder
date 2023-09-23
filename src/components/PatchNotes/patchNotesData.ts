@@ -12,6 +12,19 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-09-22',
+		version: '2.4.5',
+		title: 'Add "in-game" loadout analysis',
+		sections: [
+			{
+				items: [
+					`Add the ability to analyze in-game loadouts`,
+					`Rework the UI for the analyzer a bit`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-09-22',
 		version: '2.4.4',
 		title: 'Minor Analyzer UI Fixes',
 		sections: [

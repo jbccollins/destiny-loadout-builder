@@ -12,6 +12,19 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-09-22',
+		version: '2.4.6',
+		title: 'Add search and loadout type filter to analyzer',
+		sections: [
+			{
+				items: [
+					`Add a search bar to the analyzer`,
+					`Add the ability to filter the analyzer by loadout type`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-09-22',
 		version: '2.4.5',
 		title: 'Add "in-game" loadout analysis',
 		sections: [

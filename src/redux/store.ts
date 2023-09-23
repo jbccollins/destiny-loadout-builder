@@ -97,6 +97,7 @@ import disabledRaidModsReducer, {
 import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
 import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import inGameLoadoutsFlatItemIdListReducer from './features/inGameLoadoutsFlatItemIdList/inGameLoadoutsFlatItemIdListSlice';
+import loadoutTypeFilterReducer from './features/loadoutTypeFilter/loadoutTypeFilterSlice';
 import optimizationTypeFilterReducer from './features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import performingBatchUpdateReducer from './features/performingBatchUpdate/performingBatchUpdateSlice';
 import processedArmorReducer, {
@@ -153,6 +154,7 @@ export function makeStore() {
 			inGameLoadoutsFlatItemIdList: inGameLoadoutsFlatItemIdListReducer,
 			inGameLoadoutsFilter: inGameLoadoutsFilterReducer,
 			loadError: loadErrorReducer,
+			loadoutTypeFilter: loadoutTypeFilterReducer,
 			maxPossibleReservedArmorSlotEnergy:
 				maxPossibleReservedArmorSlotEnergyReducer,
 			maxPossibleStats: maxPossibleStatsReducer,

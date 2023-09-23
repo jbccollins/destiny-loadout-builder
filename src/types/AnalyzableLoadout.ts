@@ -101,3 +101,24 @@ export const getDefaultAnalyzableLoadoutBreakdown =
 		validLoadouts: {},
 		invalidLoadouts: {},
 	});
+
+export enum ELoadoutTypeFilter {
+	All = 'All',
+	DIM = 'DIM',
+	D2 = 'D2',
+}
+
+export const LodaoutTypeFilterToLoadoutTypeMapping: Record<
+	ELoadoutTypeFilter,
+	ELoadoutType[]
+> = {
+	[ELoadoutTypeFilter.All]: [ELoadoutType.DIM, ELoadoutType.InGame],
+	[ELoadoutTypeFilter.DIM]: [ELoadoutType.DIM],
+	[ELoadoutTypeFilter.D2]: [ELoadoutType.InGame],
+};
+
+export const ELoadoutFilterTypeList = [
+	ELoadoutTypeFilter.All,
+	ELoadoutTypeFilter.D2,
+	ELoadoutTypeFilter.DIM,
+];

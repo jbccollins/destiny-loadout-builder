@@ -1,16 +1,12 @@
 // This is just a mui tooltip with some default props
-import {
-	Box,
-	ClickAwayListener,
-	Tooltip,
-	TooltipProps,
-	useMediaQuery,
-	useTheme,
-} from '@mui/material';
+import { Box, ClickAwayListener, Tooltip, TooltipProps } from '@mui/material';
 import { useState } from 'react';
-type CustomTooltipProps = TooltipProps;
+import { isMobile } from 'react-device-detect';
+type CustomTooltipProps = TooltipProps & {
+	hideOnMobile?: boolean;
+};
 
-const defaultProps: Partial<TooltipProps> = {
+const defaultTooltipProps: Partial<TooltipProps> = {
 	enterTouchDelay: 0,
 	enterDelay: 0,
 	placement: 'bottom',
@@ -18,9 +14,7 @@ const defaultProps: Partial<TooltipProps> = {
 };
 
 export default function CustomTooltip(props: CustomTooltipProps) {
-	const theme = useTheme();
-	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-
+	const { hideOnMobile, ...otherProps } = props;
 	const [open, setOpen] = useState(false);
 
 	const handleTooltipClose = () => {
@@ -28,17 +22,20 @@ export default function CustomTooltip(props: CustomTooltipProps) {
 	};
 
 	const handleTooltipOpen = () => {
+		if (hideOnMobile && isMobile) {
+			return;
+		}
 		setOpen(true);
 	};
 
 	// Mobile tooltips are click away
-	if (isSmallScreen) {
+	if (isMobile) {
 		return (
 			<ClickAwayListener onClickAway={handleTooltipClose}>
 				<div>
 					<Tooltip
-						{...defaultProps}
-						{...props}
+						{...defaultTooltipProps}
+						{...otherProps}
 						PopperProps={{
 							disablePortal: true,
 						}}
@@ -56,7 +53,7 @@ export default function CustomTooltip(props: CustomTooltipProps) {
 	}
 	// Desktop tooltips are hover
 	return (
-		<Tooltip {...defaultProps} {...props}>
+		<Tooltip {...defaultTooltipProps} {...otherProps}>
 			{props.children}
 		</Tooltip>
 	);

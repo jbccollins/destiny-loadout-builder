@@ -27,6 +27,11 @@ import {
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectDimLoadouts } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import { selectInGameLoadouts } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	selectLoadoutTypeFilter,
+	setLoadoutTypeFilter,
+} from '@dlb/redux/features/loadoutTypeFilter/loadoutTypeFilterSlice';
 import {
 	selectOptimizationTypeFilter,
 	setOptimizationTypeFilter,
@@ -108,7 +113,10 @@ import {
 import {
 	AnalyzableLoadout,
 	AnalyzableLoadoutMapping,
+	ELoadoutFilterTypeList,
 	ELoadoutType,
+	ELoadoutTypeFilter,
+	LodaoutTypeFilterToLoadoutTypeMapping,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
@@ -137,7 +145,6 @@ import HideIcon from '@mui/icons-material/VisibilityOff';
 import WbTwilightIcon from '@mui/icons-material/WbTwilight';
 import {
 	Box,
-	Button,
 	CircularProgress,
 	Collapse,
 	IconButton,
@@ -148,9 +155,11 @@ import {
 import Image from 'next/image';
 import { ReactElement, useEffect, useMemo, useState } from 'react';
 import CustomDialog from './CustomDialog';
+import CustomTextField from './CustomTextField';
 import CustomTooltip from './CustomTooltip';
 import IconMultiSelectDropdown, { IOption } from './IconMultiSelectDropdown';
 import TabContainer, { TabContainerItem } from './TabContainer';
+import { TierBlock } from './TierBlock';
 export type LoadoutAnalyzerProps = {
 	isHidden?: boolean;
 };
@@ -202,7 +211,7 @@ const Legend = () => {
 	};
 	return (
 		<>
-			<CustomTooltip title="Click to view legend">
+			<CustomTooltip title="Click to view legend" hideOnMobile>
 				<IconButton onClick={() => setOpen(!open)} size="small">
 					<InfoIcon />
 				</IconButton>
@@ -317,15 +326,58 @@ function OptimizationTypeFilter() {
 	};
 	// TODO: Disable options in this filter when there are no loadouts that can be optimized for that optimization type
 	return (
-		<IconMultiSelectDropdown
-			getOptionValue={getOptionValue}
-			getOptionStat={() => null}
-			options={OrderedLoadoutOptimizationTypeList}
-			value={optimizationTypeFilterValue}
-			onChange={handleChange}
-			title={'Filter By'}
-			id={'optimization-type-filter'}
-		/>
+		<Box>
+			<Box sx={{ marginBottom: '2px' }}>Optimization Type:</Box>
+			<IconMultiSelectDropdown
+				getOptionValue={getOptionValue}
+				getOptionStat={() => null}
+				options={OrderedLoadoutOptimizationTypeList}
+				value={optimizationTypeFilterValue}
+				onChange={handleChange}
+				title={''}
+				id={'optimization-type-filter'}
+			/>
+		</Box>
+	);
+}
+
+function LoadoutTypeFilter() {
+	const dispatch = useAppDispatch();
+	const loadoutTypeFilter = useAppSelector(selectLoadoutTypeFilter);
+	const handleClick = (value: ELoadoutTypeFilter) => {
+		dispatch(setLoadoutTypeFilter(value));
+	};
+	return (
+		<Box>
+			<Box sx={{ marginBottom: '2px' }}>Loadout Type:</Box>
+			<Box
+				sx={{
+					background: 'rgb(50, 50, 50)',
+					display: 'flex',
+					alignItems: 'center',
+					border: '1px solid white',
+					borderRadius: '4px',
+				}}
+			>
+				{ELoadoutFilterTypeList.map((x, i) => {
+					return (
+						<TierBlock
+							sx={{
+								cursor: 'pointer',
+							}}
+							first={i === 0}
+							last={i === ELoadoutFilterTypeList.length - 1}
+							filled={x === loadoutTypeFilter}
+							key={x}
+							onClick={() => handleClick(x)}
+							backgroundColor={'rgb(40, 40, 40)'}
+						>
+							{x}
+						</TierBlock>
+					);
+				})}
+			</Box>
+		</Box>
 	);
 }
 
@@ -336,9 +388,45 @@ function Filters() {
 				display: 'flex',
 				flexDirection: 'column',
 				gap: '16px',
+				border: '1px solid rgb(50, 50, 50)',
+				background: 'rgb(50, 50, 50)',
+				marginLeft: '-8px',
+				width: 'calc(100% + 16px)',
+				padding: '8px',
+				borderRadius: '4px',
+				position: 'relative',
 			}}
 		>
+			{/* arrow */}
+			<Box
+				sx={{
+					width: 0,
+					height: 0,
+					borderLeft: '10px solid transparent',
+					borderRight: '10px solid transparent',
+					borderTop: '12px solid rgb(50, 50, 50)',
+					position: 'absolute',
+					top: 0,
+					right: 0,
+					marginTop: '-30px',
+					marginRight: '14px',
+				}}
+			></Box>
+			{/* line */}
+			<Box
+				sx={{
+					position: 'absolute',
+					top: 0,
+					right: 0,
+					width: '2px',
+					height: '20px',
+					background: 'rgb(50, 50, 50)',
+					marginTop: '-20px',
+					marginRight: '23px',
+				}}
+			/>
 			<OptimizationTypeFilter />
+			<LoadoutTypeFilter />
 		</Box>
 	);
 }
@@ -668,13 +756,16 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 						/>
 					</Box>
 				</CustomTooltip>
-				<CustomTooltip title="Edit this loadout">
+				<CustomTooltip title="Edit this loadout" hideOnMobile>
 					<IconButton onClick={() => setApplicationState(loadout)} size="small">
 						<EditIcon />
 					</IconButton>
 				</CustomTooltip>
 				{!isHidden && (
-					<CustomTooltip title="Hide this loadout from the list of loadouts that can be optimized.">
+					<CustomTooltip
+						title="Hide this loadout from the list of loadouts that can be optimized."
+						hideOnMobile
+					>
 						<IconButton
 							onClick={() => hideAnalyzableLoadout(id)}
 							size="small"
@@ -700,13 +791,31 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 	);
 };
 
+const LoadoutCriteria = () => {
+	return (
+		<Box>
+			<ul>
+				<li>
+					It must include some combination of armor, mods or subclass options
+				</li>
+				<li>It must NOT contain five legendary armor pieces</li>
+				<li>
+					{`It must be for a specific subclass (DIM Loadouts can be made for "Any Class")`}
+				</li>
+			</ul>
+		</Box>
+	);
+};
+
 export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 	const { isHidden } = props;
 	const [hiddenLoadoutsOpen, setHiddenLoadoutsOpen] = useState(false);
 	const [showFilters, setShowFilters] = useState(false);
+	const [search, setSearch] = useState('');
 	const theme = useTheme();
 	const [fatalError, setFatalError] = useState(true);
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
+	const inGameLoadouts = useAppSelector(selectInGameLoadouts);
 	const armor = useAppSelector(selectArmor);
 	const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const masterworkAssumption = useAppSelector(
@@ -726,6 +835,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 	const optimizationTypeFilterValue = useAppSelector(
 		selectOptimizationTypeFilter
 	);
+	const loadoutTypeFilter = useAppSelector(selectLoadoutTypeFilter);
 	const {
 		isAnalyzed,
 		isAnalyzing,
@@ -736,6 +846,24 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 	} = analyzeableLoadouts;
 	const { validLoadouts, invalidLoadouts } = analyzableLoadoutBreakdown;
 	const dispatch = useAppDispatch();
+
+	const filteredLoadoutTypes =
+		LodaoutTypeFilterToLoadoutTypeMapping[loadoutTypeFilter];
+
+	const hasActiveFilters = useMemo(
+		() =>
+			optimizationTypeFilterValue.length > 0 ||
+			loadoutTypeFilter !== ELoadoutTypeFilter.All,
+		[optimizationTypeFilterValue, loadoutTypeFilter]
+	);
+
+	const numTotalLoadouts = useMemo(() => {
+		let result = dimLoadouts.length;
+		Object.values(inGameLoadouts.loadoutItems).forEach((x) => {
+			result += x.loadouts.length;
+		});
+		return result;
+	}, [dimLoadouts, inGameLoadouts]);
 
 	const getLoadoutsThatCanBeOptimizedWorker: GetLoadoutsThatCanBeOptimizedWorker =
 		useMemo(
@@ -764,7 +892,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		return flatAvailableExoticArmor;
 	}, [availableExoticArmor]);
 
-	const numValidDimLoadouts = useMemo(
+	const numValidLoadouts = useMemo(
 		() => Object.entries(validLoadouts).length,
 		[validLoadouts]
 	);
@@ -862,33 +990,27 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		return <></>;
 	}
 
-	if (dimLoadouts.length === 0) {
+	if (numTotalLoadouts === 0) {
 		return (
 			<Box>
-				You do not have any DIM loadouts. In order to use this feature you must
-				have at least one DIM loadout.
+				You do not have any loadouts. In order to use this feature you must have
+				at least one loadout either in DIM or in-game.
 			</Box>
 		);
 	}
-	if (numValidDimLoadouts === 0) {
+	if (numValidLoadouts === 0) {
 		return (
 			<>
 				<Box>
-					None of your DIM loadouts are able to be analyzed. In order in order
-					for a loadout to be analyzed it must meet the following criteria:
-					<ul>
-						<li>It must include an exotic armor piece</li>
-						<li>
-							It must have all five armor slots populated. If you delete a piece
-							of armor that was in a loadout, then this critera will not be met
-						</li>
-					</ul>
+					None of your loadouts are able to be analyzed. In order in order for a
+					loadout to be analyzed it must meet the following criteria:
+					<LoadoutCriteria />
 				</Box>
 			</>
 		);
 	}
 
-	const value = (progressCompletionCount / numValidDimLoadouts) * 100;
+	const value = (progressCompletionCount / numValidLoadouts) * 100;
 	const getTabs = (): TabContainerItem[] => {
 		const tabs: TabContainerItem[] = [];
 		const defaultLoadoutItemProps: LoadoutItemProps = {
@@ -911,6 +1033,8 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 			}
 			const classSpecificRichValidLoadouts = richValidLoadouts.filter(
 				(x) =>
+					x.name.toLowerCase().includes(search.toLowerCase()) &&
+					filteredLoadoutTypes.includes(x.loadoutType) &&
 					x.destinyClassId === destinyClassId &&
 					(optimizationTypeFilterValue.length > 0
 						? x.optimizationTypeList.some((y) =>
@@ -942,9 +1066,8 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 									border: '1px solid rgb(43, 43, 43)',
 								}}
 							>
-								{optimizationTypeFilterValue.length > 0
-									? 'No loadouts found, try removing a filter.'
-									: 'No loadouts found.'}
+								No loadouts found. Try removing a filter, or clearing your
+								search.
 							</Box>
 						)}
 						{visibleClassSpecificRichValidLoadouts.map((loadout, index) => (
@@ -1002,74 +1125,131 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		return tabs;
 	};
 
-	const clearHandler = () => {
+	const clearFilters = () => {
 		dispatch(setOptimizationTypeFilter([]));
+		dispatch(setLoadoutTypeFilter(ELoadoutTypeFilter.All));
 	};
 
 	return (
 		<>
 			<Box
 				sx={{
-					fontWeight: 'bold',
-					fontSize: '1.5rem',
-					marginBottom: theme.spacing(2),
 					display: 'flex',
-					alignItems: 'center',
+					flexDirection: 'column',
 					gap: '8px',
 				}}
 			>
-				<Box>Loadouts</Box>
-
-				<CustomTooltip title="The Loadout Analyzer tool checks all of your DIM and D2 Loadouts to see if there are any optimizations that can be made and if there are any issues with your loadouts. Take a look at the legend to see all of the possible optimizations and issues that this tool checks for.">
-					<Help />
-				</CustomTooltip>
-				<Legend />
-				<CustomTooltip title={`${showFilters ? 'Hide' : 'Show'} filters`}>
-					<IconButton
-						onClick={() => setShowFilters(!showFilters)}
-						size="small"
-						sx={{ background: showFilters ? 'rgba(255,255,255, 0.2)' : '' }}
-					>
-						<FilterIcon />
-					</IconButton>
-				</CustomTooltip>
-
-				{optimizationTypeFilterValue.length > 0 && (
-					<Button
-						size="small"
-						variant="outlined"
-						onClick={clearHandler}
-						sx={{ height: '30px', marginLeft: 'auto' }}
-					>
-						Clear Filters
-					</Button>
-				)}
-			</Box>
-			{isAnalyzing && (
 				<Box
 					sx={{
+						fontWeight: 'bold',
+						fontSize: '1.5rem',
 						display: 'flex',
-						flexDirection: 'column',
-						marginBottom: theme.spacing(4),
-						gap: '4px',
+						alignItems: 'center',
+						gap: '8px',
+						marginBottom: theme.spacing(2),
 					}}
 				>
-					<Box>Analysis Progress:</Box>
-					<Box>
-						<LinearProgress variant="determinate" value={value} />
+					<Box
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							gap: '8px',
+						}}
+					>
+						<Box>Loadouts</Box>
+						<Box sx={{ height: '24px' }}>
+							<CustomTooltip title="The Loadout Analyzer tool checks all of your DIM and D2 Loadouts to see if there are any optimizations that can be made and if there are any issues with your loadouts. Take a look at the legend to see all of the possible optimizations and issues that this tool checks for.">
+								<Help />
+							</CustomTooltip>
+						</Box>
+					</Box>
+					<Box
+						sx={{
+							marginLeft: 'auto',
+							// marginTop: '-4px',
+							display: 'flex',
+							alignItems: 'center',
+							gabp: '4px',
+						}}
+					>
+						<Legend />
+						<CustomTooltip
+							title={`${showFilters ? 'Hide' : 'Show'} filters`}
+							hideOnMobile
+						>
+							<IconButton
+								onClick={() => setShowFilters(!showFilters)}
+								size="small"
+								sx={{
+									width: '35px',
+									height: '35px',
+									background: showFilters ? 'rgb(50, 50, 50)' : '',
+									color: hasActiveFilters ? '#b36200' : '',
+								}}
+							>
+								<FilterIcon />
+							</IconButton>
+						</CustomTooltip>
 					</Box>
 				</Box>
-			)}
-			{showFilters && <Filters />}
 
-			{!isAnalyzed && !isAnalyzing && (
+				<Collapse in={showFilters} timeout="auto" unmountOnExit>
+					<Box sx={{ marginBottom: theme.spacing(2) }}>
+						<Filters />
+					</Box>
+				</Collapse>
+				{isAnalyzing && (
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							marginBottom: theme.spacing(4),
+							gap: '4px',
+						}}
+					>
+						<Box>Analysis Progress:</Box>
+						<Box>
+							<LinearProgress variant="determinate" value={value} />
+						</Box>
+					</Box>
+				)}
+				{hasActiveFilters && (
+					<Box
+						sx={{
+							height: '30px',
+							display: 'flex',
+							alignItems: 'center',
+							gap: '4px',
+							background: '#b36200',
+							marginLeft: '-16px',
+							width: 'calc(100% + 32px)',
+							paddingX: '8px',
+						}}
+					>
+						<Box>Filters may limit results</Box>
+						<Box
+							sx={{
+								marginLeft: 'auto',
+								textDecoration: 'underline',
+								textUnderlineOffset: '2px',
+								cursor: 'pointer',
+							}}
+							onClick={clearFilters}
+						>
+							Clear Filters
+						</Box>
+					</Box>
+				)}
+			</Box>
+
+			{/* {!isAnalyzed && !isAnalyzing && (
 				<>
 					<p>
 						Click the button below to analyze your loadouts. Analysis may take a
 						few minutes.
 					</p>
 				</>
-			)}
+			)} */}
 			{/* {!isAnalyzing && (
 				<Button variant="contained" onClick={analyzeLoadouts}>
 					{isAnalyzed ? 'Re-Run Analysis' : 'Analyze'}
@@ -1078,7 +1258,6 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 
 			<Box
 				sx={{
-					marginTop: theme.spacing(1),
 					marginLeft: '-16px',
 					paddingX: '16px',
 					background: 'rgba(50, 50, 50, 0.5)',
@@ -1087,8 +1266,30 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 			>
 				<Box
 					sx={{
+						marginLeft: '-16px',
+						width: 'calc(100% + 31px)',
+					}}
+				>
+					<CustomTextField
+						textFieldProps={{
+							fullWidth: true,
+							variant: 'outlined',
+							size: 'small',
+							placeholder: 'Search',
+							InputProps: {
+								sx: {
+									borderRadius: '0px',
+								},
+							},
+						}}
+						value={search}
+						onChange={(v: string) => setSearch(v)}
+						label=""
+					/>
+				</Box>
+				<Box
+					sx={{
 						marginBottom: theme.spacing(2),
-
 						paddingBottom: theme.spacing(1),
 					}}
 				>
@@ -1098,7 +1299,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 						tabs={getTabs()}
 					/>
 				</Box>
-				{dimLoadouts.length > numValidDimLoadouts && (
+				{numTotalLoadouts > numValidLoadouts && (
 					<Box
 						sx={{
 							marginTop: theme.spacing(1),
@@ -1123,24 +1324,15 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 											In order to be analyzed a loadout must meet the following
 											criteria:
 										</Box>
-										<ul>
-											<li>
-												It must include some combination of armor, mods or
-												subclass options
-											</li>
-											<li>It must NOT contain five legendary armor pieces</li>
-											<li>
-												{`It must be for a specific subclass (DIM Loadouts can be made for "Any Class")`}
-											</li>
-										</ul>
+										<LoadoutCriteria />
 									</Box>
 								}
 							>
 								<Help />
 							</CustomTooltip>
 						</Box>
-						{dimLoadouts.length - numValidDimLoadouts} of your DIM loadouts were
-						not analyzed because they did not meet the criteria for analysis.
+						{numTotalLoadouts - numValidLoadouts} of your loadouts were not
+						analyzed because they did not meet the criteria for analysis.
 					</Box>
 				)}
 				{Object.values(invalidLoadouts).map((value) => {

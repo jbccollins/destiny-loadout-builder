@@ -11,6 +11,20 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-09-23',
+		version: '2.4.7',
+		title: 'Add more analyzer optimization checks',
+		sections: [
+			{
+				items: [
+					`Add 5 more optimization checks to the analyzer, bringing the total to 15`,
+					`Fix a bug where discounted mods were not named properly in some places in the build tab`,
+					`Change the sort order of the analyzer to sort DIM loadouts by name rather than creation date`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-09-22',
 		version: '2.4.6',
 		title: 'Add search and loadout type filter to analyzer',

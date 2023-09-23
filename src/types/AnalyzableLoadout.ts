@@ -56,6 +56,7 @@ export type AnalyzableLoadout = {
 	name: string;
 	armorStatMods: EModId[];
 	achievedStatTiers: ArmorStatMapping;
+	achievedStats: ArmorStatMapping; // The un-rounded stats
 	optimizationTypeList: ELoadoutOptimizationType[];
 	dimStatTierConstraints: ArmorStatMapping;
 	characterId: string;
@@ -89,6 +90,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	fragmentIdList: [],
 	armorStatMods: [],
 	achievedStatTiers: getDefaultArmorStatMapping(),
+	achievedStats: getDefaultArmorStatMapping(),
 	optimizationTypeList: [],
 	dimStatTierConstraints: getDefaultArmorStatMapping(),
 	characterId: null, // Only applicable for InGame Loadouts

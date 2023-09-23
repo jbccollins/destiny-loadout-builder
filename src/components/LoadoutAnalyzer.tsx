@@ -109,6 +109,7 @@ import {
 	GetLoadoutsThatCanBeOptimizedWorker,
 	Message,
 	OrderedLoadoutOptimizationTypeList,
+	OrderedLoadoutOptimizationTypeListWithoutNone,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
 	AnalyzableLoadout,
@@ -126,10 +127,12 @@ import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
 import { isDebugging } from '@dlb/utils/debugging';
 import { Help } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CheckIcon from '@mui/icons-material/Check';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import EditIcon from '@mui/icons-material/Edit';
 import FilterIcon from '@mui/icons-material/FilterAlt';
+import GppBadIcon from '@mui/icons-material/GppBad';
 import HourglassDisabledIcon from '@mui/icons-material/HourglassDisabled';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import InfoIcon from '@mui/icons-material/Info';
@@ -137,7 +140,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RuleIcon from '@mui/icons-material/Rule';
 import ShowIcon from '@mui/icons-material/Visibility';
@@ -201,6 +207,21 @@ const loadoutOptimizationIconMapping: EnumDictionary<
 	[ELoadoutOptimizationType.UnusableMods]: (
 		<HourglassDisabledIcon key={0} sx={iconStyle} />
 	),
+	[ELoadoutOptimizationType.UnmasterworkedArmor]: (
+		<PrivacyTipIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.FewerWastedStats]: (
+		<AutoAwesomeIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.UnspecifiedAspect]: (
+		<NotListedLocationIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.InvalidLoadoutConfiguration]: (
+		<ReportProblemIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationType.MutuallyExclusiveMods]: (
+		<GppBadIcon key={0} sx={iconStyle} />
+	),
 	[ELoadoutOptimizationType.None]: <CheckIcon key={0} sx={iconStyle} />,
 };
 
@@ -211,7 +232,7 @@ const Legend = () => {
 	};
 	return (
 		<>
-			<CustomTooltip title="Click to view legend" hideOnMobile>
+			<CustomTooltip title="View Legend" hideOnMobile>
 				<IconButton onClick={() => setOpen(!open)} size="small">
 					<InfoIcon />
 				</IconButton>
@@ -331,7 +352,7 @@ function OptimizationTypeFilter() {
 			<IconMultiSelectDropdown
 				getOptionValue={getOptionValue}
 				getOptionStat={() => null}
-				options={OrderedLoadoutOptimizationTypeList}
+				options={OrderedLoadoutOptimizationTypeListWithoutNone}
 				value={optimizationTypeFilterValue}
 				onChange={handleChange}
 				title={''}
@@ -899,13 +920,33 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 
 	const richValidLoadouts = useMemo(
 		() =>
-			Object.entries(validLoadouts).map(([key, value]) => {
-				const analysisResult = analysisResults[key];
-				return {
-					...value,
-					...analysisResult,
-				};
-			}),
+			Object.entries(validLoadouts)
+				.map(([key, value]) => {
+					const analysisResult = analysisResults[key];
+					return {
+						...value,
+						...analysisResult,
+					};
+				})
+				.sort((a, b) => {
+					// Sort by three factors
+					// D2 loadouts always before DIM
+					// D2 loadouts are sorted by index
+					// DIM loadouts are sorted by name
+					if (a.loadoutType === ELoadoutType.InGame) {
+						if (b.loadoutType === ELoadoutType.InGame) {
+							return a.index - b.index;
+						} else {
+							return -1;
+						}
+					} else {
+						if (b.loadoutType === ELoadoutType.InGame) {
+							return 1;
+						} else {
+							return a.name.localeCompare(b.name);
+						}
+					}
+				}),
 		[validLoadouts, analysisResults]
 	);
 

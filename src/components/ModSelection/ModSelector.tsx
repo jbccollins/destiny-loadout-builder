@@ -127,7 +127,10 @@ const ModSelector = ({
 	compact: boolean;
 	disabled?: boolean;
 }) => {
-	const selectedMod = getMod(selectedMods[index]);
+	let selectedMod = getMod(selectedMods[index]);
+	selectedMod = selectedMod?.isArtifactMod
+		? { ...selectedMod, name: selectedMod.name + ' (Artifact)' }
+		: selectedMod;
 	const options: IMod[] = [
 		{ ...placeholderOption, bonuses: null },
 		...availableMods

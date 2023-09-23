@@ -1,3 +1,4 @@
+import mutuallyExclusiveMods from '@dlb/dim/data/d2/mutually-exclusive-mods.json';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
@@ -395,3 +396,28 @@ export const getValidRaidModArmorSlotPlacements = (
 		? validPlacements
 		: [getDefaultPotentialRaidModArmorSlotPlacement()];
 };
+
+/**
+ * Some mods form a group of which only one mod can be equipped,
+ * which is enforced by game servers. DIM must respect this when building
+ * loadouts or applying mods.
+ */
+export function getModExclusionGroup(mod: IMod): string | undefined {
+	return mutuallyExclusiveMods[mod.hash];
+}
+
+export function hasMutuallyExclusiveMods(mods: IMod[]): boolean {
+	const exclusionGroups: string[] = [];
+	for (let i = 0; i < mods.length; i++) {
+		const group = getModExclusionGroup(mods[i]);
+		if (!group) {
+			continue;
+		}
+		if (!exclusionGroups.includes(group)) {
+			exclusionGroups.push(group);
+			continue;
+		}
+		return true;
+	}
+	return false;
+}

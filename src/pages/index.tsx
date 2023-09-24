@@ -92,6 +92,7 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
+import { ETabType } from '@dlb/types/Tab';
 import React from 'react';
 
 const Container = styled(Box)(({ theme }) => ({
@@ -347,7 +348,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<ShareLoadout />
 							</>
 						),
-						index: 0,
+						index: ETabType.BUILD,
 						title: 'Build',
 						icon: <ShieldIcon />,
 					},
@@ -357,7 +358,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<LoadoutAnalyzer />
 							</>
 						),
-						index: 1,
+						index: ETabType.ANALYZE,
 						title: 'Analyze',
 						icon: <AnalyzeIcon />,
 					},
@@ -373,7 +374,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<Logout />
 							</>
 						),
-						index: 2,
+						index: ETabType.SETTINGS,
 						title: 'Settings',
 						icon: <SettingsIcon />,
 					},
@@ -383,7 +384,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<PatchNotes />
 							</>
 						),
-						index: 3,
+						index: ETabType.ABOUT,
 						title: 'About',
 						icon: <InfoIcon />,
 					},

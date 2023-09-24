@@ -117,6 +117,7 @@ import {
 	selectSharedLoadoutDesiredStats,
 	setSharedLoadoutDesiredStats,
 } from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
+import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import {
 	selectUseZeroWastedStats,
 	setUseZeroWastedStats,
@@ -131,6 +132,7 @@ import {
 	EElementId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
+import { TabTypeList } from '@dlb/types/Tab';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, Card, CircularProgress, styled } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -384,6 +386,7 @@ function Loading() {
 			const urlParams = new URLSearchParams(window.location.search);
 			log('urlParams', urlParams);
 			let sharedLoadoutString = urlParams.get('loadout');
+			const tabString = urlParams.get('tab');
 			log('sharedLoadoutString', sharedLoadoutString);
 			if (sharedLoadoutString) {
 				localStorage.setItem(
@@ -433,6 +436,7 @@ function Loading() {
 				}
 
 				let hasLoadout = sharedLoadoutString ? true : false;
+				let hasTab = tabString ? true : false;
 
 				log('membership', membershipData);
 				const platformData = await getDestinyAccountsForBungieAccount(
@@ -543,6 +547,21 @@ function Loading() {
 						// TODO: Only do this if the error is related to the shared loadout
 						localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 						hasLoadout = false;
+					}
+				}
+				if (hasTab) {
+					try {
+						const tabIndex = Number(tabString);
+						if (TabTypeList.includes(tabIndex)) {
+							dispatch(setTabIndex(tabIndex));
+							log('tabIndex', tabIndex);
+						} else {
+							log('tabError', 'Invalid tab index', true);
+						}
+					} catch (e) {
+						console.warn('Unable to load tab. Error:', e);
+						hasTab = false;
+						log('tabError', e);
 					}
 				}
 				if (!successfullyParsedSharedLoadoutUrl) {

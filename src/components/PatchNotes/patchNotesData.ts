@@ -12,6 +12,17 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-09-23',
+		version: '2.4.8',
+		title:
+			'Fix a bug where not having 10 D2 loadouts would cause the analyzer to show no results',
+		sections: [
+			{
+				items: [`What the title says`],
+			},
+		],
+	},
+	{
+		date: '2023-09-23',
 		version: '2.4.7',
 		title: 'Add more analyzer optimization checks',
 		sections: [

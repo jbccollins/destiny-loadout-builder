@@ -513,6 +513,11 @@ const extractInGameLoadouts = (
 		}
 		const destinyClassId = character.destinyClassId;
 		characterLoadouts.loadouts.forEach((inGameLoadout, index) => {
+			// This nameHash check catches empty loadouts. It is not possible
+			// to create a loadout without a name in-game.
+			if (!inGameLoadout || inGameLoadout.nameHash === UNSET_PLUG_HASH) {
+				return;
+			}
 			const loadout: AnalyzableLoadout = {
 				...getDefaultAnalyzableLoadout(),
 				id: `${characterId}-${index}`,

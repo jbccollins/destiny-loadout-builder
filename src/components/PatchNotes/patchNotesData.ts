@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-09-24',
+		version: '2.4.9',
+		title: 'Add the ability to link directly to the analyzer tab',
+		sections: [
+			{
+				items: [
+					`The analyzer tab can now be linked to directly via the url. For example: https://destinyloadoutbuilder.com/?tab=1`,
+					'Minor UI changes to the analyzer filters UI',
+				],
+			},
+		],
+	},
+	{
 		date: '2023-09-23',
 		version: '2.4.8',
 		title:

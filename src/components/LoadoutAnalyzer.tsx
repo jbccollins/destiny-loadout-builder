@@ -418,34 +418,6 @@ function Filters() {
 				position: 'relative',
 			}}
 		>
-			{/* arrow */}
-			<Box
-				sx={{
-					width: 0,
-					height: 0,
-					borderLeft: '10px solid transparent',
-					borderRight: '10px solid transparent',
-					borderTop: '12px solid rgb(50, 50, 50)',
-					position: 'absolute',
-					top: 0,
-					right: 0,
-					marginTop: '-30px',
-					marginRight: '14px',
-				}}
-			></Box>
-			{/* line */}
-			<Box
-				sx={{
-					position: 'absolute',
-					top: 0,
-					right: 0,
-					width: '2px',
-					height: '20px',
-					background: 'rgb(50, 50, 50)',
-					marginTop: '-20px',
-					marginRight: '23px',
-				}}
-			/>
 			<OptimizationTypeFilter />
 			<LoadoutTypeFilter />
 		</Box>
@@ -1214,23 +1186,48 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 						}}
 					>
 						<Legend />
-						<CustomTooltip
-							title={`${showFilters ? 'Hide' : 'Show'} filters`}
-							hideOnMobile
-						>
-							<IconButton
-								onClick={() => setShowFilters(!showFilters)}
-								size="small"
-								sx={{
-									width: '35px',
-									height: '35px',
-									background: showFilters ? 'rgb(50, 50, 50)' : '',
-									color: hasActiveFilters ? '#b36200' : '',
-								}}
+						<Box sx={{ position: 'relative' }}>
+							<CustomTooltip
+								title={`${showFilters ? 'Hide' : 'Show'} filters`}
+								hideOnMobile
 							>
-								<FilterIcon />
-							</IconButton>
-						</CustomTooltip>
+								<IconButton
+									onClick={() => setShowFilters(!showFilters)}
+									size="small"
+									sx={{
+										zIndex: 1,
+										width: '34px',
+										height: '34px',
+										background: showFilters ? 'rgb(50, 50, 50)' : '',
+										color: hasActiveFilters ? '#b36200' : '',
+										'&:hover': {
+											background: 'rgb(90, 90, 90)',
+										},
+									}}
+								>
+									<FilterIcon />
+								</IconButton>
+							</CustomTooltip>
+							{/* arrow */}
+							{showFilters && (
+								<Box
+									sx={{
+										width: '34px',
+										height: '80px',
+										// borderLeft: '17px solid transparent',
+										// borderRight: '17px solid transparent',
+										// borderTop: '80px solid rgb(50, 50, 50)',
+										// borderTop: '80px solid red',
+										position: 'absolute',
+										top: 0,
+										right: 0,
+										marginTop: '20px',
+										zIndex: 0,
+										background: 'rgb(50, 50, 50)',
+									}}
+								/>
+							)}
+						</Box>
 					</Box>
 				</Box>
 

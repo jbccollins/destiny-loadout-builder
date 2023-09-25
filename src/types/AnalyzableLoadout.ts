@@ -21,6 +21,14 @@ export enum ELoadoutType {
 	InGame = 'InGame',
 }
 
+export enum ELoadoutOptimizationCategory {
+	COSMETIC = 'COSMETIC',
+	IMPROVEMENT = 'IMPROVEMENT',
+	WARNING = 'WARNING',
+	PROBLEM = 'PROBLEM',
+	ERROR = 'ERROR',
+}
+
 // We should be able to completely populate the redux store from this config
 // such that using the tool "just works"
 export type DLBConfig = {

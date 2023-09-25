@@ -23,10 +23,10 @@ export const tabIndexSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 			// Add the tab as a new query param to the URL
-			// If the tab is 0, remove the query param
+			// We only want to support linking to the analyze tab
 			const url = new URL(window.location.href);
 			const params = new URLSearchParams(url.search);
-			if (action.payload === ETabType.BUILD) {
+			if (action.payload !== ETabType.ANALYZE) {
 				params.delete('tab');
 			} else {
 				params.set('tab', action.payload.toString());

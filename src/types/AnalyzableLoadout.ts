@@ -21,13 +21,83 @@ export enum ELoadoutType {
 	InGame = 'InGame',
 }
 
-export enum ELoadoutOptimizationCategory {
+export enum ELoadoutOptimizationCategoryId {
+	NONE = 'NONE',
 	COSMETIC = 'COSMETIC',
 	IMPROVEMENT = 'IMPROVEMENT',
 	WARNING = 'WARNING',
 	PROBLEM = 'PROBLEM',
 	ERROR = 'ERROR',
 }
+
+export const OrderedLoadoutOptimizationCategoryIdList = [
+	ELoadoutOptimizationCategoryId.IMPROVEMENT,
+	ELoadoutOptimizationCategoryId.PROBLEM,
+	ELoadoutOptimizationCategoryId.WARNING,
+	ELoadoutOptimizationCategoryId.COSMETIC,
+	ELoadoutOptimizationCategoryId.ERROR,
+	ELoadoutOptimizationCategoryId.NONE,
+];
+
+export interface ILoadoutOptimizationCategory {
+	id: ELoadoutOptimizationCategoryId;
+	name: string;
+	description: string;
+	color: string;
+}
+
+export const LoadoutOptimizerCategoryIdToLoadoutOptimizerCategoryMapping: Record<
+	ELoadoutOptimizationCategoryId,
+	ILoadoutOptimizationCategory
+> = {
+	[ELoadoutOptimizationCategoryId.NONE]: {
+		id: ELoadoutOptimizationCategoryId.NONE,
+		name: 'None',
+		description: 'No optimizations found, this loadout is as good as it gets!',
+		color: 'white',
+	},
+	[ELoadoutOptimizationCategoryId.COSMETIC]: {
+		id: ELoadoutOptimizationCategoryId.COSMETIC,
+		name: 'Cosmetic',
+		description:
+			'Cosmetic optimizations do not impact gameplay and can be safely ignored. These are primarly for aesthetic purposes.',
+		color: 'lightblue',
+	},
+	[ELoadoutOptimizationCategoryId.IMPROVEMENT]: {
+		id: ELoadoutOptimizationCategoryId.IMPROVEMENT,
+		name: 'Improvement',
+		description:
+			'Improvement optimizations are not required, but can significantly improve a loadout.',
+		color: 'lightgreen',
+	},
+	[ELoadoutOptimizationCategoryId.WARNING]: {
+		id: ELoadoutOptimizationCategoryId.WARNING,
+		name: 'Warning',
+		description:
+			'Warnings indicate that something about a loadout looks fishy but the loadout can still be equipped as intended.',
+		color: 'yellow',
+	},
+	[ELoadoutOptimizationCategoryId.PROBLEM]: {
+		id: ELoadoutOptimizationCategoryId.PROBLEM,
+		name: 'Problem',
+		description:
+			"Problems indicate that, in it's current state, a loadout cannot be equipped as intended.",
+		color: 'darkorange',
+	},
+	[ELoadoutOptimizationCategoryId.ERROR]: {
+		id: ELoadoutOptimizationCategoryId.ERROR,
+		name: 'Error',
+		description:
+			'Errors indicate that something went wrong when processing a loadout. This should never happen. If you see this, please report it in the discord.',
+		color: '#FA8072',
+	},
+};
+
+export const getLoadoutOptimizationCategory = (
+	id: ELoadoutOptimizationCategoryId
+): ILoadoutOptimizationCategory => {
+	return LoadoutOptimizerCategoryIdToLoadoutOptimizerCategoryMapping[id];
+};
 
 // We should be able to completely populate the redux store from this config
 // such that using the tool "just works"

@@ -101,7 +101,7 @@ import {
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
-	EGetLoadoutsThatCanBeOptimizedProgresstype,
+	EGetLoadoutsThatCanBeOptimizedProgressType,
 	ELoadoutOptimizationType,
 	EMessageType,
 	getLoadoutOptimization,
@@ -115,9 +115,12 @@ import {
 	AnalyzableLoadout,
 	AnalyzableLoadoutMapping,
 	ELoadoutFilterTypeList,
+	ELoadoutOptimizationCategoryId,
 	ELoadoutType,
 	ELoadoutTypeFilter,
+	getLoadoutOptimizationCategory,
 	LodaoutTypeFilterToLoadoutTypeMapping,
+	OrderedLoadoutOptimizationCategoryIdList,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
@@ -143,6 +146,7 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
+import ReportIcon from '@mui/icons-material/Report';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RuleIcon from '@mui/icons-material/Rule';
@@ -223,6 +227,7 @@ const loadoutOptimizationIconMapping: EnumDictionary<
 		<GppBadIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationType.None]: <CheckIcon key={0} sx={iconStyle} />,
+	[ELoadoutOptimizationType.Error]: <ReportIcon key={0} sx={iconStyle} />,
 };
 
 const Legend = () => {
@@ -230,6 +235,25 @@ const Legend = () => {
 	const handleClose = () => {
 		setOpen(false);
 	};
+	// Group by category
+	const categories = useMemo(() => {
+		const categories: Record<
+			ELoadoutOptimizationCategoryId,
+			ELoadoutOptimizationType[]
+		> = {
+			[ELoadoutOptimizationCategoryId.COSMETIC]: [],
+			[ELoadoutOptimizationCategoryId.IMPROVEMENT]: [],
+			[ELoadoutOptimizationCategoryId.WARNING]: [],
+			[ELoadoutOptimizationCategoryId.PROBLEM]: [],
+			[ELoadoutOptimizationCategoryId.ERROR]: [],
+			[ELoadoutOptimizationCategoryId.NONE]: [],
+		};
+		OrderedLoadoutOptimizationTypeList.forEach((x) => {
+			const { category } = getLoadoutOptimization(x);
+			categories[category].push(x);
+		});
+		return categories;
+	}, []);
 	return (
 		<>
 			<CustomTooltip title="View Legend" hideOnMobile>
@@ -247,36 +271,65 @@ const Legend = () => {
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
-						gap: '16px',
+						gap: '24px',
 					}}
 				>
-					{OrderedLoadoutOptimizationTypeList.map((key) => {
-						const { iconColor, name, description } =
-							getLoadoutOptimization(key);
+					{OrderedLoadoutOptimizationCategoryIdList.map((categoryId) => {
+						const optimizationTypeIdList = categories[categoryId];
+						const { name, color, description } =
+							getLoadoutOptimizationCategory(categoryId);
 						return (
-							<Box
-								key={key}
-								sx={{
-									display: 'flex',
-									flexDirection: 'column',
-									gap: '8px',
-									padding: '8px',
-									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
-								}}
-							>
-								<Box
-									sx={{
-										display: 'flex',
-										alignItems: 'center',
-										gap: '8px',
-									}}
-								>
-									<IconPill key={key} color={iconColor} tooltipText={name}>
-										{loadoutOptimizationIconMapping[key]}
-									</IconPill>
-									<Box>{name}</Box>
+							<Box key={categoryId}>
+								<Box>
+									<Box
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+											gap: '8px',
+											color: color,
+											fontWeight: 'bold',
+											fontSize: '1.4rem',
+											marginLeft: '8px',
+											marginBottom: '8px',
+										}}
+									>
+										<Box>{name}</Box>
+										<CustomTooltip title={description}>
+											<Help sx={{ color: 'white' }} />
+										</CustomTooltip>
+									</Box>
 								</Box>
-								<Box>{description}</Box>
+								{optimizationTypeIdList.map((key) => {
+									const { category, name, description } =
+										getLoadoutOptimization(key);
+									const { color } = getLoadoutOptimizationCategory(category);
+									return (
+										<Box
+											key={key}
+											sx={{
+												display: 'flex',
+												flexDirection: 'column',
+												gap: '8px',
+												padding: '8px',
+												'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+											}}
+										>
+											<Box
+												sx={{
+													display: 'flex',
+													alignItems: 'center',
+													gap: '8px',
+												}}
+											>
+												<IconPill key={key} color={color} tooltipText={name}>
+													{loadoutOptimizationIconMapping[key]}
+												</IconPill>
+												<Box>{name}</Box>
+											</Box>
+											<Box>{description}</Box>
+										</Box>
+									);
+								})}
 							</Box>
 						);
 					})}
@@ -322,10 +375,11 @@ function IconPill({
 const getOptionValue = (
 	optimizationType: ELoadoutOptimizationType
 ): IOption => {
-	const { iconColor, name, description } =
+	const { category, name, description } =
 		getLoadoutOptimization(optimizationType);
+	const { color } = getLoadoutOptimizationCategory(category);
 	const icon = (
-		<IconPill color={iconColor} tooltipText={name}>
+		<IconPill color={color} tooltipText={name}>
 			{loadoutOptimizationIconMapping[optimizationType]}
 		</IconPill>
 	);
@@ -681,9 +735,10 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 					optimizationTypeList?.length > 0 && (
 						<>
 							{optimizationTypeList?.map((x, i) => {
-								const { iconColor, name } = getLoadoutOptimization(x);
+								const { category, name } = getLoadoutOptimization(x);
+								const { color } = getLoadoutOptimizationCategory(category);
 								return (
-									<IconPill key={x} color={iconColor} tooltipText={name}>
+									<IconPill key={x} color={color} tooltipText={name}>
 										{loadoutOptimizationIconMapping[x]}
 									</IconPill>
 								);
@@ -694,7 +749,11 @@ const LoadoutItem = (props: LoadoutItemProps) => {
 				{!!analysisResults[id]?.optimizationTypeList &&
 					optimizationTypeList?.length === 0 && (
 						<IconPill
-							color={noneOptimizationType.iconColor}
+							color={
+								getLoadoutOptimizationCategory(
+									ELoadoutOptimizationCategoryId.NONE
+								).color
+							}
 							tooltipText={noneOptimizationType.name}
 						>
 							{loadoutOptimizationIconMapping[noneOptimizationType.id]}
@@ -970,7 +1029,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 							})
 						);
 						if (
-							payload.type === EGetLoadoutsThatCanBeOptimizedProgresstype.Error
+							payload.type === EGetLoadoutsThatCanBeOptimizedProgressType.Error
 						) {
 							dispatch(incrementProgressErroredCount());
 						}

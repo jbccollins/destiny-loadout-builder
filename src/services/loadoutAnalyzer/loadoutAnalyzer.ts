@@ -27,6 +27,7 @@ import {
 import {
 	AnalyzableLoadout,
 	AnalyzableLoadoutBreakdown,
+	ELoadoutOptimizationCategoryId,
 	ELoadoutType,
 	getDefaultAnalyzableLoadout,
 } from '@dlb/types/AnalyzableLoadout';
@@ -818,13 +819,14 @@ export enum ELoadoutOptimizationType {
 	InvalidLoadoutConfiguration = 'InvalidLoadoutConfiguration',
 	MutuallyExclusiveMods = 'MutuallyExclusiveMods',
 	None = 'None',
+	Error = 'Error',
 }
 
 export interface ILoadoutOptimization {
 	id: ELoadoutOptimizationType;
 	name: string;
-	iconColor: string;
 	description: string;
+	category: ELoadoutOptimizationCategoryId;
 }
 
 // There maybe multiple optimizations types that, while techincally correct, are confusing
@@ -836,7 +838,7 @@ export const humanizeOptimizationTypes = (
 	let filteredOptimizationTypeList: ELoadoutOptimizationType[] = [
 		...optimizationTypeList,
 	];
-	// Missing armor takes precedence over higher stat tier, lower cost and unmet stat constraints
+	// Missing armor takes precedence over higher stat tier, lower cost, unmet stat constraints and fewer wasted stats
 	if (
 		filteredOptimizationTypeList.includes(ELoadoutOptimizationType.MissingArmor)
 	) {
@@ -846,6 +848,7 @@ export const humanizeOptimizationTypes = (
 					ELoadoutOptimizationType.HigherStatTier,
 					ELoadoutOptimizationType.LowerCost,
 					ELoadoutOptimizationType.UnmetDIMStatConstraints,
+					ELoadoutOptimizationType.FewerWastedStats,
 				].includes(x)
 		);
 	}
@@ -871,114 +874,120 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 	[ELoadoutOptimizationType.HigherStatTier]: {
 		id: ELoadoutOptimizationType.HigherStatTier,
 		name: 'Higher Stat Tier',
-		iconColor: 'lightgreen',
 		description:
-			'Recreating this loadout with a different combination of armor and/or stat boosting mods can reach higher stat tiers.',
+			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve higher stat tiers.',
+		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
 	},
 	[ELoadoutOptimizationType.LowerCost]: {
 		id: ELoadoutOptimizationType.LowerCost,
 		name: 'Lower Cost',
-		iconColor: 'lightgreen',
 		description:
-			'Recreating this loadout with a different combination of armor and/or stat boosting mods can reach the same stat tiers for a lower total stat mod cost.',
+			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers for a lower total stat mod cost.',
+		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
 	},
 	[ELoadoutOptimizationType.FewerWastedStats]: {
 		id: ELoadoutOptimizationType.FewerWastedStats,
 		name: 'Fewer Wasted Stats',
-		iconColor: 'lightgreen',
 		description:
-			'Recreating this loadout with a different combination of armor and/or stat boosting mods can reach the same stat tiers but with fewer wasted stats. Any stat that does not end in a 0 is considered a wasted stat. For example, 89 Recovery provides the same benefit as 80 Recovery so there are 9 wasted stats. Reducing wasted stats may not increase the stat tiers that you are able to achieve, but it does look aesthetically nice to have all your stats end in a 0 :)',
+			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers but with fewer wasted stats. Any stat that does not end in a 0 is considered a wasted stat. For example, 89 Recovery provides the same benefit as 80 Recovery so there are 9 wasted stats. Reducing wasted stats may not increase the stat tiers that you are able to achieve, but it does look aesthetically nice to have all your stats end in a 0 :)',
+		category: ELoadoutOptimizationCategoryId.COSMETIC,
 	},
 	[ELoadoutOptimizationType.MissingArmor]: {
 		id: ELoadoutOptimizationType.MissingArmor,
 		name: 'Missing Armor',
-		iconColor: 'darkorange',
 		description:
 			'This loadout is missing one or more armor pieces. You may have deleted armor pieces that were in this loadout.',
+		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationType.NoExoticArmor]: {
 		id: ELoadoutOptimizationType.NoExoticArmor,
 		name: 'No Exotic Armor',
-		iconColor: 'yellow',
 		description:
 			'This loadout does not have an exotic armor piece. You may have deleted the exotic armor piece that was in this loadout.',
+		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationType.DeprecatedMods]: {
 		id: ELoadoutOptimizationType.DeprecatedMods,
 		name: 'Deprecated Mods',
-		iconColor: 'yellow',
 		description:
 			'This loadout uses mods that are no longer in the game. This usually means you had an old "Charged With Light", "Warmind Cell", or "Elemental Well" mod equipped.',
+		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationType.UnspecifiedAspect]: {
 		id: ELoadoutOptimizationType.UnspecifiedAspect,
-		name: 'Unspecified Aspect',
-		iconColor: 'yellow',
+		name: 'Unused Aspect Slot',
 		description:
 			'This loadout only specifies one aspect. Consider adding another aspect to this loadout.',
+		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationType.StatsOver100]: {
 		id: ELoadoutOptimizationType.StatsOver100,
 		name: 'Stats Over 100',
-		iconColor: 'yellow',
 		description:
-			"This loadout has one or more stats of 110 or higher. It is likely that you can find a way to shuffle mods around to avoid wasting an entire stat tier's worth of stat points.",
+			"This loadout has one or more stats of 110 or higher. There is likely a way to shuffle mods around to avoid wasting an entire stat tier's worth of stat points.",
+		category: ELoadoutOptimizationCategoryId.COSMETIC,
 	},
 	[ELoadoutOptimizationType.UnusedFragmentSlots]: {
 		id: ELoadoutOptimizationType.UnusedFragmentSlots,
-		name: 'Missing Fragments',
-		iconColor: 'yellow',
+		name: 'Unused Fragment Slots',
 		description:
 			"This loadout has one or more unused fragment slots. Occasionally Bungie adds more fragment slots to an aspect. You may want to add another fragment, it's free real estate!",
+		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationType.UnavailableMods]: {
 		id: ELoadoutOptimizationType.UnavailableMods,
 		name: 'Unavailable Mods',
-		iconColor: 'yellow',
 		description:
 			'[DIM Loadout Specific] This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks. DIM is able to correct this by swapping discounted mods with their full-cost versions but you may want to consider changing these anyway.',
+		category: ELoadoutOptimizationCategoryId.COSMETIC,
 	},
 	[ELoadoutOptimizationType.UnmetDIMStatConstraints]: {
 		id: ELoadoutOptimizationType.UnmetDIMStatConstraints,
 		name: 'Unmet DIM Stat Constraints',
-		iconColor: 'yellow',
 		description:
 			'[DIM Loadout Specific] This loadout was created using DIM\'s "Loadout Optimizer" tool, or another similar tool. At the time that this loadout was created, you were able to hit higher stat tiers that you can currently hit. This can happen when Bungie adds stat penalties to an existing fragment that is part of your loadout.',
+		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationType.UnusableMods]: {
 		id: ELoadoutOptimizationType.UnusableMods,
 		name: 'Unusable Mods',
-		iconColor: 'darkorange',
 		description:
-			'This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks. In the case of DIM loadouts, DIM will attempt to correct this by swapping discounted mods with their full-cost versions. In this case, given the cost of the full-cost mods, it is not possible for DIM to correct this loadout.',
+			'This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks.',
+		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationType.UnmasterworkedArmor]: {
 		id: ELoadoutOptimizationType.UnmasterworkedArmor,
 		name: 'Unmasterworked Armor',
-		iconColor: 'yellow',
 		description:
 			'This loadout contains unmasterworked armor. Masterworking armor provides a +2 bonus to all stats and adds additional energy capacity to the armor. Masterworking armor in this loadout may allow you to socket more expensive mods which may be beneficial to your build.',
+		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationType.InvalidLoadoutConfiguration]: {
 		id: ELoadoutOptimizationType.InvalidLoadoutConfiguration,
 		name: 'Invalid Loadout Configuration',
-		iconColor: 'darkorange',
 		description:
 			'Something about this loadout is not configured correctly and no combination of armor pieces can make it valid. This most often happens when you have a loadout that had raid mods equipped and you have since deleted the raid armor that could socket those mods. In rare cases this can happen if you somehow managed to create a loadout where the total mod cost for a single armor slot exceeded 10. This would likely only happen if there was a bug in DIM or another third party loadout creation tool.',
+		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationType.MutuallyExclusiveMods]: {
 		id: ELoadoutOptimizationType.MutuallyExclusiveMods,
 		name: 'Mutually Exclusive Mods',
-		iconColor: 'darkorange',
 		description:
 			'This loadout uses mods that are mutually exclusive. This is rare, but can happen if Bungie decides to make two mods mutually exclusive after you have already equipped both of them together. It can also happen if there is a bug in DIM or another third party loadout creation tool that let you create a loadout with such mods.',
+		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationType.None]: {
 		id: ELoadoutOptimizationType.None,
 		name: 'No Optimizations Found',
-		iconColor: 'white',
 		description:
 			'No optimizations found. This loadout is as good as it gets :)',
+		category: ELoadoutOptimizationCategoryId.NONE,
+	},
+	[ELoadoutOptimizationType.Error]: {
+		id: ELoadoutOptimizationType.Error,
+		name: 'Processing Error',
+		description: 'An error occurred while processing this loadout.',
+		category: ELoadoutOptimizationCategoryId.ERROR,
 	},
 };
 
@@ -986,19 +995,20 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationType[] =
 	ValidateEnumList(Object.values(ELoadoutOptimizationType), [
 		ELoadoutOptimizationType.HigherStatTier,
 		ELoadoutOptimizationType.LowerCost,
-		ELoadoutOptimizationType.FewerWastedStats,
 		ELoadoutOptimizationType.MissingArmor,
 		ELoadoutOptimizationType.UnusableMods,
 		ELoadoutOptimizationType.InvalidLoadoutConfiguration,
 		ELoadoutOptimizationType.MutuallyExclusiveMods,
 		ELoadoutOptimizationType.NoExoticArmor,
 		ELoadoutOptimizationType.DeprecatedMods,
-		ELoadoutOptimizationType.UnspecifiedAspect,
 		ELoadoutOptimizationType.UnusedFragmentSlots,
+		ELoadoutOptimizationType.UnspecifiedAspect,
 		ELoadoutOptimizationType.UnmasterworkedArmor,
-		ELoadoutOptimizationType.StatsOver100,
-		ELoadoutOptimizationType.UnavailableMods,
 		ELoadoutOptimizationType.UnmetDIMStatConstraints,
+		ELoadoutOptimizationType.UnavailableMods,
+		ELoadoutOptimizationType.StatsOver100,
+		ELoadoutOptimizationType.FewerWastedStats,
+		ELoadoutOptimizationType.Error,
 		ELoadoutOptimizationType.None,
 	]);
 
@@ -1018,13 +1028,13 @@ export const getLoadoutOptimization = (
 // TODO: Possibly in the future make this also return loadouts with fewer
 // wasted stats
 
-export enum EGetLoadoutsThatCanBeOptimizedProgresstype {
+export enum EGetLoadoutsThatCanBeOptimizedProgressType {
 	Progress = 'progress',
 	Error = 'error',
 }
 
 export type GetLoadoutsThatCanBeOptimizedProgress = {
-	type: EGetLoadoutsThatCanBeOptimizedProgresstype;
+	type: EGetLoadoutsThatCanBeOptimizedProgressType;
 	canBeOptimized?: boolean;
 	loadoutId: string;
 	optimizationTypeList: ELoadoutOptimizationType[];
@@ -1128,6 +1138,7 @@ export const getLoadoutsThatCanBeOptimized = (
 	} = params;
 	Object.values(loadouts).forEach((loadout) => {
 		try {
+			// throw new Error('test');
 			const optimizationTypeList: ELoadoutOptimizationType[] = [
 				...loadout.optimizationTypeList,
 			];
@@ -1157,7 +1168,7 @@ export const getLoadoutsThatCanBeOptimized = (
 						});
 						earlyProgressCallback = true;
 						progressCallback({
-							type: EGetLoadoutsThatCanBeOptimizedProgresstype.Progress,
+							type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
 							canBeOptimized: true,
 							loadoutId: loadout.id,
 							optimizationTypeList: optimizationTypeList,
@@ -1369,7 +1380,7 @@ export const getLoadoutsThatCanBeOptimized = (
 					loadoutId: loadout.id,
 				});
 				progressCallback({
-					type: EGetLoadoutsThatCanBeOptimizedProgresstype.Progress,
+					type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
 					canBeOptimized: true,
 					loadoutId: loadout.id,
 					optimizationTypeList: humanizedOptimizationTypes,
@@ -1377,7 +1388,7 @@ export const getLoadoutsThatCanBeOptimized = (
 				return;
 			} else {
 				progressCallback({
-					type: EGetLoadoutsThatCanBeOptimizedProgresstype.Progress,
+					type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
 					canBeOptimized: false,
 					loadoutId: loadout.id,
 					optimizationTypeList: [],
@@ -1386,9 +1397,9 @@ export const getLoadoutsThatCanBeOptimized = (
 			}
 		} catch (e) {
 			progressCallback({
-				type: EGetLoadoutsThatCanBeOptimizedProgresstype.Error,
+				type: EGetLoadoutsThatCanBeOptimizedProgressType.Error,
 				loadoutId: loadout.id,
-				optimizationTypeList: [],
+				optimizationTypeList: [ELoadoutOptimizationType.Error],
 			});
 		}
 	});

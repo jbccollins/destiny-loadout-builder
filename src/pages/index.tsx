@@ -436,12 +436,13 @@ const Home: NextPage = () => {
 	return (
 		<>
 			<Head />
-			{/* <WebWorkerTest derp={true} /> */}
 			<Container className="application-container">
 				{!allDataLoaded && <Loading />}
 				{allDataLoaded && (
 					<>
-						<LoadoutAnalyzer isHidden />
+						{/* The analyzer renders this already. This is really hacky and poorly thought out.
+						But basically without this check the analyer web worker runs twice. Refactor this*/}
+						{tabIndex !== ETabType.ANALYZE && <LoadoutAnalyzer isHidden />}
 						{isSmallScreen && (
 							<>
 								{smallScreenResultsOpen && (

@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { ELoadoutOptimizationType } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { NIL, v4 as uuid } from 'uuid';
 
 export interface OptimizationTypeFilterState {
-	value: ELoadoutOptimizationType[];
+	value: ELoadoutOptimizationTypeId[];
 	uuid: string;
 }
 
@@ -21,7 +21,7 @@ export const optimizationTypeFilterSlice = createSlice({
 	reducers: {
 		setOptimizationTypeFilter: (
 			state,
-			action: PayloadAction<ELoadoutOptimizationType[]>
+			action: PayloadAction<ELoadoutOptimizationTypeId[]>
 		) => {
 			state.value = action.payload;
 			state.uuid = uuid();

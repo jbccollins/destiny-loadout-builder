@@ -24,7 +24,7 @@ import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
-import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer';
+import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer/LoadoutAnalyzer';
 import Logout from '@dlb/components/LogOutButton';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import Head from '@dlb/components/Meta/Head';

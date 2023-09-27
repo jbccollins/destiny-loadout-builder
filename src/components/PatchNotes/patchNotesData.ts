@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-09-26',
+		version: '2.4.10',
+		title: 'Show optimization descriptions directly in the analyzer on click',
+		sections: [
+			{
+				items: [
+					`Clicking on an optimization type in the analyzer will now show a description of what that optimization type means. A bit nicer than having to look up what the type means in the legend.`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-09-24',
 		version: '2.4.9',
 		title: 'Add the ability to link directly to the analyzer tab',

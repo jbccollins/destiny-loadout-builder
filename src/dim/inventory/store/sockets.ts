@@ -1,4 +1,18 @@
+import { emptyPlugHashes } from '@dlb/dim/data/d2/empty-plug-hashes';
+import {
+	ItemCategoryHashes,
+	PlugCategoryHashes,
+	SocketCategoryHashes,
+} from '@dlb/dim/data/d2/generated-enums';
 import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+import {
+	DimPlug,
+	DimPlugSet,
+	DimSocket,
+	DimSocketCategory,
+	DimSockets,
+	PluggableInventoryItemDefinition,
+} from '@dlb/dim/inventory/item-types';
 import { weaponMasterworkY2SocketTypeHash } from '@dlb/dim/search/d2-known-values';
 import { compareBy } from '@dlb/dim/utils/comparators';
 import { eventArmorRerollSocketIdentifiers } from '@dlb/dim/utils/socket-utils';
@@ -15,21 +29,7 @@ import {
 	DestinySocketTypeDefinition,
 	SocketPlugSources,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import { emptyPlugHashes } from '@dlb/dim/data/d2/empty-plug-hashes';
-import {
-	ItemCategoryHashes,
-	PlugCategoryHashes,
-	SocketCategoryHashes,
-} from '@dlb/dim/data/d2/generated-enums';
 import _ from 'lodash';
-import {
-	DimPlug,
-	DimPlugSet,
-	DimSocket,
-	DimSocketCategory,
-	DimSockets,
-	PluggableInventoryItemDefinition,
-} from '@dlb/dim/inventory/item-types';
 
 //
 // These are the utilities that deal with Sockets and Plugs on items. Sockets and Plugs

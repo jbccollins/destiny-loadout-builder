@@ -3,7 +3,6 @@ import {
 	getDestinyAccountsForBungieAccount,
 	getMembershipData,
 } from '@dlb/dim/bungie-api/destiny2-api';
-import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
 import { setAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setArmor } from '@dlb/redux/features/armor/armorSlice';
@@ -29,6 +28,8 @@ import {
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 
+// import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import {

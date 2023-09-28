@@ -35,7 +35,6 @@ import {
 	ItemCategoryHashes,
 	StatHashes,
 } from '@dlb/dim/data/d2/generated-enums';
-import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
 // import { reportException } from '@dlb/dim/utils/exceptions';
@@ -46,6 +45,7 @@ import { DimStore } from '@dlb/dim/inventory/store-types';
 // import { buildCatalystInfo } from './catalyst';
 // import { buildCraftedInfo } from './crafted';
 // import { buildDeepsightInfo } from './deepsight';
+import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { createItemIndex } from '@dlb/dim/inventory/store/item-index';
 import { buildMasterwork } from './masterwork';
 import { buildSockets } from './sockets';
@@ -112,7 +112,7 @@ export function processItems(
 			// not all of these should cause the store to consider itself hadErrors.
 			// dummies and invisible items are not a big deal
 
-			const bucketDef = defs.InventoryBucket[item.bucketHash];
+			const bucketDef = defs.InventoryBucket.get(item.bucketHash);
 			// if it's a named, non-invisible bucket, it may be a problem that the item wasn't generated
 			if (
 				bucketDef &&
@@ -143,7 +143,9 @@ export function processItems(
 
 const getClassTypeNameLocalized = _.memoize(
 	(type: DestinyClass, defs: D2ManifestDefinitions) => {
-		const klass = Object.values(defs.Class).find((c) => c.classType === type);
+		const klass = Object.values(defs.Class.getAll()).find(
+			(c) => c.classType === type
+		);
 		if (klass) {
 			return klass.displayProperties.name;
 		} else {
@@ -834,7 +836,7 @@ export function makeItem(
 
 	// Infusion
 	const tier = itemDef.inventory
-		? defs.ItemTierType[itemDef.inventory.tierTypeHash]
+		? defs.ItemTierType.get(itemDef.inventory.tierTypeHash)
 		: null;
 	createdItem.infusionFuel = Boolean(
 		tier?.infusionProcess && itemDef.quality?.infusionCategoryHashes?.length

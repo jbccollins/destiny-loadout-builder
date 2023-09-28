@@ -1,4 +1,14 @@
+import {
+	ItemCategoryHashes,
+	SocketCategoryHashes,
+	StatHashes,
+} from '@dlb/dim/data/d2/generated-enums';
 import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+import {
+	DimItem,
+	DimMasterwork,
+	DimSockets,
+} from '@dlb/dim/inventory/item-types';
 import { isPlugStatActive } from '@dlb/dim/utils/item-utils';
 import {
 	getFirstSocketByCategoryHash,
@@ -8,16 +18,6 @@ import {
 	DamageType,
 	DestinyInventoryItemDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import {
-	ItemCategoryHashes,
-	SocketCategoryHashes,
-	StatHashes,
-} from '@dlb/dim/data/d2/generated-enums';
-import {
-	DimItem,
-	DimMasterwork,
-	DimSockets,
-} from '@dlb/dim/inventory/item-types';
 
 /**
  * These are the utilities that deal with figuring out Masterwork info.

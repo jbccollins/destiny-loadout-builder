@@ -4,7 +4,7 @@ import {
 	DestinyClass,
 	DestinyGender,
 	DestinyProfileRecordsComponent,
-	DestinyRecordState
+	DestinyRecordState,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 // import vaultBackground from 'images/vault-background.svg';
 // import vaultIcon from 'images/vault.svg';
@@ -13,7 +13,7 @@ import { bungieNetPath } from '@dlb/dim/dim-ui/BungieImage';
 import {
 	DimCharacterStat,
 	DimStore,
-	DimTitle
+	DimTitle,
 } from '@dlb/dim/inventory/store-types';
 
 /**
@@ -24,7 +24,7 @@ import {
 const genderTypeToEnglish = {
 	[DestinyGender.Male]: 'male',
 	[DestinyGender.Female]: 'female',
-	[DestinyGender.Unknown]: ''
+	[DestinyGender.Unknown]: '',
 } as const;
 
 export function makeCharacter(
@@ -33,10 +33,10 @@ export function makeCharacter(
 	mostRecentLastPlayed: Date,
 	profileRecords: DestinyProfileRecordsComponent | undefined
 ): DimStore {
-	const race = defs.Race[character.raceHash];
+	const race = defs.Race.get(character.raceHash);
 	const raceLocalizedName = race.displayProperties.name;
-	const gender = defs.Gender[character.genderHash];
-	const classy = defs.Class[character.classHash];
+	const gender = defs.Gender.get(character.genderHash);
+	const classy = defs.Class.get(character.classHash);
 	const genderRace = race.genderedRaceNamesByGenderHash[gender.hash];
 	const className = classy.genderedClassNamesByGenderHash[gender.hash];
 	const genderLocalizedName = gender.displayProperties.name;
@@ -77,7 +77,7 @@ export function makeCharacter(
 			  )
 			: undefined,
 		items: [],
-		hadErrors: false
+		hadErrors: false,
 	};
 }
 
@@ -103,7 +103,7 @@ export function makeVault(): DimStore {
 		race: '',
 		genderRace: '',
 		stats: [],
-		hadErrors: false
+		hadErrors: false,
 	};
 }
 
@@ -130,7 +130,7 @@ export function getCharacterStatsData(
 			name: def.displayProperties.name,
 			description: def.displayProperties.description,
 			value,
-			icon: bungieNetPath(def.displayProperties.icon)
+			icon: bungieNetPath(def.displayProperties.icon),
 		};
 		ret[statHash] = stat;
 	});

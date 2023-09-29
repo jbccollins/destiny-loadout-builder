@@ -1,23 +1,10 @@
 import d2Logo from '@dlb/public/d2-logo.png';
 import dimLogo from '@dlb/public/dim-logo.png';
-import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
-import {
-	addAnalysisResult,
-	clearProgressCanBeOptimizedCount,
-	clearProgressCompletionCount,
-	clearProgressErroredCount,
-	incrementProgressCanBeOptimizedCount,
-	incrementProgressCompletionCount,
-	incrementProgressErroredCount,
-	selectAnalyzableLoadouts,
-	setIsAnalyzed,
-	setIsAnalyzing,
-} from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
+import { selectAnalyzableLoadouts } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import {
 	selectAnalyzerTabIndex,
 	setAnalyzerTabIndex,
 } from '@dlb/redux/features/analyzerTabIndex/analyzerTabIndexSlice';
-import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { selectDimLoadouts } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import { selectInGameLoadouts } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
@@ -35,20 +22,11 @@ import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDesti
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import { selectSelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import { selectSelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
-import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
-	EGetLoadoutsThatCanBeOptimizedProgressType,
-	ELoadoutOptimizationTypeId,
-	EMessageType,
-	GetLoadoutsThatCanBeOptimizedProgress,
-	GetLoadoutsThatCanBeOptimizedWorker,
-	Message,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import {
-	AnalyzableLoadoutMapping,
 	ELoadoutType,
 	ELoadoutTypeFilter,
 	LodaoutTypeFilterToLoadoutTypeMapping,
@@ -56,7 +34,6 @@ import {
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 import { EnumDictionary } from '@dlb/types/globals';
-import { isDebugging } from '@dlb/utils/debugging';
 import { Help } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
@@ -88,7 +65,7 @@ import {
 	useTheme,
 } from '@mui/material';
 import Image from 'next/image';
-import { ReactElement, useEffect, useMemo, useState } from 'react';
+import { ReactElement, useMemo, useState } from 'react';
 import CustomTextField from '../CustomTextField';
 import CustomTooltip from '../CustomTooltip';
 import TabContainer, { TabContainerItem } from '../TabContainer';
@@ -97,10 +74,7 @@ import { Legend } from './Legend';
 import LoadoutCriteria from './LoadoutCriteria';
 import { LoadoutItem, LoadoutItemProps } from './LoadoutItem';
 import Summary from './Summary';
-export type LoadoutAnalyzerProps = {
-	isHidden?: boolean;
-};
-
+import WebWorkerWrapper from './WebWorkerWrapper';
 const iconStyle: SxProps = {
 	height: '20px',
 	width: '20px',
@@ -159,20 +133,13 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	[ELoadoutOptimizationTypeId.Error]: <ReportIcon key={0} sx={iconStyle} />,
 };
 
-export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
-	const { isHidden } = props;
+export default function LoadoutAnalyzer() {
 	const [hiddenLoadoutsOpen, setHiddenLoadoutsOpen] = useState(false);
 	const [showFilters, setShowFilters] = useState(false);
 	const [search, setSearch] = useState('');
 	const theme = useTheme();
-	const [fatalError, setFatalError] = useState(true);
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const inGameLoadouts = useAppSelector(selectInGameLoadouts);
-	const armor = useAppSelector(selectArmor);
-	const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
-	const masterworkAssumption = useAppSelector(
-		selectSelectedMasterworkAssumption
-	);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const selectedAspects = useAppSelector(selectSelectedAspects);
@@ -189,7 +156,6 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 	);
 	const loadoutTypeFilter = useAppSelector(selectLoadoutTypeFilter);
 	const {
-		isAnalyzed,
 		isAnalyzing,
 		progressCompletionCount,
 		analysisResults,
@@ -216,18 +182,6 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 		});
 		return result;
 	}, [dimLoadouts, inGameLoadouts]);
-
-	const getLoadoutsThatCanBeOptimizedWorker: GetLoadoutsThatCanBeOptimizedWorker =
-		useMemo(
-			() =>
-				new Worker(
-					new URL(
-						'@dlb/services/loadoutAnalyzer/getLoadoutsThatCanBeOptimizedWorker.ts',
-						import.meta.url
-					)
-				),
-			[]
-		);
 
 	const handleAnalyzerTabChange = (index: number) => {
 		dispatch(setAnalyzerTabIndex(index));
@@ -280,82 +234,6 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 				}),
 		[validLoadouts, analysisResults]
 	);
-
-	const analyzeLoadouts = () => {
-		dispatch(clearProgressCompletionCount());
-		dispatch(clearProgressCanBeOptimizedCount());
-		dispatch(clearProgressErroredCount());
-
-		dispatch(setIsAnalyzed(false));
-		dispatch(setIsAnalyzing(true));
-		// TODO: This is just for testing. Remove this.
-		const debugging = isDebugging();
-		const _validLoadouts = debugging
-			? Object.keys(validLoadouts)
-					.slice(0, 10)
-					.reduce((obj, key) => {
-						obj[key] = validLoadouts[key];
-						return obj;
-					}, {} as AnalyzableLoadoutMapping)
-			: validLoadouts;
-
-		getLoadoutsThatCanBeOptimizedWorker.postMessage({
-			loadouts: _validLoadouts,
-			armor,
-			masterworkAssumption,
-			allClassItemMetadata,
-			availableExoticArmor,
-		});
-	};
-
-	useEffect(() => {
-		if (window.Worker) {
-			getLoadoutsThatCanBeOptimizedWorker.onmessage = (
-				e: MessageEvent<Message>
-			) => {
-				switch (e.data.type) {
-					case EMessageType.Progress:
-						dispatch(incrementProgressCompletionCount());
-						const payload = e.data
-							.payload as GetLoadoutsThatCanBeOptimizedProgress;
-						console.log('progress', e.data.payload);
-						if (payload.canBeOptimized) {
-							dispatch(incrementProgressCanBeOptimizedCount());
-						}
-						dispatch(addAnalysisResult(payload));
-						if (
-							payload.type === EGetLoadoutsThatCanBeOptimizedProgressType.Error
-						) {
-							dispatch(incrementProgressErroredCount());
-						}
-						break;
-					case EMessageType.Results:
-						console.log('results', e.data);
-						dispatch(setIsAnalyzing(false));
-						dispatch(setIsAnalyzed(true));
-						break;
-					case EMessageType.Error:
-						dispatch(setIsAnalyzing(false));
-						dispatch(setIsAnalyzed(false));
-						dispatch(clearProgressCompletionCount());
-						dispatch(clearProgressCanBeOptimizedCount());
-						dispatch(clearProgressErroredCount());
-						console.error('error', e.data);
-						setFatalError(true);
-						break;
-					default:
-						break;
-				}
-			};
-			if (!isAnalyzed && !isAnalyzing) {
-				analyzeLoadouts();
-			}
-		}
-	}, []);
-
-	if (isHidden) {
-		return <></>;
-	}
 
 	if (numTotalLoadouts === 0) {
 		return (
@@ -499,6 +377,7 @@ export default function LoadoutAnalyzer(props: LoadoutAnalyzerProps) {
 
 	return (
 		<>
+			<WebWorkerWrapper />
 			<Box
 				sx={{
 					display: 'flex',

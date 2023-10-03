@@ -1,16 +1,16 @@
-import { VENDORS } from '@dlb/dim/search/d2-known-values';
-import {
-	BucketCategory,
-	DestinyInventoryBucketDefinition,
-} from 'bungie-api-ts-no-const-enum/destiny2';
 import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
-import _ from 'lodash';
 import type {
 	D2BucketCategory,
 	DimBucketType,
 	InventoryBucket,
 	InventoryBuckets,
 } from '@dlb/dim/inventory/inventory-buckets';
+import { VENDORS } from '@dlb/dim/search/d2-known-values';
+import {
+	BucketCategory,
+	DestinyInventoryBucketDefinition,
+} from 'bungie-api-ts-no-const-enum/destiny2';
+import _ from 'lodash';
 import { D2Categories } from './d2-bucket-categories';
 import { D2ManifestDefinitions } from './d2-definitions';
 
@@ -88,26 +88,29 @@ export function getBuckets(defs: D2ManifestDefinitions) {
 			this.byCategory[this.unknown.sort] = [this.unknown];
 		},
 	};
-	_.forIn(defs.InventoryBucket, (def: DestinyInventoryBucketDefinition) => {
-		const type = bucketToType[def.hash];
-		const sort = bucketHashToSort[def.hash];
-		const bucket: InventoryBucket = {
-			description: def.displayProperties.description,
-			name: def.displayProperties.name,
-			hash: def.hash,
-			hasTransferDestination: def.hasTransferDestination,
-			capacity: def.itemCount,
-			accountWide: def.scope === 1,
-			category: def.category,
-			type,
-			sort,
-		};
-		// Add an easy helper property like "inPostmaster"
-		if (bucket.sort) {
-			bucket[`in${bucket.sort}`] = true;
+	_.forIn(
+		defs.InventoryBucket.getAll(),
+		(def: DestinyInventoryBucketDefinition) => {
+			const type = bucketToType[def.hash];
+			const sort = bucketHashToSort[def.hash];
+			const bucket: InventoryBucket = {
+				description: def.displayProperties.description,
+				name: def.displayProperties.name,
+				hash: def.hash,
+				hasTransferDestination: def.hasTransferDestination,
+				capacity: def.itemCount,
+				accountWide: def.scope === 1,
+				category: def.category,
+				type,
+				sort,
+			};
+			// Add an easy helper property like "inPostmaster"
+			if (bucket.sort) {
+				bucket[`in${bucket.sort}`] = true;
+			}
+			buckets.byHash[bucket.hash] = bucket;
 		}
-		buckets.byHash[bucket.hash] = bucket;
-	});
+	);
 	const vaultMappings = {};
 	defs.Vendor.get(VENDORS.VAULT).acceptedItems.forEach((items) => {
 		vaultMappings[items.acceptedInventoryBucketHash] =

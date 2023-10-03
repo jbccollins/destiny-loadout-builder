@@ -11,6 +11,14 @@ const defaultTooltipProps: Partial<TooltipProps> = {
 	enterDelay: 0,
 	placement: 'bottom',
 	arrow: true,
+	PopperProps: {
+		sx: {
+			'& .MuiTooltip-tooltip, .MuiTooltip-arrow:before ': {
+				backgroundColor: '#2b2b2b',
+			},
+			fontSize: '24px',
+		},
+	},
 };
 
 export default function CustomTooltip(props: CustomTooltipProps) {

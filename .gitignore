@@ -37,3 +37,6 @@ next-env.d.ts
 
 # destiny manifest
 cached-definitions/
+
+# Ignore experimental generated files*
+/generated/experiments/all-combinations.json

@@ -7,7 +7,10 @@ import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { getDefaultRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { ELoadoutOptimizationType } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import {
+	ELoadoutOptimizationTypeId,
+	GetLoadoutsThatCanBeOptimizedProgressMetadata,
+} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { ArmorItem } from './Armor';
 import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
 import { EDestinyClassId, EDestinySubclassId } from './IdEnums';
@@ -21,13 +24,99 @@ export enum ELoadoutType {
 	InGame = 'InGame',
 }
 
-export enum ELoadoutOptimizationCategory {
+export enum ELoadoutOptimizationCategoryId {
+	NONE = 'NONE',
 	COSMETIC = 'COSMETIC',
 	IMPROVEMENT = 'IMPROVEMENT',
 	WARNING = 'WARNING',
 	PROBLEM = 'PROBLEM',
 	ERROR = 'ERROR',
 }
+
+export const OrderedLoadoutOptimizationCategoryIdList = [
+	ELoadoutOptimizationCategoryId.IMPROVEMENT,
+	ELoadoutOptimizationCategoryId.PROBLEM,
+	ELoadoutOptimizationCategoryId.WARNING,
+	ELoadoutOptimizationCategoryId.COSMETIC,
+	ELoadoutOptimizationCategoryId.ERROR,
+	ELoadoutOptimizationCategoryId.NONE,
+];
+
+export const SeverityOrderedLoadoutOptimizationCategoryIdList = [
+	ELoadoutOptimizationCategoryId.ERROR,
+	ELoadoutOptimizationCategoryId.PROBLEM,
+	ELoadoutOptimizationCategoryId.WARNING,
+	ELoadoutOptimizationCategoryId.IMPROVEMENT,
+	ELoadoutOptimizationCategoryId.COSMETIC,
+	ELoadoutOptimizationCategoryId.NONE,
+];
+
+export interface ILoadoutOptimizationCategory {
+	id: ELoadoutOptimizationCategoryId;
+	name: string;
+	description: string;
+	color: string;
+	severity: number;
+}
+
+export const LoadoutOptimizerCategoryIdToLoadoutOptimizerCategoryMapping: Record<
+	ELoadoutOptimizationCategoryId,
+	ILoadoutOptimizationCategory
+> = {
+	[ELoadoutOptimizationCategoryId.NONE]: {
+		id: ELoadoutOptimizationCategoryId.NONE,
+		name: 'None',
+		description: 'No optimizations found, this loadout is as good as it gets!',
+		color: 'white',
+		severity: 0,
+	},
+	[ELoadoutOptimizationCategoryId.COSMETIC]: {
+		id: ELoadoutOptimizationCategoryId.COSMETIC,
+		name: 'Cosmetic',
+		description:
+			'Cosmetic optimizations do not impact gameplay and can be safely ignored. These are primarly for aesthetic purposes.',
+		color: 'lightblue',
+		severity: 0,
+	},
+	[ELoadoutOptimizationCategoryId.IMPROVEMENT]: {
+		id: ELoadoutOptimizationCategoryId.IMPROVEMENT,
+		name: 'Improvement',
+		description:
+			'Improvement optimizations are not required, but can significantly improve a loadout.',
+		color: 'lightgreen',
+		severity: 1,
+	},
+	[ELoadoutOptimizationCategoryId.WARNING]: {
+		id: ELoadoutOptimizationCategoryId.WARNING,
+		name: 'Warning',
+		description:
+			'Warnings indicate that something about a loadout looks fishy but the loadout can still be equipped as intended.',
+		color: 'yellow',
+		severity: 2,
+	},
+	[ELoadoutOptimizationCategoryId.PROBLEM]: {
+		id: ELoadoutOptimizationCategoryId.PROBLEM,
+		name: 'Problem',
+		description:
+			"Problems indicate that, in it's current state, a loadout cannot be equipped as intended.",
+		color: 'darkorange',
+		severity: 3,
+	},
+	[ELoadoutOptimizationCategoryId.ERROR]: {
+		id: ELoadoutOptimizationCategoryId.ERROR,
+		name: 'Error',
+		description:
+			'Errors indicate that something went wrong when processing a loadout. This should never happen. If you see this, please report it in the discord.',
+		color: '#FA8072',
+		severity: 0,
+	},
+};
+
+export const getLoadoutOptimizationCategory = (
+	id: ELoadoutOptimizationCategoryId
+): ILoadoutOptimizationCategory => {
+	return LoadoutOptimizerCategoryIdToLoadoutOptimizerCategoryMapping[id];
+};
 
 // We should be able to completely populate the redux store from this config
 // such that using the tool "just works"
@@ -50,7 +139,8 @@ export type DLBConfig = {
 export type AnalysisResults = Record<
 	string,
 	{
-		optimizationTypeList: ELoadoutOptimizationType[];
+		optimizationTypeList: ELoadoutOptimizationTypeId[];
+		metadata?: GetLoadoutsThatCanBeOptimizedProgressMetadata;
 	}
 >;
 
@@ -65,7 +155,7 @@ export type AnalyzableLoadout = {
 	armorStatMods: EModId[];
 	achievedStatTiers: ArmorStatMapping;
 	achievedStats: ArmorStatMapping; // The un-rounded stats
-	optimizationTypeList: ELoadoutOptimizationType[];
+	optimizationTypeList: ELoadoutOptimizationTypeId[];
 	dimStatTierConstraints: ArmorStatMapping;
 	characterId: string;
 } & DLBConfig;

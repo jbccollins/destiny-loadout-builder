@@ -1,8 +1,9 @@
-import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 import { v4 as uuid } from 'uuid';
 
+// import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import {
 	Armor,
 	ArmorItem,

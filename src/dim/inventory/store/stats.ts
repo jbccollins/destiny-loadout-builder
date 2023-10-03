@@ -1,11 +1,23 @@
+import {
+	BucketHashes,
+	ItemCategoryHashes,
+	StatHashes,
+} from '@dlb/dim/data/d2/generated-enums';
 import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+import {
+	DimItem,
+	DimPlug,
+	DimSocket,
+	DimStat,
+} from '@dlb/dim/inventory/item-types';
 import {
 	armorStats,
 	CUSTOM_TOTAL_STAT_HASH,
-	TOTAL_STAT_HASH
+	TOTAL_STAT_HASH,
 } from '@dlb/dim/search/d2-known-values';
 import { compareBy } from '@dlb/dim/utils/comparators';
 import { isPlugStatActive } from '@dlb/dim/utils/item-utils';
+import { socketContainsIntrinsicPlug } from '@dlb/dim/utils/socket-utils';
 import {
 	DestinyClass,
 	DestinyDisplayPropertiesDefinition,
@@ -15,21 +27,9 @@ import {
 	DestinyStatCategory,
 	DestinyStatDefinition,
 	DestinyStatDisplayDefinition,
-	DestinyStatGroupDefinition
+	DestinyStatGroupDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import {
-	BucketHashes,
-	ItemCategoryHashes,
-	StatHashes
-} from '@dlb/dim/data/d2/generated-enums';
 import _ from 'lodash';
-import { socketContainsIntrinsicPlug } from '@dlb/dim/utils/socket-utils';
-import {
-	DimItem,
-	DimPlug,
-	DimSocket,
-	DimStat
-} from '@dlb/dim/inventory/item-types';
 
 /**
  * These are the utilities that deal with Stats on items - specifically, how to calculate them.
@@ -78,7 +78,7 @@ export const statAllowList = [
 	StatHashes.AmmoCapacity,
 	...armorStats,
 	TOTAL_STAT_HASH,
-	CUSTOM_TOTAL_STAT_HASH
+	CUSTOM_TOTAL_STAT_HASH,
 ];
 
 /** Stats that are measured in milliseconds. */
@@ -89,7 +89,7 @@ const statsNoBar = [
 	StatHashes.RoundsPerMinute,
 	StatHashes.Magazine,
 	StatHashes.RecoilDirection,
-	...statsMs
+	...statsMs,
 ];
 
 /** Show these stats in addition to any "natural" stats */
@@ -97,7 +97,7 @@ const hiddenStatsAllowList = [
 	StatHashes.AimAssistance,
 	StatHashes.Zoom,
 	StatHashes.RecoilDirection,
-	StatHashes.AirborneEffectiveness
+	StatHashes.AirborneEffectiveness,
 ];
 
 /** a dictionary to look up StatDisplay info by statHash */
@@ -153,7 +153,7 @@ export function buildStats(
 						{
 							statTypeHash: armorStat,
 							value: 0,
-							isConditionallyActive: false
+							isConditionallyActive: false,
 						},
 						statGroup,
 						defs.Stat.get(armorStat),
@@ -289,7 +289,7 @@ function buildStat(
 		additive:
 			statDef.statCategory === DestinyStatCategory.Defense &&
 			statDef.aggregationType === DestinyStatAggregationType.Character,
-		isConditionallyActive: itemStat.isConditionallyActive
+		isConditionallyActive: itemStat.isConditionallyActive,
 	};
 }
 
@@ -322,7 +322,7 @@ function applyPlugsToStats(
 
 	const socketLists = [
 		[true, intrinsicSockets],
-		[false, otherSockets]
+		[false, otherSockets],
 	] as const;
 
 	// loop through sockets looking for plugs that modify an item's investmentStats
@@ -541,7 +541,7 @@ function totalStat(stats: DimStat[]): DimStat {
 		investmentValue: total,
 		statHash: TOTAL_STAT_HASH,
 		displayProperties: {
-			name: 'Stats.Total'
+			name: 'Stats.Total',
 		} as DestinyDisplayPropertiesDefinition,
 		sort: statAllowList.indexOf(TOTAL_STAT_HASH),
 		value: total,
@@ -550,7 +550,7 @@ function totalStat(stats: DimStat[]): DimStat {
 		bar: false,
 		smallerIsBetter: false,
 		additive: false,
-		isConditionallyActive: false
+		isConditionallyActive: false,
 	};
 }
 
@@ -583,7 +583,7 @@ function customStat(
 		statHash: CUSTOM_TOTAL_STAT_HASH,
 		displayProperties: {
 			name: 'Stats.Custom',
-			description: 'Stats.CustomDesc'
+			description: 'Stats.CustomDesc',
 		} as DestinyDisplayPropertiesDefinition,
 		sort: statAllowList.indexOf(CUSTOM_TOTAL_STAT_HASH),
 		value: total,
@@ -592,7 +592,7 @@ function customStat(
 		bar: false,
 		smallerIsBetter: false,
 		additive: false,
-		isConditionallyActive: false
+		isConditionallyActive: false,
 	};
 }
 

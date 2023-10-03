@@ -1,8 +1,3 @@
-// import { d2ManifestSelector } from 'app/manifest/selectors';
-// import { ThunkResult } from 'app/store/types';
-// import { reportException } from 'app/utils/exceptions';
-import { ItemCategoryHashes } from '@dlb/dim/data/d2/generated-enums';
-import { getManifest } from '@dlb/dim/manifest/manifest-service-json';
 import { warnLogCollapsedStack } from '@dlb/dim/utils/log';
 import {
 	AllDestinyManifestComponents,
@@ -23,6 +18,7 @@ import {
 	DestinyItemCategoryDefinition,
 	DestinyItemTierTypeDefinition,
 	DestinyLoadoutColorDefinition,
+	DestinyLoadoutConstantsDefinition,
 	DestinyLoadoutIconDefinition,
 	DestinyLoadoutNameDefinition,
 	DestinyMaterialRequirementSetDefinition,
@@ -47,55 +43,52 @@ import {
 	DestinyVendorDefinition,
 	DestinyVendorGroupDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import { ManifestDefinitions } from './definitions';
+import { doGetManifest } from '../manifest/manifest-service';
 
-const lazyTables = [
-	'InventoryItem',
-	'Objective',
-	'SandboxPerk',
-	'Stat',
-	'StatGroup',
-	'EnergyType',
-	'DamageType',
-	'Progression',
-	'ItemCategory',
+export const allTables = [
 	'Activity',
+	'ActivityMode',
 	'ActivityModifier',
-	'Vendor',
-	'SocketCategory',
-	'SocketType',
+	'BreakerType',
+	'Class',
+	'Collectible',
+	'DamageType',
+	'Destination',
+	'EnergyType',
+	'EventCard',
+	'Faction',
+	'Gender',
+	'InventoryBucket',
+	'InventoryItem',
+	'ItemCategory',
+	'ItemTierType',
+	'LoadoutColor',
+	'LoadoutConstants',
+	'LoadoutIcon',
+	'LoadoutName',
 	'MaterialRequirementSet',
+	'Metric',
+	'Milestone',
+	'Objective',
+	'Place',
+	'PlugSet',
+	'PowerCap',
+	'PresentationNode',
+	'Progression',
+	'Race',
+	'Record',
+	'SandboxPerk',
 	'Season',
 	'SeasonPass',
-	'Milestone',
-	'Destination',
-	'Place',
-	'VendorGroup',
-	'PlugSet',
-	'Collectible',
-	'PresentationNode',
-	'Record',
-	'Metric',
+	'SocketCategory',
+	'SocketType',
+	'Stat',
+	'StatGroup',
 	'Trait',
-	'PowerCap',
-	'BreakerType',
-	'EventCard',
-	'LoadoutName',
-	'LoadoutIcon',
-	'LoadoutColor',
+	'Vendor',
+	'VendorGroup',
 ];
 
-const eagerTables = [
-	'InventoryBucket',
-	'Class',
-	'Gender',
-	'Race',
-	'Faction',
-	'ItemTierType',
-	'ActivityMode',
-];
-
-/** These aren't really lazy */
 export interface DefinitionTable<T> {
 	/**
 	 * for troubleshooting/questionable lookups, include second arg
@@ -106,51 +99,61 @@ export interface DefinitionTable<T> {
 	getAll(): { [hash: number]: T };
 }
 
-export interface D2ManifestDefinitions extends ManifestDefinitions {
-	InventoryItem: DefinitionTable<DestinyInventoryItemDefinition>;
-	Objective: DefinitionTable<DestinyObjectiveDefinition>;
-	SandboxPerk: DefinitionTable<DestinySandboxPerkDefinition>;
-	Stat: DefinitionTable<DestinyStatDefinition>;
-	StatGroup: DefinitionTable<DestinyStatGroupDefinition>;
-	EnergyType: DefinitionTable<DestinyEnergyTypeDefinition>;
-	Progression: DefinitionTable<DestinyProgressionDefinition>;
-	ItemCategory: DefinitionTable<DestinyItemCategoryDefinition>;
+export interface D2ManifestDefinitions {
 	Activity: DefinitionTable<DestinyActivityDefinition>;
+	ActivityMode: DefinitionTable<DestinyActivityModeDefinition>;
 	ActivityModifier: DefinitionTable<DestinyActivityModifierDefinition>;
-	Vendor: DefinitionTable<DestinyVendorDefinition>;
-	SocketCategory: DefinitionTable<DestinySocketCategoryDefinition>;
-	SocketType: DefinitionTable<DestinySocketTypeDefinition>;
-	MaterialRequirementSet: DefinitionTable<DestinyMaterialRequirementSetDefinition>;
-	Season: DefinitionTable<DestinySeasonDefinition>;
-	SeasonPass: DefinitionTable<DestinySeasonPassDefinition>;
-	Milestone: DefinitionTable<DestinyMilestoneDefinition>;
-	Destination: DefinitionTable<DestinyDestinationDefinition>;
-	Place: DefinitionTable<DestinyPlaceDefinition>;
-	VendorGroup: DefinitionTable<DestinyVendorGroupDefinition>;
-	PlugSet: DefinitionTable<DestinyPlugSetDefinition>;
-	PresentationNode: DefinitionTable<DestinyPresentationNodeDefinition>;
-	Record: DefinitionTable<DestinyRecordDefinition>;
-	Metric: DefinitionTable<DestinyMetricDefinition>;
-	Trait: DefinitionTable<DestinyTraitDefinition>;
-	PowerCap: DefinitionTable<DestinyPowerCapDefinition>;
 	BreakerType: DefinitionTable<DestinyBreakerTypeDefinition>;
-	DamageType: DefinitionTable<DestinyDamageTypeDefinition>;
+	Class: DefinitionTable<DestinyClassDefinition>;
 	Collectible: DefinitionTable<DestinyCollectibleDefinition>;
+	DamageType: DefinitionTable<DestinyDamageTypeDefinition>;
+	Destination: DefinitionTable<DestinyDestinationDefinition>;
+	EnergyType: DefinitionTable<DestinyEnergyTypeDefinition>;
 	EventCard: DefinitionTable<DestinyEventCardDefinition>;
-	LoadoutName: DefinitionTable<DestinyLoadoutNameDefinition>;
+	Faction: DefinitionTable<DestinyFactionDefinition>;
+	Gender: DefinitionTable<DestinyGenderDefinition>;
+	InventoryBucket: DefinitionTable<DestinyInventoryBucketDefinition>;
+	InventoryItem: DefinitionTable<DestinyInventoryItemDefinition>;
+	ItemCategory: DefinitionTable<DestinyItemCategoryDefinition>;
+	ItemTierType: DefinitionTable<DestinyItemTierTypeDefinition>;
 	LoadoutColor: DefinitionTable<DestinyLoadoutColorDefinition>;
 	LoadoutIcon: DefinitionTable<DestinyLoadoutIconDefinition>;
-
-	InventoryBucket: { [hash: number]: DestinyInventoryBucketDefinition };
-	Class: { [hash: number]: DestinyClassDefinition };
-	Gender: { [hash: number]: DestinyGenderDefinition };
-	Race: { [hash: number]: DestinyRaceDefinition };
-	Faction: { [hash: number]: DestinyFactionDefinition };
-	ItemTierType: { [hash: number]: DestinyItemTierTypeDefinition };
-	ActivityMode: { [hash: number]: DestinyActivityModeDefinition };
+	LoadoutName: DefinitionTable<DestinyLoadoutNameDefinition>;
+	MaterialRequirementSet: DefinitionTable<DestinyMaterialRequirementSetDefinition>;
+	Metric: DefinitionTable<DestinyMetricDefinition>;
+	Milestone: DefinitionTable<DestinyMilestoneDefinition>;
+	Objective: DefinitionTable<DestinyObjectiveDefinition>;
+	Place: DefinitionTable<DestinyPlaceDefinition>;
+	PlugSet: DefinitionTable<DestinyPlugSetDefinition>;
+	PowerCap: DefinitionTable<DestinyPowerCapDefinition>;
+	PresentationNode: DefinitionTable<DestinyPresentationNodeDefinition>;
+	Progression: DefinitionTable<DestinyProgressionDefinition>;
+	Race: DefinitionTable<DestinyRaceDefinition>;
+	Record: DefinitionTable<DestinyRecordDefinition>;
+	SandboxPerk: DefinitionTable<DestinySandboxPerkDefinition>;
+	Season: DefinitionTable<DestinySeasonDefinition>;
+	SeasonPass: DefinitionTable<DestinySeasonPassDefinition>;
+	SocketCategory: DefinitionTable<DestinySocketCategoryDefinition>;
+	SocketType: DefinitionTable<DestinySocketTypeDefinition>;
+	Stat: DefinitionTable<DestinyStatDefinition>;
+	StatGroup: DefinitionTable<DestinyStatGroupDefinition>;
+	Trait: DefinitionTable<DestinyTraitDefinition>;
+	Vendor: DefinitionTable<DestinyVendorDefinition>;
+	VendorGroup: DefinitionTable<DestinyVendorGroupDefinition>;
+	LoadoutConstants: DefinitionTable<DestinyLoadoutConstantsDefinition>;
 }
 
-export const allTables = [...eagerTables, ...lazyTables];
+export class HashLookupFailure extends Error {
+	table: string;
+	id: number;
+
+	constructor(table: string, id: number) {
+		super(`hashLookupFailure: ${table}[${id}]`);
+		this.table = table;
+		this.id = id;
+		this.name = 'HashLookupFailure';
+	}
+}
 
 /**
  * Manifest database definitions. This returns a promise for an
@@ -158,17 +161,14 @@ export const allTables = [...eagerTables, ...lazyTables];
  * above (defs.TalentGrid, etc.).
  */
 export async function getDefinitions(): Promise<D2ManifestDefinitions> {
-	const manifest = await getManifest(allTables);
+	const manifest = await doGetManifest(allTables);
 	const defs = buildDefinitionsFromManifest(manifest);
 	return defs;
 }
 
 export function buildDefinitionsFromManifest(db: AllDestinyManifestComponents) {
-	enhanceDBWithFakeEntries(db);
-	const defs = {
-		isDestiny2: () => true,
-	};
-	lazyTables.forEach((tableShort) => {
+	const defs: Partial<D2ManifestDefinitions> = {};
+	allTables.forEach((tableShort) => {
 		const table =
 			`Destiny${tableShort}Definition` as keyof AllDestinyManifestComponents;
 		defs[tableShort] = {
@@ -184,11 +184,15 @@ export function buildDefinitionsFromManifest(db: AllDestinyManifestComponents) {
 					if (id < 1 || !Number.isSafeInteger(id)) {
 						const requestingEntryInfo =
 							typeof requestor === 'object' ? requestor.hash : requestor;
-						// reportException('invalidHash', new HashLookupFailure(table, id), {
-						//   requestingEntryInfo,
-						//   failedHash: id,
-						//   failedComponent: table,
-						// });
+						// warnLogCollapsedStack(
+						// 	'invalidHash',
+						// 	new HashLookupFailure(table, id),
+						// 	{
+						// 		requestingEntryInfo,
+						// 		failedHash: id,
+						// 		failedComponent: table,
+						// 	}
+						// );
 					} else {
 						warnLogCollapsedStack(
 							'hashLookupFailure',
@@ -204,20 +208,6 @@ export function buildDefinitionsFromManifest(db: AllDestinyManifestComponents) {
 			},
 		};
 	});
-	// Resources that need to be fully loaded (because they're iterated over)
-	eagerTables.forEach((tableShort) => {
-		const table = `Destiny${tableShort}Definition`;
-		defs[tableShort] = db[table];
-	});
 
 	return defs as D2ManifestDefinitions;
-}
-
-/** This adds fake entries to the DB for places where we've had to make stuff up. */
-function enhanceDBWithFakeEntries(db: AllDestinyManifestComponents) {
-	// We made up an item category for special grenade launchers. For now they can just be a copy
-	// of the regular "Grenade Launcher" category but we could patch in localized descriptions if we wanted.
-	db.DestinyItemCategoryDefinition[-ItemCategoryHashes.GrenadeLaunchers] = {
-		...db.DestinyItemCategoryDefinition[ItemCategoryHashes.GrenadeLaunchers],
-	};
 }

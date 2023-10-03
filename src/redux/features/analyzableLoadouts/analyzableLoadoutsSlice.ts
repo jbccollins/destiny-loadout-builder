@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { ELoadoutOptimizationType } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { GetLoadoutsThatCanBeOptimizedProgress } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
 	AnalysisResults,
 	AnalyzableLoadoutBreakdown,
@@ -91,13 +91,11 @@ export const analyzableLoadoutsSlice = createSlice({
 		},
 		addAnalysisResult: (
 			state,
-			action: PayloadAction<{
-				loadoutId: string;
-				optimizationTypeList: ELoadoutOptimizationType[];
-			}>
+			action: PayloadAction<GetLoadoutsThatCanBeOptimizedProgress>
 		) => {
 			state.value.analysisResults[action.payload.loadoutId] = {
 				optimizationTypeList: action.payload.optimizationTypeList,
+				metadata: action.payload.metadata,
 			};
 			state.uuid = uuid();
 		},

@@ -4,23 +4,10 @@ import { DISCORD_LINK } from '@dlb/dim/utils/constants';
 import discord_image from '@dlb/public/discord-mark-white.png';
 import { selectLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
+import { sendErrorEmail } from '@dlb/utils/send-error-email';
 import { Box, Button, styled } from '@mui/material';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-
-const sendErrorEmail = async (error: string): Promise<void> => {
-	await axios
-		.post(`/api/send-error-email`, { error })
-		.then((response) => {
-			console.log('response', response);
-		})
-		.catch(function (error) {
-			if (error.response) {
-				console.error(error.response.data);
-			}
-		});
-};
 
 const Container = styled(Box)(({ theme }) => ({
 	position: 'fixed',

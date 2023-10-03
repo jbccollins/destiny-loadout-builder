@@ -92,6 +92,7 @@ import {
 } from '@dlb/types/Mod';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
+import { sendErrorEmail } from '@dlb/utils/send-error-email';
 
 // A loadout that has some armor, mods or subclass options selected is considered valid
 // If a loadout just contains weapons, shaders, etc. then it is considered invalid
@@ -430,6 +431,9 @@ const extractDimLoadouts = (
 		loadout.achievedStatTiers = achievedStatTiers;
 		loadout.achievedStats = achievedStats;
 		loadouts.push(loadout);
+		if (loadout.name.includes('Backup plans')) {
+			sendErrorEmail(`frig ${JSON.stringify(loadout)}`);
+		}
 	});
 	return loadouts;
 };

@@ -163,7 +163,6 @@ export function emptyObject<
 	return EMPTY_OBJ as T;
 }
 
-// @ts-ignore
 const EMPTY_ARRAY: readonly unknown[] = Object.freeze<unknown>([]);
 export function emptyArray<T>(): T[] {
 	return EMPTY_ARRAY as T[];

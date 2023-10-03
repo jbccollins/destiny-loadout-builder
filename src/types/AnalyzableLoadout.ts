@@ -42,6 +42,15 @@ export const OrderedLoadoutOptimizationCategoryIdList = [
 	ELoadoutOptimizationCategoryId.NONE,
 ];
 
+export const SeverityOrderedLoadoutOptimizationCategoryIdList = [
+	ELoadoutOptimizationCategoryId.ERROR,
+	ELoadoutOptimizationCategoryId.PROBLEM,
+	ELoadoutOptimizationCategoryId.WARNING,
+	ELoadoutOptimizationCategoryId.IMPROVEMENT,
+	ELoadoutOptimizationCategoryId.COSMETIC,
+	ELoadoutOptimizationCategoryId.NONE,
+];
+
 export interface ILoadoutOptimizationCategory {
 	id: ELoadoutOptimizationCategoryId;
 	name: string;

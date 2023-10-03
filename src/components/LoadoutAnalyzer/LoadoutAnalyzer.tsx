@@ -56,14 +56,7 @@ import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RuleIcon from '@mui/icons-material/Rule';
 
 import WbTwilightIcon from '@mui/icons-material/WbTwilight';
-import {
-	Box,
-	Collapse,
-	IconButton,
-	LinearProgress,
-	SxProps,
-	useTheme,
-} from '@mui/material';
+import { Box, Collapse, IconButton, SxProps, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { ReactElement, useMemo, useState } from 'react';
 import CustomTextField from '../CustomTextField';
@@ -74,7 +67,6 @@ import { Legend } from './Legend';
 import LoadoutCriteria from './LoadoutCriteria';
 import { LoadoutItem, LoadoutItemProps } from './LoadoutItem';
 import Summary from './Summary';
-import WebWorkerWrapper from './WebWorkerWrapper';
 const iconStyle: SxProps = {
 	height: '20px',
 	width: '20px',
@@ -255,7 +247,8 @@ export default function LoadoutAnalyzer() {
 		);
 	}
 
-	const value = (progressCompletionCount / numValidLoadouts) * 100;
+	const analysisProgressValue =
+		(progressCompletionCount / numValidLoadouts) * 100;
 	const getTabs = (): TabContainerItem[] => {
 		const tabs: TabContainerItem[] = [];
 		const defaultLoadoutItemProps: LoadoutItemProps = {
@@ -377,7 +370,6 @@ export default function LoadoutAnalyzer() {
 
 	return (
 		<>
-			<WebWorkerWrapper />
 			<Box
 				sx={{
 					display: 'flex',
@@ -470,34 +462,12 @@ export default function LoadoutAnalyzer() {
 					</Box>
 				</Collapse>
 
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						marginBottom: theme.spacing(4),
-						gap: '4px',
-						background: 'rgb(50, 50, 50)',
-						height: '40px',
-					}}
-				>
-					{isAnalyzing && (
-						<Box>
-							<Box>Analysis Progress:</Box>
-							<Box>
-								<LinearProgress variant="determinate" value={value} />
-							</Box>
-						</Box>
-					)}
-					{!isAnalyzing && (
-						<Box>
-							<Summary
-								loadouts={richValidLoadouts}
-								hiddenLoadoutIdList={hiddenLoadoutIdList}
-							/>
-						</Box>
-					)}
-				</Box>
+				<Summary
+					isAnalyzing={isAnalyzing}
+					analysisProgressValue={analysisProgressValue}
+					loadouts={richValidLoadouts}
+					hiddenLoadoutIdList={hiddenLoadoutIdList}
+				/>
 				{hasActiveFilters && (
 					<Box
 						sx={{

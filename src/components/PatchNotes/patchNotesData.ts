@@ -11,26 +11,17 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2023-09-27',
-		version: '2.4.11',
+		date: '2023-10-03',
+		version: '2.4.10',
 		title: 'Manifest caching and other analyzer work',
 		sections: [
 			{
 				items: [
 					`Add caching for the manifest. This should speed up the load time of the app.`,
-					`Add a few new UI improvments to the analyzer (WIP)`,
-				],
-			},
-		],
-	},
-	{
-		date: '2023-09-26',
-		version: '2.4.10',
-		title: 'Show optimization descriptions directly in the analyzer on click',
-		sections: [
-			{
-				items: [
+					`Update the legend for the analyzer`,
+					`Add a new "Loadout Health Grade" to the analyzer`,
 					`Clicking on an optimization type in the analyzer will now show a description of what that optimization type means. A bit nicer than having to look up what the type means in the legend.`,
+					`A ton of minor updates to the analyzer`,
 				],
 			},
 		],

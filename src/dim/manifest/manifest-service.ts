@@ -178,10 +178,7 @@ export async function downloadManifestComponents(
 				throw error;
 			}
 
-			// I couldn't figure out how to make these types work...
-			//@ts-ignore
 			manifest[table] =
-				//@ts-ignore
 				table in tableTrimmers ? tableTrimmers[table]!(body) : body;
 		});
 

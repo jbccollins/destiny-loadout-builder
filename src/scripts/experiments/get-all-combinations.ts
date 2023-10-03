@@ -1,3 +1,7 @@
+/*
+This file is used to generate all possible combinations of stat mods for every given valid combination of target stat shortfalls
+run: npx ts-node src/scripts/experiments/get-all-combinations.ts
+*/
 import { getStatModCombosFromDesiredStats } from '@dlb/services/processArmor/getStatModCombosFromDesiredStats';
 import { getArmorStatMappingFromStatList } from '@dlb/services/processArmor/utils';
 import { StatList } from '@dlb/types/Armor';
@@ -13,7 +17,7 @@ function findUniqueCombinations(
 	remainingIntegers: number,
 	currentCombination: number[] = [],
 	combinations: number[][] = [],
-	minNextValue: number = 0
+	minNextValue = 0
 ): number[][] {
 	if (remainingIntegers === 0) {
 		// If we have used all integers, check if the current combination adds up to the target sum.

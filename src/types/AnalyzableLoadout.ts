@@ -91,7 +91,7 @@ export const LoadoutOptimizerCategoryIdToLoadoutOptimizerCategoryMapping: Record
 		name: 'Warning',
 		description:
 			'Warnings indicate that something about a loadout looks fishy but the loadout can still be equipped as intended.',
-		color: 'yellow',
+		color: '#ffff66',
 		severity: 2,
 	},
 	[ELoadoutOptimizationCategoryId.PROBLEM]: {

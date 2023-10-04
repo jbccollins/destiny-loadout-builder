@@ -33,6 +33,10 @@ import {
 	setUseBonusResilience,
 } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import {
+	selectUseOnlyMasterworkedArmor,
+	setUseOnlyMasterworkedArmor,
+} from '@dlb/redux/features/useOnlyMasterworkedArmor/useOnlyMasterworkedArmorSlice';
+import {
 	selectUseZeroWastedStats,
 	setUseZeroWastedStats,
 } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
@@ -349,6 +353,9 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 	const page = useAppSelector(selectResultsPagination);
 	const useBonusResilience = useAppSelector(selectUseBonusResilience);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
+	const useOnlyMasterworkedArmor = useAppSelector(
+		selectUseOnlyMasterworkedArmor
+	);
 	const dimLoadoutsFilterId = useAppSelector(selectDimLoadoutsFilter);
 	const inGameLoadoutsFilterId = useAppSelector(selectInGameLoadoutsFilter);
 	const alwaysConsiderCollectionsRolls = useAppSelector(
@@ -467,6 +474,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 
 	const hasNonDefaultSettings = useMemo(
 		() =>
+			useOnlyMasterworkedArmor ||
 			useBonusResilience ||
 			useZeroWastedStats ||
 			dimLoadoutsFilterId !== EDimLoadoutsFilterId.All ||
@@ -475,6 +483,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 			masterworkAssumption !== EMasterworkAssumption.All ||
 			minimumGearTier !== EGearTierId.Legendary,
 		[
+			useOnlyMasterworkedArmor,
 			useBonusResilience,
 			useZeroWastedStats,
 			dimLoadoutsFilterId,
@@ -489,6 +498,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		dispatch(setPerformingBatchUpdate(true));
 		dispatch(setUseBonusResilience(false));
 		dispatch(setUseZeroWastedStats(false));
+		dispatch(setUseOnlyMasterworkedArmor(false));
 		dispatch(setDimLoadoutsFilter(EDimLoadoutsFilterId.All));
 		dispatch(setInGameLoadoutsFilter(EInGameLoadoutsFilterId.All));
 		dispatch(setAlwaysConsiderCollectionsRolls(false));

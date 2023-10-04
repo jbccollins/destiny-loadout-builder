@@ -19,7 +19,7 @@ export default function UseZeroWastedStatsToggleSwitch() {
 				onChange={handleChange}
 				value={useZeroWastedStats}
 				helpText={
-					'If enabled, only builds where every stat ends in 0 will be considered. This will frequently result in fewer results and lower possible stat tiers. This is an aesthetic choice that some players like.'
+					'If enabled, only builds where every stat ends in 0 will be considered. This will frequently lead to fewer results and lower possible stat tiers. This is an aesthetic choice that some players like.'
 				}
 			/>
 		</Box>

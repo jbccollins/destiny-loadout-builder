@@ -124,6 +124,10 @@ import {
 	setUseBonusResilience,
 } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import {
+	selectUseOnlyMasterworkedArmor,
+	setUseOnlyMasterworkedArmor,
+} from '@dlb/redux/features/useOnlyMasterworkedArmor/useOnlyMasterworkedArmorSlice';
+import {
 	selectUseZeroWastedStats,
 	setUseZeroWastedStats,
 } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
@@ -206,6 +210,9 @@ function Loading() {
 	const inGameLoadoutsFilter = useAppSelector(selectInGameLoadoutsFilter);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const useBonusResilience = useAppSelector(selectUseBonusResilience);
+	const useOnlyMasterworkedArmor = useAppSelector(
+		selectUseOnlyMasterworkedArmor
+	);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
@@ -627,6 +634,8 @@ function Loading() {
 				log('dirtyInGameLoadoutsFilter', null, false);
 				dispatch(setUseBonusResilience(useBonusResilience));
 				log('dirtyUseBonusResilience', null, false);
+				dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
+				log('dirtyUseOnlyMasterworkedArmor', null, false);
 				dispatch(setUseZeroWastedStats(useZeroWastedStats));
 				log('dirtyUseZeroWastedStats', null, false);
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));

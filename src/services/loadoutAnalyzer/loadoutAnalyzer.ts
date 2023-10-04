@@ -831,6 +831,7 @@ const generatePreProcessedArmor = (
 		EInGameLoadoutsFilterId.All,
 		EGearTierId.Legendary,
 		allClassItemMetadata[destinyClassId],
+		false,
 		false
 	);
 	return {

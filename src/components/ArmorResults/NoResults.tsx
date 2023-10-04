@@ -1,5 +1,8 @@
+import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
+import UseBonusResilienceToggleSwitch from '@dlb/components/UseBonusResilienceToggleSwitch';
+import UseOnlyMasterworkedArmorToggleSwitch from '@dlb/components/UseOnlyMasterworkedArmorToggleSwitch';
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { selectAlwaysConsiderCollectionsRolls } from '@dlb/redux/features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
@@ -13,6 +16,7 @@ import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/s
 import { selectSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { selectUseBonusResilience } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
+import { selectUseOnlyMasterworkedArmor } from '@dlb/redux/features/useOnlyMasterworkedArmor/useOnlyMasterworkedArmorSlice';
 import { selectUseZeroWastedStats } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
@@ -25,8 +29,6 @@ import {
 	EIntrinsicArmorPerkOrAttributeId,
 } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
-import AlwaysConsiderCollectionsRollsToggleSwitch from '../AlwaysConsiderCollectionsRollsToggleSwitch';
-import UseBonusResilienceToggleSwitch from '../UseBonusResilienceToggleSwitch';
 
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',
@@ -59,6 +61,9 @@ function NoResults() {
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const useBonusResilience = useAppSelector(selectUseBonusResilience);
+	const useOnlyMasterworkedArmor = useAppSelector(
+		selectUseOnlyMasterworkedArmor
+	);
 	const alwaysConsiderCollectionsRolls = useAppSelector(
 		selectAlwaysConsiderCollectionsRolls
 	);
@@ -112,6 +117,7 @@ function NoResults() {
 	const withUseBonusResilience = !useBonusResilience || useZeroWastedStats;
 
 	const hasSettingsToModify =
+		useOnlyMasterworkedArmor ||
 		withUseBonusResilience ||
 		useZeroWastedStats ||
 		dimLoadoutsFilterId === EDimLoadoutsFilterId.None ||
@@ -160,6 +166,11 @@ function NoResults() {
 								{!alwaysConsiderCollectionsRolls && (
 									<li>
 										<AlwaysConsiderCollectionsRollsToggleSwitch />
+									</li>
+								)}
+								{useOnlyMasterworkedArmor && (
+									<li>
+										<UseOnlyMasterworkedArmorToggleSwitch />
 									</li>
 								)}
 								{withUseBonusResilience && (

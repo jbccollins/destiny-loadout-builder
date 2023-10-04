@@ -595,7 +595,8 @@ export const preProcessArmor = (
 	inGameLoadoutsFilterId: EInGameLoadoutsFilterId,
 	minimumGearTier: EGearTierId,
 	allClassItemMetadata: AllClassItemMetadata,
-	alwaysConsiderCollectionsRolls: boolean
+	alwaysConsiderCollectionsRolls: boolean,
+	useOnlyMasterworkedArmor: boolean
 ): [StrictArmorItems, AllClassItemMetadata] => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
@@ -615,8 +616,14 @@ export const preProcessArmor = (
 	ArmorSlotIdList.forEach((armorSlot, i) => {
 		if (armorSlot === selectedExoticArmor.armorSlot) {
 			strictArmorItems[i] = Object.values(armorGroup[armorSlot].exotic).filter(
-				(item) =>
-					!excludedItemIds[item.id] && item.hash === selectedExoticArmor.hash
+				(item) => {
+					if (useOnlyMasterworkedArmor && !item.isMasterworked) {
+						return false;
+					}
+					return (
+						!excludedItemIds[item.id] && item.hash === selectedExoticArmor.hash
+					);
+				}
 			);
 			// If we have more than one item in the exotic slot, that means we have at least
 			// one roll that is not from collections. If the user prefers to not use collections
@@ -630,6 +637,9 @@ export const preProcessArmor = (
 		}
 		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic).filter(
 			(item) => {
+				if (useOnlyMasterworkedArmor && !item.isMasterworked) {
+					return false;
+				}
 				// TODO: Write a better comparator for gear tiers
 				if (
 					item.gearTierId === EGearTierId.Uncommon ||

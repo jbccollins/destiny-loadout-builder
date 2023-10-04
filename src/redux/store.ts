@@ -105,6 +105,7 @@ import processedArmorReducer, {
 } from './features/processedArmor/processedArmorSlice';
 import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
 import useBonusResilienceReducer from './features/useBonusResilience/useBonusResilienceSlice';
+import useOnlyMasterworkedArmorReducer from './features/useOnlyMasterworkedArmor/useOnlyMasterworkedArmorSlice';
 import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
 
 function getChangedProperties(previousObj, currentObj, changes) {
@@ -185,6 +186,7 @@ export function makeStore() {
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
 			tabIndex: tabIndexReducer,
 			useBonusResilience: useBonusResilienceReducer,
+			useOnlyMasterworkedArmor: useOnlyMasterworkedArmorReducer,
 			useZeroWastedStats: useZeroWastedStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
 		},
@@ -210,6 +212,7 @@ let reservedArmorSlotEnergyUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
 let useBonusResilienceUuid = NIL;
 let useZeroWastedStatsUuid = NIL;
+let useOnlyMasterworkedArmorUuid = NIL;
 let alwaysConsiderCollectionsRollsUuid = NIL;
 let inGameLoadoutsFlatItemIdListUuid = NIL;
 let inGameLoadoutsFilterUuid = NIL;
@@ -255,6 +258,7 @@ function handleChange() {
 		reservedArmorSlotEnergy: { uuid: nextReservedArmorSlotEnergyUuid },
 		sharedLoadoutDesiredStats: { uuid: nextSharedLoadoutDesiredStatsUuid },
 		useBonusResilience: { uuid: nextUseBonusResilienceUuid },
+		useOnlyMasterworkedArmor: { uuid: nextUseOnlyMasterworkedArmorUuid },
 		useZeroWastedStats: { uuid: nextUseZeroWastedStatsUuid },
 		alwaysConsiderCollectionsRolls: {
 			uuid: nextAlwaysConsiderCollectionsRollsUuid,
@@ -288,6 +292,7 @@ function handleChange() {
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
 		sharedLoadoutDesiredStatsUuid !== nextSharedLoadoutDesiredStatsUuid ||
 		useBonusResilienceUuid !== nextUseBonusResilienceUuid ||
+		useOnlyMasterworkedArmorUuid !== nextUseOnlyMasterworkedArmorUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
 			nextAlwaysConsiderCollectionsRollsUuid ||
@@ -338,6 +343,7 @@ function handleChange() {
 	reservedArmorSlotEnergyUuid = nextReservedArmorSlotEnergyUuid;
 	sharedLoadoutDesiredStatsUuid = nextSharedLoadoutDesiredStatsUuid;
 	useBonusResilienceUuid = nextUseBonusResilienceUuid;
+	useOnlyMasterworkedArmorUuid = nextUseOnlyMasterworkedArmorUuid;
 	useZeroWastedStatsUuid = nextUseZeroWastedStatsUuid;
 	alwaysConsiderCollectionsRollsUuid = nextAlwaysConsiderCollectionsRollsUuid;
 	inGameLoadoutsFilterUuid = nextInGameLoadoutsFilterUuid;
@@ -373,6 +379,7 @@ function handleChange() {
 		selectedGrenade: { value: selectedGrenade },
 		selectedAspects: { value: selectedAspects },
 		useBonusResilience: { value: useBonusResilience },
+		useOnlyMasterworkedArmor: { value: useOnlyMasterworkedArmor },
 		useZeroWastedStats: { value: useZeroWastedStats },
 		alwaysConsiderCollectionsRolls: { value: alwaysConsiderCollectionsRolls },
 		inGameLoadoutsFilter: { value: inGameLoadoutsFilter },
@@ -460,7 +467,8 @@ function handleChange() {
 		inGameLoadoutsFilter,
 		selectedMinimumGearTier,
 		allClassItemMetadata[selectedDestinyClass],
-		alwaysConsiderCollectionsRolls
+		alwaysConsiderCollectionsRolls,
+		useOnlyMasterworkedArmor
 	);
 	console.log(
 		'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',

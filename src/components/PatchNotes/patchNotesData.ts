@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-10-04',
+		version: '2.4.12',
+		title: 'Add "only use masterworked armor" setting',
+		sections: [
+			{
+				items: [
+					`Add a new setting to only consider masterworked armor in the results`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-04',
 		version: '2.4.11',
 		title: 'Add bonus resilience setting',
 		sections: [

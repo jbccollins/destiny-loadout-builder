@@ -61,6 +61,7 @@ import {
 	setSelectedSuperAbility,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
+import { setUseBonusResilience } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import { useAppDispatch } from '@dlb/redux/hooks';
 import {
 	ELoadoutOptimizationTypeId,
@@ -251,6 +252,10 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 					})
 				);
 			}
+		}
+
+		if (loadout.hasBonusResilienceOrnament) {
+			dispatch(setUseBonusResilience(true));
 		}
 		dispatch(setTabIndex(0));
 		dispatch(setPerformingBatchUpdate(false));

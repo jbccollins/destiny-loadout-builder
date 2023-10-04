@@ -104,6 +104,7 @@ import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
 import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import useBonusResilienceReducer from './features/useBonusResilience/useBonusResilienceSlice';
 import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
 
 function getChangedProperties(previousObj, currentObj, changes) {
@@ -183,6 +184,7 @@ export function makeStore() {
 				sharedLoadoutConfigStatPriorityOrderReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
 			tabIndex: tabIndexReducer,
+			useBonusResilience: useBonusResilienceReducer,
 			useZeroWastedStats: useZeroWastedStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
 		},
@@ -206,6 +208,7 @@ let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
+let useBonusResilienceUuid = NIL;
 let useZeroWastedStatsUuid = NIL;
 let alwaysConsiderCollectionsRollsUuid = NIL;
 let inGameLoadoutsFlatItemIdListUuid = NIL;
@@ -251,6 +254,7 @@ function handleChange() {
 		dimLoadoutsFilter: { uuid: nextDimLoadoutsFilterUuid },
 		reservedArmorSlotEnergy: { uuid: nextReservedArmorSlotEnergyUuid },
 		sharedLoadoutDesiredStats: { uuid: nextSharedLoadoutDesiredStatsUuid },
+		useBonusResilience: { uuid: nextUseBonusResilienceUuid },
 		useZeroWastedStats: { uuid: nextUseZeroWastedStatsUuid },
 		alwaysConsiderCollectionsRolls: {
 			uuid: nextAlwaysConsiderCollectionsRollsUuid,
@@ -283,6 +287,7 @@ function handleChange() {
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
 		sharedLoadoutDesiredStatsUuid !== nextSharedLoadoutDesiredStatsUuid ||
+		useBonusResilienceUuid !== nextUseBonusResilienceUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
 			nextAlwaysConsiderCollectionsRollsUuid ||
@@ -332,6 +337,7 @@ function handleChange() {
 	dimLoadoutsFilterUuid = nextDimLoadoutsFilterUuid;
 	reservedArmorSlotEnergyUuid = nextReservedArmorSlotEnergyUuid;
 	sharedLoadoutDesiredStatsUuid = nextSharedLoadoutDesiredStatsUuid;
+	useBonusResilienceUuid = nextUseBonusResilienceUuid;
 	useZeroWastedStatsUuid = nextUseZeroWastedStatsUuid;
 	alwaysConsiderCollectionsRollsUuid = nextAlwaysConsiderCollectionsRollsUuid;
 	inGameLoadoutsFilterUuid = nextInGameLoadoutsFilterUuid;
@@ -366,6 +372,7 @@ function handleChange() {
 		selectedSuperAbility: { value: selectedSuperAbility },
 		selectedGrenade: { value: selectedGrenade },
 		selectedAspects: { value: selectedAspects },
+		useBonusResilience: { value: useBonusResilience },
 		useZeroWastedStats: { value: useZeroWastedStats },
 		alwaysConsiderCollectionsRolls: { value: alwaysConsiderCollectionsRolls },
 		inGameLoadoutsFilter: { value: inGameLoadoutsFilter },
@@ -436,12 +443,14 @@ function handleChange() {
 	);
 	store.dispatch(setArmorSlotModViolations(armorSlotModViolations));
 	store.dispatch(setResultsPagination(0));
+
+	const selectedExoticArmorItem = selectedExoticArmor[selectedDestinyClass];
 	// TODO: no need to preProcessArmor when only the stat slider has changed.
 	// Maybe we don't need to trigger that fake initial dispatch in
 	// the slider component if we fix this?
 	const [preProcessedArmor, _allClassItemMetadata] = preProcessArmor(
 		armor[selectedDestinyClass],
-		selectedExoticArmor[selectedDestinyClass],
+		selectedExoticArmorItem,
 		dimLoadouts.filter(
 			(x) =>
 				DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
@@ -472,6 +481,8 @@ function handleChange() {
 		destinyClassId: selectedDestinyClass,
 		reservedArmorSlotEnergy,
 		useZeroWastedStats,
+		useBonusResilience,
+		selectedExoticArmorItem,
 		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata: _allClassItemMetadata,
 	};

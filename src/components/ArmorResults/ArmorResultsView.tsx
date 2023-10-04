@@ -1,5 +1,18 @@
 import { SmallScreenData } from '@dlb/pages';
+import {
+	selectAlwaysConsiderCollectionsRolls,
+	setAlwaysConsiderCollectionsRolls,
+} from '@dlb/redux/features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
+import {
+	selectDimLoadoutsFilter,
+	setDimLoadoutsFilter,
+} from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import {
+	selectInGameLoadoutsFilter,
+	setInGameLoadoutsFilter,
+} from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import { setPerformingBatchUpdate } from '@dlb/redux/features/performingBatchUpdate/performingBatchUpdateSlice';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import {
 	selectResultsPagination,
@@ -7,11 +20,34 @@ import {
 } from '@dlb/redux/features/resultsPagination/resultsPaginationSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import {
+	selectSelectedMasterworkAssumption,
+	setSelectedMasterworkAssumption,
+} from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
+import {
+	selectSelectedMinimumGearTier,
+	setSelectedMinimumGearTier,
+} from '@dlb/redux/features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import {
+	selectUseBonusResilience,
+	setUseBonusResilience,
+} from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
+import {
+	selectUseZeroWastedStats,
+	setUseZeroWastedStats,
+} from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultModPlacements } from '@dlb/services/processArmor/getModCombos';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
-import { EArmorSlotId, EArmorStatId } from '@dlb/types/IdEnums';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EDimLoadoutsFilterId,
+	EGearTierId,
+	EInGameLoadoutsFilterId,
+	EMasterworkAssumption,
+} from '@dlb/types/IdEnums';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
 	Box,
@@ -45,10 +81,16 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 	justifyContent: 'space-between',
 }));
 
-const ArmorResultsListContainer = styled(Box)(({ theme }) => ({
-	height: 'calc(100% - 160px)',
-	overflowY: 'auto',
-}));
+const ArmorResultsListContainer = styled(Box, {
+	shouldForwardProp: (prop) => prop !== 'withNonDefaultSettingsBanner',
+})<{ withNonDefaultSettingsBanner: boolean }>(
+	({ theme, withNonDefaultSettingsBanner }) => ({
+		height: withNonDefaultSettingsBanner
+			? 'calc(100% - 190px)'
+			: 'calc(100% - 160px)',
+		overflowY: 'auto',
+	})
+);
 
 const FooterContainer = styled(Box)(({ theme }) => ({
 	// padding: theme.spacing(1)
@@ -305,6 +347,17 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 	const processedArmor = useAppSelector(selectProcessedArmor);
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const page = useAppSelector(selectResultsPagination);
+	const useBonusResilience = useAppSelector(selectUseBonusResilience);
+	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
+	const dimLoadoutsFilterId = useAppSelector(selectDimLoadoutsFilter);
+	const inGameLoadoutsFilterId = useAppSelector(selectInGameLoadoutsFilter);
+	const alwaysConsiderCollectionsRolls = useAppSelector(
+		selectAlwaysConsiderCollectionsRolls
+	);
+	const masterworkAssumption = useAppSelector(
+		selectSelectedMasterworkAssumption
+	);
+	const minimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState<Order>('asc');
@@ -412,6 +465,38 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		return res;
 	}, [processedArmor, getArmorItem]);
 
+	const hasNonDefaultSettings = useMemo(
+		() =>
+			useBonusResilience ||
+			useZeroWastedStats ||
+			dimLoadoutsFilterId !== EDimLoadoutsFilterId.All ||
+			inGameLoadoutsFilterId !== EInGameLoadoutsFilterId.All ||
+			alwaysConsiderCollectionsRolls ||
+			masterworkAssumption !== EMasterworkAssumption.All ||
+			minimumGearTier !== EGearTierId.Legendary,
+		[
+			useBonusResilience,
+			useZeroWastedStats,
+			dimLoadoutsFilterId,
+			inGameLoadoutsFilterId,
+			alwaysConsiderCollectionsRolls,
+			masterworkAssumption,
+			minimumGearTier,
+		]
+	);
+
+	const handleResetSettings = () => {
+		dispatch(setPerformingBatchUpdate(true));
+		dispatch(setUseBonusResilience(false));
+		dispatch(setUseZeroWastedStats(false));
+		dispatch(setDimLoadoutsFilter(EDimLoadoutsFilterId.All));
+		dispatch(setInGameLoadoutsFilter(EInGameLoadoutsFilterId.All));
+		dispatch(setAlwaysConsiderCollectionsRolls(false));
+		dispatch(setSelectedMasterworkAssumption(EMasterworkAssumption.All));
+		dispatch(setSelectedMinimumGearTier(EGearTierId.Legendary));
+		dispatch(setPerformingBatchUpdate(false));
+	};
+
 	return (
 		<>
 			{armor &&
@@ -427,9 +512,36 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 							sortableFields={SortableFieldsDisplayOrder}
 							handleChangeOrderBy={handleChangeOrderBy}
 						/>
-						{/* <ArmorResultsTable items={resultsTableArmorItems} /> */}
+						{hasNonDefaultSettings && (
+							<Box
+								sx={{
+									height: '30px',
+									display: 'flex',
+									alignItems: 'center',
+									gap: '4px',
+									background: '#b36200',
+									paddingX: '8px',
+								}}
+							>
+								Settings may affect results.
+								<Box
+									sx={{
+										marginLeft: 'auto',
+										textDecoration: 'underline',
+										textUnderlineOffset: '2px',
+										cursor: 'pointer',
+									}}
+									onClick={handleResetSettings}
+								>
+									Reset Settings
+								</Box>
+							</Box>
+						)}
 						{resultsTableArmorItems.length > 0 && (
-							<ArmorResultsListContainer className="ArmorResultsListContainer">
+							<ArmorResultsListContainer
+								withNonDefaultSettingsBanner={hasNonDefaultSettings}
+								className="ArmorResultsListContainer"
+							>
 								<ArmorResultsList
 									items={resultsTableArmorItems
 										.sort(getComparator(order, orderBy))

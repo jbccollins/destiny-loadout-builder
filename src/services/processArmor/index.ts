@@ -26,6 +26,7 @@ import {
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import {
+	EArmorSlotId,
 	EDestinyClassId,
 	EDimLoadoutsFilterId,
 	EGearTierId,
@@ -360,6 +361,8 @@ export type DoProcessArmorParams = {
 	destinyClassId: EDestinyClassId;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	useZeroWastedStats: boolean;
+	useBonusResilience: boolean;
+	selectedExoticArmorItem: ISelectedExoticArmor;
 	alwaysConsiderCollectionsRolls: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
 };
@@ -382,12 +385,19 @@ export const doProcessArmor = ({
 	destinyClassId,
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
+	useBonusResilience,
+	selectedExoticArmorItem,
 	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
 }: DoProcessArmorParams): DoProcessArmorOutput => {
+	// Bonus resil does not apply to exotic chest armor loadouts
+	const _useBonusResilience =
+		useBonusResilience &&
+		selectedExoticArmorItem.armorSlot !== EArmorSlotId.Chest;
 	const sumOfSeenStats = getExtraSumOfSeenStats(
 		fragmentArmorStatMapping,
-		modArmorStatMapping
+		modArmorStatMapping,
+		_useBonusResilience
 	);
 
 	const seenArmorSlotItems = getDefaultSeenArmorSlotItems();

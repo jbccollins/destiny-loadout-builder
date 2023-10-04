@@ -8,12 +8,7 @@ function Logout() {
 		router.push('/login');
 	};
 	return (
-		<Button
-			variant="contained"
-			color="secondary"
-			onClick={handleClick}
-			sx={{ position: 'absolute', bottom: '16px', marginLeft: '8px' }}
-		>
+		<Button variant="contained" color="secondary" onClick={handleClick}>
 			Logout
 		</Button>
 	);

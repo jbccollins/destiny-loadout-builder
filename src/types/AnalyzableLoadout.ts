@@ -158,6 +158,7 @@ export type AnalyzableLoadout = {
 	optimizationTypeList: ELoadoutOptimizationTypeId[];
 	dimStatTierConstraints: ArmorStatMapping;
 	characterId: string;
+	hasBonusResilienceOrnament: boolean;
 } & DLBConfig;
 
 export type AnalyzableLoadoutMapping = Record<string, AnalyzableLoadout>;
@@ -168,32 +169,33 @@ export type AnalyzableLoadoutBreakdown = {
 };
 
 export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
-	exoticHash: null,
+	achievedStats: getDefaultArmorStatMapping(),
+	achievedStatTiers: getDefaultArmorStatMapping(),
 	armor: [],
-	desiredStatTiers: getDefaultArmorStatMapping(),
 	armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
-	raidMods: getDefaultRaidMods(),
-	id: null,
-	name: null,
-	loadoutType: ELoadoutType.DIM,
-	icon: null,
+	armorStatMods: [],
+	aspectIdList: [],
+	characterId: null, // Only applicable for InGame Loadouts
+	classAbilityId: null,
+	desiredStatTiers: getDefaultArmorStatMapping(),
 	destinyClassId: null,
 	destinySubclassId: null,
-	classAbilityId: null,
-	jumpId: null,
-	superAbilityId: null,
-	meleeId: null,
-	grenadeId: null,
-	aspectIdList: [],
-	fragmentIdList: [],
-	armorStatMods: [],
-	achievedStatTiers: getDefaultArmorStatMapping(),
-	achievedStats: getDefaultArmorStatMapping(),
-	optimizationTypeList: [],
 	dimStatTierConstraints: getDefaultArmorStatMapping(),
-	characterId: null, // Only applicable for InGame Loadouts
+	exoticHash: null,
+	fragmentIdList: [],
+	grenadeId: null,
+	hasBonusResilienceOrnament: false,
+	icon: null,
 	iconColorImage: null, // Only applicable for InGame Loadouts
+	id: null,
 	index: -1, // Only applicable for InGame Loadouts
+	jumpId: null,
+	loadoutType: ELoadoutType.DIM,
+	meleeId: null,
+	name: null,
+	optimizationTypeList: [],
+	raidMods: getDefaultRaidMods(),
+	superAbilityId: null,
 });
 
 export const getDefaultAnalyzableLoadoutBreakdown =

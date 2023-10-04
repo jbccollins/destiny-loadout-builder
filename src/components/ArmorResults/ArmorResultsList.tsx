@@ -21,6 +21,7 @@ import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selected
 import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { selectUseBonusResilience } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import {
 	generateDimLink,
@@ -53,9 +54,11 @@ import {
 	EArmorStatId,
 	EDestinyClassId,
 	EElementId,
+	EGearTierId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
+import { getBonusResilienceOrnamentByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -83,6 +86,7 @@ type ResultsItemProps = {
 	dimLink: string;
 	dimQuery: string;
 	isRecommendedLoadout: boolean;
+	useBonusResilience: boolean;
 };
 
 const ResultsContainer = styled(Box)(({ theme }) => ({
@@ -219,6 +223,7 @@ function ResultsItem({
 	dimLink,
 	dimQuery,
 	isRecommendedLoadout,
+	useBonusResilience,
 }: ResultsItemProps) {
 	const [showDetailedStatBreakdown, setShowDetailedStatBreakdown] =
 		React.useState(false);
@@ -295,6 +300,35 @@ function ResultsItem({
 			)
 		);
 	};
+
+	const getBonusResilienceOrnamentStatsBreakdown = () => {
+		if (!useBonusResilience) {
+			return null;
+		}
+		const { icon, name } =
+			getBonusResilienceOrnamentByDestinyClassId(destinyClassId);
+		return (
+			<StatsBreakdown className="stats-breakdown">
+				<StatsBreakdownItem>
+					<MasterworkedBungieImage
+						isMasterworked={false}
+						width={'20px'}
+						height={'20px'}
+						src={icon}
+					/>
+				</StatsBreakdownItem>
+				{ArmorStatIdList.map((armorStatId) => (
+					<StatsBreakdownItem key={armorStatId} className="stats-breakdown">
+						{armorStatId === EArmorStatId.Resilience ? 1 : 0}
+					</StatsBreakdownItem>
+				))}
+				<StatsBreakdownItem>
+					<Description>{name} Ornament</Description>
+				</StatsBreakdownItem>
+			</StatsBreakdown>
+		);
+	};
+
 	const hasCollectibleArmor = item.armorItems.some((x) => x.isCollectible);
 	return (
 		<ResultsItemContainer
@@ -704,6 +738,7 @@ function ResultsItem({
 								</StatsBreakdown>
 							);
 						})}
+						{getBonusResilienceOrnamentStatsBreakdown()}
 					</LoadoutDetails>
 				</Collapse>
 			</ResultsSection>
@@ -721,6 +756,7 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
+	const useBonusResilience = useAppSelector(selectUseBonusResilience);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
@@ -803,6 +839,11 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 			{items
 				//  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 				.map((item, i) => {
+					// Bonus resilience is only valid for legendary chestpieces
+					const _useBonusResilience =
+						useBonusResilience &&
+						item.armorItems.find((x) => x.armorSlot === EArmorSlotId.Chest)
+							?.gearTierId === EGearTierId.Legendary;
 					return (
 						<ResultsItem
 							key={item.id}
@@ -812,6 +853,7 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							masterworkAssumption={selectedMasterworkAssumption}
 							fragmentArmorStatMappings={fragmentArmorStatMappings}
 							armorSlotModArmorStatMappings={armorSlotModArmorStatMapppings}
+							useBonusResilience={_useBonusResilience}
 							dimLink={`${generateDimLink({
 								raidModIdList: selectedRaidMods,
 								armorStatModIdList: item.requiredStatModIdList,
@@ -823,6 +865,7 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 								exoticArmor: exoticArmor,
 								stats: desiredArmorStats,
 								masterworkAssumption: selectedMasterworkAssumption,
+								useBonusResilience: _useBonusResilience,
 								destinySubclassId,
 								destinyClassId: selectedDestinyClass,
 								jumpId: selectedJump[destinySubclassId],

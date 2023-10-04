@@ -120,6 +120,10 @@ import {
 } from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import {
+	selectUseBonusResilience,
+	setUseBonusResilience,
+} from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
+import {
 	selectUseZeroWastedStats,
 	setUseZeroWastedStats,
 } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
@@ -201,6 +205,7 @@ function Loading() {
 	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
 	const inGameLoadoutsFilter = useAppSelector(selectInGameLoadoutsFilter);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
+	const useBonusResilience = useAppSelector(selectUseBonusResilience);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
 	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
@@ -620,6 +625,8 @@ function Loading() {
 				log('dirtyDimLoadoutsFilter', null, false);
 				dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
 				log('dirtyInGameLoadoutsFilter', null, false);
+				dispatch(setUseBonusResilience(useBonusResilience));
+				log('dirtyUseBonusResilience', null, false);
 				dispatch(setUseZeroWastedStats(useZeroWastedStats));
 				log('dirtyUseZeroWastedStats', null, false);
 				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
@@ -633,7 +640,7 @@ function Loading() {
 				if (!hasDimLoadoutsError && dimProfile) {
 					log('hasDimProfile', null, false);
 					try {
-						const analyzableDimLoadoutsBreakdown =
+						const analyzableLoadoutsBreakdown =
 							buildAnalyzableLoadoutsBreakdown({
 								characters,
 								inGameLoadouts,
@@ -644,12 +651,9 @@ function Loading() {
 								masterworkAssumption: EMasterworkAssumption.All,
 								availableExoticArmor,
 							});
-						log(
-							'analyzableDimLoadoutsBreakdown',
-							analyzableDimLoadoutsBreakdown
-						);
+						log('analyzableLoadoutsBreakdown', analyzableLoadoutsBreakdown);
 						dispatch(
-							setAnalyzableLoadoutsBreakdown(analyzableDimLoadoutsBreakdown)
+							setAnalyzableLoadoutsBreakdown(analyzableLoadoutsBreakdown)
 						);
 					} catch (e) {
 						log('buildLoadoutsError', e);

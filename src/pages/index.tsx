@@ -44,6 +44,7 @@ import JumpSelector from '@dlb/components/SubclassSelector/JumpSelector';
 import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
 import SuperAbilitySelector from '@dlb/components/SubclassSelector/SuperAbilitySelector';
 import TabContainer from '@dlb/components/TabContainer';
+import UseBonusResilienceToggleSwitch from '@dlb/components/UseBonusResilienceToggleSwitch';
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
@@ -372,7 +373,10 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<InGameLoadoutsFilterSelector />
 								<UseZeroWastedStatsToggleSwitch />
 								<AlwaysConsiderCollectionsRollsToggleSwitch />
-								<Logout />
+								<UseBonusResilienceToggleSwitch />
+								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>
+									<Logout />
+								</Box>
 							</>
 						),
 						index: ETabType.SETTINGS,

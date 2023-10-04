@@ -263,9 +263,14 @@ export const stripNonRaidSeenArmorSlotItems = (
 
 export const getExtraSumOfSeenStats = (
 	fragmentArmorStatMapping: ArmorStatMapping,
-	modArmorStatMapping: ArmorStatMapping
+	modArmorStatMapping: ArmorStatMapping,
+	useBonusResilience: boolean
 ): StatList => {
 	const sumOfSeenStats: StatList = [0, 0, 0, 0, 0, 0];
+	// TODO: This will add +1 resilience to blue armor. This is a bug.
+	if (useBonusResilience) {
+		sumOfSeenStats[1] = 1;
+	}
 	ArmorStatIdList.forEach((id, i) => {
 		sumOfSeenStats[i] =
 			sumOfSeenStats[i] +

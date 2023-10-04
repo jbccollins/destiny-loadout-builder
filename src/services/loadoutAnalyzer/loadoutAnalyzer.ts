@@ -1,4 +1,5 @@
 import { Loadout } from '@destinyitemmanager/dim-api-types';
+import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 import { UNSET_PLUG_HASH } from '@dlb/dim/utils/constants';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
@@ -71,6 +72,7 @@ import { EnumDictionary, ValidateEnumList } from '@dlb/types/globals';
 import { getGrenadeByHash } from '@dlb/types/Grenade';
 import {
 	EArmorSlotId,
+	EArmorStatId,
 	EDestinyClassId,
 	EDestinySubclassId,
 	EDimLoadoutsFilterId,
@@ -91,6 +93,7 @@ import {
 	hasMutuallyExclusiveMods,
 } from '@dlb/types/Mod';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
+import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
 
 // A loadout that has some armor, mods or subclass options selected is considered valid
@@ -216,6 +219,22 @@ const extractDimLoadouts = (
 		const achievedStats: ArmorStatMapping = getDefaultArmorStatMapping();
 		const dimStatTierConstraints: ArmorStatMapping =
 			getDefaultArmorStatMapping();
+
+		const chestArmorModsByBucket =
+			dimLoadout.parameters?.modsByBucket?.[BucketHashes.ChestArmor] || [];
+		const bonusResilienceOrnamentHash =
+			getBonusResilienceOrnamentHashByDestinyClassId(destinyClassId);
+		const hasBonusResilienceOrnament =
+			chestArmorModsByBucket.some(
+				(hash) => hash === bonusResilienceOrnamentHash
+			) || false;
+
+		loadout.hasBonusResilienceOrnament = hasBonusResilienceOrnament;
+		if (hasBonusResilienceOrnament) {
+			achievedStatTiers[EArmorStatId.Resilience] += 1;
+			achievedStats[EArmorStatId.Resilience] += 1;
+			desiredStatTiers[EArmorStatId.Resilience] += 1;
+		}
 
 		// TODO: Stat constraints are DIM Loadout specific and may not respect
 		// fragment bonus changes. Stat constraints are saved when creating or editing
@@ -535,6 +554,9 @@ const extractInGameLoadouts = (
 				index: index + 1,
 			};
 
+			const bonusResilienceOrnamentHash =
+				getBonusResilienceOrnamentHashByDestinyClassId(destinyClassId);
+
 			const desiredStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
 			const achievedStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
 			const achievedStats: ArmorStatMapping = getDefaultArmorStatMapping();
@@ -546,10 +568,24 @@ const extractInGameLoadouts = (
 							(armorItem) => armorItem.id === item.itemInstanceId
 						);
 						if (armorItem) {
+							loadout.armor.push(armorItem);
 							if (armorItem.gearTierId === EGearTierId.Exotic) {
 								loadout.exoticHash = armorItem.hash;
+							} else if (
+								armorItem.gearTierId === EGearTierId.Legendary ||
+								armorItem.armorSlot === EArmorSlotId.Chest
+							) {
+								// Check if the bonus resilience ornament is part of this loadout
+								const hasBonusResilienceOrnament = item.plugItemHashes.some(
+									(hash) => hash === bonusResilienceOrnamentHash
+								);
+								loadout.hasBonusResilienceOrnament = hasBonusResilienceOrnament;
+								if (hasBonusResilienceOrnament) {
+									achievedStatTiers[EArmorStatId.Resilience] += 1;
+									achievedStats[EArmorStatId.Resilience] += 1;
+									desiredStatTiers[EArmorStatId.Resilience] += 1;
+								}
 							}
-							loadout.armor.push(armorItem);
 
 							const extraMasterworkedStats = getExtraMasterworkedStats(
 								armorItem,
@@ -699,6 +735,7 @@ const extractInGameLoadouts = (
 			loadout.desiredStatTiers = desiredStatTiers;
 			loadout.achievedStatTiers = achievedStatTiers;
 			// achievedStats are not rounded
+			loadout.achievedStats = achievedStats;
 			loadouts.push(loadout);
 		});
 	});
@@ -1230,6 +1267,12 @@ export const getLoadoutsThatCanBeOptimized = (
 						destinyClassId: loadout.destinyClassId,
 						reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 						useZeroWastedStats: false,
+						useBonusResilience: loadout.hasBonusResilienceOrnament,
+						selectedExoticArmorItem: findAvailableExoticArmorItem(
+							loadout.exoticHash,
+							loadout.destinyClassId,
+							availableExoticArmor
+						),
 						alwaysConsiderCollectionsRolls: false,
 						allClassItemMetadata: _allClassItemMetadata,
 					};

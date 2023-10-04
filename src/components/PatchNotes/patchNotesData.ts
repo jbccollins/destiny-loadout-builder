@@ -11,6 +11,21 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-04',
+		version: '2.4.11',
+		title: 'Add bonus resilience setting',
+		sections: [
+			{
+				items: [
+					`Add a new setting to add a constant +1 resilience to all loadouts with non-exotic chestpieces`,
+					`This will add the Solstice (Rekindled) ornament to the chestpiece. The ornament will be included in the DIM link`,
+					`Editing a loadout that has such an ornament will turn this setting on`,
+					`Since settings can now get turned on automatically, I also added a banner on the results page to alert the user about active non-default settings`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-03',
 		version: '2.4.10',
 		title: 'Manifest caching and other analyzer work',

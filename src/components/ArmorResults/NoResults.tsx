@@ -12,6 +12,7 @@ import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArm
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import { selectSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import { selectUseBonusResilience } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import { selectUseZeroWastedStats } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
@@ -25,6 +26,7 @@ import {
 } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
 import AlwaysConsiderCollectionsRollsToggleSwitch from '../AlwaysConsiderCollectionsRollsToggleSwitch';
+import UseBonusResilienceToggleSwitch from '../UseBonusResilienceToggleSwitch';
 
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',
@@ -56,6 +58,7 @@ const Subtitle = styled(Box)(({ theme }) => ({
 function NoResults() {
 	const selectedExoticArmor = useAppSelector(selectSelectedExoticArmor);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
+	const useBonusResilience = useAppSelector(selectUseBonusResilience);
 	const alwaysConsiderCollectionsRolls = useAppSelector(
 		selectAlwaysConsiderCollectionsRolls
 	);
@@ -104,7 +107,12 @@ function NoResults() {
 		hasFragmentsWithStatPenalties ||
 		hasIntrinsicArmorPerkOrAttributes;
 
+	// Using +1 resilience might be bad if we also
+	// want zero wasted stats
+	const withUseBonusResilience = !useBonusResilience || useZeroWastedStats;
+
 	const hasSettingsToModify =
+		withUseBonusResilience ||
 		useZeroWastedStats ||
 		dimLoadoutsFilterId === EDimLoadoutsFilterId.None ||
 		inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None ||
@@ -152,6 +160,11 @@ function NoResults() {
 								{!alwaysConsiderCollectionsRolls && (
 									<li>
 										<AlwaysConsiderCollectionsRollsToggleSwitch />
+									</li>
+								)}
+								{withUseBonusResilience && (
+									<li>
+										<UseBonusResilienceToggleSwitch />
 									</li>
 								)}
 								{dimLoadoutsFilterId === EDimLoadoutsFilterId.None && (

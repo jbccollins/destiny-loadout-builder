@@ -1,4 +1,5 @@
 import { Loadout, LoadoutParameters } from '@destinyitemmanager/dim-api-types';
+import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
@@ -31,6 +32,7 @@ import { getJump } from '@dlb/types/Jump';
 import { getMelee } from '@dlb/types/Melee';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
 import { getSuperAbility } from '@dlb/types/SuperAbility';
+import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 
 export type DimLoadoutConfiguration = {
 	raidModIdList: EModId[];
@@ -46,6 +48,7 @@ export type DimLoadoutConfiguration = {
 	exoticArmor: AvailableExoticArmorItem;
 	stats: ArmorStatMapping;
 	masterworkAssumption: EMasterworkAssumption;
+	useBonusResilience: boolean;
 	destinySubclassId: EDestinySubclassId;
 	destinyClassId: EDestinyClassId;
 	armorList: ArmorItem[];
@@ -87,6 +90,7 @@ export const generateDimLink = (
 		exoticArmor,
 		stats,
 		masterworkAssumption,
+		useBonusResilience,
 		destinyClassId,
 		destinySubclassId,
 		armorList,
@@ -161,6 +165,14 @@ export const generateDimLink = (
 				: 1,
 		exoticArmorHash: exoticArmor.hash,
 	};
+
+	if (useBonusResilience) {
+		data['modsByBucket'] = {
+			[BucketHashes.ChestArmor]: [
+				getBonusResilienceOrnamentHashByDestinyClassId(destinyClassId),
+			],
+		};
+	}
 
 	const loadout: Loadout = {
 		id: 'dlb', // this doesn't matter and will be replaced

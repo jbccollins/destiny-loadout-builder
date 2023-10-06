@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-05',
+		version: '2.4.13',
+		title: 'Add resolution instructions in the analyzer tab',
+		sections: [
+			{
+				items: [
+					`Add instructions to resolve each of the analyzer optimization checks`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-04',
 		version: '2.4.12',
 		title: 'Add "only use masterworked armor" setting',

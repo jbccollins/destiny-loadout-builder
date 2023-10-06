@@ -406,8 +406,9 @@ export function getModExclusionGroup(mod: IMod): string | undefined {
 	return mutuallyExclusiveMods[mod.hash];
 }
 
-export function hasMutuallyExclusiveMods(mods: IMod[]): boolean {
+export function hasMutuallyExclusiveMods(mods: IMod[]): [boolean, string[]] {
 	const exclusionGroups: string[] = [];
+	let _hasMutuallyExclusiveMods = false;
 	for (let i = 0; i < mods.length; i++) {
 		const group = getModExclusionGroup(mods[i]);
 		if (!group) {
@@ -417,7 +418,10 @@ export function hasMutuallyExclusiveMods(mods: IMod[]): boolean {
 			exclusionGroups.push(group);
 			continue;
 		}
-		return true;
+		_hasMutuallyExclusiveMods = true;
 	}
-	return false;
+	if (_hasMutuallyExclusiveMods) {
+		return [true, exclusionGroups];
+	}
+	return [false, []];
 }

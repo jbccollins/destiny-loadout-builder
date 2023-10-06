@@ -902,6 +902,16 @@ export const humanizeOptimizationTypes = (
 			(x) => !(x === ELoadoutOptimizationTypeId.UnavailableMods)
 		);
 	}
+	// Higher stat tier takes precendence over fewer wasted stats
+	if (
+		filteredOptimizationTypeList.includes(
+			ELoadoutOptimizationTypeId.HigherStatTier
+		)
+	) {
+		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(
+			(x) => !(x === ELoadoutOptimizationTypeId.FewerWastedStats)
+		);
+	}
 	// Dedupe the list
 	filteredOptimizationTypeList = Array.from(
 		new Set(filteredOptimizationTypeList)
@@ -1080,6 +1090,11 @@ export enum EGetLoadoutsThatCanBeOptimizedProgressType {
 }
 export type GetLoadoutsThatCanBeOptimizedProgressMetadata = {
 	maxPossibleDesiredStatTiers: ArmorStatMapping;
+	lowestCost: number;
+	currentCost: number;
+	lowestWastedStats: number;
+	currentWastedStats: number;
+	mutuallyExclusiveModGroups: string[]; // TODO: Rework this to contain the actual mod ids
 };
 export type GetLoadoutsThatCanBeOptimizedProgress = {
 	type: EGetLoadoutsThatCanBeOptimizedProgressType;
@@ -1207,6 +1222,11 @@ export const getLoadoutsThatCanBeOptimized = (
 			}
 			let earlyProgressCallback = false;
 			let maxPossibleDesiredStatTiers = getDefaultArmorStatMapping();
+			let lowestCost = Infinity;
+			let currentCost = Infinity;
+			let lowestWastedStats = Infinity;
+			let currentWastedStats = Infinity;
+			let mutuallyExclusiveModGroups: string[] = [];
 			armorSlotModsVariants.forEach(
 				(armorSlotMods, armorSlotModsVariantsIndex) => {
 					// Don't even try to process without an exotic
@@ -1303,13 +1323,29 @@ export const getLoadoutsThatCanBeOptimized = (
 							hasHigherStatTiers = true;
 						}
 					});
-					// If the tiers are the same then we might still be able to optimize
-					// by achieving the same tiers, but for a lower cost.
-					const hasLowerCost =
-						maxDiff >= 0 &&
-						processedArmor.items.some(
-							(x) => x.metadata.totalModCost < sumOfCurrentStatModsCost
-						);
+
+					let hasFewerWastedStats = false;
+					let hasLowerCost = false;
+					if (armorSlotModsVariantsIndex === 0) {
+						// In one loop find the lowest cost and lowest wasted stats
+						processedArmor.items.forEach((x) => {
+							if (x.metadata.totalModCost < lowestCost) {
+								lowestCost = x.metadata.totalModCost;
+							}
+							if (x.metadata.wastedStats < lowestWastedStats) {
+								lowestWastedStats = x.metadata.wastedStats;
+							}
+						});
+
+						// TODO: Should this only be done on the first loop?
+						currentCost = sumOfCurrentStatModsCost;
+						hasLowerCost =
+							maxDiff >= 0 && lowestCost < sumOfCurrentStatModsCost;
+
+						const wastedStats = getWastedStats(loadout.achievedStats);
+						currentWastedStats = wastedStats;
+						hasFewerWastedStats = lowestWastedStats < wastedStats;
+					}
 
 					const hasUnmetDIMStatTierConstraints =
 						loadout.loadoutType === ELoadoutType.DIM &&
@@ -1351,11 +1387,6 @@ export const getLoadoutsThatCanBeOptimized = (
 						(x) => !x.isMasterworked
 					);
 
-					const wastedStats = getWastedStats(loadout.achievedStats);
-					const hasFewerWastedStats = processedArmor.items.some(
-						(x) => x.metadata.wastedStats < wastedStats
-					);
-
 					const hasUnspecifiedAspect = loadout.aspectIdList.length === 1;
 
 					const hasInvalidLoadoutConfiguration =
@@ -1363,8 +1394,9 @@ export const getLoadoutsThatCanBeOptimized = (
 						processedArmor.items.length === 0;
 
 					const flattenedMods = flattenMods(loadout).map((x) => getMod(x));
-					const _hasMutuallyExclusiveMods =
+					const [_hasMutuallyExclusiveMods, _mutuallyExclusiveModGroups] =
 						hasMutuallyExclusiveMods(flattenedMods);
+					mutuallyExclusiveModGroups = _mutuallyExclusiveModGroups;
 
 					if (hasHigherStatTiers) {
 						optimizationTypeList.push(
@@ -1451,6 +1483,11 @@ export const getLoadoutsThatCanBeOptimized = (
 					optimizationTypeList: humanizedOptimizationTypes,
 					metadata: {
 						maxPossibleDesiredStatTiers,
+						lowestCost,
+						currentCost,
+						lowestWastedStats,
+						currentWastedStats,
+						mutuallyExclusiveModGroups,
 					},
 				});
 				return;

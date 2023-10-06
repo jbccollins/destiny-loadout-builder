@@ -76,8 +76,11 @@ import {
 	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
+import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
+import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
+import { getMod } from '@dlb/types/Mod';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import EditIcon from '@mui/icons-material/Edit';
 import ShowIcon from '@mui/icons-material/Visibility';
@@ -87,6 +90,7 @@ import {
 	CircularProgress,
 	Collapse,
 	IconButton,
+	styled,
 	useTheme,
 } from '@mui/material';
 import Image from 'next/image';
@@ -95,10 +99,299 @@ import CustomTooltip from '../CustomTooltip';
 import IconPill from './IconPill';
 import { loadoutOptimizationIconMapping } from './LoadoutAnalyzer';
 
+const InspectingOptimizationDetailsHelp = styled(Box)(({ theme }) => ({
+	marginBottom: theme.spacing(0.5),
+	fontSize: '14px',
+	// italic
+	fontStyle: 'italic',
+}));
+
+type RichAnalyzableLoadout = AnalyzableLoadout & {
+	metadata?: GetLoadoutsThatCanBeOptimizedProgress['metadata'];
+};
+
+type InspectingOptimizationDetailsProps = {
+	loadout: RichAnalyzableLoadout;
+	optimizationType: ELoadoutOptimizationTypeId;
+};
+
+const InspectingOptimizationDetails = (
+	props: InspectingOptimizationDetailsProps
+) => {
+	const { loadout, optimizationType } = props;
+	const { metadata } = loadout;
+	return (
+		<Box>
+			<Box sx={{ fontSize: '18px', fontWeight: 'bold' }}>
+				Resolution Instructions:
+			</Box>
+			{optimizationType === ELoadoutOptimizationTypeId.HigherStatTier && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Use the &quot;Desired Stat Tiers&quot; selector to resolve this
+						optimization:
+					</InspectingOptimizationDetailsHelp>
+					{ArmorStatIdList.map((armorStatId) => {
+						const armorStat = getArmorStat(armorStatId);
+						const diff =
+							metadata?.maxPossibleDesiredStatTiers[armorStatId] -
+								loadout.desiredStatTiers[armorStatId] || 0;
+						return diff > 0 ? (
+							<Box
+								key={armorStatId}
+								sx={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: '4px',
+									background: 'rgba(30,30,30,0.5)',
+									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+									padding: '4px',
+								}}
+							>
+								<CustomTooltip title={armorStat.name}>
+									<Box sx={{ width: '26px', height: '26px' }}>
+										<BungieImage src={armorStat.icon} width={26} height={26} />
+									</Box>
+								</CustomTooltip>
+								<Box sx={{ width: '80px' }}>{armorStat.name}: </Box>
+								<Box>
+									(+{diff / 10} tier{diff > 10 ? 's' : ''})
+								</Box>
+							</Box>
+						) : null;
+					})}
+				</Box>
+			)}
+			{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
+				optimizationType === ELoadoutOptimizationTypeId.UnavailableMods) && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Remove the following mods from the loadout to resolve this
+						optimization:
+					</InspectingOptimizationDetailsHelp>
+					{ArmorSlotIdList.map((armorSlotId) => {
+						const armorSlot = getArmorSlot(armorSlotId);
+						const artifactModList = loadout.armorSlotMods[armorSlotId]
+							.filter((x) => x !== null)
+							.map((modId) => getMod(modId))
+							.filter((mod) => mod.isArtifactMod);
+						return artifactModList.length > 0 ? (
+							<Box
+								key={armorSlotId}
+								sx={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: '4px',
+									background: 'rgba(30,30,30,0.5)',
+									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+									padding: '4px',
+								}}
+							>
+								<Box sx={{ width: '26px', height: '26px', display: 'flex' }}>
+									<BungieImage src={armorSlot.icon} width={26} height={26} />
+								</Box>
+
+								<Box
+									sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
+								>
+									{artifactModList.map((mod) => (
+										<Box
+											key={mod.id}
+											sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+										>
+											<Box sx={{ width: '26px', height: '26px' }}>
+												<BungieImage src={mod.icon} width={26} height={26} />
+											</Box>
+											<Box>
+												{mod.name} {'(Artifact)'}
+											</Box>
+										</Box>
+									))}
+								</Box>
+							</Box>
+						) : null;
+					})}
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.LowerCost && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Sort the results by &quot;Total Mod Cost&quot; to resolve this
+						optimization.
+					</InspectingOptimizationDetailsHelp>
+					<Box>Current cost: {metadata.currentCost}</Box>
+					<Box>Optimized cost: {metadata.lowestCost}</Box>
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.FewerWastedStats && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Sort the results by &quot;Wasted Stats&quot; to resolve this
+						optimization.
+					</InspectingOptimizationDetailsHelp>
+					<Box>
+						<Box>Current wasted stats: {metadata.currentWastedStats}</Box>
+						<Box>Optimized wasted stats: {metadata.lowestWastedStats}</Box>
+					</Box>
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.DeprecatedMods && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						The symptom of this will be empty mod sockets in the &quot;Armor
+						Mods&quot; section. Add any mods in such sockets to resolve this
+						optimization.
+					</InspectingOptimizationDetailsHelp>
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.Error && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						This should never happen. Please report this bug in the Discord.
+					</InspectingOptimizationDetailsHelp>
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.UnusedFragmentSlots && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Add more fragments to resolve this optimization.
+					</InspectingOptimizationDetailsHelp>
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.UnspecifiedAspect && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Select a second aspect to resolve this optimization.
+					</InspectingOptimizationDetailsHelp>
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.UnmasterworkedArmor && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Masterwork all armor in this loadout to resolve this optimization.
+					</InspectingOptimizationDetailsHelp>
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.MissingArmor && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						This loadout is missing armor and must be recreated from scratch to
+						resolve this optimization.
+					</InspectingOptimizationDetailsHelp>
+				</Box>
+			)}
+			{optimizationType ===
+				ELoadoutOptimizationTypeId.UnmetDIMStatConstraints && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						This loadout must be recreated to resolve this optimization. Here
+						are the discrepancies between the DIM Stat Tier Constraints (DSTC)
+						and the Actual Stat Tiers (AST) that this loadout achieves:
+					</InspectingOptimizationDetailsHelp>
+					<Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+						<Box sx={{ width: '114px' }}>Stat</Box>
+						<Box
+							sx={{
+								width: '60px',
+								paddingLeft: '6px',
+								borderLeft: '1px solid white',
+							}}
+						>
+							DSTC
+						</Box>
+						<Box
+							sx={{
+								width: '60px',
+								borderLeft: '1px solid white',
+								paddingLeft: '6px',
+							}}
+						>
+							AST
+						</Box>
+					</Box>
+					{ArmorStatIdList.map((armorStatId) => {
+						const armorStat = getArmorStat(armorStatId);
+						const diff =
+							loadout.dimStatTierConstraints[armorStatId] -
+							loadout.achievedStatTiers[armorStatId];
+
+						return diff > 0 ? (
+							<Box
+								key={armorStatId}
+								sx={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: '4px',
+									background: 'rgba(30,30,30,0.5)',
+									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+									padding: '4px',
+								}}
+							>
+								<CustomTooltip title={armorStat.name}>
+									<Box sx={{ width: '26px', height: '26px' }}>
+										<BungieImage src={armorStat.icon} width={26} height={26} />
+									</Box>
+								</CustomTooltip>
+								<Box sx={{ width: '80px' }}>{armorStat.name}: </Box>
+								<Box
+									sx={{
+										width: '60px',
+										borderLeft: '1px solid white',
+										paddingLeft: '6px',
+									}}
+								>
+									{loadout.dimStatTierConstraints[armorStatId] / 10}
+								</Box>
+								<Box
+									sx={{
+										width: '60px',
+										borderLeft: '1px solid white',
+										paddingLeft: '6px',
+									}}
+								>
+									{loadout.achievedStatTiers[armorStatId] / 10}
+								</Box>
+							</Box>
+						) : null;
+					})}
+				</Box>
+			)}
+			{optimizationType ===
+				ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Follow the troubleshooting guide in the &quot;No Results&quot;
+						section to resolve this optimization.
+					</InspectingOptimizationDetailsHelp>
+				</Box>
+			)}
+			{optimizationType ===
+				ELoadoutOptimizationTypeId.MutuallyExclusiveMods && (
+				<InspectingOptimizationDetailsHelp>
+					This loadout contains mutually exclusive{' '}
+					{loadout.metadata.mutuallyExclusiveModGroups.join(' and ')} mods.
+					Remove mutually exclusive mods to resolve this optimization.
+				</InspectingOptimizationDetailsHelp>
+			)}
+			{optimizationType == ELoadoutOptimizationTypeId.NoExoticArmor && (
+				<InspectingOptimizationDetailsHelp>
+					This loadout must be recreated from scratch. Select an exotic armor
+					piece to resolve this optimization.
+				</InspectingOptimizationDetailsHelp>
+			)}
+			{optimizationType == ELoadoutOptimizationTypeId.StatsOver100 && (
+				<InspectingOptimizationDetailsHelp>
+					This may or may not be something that can be resolved given obtained
+					armor and selected mods. Play around with the &quot;Desired Stat
+					Tiers&quot; selector to try and resolve this optimization.
+				</InspectingOptimizationDetailsHelp>
+			)}
+		</Box>
+	);
+};
+
 export type LoadoutItemProps = {
-	loadout: AnalyzableLoadout & {
-		metadata?: GetLoadoutsThatCanBeOptimizedProgress['metadata'];
-	};
+	loadout: RichAnalyzableLoadout;
 	isHidden: boolean;
 	selectedExoticArmor: Record<EDestinyClassId, AvailableExoticArmorItem>;
 	flatAvailableExoticArmor: AvailableExoticArmorItem[];
@@ -457,28 +750,14 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 							borderRadius: '4px',
 						}}
 					>
-						<Box>{inspectingOptimization.name}</Box>
+						<Box sx={{ fontSize: '20px', fontWeight: 'bold' }}>
+							{inspectingOptimization.name}
+						</Box>
 						<Box>{inspectingOptimization.description}</Box>
-						{/* <Box>
-							{inspectingOptimizationType ===
-								ELoadoutOptimizationType.HigherStatTier && (
-								<Box>
-									{ArmorStatIdList.map((armorStatId) => {
-										const armorStat = getArmorStat(armorStatId);
-										const diff =
-											metadata?.maxPossibleDesiredStatTiers[armorStatId] -
-												loadout.desiredStatTiers[armorStatId] || 0;
-										return diff > 0 ? (
-											<Box key={armorStatId}>
-												<Box>
-													{armorStat.name}: {diff / 10}
-												</Box>
-											</Box>
-										) : null;
-									})}
-								</Box>
-							)}
-						</Box> */}
+						<InspectingOptimizationDetails
+							loadout={loadout}
+							optimizationType={inspectingOptimizationType}
+						/>
 					</Box>
 				)}
 			</Collapse>
@@ -490,27 +769,6 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 					marginTop: '4px',
 				}}
 			>
-				<CustomTooltip
-					title={`This is a ${
-						loadoutType === ELoadoutType.DIM ? 'DIM' : 'D2'
-					} loadout`}
-				>
-					<Box
-						sx={{
-							height: '20px',
-							width: '20px',
-							minWidth: '20px',
-							minHeight: '20px',
-						}}
-					>
-						<Image
-							src={loadoutType === ELoadoutType.DIM ? dimLogo : d2Logo}
-							alt="Loadout Logo"
-							height="20px"
-							width="20px"
-						/>
-					</Box>
-				</CustomTooltip>
 				<CustomTooltip title="Edit this loadout" hideOnMobile>
 					<IconButton onClick={() => setApplicationState(loadout)} size="small">
 						<EditIcon />
@@ -541,7 +799,31 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 						</IconButton>
 					</CustomTooltip>
 				)}
+				<Box sx={{ marginLeft: 'auto' }}>
+					<CustomTooltip
+						title={`This is a ${
+							loadoutType === ELoadoutType.DIM ? 'DIM' : 'D2'
+						} loadout`}
+					>
+						<Box
+							sx={{
+								height: '20px',
+								width: '20px',
+								minWidth: '20px',
+								minHeight: '20px',
+							}}
+						>
+							<Image
+								src={loadoutType === ELoadoutType.DIM ? dimLogo : d2Logo}
+								alt="Loadout Logo"
+								height="20px"
+								width="20px"
+							/>
+						</Box>
+					</CustomTooltip>
+				</Box>
 			</Box>
+			{/* <Breakdown loadout={loadout} /> */}
 		</Box>
 	);
 };

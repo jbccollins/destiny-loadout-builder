@@ -333,7 +333,7 @@ export type ProcessedArmorItemMetadata = {
 	classItem: ProcessedArmorItemMetadataClassItem;
 };
 
-type ProcessArmorOutputItem = {
+export type ProcessArmorOutputItem = {
 	armorIdList: ArmorIdList;
 	armorStatModIdList: EModId[];
 	artificeModIdList: EModId[];

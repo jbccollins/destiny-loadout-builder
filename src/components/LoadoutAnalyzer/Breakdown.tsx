@@ -57,7 +57,7 @@ const BreakdownContent = (props: BreakdownProps) => {
 		!!modPlacement && !!classItem && !!exoticArmorItem;
 	return (
 		<Box>
-			<Box>
+			<Box sx={{ overflowY: 'auto' }} className="mod-placement-wrapper">
 				{useModPlacementView && (
 					<ModPlacement
 						exoticArmorItem={exoticArmorItem}

@@ -645,7 +645,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 						</Box>
 					</Box>
 				)}
-				<Box>{name}</Box>
+				<Box sx={{ fontWeight: 'bold' }}>{name}</Box>
 			</Box>
 
 			<Box

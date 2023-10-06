@@ -266,7 +266,7 @@ const ModPlacement = (props: ModPlacementProps) => {
 							</CustomTooltip>
 						)}
 
-						{isExotic && (
+						{isExotic && exoticPerk && (
 							<CustomTooltip title={`${exoticPerk.name}`}>
 								<Box className="exotic-badge">
 									<Socket getIcon={() => exoticPerk.icon} />

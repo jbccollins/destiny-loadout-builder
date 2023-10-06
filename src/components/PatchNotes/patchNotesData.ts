@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-10-06',
+		version: '2.4.16',
+		title: 'Mod Placement Details Bug Fixes',
+		sections: [
+			{
+				items: [
+					`Fix a few minor bugs associated with adding the Mod Placement Details to the analyzer tab`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-06',
 		version: '2.4.15',
 		title: 'Add discord link to main page',
 		sections: [

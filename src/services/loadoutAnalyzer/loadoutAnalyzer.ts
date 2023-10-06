@@ -775,23 +775,15 @@ export const buildAnalyzableLoadoutsBreakdown = (
 		inGameLoadoutsDefinitions,
 	} = params;
 	const hasDimLoadouts = dimLoadouts && dimLoadouts.length > 0;
-	const hasInGameLoadouts = Object.values(inGameLoadouts.loadoutItems).some(
-		(x) => x.loadouts.length > 0
-	);
-
-	if (!hasDimLoadouts && !hasInGameLoadouts) {
-		return {
-			validLoadouts: {},
-			invalidLoadouts: {},
-		};
-	}
 	const armorItems = flattenArmor(armor, allClassItemMetadata);
-	const analyzableDimLoadouts = extractDimLoadouts({
-		armorItems,
-		dimLoadouts,
-		masterworkAssumption,
-		availableExoticArmor,
-	});
+	const analyzableDimLoadouts = hasDimLoadouts
+		? extractDimLoadouts({
+				armorItems,
+				dimLoadouts,
+				masterworkAssumption,
+				availableExoticArmor,
+		  })
+		: [];
 	const analyzableInGameLoadouts = extractInGameLoadouts({
 		armorItems,
 		inGameLoadouts,
@@ -1497,6 +1489,16 @@ export const getLoadoutsThatCanBeOptimized = (
 
 			const humanizedOptimizationTypes =
 				humanizeOptimizationTypes(optimizationTypeList);
+
+			const metadata = {
+				maxPossibleDesiredStatTiers,
+				lowestCost,
+				currentCost,
+				lowestWastedStats,
+				currentWastedStats,
+				mutuallyExclusiveModGroups,
+				modPlacement,
+			};
 			if (humanizedOptimizationTypes.length > 0) {
 				result.push({
 					optimizationTypeList: humanizedOptimizationTypes,
@@ -1507,15 +1509,7 @@ export const getLoadoutsThatCanBeOptimized = (
 					canBeOptimized: true,
 					loadoutId: loadout.id,
 					optimizationTypeList: humanizedOptimizationTypes,
-					metadata: {
-						maxPossibleDesiredStatTiers,
-						lowestCost,
-						currentCost,
-						lowestWastedStats,
-						currentWastedStats,
-						mutuallyExclusiveModGroups,
-						modPlacement,
-					},
+					metadata,
 				});
 				return;
 			} else {
@@ -1524,6 +1518,7 @@ export const getLoadoutsThatCanBeOptimized = (
 					canBeOptimized: false,
 					loadoutId: loadout.id,
 					optimizationTypeList: [],
+					metadata,
 				});
 				return;
 			}

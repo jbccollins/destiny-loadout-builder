@@ -30,6 +30,7 @@ import {
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import {
 	ArmorItem,
+	AvailableExoticArmorItem,
 	getDefaultArmorItem,
 	getExtraMasterworkedStats,
 } from '@dlb/types/Armor';
@@ -57,7 +58,7 @@ import {
 	EGearTierId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
-import { getMod } from '@dlb/types/Mod';
+import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
 import { getBonusResilienceOrnamentByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -87,6 +88,8 @@ type ResultsItemProps = {
 	dimQuery: string;
 	isRecommendedLoadout: boolean;
 	useBonusResilience: boolean;
+	exoticArmorItem: AvailableExoticArmorItem;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
 };
 
 const ResultsContainer = styled(Box)(({ theme }) => ({
@@ -224,6 +227,8 @@ function ResultsItem({
 	dimQuery,
 	isRecommendedLoadout,
 	useBonusResilience,
+	exoticArmorItem,
+	armorSlotMods,
 }: ResultsItemProps) {
 	const [showDetailedStatBreakdown, setShowDetailedStatBreakdown] =
 		React.useState(false);
@@ -498,10 +503,12 @@ function ResultsItem({
 			<ResultsSection fullWidth sx={{ overflowX: 'auto', padding: 0 }}>
 				<Collapse in={showModPlacement} timeout="auto" unmountOnExit>
 					<ModPlacement
+						exoticArmorItem={exoticArmorItem}
 						modPlacement={item.modPlacement}
 						artificeModIdList={item.requiredArtificeModIdList}
 						armorItems={item.armorItems}
 						classItem={item.classItem}
+						armorSlotMods={armorSlotMods}
 					/>
 				</Collapse>
 			</ResultsSection>
@@ -774,6 +781,7 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 
 	const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const classItemMetadata = allClassItemMetadata[selectedDestinyClass];
+	const exoticArmorItem = selectedExoticArmor[selectedDestinyClass];
 
 	let elementId: EElementId = EElementId.Any;
 	if (destinySubclassId) {
@@ -854,6 +862,8 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							fragmentArmorStatMappings={fragmentArmorStatMappings}
 							armorSlotModArmorStatMappings={armorSlotModArmorStatMapppings}
 							useBonusResilience={_useBonusResilience}
+							exoticArmorItem={exoticArmorItem}
+							armorSlotMods={selectedArmorSlotMods}
 							dimLink={`${generateDimLink({
 								raidModIdList: selectedRaidMods,
 								armorStatModIdList: item.requiredStatModIdList,

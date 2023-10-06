@@ -9,6 +9,7 @@ import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { getDefaultRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import {
 	ELoadoutOptimizationTypeId,
+	GetLoadoutsThatCanBeOptimizedProgress,
 	GetLoadoutsThatCanBeOptimizedProgressMetadata,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { ArmorItem } from './Armor';
@@ -153,6 +154,7 @@ export type AnalyzableLoadout = {
 	index: number;
 	name: string;
 	armorStatMods: EModId[];
+	artificeModIdList: EModId[];
 	achievedStatTiers: ArmorStatMapping;
 	achievedStats: ArmorStatMapping; // The un-rounded stats
 	optimizationTypeList: ELoadoutOptimizationTypeId[];
@@ -160,6 +162,10 @@ export type AnalyzableLoadout = {
 	characterId: string;
 	hasBonusResilienceOrnament: boolean;
 } & DLBConfig;
+
+export type RichAnalyzableLoadout = AnalyzableLoadout & {
+	metadata?: GetLoadoutsThatCanBeOptimizedProgress['metadata'];
+};
 
 export type AnalyzableLoadoutMapping = Record<string, AnalyzableLoadout>;
 
@@ -196,6 +202,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	optimizationTypeList: [],
 	raidMods: getDefaultRaidMods(),
 	superAbilityId: null,
+	artificeModIdList: [],
 });
 
 export const getDefaultAnalyzableLoadoutBreakdown =

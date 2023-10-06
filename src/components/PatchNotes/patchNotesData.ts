@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-10-05',
+		version: '2.4.14',
+		title: 'Add mod placement details to the analyzer tab',
+		sections: [
+			{
+				items: [
+					`Where applicable, show mod placments in the details section for each loadout in the analyzer tab`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-05',
 		version: '2.4.13',
 		title: 'Add resolution instructions in the analyzer tab',
 		sections: [

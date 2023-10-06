@@ -1,10 +1,8 @@
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import { useAppSelector } from '@dlb/redux/hooks';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { ArmorStatAndRaidModComboPlacement } from '@dlb/services/processArmor/getModCombos';
-import { ArmorItem } from '@dlb/types/Armor';
+import { ArmorItem, AvailableExoticArmorItem } from '@dlb/types/Armor';
 import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
@@ -12,17 +10,17 @@ import {
 import { ARTIFICE_ICON, MISSING_ICON } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
-	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,
 } from '@dlb/types/IdEnums';
 import {
 	getIntrinsicArmorPerkOrAttribute,
 	intrinsicArmorPerkOrAttributeIdList,
 } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
-import { getMod } from '@dlb/types/Mod';
+import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
 import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
 import { styled } from '@mui/material';
 import { Box } from '@mui/system';
+import CustomTooltip from './CustomTooltip';
 
 const Container = styled(Box)(({ theme }) => ({
 	display: 'flex',
@@ -70,30 +68,104 @@ const Description = styled(Box)(({ theme }) => ({
 	top: '240px',
 }));
 
+type FinalizedModPlacement = Record<
+	EArmorSlotId,
+	{
+		armorStatModId: EModId;
+		armorSlotModIdList: EModId[];
+		raidModId: EModId;
+		artificeModId: EModId;
+	}
+>;
+type GetFinalizedModPlacementParams = {
+	modPlacement: ArmorStatAndRaidModComboPlacement;
+	artificeModIdList: EModId[];
+	armorItems: ArmorItem[];
+	classItem: ProcessedArmorItemMetadataClassItem;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
+};
+const getDefaultFinalizedModPlacement = (): FinalizedModPlacement => {
+	return ArmorSlotWithClassItemIdList.reduce((acc, armorSlotId) => {
+		acc[armorSlotId] = {
+			armorStatModId: null,
+			armorSlotModIdList: [],
+			raidModId: null,
+			artificeModId: null,
+		};
+		return acc;
+	}, {} as FinalizedModPlacement);
+};
+const getFinalizedModPlacement = (
+	params: GetFinalizedModPlacementParams
+): FinalizedModPlacement => {
+	const {
+		modPlacement,
+		artificeModIdList,
+		armorItems,
+		classItem,
+		armorSlotMods,
+	} = params;
+	const finalizedModPlacement = getDefaultFinalizedModPlacement();
+	let numSlottedArtificeMods = 0;
+	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+		const armorSlotModIdList = armorSlotMods[armorSlotId];
+		const { armorStatModId, raidModId } = modPlacement[armorSlotId];
+		const isArtificeArmorSlot =
+			armorSlotId === EArmorSlotId.ClassItem
+				? classItem.requiredClassItemMetadataKey === 'Artifice'
+				: armorItems.find((x) => x.armorSlot === armorSlotId).isArtifice;
+		const artificeModId = isArtificeArmorSlot
+			? artificeModIdList.slice(numSlottedArtificeMods)[0] ?? null
+			: null;
+		if (isArtificeArmorSlot) {
+			numSlottedArtificeMods++;
+		}
+		finalizedModPlacement[armorSlotId] = {
+			armorStatModId,
+			armorSlotModIdList,
+			raidModId,
+			artificeModId,
+		};
+	});
+	return finalizedModPlacement;
+};
+
 type ModPlacementProps = {
 	modPlacement: ArmorStatAndRaidModComboPlacement;
 	artificeModIdList: EModId[];
 	armorItems: ArmorItem[];
 	classItem: ProcessedArmorItemMetadataClassItem;
+	exoticArmorItem: AvailableExoticArmorItem;
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
 };
 
 const ModPlacement = (props: ModPlacementProps) => {
-	const armorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
-	const { modPlacement, artificeModIdList, armorItems, classItem } = props;
-	const showArtificeModSlot = artificeModIdList.length > 0;
-	const showRaidModSlot = Object.values(modPlacement).some(
-		(x) => x.raidModId !== null
+	const { classItem, armorItems } = props;
+	const finalizedModPlacement = getFinalizedModPlacement({
+		modPlacement: props.modPlacement,
+		artificeModIdList: props.artificeModIdList,
+		armorItems: props.armorItems,
+		classItem: props.classItem,
+		armorSlotMods: props.armorSlotMods,
+	});
+	const showArtificeModSlot = ArmorSlotWithClassItemIdList.some(
+		(armorSlotId) => !!finalizedModPlacement[armorSlotId].artificeModId
 	);
-	let numRenderedArtificeMods = 0;
+	const showRaidModSlot = ArmorSlotWithClassItemIdList.some(
+		(armorSlotId) => !!finalizedModPlacement[armorSlotId].raidModId
+	);
+	const exoticPerk = props.exoticArmorItem.exoticPerk;
 	return (
 		<Container>
 			{ArmorSlotWithClassItemIdList.map((armorSlotId) => {
-				const { armorStatModId, raidModId } = modPlacement[armorSlotId];
-				const raidIcon = raidModId
+				const { armorStatModId, armorSlotModIdList, raidModId, artificeModId } =
+					finalizedModPlacement[armorSlotId];
+
+				const { name: raidName, icon: raidIcon } = raidModId
 					? getRaidAndNightmareModType(
 							getMod(raidModId).raidAndNightmareModTypeId
-					  ).icon
-					: null;
+					  )
+					: { name: null, icon: null };
 
 				const intrinsicArmorPerkOrAttributeId =
 					armorSlotId === EArmorSlotId.ClassItem
@@ -105,91 +177,101 @@ const ModPlacement = (props: ModPlacementProps) => {
 						: armorItems.find((x) => x.armorSlot === armorSlotId)
 								.intrinsicArmorPerkOrAttributeId;
 
-				const intrinsicArmorPerkOrAttributeIcon =
-					intrinsicArmorPerkOrAttributeId
-						? getIntrinsicArmorPerkOrAttribute(
-								intrinsicArmorPerkOrAttributeId as EIntrinsicArmorPerkOrAttributeId
-						  ).icon
-						: null;
-
-				const isExotic =
-					armorSlotId === EArmorSlotId.ClassItem
-						? false
-						: armorItems.find((x) => x.armorSlot === armorSlotId).gearTierId ===
-						  EGearTierId.Exotic;
-
-				const isArtificeArmorSlot =
-					armorSlotId === EArmorSlotId.ClassItem
-						? classItem.requiredClassItemMetadataKey === 'Artifice'
-						: armorItems.find((x) => x.armorSlot === armorSlotId).isArtifice;
-				const artificeModId = isArtificeArmorSlot
-					? artificeModIdList.slice(numRenderedArtificeMods)[0] ?? null
-					: null;
-				if (isArtificeArmorSlot) {
-					numRenderedArtificeMods++;
-				}
-				const armorSlotModIdList = armorSlotMods[armorSlotId];
+				const isExotic = props.exoticArmorItem.armorSlot === armorSlotId;
+				const { name: armorSlotName, icon: armorSlotIcon } =
+					getArmorSlot(armorSlotId);
+				const { name: armorStatModName, icon: armorStatModIcon } =
+					armorStatModId ? getMod(armorStatModId) : { name: null, icon: null };
+				const { name: artificeModName, icon: artificeModIcon } = artificeModId
+					? getMod(artificeModId)
+					: { name: null, icon: null };
+				const { name: raidModName, icon: raidModIcon } = raidModId
+					? getMod(raidModId)
+					: { name: null, icon: null };
+				const {
+					name: intrinsicArmorPerkOrAttributeName,
+					icon: intrinsicArmorPerkOrAttributeIcon,
+				} = intrinsicArmorPerkOrAttributeId
+					? getIntrinsicArmorPerkOrAttribute(
+							intrinsicArmorPerkOrAttributeId as EIntrinsicArmorPerkOrAttributeId
+					  )
+					: { name: null, icon: null };
 				return (
 					<ArmorSlotRow className="armor-slot-row" key={armorSlotId}>
-						<Box
-							sx={{
-								// This filter comes from this site: https://codepen.io/sosuke/pen/Pjoqqp
-								// Converts the image to gold (#ffd700)
-								filter: isExotic
-									? 'brightness(0) saturate(100%) invert(79%) sepia(19%) saturate(2242%) hue-rotate(360deg) brightness(106%) contrast(104%)'
-									: 'none',
-							}}
+						<CustomTooltip
+							title={`${isExotic ? 'Exotic ' : ''}${armorSlotName}`}
 						>
-							<Socket getIcon={() => getArmorSlot(armorSlotId).icon} />
-						</Box>
-						<Box className="armor-stat-mod-socket">
-							<Socket
-								getIcon={() =>
-									armorStatModId ? getMod(armorStatModId).icon : null
-								}
-							/>
-						</Box>
-						{showArtificeModSlot && (
-							<Box className="artifice-mod-socket">
-								<Socket
-									getIcon={() =>
-										artificeModId ? getMod(artificeModId).icon : null
-									}
-								/>
+							<Box
+								sx={{
+									// This filter comes from this site: https://codepen.io/sosuke/pen/Pjoqqp
+									// Converts the image to gold (#ffd700)
+									filter: isExotic
+										? 'brightness(0) saturate(100%) invert(79%) sepia(19%) saturate(2242%) hue-rotate(360deg) brightness(106%) contrast(104%)'
+										: 'none',
+								}}
+							>
+								<Socket getIcon={() => armorSlotIcon} />
 							</Box>
+						</CustomTooltip>
+						<CustomTooltip title={armorStatModName}>
+							<Box className="armor-stat-mod-socket">
+								<Socket getIcon={() => armorStatModIcon} />
+							</Box>
+						</CustomTooltip>
+						{showArtificeModSlot && (
+							<CustomTooltip title={artificeModName}>
+								<Box className="artifice-mod-socket">
+									<Socket getIcon={() => artificeModIcon} />
+								</Box>
+							</CustomTooltip>
 						)}
 						{armorSlotModIdList.map((armorSlotModId, i) => {
+							const { name, icon } = armorSlotModId
+								? getMod(armorSlotModId)
+								: { name: null, icon: null };
 							return (
-								<Box className={`armor-slot-mod-socket$-${i}`} key={i}>
-									<Socket
-										getIcon={() =>
-											armorSlotModId ? getMod(armorSlotModId).icon : null
-										}
-									/>
-								</Box>
+								<CustomTooltip title={name} key={i}>
+									<Box className={`armor-slot-mod-socket$-${i}`}>
+										<Socket getIcon={() => icon} />
+									</Box>
+								</CustomTooltip>
 							);
 						})}
 						{showRaidModSlot && (
-							<Box className="raid-mod-socket">
-								<Socket
-									getIcon={() => (raidModId ? getMod(raidModId).icon : null)}
-								/>
-							</Box>
+							<CustomTooltip title={raidModName}>
+								<Box className="raid-mod-socket">
+									<Socket getIcon={() => raidModIcon} />
+								</Box>
+							</CustomTooltip>
 						)}
-						{isArtificeArmorSlot && (
-							<Box className="artifice-badge">
-								<Socket getIcon={() => ARTIFICE_ICON} />
-							</Box>
+						{artificeModId && (
+							<CustomTooltip title={'Artifice Armor'}>
+								<Box className="artifice-badge">
+									<Socket getIcon={() => ARTIFICE_ICON} />
+								</Box>
+							</CustomTooltip>
 						)}
 						{raidIcon && (
-							<Box className="raid-badge">
-								<Socket getIcon={() => raidIcon} />
-							</Box>
+							<CustomTooltip title={`${raidName} Armor`}>
+								<Box className="raid-badge">
+									<Socket getIcon={() => raidIcon} />
+								</Box>
+							</CustomTooltip>
 						)}
 						{intrinsicArmorPerkOrAttributeIcon && (
-							<Box className="intrinsic-armor-perk-or-attribute-badge">
-								<Socket getIcon={() => intrinsicArmorPerkOrAttributeIcon} />
-							</Box>
+							<CustomTooltip title={`${intrinsicArmorPerkOrAttributeName}`}>
+								<Box className="intrinsic-armor-perk-or-attribute-badge">
+									<Socket getIcon={() => intrinsicArmorPerkOrAttributeIcon} />
+								</Box>
+							</CustomTooltip>
+						)}
+
+						{isExotic && (
+							<CustomTooltip title={`${exoticPerk.name}`}>
+								<Box className="exotic-badge">
+									<Socket getIcon={() => exoticPerk.icon} />
+								</Box>
+							</CustomTooltip>
 						)}
 					</ArmorSlotRow>
 				);

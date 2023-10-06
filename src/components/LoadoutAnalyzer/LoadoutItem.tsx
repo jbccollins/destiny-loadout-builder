@@ -66,7 +66,6 @@ import { useAppDispatch } from '@dlb/redux/hooks';
 import {
 	ELoadoutOptimizationTypeId,
 	getLoadoutOptimization,
-	GetLoadoutsThatCanBeOptimizedProgress,
 	NoneOptimization,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
@@ -74,6 +73,7 @@ import {
 	ELoadoutOptimizationCategoryId,
 	ELoadoutType,
 	getLoadoutOptimizationCategory,
+	RichAnalyzableLoadout,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
@@ -96,6 +96,7 @@ import {
 import Image from 'next/image';
 import { useState } from 'react';
 import CustomTooltip from '../CustomTooltip';
+import Breakdown from './Breakdown';
 import IconPill from './IconPill';
 import { loadoutOptimizationIconMapping } from './LoadoutAnalyzer';
 
@@ -105,10 +106,6 @@ const InspectingOptimizationDetailsHelp = styled(Box)(({ theme }) => ({
 	// italic
 	fontStyle: 'italic',
 }));
-
-type RichAnalyzableLoadout = AnalyzableLoadout & {
-	metadata?: GetLoadoutsThatCanBeOptimizedProgress['metadata'];
-};
 
 type InspectingOptimizationDetailsProps = {
 	loadout: RichAnalyzableLoadout;
@@ -823,7 +820,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 					</CustomTooltip>
 				</Box>
 			</Box>
-			{/* <Breakdown loadout={loadout} /> */}
+			<Breakdown loadout={loadout} />
 		</Box>
 	);
 };

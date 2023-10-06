@@ -95,6 +95,7 @@ import {
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
+import { ArmorStatAndRaidModComboPlacement } from '../processArmor/getModCombos';
 
 // A loadout that has some armor, mods or subclass options selected is considered valid
 // If a loadout just contains weapons, shaders, etc. then it is considered invalid
@@ -409,6 +410,10 @@ const extractDimLoadouts = (
 					return;
 				}
 				loadout.raidMods[idx] = mod.id;
+			} else if (
+				mod.modSocketCategoryId === EModSocketCategoryId.ArtificeStat
+			) {
+				loadout.artificeModIdList.push(mod.id);
 			}
 			// TODO: Currently no armor slot mods give bonuses so this is safe.
 			// But there have been mods in the past that did give bonuses.
@@ -644,6 +649,10 @@ const extractInGameLoadouts = (
 										return;
 									}
 									loadout.raidMods[idx] = mod.id;
+								} else if (
+									mod.modSocketCategoryId === EModSocketCategoryId.ArtificeStat
+								) {
+									loadout.artificeModIdList.push(mod.id);
 								}
 								mod.bonuses.forEach((bonus) => {
 									desiredStatTiers[bonus.stat] += bonus.value;
@@ -1095,6 +1104,7 @@ export type GetLoadoutsThatCanBeOptimizedProgressMetadata = {
 	lowestWastedStats: number;
 	currentWastedStats: number;
 	mutuallyExclusiveModGroups: string[]; // TODO: Rework this to contain the actual mod ids
+	modPlacement: ArmorStatAndRaidModComboPlacement;
 };
 export type GetLoadoutsThatCanBeOptimizedProgress = {
 	type: EGetLoadoutsThatCanBeOptimizedProgressType;
@@ -1227,6 +1237,7 @@ export const getLoadoutsThatCanBeOptimized = (
 			let lowestWastedStats = Infinity;
 			let currentWastedStats = Infinity;
 			let mutuallyExclusiveModGroups: string[] = [];
+			let modPlacement: ArmorStatAndRaidModComboPlacement = null;
 			armorSlotModsVariants.forEach(
 				(armorSlotMods, armorSlotModsVariantsIndex) => {
 					// Don't even try to process without an exotic
@@ -1334,6 +1345,14 @@ export const getLoadoutsThatCanBeOptimized = (
 							}
 							if (x.metadata.wastedStats < lowestWastedStats) {
 								lowestWastedStats = x.metadata.wastedStats;
+							}
+							// If this is the currently equipped set of armor, then we can use the mod placement
+							if (
+								x.armorIdList.every((processedArmorId) =>
+									loadout.armor.find((x) => x.id === processedArmorId)
+								)
+							) {
+								modPlacement = x.modPlacement;
 							}
 						});
 
@@ -1488,6 +1507,7 @@ export const getLoadoutsThatCanBeOptimized = (
 						lowestWastedStats,
 						currentWastedStats,
 						mutuallyExclusiveModGroups,
+						modPlacement,
 					},
 				});
 				return;

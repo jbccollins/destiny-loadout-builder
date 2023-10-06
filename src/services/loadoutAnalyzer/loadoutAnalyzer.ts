@@ -774,7 +774,12 @@ export const buildAnalyzableLoadoutsBreakdown = (
 		characters,
 		inGameLoadoutsDefinitions,
 	} = params;
-	if (!dimLoadouts || !dimLoadouts.length) {
+	const hasDimLoadouts = dimLoadouts && dimLoadouts.length > 0;
+	const hasInGameLoadouts = Object.values(inGameLoadouts.loadoutItems).some(
+		(x) => x.loadouts.length > 0
+	);
+
+	if (!hasDimLoadouts && !hasInGameLoadouts) {
 		return {
 			validLoadouts: {},
 			invalidLoadouts: {},

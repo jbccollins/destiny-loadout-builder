@@ -11,13 +11,25 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-06',
+		version: '2.4.15',
+		title: 'Add discord link to main page',
+		sections: [
+			{
+				items: [
+					`Bring the discord link more front and center, right next to the tabs`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-05',
 		version: '2.4.14',
 		title: 'Add mod placement details to the analyzer tab',
 		sections: [
 			{
 				items: [
-					`Where applicable, show mod placments in the details section for each loadout in the analyzer tab`,
+					`Where applicable, show mod placements in the details section for each loadout in the analyzer tab`,
 				],
 			},
 		],

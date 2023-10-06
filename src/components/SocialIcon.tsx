@@ -18,16 +18,18 @@ const SocialIcon = (props: {
 					objectFit="contain"
 					objectPosition="left"
 				/>
-				<Box
-					sx={{
-						fontSize: '20px',
-						marginLeft: '8px',
-						marginTop: '4px',
-						fontWeight: 'bold',
-					}}
-				>
-					{text}
-				</Box>
+				{text && (
+					<Box
+						sx={{
+							fontSize: '20px',
+							marginLeft: '8px',
+							marginTop: '4px',
+							fontWeight: 'bold',
+						}}
+					>
+						{text}
+					</Box>
+				)}
 			</Box>
 		</Link>
 	);

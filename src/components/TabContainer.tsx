@@ -1,4 +1,5 @@
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -44,10 +45,14 @@ interface TabContainerProps {
 	tabs: TabContainerItem[];
 	onChange: (value: number) => void;
 	tabIndex: number;
+	tabsWrapperSx?: SxProps;
+	tabSx?: SxProps;
 }
 
 export default function TabContainer(props: TabContainerProps) {
-	const { tabs, onChange, tabIndex } = props;
+	const { tabs, onChange, tabIndex, tabsWrapperSx, tabSx } = props;
+	const _tabsWrapperSx = tabsWrapperSx || {};
+	const _tabSx = tabSx || {};
 
 	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
 		onChange(newValue);
@@ -55,7 +60,10 @@ export default function TabContainer(props: TabContainerProps) {
 
 	return (
 		<Box sx={{ width: '100%' }}>
-			<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+			<Box
+				className="tabs-wrapper"
+				sx={{ borderBottom: 1, borderColor: 'divider', ..._tabsWrapperSx }}
+			>
 				<Tabs value={tabIndex} onChange={handleChange} aria-label="tabs">
 					{tabs.map(({ index, title, icon }) => {
 						const _icon =
@@ -73,6 +81,7 @@ export default function TabContainer(props: TabContainerProps) {
 								sx={{
 									fontSize: '12px',
 									minWidth: '64px',
+									..._tabSx,
 								}}
 								{...a11yProps(index)}
 							/>

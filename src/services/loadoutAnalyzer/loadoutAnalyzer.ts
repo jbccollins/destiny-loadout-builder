@@ -1335,6 +1335,8 @@ export const getLoadoutsThatCanBeOptimized = (
 						}
 					});
 
+					const missingArmor = loadout.armor.length < 5;
+
 					let hasFewerWastedStats = false;
 					let hasLowerCost = false;
 					if (armorSlotModsVariantsIndex === 0) {
@@ -1348,6 +1350,7 @@ export const getLoadoutsThatCanBeOptimized = (
 							}
 							// If this is the currently equipped set of armor, then we can use the mod placement
 							if (
+								!missingArmor &&
 								x.armorIdList.every((processedArmorId) =>
 									loadout.armor.find((x) => x.id === processedArmorId)
 								)
@@ -1388,7 +1391,6 @@ export const getLoadoutsThatCanBeOptimized = (
 								}
 							});
 					});
-					const missingArmor = loadout.armor.length < 5;
 					const hasStatOver100 = Object.values(loadout.achievedStatTiers).some(
 						(x) => x > 100
 					);

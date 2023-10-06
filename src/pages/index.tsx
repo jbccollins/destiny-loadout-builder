@@ -5,6 +5,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import InfoIcon from '@mui/icons-material/Info';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import AnalyzeIcon from '@mui/icons-material/QueryStats';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShieldIcon from '@mui/icons-material/Shield';
@@ -12,6 +13,7 @@ import {
 	Box,
 	Button,
 	Collapse,
+	Link,
 	styled,
 	useMediaQuery,
 	useTheme,
@@ -35,6 +37,7 @@ import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
 import RaidModSelector from '@dlb/components/RaidModsSelector';
 import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 import ShareLoadout from '@dlb/components/ShareLoadout';
+import SocialIcon from '@dlb/components/SocialIcon';
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
 import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
 import DestinySubclassSelector from '@dlb/components/SubclassSelector/DestinySubclassSelector';
@@ -47,6 +50,8 @@ import TabContainer from '@dlb/components/TabContainer';
 import UseBonusResilienceToggleSwitch from '@dlb/components/UseBonusResilienceToggleSwitch';
 import UseOnlyMasterworkedArmorToggleSwitch from '@dlb/components/UseOnlyMasterworkedArmorToggleSwitch';
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
+import { DISCORD_LINK } from '@dlb/dim/utils/constants';
+import discord_image from '@dlb/public/discord-mark-white.png';
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
@@ -266,8 +271,15 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 	};
 
 	return (
-		<LeftSection className="left-section">
+		<LeftSection className="left-section" position="relative">
 			<TabContainer
+				tabsWrapperSx={{
+					marginLeft: '-8px',
+					width: 'calc(100% + 16px)',
+				}}
+				tabSx={{
+					paddingX: '8px',
+				}}
 				tabIndex={props.tabIndex}
 				onChange={handleTabChange}
 				tabs={[
@@ -397,7 +409,39 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					},
 				]}
 			/>
-
+			<Link
+				sx={{
+					zIndex: 1,
+				}}
+				href={DISCORD_LINK}
+				target="_blank"
+			>
+				<Box
+					sx={{
+						transform: 'scale(0.7)',
+						width: '40px',
+						height: '40px',
+						position: 'absolute',
+						top: '24px',
+						right: '40px',
+						fontWeight: 500,
+					}}
+				>
+					<SocialIcon linkUrl={DISCORD_LINK} iconUrl={discord_image} text="" />
+					<Box
+						sx={{
+							marginTop: '8px',
+							marginLeft: '-24px',
+							display: 'flex',
+							gap: '4px',
+							alignItems: 'center',
+						}}
+					>
+						<Box>DISCORD</Box>
+						<OpenInNewIcon />
+					</Box>
+				</Box>
+			</Link>
 			{/* <ArmorSlotRestrictions /> */}
 		</LeftSection>
 	);

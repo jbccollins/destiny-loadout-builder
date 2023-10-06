@@ -20,9 +20,15 @@ const BreakdownContent = (props: BreakdownProps) => {
 	const exoticArmor = props.loadout.armor.find(
 		(x) => x.gearTierId === EGearTierId.Exotic
 	);
-	const exoticArmorItem = availableExoticArmor[props.loadout.destinyClassId][
-		exoticArmor.armorSlot
-	].find((x: AvailableExoticArmorItem) => x.hash === props.loadout.exoticHash);
+
+	let exoticArmorItem = null;
+	if (exoticArmor) {
+		exoticArmorItem = availableExoticArmor[props.loadout.destinyClassId][
+			exoticArmor.armorSlot
+		].find(
+			(x: AvailableExoticArmorItem) => x.hash === props.loadout.exoticHash
+		);
+	}
 
 	const _classItem = props.loadout.armor.find(
 		(x) => x.armorSlot === EArmorSlotId.ClassItem
@@ -46,7 +52,9 @@ const BreakdownContent = (props: BreakdownProps) => {
 		};
 	}
 
-	const useModPlacementView = !!modPlacement && !!classItem;
+	// TODO: only show this when the loadout has finished processing
+	const useModPlacementView =
+		!!modPlacement && !!classItem && !!exoticArmorItem;
 	return (
 		<Box>
 			<Box>
@@ -79,9 +87,7 @@ export default function Breakdown(props: BreakdownProps) {
 				sx={{
 					cursor: 'pointer',
 					marginTop: '16px',
-					// position: 'absolute',
-					// left: '50%',
-					// transform: 'translate(-50%, 0)',
+					display: 'inline-block',
 				}}
 			>
 				Show Loadout Details

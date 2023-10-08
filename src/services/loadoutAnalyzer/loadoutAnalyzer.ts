@@ -538,8 +538,10 @@ const extractInGameLoadouts = (
 	if (!inGameLoadouts || Object.keys(inGameLoadouts).length === 0) {
 		return [];
 	}
+	console.log('>>>>>>>>>>>>>>>>> characters', characters);
 	Object.keys(inGameLoadouts).forEach((characterId) => {
 		const characterLoadouts = inGameLoadouts[characterId];
+		console.log('>>>>>>>>>>>>>>>>> characterId', characterId);
 		const character = characters.find((x) => x.id === characterId) as Character;
 		if (!character) {
 			return;
@@ -578,9 +580,11 @@ const extractInGameLoadouts = (
 			inGameLoadout.items.forEach((item, index) => {
 				switch (getInGameLoadoutItemTypeFromIndex(index)) {
 					case EInGameLoadoutItemType.ARMOR:
+						console.log('>>>>>>>>>>>>>>>>> finding armor item');
 						const armorItem = armorItems.find(
 							(armorItem) => armorItem.id === item.itemInstanceId
 						);
+						console.log('>>>>>>>>>>>>>>>>> armorItem', armorItem);
 						if (armorItem) {
 							loadout.armor.push(armorItem);
 							if (armorItem.gearTierId === EGearTierId.Exotic) {
@@ -624,6 +628,7 @@ const extractInGameLoadouts = (
 								if (!mod) {
 									return;
 								}
+								console.log('>>>>>>>>>>>>>>>>> mod', mod, hash);
 								if (
 									mod.modSocketCategoryId === EModSocketCategoryId.ArmorSlot
 								) {
@@ -640,6 +645,7 @@ const extractInGameLoadouts = (
 										});
 										return;
 									}
+
 									loadout.armorSlotMods[mod.armorSlotId][idx] = mod.id;
 								} else if (
 									mod.modSocketCategoryId === EModSocketCategoryId.Stat
@@ -678,26 +684,41 @@ const extractInGameLoadouts = (
 							}
 							switch (index) {
 								case 0:
+									console.log(
+										'>>>>>>>>>>>>>>>>> classAbility',
+										getClassAbilityByHash(hash)
+									);
 									loadout.classAbilityId = getClassAbilityByHash(hash)
 										.id as EClassAbilityId;
 									break;
 								case 1:
+									console.log('>>>>>>>>>>>>>>>>> jump', getJumpByHash(hash));
 									loadout.jumpId = getJumpByHash(hash).id as EJumpId;
 									break;
 								case 2:
 									const superAbility = getSuperAbilityByHash(hash);
+									console.log('>>>>>>>>>>>>>>>>> superAbility', superAbility);
 									loadout.superAbilityId = superAbility.id as ESuperAbilityId;
 									// This is a janky way to get the subclass id from the super ability id
 									loadout.destinySubclassId = superAbility.destinySubclassId;
 									break;
 								case 3:
+									console.log('>>>>>>>>>>>>>>>>> melee', getMeleeByHash(hash));
 									loadout.meleeId = getMeleeByHash(hash).id as EMeleeId;
 									break;
 								case 4:
+									console.log(
+										'>>>>>>>>>>>>>>>>> grenade',
+										getGrenadeByHash(hash)
+									);
 									loadout.grenadeId = getGrenadeByHash(hash).id as EGrenadeId;
 									break;
 								case 5:
 								case 6:
+									console.log(
+										'>>>>>>>>>>>>>>>>> aspect',
+										getAspectByHash(hash)
+									);
 									loadout.aspectIdList.push(
 										getAspectByHash(hash).id as EAspectId
 									);
@@ -714,6 +735,10 @@ const extractInGameLoadouts = (
 								case 16:
 								case 17:
 								case 18:
+									console.log(
+										'>>>>>>>>>>>>>>>>>> fragment',
+										getFragmentByHash(hash)
+									);
 									loadout.fragmentIdList.push(
 										getFragmentByHash(hash).id as EFragmentId
 									);
@@ -1178,6 +1203,7 @@ const replaceAlternateSeasonArtifactMods = (
 			const idx = newArmorSlotMods[mod.armorSlotId].findIndex(
 				(x) => x === null
 			);
+			console.log('>>>>>>>>>>>>>>>>> mod', mod);
 			if (idx === -1) {
 				console.warn({
 					message: 'Could not find null value in armorSlotMods',
@@ -1193,6 +1219,7 @@ const replaceAlternateSeasonArtifactMods = (
 					return;
 				}
 				const newMod = getModByHash(newModHash);
+				console.log('>>>>>>>>>>>>>>>>> newMod', newMod);
 				if (newMod) {
 					newArmorSlotMods[armorSlotId][idx] = newMod.id;
 				}

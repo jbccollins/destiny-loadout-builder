@@ -737,7 +737,11 @@ const extractInGameLoadouts = (
 								case 18:
 									console.log(
 										'>>>>>>>>>>>>>>>>>> fragment',
-										getFragmentByHash(hash)
+										getFragmentByHash(hash),
+										hash,
+										loadout.index,
+										loadout.characterId,
+										character.destinyClassId
 									);
 									loadout.fragmentIdList.push(
 										getFragmentByHash(hash).id as EFragmentId

@@ -166,7 +166,7 @@ const InspectingOptimizationDetails = (
 						Remove the following mods from the loadout to resolve this
 						optimization:
 					</InspectingOptimizationDetailsHelp>
-					{ArmorSlotIdList.map((armorSlotId) => {
+					{ArmorSlotIdList.map((armorSlotId, i) => {
 						const armorSlot = getArmorSlot(armorSlotId);
 						const artifactModList = loadout.armorSlotMods[armorSlotId]
 							.filter((x) => x !== null)
@@ -191,9 +191,9 @@ const InspectingOptimizationDetails = (
 								<Box
 									sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
 								>
-									{artifactModList.map((mod) => (
+									{artifactModList.map((mod, i) => (
 										<Box
-											key={mod.id}
+											key={i}
 											sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
 										>
 											<Box sx={{ width: '26px', height: '26px' }}>
@@ -593,12 +593,36 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 			}}
 		>
 			<Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+				<Box>
+					<CustomTooltip
+						title={`This is a ${
+							loadoutType === ELoadoutType.DIM ? 'DIM' : 'D2'
+						} loadout`}
+					>
+						<Box
+							sx={{
+								height: '20px',
+								width: '20px',
+								minWidth: '20px',
+								minHeight: '20px',
+							}}
+						>
+							<Image
+								src={loadoutType === ELoadoutType.DIM ? dimLogo : d2Logo}
+								alt="Loadout Logo"
+								height="20px"
+								width="20px"
+							/>
+						</Box>
+					</CustomTooltip>
+				</Box>
 				{loadoutType === ELoadoutType.InGame && (
 					<Box
 						sx={{
 							width: inGameLoadoutIconSize,
 							height: inGameLoadoutIconSize,
 							position: 'relative',
+							marginLeft: '4px',
 						}}
 					>
 						<Box
@@ -796,29 +820,6 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 						</IconButton>
 					</CustomTooltip>
 				)}
-				<Box sx={{ marginLeft: 'auto' }}>
-					<CustomTooltip
-						title={`This is a ${
-							loadoutType === ELoadoutType.DIM ? 'DIM' : 'D2'
-						} loadout`}
-					>
-						<Box
-							sx={{
-								height: '20px',
-								width: '20px',
-								minWidth: '20px',
-								minHeight: '20px',
-							}}
-						>
-							<Image
-								src={loadoutType === ELoadoutType.DIM ? dimLogo : d2Logo}
-								alt="Loadout Logo"
-								height="20px"
-								width="20px"
-							/>
-						</Box>
-					</CustomTooltip>
-				</Box>
 			</Box>
 			<Breakdown loadout={loadout} />
 		</Box>

@@ -21,6 +21,7 @@ import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
 import { styled } from '@mui/material';
 import { Box } from '@mui/system';
 import CustomTooltip from './CustomTooltip';
+import MasterworkedBungieImage from './MasterworkedBungieImage';
 
 const Container = styled(Box)(({ theme }) => ({
 	display: 'flex',
@@ -28,6 +29,8 @@ const Container = styled(Box)(({ theme }) => ({
 	flexWrap: 'wrap',
 	position: 'relative',
 	height: '320px',
+	paddingLeft: '2px',
+	paddingTop: '2px',
 }));
 
 const ArmorSlotRow = styled(Box)(({ theme }) => ({
@@ -80,8 +83,8 @@ type FinalizedModPlacement = Record<
 type GetFinalizedModPlacementParams = {
 	modPlacement: ArmorStatAndRaidModComboPlacement;
 	artificeModIdList: EModId[];
-	armorItems: ArmorItem[];
-	classItem: ProcessedArmorItemMetadataClassItem;
+	armorItems: ArmorItem[] | null;
+	classItem: ProcessedArmorItemMetadataClassItem | null;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 };
 const getDefaultFinalizedModPlacement = (): FinalizedModPlacement => {
@@ -112,8 +115,12 @@ const getFinalizedModPlacement = (
 		const { armorStatModId, raidModId } = modPlacement[armorSlotId];
 		const isArtificeArmorSlot =
 			armorSlotId === EArmorSlotId.ClassItem
-				? classItem.requiredClassItemMetadataKey === 'Artifice'
-				: armorItems.find((x) => x.armorSlot === armorSlotId).isArtifice;
+				? classItem
+					? classItem.requiredClassItemMetadataKey === 'Artifice'
+					: false
+				: armorItems
+				? armorItems.find((x) => x.armorSlot === armorSlotId)?.isArtifice
+				: false;
 		const artificeModId = isArtificeArmorSlot
 			? artificeModIdList.slice(numSlottedArtificeMods)[0] ?? null
 			: null;
@@ -133,14 +140,17 @@ const getFinalizedModPlacement = (
 type ModPlacementProps = {
 	modPlacement: ArmorStatAndRaidModComboPlacement;
 	artificeModIdList: EModId[];
-	armorItems: ArmorItem[];
+	armorItems: ArmorItem[] | null;
 	classItem: ProcessedArmorItemMetadataClassItem;
-	exoticArmorItem: AvailableExoticArmorItem;
+	exoticArmorItem: AvailableExoticArmorItem | null;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	onlyShowArmorSlotMods?: boolean;
+	withArmorItemIcons?: boolean;
 };
 
 const ModPlacement = (props: ModPlacementProps) => {
-	const { classItem, armorItems } = props;
+	const { classItem, armorItems, onlyShowArmorSlotMods, withArmorItemIcons } =
+		props;
 	const finalizedModPlacement = getFinalizedModPlacement({
 		modPlacement: props.modPlacement,
 		artificeModIdList: props.artificeModIdList,
@@ -148,13 +158,20 @@ const ModPlacement = (props: ModPlacementProps) => {
 		classItem: props.classItem,
 		armorSlotMods: props.armorSlotMods,
 	});
-	const showArtificeModSlot = ArmorSlotWithClassItemIdList.some(
-		(armorSlotId) => !!finalizedModPlacement[armorSlotId].artificeModId
-	);
-	const showRaidModSlot = ArmorSlotWithClassItemIdList.some(
-		(armorSlotId) => !!finalizedModPlacement[armorSlotId].raidModId
-	);
-	const exoticPerk = props.exoticArmorItem.exoticPerk;
+	const showPerkIcons = !onlyShowArmorSlotMods;
+	const showArmorStatModSlot = !onlyShowArmorSlotMods;
+	const showHelpText = !onlyShowArmorSlotMods;
+	const showArtificeModSlot =
+		!onlyShowArmorSlotMods &&
+		ArmorSlotWithClassItemIdList.some(
+			(armorSlotId) => !!finalizedModPlacement[armorSlotId].artificeModId
+		);
+	const showRaidModSlot =
+		!onlyShowArmorSlotMods &&
+		ArmorSlotWithClassItemIdList.some(
+			(armorSlotId) => !!finalizedModPlacement[armorSlotId].raidModId
+		);
+	const exoticPerk = props.exoticArmorItem?.exoticPerk;
 	return (
 		<Container>
 			{ArmorSlotWithClassItemIdList.map((armorSlotId) => {
@@ -167,17 +184,24 @@ const ModPlacement = (props: ModPlacementProps) => {
 					  )
 					: { name: null, icon: null };
 
+				const currentArmorItem = (armorItems || []).find(
+					(x) => x.armorSlot === armorSlotId
+				);
+
 				const intrinsicArmorPerkOrAttributeId =
 					armorSlotId === EArmorSlotId.ClassItem
-						? intrinsicArmorPerkOrAttributeIdList.includes(
-								classItem.requiredClassItemMetadataKey as any
-						  )
-							? classItem.requiredClassItemMetadataKey
+						? classItem
+							? intrinsicArmorPerkOrAttributeIdList.includes(
+									classItem.requiredClassItemMetadataKey as any
+							  )
+								? classItem.requiredClassItemMetadataKey
+								: null
 							: null
-						: armorItems.find((x) => x.armorSlot === armorSlotId)
-								.intrinsicArmorPerkOrAttributeId;
+						: currentArmorItem
+						? currentArmorItem.intrinsicArmorPerkOrAttributeId
+						: null;
 
-				const isExotic = props.exoticArmorItem.armorSlot === armorSlotId;
+				const isExotic = props.exoticArmorItem?.armorSlot === armorSlotId;
 				const { name: armorSlotName, icon: armorSlotIcon } =
 					getArmorSlot(armorSlotId);
 				const { name: armorStatModName, icon: armorStatModIcon } =
@@ -196,28 +220,63 @@ const ModPlacement = (props: ModPlacementProps) => {
 							intrinsicArmorPerkOrAttributeId as EIntrinsicArmorPerkOrAttributeId
 					  )
 					: { name: null, icon: null };
+
+				// Fallback icon
+				const { icon: exoticIcon } = isExotic
+					? props.exoticArmorItem
+					: { icon: null };
+
+				const _currentArmorItem =
+					isExotic && !currentArmorItem
+						? {
+								...props.exoticArmorItem,
+								isMasterworked: false,
+						  }
+						: currentArmorItem;
+
+				const useCurrentItemArmorIcon =
+					withArmorItemIcons && !!_currentArmorItem;
 				return (
 					<ArmorSlotRow className="armor-slot-row" key={armorSlotId}>
 						<CustomTooltip
-							title={`${isExotic ? 'Exotic ' : ''}${armorSlotName}`}
+							title={
+								useCurrentItemArmorIcon
+									? _currentArmorItem.name
+									: `${isExotic ? 'Exotic ' : ''}${armorSlotName}`
+							}
 						>
 							<Box
 								sx={{
 									// This filter comes from this site: https://codepen.io/sosuke/pen/Pjoqqp
 									// Converts the image to gold (#ffd700)
-									filter: isExotic
-										? 'brightness(0) saturate(100%) invert(79%) sepia(19%) saturate(2242%) hue-rotate(360deg) brightness(106%) contrast(104%)'
-										: 'none',
+									filter:
+										isExotic && !useCurrentItemArmorIcon
+											? 'brightness(0) saturate(100%) invert(79%) sepia(19%) saturate(2242%) hue-rotate(360deg) brightness(106%) contrast(104%)'
+											: 'none',
 								}}
 							>
-								<Socket getIcon={() => armorSlotIcon} />
+								{useCurrentItemArmorIcon && (
+									<Box sx={{ marginLeft: '-2px', marginTop: '-2px' }}>
+										<MasterworkedBungieImage
+											src={_currentArmorItem.icon}
+											width={'40px'}
+											height={'40px'}
+											isMasterworked={_currentArmorItem.isMasterworked}
+										/>
+									</Box>
+								)}
+								{!useCurrentItemArmorIcon && (
+									<Socket getIcon={() => armorSlotIcon} />
+								)}
 							</Box>
 						</CustomTooltip>
-						<CustomTooltip title={armorStatModName}>
-							<Box className="armor-stat-mod-socket">
-								<Socket getIcon={() => armorStatModIcon} />
-							</Box>
-						</CustomTooltip>
+						{showArmorStatModSlot && (
+							<CustomTooltip title={armorStatModName}>
+								<Box className="armor-stat-mod-socket">
+									<Socket getIcon={() => armorStatModIcon} />
+								</Box>
+							</CustomTooltip>
+						)}
 						{showArtificeModSlot && (
 							<CustomTooltip title={artificeModName}>
 								<Box className="artifice-mod-socket">
@@ -226,11 +285,14 @@ const ModPlacement = (props: ModPlacementProps) => {
 							</CustomTooltip>
 						)}
 						{armorSlotModIdList.map((armorSlotModId, i) => {
-							const { name, icon } = armorSlotModId
+							const { name, icon, isArtifactMod } = armorSlotModId
 								? getMod(armorSlotModId)
-								: { name: null, icon: null };
+								: { name: null, icon: null, isArtifactMod: false };
 							return (
-								<CustomTooltip title={name} key={i}>
+								<CustomTooltip
+									title={`${name}${isArtifactMod ? ' (Artifact)' : ''}`}
+									key={i}
+								>
 									<Box className={`armor-slot-mod-socket$-${i}`}>
 										<Socket getIcon={() => icon} />
 									</Box>
@@ -244,21 +306,21 @@ const ModPlacement = (props: ModPlacementProps) => {
 								</Box>
 							</CustomTooltip>
 						)}
-						{artificeModId && (
+						{artificeModId && showPerkIcons && (
 							<CustomTooltip title={'Artifice Armor'}>
 								<Box className="artifice-badge">
 									<Socket getIcon={() => ARTIFICE_ICON} />
 								</Box>
 							</CustomTooltip>
 						)}
-						{raidIcon && (
+						{raidIcon && showPerkIcons && (
 							<CustomTooltip title={`${raidName} Armor`}>
 								<Box className="raid-badge">
 									<Socket getIcon={() => raidIcon} />
 								</Box>
 							</CustomTooltip>
 						)}
-						{intrinsicArmorPerkOrAttributeIcon && (
+						{intrinsicArmorPerkOrAttributeIcon && showPerkIcons && (
 							<CustomTooltip title={`${intrinsicArmorPerkOrAttributeName}`}>
 								<Box className="intrinsic-armor-perk-or-attribute-badge">
 									<Socket getIcon={() => intrinsicArmorPerkOrAttributeIcon} />
@@ -276,40 +338,49 @@ const ModPlacement = (props: ModPlacementProps) => {
 					</ArmorSlotRow>
 				);
 			})}
-			<Box
-				sx={{
-					position: 'absolute',
-					width: '136px',
-					height: '4px',
-					border: '1px solid white',
-					borderTop: 'none',
-					marginLeft: showArtificeModSlot ? '144px' : '96px',
-					top: `236px`,
-				}}
-			></Box>
-			<Box
-				sx={{
-					background: 'white',
-					width: '2px',
-					height: '4px',
-					position: 'absolute',
-					top: '240px', // `calc(100% + 1px)`,
-					marginLeft: showArtificeModSlot ? '213px' : '165px',
-				}}
-			></Box>
-			<Description>Stat Mods</Description>
+			{showHelpText && (
+				<>
+					{' '}
+					<Box
+						sx={{
+							position: 'absolute',
+							width: '136px',
+							height: '4px',
+							border: '1px solid white',
+							borderTop: 'none',
+							marginLeft: showArtificeModSlot ? '144px' : '96px',
+							top: `236px`,
+						}}
+					></Box>
+					<Box
+						sx={{
+							background: 'white',
+							width: '2px',
+							height: '4px',
+							position: 'absolute',
+							top: '240px', // `calc(100% + 1px)`,
+							marginLeft: showArtificeModSlot ? '213px' : '165px',
+						}}
+					></Box>
+				</>
+			)}
+
+			{showHelpText && <Description>Stat Mods</Description>}
+
 			{showArtificeModSlot && (
 				<Description sx={{ marginLeft: `${BASE_OFFSET + 48}px` }}>
 					Artifice Mods
 				</Description>
 			)}
-			<Description
-				sx={{
-					marginLeft: `${BASE_OFFSET + (showArtificeModSlot ? 144 : 96)}px`,
-				}}
-			>
-				Armor Mods
-			</Description>
+			{showHelpText && (
+				<Description
+					sx={{
+						marginLeft: `${BASE_OFFSET + (showArtificeModSlot ? 144 : 96)}px`,
+					}}
+				>
+					Armor Mods
+				</Description>
+			)}
 			{showRaidModSlot && (
 				<Description
 					sx={{

@@ -95,7 +95,10 @@ import {
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
-import { ArmorStatAndRaidModComboPlacement } from '../processArmor/getModCombos';
+import {
+	ArmorStatAndRaidModComboPlacement,
+	getDefaultModPlacements,
+} from '../processArmor/getModCombos';
 
 // A loadout that has some armor, mods or subclass options selected is considered valid
 // If a loadout just contains weapons, shaders, etc. then it is considered invalid
@@ -205,6 +208,7 @@ const extractDimLoadouts = (
 		return [];
 	}
 	dimLoadouts.forEach((dimLoadout) => {
+		console.log('>>>>>> dimLoadout', dimLoadout);
 		const destinyClassId =
 			DestinyClassHashToDestinyClass[dimLoadout.classType] || null; // Loadouts with just weapons don't need to have a class type
 
@@ -215,6 +219,7 @@ const extractDimLoadouts = (
 			loadoutType: ELoadoutType.DIM,
 			destinyClassId,
 		};
+
 		const desiredStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
 		const achievedStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
 		const achievedStats: ArmorStatMapping = getDefaultArmorStatMapping();
@@ -454,6 +459,9 @@ const extractDimLoadouts = (
 		loadout.achievedStatTiers = achievedStatTiers;
 		loadout.achievedStats = achievedStats;
 		loadouts.push(loadout);
+		if (loadout.name === 'GP Void Contraverse (WIP LS)') {
+			console.log('>>>>>> loadout', loadout);
+		}
 	});
 	return loadouts;
 };
@@ -538,6 +546,7 @@ const extractInGameLoadouts = (
 		}
 		const destinyClassId = character.destinyClassId;
 		characterLoadouts.loadouts.forEach((inGameLoadout, index) => {
+			console.log('>>>>>> inGameLoadout', inGameLoadout);
 			// This nameHash check catches empty loadouts. It is not possible
 			// to create a loadout without a name in-game.
 			if (!inGameLoadout || inGameLoadout.nameHash === UNSET_PLUG_HASH) {
@@ -1024,7 +1033,7 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		id: ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
 		name: 'Invalid Loadout Configuration',
 		description:
-			'Something about this loadout is not configured correctly and no combination of armor pieces can make it valid. This most often happens when you have a loadout that had raid mods equipped and you have since deleted the raid armor that could socket those mods. In rare cases this can happen if you somehow managed to create a loadout where the total mod cost for a single armor slot exceeded 10. This would likely only happen if there was a bug in DIM or another third party loadout creation tool.',
+			'Something about this loadout is not configured correctly and no combination of armor pieces can make it valid. This can happen when the loadout uses raid mods and you have since deleted the raid armor that could socket those mods. In rare cases this can happen if you somehow managed to create a loadout where the total mod cost for a single armor slot exceeded 10. This would likely only happen if there was a bug in DIM or another third party loadout creation tool.',
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.MutuallyExclusiveMods]: {
@@ -1208,6 +1217,7 @@ export const getLoadoutsThatCanBeOptimized = (
 		availableExoticArmor,
 	} = params;
 	Object.values(loadouts).forEach((loadout) => {
+		console.log('>>>>>>>>>>>>>>>>> loadout', loadout);
 		try {
 			// throw new Error('test');
 			const optimizationTypeList: ELoadoutOptimizationTypeId[] = [
@@ -1227,14 +1237,16 @@ export const getLoadoutsThatCanBeOptimized = (
 					replaceAlternateSeasonArtifactMods(loadout.armorSlotMods)
 				);
 			}
+			const metadata = {
+				maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
+				lowestCost: Infinity,
+				currentCost: Infinity,
+				lowestWastedStats: Infinity,
+				currentWastedStats: Infinity,
+				mutuallyExclusiveModGroups: [],
+				modPlacement: getDefaultModPlacements().placement,
+			};
 			let earlyProgressCallback = false;
-			let maxPossibleDesiredStatTiers = getDefaultArmorStatMapping();
-			let lowestCost = Infinity;
-			let currentCost = Infinity;
-			let lowestWastedStats = Infinity;
-			let currentWastedStats = Infinity;
-			let mutuallyExclusiveModGroups: string[] = [];
-			let modPlacement: ArmorStatAndRaidModComboPlacement = null;
 			armorSlotModsVariants.forEach(
 				(armorSlotMods, armorSlotModsVariantsIndex) => {
 					// Don't even try to process without an exotic
@@ -1250,6 +1262,7 @@ export const getLoadoutsThatCanBeOptimized = (
 							canBeOptimized: true,
 							loadoutId: loadout.id,
 							optimizationTypeList: optimizationTypeList,
+							metadata: metadata,
 						});
 						return;
 					}
@@ -1313,7 +1326,7 @@ export const getLoadoutsThatCanBeOptimized = (
 					let maxDiff = -1;
 					let hasHigherStatTiers = false;
 					if (armorSlotModsVariantsIndex === 0) {
-						maxPossibleDesiredStatTiers = {
+						metadata.maxPossibleDesiredStatTiers = {
 							...processedArmor.maxPossibleDesiredStatTiers,
 						};
 					}
@@ -1339,11 +1352,11 @@ export const getLoadoutsThatCanBeOptimized = (
 					if (armorSlotModsVariantsIndex === 0) {
 						// In one loop find the lowest cost and lowest wasted stats
 						processedArmor.items.forEach((x) => {
-							if (x.metadata.totalModCost < lowestCost) {
-								lowestCost = x.metadata.totalModCost;
+							if (x.metadata.totalModCost < metadata.lowestCost) {
+								metadata.lowestCost = x.metadata.totalModCost;
 							}
-							if (x.metadata.wastedStats < lowestWastedStats) {
-								lowestWastedStats = x.metadata.wastedStats;
+							if (x.metadata.wastedStats < metadata.lowestWastedStats) {
+								metadata.lowestWastedStats = x.metadata.wastedStats;
 							}
 							// If this is the currently equipped set of armor, then we can use the mod placement
 							if (
@@ -1352,18 +1365,23 @@ export const getLoadoutsThatCanBeOptimized = (
 									loadout.armor.find((x) => x.id === processedArmorId)
 								)
 							) {
-								modPlacement = x.modPlacement;
+								metadata.modPlacement = x.modPlacement;
 							}
 						});
 
+						// // Pick the first valid placment as a placeholder
+						// // We only use this for rendering armor slot mods
+						// if (!modPlacement && processedArmor.items.length > 0) {
+						// 	modPlacement = processedArmor.items[0].modPlacement;
+						// }
 						// TODO: Should this only be done on the first loop?
-						currentCost = sumOfCurrentStatModsCost;
+						metadata.currentCost = sumOfCurrentStatModsCost;
 						hasLowerCost =
-							maxDiff >= 0 && lowestCost < sumOfCurrentStatModsCost;
+							maxDiff >= 0 && metadata.lowestCost < sumOfCurrentStatModsCost;
 
 						const wastedStats = getWastedStats(loadout.achievedStats);
-						currentWastedStats = wastedStats;
-						hasFewerWastedStats = lowestWastedStats < wastedStats;
+						metadata.currentWastedStats = wastedStats;
+						hasFewerWastedStats = metadata.lowestWastedStats < wastedStats;
 					}
 
 					const hasUnmetDIMStatTierConstraints =
@@ -1414,7 +1432,7 @@ export const getLoadoutsThatCanBeOptimized = (
 					const flattenedMods = flattenMods(loadout).map((x) => getMod(x));
 					const [_hasMutuallyExclusiveMods, _mutuallyExclusiveModGroups] =
 						hasMutuallyExclusiveMods(flattenedMods);
-					mutuallyExclusiveModGroups = _mutuallyExclusiveModGroups;
+					metadata.mutuallyExclusiveModGroups = _mutuallyExclusiveModGroups;
 
 					if (hasHigherStatTiers) {
 						optimizationTypeList.push(
@@ -1490,15 +1508,6 @@ export const getLoadoutsThatCanBeOptimized = (
 			const humanizedOptimizationTypes =
 				humanizeOptimizationTypes(optimizationTypeList);
 
-			const metadata = {
-				maxPossibleDesiredStatTiers,
-				lowestCost,
-				currentCost,
-				lowestWastedStats,
-				currentWastedStats,
-				mutuallyExclusiveModGroups,
-				modPlacement,
-			};
 			if (humanizedOptimizationTypes.length > 0) {
 				result.push({
 					optimizationTypeList: humanizedOptimizationTypes,

@@ -1,14 +1,17 @@
 import ModPlacement from '@dlb/components/ModPlacement';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
+import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { RichAnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
+import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { EArmorSlotId, EGearTierId } from '@dlb/types/IdEnums';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Collapse, IconButton } from '@mui/material';
 import { useState } from 'react';
+import ModDetails from './ModDetails';
 type BreakdownProps = {
 	loadout: RichAnalyzableLoadout;
 };
@@ -21,13 +24,28 @@ const BreakdownContent = (props: BreakdownProps) => {
 		(x) => x.gearTierId === EGearTierId.Exotic
 	);
 
-	let exoticArmorItem = null;
+	if (props.loadout.name === 'GP Void Contraverse (WIP LS)') {
+		console.log('props.loadout', props.loadout);
+	}
+
+	let exoticArmorItem: AvailableExoticArmorItem = null;
 	if (exoticArmor) {
 		exoticArmorItem = availableExoticArmor[props.loadout.destinyClassId][
 			exoticArmor.armorSlot
 		].find(
 			(x: AvailableExoticArmorItem) => x.hash === props.loadout.exoticHash
 		);
+	} else if (props.loadout.exoticHash) {
+		for (const armorSlotId of ArmorSlotIdList) {
+			exoticArmorItem = availableExoticArmor[props.loadout.destinyClassId][
+				armorSlotId
+			].find(
+				(x: AvailableExoticArmorItem) => x.hash === props.loadout.exoticHash
+			);
+			if (exoticArmorItem) {
+				break;
+			}
+		}
 	}
 
 	const _classItem = props.loadout.armor.find(
@@ -54,9 +72,26 @@ const BreakdownContent = (props: BreakdownProps) => {
 
 	// TODO: only show this when the loadout has finished processing
 	const useModPlacementView =
-		!!modPlacement && !!classItem && !!exoticArmorItem;
+		!!modPlacement && // No mod placment means we can't render raid mods in their correct slots
+		!!classItem && // No class item means we can't render raid mods in their correct slots
+		// !!exoticArmorItem && //
+		// Invalid loadouts and errors are not guaranteed to have valid stat/raid mod placements
+		!props.loadout.optimizationTypeList.some((x) =>
+			[
+				ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
+				ELoadoutOptimizationTypeId.Error,
+			].includes(x)
+		);
+
+	const useModDetailsView = !useModPlacementView && !!modPlacement;
+	const cannotRenderModView = !useModDetailsView && !useModPlacementView;
+
 	return (
 		<Box>
+			{/* <Box>
+				<Box>Exotic Armor: </Box>
+				<BungieImage width="40" height="40" src={exoticIcon} alt={exoticName} />
+			</Box> */}
 			<Box sx={{ overflowY: 'auto' }} className="mod-placement-wrapper">
 				{useModPlacementView && (
 					<ModPlacement
@@ -66,13 +101,20 @@ const BreakdownContent = (props: BreakdownProps) => {
 						armorItems={props.loadout.armor}
 						classItem={classItem}
 						armorSlotMods={props.loadout.armorSlotMods}
+						withArmorItemIcons
 					/>
 				)}
-				{!useModPlacementView && (
-					<Box>
-						Mod Placement View Not Available. Alternative view coming soon
-					</Box>
+				{useModDetailsView && (
+					<ModDetails
+						exoticArmorItem={exoticArmorItem}
+						modPlacement={modPlacement}
+						artificeModIdList={props.loadout.artificeModIdList}
+						armorItems={props.loadout.armor}
+						armorSlotMods={props.loadout.armorSlotMods}
+						raidModIdList={props.loadout.raidMods}
+					/>
 				)}
+				{cannotRenderModView && <Box>Unable to render mods</Box>}
 			</Box>
 		</Box>
 	);

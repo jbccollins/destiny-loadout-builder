@@ -143,6 +143,8 @@ const testCases: TestCase[] = [
 		[
 			{
 				masterworkAssumption: EMasterworkAssumption.None,
+				useBonusResilience: false,
+				selectedExoticArmorItem: null,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 0,
 					[EArmorStatId.Resilience]: 60,
@@ -270,6 +272,8 @@ const testCases: TestCase[] = [
 		'It returns results with artifice boosts required',
 		[
 			{
+				useBonusResilience: false,
+				selectedExoticArmorItem: null,
 				useZeroWastedStats: false,
 				alwaysConsiderCollectionsRolls: false,
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
@@ -451,6 +455,8 @@ const testCases: TestCase[] = [
 		'It returns results when five major mods are required',
 		[
 			{
+				useBonusResilience: false,
+				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.None,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 100,
@@ -607,6 +613,8 @@ const testCases: TestCase[] = [
 		'It returns results when five major mods and two artifice mods are required',
 		[
 			{
+				useBonusResilience: false,
+				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.All,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 0,
@@ -776,6 +784,8 @@ const testCases: TestCase[] = [
 		'It returns results when five major mods and four artifice mods are required',
 		[
 			{
+				useBonusResilience: false,
+				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.All,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 0,
@@ -957,6 +967,8 @@ const testCases: TestCase[] = [
 		'It returns results with a raid chest and class item when the chestpiece has no capacity',
 		[
 			{
+				useBonusResilience: false,
+				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.None,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 0,
@@ -1124,9 +1136,9 @@ const testCases: TestCase[] = [
 	],
 ];
 
-// const nameOfTestToDebug =
-// 	'It returns results with a raid chest and class item when the chestpiece has no capacity';
-const nameOfTestToDebug = null;
+const nameOfTestToDebug =
+	'It returns results with very tight tolerances and maximum stat mod usage';
+// const nameOfTestToDebug = null;
 describe('doProcessArmor', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

@@ -19,6 +19,7 @@ import {
 	useTheme,
 } from '@mui/material';
 import type { NextPage } from 'next';
+import Image from 'next/image';
 
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
@@ -37,7 +38,6 @@ import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
 import RaidModSelector from '@dlb/components/RaidModsSelector';
 import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 import ShareLoadout from '@dlb/components/ShareLoadout';
-import SocialIcon from '@dlb/components/SocialIcon';
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
 import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
 import DestinySubclassSelector from '@dlb/components/SubclassSelector/DestinySubclassSelector';
@@ -412,7 +412,13 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 			<Link
 				sx={{
 					zIndex: 1,
+					//background: 'red',
+					display: 'block',
+					position: 'absolute',
+					top: '24px',
+					right: '40px',
 				}}
+				className="discord-link"
 				href={DISCORD_LINK}
 				target="_blank"
 			>
@@ -421,13 +427,18 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 						transform: 'scale(0.7)',
 						width: '40px',
 						height: '40px',
-						position: 'absolute',
-						top: '24px',
-						right: '40px',
+
 						fontWeight: 500,
 					}}
 				>
-					<SocialIcon linkUrl={DISCORD_LINK} iconUrl={discord_image} text="" />
+					<Image
+						src={discord_image}
+						alt="me"
+						height="40"
+						width="50"
+						objectFit="contain"
+						objectPosition="left"
+					/>
 					<Box
 						sx={{
 							marginTop: '8px',

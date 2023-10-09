@@ -27,7 +27,6 @@ import {
 } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
-	EArmorStatId,
 	EDestinyClassId,
 	EDimLoadoutsFilterId,
 	EGearTierId,
@@ -39,7 +38,7 @@ import {
 	ArmorSlotIdToModIdListMapping,
 	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import {
 	ArmorStatAndRaidModComboPlacement,
@@ -148,20 +147,20 @@ const _processArmorBaseCase = ({
 			masterworkAssumption,
 		});
 		const armorIdList = [...seenArmorIds, armorSlotItem.id] as ArmorIdList;
-		// How to debug a specific armor combo
-		if (
-			isEqual(armorIdList, [
-				'6917529863666127626',
-				'6917529740344211114',
-				'6917529863973030380',
-				'6917529863876854947',
-			]) &&
-			desiredArmorStats[EArmorStatId.Resilience] === 100 &&
-			desiredArmorStats[EArmorStatId.Recovery] === 90 &&
-			desiredArmorStats[EArmorStatId.Discipline] === 80
-		) {
-			console.log('>>>> Specific Combo');
-		}
+		// // How to debug a specific armor combo
+		// if (
+		// 	isEqual(armorIdList, [
+		// 		'6917529863666127626',
+		// 		'6917529740344211114',
+		// 		'6917529863973030380',
+		// 		'6917529863876854947',
+		// 	]) &&
+		// 	desiredArmorStats[EArmorStatId.Resilience] === 100 &&
+		// 	desiredArmorStats[EArmorStatId.Recovery] === 90 &&
+		// 	desiredArmorStats[EArmorStatId.Discipline] === 80
+		// ) {
+		// 	console.log('>>>> Specific Combo');
+		// }
 		const modCombosList = getModCombos({
 			sumOfSeenStats: finalSumOfSeenStats,
 			desiredArmorStats,

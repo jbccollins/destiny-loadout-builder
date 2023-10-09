@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-08',
+		version: '2.4.17',
+		title: 'Analyzer crash fix',
+		sections: [
+			{
+				items: [
+					`Fix a rare bug that could cause the user to see no results in the analyzer if they were missing an aspect in one of their in-game loadouts`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-06',
 		version: '2.4.16',
 		title: 'Mod Placement Details Bug Fixes',

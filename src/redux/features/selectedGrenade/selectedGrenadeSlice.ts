@@ -3,13 +3,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppState } from '@dlb/redux/store';
 
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
-import { ElementIdList } from '@dlb/types/Element';
-import { EElementId } from '@dlb/types/IdEnums';
+import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
+import { EDestinySubclassId } from '@dlb/types/IdEnums';
 import { NIL, v4 as uuid } from 'uuid';
 
-export type SelectedGrenade = {
-	[key in EElementId]: EGrenadeId;
-};
+export type SelectedGrenade = Record<EDestinySubclassId, EGrenadeId>;
 
 export interface SelectedGrenadeState {
 	value: SelectedGrenade;
@@ -17,8 +15,8 @@ export interface SelectedGrenadeState {
 }
 
 const generateIntitalState = (): SelectedGrenade => {
-	return ElementIdList.reduce((accumulator, currentValue) => {
-		accumulator[currentValue] = null; // getGrenadeIdsByElementId(currentValue)[0];
+	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
+		accumulator[currentValue] = null;
 		return accumulator;
 	}, {}) as SelectedGrenade;
 };
@@ -36,6 +34,19 @@ export const selectedGrenadeSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		setSelectedGreandeForDestinySubclass: (
+			state,
+			action: PayloadAction<{
+				destinySubclassId: EDestinySubclassId;
+				grenadeId: EGrenadeId;
+			}>
+		) => {
+			state.value = {
+				...state.value,
+				[action.payload.destinySubclassId]: action.payload.grenadeId,
+			};
+			state.uuid = uuid();
+		},
 		clearSelectedGrenade: (state) => {
 			state.value = generateIntitalState();
 			state.uuid = uuid();
@@ -43,8 +54,11 @@ export const selectedGrenadeSlice = createSlice({
 	},
 });
 
-export const { setSelectedGrenade, clearSelectedGrenade } =
-	selectedGrenadeSlice.actions;
+export const {
+	setSelectedGrenade,
+	clearSelectedGrenade,
+	setSelectedGreandeForDestinySubclass,
+} = selectedGrenadeSlice.actions;
 
 export const selectSelectedGrenade = (state: AppState) =>
 	state.selectedGrenade.value;

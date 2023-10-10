@@ -38,6 +38,19 @@ export const selectedAspectsSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		setSelectedAspectsForDestinySubclass: (
+			state,
+			action: PayloadAction<{
+				destinySubclassId: EDestinySubclassId;
+				aspects: EAspectId[];
+			}>
+		) => {
+			state.value = {
+				...state.value,
+				[action.payload.destinySubclassId]: action.payload.aspects,
+			};
+			state.uuid = uuid();
+		},
 		clearSelectedAspects: (state) => {
 			state.value = getInitialStateValue();
 			state.uuid = uuid();
@@ -45,8 +58,11 @@ export const selectedAspectsSlice = createSlice({
 	},
 });
 
-export const { setSelectedAspects, clearSelectedAspects } =
-	selectedAspectsSlice.actions;
+export const {
+	setSelectedAspects,
+	clearSelectedAspects,
+	setSelectedAspectsForDestinySubclass,
+} = selectedAspectsSlice.actions;
 
 export const selectSelectedAspects = (state: AppState) =>
 	state.selectedAspects.value;

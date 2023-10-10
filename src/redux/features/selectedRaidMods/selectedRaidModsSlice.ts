@@ -5,7 +5,7 @@ import { AppState } from '@dlb/redux/store';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { NIL, v4 as uuid } from 'uuid';
 
-export const getDefaultRaidMods = (): [EModId, EModId, EModId, EModId] => [
+export const getDefaultRaidModIdList = (): [EModId, EModId, EModId, EModId] => [
 	null,
 	null,
 	null,
@@ -20,7 +20,7 @@ export interface SelectedRaidModsState {
 const initialState: SelectedRaidModsState = {
 	// TODO: If we ever let the user have a build with all
 	// Legendary items this will need to have 5 mod slots
-	value: getDefaultRaidMods(),
+	value: getDefaultRaidModIdList(),
 	uuid: NIL,
 };
 
@@ -33,7 +33,7 @@ export const selectedRaidModsSlice = createSlice({
 			state.uuid = uuid();
 		},
 		clearSelectedRaidMods: (state) => {
-			state.value = getDefaultRaidMods();
+			state.value = getDefaultRaidModIdList();
 			state.uuid = uuid();
 		},
 	},

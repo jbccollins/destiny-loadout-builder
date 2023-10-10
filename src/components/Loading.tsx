@@ -12,8 +12,14 @@ import {
 } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { setSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import {
+	setSelectedDestinySubclass,
+	setSelectedDestinySubclassForDestinyClass,
+} from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import {
+	setSelectedExoticArmor,
+	setSelectedExoticArmorForDestinyClass,
+} from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
@@ -32,6 +38,10 @@ import { DestinyClassIdList } from '@dlb/types/DestinyClass';
 import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
+import {
+	selectAlwaysConsiderCollectionsRolls,
+	setAlwaysConsiderCollectionsRolls,
+} from '@dlb/redux/features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
 import {
 	setAnalyzableLoadoutsBreakdown,
 	setHiddenLoadoutIdList,
@@ -71,17 +81,21 @@ import {
 import {
 	selectSelectedAspects,
 	setSelectedAspects,
+	setSelectedAspectsForDestinySubclass,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import {
 	selectSelectedClassAbility,
 	setSelectedClassAbility,
+	setSelectedClassAbilityForDestinySubclass,
 } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
 import {
 	selectSelectedFragments,
 	setSelectedFragments,
+	setSelectedFragmentsForDestinySubclass,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import {
 	selectSelectedGrenade,
+	setSelectedGreandeForDestinySubclass,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import {
@@ -91,6 +105,7 @@ import {
 import {
 	selectSelectedJump,
 	setSelectedJump,
+	setSelectedJumpForDestinySubclass,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 import {
 	selectSelectedMasterworkAssumption,
@@ -99,6 +114,7 @@ import {
 import {
 	selectSelectedMelee,
 	setSelectedMelee,
+	setSelectedMeleeForDestinySubclass,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import {
 	selectSelectedMinimumGearTier,
@@ -112,8 +128,12 @@ import {
 import {
 	selectSelectedSuperAbility,
 	setSelectedSuperAbility,
+	setSelectedSuperAbilityForDestinySubclass,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
-import { setSharedLoadoutConfigStatPriorityOrder } from '@dlb/redux/features/sharedLoadoutConfigStatPriorityOrder/sharedLoadoutConfigStatPriorityOrderSlice';
+import {
+	selectSharedLoadoutConfigStatPriorityOrder,
+	setSharedLoadoutConfigStatPriorityOrder,
+} from '@dlb/redux/features/sharedLoadoutConfigStatPriorityOrder/sharedLoadoutConfigStatPriorityOrderSlice';
 import {
 	selectSharedLoadoutDesiredStats,
 	setSharedLoadoutDesiredStats,
@@ -134,13 +154,15 @@ import {
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
 import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import {
 	EDestinyClassId,
 	EDestinySubclassId,
-	EElementId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
+import {
+	getLocalStorageRecall,
+	LocalStorageRecall,
+} from '@dlb/types/LocalStorageRecall';
 import { TabTypeList } from '@dlb/types/Tab';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, Card, CircularProgress, styled } from '@mui/material';
@@ -210,11 +232,16 @@ function Loading() {
 	const inGameLoadoutsFilter = useAppSelector(selectInGameLoadoutsFilter);
 	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
 	const useBonusResilience = useAppSelector(selectUseBonusResilience);
+	const alwaysConsiderCollectionsRolls = useAppSelector(
+		selectAlwaysConsiderCollectionsRolls
+	);
 	const useOnlyMasterworkedArmor = useAppSelector(
 		selectUseOnlyMasterworkedArmor
 	);
 	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
-	const reservedArmorSlotEnergy = useAppSelector(selectReservedArmorSlotEnergy);
+	const selectedReservedArmorSlotEnergy = useAppSelector(
+		selectReservedArmorSlotEnergy
+	);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const selectedArmorSlotMods = useAppSelector(selectSelectedArmorSlotMods);
 	const selectedIntrisicArmorPerkOrAttributeIds = useAppSelector(
@@ -232,6 +259,9 @@ function Loading() {
 	const selectedJump = useAppSelector(selectSelectedJump);
 	const sharedLoadoutDesiredStats = useAppSelector(
 		selectSharedLoadoutDesiredStats
+	);
+	const sharedLoadoutConfigStatPriorityOrder = useAppSelector(
+		selectSharedLoadoutConfigStatPriorityOrder
 	);
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 
@@ -285,18 +315,35 @@ function Loading() {
 			}
 		}
 
-		let elementId: EElementId = null;
 		// Subclass
 		if (loadoutConfig.dsc) {
-			elementId = getDestinySubclass(loadoutConfig.dsc).elementId;
 			dispatch(
 				setSelectedDestinySubclass({
 					...defaultSelectedDestinySubclass,
 					[loadoutConfig.dc]: loadoutConfig.dsc,
 				})
 			);
+			// Fragments
+			if (loadoutConfig.fl) {
+				dispatch(
+					setSelectedFragmentsForDestinySubclass({
+						destinySubclassId: loadoutConfig.dsc,
+						fragments: loadoutConfig.fl,
+					})
+				);
+			}
+			if (loadoutConfig.g) {
+				dispatch(
+					setSelectedGrenade({
+						...selectedGrenade,
+						[loadoutConfig.dsc]: loadoutConfig.g,
+					})
+				);
+			}
 		} else {
 			dispatch(setSelectedDestinySubclass(defaultSelectedDestinySubclass));
+			dispatch(setSelectedFragments(selectedFragments));
+			dispatch(setSelectedGrenade(selectedGrenade));
 		}
 
 		// Super ability
@@ -315,25 +362,6 @@ function Loading() {
 				setSelectedAspects({
 					...selectedAspects,
 					[loadoutConfig.dsc]: loadoutConfig.al,
-				})
-			);
-		}
-
-		// Fragments
-		if (loadoutConfig.fl) {
-			dispatch(
-				setSelectedFragments({
-					elementId,
-					fragments: loadoutConfig.fl,
-				})
-			);
-		}
-
-		if (loadoutConfig.g) {
-			dispatch(
-				setSelectedGrenade({
-					...selectedGrenade,
-					[elementId]: loadoutConfig.g,
 				})
 			);
 		}
@@ -392,6 +420,212 @@ function Loading() {
 			dispatch(setSharedLoadoutConfigStatPriorityOrder(loadoutConfig.spo));
 		}
 	}
+	type LoadFromLocalStorageRecallParams = {
+		availableExoticArmor: AvailableExoticArmor;
+		localStorageRecall: LocalStorageRecall;
+	};
+	function loadFromLocalStorageRecall({
+		availableExoticArmor,
+		localStorageRecall,
+	}: LoadFromLocalStorageRecallParams) {
+		const { destinyClassId, sharedConfig, settings } = localStorageRecall;
+		if (!destinyClassId) {
+			return false;
+		}
+
+		dispatch(setSelectedDestinyClass(destinyClassId));
+		// Dirty the subclass stuff
+		dispatch(setSelectedDestinySubclass(defaultSelectedDestinySubclass));
+		dispatch(setSelectedAspects(selectedAspects));
+		dispatch(setSelectedFragments(selectedFragments));
+		dispatch(setSelectedSuperAbility(selectedSuperAbility));
+		dispatch(setSelectedGrenade(selectedGrenade));
+		dispatch(setSelectedMelee(selectedMelee));
+		dispatch(setSelectedClassAbility(selectedClassAbility));
+		dispatch(setSelectedJump(selectedJump));
+
+		DestinyClassIdList.forEach((destinyClassId) => {
+			const { exoticHash, destinySubclassId } =
+				localStorageRecall.classSpecificConfig[destinyClassId];
+
+			// Exotics
+			for (const armorSlotId of ArmorSlotIdList) {
+				const availableExoticArmorForSlot = availableExoticArmor[
+					destinyClassId
+				][armorSlotId] as AvailableExoticArmorItem[];
+				const item = availableExoticArmorForSlot.find(
+					(x) => x.hash === exoticHash
+				);
+				if (item) {
+					dispatch(
+						setSelectedExoticArmorForDestinyClass({
+							destinyClassId: destinyClassId as EDestinyClassId,
+							availableExoticArmorItem: item,
+						})
+					);
+					break;
+				}
+			}
+
+			if (destinySubclassId) {
+				dispatch(
+					setSelectedDestinySubclassForDestinyClass({
+						destinyClassId: destinyClassId as EDestinyClassId,
+						destinySubclassId: destinySubclassId as EDestinySubclassId,
+					})
+				);
+			}
+
+			Object.keys(
+				localStorageRecall.classSpecificConfig[destinyClassId].subclassConfig
+			).forEach((destinySubclassId) => {
+				const {
+					fragmentIdList,
+					aspectIdList,
+					superAbilityId,
+					grenadeId,
+					jumpId,
+					meleeId,
+					classAbilityId,
+				} =
+					localStorageRecall.classSpecificConfig[destinyClassId].subclassConfig[
+						destinySubclassId
+					];
+				// Aspects
+				if (aspectIdList) {
+					dispatch(
+						setSelectedAspectsForDestinySubclass({
+							destinySubclassId: destinySubclassId as EDestinySubclassId,
+							aspects: aspectIdList,
+						})
+					);
+				}
+				// Fragments
+				if (fragmentIdList) {
+					dispatch(
+						setSelectedFragmentsForDestinySubclass({
+							destinySubclassId: destinySubclassId as EDestinySubclassId,
+							fragments: fragmentIdList,
+						})
+					);
+				}
+				// SuperAbility
+				if (superAbilityId) {
+					dispatch(
+						setSelectedSuperAbilityForDestinySubclass({
+							destinySubclassId: destinySubclassId as EDestinySubclassId,
+							superAbilityId,
+						})
+					);
+				}
+				// Grenade
+				if (grenadeId) {
+					dispatch(
+						setSelectedGreandeForDestinySubclass({
+							destinySubclassId: destinySubclassId as EDestinySubclassId,
+							grenadeId,
+						})
+					);
+				}
+				// Melee
+				if (meleeId) {
+					dispatch(
+						setSelectedMeleeForDestinySubclass({
+							destinySubclassId: destinySubclassId as EDestinySubclassId,
+							meleeId,
+						})
+					);
+				}
+				// Class Ability
+				if (classAbilityId) {
+					dispatch(
+						setSelectedClassAbilityForDestinySubclass({
+							destinySubclassId: destinySubclassId as EDestinySubclassId,
+							classAbilityId,
+						})
+					);
+				}
+				// Jump
+				if (jumpId) {
+					dispatch(
+						setSelectedJumpForDestinySubclass({
+							destinySubclassId: destinySubclassId as EDestinySubclassId,
+							jumpId,
+						})
+					);
+				}
+			});
+		});
+
+		const {
+			armorSlotMods,
+			raidModIdList,
+			reservedArmorSlotEnergy,
+			intrinsicArmorPerkOrAttributeIdList,
+		} = sharedConfig;
+
+		if (armorSlotMods) {
+			dispatch(setSelectedArmorSlotMods(armorSlotMods));
+		} else {
+			dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
+		}
+
+		if (raidModIdList) {
+			dispatch(setSelectedRaidMods(raidModIdList));
+		} else {
+			dispatch(clearSelectedRaidMods());
+		}
+
+		if (reservedArmorSlotEnergy) {
+			dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
+		} else {
+			dispatch(setReservedArmorSlotEnergy(selectedReservedArmorSlotEnergy));
+		}
+
+		if (intrinsicArmorPerkOrAttributeIdList) {
+			dispatch(
+				setSelectedIntrinsicArmorPerkOrAttributeIds(
+					intrinsicArmorPerkOrAttributeIdList
+				)
+			);
+		} else {
+			dispatch(
+				setSelectedIntrinsicArmorPerkOrAttributeIds(
+					selectedIntrisicArmorPerkOrAttributeIds
+				)
+			);
+		}
+
+		const {
+			masterworkAssumption,
+			minimumGearTierId,
+			dimLoadoutsFilterId,
+			d2LoadoutsFilterId,
+			useBonusResilience,
+			useOnlyMasterworkedArmor,
+			useZeroWastedStats,
+			alwaysConsiderCollectionsRolls,
+		} = settings;
+
+		dispatch(setSelectedMasterworkAssumption(masterworkAssumption));
+		dispatch(setSelectedMinimumGearTier(minimumGearTierId));
+		dispatch(setDimLoadoutsFilter(dimLoadoutsFilterId));
+		dispatch(setInGameLoadoutsFilter(d2LoadoutsFilterId));
+		dispatch(setUseBonusResilience(useBonusResilience));
+		dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
+		dispatch(setUseZeroWastedStats(useZeroWastedStats));
+		dispatch(setAlwaysConsiderCollectionsRolls(alwaysConsiderCollectionsRolls));
+
+		// Diry these things
+		dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
+		dispatch(
+			setSharedLoadoutConfigStatPriorityOrder(
+				sharedLoadoutConfigStatPriorityOrder
+			)
+		);
+
+		return true;
+	}
 
 	useEffect(() => {
 		(async () => {
@@ -448,8 +682,9 @@ function Loading() {
 					}
 				}
 
-				let hasLoadout = sharedLoadoutString ? true : false;
-				let hasTab = tabString ? true : false;
+				let hasSharedLoadoutString = !!sharedLoadoutString;
+				let hasTabString = !!tabString;
+				const localStorageRecall = getLocalStorageRecall();
 
 				log('membership', membershipData);
 				const platformData = await getDestinyAccountsForBungieAccount(
@@ -547,7 +782,8 @@ function Loading() {
 				dispatch(setSelectedExoticArmor(defaultSelectedExoticArmor));
 
 				let successfullyParsedSharedLoadoutUrl = false;
-				if (hasLoadout) {
+				let successfullyParsedLocalStorageRecall = false;
+				if (hasSharedLoadoutString) {
 					try {
 						loadFromQueryParams({
 							availableExoticArmor,
@@ -559,10 +795,20 @@ function Loading() {
 						// Clear the shared loadout url in case it was causing an issue
 						// TODO: Only do this if the error is related to the shared loadout
 						localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
-						hasLoadout = false;
+						hasSharedLoadoutString = false;
+					}
+					// Shared loadout is higher priority than reading from localStorageRecall
+				} else if (!!localStorageRecall) {
+					try {
+						successfullyParsedLocalStorageRecall = loadFromLocalStorageRecall({
+							availableExoticArmor,
+							localStorageRecall,
+						});
+					} catch (e) {
+						// localStorage.removeItem(LOCAL_STORAGE_RECALL_KEY);
 					}
 				}
-				if (hasTab) {
+				if (hasTabString) {
 					try {
 						const tabIndex = Number(tabString);
 						if (TabTypeList.includes(tabIndex)) {
@@ -573,11 +819,15 @@ function Loading() {
 						}
 					} catch (e) {
 						console.warn('Unable to load tab. Error:', e);
-						hasTab = false;
+						hasTabString = false;
 						log('tabError', e);
 					}
 				}
-				if (!successfullyParsedSharedLoadoutUrl) {
+				// Common between loadout urls and localStorageRecall
+				const successfullyParsedLoadout =
+					successfullyParsedSharedLoadoutUrl ||
+					successfullyParsedLocalStorageRecall;
+				if (!successfullyParsedLoadout) {
 					dispatch(setSelectedDestinyClass(validDestinyClassIds[0]));
 					log('characters', characters);
 
@@ -587,29 +837,9 @@ function Loading() {
 					log('defaultSelectedDestinySubclass', defaultSelectedDestinySubclass);
 
 					// This is kinda hacky but by triggering a dispatch of the existing
-					// default values for
-					//  [
-					// 		desiredArmorStats,
-					// 		selectedMasterworkAssumption,
-					// 		selectedFragments,
-					// 		dimLoadouts,
-					// 		dimLoadoutsFilter,
-					// 		selectedMinimumGearTier,
-					// 		selectedRaidMods,
-					// 		reservedArmorSlotEnergy,
-					// 		allClassItemMetadata
-					// 	]
-					// we can "dirty" the store so it knows it needs to recalculate the
+					// default values this stuff we "dirty" the store so it knows it needs to recalculate the
 					// processedArmorItems
-
-					// TODO: Rework setSelectedFragments to not require an element id. Just set all elements
-					// with spread syntax
-					dispatch(
-						setSelectedFragments({
-							elementId: EElementId.Stasis,
-							fragments: selectedFragments[EElementId.Stasis],
-						})
-					);
+					dispatch(setSelectedFragments(selectedFragments));
 					log('dirtySelectedFragments', null, false);
 					dispatch(setSelectedArmorSlotMods(selectedArmorSlotMods));
 					log('dirtySelectedArmorSlotMods', null, false);
@@ -618,30 +848,40 @@ function Loading() {
 					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
 					log('dirtySharedLoadoutDesiredStats', null, false);
 				}
-				dispatch(
-					setSelectedIntrinsicArmorPerkOrAttributeIds(
-						selectedIntrisicArmorPerkOrAttributeIds
-					)
-				);
-				log('dirtySelectedIntrinsicArmorPerkOrAttributeIds', null, false);
+				// These are all handled by the recall
+				if (!successfullyParsedLocalStorageRecall) {
+					dispatch(
+						setSelectedIntrinsicArmorPerkOrAttributeIds(
+							selectedIntrisicArmorPerkOrAttributeIds
+						)
+					);
+					log('dirtySelectedIntrinsicArmorPerkOrAttributeIds', null, false);
+					dispatch(
+						setSelectedMasterworkAssumption(selectedMasterworkAssumption)
+					);
+					log('dirtySelectedMasterworkAssumption', null, false);
+					dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
+					log('dirtyDimLoadoutsFilter', null, false);
+					dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
+					log('dirtyInGameLoadoutsFilter', null, false);
+					dispatch(setUseBonusResilience(useBonusResilience));
+					log('dirtyUseBonusResilience', null, false);
+					dispatch(
+						setAlwaysConsiderCollectionsRolls(alwaysConsiderCollectionsRolls)
+					);
+					log('dirtyAlwaysConsiderCollectionsRolls', null, false);
+					dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
+					log('dirtyUseOnlyMasterworkedArmor', null, false);
+					dispatch(setUseZeroWastedStats(useZeroWastedStats));
+					log('dirtyUseZeroWastedStats', null, false);
+					dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
+					log('dirtySelectedMinimumGearTier', null, false);
+					dispatch(setReservedArmorSlotEnergy(selectedReservedArmorSlotEnergy));
+					log('dirtyReservedArmorSlotEnergy', null, false);
+				}
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				log('dirtyDesiredArmorStats', null, false);
-				dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
-				log('dirtySelectedMasterworkAssumption', null, false);
-				dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
-				log('dirtyDimLoadoutsFilter', null, false);
-				dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
-				log('dirtyInGameLoadoutsFilter', null, false);
-				dispatch(setUseBonusResilience(useBonusResilience));
-				log('dirtyUseBonusResilience', null, false);
-				dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
-				log('dirtyUseOnlyMasterworkedArmor', null, false);
-				dispatch(setUseZeroWastedStats(useZeroWastedStats));
-				log('dirtyUseZeroWastedStats', null, false);
-				dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
-				log('dirtySelectedMinimumGearTier', null, false);
-				dispatch(setReservedArmorSlotEnergy(reservedArmorSlotEnergy));
-				log('dirtyReservedArmorSlotEnergy', null, false);
+
 				if (hasDimLoadoutsError) {
 					dispatch(setDimLoadouts([]));
 					log('hasDimLoadoutsError', null, false);

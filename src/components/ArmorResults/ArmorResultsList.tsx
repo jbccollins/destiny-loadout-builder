@@ -47,14 +47,12 @@ import {
 	getDefaultArmorStatMapping,
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
 import { MISSING_ICON } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
-	EElementId,
 	EGearTierId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
@@ -782,29 +780,17 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const classItemMetadata = allClassItemMetadata[selectedDestinyClass];
 	const exoticArmorItem = selectedExoticArmor[selectedDestinyClass];
-
-	let elementId: EElementId = EElementId.Any;
-	if (destinySubclassId) {
-		elementId = getDestinySubclass(destinySubclassId).elementId;
-	}
-	const aspectIds = destinySubclassId ? selectedAspects[destinySubclassId] : [];
-
-	// TODO: Having to do this cast sucks
-	const fragmentIds =
-		elementId !== EElementId.Any
-			? (selectedFragments[elementId] as EFragmentId[])
-			: [];
-
-	// const { elementId } = getDestinySubclass(destinySubclassId);
-	// const aspectIds = selectedAspects[destinySubclassId];
-
-	// TODO: Having to do this cast sucks
-	// const fragmentIds = selectedFragments[elementId] as EFragmentId[];
+	const aspectIdList = destinySubclassId
+		? selectedAspects[destinySubclassId]
+		: [];
+	const fragmentIdList = destinySubclassId
+		? selectedFragments[destinySubclassId]
+		: [];
 
 	const fragmentArmorStatMappings: Partial<
 		Record<EFragmentId, ArmorStatMapping>
 	> = {};
-	fragmentIds.forEach((id) => {
+	fragmentIdList.forEach((id) => {
 		const { bonuses } = getFragment(id);
 		if (bonuses.length > 0) {
 			fragmentArmorStatMappings[id] = getArmorStatMappingFromFragments(
@@ -870,19 +856,29 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 								artificeModIdList: item.requiredArtificeModIdList,
 								armorSlotMods: selectedArmorSlotMods,
 								armorList: item.armorItems,
-								fragmentIdList: fragmentIds,
-								aspectIdList: aspectIds,
+								fragmentIdList: fragmentIdList,
+								aspectIdList: aspectIdList,
 								exoticArmor: exoticArmor,
 								stats: desiredArmorStats,
 								masterworkAssumption: selectedMasterworkAssumption,
 								useBonusResilience: _useBonusResilience,
 								destinySubclassId,
 								destinyClassId: selectedDestinyClass,
-								jumpId: selectedJump[destinySubclassId],
-								meleeId: selectedMelee[destinySubclassId],
-								superAbilityId: selectedSuperAbility[destinySubclassId],
-								classAbilityId: selectedClassAbility[destinySubclassId],
-								grenadeId: selectedGrenade[elementId],
+								jumpId: destinySubclassId
+									? selectedJump[destinySubclassId]
+									: null,
+								meleeId: destinySubclassId
+									? selectedMelee[destinySubclassId]
+									: null,
+								superAbilityId: destinySubclassId
+									? selectedSuperAbility[destinySubclassId]
+									: null,
+								classAbilityId: destinySubclassId
+									? selectedClassAbility[destinySubclassId]
+									: null,
+								grenadeId: destinySubclassId
+									? selectedGrenade[destinySubclassId]
+									: null,
 								classItem: item.classItem,
 								classItemMetadata: classItemMetadata,
 							})}`}

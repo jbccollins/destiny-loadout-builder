@@ -36,6 +36,7 @@ import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
 import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
 import RaidModSelector from '@dlb/components/RaidModsSelector';
+import ResetButton from '@dlb/components/ResetButton';
 import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 import ShareLoadout from '@dlb/components/ShareLoadout';
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
@@ -392,6 +393,9 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<UseBonusResilienceToggleSwitch />
 								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>
 									<Logout />
+								</Box>
+								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>
+									<ResetButton />
 								</Box>
 							</>
 						),

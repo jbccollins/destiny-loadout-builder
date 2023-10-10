@@ -11,6 +11,21 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-09',
+		version: '2.4.19-BETA',
+		title: 'Remember last used application configuration',
+		sections: [
+			{
+				items: [
+					`The app will now remember the last used application configuration (selected subclass, mods, settings etc...)`,
+					`Fixed a bug with the fragments selector where it was possible to select more fragments than the game allows`,
+					`Add beta.destinyloadoutbuilder.com to test risky changes like this one`,
+					`Add a "Reset" button to the settings page as saving the last used application configuration is a risky change and this provides an escape hatch`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-10',
 		version: '2.4.18',
 		title: 'Better loadout details view',

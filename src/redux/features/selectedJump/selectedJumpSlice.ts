@@ -36,6 +36,19 @@ export const selectedJumpSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		setSelectedJumpForDestinySubclass: (
+			state,
+			action: PayloadAction<{
+				destinySubclassId: EDestinySubclassId;
+				jumpId: EJumpId;
+			}>
+		) => {
+			state.value = {
+				...state.value,
+				[action.payload.destinySubclassId]: action.payload.jumpId,
+			};
+			state.uuid = uuid();
+		},
 		clearSelectedJump: (state) => {
 			state.value = generateIntitalState();
 			state.uuid = uuid();
@@ -43,7 +56,11 @@ export const selectedJumpSlice = createSlice({
 	},
 });
 
-export const { setSelectedJump, clearSelectedJump } = selectedJumpSlice.actions;
+export const {
+	setSelectedJump,
+	clearSelectedJump,
+	setSelectedJumpForDestinySubclass,
+} = selectedJumpSlice.actions;
 
 export const selectSelectedJump = (state: AppState) => state.selectedJump.value;
 

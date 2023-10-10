@@ -1,27 +1,22 @@
-import * as React from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { IArmorStat } from '@dlb/types/ArmorStat';
+import { getElement } from '@dlb/types/Element';
+import { StatBonus, StatBonusStat } from '@dlb/types/globals';
+import { EElementId } from '@dlb/types/IdEnums';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import {
 	Avatar,
 	Box,
 	Chip,
 	FormControl,
-	InputLabel,
-	Menu,
 	MenuItem,
 	Select,
-	SelectChangeEvent,
 	styled,
 } from '@mui/material';
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { getFragment, getFragmentIdsByElementId } from '@dlb/types/Fragment';
-import { EElementId } from '@dlb/types/IdEnums';
-import { getArmorStat, IArmorStat } from '@dlb/types/ArmorStat';
-import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
-import { getElement } from '@dlb/types/Element';
+import Autocomplete from '@mui/material/Autocomplete';
+import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;

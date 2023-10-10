@@ -20,7 +20,6 @@ import { selectUseOnlyMasterworkedArmor } from '@dlb/redux/features/useOnlyMaste
 import { selectUseZeroWastedStats } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStatIdList } from '@dlb/types/ArmorStat';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
 import {
 	EArmorSlotId,
@@ -98,8 +97,7 @@ function NoResults() {
 	let hasFragmentsWithStatPenalties = false;
 	// TODO: Memoize this stuff
 	if (destinySubclassId) {
-		const { elementId } = getDestinySubclass(destinySubclassId);
-		const fragments: EFragmentId[] = selectedFragments[elementId];
+		const fragments: EFragmentId[] = selectedFragments[destinySubclassId];
 		hasFragmentsWithStatPenalties = fragments.some((fragmentId) => {
 			const { bonuses } = getFragment(fragmentId);
 			return bonuses.some((bonus) => bonus.value < 0);

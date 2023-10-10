@@ -15,8 +15,6 @@ import {
 	getAspectIdsByDestinySubclassId,
 	getAspectsByDestinySubclassId,
 } from '@dlb/types/Aspect';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { EElementId } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
 
 const Container = styled('div')(({ theme }) => ({
@@ -77,15 +75,11 @@ function AspectSelector() {
 		: [];
 
 	let fragments: EFragmentId[] = [];
-	let elementId = EElementId.Any;
 
 	let firstDisabledAspectIdList: EAspectId[] = [];
 	let secondDisabledAspectIdList: EAspectId[] = [];
 	if (destinySubclassId) {
-		const { elementId: subclassElementId } =
-			getDestinySubclass(destinySubclassId);
-		elementId = subclassElementId;
-		fragments = selectedFragments[elementId];
+		fragments = selectedFragments[destinySubclassId];
 
 		const availableAspectIds =
 			getAspectIdsByDestinySubclassId(destinySubclassId);

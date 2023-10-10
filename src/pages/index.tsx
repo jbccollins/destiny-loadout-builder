@@ -73,7 +73,7 @@ import {
 	selectSelectedDestinySubclass,
 	setSelectedDestinySubclass,
 } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { setSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { setSelectedFragmentsForDestinySubclass } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import {
 	selectSelectedGrenade,
 	setSelectedGrenade,
@@ -98,7 +98,6 @@ import {
 } from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { ETabType } from '@dlb/types/Tab';
 import React from 'react';
@@ -218,13 +217,16 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					[destinySubclassId]: null,
 				})
 			);
-			// TODO: This will clear fragments for all classes. Is that desired?
-			const { elementId } = getDestinySubclass(destinySubclassId);
-			dispatch(setSelectedFragments({ elementId, fragments: [] }));
+			dispatch(
+				setSelectedFragmentsForDestinySubclass({
+					destinySubclassId,
+					fragments: [],
+				})
+			);
 			dispatch(
 				setSelectedGrenade({
 					...selectedGrenade,
-					[elementId]: null,
+					[destinySubclassId]: null,
 				})
 			);
 			dispatch(

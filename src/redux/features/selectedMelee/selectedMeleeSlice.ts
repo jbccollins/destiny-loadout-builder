@@ -36,6 +36,19 @@ export const selectedMeleeSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		setSelectedMeleeForDestinySubclass: (
+			state,
+			action: PayloadAction<{
+				destinySubclassId: EDestinySubclassId;
+				meleeId: EMeleeId;
+			}>
+		) => {
+			state.value = {
+				...state.value,
+				[action.payload.destinySubclassId]: action.payload.meleeId,
+			};
+			state.uuid = uuid();
+		},
 		clearSelectedMelee: (state) => {
 			state.value = generateIntitalState();
 			state.uuid = uuid();
@@ -43,8 +56,11 @@ export const selectedMeleeSlice = createSlice({
 	},
 });
 
-export const { setSelectedMelee, clearSelectedMelee } =
-	selectedMeleeSlice.actions;
+export const {
+	setSelectedMelee,
+	clearSelectedMelee,
+	setSelectedMeleeForDestinySubclass,
+} = selectedMeleeSlice.actions;
 
 export const selectSelectedMelee = (state: AppState) =>
 	state.selectedMelee.value;

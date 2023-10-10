@@ -42,6 +42,19 @@ export const selectedSuperAbilitySlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		setSelectedSuperAbilityForDestinySubclass: (
+			state,
+			action: PayloadAction<{
+				destinySubclassId: EDestinySubclassId;
+				superAbilityId: ESuperAbilityId;
+			}>
+		) => {
+			state.value = {
+				...state.value,
+				[action.payload.destinySubclassId]: action.payload.superAbilityId,
+			};
+			state.uuid = uuid();
+		},
 		clearSelectedSuperAbility: (state) => {
 			state.value = getInitialStateValue();
 			state.uuid = uuid();
@@ -49,8 +62,11 @@ export const selectedSuperAbilitySlice = createSlice({
 	},
 });
 
-export const { setSelectedSuperAbility, clearSelectedSuperAbility } =
-	selectedSuperAbilitySlice.actions;
+export const {
+	setSelectedSuperAbility,
+	clearSelectedSuperAbility,
+	setSelectedSuperAbilityForDestinySubclass,
+} = selectedSuperAbilitySlice.actions;
 
 export const selectSelectedSuperAbility = (state: AppState) =>
 	state.selectedSuperAbility.value;

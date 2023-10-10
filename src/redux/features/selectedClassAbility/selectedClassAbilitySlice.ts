@@ -40,6 +40,19 @@ export const selectedClassAbilitySlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		setSelectedClassAbilityForDestinySubclass: (
+			state,
+			action: PayloadAction<{
+				destinySubclassId: EDestinySubclassId;
+				classAbilityId: EClassAbilityId;
+			}>
+		) => {
+			state.value = {
+				...state.value,
+				[action.payload.destinySubclassId]: action.payload.classAbilityId,
+			};
+			state.uuid = uuid();
+		},
 		clearSelectedClassAbility: (state) => {
 			state.value = generateIntitalState();
 			state.uuid = uuid();
@@ -47,8 +60,11 @@ export const selectedClassAbilitySlice = createSlice({
 	},
 });
 
-export const { setSelectedClassAbility, clearSelectedClassAbility } =
-	selectedClassAbilitySlice.actions;
+export const {
+	setSelectedClassAbility,
+	clearSelectedClassAbility,
+	setSelectedClassAbilityForDestinySubclass,
+} = selectedClassAbilitySlice.actions;
 
 export const selectSelectedClassAbility = (state: AppState) =>
 	state.selectedClassAbility.value;

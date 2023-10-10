@@ -18,13 +18,8 @@ import {
 	ArmorStatMapping,
 	getArmorStatMappingFromFragments,
 } from '@dlb/types/ArmorStat';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
-import {
-	EDestinyClassId,
-	EDestinySubclassId,
-	EElementId,
-} from '@dlb/types/IdEnums';
+import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
 import { ArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 
 export type GetDlbLoadoutConfigurationParams = {
@@ -62,24 +57,30 @@ export const getDlbLoadoutConfiguration = ({
 	try {
 		const exoticArmor = selectedExoticArmor[selectedDestinyClass];
 		const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
-		let elementId: EElementId = EElementId.Any;
-		if (destinySubclassId) {
-			elementId = getDestinySubclass(destinySubclassId).elementId;
-		}
-		const aspectIds: EAspectId[] = destinySubclassId
+		const aspectIdList: EAspectId[] = destinySubclassId
 			? selectedAspects[destinySubclassId]
 			: [];
 
-		// TODO: Having to do this cast sucks
-		const fragmentIds =
-			elementId !== EElementId.Any
-				? (selectedFragments[elementId] as EFragmentId[])
-				: [];
+		const fragmentIdList = destinySubclassId
+			? selectedFragments[destinySubclassId]
+			: [];
+
+		const grenadeId = destinySubclassId
+			? selectedGrenade[destinySubclassId]
+			: null;
+		const jumpId = destinySubclassId ? selectedJump[destinySubclassId] : null;
+		const meleeId = destinySubclassId ? selectedMelee[destinySubclassId] : null;
+		const superAbilityId = destinySubclassId
+			? selectedSuperAbility[destinySubclassId]
+			: null;
+		const classAbilityId = destinySubclassId
+			? selectedClassAbility[destinySubclassId]
+			: null;
 
 		const fragmentArmorStatMappings: Partial<
 			Record<EFragmentId, ArmorStatMapping>
 		> = {};
-		fragmentIds.forEach((id) => {
+		fragmentIdList.forEach((id) => {
 			const { bonuses } = getFragment(id);
 			if (bonuses.length > 0) {
 				fragmentArmorStatMappings[id] = getArmorStatMappingFromFragments(
@@ -91,16 +92,16 @@ export const getDlbLoadoutConfiguration = ({
 		return {
 			rml: selectedRaidMods,
 			asm: selectedArmorSlotMods,
-			fl: fragmentIds,
-			al: aspectIds,
+			fl: fragmentIdList,
+			al: aspectIdList,
 			e: exoticArmor.hash,
 			dsc: destinySubclassId,
 			dc: selectedDestinyClass,
-			j: selectedJump[destinySubclassId],
-			m: selectedMelee[destinySubclassId],
-			s: selectedSuperAbility[destinySubclassId],
-			c: selectedClassAbility[destinySubclassId],
-			g: selectedGrenade[elementId],
+			j: jumpId,
+			m: meleeId,
+			s: superAbilityId,
+			c: classAbilityId,
+			g: grenadeId,
 			das: desiredArmorStats,
 			spo: sharedLoadoutConfigStatPriorityOrder,
 		};

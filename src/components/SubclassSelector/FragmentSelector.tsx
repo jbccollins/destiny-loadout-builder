@@ -6,7 +6,7 @@ import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyC
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import {
 	selectSelectedFragments,
-	setSelectedFragments,
+	setSelectedFragmentsForDestinySubclass,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getStat } from '@dlb/types/ArmorStat';
@@ -15,9 +15,10 @@ import {
 	getAspectIdsByDestinySubclassId,
 	getMaximumFragmentSlotsByDestinySubclassId,
 } from '@dlb/types/Aspect';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { getFragment, getFragmentIdsByElementId } from '@dlb/types/Fragment';
-import { EElementId } from '@dlb/types/IdEnums';
+import {
+	getFragment,
+	getFragmentIdListByDestinySubclassId,
+} from '@dlb/types/Fragment';
 import { StatBonusStat } from '@dlb/types/globals';
 import { Box, styled } from '@mui/material';
 
@@ -34,15 +35,11 @@ const FragmentSelector = () => {
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
 	let fragments: EFragmentId[] = [];
-	let elementId = EElementId.Any;
 	let maxFragments = 0;
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 	// TODO: Memoize this stuff
 	if (destinySubclassId) {
-		const { elementId: subclassElementId } =
-			getDestinySubclass(destinySubclassId);
-		elementId = subclassElementId;
-		fragments = selectedFragments[elementId];
+		fragments = selectedFragments[destinySubclassId];
 		const _selectedAspects = selectedAspects[destinySubclassId].filter(
 			(x) => x !== null
 		);
@@ -72,7 +69,12 @@ const FragmentSelector = () => {
 	const handleChange = (fragmentIds: EFragmentId[]) => {
 		// TODO: We can probably avoid triggering a redux dirty if they switch to
 		// A set of fragments that has the same stat bonuses
-		dispatch(setSelectedFragments({ elementId, fragments: fragmentIds }));
+		dispatch(
+			setSelectedFragmentsForDestinySubclass({
+				destinySubclassId,
+				fragments: fragmentIds,
+			})
+		);
 	};
 
 	const getOptionValue = (id: EFragmentId) => getFragment(id);
@@ -106,7 +108,7 @@ const FragmentSelector = () => {
 				disabled={!destinySubclassId}
 				getOptionValue={getOptionValue}
 				getOptionStat={getOptionStat}
-				options={getFragmentIdsByElementId(elementId)}
+				options={getFragmentIdListByDestinySubclassId(destinySubclassId)}
 				value={fragments}
 				onChange={handleChange}
 				title={'Fragments'}

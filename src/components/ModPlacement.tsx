@@ -1,4 +1,3 @@
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { ArmorStatAndRaidModComboPlacement } from '@dlb/services/processArmor/getModCombos';
@@ -7,7 +6,7 @@ import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
-import { ARTIFICE_ICON, MISSING_ICON } from '@dlb/types/globals';
+import { ARTIFICE_ICON, EMPTY_SOCKET_TEXT } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
 	EIntrinsicArmorPerkOrAttributeId,
@@ -22,13 +21,28 @@ import { styled } from '@mui/material';
 import { Box } from '@mui/system';
 import CustomTooltip from './CustomTooltip';
 import MasterworkedBungieImage from './MasterworkedBungieImage';
+import { Socket } from './Socket';
 
-const Container = styled(Box)(({ theme }) => ({
+// const Container = styled(Box)(({ theme }) => ({
+// 	display: 'flex',
+// 	flexDirection: 'column',
+// 	flexWrap: 'wrap',
+// 	position: 'relative',
+// 	height: '320px',
+// 	paddingLeft: '2px',
+// 	paddingTop: '2px',
+// }));
+
+const Container = styled(Box, {
+	shouldForwardProp: (prop) => !['showHelpText'].includes(prop as string),
+})<{
+	showHelpText?: boolean;
+}>(({ showHelpText }) => ({
 	display: 'flex',
 	flexDirection: 'column',
 	flexWrap: 'wrap',
 	position: 'relative',
-	height: '320px',
+	height: showHelpText ? '320px' : '242px',
 	paddingLeft: '2px',
 	paddingTop: '2px',
 }));
@@ -38,26 +52,6 @@ const ArmorSlotRow = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	gap: theme.spacing(1),
 }));
-
-type SocketProps = {
-	getIcon: () => string;
-};
-
-const Socket = (props: SocketProps) => {
-	const { getIcon } = props;
-	const icon = getIcon() || MISSING_ICON;
-	return (
-		<Box
-			sx={{
-				width: '40px',
-				height: '40px',
-				opacity: icon === MISSING_ICON ? 0.6 : 1,
-			}}
-		>
-			<BungieImage src={icon} width={'40px'} height={'40px'} />
-		</Box>
-	);
-};
 
 const BASE_OFFSET = -40;
 
@@ -173,7 +167,7 @@ const ModPlacement = (props: ModPlacementProps) => {
 		);
 	const exoticPerk = props.exoticArmorItem?.exoticPerk;
 	return (
-		<Container>
+		<Container showHelpText={showHelpText}>
 			{ArmorSlotWithClassItemIdList.map((armorSlotId) => {
 				const { armorStatModId, armorSlotModIdList, raidModId, artificeModId } =
 					finalizedModPlacement[armorSlotId];
@@ -271,14 +265,14 @@ const ModPlacement = (props: ModPlacementProps) => {
 							</Box>
 						</CustomTooltip>
 						{showArmorStatModSlot && (
-							<CustomTooltip title={armorStatModName}>
+							<CustomTooltip title={armorStatModName || EMPTY_SOCKET_TEXT}>
 								<Box className="armor-stat-mod-socket">
 									<Socket getIcon={() => armorStatModIcon} />
 								</Box>
 							</CustomTooltip>
 						)}
 						{showArtificeModSlot && (
-							<CustomTooltip title={artificeModName}>
+							<CustomTooltip title={artificeModName || EMPTY_SOCKET_TEXT}>
 								<Box className="artifice-mod-socket">
 									<Socket getIcon={() => artificeModIcon} />
 								</Box>
@@ -290,7 +284,11 @@ const ModPlacement = (props: ModPlacementProps) => {
 								: { name: null, icon: null, isArtifactMod: false };
 							return (
 								<CustomTooltip
-									title={`${name}${isArtifactMod ? ' (Artifact)' : ''}`}
+									title={
+										name
+											? `${name}${isArtifactMod ? ' (Artifact)' : ''}`
+											: EMPTY_SOCKET_TEXT
+									}
 									key={i}
 								>
 									<Box className={`armor-slot-mod-socket$-${i}`}>

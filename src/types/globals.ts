@@ -98,6 +98,8 @@ export const MISSING_ICON =
 export const ARTIFICE_ICON =
 	'https://www.bungie.net/common/destiny2_content/icons/46eec78bb7864641bbd7ba1fd4f9f248.png';
 
+export const EMPTY_SOCKET_TEXT = 'Empty Socket';
+
 export function copyToClipboard(text: string) {
 	navigator.clipboard.writeText(text);
 }

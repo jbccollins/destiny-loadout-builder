@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-10',
+		version: '2.4.18',
+		title: 'Better loadout details view',
+		sections: [
+			{
+				items: [
+					`Add subclass config and unplaced mods to the details view in for items in the analyzer tab`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-08',
 		version: '2.4.17',
 		title: 'Analyzer crash fix',

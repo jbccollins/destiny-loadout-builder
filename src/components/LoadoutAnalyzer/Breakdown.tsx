@@ -12,6 +12,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Collapse, IconButton } from '@mui/material';
 import { useState } from 'react';
 import ModDetails from './ModDetails';
+import SubclassSummary from './SubclassSummary';
 type BreakdownProps = {
 	loadout: RichAnalyzableLoadout;
 };
@@ -79,6 +80,8 @@ const BreakdownContent = (props: BreakdownProps) => {
 		!props.loadout.optimizationTypeList.some((x) =>
 			[
 				ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
+				ELoadoutOptimizationTypeId.MissingArmor,
+				ELoadoutOptimizationTypeId.NoExoticArmor,
 				ELoadoutOptimizationTypeId.Error,
 			].includes(x)
 		);
@@ -88,24 +91,33 @@ const BreakdownContent = (props: BreakdownProps) => {
 
 	return (
 		<Box>
-			{/* <Box>
-				<Box>Exotic Armor: </Box>
-				<BungieImage width="40" height="40" src={exoticIcon} alt={exoticName} />
-			</Box> */}
-			<Box sx={{ overflowY: 'auto' }} className="mod-placement-wrapper">
+			<Box sx={{ marginTop: '8px' }} className="mod-placement-wrapper">
 				{useModPlacementView && (
-					<ModPlacement
-						exoticArmorItem={exoticArmorItem}
-						modPlacement={modPlacement}
-						artificeModIdList={props.loadout.artificeModIdList}
-						armorItems={props.loadout.armor}
-						classItem={classItem}
-						armorSlotMods={props.loadout.armorSlotMods}
-						withArmorItemIcons
-					/>
+					<Box>
+						<Box
+							sx={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '4px' }}
+						>
+							Mods
+						</Box>
+						<Box
+							className="mod-placement-wrapper"
+							sx={{ overflowX: 'auto', width: '100%' }}
+						>
+							<ModPlacement
+								exoticArmorItem={exoticArmorItem}
+								modPlacement={modPlacement}
+								artificeModIdList={props.loadout.artificeModIdList}
+								armorItems={props.loadout.armor}
+								classItem={classItem}
+								armorSlotMods={props.loadout.armorSlotMods}
+								withArmorItemIcons
+							/>
+						</Box>
+					</Box>
 				)}
 				{useModDetailsView && (
 					<ModDetails
+						armorStatModIdList={props.loadout.armorStatMods}
 						exoticArmorItem={exoticArmorItem}
 						modPlacement={modPlacement}
 						artificeModIdList={props.loadout.artificeModIdList}
@@ -115,6 +127,9 @@ const BreakdownContent = (props: BreakdownProps) => {
 					/>
 				)}
 				{cannotRenderModView && <Box>Unable to render mods</Box>}
+			</Box>
+			<Box sx={{ marginTop: '8px' }}>
+				<SubclassSummary loadout={props.loadout} />
 			</Box>
 		</Box>
 	);

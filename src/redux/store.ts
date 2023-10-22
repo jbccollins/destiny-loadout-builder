@@ -434,6 +434,9 @@ function handleChange() {
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
 		localStorageRecall.settings.dimLoadoutsFilterId = dimLoadoutsFilter;
 		localStorageRecall.settings.d2LoadoutsFilterId = inGameLoadoutsFilter;
+		// Exotic
+		localStorageRecall.classSpecificConfig[selectedDestinyClass].exoticHash =
+			selectedExoticArmorItem?.hash;
 		// Shared
 		localStorageRecall.sharedConfig.armorSlotMods = selectedArmorSlotMods;
 		localStorageRecall.sharedConfig.raidModIdList = selectedRaidMods as [
@@ -456,6 +459,9 @@ function handleChange() {
 		if (destinySubclassId) {
 			localStorageRecall.classSpecificConfig[
 				selectedDestinyClass
+			].destinySubclassId = destinySubclassId;
+			localStorageRecall.classSpecificConfig[
+				selectedDestinyClass
 			].subclassConfig[destinySubclassId] = {
 				aspectIdList: selectedAspects[destinySubclassId],
 				fragmentIdList: selectedFragments[destinySubclassId],
@@ -465,11 +471,6 @@ function handleChange() {
 				jumpId: selectedJump[destinySubclassId],
 				classAbilityId: selectedClassAbility[destinySubclassId],
 			};
-			localStorageRecall.classSpecificConfig[selectedDestinyClass].exoticHash =
-				selectedExoticArmorItem?.hash;
-			localStorageRecall.classSpecificConfig[
-				selectedDestinyClass
-			].destinySubclassId = destinySubclassId;
 		}
 		console.log(
 			'>>>>>>>>>>> [STORE] saving localStorageRecall <<<<<<<<<<<',

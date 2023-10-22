@@ -12,12 +12,25 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-10-09',
+		version: '2.4.21-BETA',
+		title: 'Fix exotic armor recall bug',
+		sections: [
+			{
+				items: [
+					`Fix a bug where exotic armor was not being recalled properly when the user did not select a subclass`,
+					`Fix a bug where, if the DIM API was down, the analyzer tool wouldn't analyze in-game loadouts`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-09',
 		version: '2.4.20-BETA',
 		title: 'Fix FotL Mask Bug',
 		sections: [
 			{
 				items: [
-					`Fix a bug where no results were returned whent he user selected the "Festival of the Lost Mask" armor attribute`,
+					`Fix a bug where no results were returned when the user selected the "Festival of the Lost Mask" armor attribute`,
 				],
 			},
 		],

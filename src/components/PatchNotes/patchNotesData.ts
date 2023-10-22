@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-10-09',
+		version: '2.4.20-BETA',
+		title: 'Fix FotL Mask Bug',
+		sections: [
+			{
+				items: [
+					`Fix a bug where no results were returned whent he user selected the "Festival of the Lost Mask" armor attribute`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-09',
 		version: '2.4.19-BETA',
 		title: 'Remember last used application configuration',
 		sections: [

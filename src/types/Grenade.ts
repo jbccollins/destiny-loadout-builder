@@ -1,9 +1,10 @@
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import { GrenadeIdToGrenadeMapping } from '@dlb/generated/grenade/GrenadeMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
+import { getDestinySubclass } from './DestinySubclass';
 import { IGrenade } from './generation';
 import { EnumDictionary } from './globals';
-import { EElementId } from './IdEnums';
+import { EDestinySubclassId, EElementId } from './IdEnums';
 
 export const GrenadeIdList = Object.values(EGrenadeId);
 
@@ -65,26 +66,15 @@ const ElementIdToGrenadeIdListMapping: EnumDictionary<
 	[EElementId.Any]: [],
 };
 
-export const getGrenadeIdsByElementId = (id: EElementId): EGrenadeId[] =>
+const getGrenadeIdListByElementId = (id: EElementId): EGrenadeId[] =>
 	ElementIdToGrenadeIdListMapping[id];
 
-// export const ElementIdToGrenadetMapping: EnumDictionary<
-// 	EElementId,
-// 	IGrenade[]
-// > = {
-// 	[EElementId.Stasis]: getGrenadeIdsByElementId(EElementId.Stasis).map((id) =>
-// 		getGrenade(id)
-// 	),
-// 	[EElementId.Void]: getGrenadeIdsByElementId(EElementId.Void).map((id) =>
-// 		getGrenade(id)
-// 	),
-// 	[EElementId.Solar]: getGrenadeIdsByElementId(EElementId.Solar).map((id) =>
-// 		getGrenade(id)
-// 	),
-// 	[EElementId.Arc]: getGrenadeIdsByElementId(EElementId.Any).map((id) =>
-// 		getGrenade(id)
-// 	),
-// 	// TODO: Refactor this type so that we don't need to include the "Any" id here. It makes
-// 	// no sense for grenades
-// 	[EElementId.Any]: [],
-// };
+export const getGrenadeIdListByDestinySubclassId = (
+	destinySubclassId: EDestinySubclassId
+): EGrenadeId[] => {
+	if (!destinySubclassId) {
+		return [];
+	}
+	const { elementId } = getDestinySubclass(destinySubclassId);
+	return getGrenadeIdListByElementId(elementId);
+};

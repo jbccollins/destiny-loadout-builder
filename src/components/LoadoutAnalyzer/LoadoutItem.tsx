@@ -33,7 +33,7 @@ import {
 import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import {
 	clearSelectedFragments,
-	setSelectedFragments,
+	setSelectedFragmentsForDestinySubclass,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import {
 	clearSelectedGrenade,
@@ -78,7 +78,6 @@ import {
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
 import { bungieNetPath } from '@dlb/utils/item-utils';
@@ -504,17 +503,19 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 					})
 				);
 			}
-			const { elementId } = getDestinySubclass(destinySubclassId);
 			if (fragmentIdList.length > 0) {
 				dispatch(
-					setSelectedFragments({ elementId, fragments: fragmentIdList })
+					setSelectedFragmentsForDestinySubclass({
+						destinySubclassId,
+						fragments: fragmentIdList,
+					})
 				);
 			}
 			if (grenadeId) {
 				dispatch(
 					setSelectedGrenade({
 						...selectedGrenade,
-						[elementId]: grenadeId,
+						[destinySubclassId]: grenadeId,
 					})
 				);
 			}
@@ -589,7 +590,8 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 			sx={{
 				padding: theme.spacing(1),
 				marginBottom: theme.spacing(1),
-				'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+				background: 'rgb(50, 50, 50)',
+				//'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
 			}}
 		>
 			<Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

@@ -27,8 +27,8 @@ import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
+import LoadoutAnalysisWebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/LoadoutAnalysisWebWorkerWrapper';
 import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer/LoadoutAnalyzer';
-import WebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/WebWorkerWrapper';
 import Logout from '@dlb/components/LogOutButton';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import Head from '@dlb/components/Meta/Head';
@@ -36,6 +36,7 @@ import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
 import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
 import RaidModSelector from '@dlb/components/RaidModsSelector';
+import ResetButton from '@dlb/components/ResetButton';
 import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 import ShareLoadout from '@dlb/components/ShareLoadout';
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
@@ -73,7 +74,7 @@ import {
 	selectSelectedDestinySubclass,
 	setSelectedDestinySubclass,
 } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { setSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
+import { setSelectedFragmentsForDestinySubclass } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import {
 	selectSelectedGrenade,
 	setSelectedGrenade,
@@ -98,7 +99,6 @@ import {
 } from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { ETabType } from '@dlb/types/Tab';
 import React from 'react';
@@ -218,13 +218,16 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					[destinySubclassId]: null,
 				})
 			);
-			// TODO: This will clear fragments for all classes. Is that desired?
-			const { elementId } = getDestinySubclass(destinySubclassId);
-			dispatch(setSelectedFragments({ elementId, fragments: [] }));
+			dispatch(
+				setSelectedFragmentsForDestinySubclass({
+					destinySubclassId,
+					fragments: [],
+				})
+			);
 			dispatch(
 				setSelectedGrenade({
 					...selectedGrenade,
-					[elementId]: null,
+					[destinySubclassId]: null,
 				})
 			);
 			dispatch(
@@ -391,6 +394,9 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>
 									<Logout />
 								</Box>
+								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>
+									<ResetButton />
+								</Box>
 							</>
 						),
 						index: ETabType.SETTINGS,
@@ -502,7 +508,7 @@ const Home: NextPage = () => {
 				{!allDataLoaded && <Loading />}
 				{allDataLoaded && (
 					<>
-						<WebWorkerWrapper />
+						<LoadoutAnalysisWebWorkerWrapper />
 						{isSmallScreen && (
 							<>
 								{smallScreenResultsOpen && (

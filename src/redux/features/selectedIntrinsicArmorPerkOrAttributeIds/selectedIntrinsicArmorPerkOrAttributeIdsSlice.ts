@@ -10,10 +10,15 @@ export interface SelectedIntrinsicArmorPerkOrAttributeIdsState {
 	uuid: string;
 }
 
-const getInitialState = () => [null, null, null, null];
+export const getDefaultIntrinsicArmorPerkOrAttributeIdList = (): [
+	EIntrinsicArmorPerkOrAttributeId,
+	EIntrinsicArmorPerkOrAttributeId,
+	EIntrinsicArmorPerkOrAttributeId,
+	EIntrinsicArmorPerkOrAttributeId
+] => [null, null, null, null];
 
 const initialState: SelectedIntrinsicArmorPerkOrAttributeIdsState = {
-	value: getInitialState(),
+	value: getDefaultIntrinsicArmorPerkOrAttributeIdList(),
 	uuid: NIL,
 };
 
@@ -29,7 +34,7 @@ export const selectedIntrinsicArmorPerkOrAttributeIdsSlice = createSlice({
 			state.uuid = uuid();
 		},
 		clearSelectedIntrinsicArmorPerkOrAttributeIds: (state) => {
-			state.value = getInitialState();
+			state.value = getDefaultIntrinsicArmorPerkOrAttributeIdList();
 			state.uuid = uuid();
 		},
 	},

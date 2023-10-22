@@ -30,6 +30,19 @@ export const selectedDestinySubclassSlice = createSlice({
 			state.value = action.payload;
 			state.uuid = uuid();
 		},
+		setSelectedDestinySubclassForDestinyClass: (
+			state,
+			action: PayloadAction<{
+				destinyClassId: EDestinyClassId;
+				destinySubclassId: EDestinySubclassId;
+			}>
+		) => {
+			state.value = {
+				...state.value,
+				[action.payload.destinyClassId]: action.payload.destinySubclassId,
+			};
+			state.uuid = uuid();
+		},
 		clearSelectedDestinySubclass: (state) => {
 			state.value = getInitialStateValue();
 			state.uuid = uuid();
@@ -37,8 +50,11 @@ export const selectedDestinySubclassSlice = createSlice({
 	},
 });
 
-export const { setSelectedDestinySubclass, clearSelectedDestinySubclass } =
-	selectedDestinySubclassSlice.actions;
+export const {
+	setSelectedDestinySubclass,
+	clearSelectedDestinySubclass,
+	setSelectedDestinySubclassForDestinyClass,
+} = selectedDestinySubclassSlice.actions;
 
 export const selectSelectedDestinySubclass = (state: AppState) =>
 	state.selectedDestinySubclass.value;

@@ -123,7 +123,9 @@ export const extractArmor = (
 		// But this does seem to work for white armor 1.0 which I do have.
 		if (
 			// 20 is the category hash for armor.
-			item.itemCategoryHashes.includes(20) &&
+			// 55 is the category hash for halloween masks.
+			(item.itemCategoryHashes.includes(20) ||
+				item.itemCategoryHashes.includes(55)) &&
 			(item.element?.enumValue || isCollectible) && // Collectibles don't have an element
 			!item.classified // Classified armor has no stats
 		) {

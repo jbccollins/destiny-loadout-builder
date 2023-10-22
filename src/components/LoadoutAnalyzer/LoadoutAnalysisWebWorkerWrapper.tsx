@@ -26,7 +26,7 @@ import { AnalyzableLoadoutMapping } from '@dlb/types/AnalyzableLoadout';
 import { isDebugging } from '@dlb/utils/debugging';
 import { useEffect, useMemo } from 'react';
 
-export default function WebWorkerWrapper() {
+export default function LoadoutAnalysisWebWorkerWrapper() {
 	const armor = useAppSelector(selectArmor);
 	const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const masterworkAssumption = useAppSelector(

@@ -1,20 +1,17 @@
-import { styled } from '@mui/material';
+import IconDropdown from '@dlb/components/IconDropdown';
+import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import {
 	selectSelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
-	GrenadeIdList,
 	getGrenade,
-	getGrenadeIdsByElementId,
+	getGrenadeIdListByDestinySubclassId,
 } from '@dlb/types/Grenade';
-import IconDropdown from '@dlb/components/IconDropdown';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
-import { EElementId } from '@dlb/types/IdEnums';
+import { styled } from '@mui/material';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0
@@ -36,11 +33,7 @@ function GrenadeSelector() {
 	const selectedGrenade = useAppSelector(selectSelectedGrenade);
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
-	let elementId: EElementId = EElementId.Any;
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
-	if (destinySubclassId) {
-		elementId = getDestinySubclass(destinySubclassId).elementId;
-	}
 	const dispatch = useAppDispatch();
 
 	const getLabel = (option: Option) => option.label;
@@ -50,23 +43,23 @@ function GrenadeSelector() {
 		dispatch(
 			setSelectedGrenade({
 				...selectedGrenade,
-				[elementId]: grenadeId,
+				[destinySubclassId]: grenadeId,
 			})
 		);
 	};
 
 	// TODO: Memoize these options
-	const options: Option[] = getGrenadeIdsByElementId(elementId).map(
-		(grenadeId) => {
-			const { name, id, icon, description } = getGrenade(grenadeId);
-			return {
-				label: name,
-				icon,
-				id,
-				description,
-			};
-		}
-	);
+	const options: Option[] = getGrenadeIdListByDestinySubclassId(
+		destinySubclassId
+	).map((grenadeId) => {
+		const { name, id, icon, description } = getGrenade(grenadeId);
+		return {
+			label: name,
+			icon,
+			id,
+			description,
+		};
+	});
 
 	return (
 		<>
@@ -78,7 +71,7 @@ function GrenadeSelector() {
 						options={options}
 						getLabel={getLabel}
 						getDescription={getDescription}
-						value={selectedGrenade[elementId] || ''}
+						value={selectedGrenade[destinySubclassId] || ''}
 						onChange={handleChange}
 						title="Grenade"
 					/>

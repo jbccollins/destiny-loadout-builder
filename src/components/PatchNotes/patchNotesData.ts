@@ -11,7 +11,23 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2023-10-09',
+		date: '2023-10-22',
+		version: '2.4.22-BETA',
+		title: 'Minor analyzer UI changes',
+		sections: [
+			{
+				items: [
+					`Condense the width of the mod placement component to reduce the chance of needing to scroll horizontally`,
+					`When generating a DIM link, prefer class items that are masterworked if there is a tie in power`,
+					`Fix a bug where the user would not be loaded into the analyzer tab via a direct url link if they had to log in first`,
+					`Fix a bug where the user could select mutually exclusive mods (e.g. two copies of "Fastball" or two copies of various "Finisher" mods on the class item)`,
+					`Fix a bug where the user's analyzer search would not persist when switching between the "build" and "analyze" tabs`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-22',
 		version: '2.4.21-BETA',
 		title: 'Fix exotic armor recall bug',
 		sections: [

@@ -118,7 +118,7 @@ const Progress = (props: { value: number }) => {
 		<Box sx={{ width: '100%', height: '40px' }}>
 			<Box>Analysis Progress:</Box>
 			<Box>
-				<LinearProgress variant="determinate" value={props.value} />
+				<LinearProgress key={1} variant="determinate" value={props.value} />
 			</Box>
 		</Box>
 	);

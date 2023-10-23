@@ -198,7 +198,11 @@ export const generateDimLink = (
 	}
 
 	// Select the highest power class item that meets our requirements
-	const ci = [...potentialClassItems].sort((a, b) => b.power - a.power)[0];
+	// Prefer class items that are masterworked if there is a tie in power
+	const ci = [...potentialClassItems].sort(
+		(a, b) =>
+			b.power - a.power || Number(b.isMasterworked) - Number(a.isMasterworked)
+	)[0];
 	loadout.equipped.push({
 		id: ci.id,
 		hash: ci.hash,

@@ -2,6 +2,10 @@ import d2Logo from '@dlb/public/d2-logo.png';
 import dimLogo from '@dlb/public/dim-logo.png';
 import { selectAnalyzableLoadouts } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import {
+	selectAnalyzerSearch,
+	setAnalyzerSearch,
+} from '@dlb/redux/features/analyzerSearch/analyzerSearchSlice';
+import {
 	selectAnalyzerTabIndex,
 	setAnalyzerTabIndex,
 } from '@dlb/redux/features/analyzerTabIndex/analyzerTabIndexSlice';
@@ -128,7 +132,6 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 export default function LoadoutAnalyzer() {
 	const [hiddenLoadoutsOpen, setHiddenLoadoutsOpen] = useState(false);
 	const [showFilters, setShowFilters] = useState(false);
-	const [search, setSearch] = useState('');
 	const theme = useTheme();
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const inGameLoadouts = useAppSelector(selectInGameLoadouts);
@@ -143,6 +146,7 @@ export default function LoadoutAnalyzer() {
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const analyzeableLoadouts = useAppSelector(selectAnalyzableLoadouts);
 	const analyzerTabIndex = useAppSelector(selectAnalyzerTabIndex);
+	const analyzerSearch = useAppSelector(selectAnalyzerSearch);
 	const optimizationTypeFilterValue = useAppSelector(
 		selectOptimizationTypeFilter
 	);
@@ -177,6 +181,10 @@ export default function LoadoutAnalyzer() {
 
 	const handleAnalyzerTabChange = (index: number) => {
 		dispatch(setAnalyzerTabIndex(index));
+	};
+
+	const handleSearchChange = (value: string) => {
+		dispatch(setAnalyzerSearch(value));
 	};
 
 	const flatAvailableExoticArmor: AvailableExoticArmorItem[] = useMemo(() => {
@@ -271,7 +279,7 @@ export default function LoadoutAnalyzer() {
 			}
 			const classSpecificRichValidLoadouts = richValidLoadouts.filter(
 				(x) =>
-					x.name.toLowerCase().includes(search.toLowerCase()) &&
+					x.name.toLowerCase().includes(analyzerSearch.toLowerCase()) &&
 					filteredLoadoutTypes.includes(x.loadoutType) &&
 					x.destinyClassId === destinyClassId &&
 					(optimizationTypeFilterValue.length > 0
@@ -309,12 +317,20 @@ export default function LoadoutAnalyzer() {
 							</Box>
 						)}
 						{visibleClassSpecificRichValidLoadouts.map((loadout, index) => (
-							<LoadoutItem
-								{...defaultLoadoutItemProps}
+							<Box
 								key={loadout.id}
-								loadout={loadout}
-								isHidden={false}
-							/>
+								sx={{
+									'&:first-of-type': {
+										marginTop: '-16px',
+									},
+								}}
+							>
+								<LoadoutItem
+									{...defaultLoadoutItemProps}
+									loadout={loadout}
+									isHidden={false}
+								/>
+							</Box>
 						))}
 						{hiddenClassSpecificRichValidLoadouts.length > 0 && (
 							<>
@@ -514,15 +530,16 @@ export default function LoadoutAnalyzer() {
 			<Box
 				sx={{
 					marginLeft: '-16px',
-					paddingX: '16px',
+					// paddingX: '16px',
 					background: 'rgba(50, 50, 50, 0.5)',
 					width: 'calc(100% + 32px)',
 				}}
 			>
 				<Box
 					sx={{
-						marginLeft: '-16px',
-						width: 'calc(100% + 31px)',
+						//marginLeft: '-16px',
+						// width: 'calc(100% + 31px)',
+						width: '100%',
 					}}
 				>
 					<CustomTextField
@@ -537,8 +554,8 @@ export default function LoadoutAnalyzer() {
 								},
 							},
 						}}
-						value={search}
-						onChange={(v: string) => setSearch(v)}
+						value={analyzerSearch}
+						onChange={handleSearchChange}
 						label=""
 					/>
 				</Box>
@@ -552,6 +569,9 @@ export default function LoadoutAnalyzer() {
 						tabIndex={analyzerTabIndex}
 						onChange={handleAnalyzerTabChange}
 						tabs={getTabs()}
+						tabSx={{
+							'&:first-of-type': { marginLeft: '8px' },
+						}}
 					/>
 				</Box>
 				{numTotalLoadouts > numValidLoadouts && (

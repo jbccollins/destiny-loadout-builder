@@ -3,6 +3,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import allClassItemMetadataReducer from './features/allClassItemMetadata/allClassItemMetadataSlice';
 import allDataLoadedReducer from './features/allDataLoaded/allDataLoadedSlice';
 import analyzableLoadoutsReducer from './features/analyzableLoadouts/analyzableLoadoutsSlice';
+import analyzerSearchReducer from './features/analyzerSearch/analyzerSearchSlice';
 import analyzerTabIndexReducer from './features/analyzerTabIndex/analyzerTabIndexSlice';
 import armorReducer from './features/armor/armorSlice';
 import availableExoticArmorReducer from './features/availableExoticArmor/availableExoticArmorSlice';
@@ -142,6 +143,7 @@ export function makeStore() {
 			allDataLoaded: allDataLoadedReducer,
 			alwaysConsiderCollectionsRolls: alwaysConsiderCollectionsRollsReducer,
 			analyzableLoadouts: analyzableLoadoutsReducer,
+			analyzerSearch: analyzerSearchReducer,
 			analyzerTabIndex: analyzerTabIndexReducer,
 			armor: armorReducer,
 			armorMetadata: armorMetadataReducer,

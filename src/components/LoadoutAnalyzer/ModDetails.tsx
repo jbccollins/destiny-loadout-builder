@@ -38,6 +38,7 @@ export default function ModDetails(props: ModDetailsProps) {
 				classItem={null}
 				armorSlotMods={props.armorSlotMods}
 				onlyShowArmorSlotMods
+				showHelpText={false}
 				withArmorItemIcons
 			/>
 			{armorStatModIdList.length > 0 && (

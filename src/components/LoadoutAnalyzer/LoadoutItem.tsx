@@ -588,7 +588,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 	return (
 		<Box
 			sx={{
-				padding: theme.spacing(1),
+				padding: theme.spacing(1.5),
 				marginBottom: theme.spacing(1),
 				background: 'rgb(50, 50, 50)',
 				//'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },

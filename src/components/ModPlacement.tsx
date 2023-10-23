@@ -48,9 +48,9 @@ const Container = styled(Box, {
 }));
 
 const ArmorSlotRow = styled(Box)(({ theme }) => ({
-	marginBottom: theme.spacing(1),
+	marginBottom: theme.spacing(0.5),
 	display: 'flex',
-	gap: theme.spacing(1),
+	gap: theme.spacing(0.5),
 }));
 
 const BASE_OFFSET = -40;
@@ -62,7 +62,7 @@ const Description = styled(Box)(({ theme }) => ({
 	marginLeft: BASE_OFFSET,
 	textAlign: 'right',
 	position: 'absolute',
-	top: '240px',
+	top: '226px',
 }));
 
 type FinalizedModPlacement = Record<
@@ -140,11 +140,17 @@ type ModPlacementProps = {
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	onlyShowArmorSlotMods?: boolean;
 	withArmorItemIcons?: boolean;
+	showHelpText?: boolean;
 };
 
 const ModPlacement = (props: ModPlacementProps) => {
-	const { classItem, armorItems, onlyShowArmorSlotMods, withArmorItemIcons } =
-		props;
+	const {
+		classItem,
+		armorItems,
+		onlyShowArmorSlotMods,
+		withArmorItemIcons,
+		showHelpText,
+	} = props;
 	const finalizedModPlacement = getFinalizedModPlacement({
 		modPlacement: props.modPlacement,
 		artificeModIdList: props.artificeModIdList,
@@ -154,7 +160,6 @@ const ModPlacement = (props: ModPlacementProps) => {
 	});
 	const showPerkIcons = !onlyShowArmorSlotMods;
 	const showArmorStatModSlot = !onlyShowArmorSlotMods;
-	const showHelpText = !onlyShowArmorSlotMods;
 	const showArtificeModSlot =
 		!onlyShowArmorSlotMods &&
 		ArmorSlotWithClassItemIdList.some(
@@ -342,12 +347,12 @@ const ModPlacement = (props: ModPlacementProps) => {
 					<Box
 						sx={{
 							position: 'absolute',
-							width: '136px',
+							width: '132px',
 							height: '4px',
 							border: '1px solid white',
-							borderTop: 'none',
-							marginLeft: showArtificeModSlot ? '144px' : '96px',
-							top: `236px`,
+							borderTop: 'none', // 144px
+							marginLeft: showArtificeModSlot ? '130px' : '86px',
+							top: `220px`,
 						}}
 					></Box>
 					<Box
@@ -356,33 +361,37 @@ const ModPlacement = (props: ModPlacementProps) => {
 							width: '2px',
 							height: '4px',
 							position: 'absolute',
-							top: '240px', // `calc(100% + 1px)`,
-							marginLeft: showArtificeModSlot ? '213px' : '165px',
+							top: '224px', // `calc(100% + 1px)`, 213px
+							marginLeft: showArtificeModSlot ? '195px' : '153px',
 						}}
 					></Box>
 				</>
 			)}
 
-			{showHelpText && <Description>Stat Mods</Description>}
+			{showHelpText && (
+				<Description sx={{ marginLeft: `${BASE_OFFSET - 4}px` }}>
+					Stat Mods
+				</Description>
+			)}
 
-			{showArtificeModSlot && (
-				<Description sx={{ marginLeft: `${BASE_OFFSET + 48}px` }}>
+			{showHelpText && showArtificeModSlot && (
+				<Description sx={{ marginLeft: `${BASE_OFFSET + 40}px` }}>
 					Artifice Mods
 				</Description>
 			)}
 			{showHelpText && (
 				<Description
 					sx={{
-						marginLeft: `${BASE_OFFSET + (showArtificeModSlot ? 144 : 96)}px`,
+						marginLeft: `${BASE_OFFSET + (showArtificeModSlot ? 130 : 86)}px`,
 					}}
 				>
 					Armor Mods
 				</Description>
 			)}
-			{showRaidModSlot && (
+			{showHelpText && showRaidModSlot && (
 				<Description
 					sx={{
-						marginLeft: `${BASE_OFFSET + (showArtificeModSlot ? 240 : 192)}px`,
+						marginLeft: `${BASE_OFFSET + (showArtificeModSlot ? 216 : 170)}px`,
 					}}
 				>
 					Raid Mods
@@ -390,6 +399,9 @@ const ModPlacement = (props: ModPlacementProps) => {
 			)}
 		</Container>
 	);
+};
+ModPlacement.defaultProps = {
+	showHelpText: true,
 };
 
 export default ModPlacement;

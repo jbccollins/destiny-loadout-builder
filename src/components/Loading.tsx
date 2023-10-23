@@ -1,35 +1,35 @@
 import {
 	getCharacters,
 	getDestinyAccountsForBungieAccount,
-	getMembershipData
+	getMembershipData,
 } from '@dlb/dim/bungie-api/destiny2-api';
 import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
 import { setAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setArmor } from '@dlb/redux/features/armor/armorSlice';
 import {
 	selectAvailableExoticArmor,
-	setAvailableExoticArmor
+	setAvailableExoticArmor,
 } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
 	setSelectedDestinySubclass,
-	setSelectedDestinySubclassForDestinyClass
+	setSelectedDestinySubclassForDestinyClass,
 } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import {
 	setSelectedExoticArmor,
-	setSelectedExoticArmorForDestinyClass
+	setSelectedExoticArmorForDestinyClass,
 } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	extractArmor,
 	extractCharacters,
-	getValidDestinyClassIds
+	getValidDestinyClassIds,
 } from '@dlb/services/data';
 import {
 	AvailableExoticArmor,
-	AvailableExoticArmorItem
+	AvailableExoticArmorItem,
 } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
@@ -40,116 +40,116 @@ import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import {
 	selectAlwaysConsiderCollectionsRolls,
-	setAlwaysConsiderCollectionsRolls
+	setAlwaysConsiderCollectionsRolls,
 } from '@dlb/redux/features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
 import {
 	setAnalyzableLoadoutsBreakdown,
-	setHiddenLoadoutIdList
+	setHiddenLoadoutIdList,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
-	setDesiredArmorStats
+	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { setDimLoadouts } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import {
 	selectDimLoadoutsFilter,
-	setDimLoadoutsFilter
+	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import { setHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
 import {
 	setInGameLoadoutsDefinitions,
-	setInGameLoadoutsLoadoutItems
+	setInGameLoadoutsLoadoutItems,
 } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import {
 	selectInGameLoadoutsFilter,
-	setInGameLoadoutsFilter
+	setInGameLoadoutsFilter,
 } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import { setInGameLoadoutsFlatItemIdList } from '@dlb/redux/features/inGameLoadoutsFlatItemIdList/inGameLoadoutsFlatItemIdListSlice';
 import {
 	LoadLog,
-	setLoadError
+	setLoadError,
 } from '@dlb/redux/features/loadError/loadErrorSlice';
 import {
 	selectReservedArmorSlotEnergy,
-	setReservedArmorSlotEnergy
+	setReservedArmorSlotEnergy,
 } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import {
 	selectSelectedArmorSlotMods,
-	setSelectedArmorSlotMods
+	setSelectedArmorSlotMods,
 } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import {
 	selectSelectedAspects,
 	setSelectedAspects,
-	setSelectedAspectsForDestinySubclass
+	setSelectedAspectsForDestinySubclass,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import {
 	selectSelectedClassAbility,
 	setSelectedClassAbility,
-	setSelectedClassAbilityForDestinySubclass
+	setSelectedClassAbilityForDestinySubclass,
 } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
 import {
 	selectSelectedFragments,
 	setSelectedFragments,
-	setSelectedFragmentsForDestinySubclass
+	setSelectedFragmentsForDestinySubclass,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import {
 	selectSelectedGrenade,
 	setSelectedGreandeForDestinySubclass,
-	setSelectedGrenade
+	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import {
 	selectSelectedIntrinsicArmorPerkOrAttributeIds,
-	setSelectedIntrinsicArmorPerkOrAttributeIds
+	setSelectedIntrinsicArmorPerkOrAttributeIds,
 } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
 	selectSelectedJump,
 	setSelectedJump,
-	setSelectedJumpForDestinySubclass
+	setSelectedJumpForDestinySubclass,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 import {
 	selectSelectedMasterworkAssumption,
-	setSelectedMasterworkAssumption
+	setSelectedMasterworkAssumption,
 } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import {
 	selectSelectedMelee,
 	setSelectedMelee,
-	setSelectedMeleeForDestinySubclass
+	setSelectedMeleeForDestinySubclass,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import {
 	selectSelectedMinimumGearTier,
-	setSelectedMinimumGearTier
+	setSelectedMinimumGearTier,
 } from '@dlb/redux/features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
 import {
 	clearSelectedRaidMods,
 	selectSelectedRaidMods,
-	setSelectedRaidMods
+	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import {
 	selectSelectedSuperAbility,
 	setSelectedSuperAbility,
-	setSelectedSuperAbilityForDestinySubclass
+	setSelectedSuperAbilityForDestinySubclass,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import {
 	selectSharedLoadoutConfigStatPriorityOrder,
-	setSharedLoadoutConfigStatPriorityOrder
+	setSharedLoadoutConfigStatPriorityOrder,
 } from '@dlb/redux/features/sharedLoadoutConfigStatPriorityOrder/sharedLoadoutConfigStatPriorityOrderSlice';
 import {
 	selectSharedLoadoutDesiredStats,
-	setSharedLoadoutDesiredStats
+	setSharedLoadoutDesiredStats,
 } from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import {
 	selectUseBonusResilience,
-	setUseBonusResilience
+	setUseBonusResilience,
 } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import {
 	selectUseOnlyMasterworkedArmor,
-	setUseOnlyMasterworkedArmor
+	setUseOnlyMasterworkedArmor,
 } from '@dlb/redux/features/useOnlyMasterworkedArmor/useOnlyMasterworkedArmorSlice';
 import {
 	selectUseZeroWastedStats,
-	setUseZeroWastedStats
+	setUseZeroWastedStats,
 } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
@@ -157,11 +157,11 @@ import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/
 import {
 	EDestinyClassId,
 	EDestinySubclassId,
-	EMasterworkAssumption
+	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
 	getLocalStorageRecall,
-	LocalStorageRecall
+	LocalStorageRecall,
 } from '@dlb/types/LocalStorageRecall';
 import { TabTypeList } from '@dlb/types/Tab';
 import { CheckCircleRounded } from '@mui/icons-material';
@@ -205,6 +205,7 @@ const LoadingSpinnerContainer = styled(Box)(() => ({
 }));
 
 const LOCAL_STORAGE_SHARED_LOADOUT_URL = 'sharedLoadoutString';
+const LOCAL_STORAGE_TAB = 'tab';
 
 function Loading() {
 	const logs: LoadLog[] = [];
@@ -633,7 +634,7 @@ function Loading() {
 			const urlParams = new URLSearchParams(window.location.search);
 			log('urlParams', urlParams);
 			let sharedLoadoutString = urlParams.get('loadout');
-			const tabString = urlParams.get('tab');
+			let tabString = urlParams.get('tab');
 			log('sharedLoadoutString', sharedLoadoutString);
 			if (sharedLoadoutString) {
 				localStorage.setItem(
@@ -644,6 +645,10 @@ function Loading() {
 					'sharedLoadoutString cached',
 					localStorage.getItem(LOCAL_STORAGE_SHARED_LOADOUT_URL)
 				);
+			}
+			if (tabString) {
+				localStorage.setItem(LOCAL_STORAGE_TAB, tabString);
+				log('tabString cached', localStorage.getItem(LOCAL_STORAGE_TAB));
 			}
 
 			try {
@@ -661,6 +666,17 @@ function Loading() {
 				}
 				if (loadoutStringFromLocalStorage && sharedLoadoutString) {
 					router.push('/?loadout=' + encodeURIComponent(sharedLoadoutString));
+				}
+				let tabStringFromLocalStorage = false;
+				if (!tabString) {
+					tabStringFromLocalStorage = true;
+					tabString = localStorage.getItem(LOCAL_STORAGE_TAB);
+				}
+				// TODO: This will work right now but is ugly af. At the moment the "tab" and "loadout" query params
+				// are mutually exclusive. If we ever want to allow both at the same time then we need to do some
+				// more work here to make sure we don't overwrite the query params
+				if (tabStringFromLocalStorage && tabString) {
+					router.push('/?tab=' + encodeURIComponent(tabString));
 				}
 
 				const hiddenLoadoutIdListString = localStorage.getItem(

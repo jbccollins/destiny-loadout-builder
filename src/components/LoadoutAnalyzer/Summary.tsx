@@ -1,3 +1,4 @@
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import {
 	ELoadoutOptimizationTypeId,
 	getLoadoutOptimization,
@@ -8,6 +9,8 @@ import {
 	getLoadoutOptimizationCategory,
 	SeverityOrderedLoadoutOptimizationCategoryIdList,
 } from '@dlb/types/AnalyzableLoadout';
+import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
 import HelpIcon from '@mui/icons-material/Help';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -18,12 +21,16 @@ import {
 	LinearProgress,
 	useTheme,
 } from '@mui/material';
+import { isEmpty } from 'lodash';
 import { useMemo, useState } from 'react';
 import CustomTooltip from '../CustomTooltip';
 
 function calculateWeightedScore(
 	loadoutCategoryCounts: Partial<Record<ELoadoutOptimizationCategoryId, number>>
 ): number {
+	if (isEmpty(loadoutCategoryCounts)) {
+		return null;
+	}
 	const maxSeverity = 3; // Maximum severity level
 	let totalWeightedSeverity = 0;
 	let totalWeight = 0;
@@ -50,6 +57,9 @@ function calculateWeightedScore(
 
 // Define a function to assign letter grades with +/- variants
 function assignLetterGrade(weightedAverageScore: number): string {
+	if (weightedAverageScore === null) {
+		return '-';
+	}
 	if (weightedAverageScore === 100) {
 		return 'A+';
 	} else if (weightedAverageScore >= 93) {
@@ -93,6 +103,7 @@ function getGradeColor(letterGrade: string): string {
 		D: '#FF0000', // Red
 		'D-': '#FF0000', // Red
 		F: '#FF0000', // Red
+		'-': 'white',
 	};
 
 	return gradeColors[letterGrade] || 'initial'; // Default to black for unknown grades
@@ -168,6 +179,57 @@ const ScoredResults = (props: {
 		return loadoutCategoryCounts;
 	}, [loadouts, hiddenLoadoutIdList]);
 
+	const classSpecificLoadoutCategoryCounts = useMemo(() => {
+		const classSpecificLoadoutCategoryCounts: Record<
+			EDestinyClassId,
+			Partial<Record<ELoadoutOptimizationCategoryId, number>>
+		> = {
+			[EDestinyClassId.Hunter]: {},
+			[EDestinyClassId.Titan]: {},
+			[EDestinyClassId.Warlock]: {},
+		};
+		DestinyClassIdList.forEach((destinyClassId) => {
+			loadouts
+				.filter(
+					(x) =>
+						x.destinyClassId === destinyClassId &&
+						!hiddenLoadoutIdList.includes(x.id)
+				)
+				.forEach((loadout) => {
+					const { optimizationTypeList } = loadout;
+					let highestSeverityOptimizationTypeId: ELoadoutOptimizationTypeId =
+						ELoadoutOptimizationTypeId.None;
+
+					optimizationTypeList.forEach((optimizationType) => {
+						const { category: categoryId } =
+							getLoadoutOptimization(optimizationType);
+						const category = getLoadoutOptimizationCategory(categoryId);
+						if (
+							category.severity >
+								getLoadoutOptimizationCategory(
+									getLoadoutOptimization(highestSeverityOptimizationTypeId)
+										.category
+								).severity ||
+							highestSeverityOptimizationTypeId ===
+								ELoadoutOptimizationTypeId.None
+						) {
+							highestSeverityOptimizationTypeId = optimizationType;
+						}
+					});
+					const { category: categoryId } = getLoadoutOptimization(
+						highestSeverityOptimizationTypeId
+					);
+					classSpecificLoadoutCategoryCounts[destinyClassId][categoryId] =
+						classSpecificLoadoutCategoryCounts[destinyClassId][categoryId]
+							? classSpecificLoadoutCategoryCounts[destinyClassId][categoryId] +
+							  1
+							: 1;
+				});
+		});
+
+		return classSpecificLoadoutCategoryCounts;
+	}, [loadouts, hiddenLoadoutIdList]);
+
 	const numHiddenLoadouts = useMemo(
 		() => loadouts.filter((x) => hiddenLoadoutIdList.includes(x.id)).length,
 		[hiddenLoadoutIdList]
@@ -179,7 +241,39 @@ const ScoredResults = (props: {
 		return assignLetterGrade(weightedScore);
 	}, [loadoutCategoryCounts]);
 
+	const classSpecificGrades = useMemo(() => {
+		const classSpecificGrades: Record<EDestinyClassId, string> = {
+			[EDestinyClassId.Hunter]: '-',
+			[EDestinyClassId.Titan]: '-',
+			[EDestinyClassId.Warlock]: '-',
+		};
+
+		DestinyClassIdList.forEach((destinyClassId) => {
+			const weightedScore = calculateWeightedScore(
+				classSpecificLoadoutCategoryCounts[destinyClassId]
+			);
+			classSpecificGrades[destinyClassId] = assignLetterGrade(weightedScore);
+		});
+
+		return classSpecificGrades;
+	}, [classSpecificLoadoutCategoryCounts]);
+
 	const gradeColor = useMemo(() => getGradeColor(grade), [grade]);
+
+	const classSpecificGradeColors = useMemo(
+		() => ({
+			[EDestinyClassId.Hunter]: getGradeColor(
+				classSpecificGrades[EDestinyClassId.Hunter]
+			),
+			[EDestinyClassId.Titan]: getGradeColor(
+				classSpecificGrades[EDestinyClassId.Titan]
+			),
+			[EDestinyClassId.Warlock]: getGradeColor(
+				classSpecificGrades[EDestinyClassId.Warlock]
+			),
+		}),
+		[classSpecificGrades]
+	);
 
 	return (
 		<Box>
@@ -187,17 +281,18 @@ const ScoredResults = (props: {
 				sx={{
 					display: 'flex',
 					gap: '4px',
-					alignItems: 'center',
+					flexWrap: 'wrap',
+					// alignItems: 'center',
 				}}
 			>
 				<Box
 					sx={{
 						color: gradeColor,
 						backgroundColor: 'black',
-						width: '80px',
-						height: '80px',
+						width: '64px',
+						height: '64px',
 						textAlign: 'center',
-						lineHeight: '80px',
+						lineHeight: '64px',
 						alignItems: 'center',
 						borderRadius: '50%',
 						fontSize: '40px',
@@ -209,42 +304,67 @@ const ScoredResults = (props: {
 					}}
 				>
 					{grade}
-					{/* {numHiddenLoadouts > 0 && (
+				</Box>
+				<Box>
+					<Box sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
 						<Box
 							sx={{
-								color: 'white',
-								fontSize: '40px',
-								position: 'absolute',
-								width: '1px',
-								height: '1px',
-								lineHeight: '0px',
-								left: '70px',
-								top: '20px',
-								fontWeight: 'normal',
-								// verticalAlign: 'bottom',
+								fontWeight: 'bold',
+								fontSize: '20px',
+								marginTop: theme.spacing(1),
+								marginBottom: theme.spacing(1),
 							}}
 						>
-							*
+							Loadout Health Grade
 						</Box>
-					)} */}
-				</Box>
 
-				<Box
-					sx={{
-						fontWeight: 'bold',
-						fontSize: '20px',
-					}}
-				>
-					Loadout Health Grade
+						<CustomTooltip title={gradingHelpText}>
+							<HelpIcon />
+						</CustomTooltip>
+					</Box>
+					<Box sx={{ display: 'flex', gap: '8px', cursor: 'default' }}>
+						{DestinyClassIdList.map((destinyClassId) => {
+							const destinyClass = getDestinyClass(destinyClassId);
+							return (
+								<CustomTooltip
+									key={destinyClassId}
+									title={`${destinyClass.name} sub-grade`}
+								>
+									<Box
+										sx={{
+											color: classSpecificGradeColors[destinyClassId],
+											fontWeight: 'bold',
+											fontSize: '20px',
+											display: 'flex',
+											gap: '4px',
+											alignItems: 'center',
+											background: 'black',
+											padding: '4px',
+											paddingRight: '8px',
+											borderRadius: '12px',
+										}}
+									>
+										<BungieImage
+											width={40}
+											height={40}
+											src={destinyClass.icon}
+										/>
+										{classSpecificGrades[destinyClassId]}
+									</Box>
+								</CustomTooltip>
+							);
+						})}
+					</Box>
 				</Box>
-				<CustomTooltip title={gradingHelpText}>
-					<HelpIcon />
-				</CustomTooltip>
 			</Box>
 
 			<Box
 				onClick={() => setShowGradeDetails(!showGradeDetails)}
-				sx={{ cursor: 'pointer', display: 'inline-block' }}
+				sx={{
+					cursor: 'pointer',
+					display: 'inline-block',
+					marginTop: theme.spacing(1),
+				}}
 			>
 				Show Grade Details{numHiddenLoadouts > 0 && '*'}
 				<IconButton aria-label="expand row" size="small">

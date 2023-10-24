@@ -303,7 +303,7 @@ const ModPlacement = (props: ModPlacementProps) => {
 							);
 						})}
 						{showRaidModSlot && (
-							<CustomTooltip title={raidModName}>
+							<CustomTooltip title={raidModName || EMPTY_SOCKET_TEXT}>
 								<Box className="raid-mod-socket">
 									<Socket getIcon={() => raidModIcon} />
 								</Box>

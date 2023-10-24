@@ -1400,6 +1400,7 @@ export const getLoadoutsThatCanBeOptimized = (
 						hasLowerCost =
 							maxDiff >= 0 && metadata.lowestCost < sumOfCurrentStatModsCost;
 
+						console.log('+++ loadout', loadout);
 						const wastedStats = getWastedStats(loadout.achievedStats);
 						metadata.currentWastedStats = wastedStats;
 						hasFewerWastedStats = metadata.lowestWastedStats < wastedStats;

@@ -32,7 +32,7 @@ import {
 	AvailableExoticArmorItem,
 } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
-import { DestinyClassIdList } from '@dlb/types/DestinyClass';
+import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 
 // import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
@@ -285,14 +285,34 @@ function Loading() {
 	};
 
 	type LoadFromQueryParamsParams = {
+		validDestinyClassIds: EDestinyClassId[];
 		availableExoticArmor: AvailableExoticArmor;
 		loadoutString: string;
 	};
 	function loadFromQueryParams({
+		validDestinyClassIds,
 		availableExoticArmor,
 		loadoutString,
 	}: LoadFromQueryParamsParams) {
 		const loadoutConfig = JSON.parse(loadoutString) as DlbLoadoutConfiguration;
+
+		const destinyClassId = loadoutConfig.dc;
+		const destinyClass = destinyClassId
+			? getDestinyClass(destinyClassId)
+			: null;
+		if (!destinyClass) {
+			alert(
+				'This shared loadout does not have a valid destiny class. Reverting to default.'
+			);
+			throw new Error('Invalid destiny class');
+		}
+		if (!validDestinyClassIds.includes(destinyClassId)) {
+			alert(
+				`You do not have enough armor to make a loadout for the ${destinyClass.name} class. The shared loadout url is being ignored as a result.`
+			);
+			throw new Error('Invalid destiny class');
+		}
+
 		// Class
 		dispatch(setSelectedDestinyClass(loadoutConfig.dc));
 
@@ -802,6 +822,7 @@ function Loading() {
 				if (hasSharedLoadoutString) {
 					try {
 						loadFromQueryParams({
+							validDestinyClassIds,
 							availableExoticArmor,
 							loadoutString: sharedLoadoutString,
 						});
@@ -829,6 +850,8 @@ function Loading() {
 						const tabIndex = Number(tabString);
 						if (TabTypeList.includes(tabIndex)) {
 							dispatch(setTabIndex(tabIndex));
+							// Ensure that we don't always load into the analyze tab
+							localStorage.removeItem(LOCAL_STORAGE_TAB);
 							log('tabIndex', tabIndex);
 						} else {
 							log('tabError', 'Invalid tab index', true);
@@ -936,6 +959,8 @@ function Loading() {
 					errorMessage.includes('BungieService.NetworkError') // Bad token
 				) {
 					router.push('/login');
+				} else if (errorMessage.includes('BungieService.Maintenance')) {
+					router.push('/bungie-api-maintainence');
 				} else {
 					const err = error as Error;
 					const errMessage = `message: ${err.message}\nstack: ${err.stack}`;

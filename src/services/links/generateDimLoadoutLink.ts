@@ -178,7 +178,7 @@ export const generateDimLink = (
 		id: 'dlb', // this doesn't matter and will be replaced
 		name: `${
 			destinySubclassId ? getDestinySubclass(destinySubclassId).name + ' ' : ''
-		}${exoticArmor.name} Loadout [DLB GENERATED]`,
+		}${exoticArmor.name} [DLB GENERATED]`,
 		classType: DestinyClassIdToDestinyClassHash[destinyClassId],
 		parameters: data,
 		equipped: (armorList || []).map(({ hash, id }) => ({

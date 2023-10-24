@@ -30,9 +30,7 @@ import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmo
 import LoadoutAnalysisWebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/LoadoutAnalysisWebWorkerWrapper';
 import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer/LoadoutAnalyzer';
 import Logout from '@dlb/components/LogOutButton';
-import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import Head from '@dlb/components/Meta/Head';
-import MinimumGearTierSelector from '@dlb/components/MinimumGearTierSelector';
 import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
 import RaidModSelector from '@dlb/components/RaidModsSelector';
@@ -383,8 +381,8 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					{
 						content: (
 							<>
-								<MasterworkAssumptionSelector />
-								<MinimumGearTierSelector />
+								{/* <MasterworkAssumptionSelector />
+								<MinimumGearTierSelector /> */}
 								<DimLoadoutsFilterSelector />
 								<InGameLoadoutsFilterSelector />
 								<UseZeroWastedStatsToggleSwitch />

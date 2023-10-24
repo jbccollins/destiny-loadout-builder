@@ -1,5 +1,9 @@
 import LoginButton from '@dlb/components/LoginButton';
 import Head from '@dlb/components/Meta/Head';
+import SocialIcon from '@dlb/components/SocialIcon';
+import { DISCORD_LINK } from '@dlb/dim/utils/constants';
+import discord_image from '@dlb/public/discord-mark-white.png';
+
 import logo_with_padding from '@dlb/public/logo-with-padding.png';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -75,7 +79,15 @@ function Login() {
 					vault
 				</Box> */}
 					<LoginButton />
-
+					<Box
+						sx={{ marginTop: '32px', marginX: 'auto', display: 'inline-block' }}
+					>
+						<SocialIcon
+							linkUrl={DISCORD_LINK}
+							iconUrl={discord_image}
+							text="Discord"
+						/>
+					</Box>
 					<Box
 						onClick={() => setOpen(!open)}
 						sx={{ cursor: 'pointer', marginTop: '24px' }}

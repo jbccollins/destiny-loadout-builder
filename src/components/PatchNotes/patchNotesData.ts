@@ -11,6 +11,23 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-23',
+		version: '2.4.23-BETA',
+		title: 'Analyzer Class Specific Grades',
+		sections: [
+			{
+				items: [
+					`Add class specific grades to the analyzer`,
+					`Add a new page that the user will be redirected to when there is Bungie API Maintenance. Previously the user was dumped on the error page.`,
+					`Removed the settings for "Masterwork Assumption" and "Minimum Gear Tier". These were really buggy and I doubt anyone actually used them. Will revisit these options later.`,
+					`Fix a bug where unmasterworked class items were not assumed to be masterworked`,
+					`Fix a bug where the user might get into a state where they always land on the "Analyze" tab`,
+					`Fix a bug where the application would become unusable if the user opened a shared loadout for a class that they did not have a valid set of armor for`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-22',
 		version: '2.4.22-BETA',
 		title: 'Minor analyzer UI changes',

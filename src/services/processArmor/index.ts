@@ -60,6 +60,7 @@ import {
 	RequiredClassItemMetadataKey,
 	RequiredClassItemMetadataKeyList,
 	sumModCosts,
+	sumStatLists,
 } from './utils';
 
 const _processArmorRecursiveCase = ({
@@ -226,11 +227,15 @@ const _processArmorBaseCase = ({
 
 		const baseArmorStatMapping =
 			getArmorStatMappingFromStatList(finalSumOfSeenStats);
-		const masterworkedStatList = hasMasterworkedClassItem
-			? getArmorStatMappingFromStatList(EXTRA_MASTERWORK_STAT_LIST)
-			: getDefaultArmorStatMapping();
+		// const masterworkedStatList =
+		// 	hasMasterworkedClassItem ||
+		// 	masterworkAssumption === EMasterworkAssumption.Legendary ||
+		// 	masterworkAssumption === EMasterworkAssumption.All
+		// 		? getArmorStatMappingFromStatList(EXTRA_MASTERWORK_STAT_LIST)
+		// 		: getDefaultArmorStatMapping();
+
 		const totalArmorStatMapping = sumArmorStatMappings([
-			masterworkedStatList,
+			// masterworkedStatList,
 			baseArmorStatMapping,
 			getArmorStatMappingFromMods(requiredArmorStatModIdList, destinyClassId),
 			getArmorStatMappingFromArtificeModIdList(requiredArtificeModIdList),
@@ -397,11 +402,15 @@ export const doProcessArmor = ({
 	const _useBonusResilience =
 		useBonusResilience &&
 		selectedExoticArmorItem.armorSlot !== EArmorSlotId.Chest;
-	const sumOfSeenStats = getExtraSumOfSeenStats(
-		fragmentArmorStatMapping,
-		modArmorStatMapping,
-		_useBonusResilience
-	);
+	const sumOfSeenStats = sumStatLists([
+		getExtraSumOfSeenStats(
+			fragmentArmorStatMapping,
+			modArmorStatMapping,
+			_useBonusResilience
+		),
+		// Assume every class item is masterworked
+		EXTRA_MASTERWORK_STAT_LIST,
+	]);
 
 	const seenArmorSlotItems = getDefaultSeenArmorSlotItems();
 	const processArmorParams: ProcessArmorParams = {

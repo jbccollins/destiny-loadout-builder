@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-24',
+		version: '2.4.24-BETA',
+		title: 'Unused Mod Slots Optimization',
+		sections: [
+			{
+				items: [
+					`Add a new analyzer optimization: "Unused Mod Slots"`,
+					`Note that this optimization needs a bit more testing on my end before I'm sure it's 100% accurate`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-23',
 		version: '2.4.23-BETA',
 		title: 'Analyzer Class Specific Grades',

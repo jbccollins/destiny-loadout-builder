@@ -3,10 +3,16 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { permute } from '@dlb/utils/permutations';
+import { normalToReducedMod } from '@dlb/utils/reduced-cost-mod-mapping';
 import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
 import { IMod } from './generation';
 import { EnumDictionary } from './globals';
-import { EArmorSlotId, EArmorStatId, EModSocketCategoryId } from './IdEnums';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EModCategoryId,
+	EModSocketCategoryId,
+} from './IdEnums';
 
 export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 
@@ -29,6 +35,10 @@ export const ArmorSlotModIdList = ModIdList.filter((id) => {
 		// !mod?.isArtifactMod
 	);
 });
+
+export const NonArtifactArmorSlotModIdList = ArmorSlotModIdList.filter(
+	(id) => !getMod(id)?.isArtifactMod
+);
 
 export const RaidModIdList = ModIdList.filter(
 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.Raid
@@ -79,6 +89,80 @@ export const ArtifactMinorStatModIdList = ArtifactStatModIdList.filter((id) =>
 export const ArtificeStatModIdList = ModIdList.filter(
 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.ArtificeStat
 );
+
+const fontModIdList = ModIdList.filter((id) => {
+	const mod = getMod(id);
+	return (
+		mod?.modCategoryId === EModCategoryId.ArmorCharge &&
+		mod?.name.startsWith('Font of')
+	);
+});
+
+// If we have no way to spend armor charge, then we don't care about acquiring it
+const armorChargeAcquisitionModIdList = [
+	// Head
+	EModId.PowerfulFriends,
+	EModId.RadiantLight,
+	// Arms
+	EModId.ShieldBreakCharge,
+	// Chest
+	EModId.ChargedUp,
+	// Legs
+	EModId.ElementalCharge,
+	EModId.StacksOnStacks,
+	// Class Item
+	EModId.EmpoweredFinish,
+	EModId.TimeDilation,
+];
+
+// If we are spending armor charge then we want to be careful about spending it in ways that we don't want to
+const armorChargeSpendModIdList = [
+	// Head
+	// Arms
+	EModId.GrenadeKickstart,
+	EModId.MeleeKickstart,
+	// Chest
+	EModId.EmergencyReinforcement,
+	// Legs
+	// Class Item
+	EModId.BenevolentFinisher,
+	EModId.BulwarkFinisher,
+	EModId.ExplosiveFinisher,
+	EModId.HealthyFinisher,
+	EModId.OneTwoFinisher,
+	EModId.RestorativeFinisher,
+	EModId.SnaploadFinisher,
+	EModId.SpecialFinisher,
+	EModId.UtilityFinisher,
+	EModId.UtilityKickstart,
+];
+
+const getReducedCostModIdListFromModIdList = (
+	modIdList: EModId[]
+): EModId[] => {
+	const result: EModId[] = [];
+	modIdList.forEach((modId) => {
+		const mod = getMod(modId);
+		const reducedCostModHash = normalToReducedMod[mod.hash];
+		if (reducedCostModHash) {
+			result.push(ModHashToModIdMapping[reducedCostModHash]);
+		}
+	});
+	return result;
+};
+
+export const FontModIdList = [
+	...fontModIdList,
+	...getReducedCostModIdListFromModIdList(fontModIdList),
+];
+export const ArmorChargeAcquisitionModIdList = [
+	...armorChargeAcquisitionModIdList,
+	...getReducedCostModIdListFromModIdList(armorChargeAcquisitionModIdList),
+];
+export const ArmorChargeSpendModIdList = [
+	...armorChargeSpendModIdList,
+	...getReducedCostModIdListFromModIdList(armorChargeSpendModIdList),
+];
 
 export const AllStatModHashes = [
 	...ArtificeStatModIdList,

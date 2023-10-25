@@ -78,7 +78,11 @@ import {
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
-import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
+import {
+	EArmorSlotId,
+	EDestinyClassId,
+	EDestinySubclassId,
+} from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import EditIcon from '@mui/icons-material/Edit';
@@ -102,7 +106,6 @@ import { loadoutOptimizationIconMapping } from './LoadoutAnalyzer';
 const InspectingOptimizationDetailsHelp = styled(Box)(({ theme }) => ({
 	marginBottom: theme.spacing(0.5),
 	fontSize: '14px',
-	// italic
 	fontStyle: 'italic',
 }));
 
@@ -228,6 +231,43 @@ const InspectingOptimizationDetails = (
 					<Box>
 						<Box>Current wasted stats: {metadata.currentWastedStats}</Box>
 						<Box>Optimized wasted stats: {metadata.lowestWastedStats}</Box>
+					</Box>
+				</Box>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.UnusedModSlots && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Add mods to available mod slots to resolve this optimization.
+					</InspectingOptimizationDetailsHelp>
+					<Box>
+						{Object.keys(metadata.unusedModSlots).map((armorSlotId) => {
+							const value = metadata.unusedModSlots[armorSlotId];
+							const armorSlot = getArmorSlot(armorSlotId as EArmorSlotId);
+							return (
+								<Box
+									key={armorSlotId}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+										gap: '4px',
+										background: 'rgba(30,30,30,0.5)',
+										'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+										padding: '4px',
+									}}
+								>
+									<CustomTooltip title={armorSlot.name}>
+										<Box sx={{ width: '26px', height: '26px' }}>
+											<BungieImage
+												src={armorSlot.icon}
+												width={26}
+												height={26}
+											/>
+										</Box>
+									</CustomTooltip>
+									<Box>Any mod costing {value} or less</Box>
+								</Box>
+							);
+						})}
 					</Box>
 				</Box>
 			)}
@@ -673,117 +713,6 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				)}
 				<Box sx={{ fontWeight: 'bold' }}>{name}</Box>
 			</Box>
-
-			<Box
-				sx={{
-					marginTop: '8px',
-					display: 'flex',
-					gap: '4px',
-					alignItems: 'center',
-				}}
-			>
-				{/* This loadout has been analyzed and has optimizations */}
-				{!!analysisResults[id]?.optimizationTypeList &&
-					optimizationTypeList?.length > 0 && (
-						<>
-							{optimizationTypeList?.map((x, i) => {
-								const { category, name } = getLoadoutOptimization(x);
-								const { color } = getLoadoutOptimizationCategory(category);
-								return (
-									<Box
-										key={x}
-										sx={{
-											position: 'relative',
-										}}
-									>
-										<Box
-											sx={{
-												cursor: 'pointer',
-												zIndex: 1,
-												position: 'relative',
-											}}
-											onClick={() => handleInspectingOptimizationType(x)}
-										>
-											<IconPill key={x} color={color} tooltipText={name}>
-												{loadoutOptimizationIconMapping[x]}
-											</IconPill>
-										</Box>
-										{inspectingOptimizationType === x && (
-											<Box
-												sx={{
-													zIndex: 0,
-													position: 'absolute',
-													top: '16px',
-													left: '0px',
-													width: '32px',
-													height: '32px',
-													background: '#585858',
-												}}
-											/>
-										)}
-									</Box>
-								);
-							})}
-						</>
-					)}
-				{/* This loadout has been analyzed and has NO optimizations */}
-				{!!analysisResults[id]?.optimizationTypeList &&
-					optimizationTypeList?.length === 0 && (
-						<IconPill
-							color={
-								getLoadoutOptimizationCategory(
-									ELoadoutOptimizationCategoryId.NONE
-								).color
-							}
-							tooltipText={NoneOptimization.name}
-						>
-							{loadoutOptimizationIconMapping[NoneOptimization.id]}
-						</IconPill>
-					)}
-				{/* This loadout has not been analyzed yet */}
-				{!analysisResults[id]?.optimizationTypeList && (
-					<>
-						<Box
-							sx={{
-								height: '32px !important',
-								width: '32px !important',
-							}}
-						>
-							<CircularProgress
-								sx={{
-									height: '32px !important',
-									width: '32px !important',
-								}}
-							/>
-						</Box>
-						<Box sx={{ marginLeft: '8px' }}>Checking for optimizations...</Box>
-					</>
-				)}
-			</Box>
-			<Collapse in={!!inspectingOptimization}>
-				{inspectingOptimization && (
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							gap: '8px',
-							marginTop: '8px',
-							background: '#585858',
-							padding: '8px',
-							borderRadius: '4px',
-						}}
-					>
-						<Box sx={{ fontSize: '20px', fontWeight: 'bold' }}>
-							{inspectingOptimization.name}
-						</Box>
-						<Box>{inspectingOptimization.description}</Box>
-						<InspectingOptimizationDetails
-							loadout={loadout}
-							optimizationType={inspectingOptimizationType}
-						/>
-					</Box>
-				)}
-			</Collapse>
 			<Box
 				sx={{
 					display: 'flex',
@@ -823,6 +752,163 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 					</CustomTooltip>
 				)}
 			</Box>
+			<Box
+				sx={{
+					marginTop: '12px',
+					display: 'flex',
+					gap: '4px',
+					alignItems: 'center',
+				}}
+			>
+				{/* This loadout has been analyzed and has optimizations */}
+				{!!analysisResults[id]?.optimizationTypeList &&
+					optimizationTypeList?.length > 0 && (
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								// background: 'rgb(19,19,19)',
+								// padding: '8px',
+								width: '100%',
+								// borderRadius: '4px',
+							}}
+						>
+							<Box
+								sx={{
+									marginBottom: '4px',
+									fontSize: '14px',
+									fontStyle: 'italic',
+									// verticalAlign: 'text-top',
+								}}
+							>
+								Available optimizations:
+							</Box>
+							<Box sx={{ display: 'flex', gap: '4px' }}>
+								{optimizationTypeList?.map((x, i) => {
+									const { category, name } = getLoadoutOptimization(x);
+									const { color } = getLoadoutOptimizationCategory(category);
+									return (
+										<Box
+											key={x}
+											sx={{
+												position: 'relative',
+											}}
+										>
+											<Box
+												sx={{
+													cursor: 'pointer',
+													zIndex: 1,
+													position: 'relative',
+												}}
+												onClick={() => handleInspectingOptimizationType(x)}
+											>
+												<IconPill key={x} color={color} tooltipText={name}>
+													{loadoutOptimizationIconMapping[x]}
+												</IconPill>
+											</Box>
+											{inspectingOptimizationType === x && (
+												<Box
+													sx={{
+														zIndex: 0,
+														position: 'absolute',
+														top: '16px',
+														left: '0px',
+														width: '32px',
+														height: '32px',
+														background: '#585858',
+													}}
+												/>
+											)}
+										</Box>
+									);
+								})}
+							</Box>
+						</Box>
+					)}
+				{/* This loadout has been analyzed and has NO optimizations */}
+				{!!analysisResults[id]?.optimizationTypeList &&
+					optimizationTypeList?.length === 0 && (
+						<Box
+							sx={{
+								display: 'flex',
+								// background: 'rgb(19,19,19)',
+								// padding: '8px',
+								width: '100%',
+								alignItems: 'center',
+								gap: '8px',
+								// borderRadius: '4px',
+							}}
+						>
+							<IconPill
+								color={
+									getLoadoutOptimizationCategory(
+										ELoadoutOptimizationCategoryId.NONE
+									).color
+								}
+								tooltipText={NoneOptimization.name}
+							>
+								{loadoutOptimizationIconMapping[NoneOptimization.id]}
+							</IconPill>
+							<Box
+								sx={{
+									fontSize: '14px',
+									fontStyle: 'italic',
+									// verticalAlign: 'text-top',
+								}}
+							>
+								This loadout is fully optimized
+							</Box>
+						</Box>
+					)}
+				{/* This loadout has not been analyzed yet */}
+				{!analysisResults[id]?.optimizationTypeList && (
+					<>
+						<Box
+							sx={{
+								height: '32px !important',
+								width: '32px !important',
+							}}
+						>
+							<CircularProgress
+								sx={{
+									height: '32px !important',
+									width: '32px !important',
+								}}
+							/>
+						</Box>
+						<Box
+							sx={{ marginLeft: '8px', fontSize: '14px', fontStyle: 'italic' }}
+						>
+							Checking for optimizations...
+						</Box>
+					</>
+				)}
+			</Box>
+			<Collapse in={!!inspectingOptimization}>
+				{inspectingOptimization && (
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: '8px',
+							marginTop: '8px',
+							background: '#585858',
+							padding: '8px',
+							borderRadius: '4px',
+						}}
+					>
+						<Box sx={{ fontSize: '20px', fontWeight: 'bold' }}>
+							{inspectingOptimization.name}
+						</Box>
+						<Box>{inspectingOptimization.description}</Box>
+						<InspectingOptimizationDetails
+							loadout={loadout}
+							optimizationType={inspectingOptimizationType}
+						/>
+					</Box>
+				)}
+			</Collapse>
+
 			<Breakdown loadout={loadout} />
 		</Box>
 	);

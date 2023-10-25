@@ -53,6 +53,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import ReportIcon from '@mui/icons-material/Report';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
@@ -124,6 +125,9 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.MutuallyExclusiveMods]: (
 		<GppBadIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.UnusedModSlots]: (
+		<PostAddIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.None]: <CheckIcon key={0} sx={iconStyle} />,
 	[ELoadoutOptimizationTypeId.Error]: <ReportIcon key={0} sx={iconStyle} />,

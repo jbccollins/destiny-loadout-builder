@@ -13,7 +13,10 @@ import {
 	InGameLoadoutsDefinitions,
 	InGameLoadoutsMapping,
 } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
-import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import {
+	ArmorSlotEnergyMapping,
+	getDefaultArmorSlotEnergyMapping,
+} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 
 import {
 	doProcessArmor,
@@ -31,6 +34,7 @@ import {
 	ELoadoutOptimizationCategoryId,
 	ELoadoutType,
 	getDefaultAnalyzableLoadout,
+	SeverityOrderedLoadoutOptimizationCategoryIdList,
 } from '@dlb/types/AnalyzableLoadout';
 import {
 	AllClassItemMetadata,
@@ -85,16 +89,21 @@ import {
 import { getJumpByHash } from '@dlb/types/Jump';
 import { getMeleeByHash } from '@dlb/types/Melee';
 import {
+	ArmorChargeAcquisitionModIdList,
+	ArmorChargeSpendModIdList,
 	ArmorSlotIdToModIdListMapping,
+	FontModIdList,
 	getDefaultArmorSlotIdToModIdListMapping,
 	getMod,
 	getModByHash,
 	getValidRaidModArmorSlotPlacements,
 	hasMutuallyExclusiveMods,
+	NonArtifactArmorSlotModIdList,
 } from '@dlb/types/Mod';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
+import { isEmpty } from 'lodash';
 import {
 	ArmorStatAndRaidModComboPlacement,
 	getDefaultModPlacements,
@@ -893,6 +902,7 @@ export enum ELoadoutOptimizationTypeId {
 	FewerWastedStats = 'FewerWastedStats',
 	InvalidLoadoutConfiguration = 'InvalidLoadoutConfiguration',
 	MutuallyExclusiveMods = 'MutuallyExclusiveMods',
+	UnusedModSlots = 'UnusedModSlots',
 	None = 'None',
 	Error = 'Error',
 }
@@ -903,6 +913,90 @@ export interface ILoadoutOptimization {
 	description: string;
 	category: ELoadoutOptimizationCategoryId;
 }
+type GetUnusedModSlotsParams = {
+	allModsIdList: EModId[];
+	maxPossibleReservedArmorSlotEnergy: ArmorSlotEnergyMapping;
+};
+const getUnusedModSlots = ({
+	allModsIdList,
+	maxPossibleReservedArmorSlotEnergy,
+}: GetUnusedModSlotsParams): Partial<Record<EArmorSlotId, number>> => {
+	const unusedModSlots: Partial<Record<EArmorSlotId, number>> = {};
+	const allArmorSlotMods = allModsIdList
+		.map((x) => getMod(x))
+		.filter((x) => x?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot);
+	const nonArtifactArmorSlotMods = NonArtifactArmorSlotModIdList.map((x) =>
+		getMod(x)
+	);
+	const hasFontMod = allArmorSlotMods.some((mod) =>
+		FontModIdList.includes(mod.id)
+	);
+	const hasArmorChargeAcquisitionMod = allArmorSlotMods.some((mod) =>
+		ArmorChargeAcquisitionModIdList.includes(mod.id)
+	);
+	const hasArmorChargeSpendMod = allArmorSlotMods.some((mod) =>
+		ArmorChargeSpendModIdList.includes(mod.id)
+	);
+
+	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+		const currentModCount = allArmorSlotMods.filter(
+			(x) => x.armorSlotId === armorSlotId
+		).length;
+		const maxReservedArmorSlotEnergy =
+			maxPossibleReservedArmorSlotEnergy[armorSlotId];
+
+		if (currentModCount < 3 && maxReservedArmorSlotEnergy > 0) {
+			const currentArmorSlotMods = allArmorSlotMods.filter(
+				(x) => x.armorSlotId === armorSlotId
+			);
+
+			const potentialReccomendedMods =
+				// Only recommend mods that are NOT discounted via the seasonal artifact
+				nonArtifactArmorSlotMods
+					// Cheap sanity pre-filter
+					.filter(
+						(mod) =>
+							mod.armorSlotId === armorSlotId &&
+							mod.cost <= maxReservedArmorSlotEnergy
+					)
+					// Costly logic filter
+					.filter((mod) => {
+						const [_hasMutuallyExclusiveMods, _] = hasMutuallyExclusiveMods([
+							...currentArmorSlotMods,
+							mod,
+						]);
+						// Do we have a way to actually spend armor charges?
+						const meetsArmorChargeAcquisitionModConstraints =
+							ArmorChargeAcquisitionModIdList.includes(mod.id)
+								? hasFontMod || hasArmorChargeSpendMod
+								: true;
+						// If we are already using a font mod, then we can use any other font mod
+						// If we don't have any armor charge acquisition mods, then we can use any font mod
+						const meetsFontModConstraints = FontModIdList.includes(mod.id)
+							? hasFontMod || !hasArmorChargeAcquisitionMod
+							: true;
+						const meetsArmorChargeSpendModConstraints =
+							ArmorChargeSpendModIdList.includes(mod.id)
+								? // We can only recommend using a spend mod if it's a duplicate spend mod (two copies of grenade kickstart for example)
+								  // or if we don't have any other spend mods or font mods
+								  !hasFontMod &&
+								  (!hasArmorChargeSpendMod ||
+										currentArmorSlotMods.some((cMod) => cMod.id === mod.id))
+								: true;
+						return (
+							!_hasMutuallyExclusiveMods &&
+							meetsArmorChargeAcquisitionModConstraints &&
+							meetsFontModConstraints &&
+							meetsArmorChargeSpendModConstraints
+						);
+					});
+			if (potentialReccomendedMods.length > 0) {
+				unusedModSlots[armorSlotId] = maxReservedArmorSlotEnergy;
+			}
+		}
+	});
+	return unusedModSlots;
+};
 
 // There maybe multiple optimizations types that, while techincally correct, are confusing
 // to a user. For example, if you are missing an armor piece, then the lower cost and higher stat tier checks aren't
@@ -949,9 +1043,17 @@ export const humanizeOptimizationTypes = (
 			(x) => !(x === ELoadoutOptimizationTypeId.FewerWastedStats)
 		);
 	}
-	// Dedupe the list
+	// Dedupe and sort the list
 	filteredOptimizationTypeList = Array.from(
 		new Set(filteredOptimizationTypeList)
+	).sort(
+		(a, b) =>
+			SeverityOrderedLoadoutOptimizationCategoryIdList.indexOf(
+				getLoadoutOptimization(a).category
+			) -
+			SeverityOrderedLoadoutOptimizationCategoryIdList.indexOf(
+				getLoadoutOptimization(b).category
+			)
 	);
 	return filteredOptimizationTypeList;
 };
@@ -1065,6 +1167,13 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 			'This loadout uses mods that are mutually exclusive. This is rare, but can happen if Bungie decides to make two mods mutually exclusive after you have already equipped both of them together. It can also happen if there is a bug in DIM or another third party loadout creation tool that let you create a loadout with such mods.',
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
+	[ELoadoutOptimizationTypeId.UnusedModSlots]: {
+		id: ELoadoutOptimizationTypeId.UnusedModSlots,
+		name: 'Unused Mod Slots',
+		description:
+			"This loadout has space to slot additional mods. It's free real estate!",
+		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
+	},
 	[ELoadoutOptimizationTypeId.None]: {
 		id: ELoadoutOptimizationTypeId.None,
 		name: 'No Optimizations Found',
@@ -1084,6 +1193,7 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 	ValidateEnumList(Object.values(ELoadoutOptimizationTypeId), [
 		ELoadoutOptimizationTypeId.HigherStatTier,
 		ELoadoutOptimizationTypeId.LowerCost,
+		ELoadoutOptimizationTypeId.UnusedModSlots,
 		ELoadoutOptimizationTypeId.MissingArmor,
 		ELoadoutOptimizationTypeId.UnusableMods,
 		ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
@@ -1127,12 +1237,14 @@ export enum EGetLoadoutsThatCanBeOptimizedProgressType {
 }
 export type GetLoadoutsThatCanBeOptimizedProgressMetadata = {
 	maxPossibleDesiredStatTiers: ArmorStatMapping;
+	maxPossibleReservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	lowestCost: number;
 	currentCost: number;
 	lowestWastedStats: number;
 	currentWastedStats: number;
 	mutuallyExclusiveModGroups: string[]; // TODO: Rework this to contain the actual mod ids
 	modPlacement: ArmorStatAndRaidModComboPlacement;
+	unusedModSlots: Partial<Record<EArmorSlotId, number>>;
 };
 export type GetLoadoutsThatCanBeOptimizedProgress = {
 	type: EGetLoadoutsThatCanBeOptimizedProgressType;
@@ -1260,153 +1372,181 @@ export const getLoadoutsThatCanBeOptimized = (
 			}
 			const metadata = {
 				maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
+				maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				lowestCost: Infinity,
 				currentCost: Infinity,
 				lowestWastedStats: Infinity,
 				currentWastedStats: Infinity,
 				mutuallyExclusiveModGroups: [],
 				modPlacement: getDefaultModPlacements().placement,
+				unusedModSlots: {},
 			};
 			let earlyProgressCallback = false;
-			armorSlotModsVariants.forEach(
-				(armorSlotMods, armorSlotModsVariantsIndex) => {
-					// Don't even try to process without an exotic
-					if (!loadout.exoticHash) {
-						optimizationTypeList.push(ELoadoutOptimizationTypeId.NoExoticArmor);
-						result.push({
-							optimizationTypeList: optimizationTypeList,
-							loadoutId: loadout.id,
-						});
-						earlyProgressCallback = true;
-						progressCallback({
-							type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
-							canBeOptimized: true,
-							loadoutId: loadout.id,
-							optimizationTypeList: optimizationTypeList,
-							metadata: metadata,
-						});
-						return;
+
+			for (
+				let armorSlotModsVariantsIndex = 0;
+				armorSlotModsVariantsIndex < armorSlotModsVariants.length;
+				armorSlotModsVariantsIndex++
+			) {
+				const armorSlotMods = armorSlotModsVariants[armorSlotModsVariantsIndex];
+				// Don't even try to process without an exotic
+				if (!loadout.exoticHash) {
+					optimizationTypeList.push(ELoadoutOptimizationTypeId.NoExoticArmor);
+					result.push({
+						optimizationTypeList: optimizationTypeList,
+						loadoutId: loadout.id,
+					});
+					earlyProgressCallback = true;
+					progressCallback({
+						type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
+						canBeOptimized: true,
+						loadoutId: loadout.id,
+						optimizationTypeList: optimizationTypeList,
+						metadata: metadata,
+					});
+					break;
+				}
+
+				const {
+					preProcessedArmor,
+					allClassItemMetadata: _allClassItemMetadata,
+				} = generatePreProcessedArmor({
+					armor,
+					loadout,
+					allClassItemMetadata,
+					availableExoticArmor,
+				});
+
+				const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
+					loadout.fragmentIdList,
+					loadout.destinyClassId
+				);
+				const validRaidModArmorSlotPlacements =
+					getValidRaidModArmorSlotPlacements(armorSlotMods, loadout.raidMods);
+
+				let allModsIdList = [...loadout.raidMods];
+				ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
+					allModsIdList = [...allModsIdList, ...armorSlotMods[armorSlotId]];
+				});
+				const modsArmorStatMapping = getArmorStatMappingFromMods(
+					allModsIdList,
+					loadout.destinyClassId
+				);
+
+				// TODO: Flesh out the non-default stuff like
+				// raid mods, placements, armor slot mods,
+				const doProcessArmorParams: DoProcessArmorParams = {
+					masterworkAssumption,
+					desiredArmorStats: loadout.desiredStatTiers,
+					armorItems: preProcessedArmor,
+					fragmentArmorStatMapping,
+					modArmorStatMapping: modsArmorStatMapping,
+					potentialRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
+					armorSlotMods,
+					raidMods: loadout.raidMods.filter((x) => x !== null),
+					intrinsicArmorPerkOrAttributeIds: [],
+					destinyClassId: loadout.destinyClassId,
+					reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+					useZeroWastedStats: false,
+					useBonusResilience: loadout.hasBonusResilienceOrnament,
+					selectedExoticArmorItem: findAvailableExoticArmorItem(
+						loadout.exoticHash,
+						loadout.destinyClassId,
+						availableExoticArmor
+					),
+					alwaysConsiderCollectionsRolls: false,
+					allClassItemMetadata: _allClassItemMetadata,
+				};
+				const sumOfCurrentStatModsCost = sumModCosts(loadout.armorStatMods);
+				const processedArmor = doProcessArmor(doProcessArmorParams);
+				let maxDiff = -1;
+				let hasHigherStatTiers = false;
+				ArmorStatIdList.forEach((armorStatId) => {
+					const processedArmorVal =
+						processedArmor.maxPossibleDesiredStatTiers[armorStatId];
+					const existingVal = roundDown10(
+						loadout.desiredStatTiers[armorStatId]
+					);
+					maxDiff = Math.max(
+						maxDiff,
+						processedArmorVal / 10 - existingVal / 10
+					);
+					if (maxDiff > 0) {
+						hasHigherStatTiers = true;
 					}
+				});
+				const flattenedMods = flattenMods(loadout).map((x) => getMod(x));
 
-					const {
-						preProcessedArmor,
-						allClassItemMetadata: _allClassItemMetadata,
-					} = generatePreProcessedArmor({
-						armor,
-						loadout,
-						allClassItemMetadata,
-						availableExoticArmor,
-					});
-
-					const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
-						loadout.fragmentIdList,
-						loadout.destinyClassId
-					);
-					const validRaidModArmorSlotPlacements =
-						getValidRaidModArmorSlotPlacements(armorSlotMods, loadout.raidMods);
-
-					let mods = [...loadout.raidMods];
-					ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
-						mods = [...mods, ...armorSlotMods[armorSlotId]];
-					});
-					const modsArmorStatMapping = getArmorStatMappingFromMods(
-						mods,
-						loadout.destinyClassId
-					);
-
-					// TODO: Flesh out the non-default stuff like
-					// raid mods, placements, armor slot mods,
-					const doProcessArmorParams: DoProcessArmorParams = {
-						masterworkAssumption,
-						desiredArmorStats: loadout.desiredStatTiers,
-						armorItems: preProcessedArmor,
-						fragmentArmorStatMapping,
-						modArmorStatMapping: modsArmorStatMapping,
-						potentialRaidModArmorSlotPlacements:
-							validRaidModArmorSlotPlacements,
-						armorSlotMods,
-						raidMods: loadout.raidMods.filter((x) => x !== null),
-						intrinsicArmorPerkOrAttributeIds: [],
-						destinyClassId: loadout.destinyClassId,
-						reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
-						useZeroWastedStats: false,
-						useBonusResilience: loadout.hasBonusResilienceOrnament,
-						selectedExoticArmorItem: findAvailableExoticArmorItem(
-							loadout.exoticHash,
-							loadout.destinyClassId,
-							availableExoticArmor
-						),
-						alwaysConsiderCollectionsRolls: false,
-						allClassItemMetadata: _allClassItemMetadata,
+				// First pass vars
+				let hasMissingArmor = false;
+				let hasFewerWastedStats = false;
+				let hasLowerCost = false;
+				let hasUnusedModSlots = false;
+				let hasUnmetDIMStatTierConstraints = false;
+				let hasUnavailableMods = false;
+				let hasStatOver100 = false;
+				let hasUnusedFragmentSlots = false;
+				let hasUnmasterworkedArmor = false;
+				let hasUnspecifiedAspect = false;
+				let hasInvalidLoadoutConfiguration = false;
+				let _hasMutuallyExclusiveMods = false;
+				let _mutuallyExclusiveModGroups: string[] = [];
+				// Second pass vars
+				let hasUnusableMods = false;
+				if (armorSlotModsVariantsIndex === 0) {
+					metadata.maxPossibleDesiredStatTiers = {
+						...processedArmor.maxPossibleDesiredStatTiers,
 					};
-					const sumOfCurrentStatModsCost = sumModCosts(loadout.armorStatMods);
-					const processedArmor = doProcessArmor(doProcessArmorParams);
-					if (armorSlotModsVariantsIndex === 0) {
-						hasCorrectableMods = processedArmor.items.length > 0;
-					}
-					let maxDiff = -1;
-					let hasHigherStatTiers = false;
-					if (armorSlotModsVariantsIndex === 0) {
-						metadata.maxPossibleDesiredStatTiers = {
-							...processedArmor.maxPossibleDesiredStatTiers,
-						};
-					}
-					ArmorStatIdList.forEach((armorStatId) => {
-						const processedArmorVal =
-							processedArmor.maxPossibleDesiredStatTiers[armorStatId];
-						const existingVal = roundDown10(
-							loadout.desiredStatTiers[armorStatId]
-						);
-						maxDiff = Math.max(
-							maxDiff,
-							processedArmorVal / 10 - existingVal / 10
-						);
-						if (maxDiff > 0) {
-							hasHigherStatTiers = true;
+					metadata.maxPossibleReservedArmorSlotEnergy = {
+						...processedArmor.maxPossibleReservedArmorSlotEnergy,
+					};
+
+					hasMissingArmor = loadout.armor.length < 5;
+					hasCorrectableMods = processedArmor.items.length > 0;
+
+					// In one loop find the lowest cost and lowest wasted stats
+					processedArmor.items.forEach((x) => {
+						if (x.metadata.totalModCost < metadata.lowestCost) {
+							metadata.lowestCost = x.metadata.totalModCost;
+						}
+						if (x.metadata.wastedStats < metadata.lowestWastedStats) {
+							metadata.lowestWastedStats = x.metadata.wastedStats;
+						}
+						// If this is the currently equipped set of armor, then we can use the mod placement
+						if (
+							!hasMissingArmor &&
+							x.armorIdList.every((processedArmorId) =>
+								loadout.armor.find((x) => x.id === processedArmorId)
+							)
+						) {
+							metadata.modPlacement = x.modPlacement;
 						}
 					});
 
-					const missingArmor = loadout.armor.length < 5;
+					// // Pick the first valid placment as a placeholder
+					// // We only use this for rendering armor slot mods
+					// if (!modPlacement && processedArmor.items.length > 0) {
+					// 	modPlacement = processedArmor.items[0].modPlacement;
+					// }
+					// TODO: Should this only be done on the first loop?
+					metadata.currentCost = sumOfCurrentStatModsCost;
+					hasLowerCost =
+						maxDiff >= 0 && metadata.lowestCost < sumOfCurrentStatModsCost;
 
-					let hasFewerWastedStats = false;
-					let hasLowerCost = false;
-					if (armorSlotModsVariantsIndex === 0) {
-						// In one loop find the lowest cost and lowest wasted stats
-						processedArmor.items.forEach((x) => {
-							if (x.metadata.totalModCost < metadata.lowestCost) {
-								metadata.lowestCost = x.metadata.totalModCost;
-							}
-							if (x.metadata.wastedStats < metadata.lowestWastedStats) {
-								metadata.lowestWastedStats = x.metadata.wastedStats;
-							}
-							// If this is the currently equipped set of armor, then we can use the mod placement
-							if (
-								!missingArmor &&
-								x.armorIdList.every((processedArmorId) =>
-									loadout.armor.find((x) => x.id === processedArmorId)
-								)
-							) {
-								metadata.modPlacement = x.modPlacement;
-							}
-						});
+					const wastedStats = getWastedStats(loadout.achievedStats);
+					metadata.currentWastedStats = wastedStats;
+					hasFewerWastedStats = metadata.lowestWastedStats < wastedStats;
 
-						// // Pick the first valid placment as a placeholder
-						// // We only use this for rendering armor slot mods
-						// if (!modPlacement && processedArmor.items.length > 0) {
-						// 	modPlacement = processedArmor.items[0].modPlacement;
-						// }
-						// TODO: Should this only be done on the first loop?
-						metadata.currentCost = sumOfCurrentStatModsCost;
-						hasLowerCost =
-							maxDiff >= 0 && metadata.lowestCost < sumOfCurrentStatModsCost;
-
-						console.log('+++ loadout', loadout);
-						const wastedStats = getWastedStats(loadout.achievedStats);
-						metadata.currentWastedStats = wastedStats;
-						hasFewerWastedStats = metadata.lowestWastedStats < wastedStats;
+					const unusedModSlots = getUnusedModSlots({
+						allModsIdList,
+						maxPossibleReservedArmorSlotEnergy:
+							metadata.maxPossibleReservedArmorSlotEnergy,
+					});
+					if (!isEmpty(unusedModSlots)) {
+						metadata.unusedModSlots = { ...unusedModSlots };
+						hasUnusedModSlots = true;
 					}
-
-					const hasUnmetDIMStatTierConstraints =
+					hasUnmetDIMStatTierConstraints =
 						loadout.loadoutType === ELoadoutType.DIM &&
 						ArmorStatIdList.some(
 							(armorStatId) =>
@@ -1414,7 +1554,6 @@ export const getLoadoutsThatCanBeOptimized = (
 								loadout.dimStatTierConstraints[armorStatId]
 						);
 
-					let hasUnavailableMods = false;
 					Object.values(armorSlotMods).forEach((modIdList) => {
 						modIdList
 							.filter((x) => x !== null)
@@ -1428,107 +1567,103 @@ export const getLoadoutsThatCanBeOptimized = (
 								}
 							});
 					});
-					const hasStatOver100 = Object.values(loadout.achievedStatTiers).some(
+
+					hasStatOver100 = Object.values(loadout.achievedStatTiers).some(
 						(x) => x > 100
 					);
-
-					// If the first pass returned results
-					const hasUnusableMods =
-						hasCorrectableMods && // The first pass returned results
-						armorSlotModsVariantsIndex === 1 && // We're on the second pass
-						processedArmor.items.length === 0; // We have no results on the second pass
-					const hasUnusedFragmentSlots =
+					hasUnusedFragmentSlots =
 						getFragmentSlots(loadout.aspectIdList) >
 						loadout.fragmentIdList.length;
 
-					const hasUnmasterworkedArmor = loadout.armor.some(
-						(x) => !x.isMasterworked
-					);
-
-					const hasUnspecifiedAspect = loadout.aspectIdList.length === 1;
-
-					const hasInvalidLoadoutConfiguration =
-						armorSlotModsVariantsIndex === 0 && // We're on the first pass
-						processedArmor.items.length === 0;
-
-					const flattenedMods = flattenMods(loadout).map((x) => getMod(x));
-					const [_hasMutuallyExclusiveMods, _mutuallyExclusiveModGroups] =
+					hasUnmasterworkedArmor = loadout.armor.some((x) => !x.isMasterworked);
+					hasUnspecifiedAspect = loadout.aspectIdList.length === 1;
+					hasInvalidLoadoutConfiguration = processedArmor.items.length === 0;
+					[_hasMutuallyExclusiveMods, _mutuallyExclusiveModGroups] =
 						hasMutuallyExclusiveMods(flattenedMods);
 					metadata.mutuallyExclusiveModGroups = _mutuallyExclusiveModGroups;
+				} else if (armorSlotModsVariantsIndex === 1) {
+					// This is a check for if DIM can correct this loadout
+					hasUnusableMods =
+						hasCorrectableMods && // The first pass returned results
+						processedArmor.items.length === 0; // We have no results on the second pass
+				}
 
-					if (hasHigherStatTiers) {
-						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.HigherStatTier
-						);
-					}
-					if (hasLowerCost) {
-						optimizationTypeList.push(ELoadoutOptimizationTypeId.LowerCost);
-					}
-					if (missingArmor) {
-						optimizationTypeList.push(ELoadoutOptimizationTypeId.MissingArmor);
-					}
-					if (hasUnavailableMods) {
-						// DIM can correct for unavailable mods, but only if there is enough armor energy
-						// InGame Loadouts cannot correct for unavailable mods
-						if (loadout.loadoutType === ELoadoutType.InGame) {
-							optimizationTypeList.push(
-								ELoadoutOptimizationTypeId.UnusableMods
-							);
-						} else {
-							optimizationTypeList.push(
-								ELoadoutOptimizationTypeId.UnavailableMods
-							);
-						}
-					}
-					if (hasStatOver100) {
-						optimizationTypeList.push(ELoadoutOptimizationTypeId.StatsOver100);
-					}
-					if (hasUnusedFragmentSlots) {
-						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.UnusedFragmentSlots
-						);
-					}
-					if (hasUnusableMods) {
+				if (hasHigherStatTiers) {
+					optimizationTypeList.push(ELoadoutOptimizationTypeId.HigherStatTier);
+				}
+				if (hasLowerCost) {
+					optimizationTypeList.push(ELoadoutOptimizationTypeId.LowerCost);
+				}
+				if (hasMissingArmor) {
+					optimizationTypeList.push(ELoadoutOptimizationTypeId.MissingArmor);
+				}
+				if (hasUnusableMods) {
+					optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusableMods);
+				}
+				// TODO: Maybe we only want to include hasUnavailableMods if !hasUnusableMods
+				if (hasUnavailableMods) {
+					// DIM can correct for unavailable mods, but only if there is enough armor energy
+					// InGame Loadouts cannot correct for unavailable mods
+					if (loadout.loadoutType === ELoadoutType.InGame) {
 						optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusableMods);
-					}
-					if (hasUnmetDIMStatTierConstraints) {
+					} else {
 						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.UnmetDIMStatConstraints
-						);
-					}
-					if (hasUnmasterworkedArmor) {
-						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.UnmasterworkedArmor
-						);
-					}
-					if (hasFewerWastedStats) {
-						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.FewerWastedStats
-						);
-					}
-					if (hasUnspecifiedAspect) {
-						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.UnspecifiedAspect
-						);
-					}
-					if (hasInvalidLoadoutConfiguration) {
-						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration
-						);
-					}
-					if (_hasMutuallyExclusiveMods) {
-						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.MutuallyExclusiveMods
+							ELoadoutOptimizationTypeId.UnavailableMods
 						);
 					}
 				}
-			);
+				if (hasStatOver100) {
+					optimizationTypeList.push(ELoadoutOptimizationTypeId.StatsOver100);
+				}
+				if (hasUnusedFragmentSlots) {
+					optimizationTypeList.push(
+						ELoadoutOptimizationTypeId.UnusedFragmentSlots
+					);
+				}
+				if (hasUnmetDIMStatTierConstraints) {
+					optimizationTypeList.push(
+						ELoadoutOptimizationTypeId.UnmetDIMStatConstraints
+					);
+				}
+				if (hasUnmasterworkedArmor) {
+					optimizationTypeList.push(
+						ELoadoutOptimizationTypeId.UnmasterworkedArmor
+					);
+				}
+				if (hasFewerWastedStats) {
+					optimizationTypeList.push(
+						ELoadoutOptimizationTypeId.FewerWastedStats
+					);
+				}
+				if (hasUnspecifiedAspect) {
+					optimizationTypeList.push(
+						ELoadoutOptimizationTypeId.UnspecifiedAspect
+					);
+				}
+				if (hasInvalidLoadoutConfiguration) {
+					optimizationTypeList.push(
+						ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration
+					);
+				}
+				if (_hasMutuallyExclusiveMods) {
+					optimizationTypeList.push(
+						ELoadoutOptimizationTypeId.MutuallyExclusiveMods
+					);
+				}
+				if (hasUnusedModSlots) {
+					optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusedModSlots);
+				}
+			}
+
 			if (earlyProgressCallback) {
 				return;
 			}
 
 			const humanizedOptimizationTypes =
 				humanizeOptimizationTypes(optimizationTypeList);
+
+			// Do this to fake a high score
+			// const humanizedOptimizationTypes = [];
 
 			if (humanizedOptimizationTypes.length > 0) {
 				result.push({

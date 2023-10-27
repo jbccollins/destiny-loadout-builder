@@ -40,6 +40,30 @@ export const NonArtifactArmorSlotModIdList = ArmorSlotModIdList.filter(
 	(id) => !getMod(id)?.isArtifactMod
 );
 
+export const ActiveSeasonReducedCostVariantModIdList =
+	ArmorSlotModIdList.filter((id) => {
+		const mod = getMod(id);
+		return (
+			mod.isArtifactMod &&
+			!(mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact)
+		);
+	});
+
+export const ActiveSeasonFullCostVariantModIdList =
+	NonArtifactArmorSlotModIdList.filter((x) => {
+		const mod = getMod(x);
+		const reducedCostModHash = normalToReducedMod[mod.hash];
+		if (reducedCostModHash) {
+			const reducedCostMod = getModByHash(reducedCostModHash);
+			if (reducedCostMod) {
+				return ActiveSeasonReducedCostVariantModIdList.includes(
+					reducedCostMod.id
+				);
+			}
+		}
+		return false;
+	});
+
 export const RaidModIdList = ModIdList.filter(
 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.Raid
 );

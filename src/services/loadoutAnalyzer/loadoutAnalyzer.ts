@@ -72,6 +72,7 @@ import {
 } from '@dlb/types/DestinySubclass';
 import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
 import { getFragmentByHash } from '@dlb/types/Fragment';
+import { IMod } from '@dlb/types/generation';
 import { EnumDictionary, ValidateEnumList } from '@dlb/types/globals';
 import { getGrenadeByHash } from '@dlb/types/Grenade';
 import {
@@ -89,6 +90,7 @@ import {
 import { getJumpByHash } from '@dlb/types/Jump';
 import { getMeleeByHash } from '@dlb/types/Melee';
 import {
+	ActiveSeasonFullCostVariantModIdList,
 	ArmorChargeAcquisitionModIdList,
 	ArmorChargeSpendModIdList,
 	ArmorSlotIdToModIdListMapping,
@@ -102,7 +104,10 @@ import {
 } from '@dlb/types/Mod';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
-import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
+import {
+	normalToReducedMod,
+	reducedToNormalMod,
+} from '@dlb/utils/reduced-cost-mod-mapping';
 import { isEmpty } from 'lodash';
 import {
 	ArmorStatAndRaidModComboPlacement,
@@ -1284,7 +1289,7 @@ const getFragmentSlots = (aspectIdList: EAspectId[]): number => {
 	return fragmentSlots;
 };
 
-export const hasAlternateSeasonArtifactMods = (
+export const hasAlternateSeasonReducedCostVariantMods = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping
 ): boolean => {
 	return Object.values(armorSlotMods).some((modIdList) => {
@@ -1293,13 +1298,67 @@ export const hasAlternateSeasonArtifactMods = (
 			if (!mod) {
 				return false;
 			}
-			return mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact;
+			return (
+				mod.isArtifactMod &&
+				mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact
+			);
 		});
 	});
 };
 
-const replaceAlternateSeasonArtifactMods = (
+export const hasActiveSeasonReducedCostVariantMods = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping
+): boolean => {
+	return Object.values(armorSlotMods).some((modIdList) => {
+		return modIdList.some((modId) => {
+			const mod = getMod(modId);
+			if (!mod) {
+				return false;
+			}
+
+			return (
+				mod.isArtifactMod &&
+				mod.modCategoryId !== EModCategoryId.AlternateSeasonalArtifact
+			);
+		});
+	});
+};
+
+export const hasActiveSeasonFullCostVariantMods = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping
+): boolean => {
+	return Object.values(armorSlotMods).some((modIdList) => {
+		return modIdList.some((modId) => {
+			const mod = getMod(modId);
+			if (!mod) {
+				return false;
+			}
+			// Bit of a reduncant check I know...
+			return (
+				!mod.isArtifactMod &&
+				ActiveSeasonFullCostVariantModIdList.includes(mod.id)
+			);
+		});
+	});
+};
+
+const doReplace = (
+	mapping: Record<number, number>
+): ((mod: IMod) => IMod | null) => {
+	return (mod: IMod) => {
+		const newModHash = mapping[mod.hash];
+		if (!newModHash) {
+			// This means we need to update the generated files and the reducedToNormalMod/normalToReduced mapping
+			return null;
+		}
+		return getModByHash(newModHash);
+	};
+};
+
+const modReplacer = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping,
+	shouldReplace: (mod: IMod) => boolean,
+	doReplace: (mod: IMod) => IMod | null
 ): ArmorSlotIdToModIdListMapping => {
 	const newArmorSlotMods = getDefaultArmorSlotIdToModIdListMapping();
 	Object.entries(armorSlotMods).forEach(([armorSlotId, modIdList]) => {
@@ -1320,13 +1379,8 @@ const replaceAlternateSeasonArtifactMods = (
 				});
 				return;
 			}
-			if (mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact) {
-				const newModHash = reducedToNormalMod[mod.hash];
-				if (!newModHash) {
-					// This means we need to update the generated files and the reducedToNormalMod mapping
-					return;
-				}
-				const newMod = getModByHash(newModHash);
+			if (shouldReplace(mod)) {
+				const newMod = doReplace(mod);
 				if (newMod) {
 					newArmorSlotMods[armorSlotId][idx] = newMod.id;
 				}
@@ -1336,6 +1390,78 @@ const replaceAlternateSeasonArtifactMods = (
 		});
 	});
 	return newArmorSlotMods;
+};
+
+const isActiveSeasonFullCostVariantMod = (mod: IMod): boolean => {
+	return ActiveSeasonFullCostVariantModIdList.includes(mod.id);
+};
+const isActiveSeasonReducedCostVariantMod = (mod: IMod): boolean => {
+	return (
+		mod.isArtifactMod &&
+		mod.modCategoryId !== EModCategoryId.AlternateSeasonalArtifact
+	);
+};
+
+const isAlternateSeasonReducedCostVariantMod = (mod: IMod): boolean => {
+	return (
+		mod.isArtifactMod &&
+		mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact
+	);
+};
+
+const isReducedCostVariantMod = (mod: IMod): boolean => {
+	return mod.isArtifactMod;
+};
+
+const replaceActiveSeasonFullCostVariantMods = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping
+) => {
+	return modReplacer(
+		armorSlotMods,
+		isActiveSeasonFullCostVariantMod,
+		doReplace(normalToReducedMod)
+	);
+};
+
+const replaceActiveSeasonReducedCostVariantMods = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping
+) => {
+	return modReplacer(
+		armorSlotMods,
+		isActiveSeasonReducedCostVariantMod,
+		doReplace(reducedToNormalMod)
+	);
+};
+
+const replaceAlternateSeasonReducedCostVariantMods = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping
+) => {
+	return modReplacer(
+		armorSlotMods,
+		isAlternateSeasonReducedCostVariantMod,
+		doReplace(reducedToNormalMod)
+	);
+};
+
+const replaceAllReducedCostVariantMods = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping
+) => {
+	return modReplacer(
+		armorSlotMods,
+		isReducedCostVariantMod,
+		doReplace(reducedToNormalMod)
+	);
+};
+
+// Replace active full cost variants with active reduced cost variants
+// Replace out-of-season reduced cost variants with active full cost variants
+// In-season reduced cost variants are left alone
+const replaceAllModsThatDimWillReplace = (
+	armorSlotMods: ArmorSlotIdToModIdListMapping
+) => {
+	return replaceAlternateSeasonReducedCostVariantMods(
+		replaceActiveSeasonFullCostVariantMods(armorSlotMods)
+	);
 };
 
 export const getLoadoutsThatCanBeOptimized = (
@@ -1362,13 +1488,48 @@ export const getLoadoutsThatCanBeOptimized = (
 			// armor energy capacity to slot the full cost variants. We will check for both
 			// the discounted and full cost variants to see if DIM can handle this or not.
 			const armorSlotModsVariants = [loadout.armorSlotMods];
-			if (
-				loadout.loadoutType === ELoadoutType.DIM &&
-				hasAlternateSeasonArtifactMods(loadout.armorSlotMods)
-			) {
+			const _hasAlternateSeasonReducedCostVariantMods =
+				hasAlternateSeasonReducedCostVariantMods(loadout.armorSlotMods);
+			const _hasActiveSeasonReducedCostVariantMods =
+				hasActiveSeasonReducedCostVariantMods(loadout.armorSlotMods);
+
+			if (_hasActiveSeasonReducedCostVariantMods) {
 				armorSlotModsVariants.push(
-					replaceAlternateSeasonArtifactMods(loadout.armorSlotMods)
+					replaceActiveSeasonReducedCostVariantMods(loadout.armorSlotMods)
 				);
+			} else {
+				armorSlotModsVariants.push(null);
+			}
+			if (loadout.loadoutType === ELoadoutType.DIM) {
+				// Used to check if DIM can replace just the out of season reduced cost mods,
+				// leaving the current season reduced cost mods alone
+				if (_hasAlternateSeasonReducedCostVariantMods) {
+					armorSlotModsVariants.push(
+						replaceAlternateSeasonReducedCostVariantMods(loadout.armorSlotMods)
+					);
+				} else {
+					armorSlotModsVariants.push(null);
+				}
+				// Used to check if DIM can replace all reduced cost mods with their full cost variants
+				// This replaces both the out-of-season and in-season reduced cost mods as it doesn't make sense
+				// to only replace the in-season ones.
+				if (_hasActiveSeasonReducedCostVariantMods) {
+					armorSlotModsVariants.push(
+						replaceAllReducedCostVariantMods(loadout.armorSlotMods)
+					);
+				} else {
+					armorSlotModsVariants.push(null);
+				}
+				// This assumes the user's artifact is set up to use all the reduced cost mods.
+				// Not a great assumption. In the future we may want to re-think this.
+				// Make sure the description of the resulting optimization notes this limitation.
+				if (hasActiveSeasonFullCostVariantMods(loadout.armorSlotMods)) {
+					armorSlotModsVariants.push(
+						replaceAllModsThatDimWillReplace(loadout.armorSlotMods)
+					);
+				} else {
+					armorSlotModsVariants.push(null);
+				}
 			}
 			const metadata = {
 				maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
@@ -1389,6 +1550,9 @@ export const getLoadoutsThatCanBeOptimized = (
 				armorSlotModsVariantsIndex++
 			) {
 				const armorSlotMods = armorSlotModsVariants[armorSlotModsVariantsIndex];
+				if (!armorSlotMods) {
+					continue;
+				}
 				// Don't even try to process without an exotic
 				if (!loadout.exoticHash) {
 					optimizationTypeList.push(ELoadoutOptimizationTypeId.NoExoticArmor);
@@ -1483,13 +1647,14 @@ export const getLoadoutsThatCanBeOptimized = (
 				let hasLowerCost = false;
 				let hasUnusedModSlots = false;
 				let hasUnmetDIMStatTierConstraints = false;
-				let hasUnavailableMods = false;
+				let hasAlternateSeasonArtifactMods = false;
 				let hasStatOver100 = false;
 				let hasUnusedFragmentSlots = false;
 				let hasUnmasterworkedArmor = false;
 				let hasUnspecifiedAspect = false;
 				let hasInvalidLoadoutConfiguration = false;
 				let _hasMutuallyExclusiveMods = false;
+				let hasCurrentSeasonArtifactModsThatWillBecomeUnusable = false;
 				let _mutuallyExclusiveModGroups: string[] = [];
 				// Second pass vars
 				let hasUnusableMods = false;
@@ -1563,7 +1728,7 @@ export const getLoadoutsThatCanBeOptimized = (
 									!mod ||
 									mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact
 								) {
-									hasUnavailableMods = true;
+									hasAlternateSeasonArtifactMods = true;
 								}
 							});
 					});
@@ -1600,8 +1765,8 @@ export const getLoadoutsThatCanBeOptimized = (
 				if (hasUnusableMods) {
 					optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusableMods);
 				}
-				// TODO: Maybe we only want to include hasUnavailableMods if !hasUnusableMods
-				if (hasUnavailableMods) {
+				// TODO: Maybe we only want to include hasAlternateSeasonArtifactMods if !hasUnusableMods
+				if (hasAlternateSeasonArtifactMods) {
 					// DIM can correct for unavailable mods, but only if there is enough armor energy
 					// InGame Loadouts cannot correct for unavailable mods
 					if (loadout.loadoutType === ELoadoutType.InGame) {

@@ -11,7 +11,65 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2023-10-09',
+		date: '2023-10-27',
+		version: '2.4.24-BETA',
+		title: 'Enforce FotL mask when editing a loadout via the analyzer',
+		sections: [
+			{
+				items: [
+					`Loadouts that contain FotL masks will now have the Armor Attributes section populated with the FotL mask attribute when editing a loadout via the analyzer`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-24',
+		version: '2.4.24-BETA',
+		title: 'Unused Mod Slots Optimization',
+		sections: [
+			{
+				items: [
+					`Add a new analyzer optimization: "Unused Mod Slots"`,
+					`Note that this optimization needs a bit more testing on my end before I'm sure it's 100% accurate`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-23',
+		version: '2.4.23-BETA',
+		title: 'Analyzer Class Specific Grades',
+		sections: [
+			{
+				items: [
+					`Add class specific grades to the analyzer`,
+					`Add a new page that the user will be redirected to when there is Bungie API Maintenance. Previously the user was dumped on the error page.`,
+					`Removed the settings for "Masterwork Assumption" and "Minimum Gear Tier". These were really buggy and I doubt anyone actually used them. Will revisit these options later.`,
+					`Fix a bug where unmasterworked class items were not assumed to be masterworked`,
+					`Fix a bug where the user might get into a state where they always land on the "Analyze" tab`,
+					`Fix a bug where the application would become unusable if the user opened a shared loadout for a class that they did not have a valid set of armor for`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-22',
+		version: '2.4.22-BETA',
+		title: 'Minor analyzer UI changes',
+		sections: [
+			{
+				items: [
+					`Condense the width of the mod placement component to reduce the chance of needing to scroll horizontally`,
+					`When generating a DIM link, prefer class items that are masterworked if there is a tie in power`,
+					`Fix a bug where the user would not be loaded into the analyzer tab via a direct url link if they had to log in first`,
+					`Fix a bug where the user could select mutually exclusive mods (e.g. two copies of "Fastball" or two copies of various "Finisher" mods on the class item)`,
+					`Fix a bug where the user's analyzer search would not persist when switching between the "build" and "analyze" tabs`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-22',
 		version: '2.4.21-BETA',
 		title: 'Fix exotic armor recall bug',
 		sections: [

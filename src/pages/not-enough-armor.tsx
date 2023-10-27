@@ -1,4 +1,7 @@
 import Head from '@dlb/components/Meta/Head';
+import SocialIcon from '@dlb/components/SocialIcon';
+import { DISCORD_LINK } from '@dlb/dim/utils/constants';
+import discord_image from '@dlb/public/discord-mark-white.png';
 import { Box, styled } from '@mui/material';
 
 const Container = styled(Box)(({ theme }) => ({
@@ -49,6 +52,24 @@ function NotEnoughArmor() {
 							item.
 						</li>
 					</ul>
+					<Box
+						sx={{
+							marginY: '16px',
+							background: '#2b2b2b',
+							padding: '8px',
+							borderRadius: '8px',
+						}}
+					>
+						<Box sx={{ marginBottom: '8px' }}>
+							Are you seeing this page when you meet all the above criteria?
+							Reach out to me on Discord:{' '}
+						</Box>
+						<SocialIcon
+							linkUrl={DISCORD_LINK}
+							iconUrl={discord_image}
+							text="Discord"
+						/>
+					</Box>
 				</Content>
 			</Container>
 		</>

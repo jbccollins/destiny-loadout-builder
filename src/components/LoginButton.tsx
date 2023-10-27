@@ -2,7 +2,7 @@ import { oauthClientId } from '@dlb/dim/bungie-api/bungie-api-utils';
 import { Button } from '@mui/material';
 import Link from 'next/link';
 
-function Login() {
+function LoginButton() {
 	const queryParams = new URLSearchParams({
 		client_id: oauthClientId(),
 		response_type: 'code',
@@ -17,4 +17,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default LoginButton;

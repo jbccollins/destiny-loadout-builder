@@ -339,6 +339,7 @@ export const extractArmor = (
 	// (a, b) =>
 	// b.capacity - a.capacity || a.armorSlotId.localeCompare(b.armorSlotId)
 
+	// HERE
 	DestinyClassIdList.forEach((destinyClassId) => {
 		Object.values(allClassItemMetadataMapping[destinyClassId]).forEach((v) => {
 			// sort v

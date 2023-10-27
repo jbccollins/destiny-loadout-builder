@@ -2,7 +2,7 @@ import {
 	CoreSettingsConfiguration,
 	getCommonSettings,
 	getGlobalAlerts as getGlobalAlertsApi,
-	GlobalAlert
+	GlobalAlert,
 } from 'bungie-api-ts-no-const-enum/core';
 import { unauthenticatedHttpClient } from './bungie-service-helper';
 

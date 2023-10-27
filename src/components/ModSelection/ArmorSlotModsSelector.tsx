@@ -19,7 +19,11 @@ import {
 } from '@dlb/types/ArmorSlot';
 import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
-import { ArmorSlotIdToArmorSlotModIdListMapping, getMod } from '@dlb/types/Mod';
+import {
+	ArmorSlotIdToArmorSlotModIdListMapping,
+	getMod,
+	hasMutuallyExclusiveMods,
+} from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
 import {
 	Box,
@@ -170,6 +174,15 @@ function ArmorSlotModSelector() {
 			return true;
 		}
 		if (disabledMods[mod.id] && disabledMods[mod.id][index]) {
+			return true;
+		}
+
+		const _selectedMods = [...selectedMods, mod.id]
+			.filter((x) => !!x)
+			.map((x) => getMod(x));
+		const [_hasMutuallyExclusiveMods, _] =
+			hasMutuallyExclusiveMods(_selectedMods);
+		if (_hasMutuallyExclusiveMods) {
 			return true;
 		}
 	};

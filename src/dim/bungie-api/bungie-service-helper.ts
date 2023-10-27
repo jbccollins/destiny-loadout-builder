@@ -82,12 +82,22 @@ export const unauthenticatedHttpClient = dimErrorHandledHttpClient(
 	)
 );
 
+// const request: Request = new Request('fake');
+// const fakeBungieError: BungieError = new BungieError(
+// 	{
+// 		Message: 'fake',
+// 		ErrorCode: PlatformErrorCodes.SystemDisabled,
+// 		ErrorStatus: 'fake',
+// 	},
+// 	request
+// );
 /**
  * wrap HttpClient in handling specific to DIM, using i18n strings, bounce to login, etc
  */
 export function dimErrorHandledHttpClient(httpClient: HttpClient): HttpClient {
 	return async (config: HttpClientConfig) => {
 		try {
+			// throw fakeBungieError;
 			return await httpClient(config);
 		} catch (e) {
 			handleErrors(e);
@@ -160,9 +170,6 @@ export function handleErrors(error: Error) {
 				throw new Error('BungieService.AppNotPermitted');
 
 			case PlatformErrorCodes.SystemDisabled:
-				alert(
-					'The Bungie API is down for maintainence. This app will not work until the Bungie API is back up. Check @BungieHelp on twitter for status updates.'
-				);
 				throw new Error('BungieService.Maintenance');
 
 			case PlatformErrorCodes.ThrottleLimitExceededMinutes:

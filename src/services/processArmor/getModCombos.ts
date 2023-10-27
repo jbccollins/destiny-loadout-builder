@@ -23,7 +23,7 @@ import {
 	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
 import { cloneDeep } from 'lodash';
-import { ARTIFICE, EXTRA_MASTERWORK_STAT_LIST } from './constants';
+import { ARTIFICE } from './constants';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
 	getDefaultStatModCombo,
@@ -35,7 +35,6 @@ import {
 	getItemCountsFromSeenArmorSlotItems,
 	RequiredClassItemMetadataKey,
 	sumModCosts,
-	sumStatLists,
 } from './utils';
 
 /***** ArmorSlotModComboPlacementWithArtificeMods *****/
@@ -170,7 +169,7 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 	} = params;
 	let canUseArtificeClassItem = false;
 	let hasDefaultMasterworkedClassItem = false;
-	let _sumOfSeenStats: StatList = [...sumOfSeenStats];
+	const _sumOfSeenStats: StatList = [...sumOfSeenStats];
 
 	let requiredClassItemMetadataKey: RequiredClassItemMetadataKey =
 		placement.ClassItem
@@ -196,10 +195,10 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		allClassItemMetadata[requiredClassItemMetadataKey].hasMasterworkedVariant
 	) {
 		hasDefaultMasterworkedClassItem = true;
-		_sumOfSeenStats = sumStatLists([
-			sumOfSeenStats,
-			EXTRA_MASTERWORK_STAT_LIST,
-		]);
+		// _sumOfSeenStats = sumStatLists([
+		// 	sumOfSeenStats,
+		// 	EXTRA_MASTERWORK_STAT_LIST,
+		// ]);
 	}
 
 	// This is a special edge case where all of these conditions are true
@@ -216,7 +215,7 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		!allClassItemMetadata.Artifice.hasMasterworkedVariant &&
 		masterworkAssumption === EMasterworkAssumption.None;
 
-	let defaultStatModCombosSumOfSeenStats = _sumOfSeenStats;
+	const defaultStatModCombosSumOfSeenStats = _sumOfSeenStats;
 	let defaultStatModsSeenArtificeCount = seenItemCounts.Artifice;
 	// If we don't need to check the special edge case we only care about the
 	// artifice class item and can disregard the masterworked legendary class item
@@ -226,30 +225,30 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 			defaultStatModsSeenArtificeCount++;
 			if (allClassItemMetadata.Artifice.hasMasterworkedVariant) {
 				hasDefaultMasterworkedClassItem = true; // TODO: Split this out for defaultStatModCombos and artificeClassItemStatModCombos
-				defaultStatModCombosSumOfSeenStats = sumStatLists([
-					sumOfSeenStats,
-					EXTRA_MASTERWORK_STAT_LIST,
-				]);
+				// defaultStatModCombosSumOfSeenStats = sumStatLists([
+				// 	sumOfSeenStats,
+				// 	EXTRA_MASTERWORK_STAT_LIST,
+				// ]);
 			}
 		} else if (
 			requiredClassItemMetadataKey === null &&
 			allClassItemMetadata.Legendary.hasMasterworkedVariant
 		) {
 			hasDefaultMasterworkedClassItem = true;
-			defaultStatModCombosSumOfSeenStats = sumStatLists([
-				sumOfSeenStats,
-				EXTRA_MASTERWORK_STAT_LIST,
-			]);
+			// defaultStatModCombosSumOfSeenStats = sumStatLists([
+			// 	sumOfSeenStats,
+			// 	EXTRA_MASTERWORK_STAT_LIST,
+			// ]);
 		}
 	} else if (
 		requiredClassItemMetadataKey === null &&
 		allClassItemMetadata.Legendary.hasMasterworkedVariant
 	) {
 		hasDefaultMasterworkedClassItem = true;
-		defaultStatModCombosSumOfSeenStats = sumStatLists([
-			_sumOfSeenStats,
-			EXTRA_MASTERWORK_STAT_LIST,
-		]);
+		// defaultStatModCombosSumOfSeenStats = sumStatLists([
+		// 	_sumOfSeenStats,
+		// 	EXTRA_MASTERWORK_STAT_LIST,
+		// ]);
 	}
 
 	// Get all the stat mod combos which get us to the desiredArmorStats

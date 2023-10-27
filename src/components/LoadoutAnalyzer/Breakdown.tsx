@@ -111,6 +111,7 @@ const BreakdownContent = (props: BreakdownProps) => {
 								classItem={classItem}
 								armorSlotMods={props.loadout.armorSlotMods}
 								withArmorItemIcons
+								showHelpText={false}
 							/>
 						</Box>
 					</Box>

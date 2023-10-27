@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-27',
+		version: '2.4.24-BETA',
+		title: 'Enforce FotL mask when editing a loadout via the analyzer',
+		sections: [
+			{
+				items: [
+					`Loadouts that contain FotL masks will now have the Armor Attributes section populated with the FotL mask attribute when editing a loadout via the analyzer`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-24',
 		version: '2.4.24-BETA',
 		title: 'Unused Mod Slots Optimization',

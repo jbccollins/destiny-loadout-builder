@@ -40,7 +40,11 @@ import {
 	SelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
-import { clearSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
+import {
+	clearSelectedIntrinsicArmorPerkOrAttributeIds,
+	getDefaultIntrinsicArmorPerkOrAttributeIdList,
+	setSelectedIntrinsicArmorPerkOrAttributeIds,
+} from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
 	clearSelectedJump,
 	SelectedJump,
@@ -82,6 +86,7 @@ import {
 	EArmorSlotId,
 	EDestinyClassId,
 	EDestinySubclassId,
+	EIntrinsicArmorPerkOrAttributeId,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
 import { bungieNetPath } from '@dlb/utils/item-utils';
@@ -506,6 +511,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 			desiredStatTiers,
 			armorSlotMods,
 			raidMods,
+			armor,
 		} = loadout;
 
 		const newSelectedExoticArmor = { ...selectedExoticArmor };
@@ -587,6 +593,20 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 
 		if (loadout.hasBonusResilienceOrnament) {
 			dispatch(setUseBonusResilience(true));
+		}
+		if (
+			loadout.armor[0]?.intrinsicArmorPerkOrAttributeId ===
+			EIntrinsicArmorPerkOrAttributeId.HalloweenMask
+		) {
+			const newSelectedIntrinsicArmorPerkOrAttributeIds =
+				getDefaultIntrinsicArmorPerkOrAttributeIdList();
+			newSelectedIntrinsicArmorPerkOrAttributeIds[0] =
+				EIntrinsicArmorPerkOrAttributeId.HalloweenMask;
+			dispatch(
+				setSelectedIntrinsicArmorPerkOrAttributeIds(
+					newSelectedIntrinsicArmorPerkOrAttributeIds
+				)
+			);
 		}
 		dispatch(setTabIndex(0));
 		dispatch(setPerformingBatchUpdate(false));

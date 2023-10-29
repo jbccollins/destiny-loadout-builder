@@ -638,9 +638,13 @@ function Loading() {
 		dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
 		dispatch(setUseZeroWastedStats(useZeroWastedStats));
 		dispatch(setAlwaysConsiderCollectionsRolls(alwaysConsiderCollectionsRolls));
-		dispatch(
-			setIgnoredLoadoutOptimizationTypes(ignoredLoadoutOptimizationTypes)
-		);
+		if (ignoredLoadoutOptimizationTypes) {
+			dispatch(
+				setIgnoredLoadoutOptimizationTypes(ignoredLoadoutOptimizationTypes)
+			);
+		} else {
+			dispatch(setIgnoredLoadoutOptimizationTypes([]));
+		}
 
 		// Dirty these things
 		dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));

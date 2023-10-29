@@ -11,6 +11,7 @@ import {
 } from '@dlb/redux/features/analyzerTabIndex/analyzerTabIndexSlice';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { selectDimLoadouts } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import { selectIgnoredLoadoutOptimizationTypes } from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import { selectInGameLoadouts } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import {
 	selectLoadoutTypeFilter,
@@ -33,6 +34,7 @@ import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadou
 import {
 	ELoadoutType,
 	ELoadoutTypeFilter,
+	filterOptimizationTypeList,
 	LodaoutTypeFilterToLoadoutTypeMapping,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
@@ -45,12 +47,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import FilterIcon from '@mui/icons-material/FilterAlt';
 import GppBadIcon from '@mui/icons-material/GppBad';
-import HourglassDisabledIcon from '@mui/icons-material/HourglassDisabled';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import PostAddIcon from '@mui/icons-material/PostAdd';
@@ -59,6 +61,7 @@ import ReportIcon from '@mui/icons-material/Report';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RuleIcon from '@mui/icons-material/Rule';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 
 import WbTwilightIcon from '@mui/icons-material/WbTwilight';
 import { Box, Collapse, IconButton, SxProps, useTheme } from '@mui/material';
@@ -93,7 +96,7 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	[ELoadoutOptimizationTypeId.NoExoticArmor]: (
 		<DiamondIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationTypeId.UnavailableMods]: (
+	[ELoadoutOptimizationTypeId.UnusableMods]: (
 		<HourglassEmptyIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.DeprecatedMods]: (
@@ -107,9 +110,6 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.UnmetDIMStatConstraints]: (
 		<KeyboardDoubleArrowDownIcon key={0} sx={iconStyle} />
-	),
-	[ELoadoutOptimizationTypeId.UnusableMods]: (
-		<HourglassDisabledIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.UnmasterworkedArmor]: (
 		<PrivacyTipIcon key={0} sx={iconStyle} />
@@ -131,6 +131,10 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.None]: <CheckIcon key={0} sx={iconStyle} />,
 	[ELoadoutOptimizationTypeId.Error]: <ReportIcon key={0} sx={iconStyle} />,
+	[ELoadoutOptimizationTypeId.Doomed]: <ScheduleIcon key={0} sx={iconStyle} />,
+	[ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed]: (
+		<MoreTimeIcon key={0} sx={iconStyle} />
+	),
 };
 
 export default function LoadoutAnalyzer() {
@@ -151,6 +155,9 @@ export default function LoadoutAnalyzer() {
 	const analyzeableLoadouts = useAppSelector(selectAnalyzableLoadouts);
 	const analyzerTabIndex = useAppSelector(selectAnalyzerTabIndex);
 	const analyzerSearch = useAppSelector(selectAnalyzerSearch);
+	const ignoredLoadoutOptimizationTypeIdList = useAppSelector(
+		selectIgnoredLoadoutOptimizationTypes
+	);
 	const optimizationTypeFilterValue = useAppSelector(
 		selectOptimizationTypeFilter
 	);
@@ -212,9 +219,16 @@ export default function LoadoutAnalyzer() {
 			Object.entries(validLoadouts)
 				.map(([key, value]) => {
 					const analysisResult = analysisResults[key];
+
+					const optimizationTypeList = filterOptimizationTypeList(
+						analysisResult?.optimizationTypeList || [],
+						ignoredLoadoutOptimizationTypeIdList
+					);
+
 					return {
 						...value,
 						...analysisResult,
+						optimizationTypeList,
 					};
 				})
 				.sort((a, b) => {
@@ -236,7 +250,7 @@ export default function LoadoutAnalyzer() {
 						}
 					}
 				}),
-		[validLoadouts, analysisResults]
+		[validLoadouts, analysisResults, ignoredLoadoutOptimizationTypeIdList]
 	);
 
 	if (numTotalLoadouts === 0) {
@@ -487,6 +501,9 @@ export default function LoadoutAnalyzer() {
 					analysisProgressValue={analysisProgressValue}
 					loadouts={richValidLoadouts}
 					hiddenLoadoutIdList={hiddenLoadoutIdList}
+					ignoredLoadoutOptimizationTypeIdList={
+						ignoredLoadoutOptimizationTypeIdList
+					}
 				/>
 				{hasActiveFilters && (
 					<Box

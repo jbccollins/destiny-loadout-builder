@@ -57,6 +57,7 @@ import {
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import { setHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
+import { setIgnoredLoadoutOptimizationTypes } from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import {
 	setInGameLoadoutsDefinitions,
 	setInGameLoadoutsLoadoutItems,
@@ -626,6 +627,7 @@ function Loading() {
 			useOnlyMasterworkedArmor,
 			useZeroWastedStats,
 			alwaysConsiderCollectionsRolls,
+			ignoredLoadoutOptimizationTypes,
 		} = settings;
 
 		dispatch(setSelectedMasterworkAssumption(masterworkAssumption));
@@ -636,8 +638,11 @@ function Loading() {
 		dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
 		dispatch(setUseZeroWastedStats(useZeroWastedStats));
 		dispatch(setAlwaysConsiderCollectionsRolls(alwaysConsiderCollectionsRolls));
+		dispatch(
+			setIgnoredLoadoutOptimizationTypes(ignoredLoadoutOptimizationTypes)
+		);
 
-		// Diry these things
+		// Dirty these things
 		dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
 		dispatch(
 			setSharedLoadoutConfigStatPriorityOrder(

@@ -13,6 +13,7 @@ import {
 	Box,
 	Button,
 	Collapse,
+	Divider,
 	Link,
 	styled,
 	useMediaQuery,
@@ -25,6 +26,7 @@ import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysCo
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
+import IgnoredLoadoutOptimizationTypesSelector from '@dlb/components/IgnoredLoadoutOptimizationTypesSelector';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
 import LoadoutAnalysisWebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/LoadoutAnalysisWebWorkerWrapper';
@@ -383,13 +385,36 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 							<>
 								{/* <MasterworkAssumptionSelector />
 								<MinimumGearTierSelector /> */}
+								<Box
+									sx={{
+										fontWeight: 'bold',
+										fontSize: '1.4rem',
+										marginLeft: '8px',
+										marginBottom: '8px',
+									}}
+								>
+									Build Settings
+								</Box>
 								<DimLoadoutsFilterSelector />
 								<InGameLoadoutsFilterSelector />
 								<UseZeroWastedStatsToggleSwitch />
 								<AlwaysConsiderCollectionsRollsToggleSwitch />
 								<UseOnlyMasterworkedArmorToggleSwitch />
 								<UseBonusResilienceToggleSwitch />
-								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>
+								<Divider sx={{ marginTop: '32px' }} />
+								<Box
+									sx={{
+										fontWeight: 'bold',
+										fontSize: '1.4rem',
+										marginLeft: '8px',
+										marginTop: '16px',
+									}}
+								>
+									Analyzer Settings
+								</Box>
+								<IgnoredLoadoutOptimizationTypesSelector />
+								<Divider sx={{ marginTop: '32px' }} />
+								<Box sx={{ marginTop: '32px', marginLeft: '8px' }}>
 									<Logout />
 								</Box>
 								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>

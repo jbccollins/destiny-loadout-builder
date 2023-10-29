@@ -167,11 +167,25 @@ const InspectingOptimizationDetails = (
 				</Box>
 			)}
 			{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-				optimizationType === ELoadoutOptimizationTypeId.UnavailableMods) && (
+				optimizationType === ELoadoutOptimizationTypeId.Doomed ||
+				optimizationType ===
+					ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed) && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
-						Remove the following mods from the loadout to resolve this
-						optimization:
+						{optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
+							(optimizationType === ELoadoutOptimizationTypeId.Doomed && (
+								<Box>
+									Remove the following mods from the loadout to resolve this
+									optimization:
+								</Box>
+							))}
+						{optimizationType ===
+							ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed && (
+							<Box>
+								Replace the following mods from the loadout with their
+								respective full cost variants to resolve this optimization:
+							</Box>
+						)}
 					</InspectingOptimizationDetailsHelp>
 					{ArmorSlotIdList.map((armorSlotId, i) => {
 						const armorSlot = getArmorSlot(armorSlotId);
@@ -594,10 +608,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 		if (loadout.hasBonusResilienceOrnament) {
 			dispatch(setUseBonusResilience(true));
 		}
-		if (
-			loadout.armor[0]?.intrinsicArmorPerkOrAttributeId ===
-			EIntrinsicArmorPerkOrAttributeId.HalloweenMask
-		) {
+		if (loadout.hasHalloweenMask) {
 			const newSelectedIntrinsicArmorPerkOrAttributeIds =
 				getDefaultIntrinsicArmorPerkOrAttributeIdList();
 			newSelectedIntrinsicArmorPerkOrAttributeIds[0] =

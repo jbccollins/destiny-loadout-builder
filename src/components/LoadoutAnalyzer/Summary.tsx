@@ -114,6 +114,7 @@ type SummaryProps = {
 	hiddenLoadoutIdList: string[];
 	isAnalyzing: boolean;
 	analysisProgressValue: number;
+	ignoredLoadoutOptimizationTypeIdList: ELoadoutOptimizationTypeId[];
 };
 
 const gradingHelpText = `
@@ -138,10 +139,15 @@ const Progress = (props: { value: number }) => {
 const ScoredResults = (props: {
 	loadouts: AnalyzableLoadout[];
 	hiddenLoadoutIdList: string[];
+	ignoredLoadoutOptimizationTypeIdList: ELoadoutOptimizationTypeId[];
 }) => {
 	const theme = useTheme();
 	const [showGradeDetails, setShowGradeDetails] = useState(false);
-	const { loadouts, hiddenLoadoutIdList } = props;
+	const {
+		loadouts,
+		hiddenLoadoutIdList,
+		ignoredLoadoutOptimizationTypeIdList,
+	} = props;
 	const loadoutCategoryCounts = useMemo(() => {
 		const loadoutCategoryCounts: Partial<
 			Record<ELoadoutOptimizationCategoryId, number>
@@ -366,7 +372,9 @@ const ScoredResults = (props: {
 					marginTop: theme.spacing(1),
 				}}
 			>
-				Show Grade Details{numHiddenLoadouts > 0 && '*'}
+				Show Grade Details
+				{(numHiddenLoadouts > 0 ||
+					ignoredLoadoutOptimizationTypeIdList.length) > 0 && '*'}
 				<IconButton aria-label="expand row" size="small">
 					{showGradeDetails ? (
 						<KeyboardArrowUpIcon />
@@ -464,8 +472,13 @@ const ScoredResults = (props: {
 };
 
 export default function Summary(props: SummaryProps) {
-	const { loadouts, hiddenLoadoutIdList, isAnalyzing, analysisProgressValue } =
-		props;
+	const {
+		loadouts,
+		hiddenLoadoutIdList,
+		isAnalyzing,
+		analysisProgressValue,
+		ignoredLoadoutOptimizationTypeIdList,
+	} = props;
 	const theme = useTheme();
 
 	return (
@@ -489,6 +502,9 @@ export default function Summary(props: SummaryProps) {
 				<ScoredResults
 					loadouts={loadouts}
 					hiddenLoadoutIdList={hiddenLoadoutIdList}
+					ignoredLoadoutOptimizationTypeIdList={
+						ignoredLoadoutOptimizationTypeIdList
+					}
 				/>
 			)}
 		</Box>

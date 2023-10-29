@@ -34,6 +34,7 @@ import {
 	ELoadoutOptimizationCategoryId,
 	ELoadoutType,
 	getDefaultAnalyzableLoadout,
+	getLoadoutOptimizationCategory,
 	SeverityOrderedLoadoutOptimizationCategoryIdList,
 } from '@dlb/types/AnalyzableLoadout';
 import {
@@ -82,8 +83,8 @@ import {
 	EDimLoadoutsFilterId,
 	EGearTierId,
 	EInGameLoadoutsFilterId,
+	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
-	EModCategoryId,
 	EModSocketCategoryId,
 } from '@dlb/types/IdEnums';
 import { getJumpByHash } from '@dlb/types/Jump';
@@ -93,16 +94,18 @@ import {
 	ArmorChargeSpendModIdList,
 	ArmorSlotIdToModIdListMapping,
 	FontModIdList,
-	getDefaultArmorSlotIdToModIdListMapping,
 	getMod,
 	getModByHash,
 	getValidRaidModArmorSlotPlacements,
+	hasActiveSeasonReducedCostVariantMods,
+	hasAlternateSeasonReducedCostVariantMods,
 	hasMutuallyExclusiveMods,
 	NonArtifactArmorSlotModIdList,
+	replaceAllModsThatDimWillReplace,
+	replaceAllReducedCostVariantMods,
 } from '@dlb/types/Mod';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
-import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
 import { isEmpty } from 'lodash';
 import {
 	ArmorStatAndRaidModComboPlacement,
@@ -271,6 +274,7 @@ const extractDimLoadouts = (
 			});
 			loadout.dimStatTierConstraints = dimStatTierConstraints;
 		}
+		let hasHalloweenMask = false;
 		dimLoadout.equipped.forEach((equippedItem) => {
 			const armorItem = armorItems.find(
 				(armorItem) => armorItem.id === equippedItem.id
@@ -278,6 +282,12 @@ const extractDimLoadouts = (
 			if (armorItem) {
 				if (armorItem.gearTierId === EGearTierId.Exotic) {
 					loadout.exoticHash = armorItem.hash;
+				}
+				if (
+					armorItem.intrinsicArmorPerkOrAttributeId ===
+					EIntrinsicArmorPerkOrAttributeId.HalloweenMask
+				) {
+					hasHalloweenMask = true;
 				}
 				loadout.armor.push(armorItem);
 
@@ -385,10 +395,11 @@ const extractDimLoadouts = (
 				});
 			}
 		});
+		loadout.hasHalloweenMask = hasHalloweenMask;
 		dimLoadout.parameters?.mods?.forEach((hash) => {
 			const mod = getModByHash(hash);
 			if (!mod) {
-				// This means a deprecated mod like "Powerful Friends". Mark this as an optimization
+				// This means a deprecated mod like "Protective Light". Mark this as an optimization
 				if (
 					!loadout.optimizationTypeList.includes(
 						ELoadoutOptimizationTypeId.DeprecatedMods
@@ -449,6 +460,12 @@ const extractDimLoadouts = (
 				achievedStats[bonus.stat] += bonus.value;
 			});
 		});
+		// Coerce the mod list that is in the DIM json to contain the mods that the user
+		// actually sees in DIM itself. DIM swaps out out-of-season discounted mods with their
+		// full cost variants, and swaps in-season full cost mods with their discounted variants.
+		loadout.armorSlotMods = replaceAllModsThatDimWillReplace(
+			loadout.armorSlotMods
+		);
 		const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
 			loadout.fragmentIdList,
 			loadout.destinyClassId
@@ -592,6 +609,7 @@ const extractInGameLoadouts = (
 			const achievedStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
 			const achievedStats: ArmorStatMapping = getDefaultArmorStatMapping();
 
+			let hasHalloweenMask = false;
 			inGameLoadout.items.forEach((item, index) => {
 				switch (getInGameLoadoutItemTypeFromIndex(index)) {
 					case EInGameLoadoutItemType.ARMOR:
@@ -599,6 +617,12 @@ const extractInGameLoadouts = (
 							(armorItem) => armorItem.id === item.itemInstanceId
 						);
 						if (armorItem) {
+							if (
+								armorItem.intrinsicArmorPerkOrAttributeId ===
+								EIntrinsicArmorPerkOrAttributeId.HalloweenMask
+							) {
+								hasHalloweenMask = true;
+							}
 							loadout.armor.push(armorItem);
 							if (armorItem.gearTierId === EGearTierId.Exotic) {
 								loadout.exoticHash = armorItem.hash;
@@ -757,6 +781,7 @@ const extractInGameLoadouts = (
 						break;
 				}
 			});
+			loadout.hasHalloweenMask = hasHalloweenMask;
 			const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
 				loadout.fragmentIdList,
 				loadout.destinyClassId
@@ -891,7 +916,6 @@ export enum ELoadoutOptimizationTypeId {
 	LowerCost = 'LowerCost',
 	MissingArmor = 'MissingArmor',
 	NoExoticArmor = 'NoExoticArmor',
-	UnavailableMods = 'UnavailableMods',
 	DeprecatedMods = 'DeprecatedMods',
 	StatsOver100 = 'StatsOver100',
 	UnusedFragmentSlots = 'UnusedFragmentSlots',
@@ -903,6 +927,8 @@ export enum ELoadoutOptimizationTypeId {
 	InvalidLoadoutConfiguration = 'InvalidLoadoutConfiguration',
 	MutuallyExclusiveMods = 'MutuallyExclusiveMods',
 	UnusedModSlots = 'UnusedModSlots',
+	Doomed = 'Doomed',
+	ManuallyCorrectableDoomed = 'ManuallyCorrectableDoomed',
 	None = 'None',
 	Error = 'Error',
 }
@@ -1023,16 +1049,6 @@ export const humanizeOptimizationTypes = (
 				].includes(x)
 		);
 	}
-	// Uncorrectable takes precedence over unavailable
-	if (
-		filteredOptimizationTypeList.includes(
-			ELoadoutOptimizationTypeId.UnusableMods
-		)
-	) {
-		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(
-			(x) => !(x === ELoadoutOptimizationTypeId.UnavailableMods)
-		);
-	}
 	// Higher stat tier takes precendence over fewer wasted stats
 	if (
 		filteredOptimizationTypeList.includes(
@@ -1125,13 +1141,6 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 			"This loadout has one or more unused fragment slots. Occasionally Bungie adds more fragment slots to an aspect. You may want to add another fragment, it's free real estate!",
 		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
-	[ELoadoutOptimizationTypeId.UnavailableMods]: {
-		id: ELoadoutOptimizationTypeId.UnavailableMods,
-		name: 'Unavailable Mods',
-		description:
-			'[DIM Loadout Specific] This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks. DIM is able to correct this by swapping discounted mods with their full-cost versions but you may want to consider changing these anyway.',
-		category: ELoadoutOptimizationCategoryId.COSMETIC,
-	},
 	[ELoadoutOptimizationTypeId.UnmetDIMStatConstraints]: {
 		id: ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
 		name: 'Unmet DIM Stat Constraints',
@@ -1143,7 +1152,7 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		id: ELoadoutOptimizationTypeId.UnusableMods,
 		name: 'Unusable Mods',
 		description:
-			'This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks.',
+			'[D2 Loadout Specific] This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks.',
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.UnmasterworkedArmor]: {
@@ -1157,7 +1166,7 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		id: ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
 		name: 'Invalid Loadout Configuration',
 		description:
-			'Something about this loadout is not configured correctly and no combination of armor pieces can make it valid. This can happen when the loadout uses raid mods and you have since deleted the raid armor that could socket those mods. In rare cases this can happen if you somehow managed to create a loadout where the total mod cost for a single armor slot exceeded 10. This would likely only happen if there was a bug in DIM or another third party loadout creation tool.',
+			"Something about this loadout is not configured correctly and no combination of armor pieces can make it valid. This should theoretically never happen for D2 Loadouts. If this is a DIM loadout, this can happen if you created a loadout using discounted mods from an old season. DIM will automatically attempt swap over to using the full cost variants of such mods. When DIM does such a swap, there sometimes won't be enough armor energy capacity to slot the full cost variants, which results in this optimization type. In rare cases this can happen if you somehow managed to create a loadout where the total mod cost for a given armor slot exceeded 10. This would likely only happen if there was a bug in DIM or another third party loadout creation tool.",
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.MutuallyExclusiveMods]: {
@@ -1173,6 +1182,20 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		description:
 			"This loadout has space to slot additional mods. It's free real estate!",
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
+	},
+	[ELoadoutOptimizationTypeId.Doomed]: {
+		id: ELoadoutOptimizationTypeId.Doomed,
+		name: 'Doomed Loadout',
+		description:
+			'This loadout uses discounted mods from the current season that will become unavailable once the season ends. If this is a DIM loadout, DIM will not be able to automatically swap such discounted mods for their full cost variants, as the total mod cost would exceed the available armor energy capacity.',
+		category: ELoadoutOptimizationCategoryId.TRANSIENT,
+	},
+	[ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed]: {
+		id: ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed,
+		name: 'Doomed Loadout (Correctable)',
+		description:
+			'[D2 Loadout Specific] This loadout uses discounted mods from the current season that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
+		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 	},
 	[ELoadoutOptimizationTypeId.None]: {
 		id: ELoadoutOptimizationTypeId.None,
@@ -1204,7 +1227,8 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 		ELoadoutOptimizationTypeId.UnspecifiedAspect,
 		ELoadoutOptimizationTypeId.UnmasterworkedArmor,
 		ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
-		ELoadoutOptimizationTypeId.UnavailableMods,
+		ELoadoutOptimizationTypeId.Doomed,
+		ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed,
 		ELoadoutOptimizationTypeId.StatsOver100,
 		ELoadoutOptimizationTypeId.FewerWastedStats,
 		ELoadoutOptimizationTypeId.Error,
@@ -1225,6 +1249,25 @@ export const getLoadoutOptimization = (
 export const NoneOptimization = getLoadoutOptimization(
 	ELoadoutOptimizationTypeId.None
 );
+
+export const IgnorableLoadoutOptimizationTypes =
+	OrderedLoadoutOptimizationTypeList.filter(
+		(x) =>
+			![
+				ELoadoutOptimizationTypeId.Error,
+				ELoadoutOptimizationTypeId.None,
+			].includes(x)
+	).map((loadoutOptimizationTypeId) => {
+		const loadoutOptimizationType = getLoadoutOptimization(
+			loadoutOptimizationTypeId
+		);
+		const { category } = loadoutOptimizationType;
+		const color = getLoadoutOptimizationCategory(category).color;
+		return {
+			...loadoutOptimizationType,
+			color,
+		};
+	});
 
 // Return all AnalyzableLoadouts that can reach higher stat tiers or that
 // can reach the same stat tiers, but for cheaper.
@@ -1284,60 +1327,36 @@ const getFragmentSlots = (aspectIdList: EAspectId[]): number => {
 	return fragmentSlots;
 };
 
-export const hasAlternateSeasonArtifactMods = (
+enum EModVariantCheckType {
+	Base = 'Base',
+	Doomed = 'Doomed',
+}
+
+type ModReplacer = (
 	armorSlotMods: ArmorSlotIdToModIdListMapping
-): boolean => {
-	return Object.values(armorSlotMods).some((modIdList) => {
-		return modIdList.some((modId) => {
-			const mod = getMod(modId);
-			if (!mod) {
-				return false;
-			}
-			return mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact;
-		});
-	});
+) => ArmorSlotIdToModIdListMapping;
+
+const ModVariantCheckTypeToModReplacerMapping: Record<
+	EModVariantCheckType,
+	ModReplacer
+> = {
+	[EModVariantCheckType.Base]: (armorSlotMods) => armorSlotMods,
+	[EModVariantCheckType.Doomed]: replaceAllReducedCostVariantMods,
 };
 
-const replaceAlternateSeasonArtifactMods = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
-): ArmorSlotIdToModIdListMapping => {
-	const newArmorSlotMods = getDefaultArmorSlotIdToModIdListMapping();
-	Object.entries(armorSlotMods).forEach(([armorSlotId, modIdList]) => {
-		modIdList.forEach((modId) => {
-			const mod = getMod(modId);
-			if (!mod) {
-				return;
-			}
-			// Repace first null value with this mod id
-			const idx = newArmorSlotMods[mod.armorSlotId].findIndex(
-				(x) => x === null
-			);
-			if (idx === -1) {
-				console.warn({
-					message: 'Could not find null value in armorSlotMods',
-					modId: mod.id,
-					armorSlotId: mod.armorSlotId,
-				});
-				return;
-			}
-			if (mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact) {
-				const newModHash = reducedToNormalMod[mod.hash];
-				if (!newModHash) {
-					// This means we need to update the generated files and the reducedToNormalMod mapping
-					return;
-				}
-				const newMod = getModByHash(newModHash);
-				if (newMod) {
-					newArmorSlotMods[armorSlotId][idx] = newMod.id;
-				}
-			} else {
-				newArmorSlotMods[armorSlotId][idx] = modId;
-			}
-		});
-	});
-	return newArmorSlotMods;
-};
+type ArmorSlotModsVariants = {
+	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	modVariantCheckType: EModVariantCheckType;
+}[];
 
+// We assume that the DIM mods will be swapped appropriately
+// before the analyzer even runs. This is how DIM behaves internally
+// and we want to mimic that behavior.
+// "Doomed D2" doesn't require any mod swapping. Just check if the loadout contains an in-seaon reduced cost mod
+// "Unusable Mods" should be D2 specific. DIM loadouts will never have unusable mods since we pre-swap the mods on initial DIM loadout ingestion.
+// "Unavailable Mods" is gone. DIM loadouts will never have unavailable mods since we pre-swap the mods on initial DIM loadout ingestion.
+// "Invalid Loadout Configuration" might need to be DIM specific. The description should mention that the user may have initially created that loadout using reduced cost mods that are now out-of-season
+// If "Invalid Loadout Configuration" is DIM specific, then we need to have separate checks for mutually exclusive mods and
 export const getLoadoutsThatCanBeOptimized = (
 	params: GetLoadoutsThatCanBeOptimizedParams
 ): GetLoadoutsThatCanBeOptimizedOutputItem[] => {
@@ -1356,20 +1375,6 @@ export const getLoadoutsThatCanBeOptimized = (
 			const optimizationTypeList: ELoadoutOptimizationTypeId[] = [
 				...loadout.optimizationTypeList,
 			];
-			let hasCorrectableMods = false;
-			// DIM Loadouts will try to auto-correct any discounted mods from previous seasons
-			// by replacing them with the full cost variants. Sometimes there is not enough
-			// armor energy capacity to slot the full cost variants. We will check for both
-			// the discounted and full cost variants to see if DIM can handle this or not.
-			const armorSlotModsVariants = [loadout.armorSlotMods];
-			if (
-				loadout.loadoutType === ELoadoutType.DIM &&
-				hasAlternateSeasonArtifactMods(loadout.armorSlotMods)
-			) {
-				armorSlotModsVariants.push(
-					replaceAlternateSeasonArtifactMods(loadout.armorSlotMods)
-				);
-			}
 			const metadata = {
 				maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
 				maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
@@ -1381,31 +1386,59 @@ export const getLoadoutsThatCanBeOptimized = (
 				modPlacement: getDefaultModPlacements().placement,
 				unusedModSlots: {},
 			};
-			let earlyProgressCallback = false;
 
-			for (
-				let armorSlotModsVariantsIndex = 0;
-				armorSlotModsVariantsIndex < armorSlotModsVariants.length;
-				armorSlotModsVariantsIndex++
+			// Don't even try to process without an exotic
+			if (!loadout.exoticHash) {
+				optimizationTypeList.push(ELoadoutOptimizationTypeId.NoExoticArmor);
+				result.push({
+					optimizationTypeList: optimizationTypeList,
+					loadoutId: loadout.id,
+				});
+				progressCallback({
+					type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
+					canBeOptimized: true,
+					loadoutId: loadout.id,
+					optimizationTypeList: optimizationTypeList,
+					metadata: metadata,
+				});
+				return;
+			}
+
+			let hasBaseVariantModsResults = false;
+			// DIM Loadouts will try to auto-correct any discounted mods from previous seasons
+			// by replacing them with the full cost variants. Sometimes there is not enough
+			// armor energy capacity to slot the full cost variants. We will check for both
+			// the discounted and full cost variants to see if DIM can handle this or not.
+			const armorSlotModsVariants: ArmorSlotModsVariants = [
+				{
+					armorSlotMods: ModVariantCheckTypeToModReplacerMapping[
+						EModVariantCheckType.Base
+					](loadout.armorSlotMods),
+					modVariantCheckType: EModVariantCheckType.Base,
+				},
+			];
+
+			const _hasAlternateSeasonReducedCostVariantMods =
+				hasAlternateSeasonReducedCostVariantMods(loadout.armorSlotMods);
+			const _hasActiveSeasonReducedCostVariantMods =
+				hasActiveSeasonReducedCostVariantMods(loadout.armorSlotMods);
+			// The alternate check overrides the doomed check
+			// So don't even bother checking for doomed loadouts if
+			// the base variant mods contain alternate season reduced cost mods
+			if (
+				!_hasAlternateSeasonReducedCostVariantMods &&
+				_hasActiveSeasonReducedCostVariantMods
 			) {
-				const armorSlotMods = armorSlotModsVariants[armorSlotModsVariantsIndex];
-				// Don't even try to process without an exotic
-				if (!loadout.exoticHash) {
-					optimizationTypeList.push(ELoadoutOptimizationTypeId.NoExoticArmor);
-					result.push({
-						optimizationTypeList: optimizationTypeList,
-						loadoutId: loadout.id,
-					});
-					earlyProgressCallback = true;
-					progressCallback({
-						type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
-						canBeOptimized: true,
-						loadoutId: loadout.id,
-						optimizationTypeList: optimizationTypeList,
-						metadata: metadata,
-					});
-					break;
-				}
+				armorSlotModsVariants.push({
+					armorSlotMods: ModVariantCheckTypeToModReplacerMapping[
+						EModVariantCheckType.Doomed
+					](loadout.armorSlotMods),
+					modVariantCheckType: EModVariantCheckType.Doomed,
+				});
+			}
+
+			for (let i = 0; i < armorSlotModsVariants.length; i++) {
+				const { armorSlotMods, modVariantCheckType } = armorSlotModsVariants[i];
 
 				const {
 					preProcessedArmor,
@@ -1444,7 +1477,9 @@ export const getLoadoutsThatCanBeOptimized = (
 					potentialRaidModArmorSlotPlacements: validRaidModArmorSlotPlacements,
 					armorSlotMods,
 					raidMods: loadout.raidMods.filter((x) => x !== null),
-					intrinsicArmorPerkOrAttributeIds: [],
+					intrinsicArmorPerkOrAttributeIds: loadout.hasHalloweenMask
+						? [EIntrinsicArmorPerkOrAttributeId.HalloweenMask]
+						: [],
 					destinyClassId: loadout.destinyClassId,
 					reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 					useZeroWastedStats: false,
@@ -1460,49 +1495,31 @@ export const getLoadoutsThatCanBeOptimized = (
 				const sumOfCurrentStatModsCost = sumModCosts(loadout.armorStatMods);
 				const processedArmor = doProcessArmor(doProcessArmorParams);
 				let maxDiff = -1;
-				let hasHigherStatTiers = false;
-				ArmorStatIdList.forEach((armorStatId) => {
-					const processedArmorVal =
-						processedArmor.maxPossibleDesiredStatTiers[armorStatId];
-					const existingVal = roundDown10(
-						loadout.desiredStatTiers[armorStatId]
-					);
-					maxDiff = Math.max(
-						maxDiff,
-						processedArmorVal / 10 - existingVal / 10
-					);
-					if (maxDiff > 0) {
-						hasHigherStatTiers = true;
-					}
-				});
+
 				const flattenedMods = flattenMods(loadout).map((x) => getMod(x));
 
-				// First pass vars
-				let hasMissingArmor = false;
-				let hasFewerWastedStats = false;
-				let hasLowerCost = false;
-				let hasUnusedModSlots = false;
-				let hasUnmetDIMStatTierConstraints = false;
-				let hasUnavailableMods = false;
-				let hasStatOver100 = false;
-				let hasUnusedFragmentSlots = false;
-				let hasUnmasterworkedArmor = false;
-				let hasUnspecifiedAspect = false;
-				let hasInvalidLoadoutConfiguration = false;
-				let _hasMutuallyExclusiveMods = false;
-				let _mutuallyExclusiveModGroups: string[] = [];
-				// Second pass vars
-				let hasUnusableMods = false;
-				if (armorSlotModsVariantsIndex === 0) {
+				if (modVariantCheckType === EModVariantCheckType.Base) {
+					hasBaseVariantModsResults = processedArmor.items.length > 0;
+
 					metadata.maxPossibleDesiredStatTiers = {
 						...processedArmor.maxPossibleDesiredStatTiers,
 					};
 					metadata.maxPossibleReservedArmorSlotEnergy = {
 						...processedArmor.maxPossibleReservedArmorSlotEnergy,
 					};
-
-					hasMissingArmor = loadout.armor.length < 5;
-					hasCorrectableMods = processedArmor.items.length > 0;
+					const hasMissingArmor = loadout.armor.length < 5;
+					let hasHigherStatTiers = false;
+					let hasFewerWastedStats = false;
+					let hasLowerCost = false;
+					let hasUnusedModSlots = false;
+					let hasUnmetDIMStatTierConstraints = false;
+					let hasStatOver100 = false;
+					let hasUnusedFragmentSlots = false;
+					let hasUnmasterworkedArmor = false;
+					let hasUnspecifiedAspect = false;
+					let hasInvalidLoadoutConfiguration = false;
+					let _hasMutuallyExclusiveMods = false;
+					let _mutuallyExclusiveModGroups: string[] = [];
 
 					// In one loop find the lowest cost and lowest wasted stats
 					processedArmor.items.forEach((x) => {
@@ -1520,6 +1537,21 @@ export const getLoadoutsThatCanBeOptimized = (
 							)
 						) {
 							metadata.modPlacement = x.modPlacement;
+						}
+					});
+
+					ArmorStatIdList.forEach((armorStatId) => {
+						const processedArmorVal =
+							processedArmor.maxPossibleDesiredStatTiers[armorStatId];
+						const existingVal = roundDown10(
+							loadout.desiredStatTiers[armorStatId]
+						);
+						maxDiff = Math.max(
+							maxDiff,
+							processedArmorVal / 10 - existingVal / 10
+						);
+						if (maxDiff > 0) {
+							hasHigherStatTiers = true;
 						}
 					});
 
@@ -1554,20 +1586,6 @@ export const getLoadoutsThatCanBeOptimized = (
 								loadout.dimStatTierConstraints[armorStatId]
 						);
 
-					Object.values(armorSlotMods).forEach((modIdList) => {
-						modIdList
-							.filter((x) => x !== null)
-							.forEach((modId) => {
-								const mod = getMod(modId);
-								if (
-									!mod ||
-									mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact
-								) {
-									hasUnavailableMods = true;
-								}
-							});
-					});
-
 					hasStatOver100 = Object.values(loadout.achievedStatTiers).some(
 						(x) => x > 100
 					);
@@ -1581,82 +1599,86 @@ export const getLoadoutsThatCanBeOptimized = (
 					[_hasMutuallyExclusiveMods, _mutuallyExclusiveModGroups] =
 						hasMutuallyExclusiveMods(flattenedMods);
 					metadata.mutuallyExclusiveModGroups = _mutuallyExclusiveModGroups;
-				} else if (armorSlotModsVariantsIndex === 1) {
-					// This is a check for if DIM can correct this loadout
-					hasUnusableMods =
-						hasCorrectableMods && // The first pass returned results
-						processedArmor.items.length === 0; // We have no results on the second pass
-				}
 
-				if (hasHigherStatTiers) {
-					optimizationTypeList.push(ELoadoutOptimizationTypeId.HigherStatTier);
-				}
-				if (hasLowerCost) {
-					optimizationTypeList.push(ELoadoutOptimizationTypeId.LowerCost);
-				}
-				if (hasMissingArmor) {
-					optimizationTypeList.push(ELoadoutOptimizationTypeId.MissingArmor);
-				}
-				if (hasUnusableMods) {
-					optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusableMods);
-				}
-				// TODO: Maybe we only want to include hasUnavailableMods if !hasUnusableMods
-				if (hasUnavailableMods) {
-					// DIM can correct for unavailable mods, but only if there is enough armor energy
-					// InGame Loadouts cannot correct for unavailable mods
-					if (loadout.loadoutType === ELoadoutType.InGame) {
-						optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusableMods);
-					} else {
+					if (hasHigherStatTiers) {
 						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.UnavailableMods
+							ELoadoutOptimizationTypeId.HigherStatTier
 						);
 					}
-				}
-				if (hasStatOver100) {
-					optimizationTypeList.push(ELoadoutOptimizationTypeId.StatsOver100);
-				}
-				if (hasUnusedFragmentSlots) {
-					optimizationTypeList.push(
-						ELoadoutOptimizationTypeId.UnusedFragmentSlots
-					);
-				}
-				if (hasUnmetDIMStatTierConstraints) {
-					optimizationTypeList.push(
-						ELoadoutOptimizationTypeId.UnmetDIMStatConstraints
-					);
-				}
-				if (hasUnmasterworkedArmor) {
-					optimizationTypeList.push(
-						ELoadoutOptimizationTypeId.UnmasterworkedArmor
-					);
-				}
-				if (hasFewerWastedStats) {
-					optimizationTypeList.push(
-						ELoadoutOptimizationTypeId.FewerWastedStats
-					);
-				}
-				if (hasUnspecifiedAspect) {
-					optimizationTypeList.push(
-						ELoadoutOptimizationTypeId.UnspecifiedAspect
-					);
-				}
-				if (hasInvalidLoadoutConfiguration) {
-					optimizationTypeList.push(
-						ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration
-					);
-				}
-				if (_hasMutuallyExclusiveMods) {
-					optimizationTypeList.push(
-						ELoadoutOptimizationTypeId.MutuallyExclusiveMods
-					);
-				}
-				if (hasUnusedModSlots) {
-					optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusedModSlots);
-				}
-			}
+					if (hasLowerCost) {
+						optimizationTypeList.push(ELoadoutOptimizationTypeId.LowerCost);
+					}
+					if (hasMissingArmor) {
+						optimizationTypeList.push(ELoadoutOptimizationTypeId.MissingArmor);
+					}
+					if (hasStatOver100) {
+						optimizationTypeList.push(ELoadoutOptimizationTypeId.StatsOver100);
+					}
+					if (hasUnusedFragmentSlots) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.UnusedFragmentSlots
+						);
+					}
+					if (hasUnmetDIMStatTierConstraints) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.UnmetDIMStatConstraints
+						);
+					}
+					if (hasUnmasterworkedArmor) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.UnmasterworkedArmor
+						);
+					}
+					if (hasFewerWastedStats) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.FewerWastedStats
+						);
+					}
+					if (hasUnspecifiedAspect) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.UnspecifiedAspect
+						);
+					}
+					if (hasInvalidLoadoutConfiguration) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration
+						);
+					}
+					if (_hasMutuallyExclusiveMods) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.MutuallyExclusiveMods
+						);
+					}
+					if (hasUnusedModSlots) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.UnusedModSlots
+						);
+					}
+					if (_hasAlternateSeasonReducedCostVariantMods) {
+						optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusableMods);
+					}
+				} else if (modVariantCheckType === EModVariantCheckType.Doomed) {
+					const isDoomedLoadout =
+						hasBaseVariantModsResults && // The base check returned results
+						processedArmor.items.length === 0; // We have no results on the second pass
+					let isManuallyCorrectableDoomedLoadout = false;
+					// DIM will auto-correct the loadout if it can
+					// But in-game loadouts must be manually corrected
+					if (loadout.loadoutType === ELoadoutType.InGame) {
+						isManuallyCorrectableDoomedLoadout =
+							!isDoomedLoadout && _hasActiveSeasonReducedCostVariantMods;
+					}
+					if (isManuallyCorrectableDoomedLoadout) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed
+						);
+					}
 
-			if (earlyProgressCallback) {
-				return;
+					// Don't add both "Doomed" and "ManuallyCorrectableDoomed"
+					if (isDoomedLoadout && !isManuallyCorrectableDoomedLoadout) {
+						optimizationTypeList.push(ELoadoutOptimizationTypeId.Doomed);
+					}
+				}
 			}
 
 			const humanizedOptimizationTypes =

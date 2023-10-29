@@ -29,6 +29,7 @@ export const Legend = () => {
 			ELoadoutOptimizationTypeId[]
 		> = {
 			[ELoadoutOptimizationCategoryId.COSMETIC]: [],
+			[ELoadoutOptimizationCategoryId.TRANSIENT]: [],
 			[ELoadoutOptimizationCategoryId.IMPROVEMENT]: [],
 			[ELoadoutOptimizationCategoryId.WARNING]: [],
 			[ELoadoutOptimizationCategoryId.PROBLEM]: [],

@@ -98,6 +98,7 @@ import disabledArmorSlotModsReducer, {
 import disabledRaidModsReducer, {
 	setDisabledRaidMods,
 } from './features/disabledRaidMods/disabledRaidModsSlice';
+import ignoredLoadoutOptimizationTypesReducer from './features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
 import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import inGameLoadoutsFlatItemIdListReducer from './features/inGameLoadoutsFlatItemIdList/inGameLoadoutsFlatItemIdListSlice';
@@ -157,6 +158,7 @@ export function makeStore() {
 			disabledArmorSlotMods: disabledArmorSlotModsReducer,
 			disabledRaidMods: disabledRaidModsReducer,
 			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
+			ignoredLoadoutOptimizationTypes: ignoredLoadoutOptimizationTypesReducer,
 			inGameLoadouts: inGameLoadoutsReducer,
 			inGameLoadoutsFlatItemIdList: inGameLoadoutsFlatItemIdListReducer,
 			inGameLoadoutsFilter: inGameLoadoutsFilterReducer,
@@ -228,6 +230,7 @@ let selectedJumpUuid = NIL;
 let selectedMeleeUuid = NIL;
 let selectedSuperAbilityUuid = NIL;
 let selectedClassAbilityUuid = NIL;
+let ignoredLoadoutOptimizationTypesUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: any = null;
@@ -335,6 +338,10 @@ function handleChange() {
 			value: selectedClassAbility,
 			uuid: nextSelectedClassAbilityUuid,
 		},
+		ignoredLoadoutOptimizationTypes: {
+			value: ignoredLoadoutOptimizationTypes,
+			uuid: nextIgnoredLoadoutOptimizationTypesUuid,
+		},
 
 		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
@@ -352,6 +359,8 @@ function handleChange() {
 		selectedGrenadeUuid !== nextSelectedGrenadeUuid ||
 		selectedSuperAbilityUuid !== nextSelectedSuperAbilityUuid ||
 		selectedClassAbilityUuid !== nextSelectedClassAbilityUuid ||
+		ignoredLoadoutOptimizationTypesUuid !==
+			nextIgnoredLoadoutOptimizationTypesUuid ||
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
@@ -419,6 +428,8 @@ function handleChange() {
 		selectedGrenadeUuid = nextSelectedGrenadeUuid;
 		selectedSuperAbilityUuid = nextSelectedSuperAbilityUuid;
 		selectedClassAbilityUuid = nextSelectedClassAbilityUuid;
+		ignoredLoadoutOptimizationTypesUuid =
+			nextIgnoredLoadoutOptimizationTypesUuid;
 
 		const localStorageRecall = getLocalStorageRecall();
 		// console.log(
@@ -436,6 +447,8 @@ function handleChange() {
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
 		localStorageRecall.settings.dimLoadoutsFilterId = dimLoadoutsFilter;
 		localStorageRecall.settings.d2LoadoutsFilterId = inGameLoadoutsFilter;
+		localStorageRecall.settings.ignoredLoadoutOptimizationTypes =
+			ignoredLoadoutOptimizationTypes;
 		// Exotic
 		localStorageRecall.classSpecificConfig[selectedDestinyClass].exoticHash =
 			selectedExoticArmorItem?.hash;

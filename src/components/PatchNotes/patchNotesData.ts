@@ -11,8 +11,25 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-10-28',
+		version: '2.4.26',
+		title: 'New Optimization Types',
+		sections: [
+			{
+				items: [
+					`Add two new optimization types: "Doomed Loadout" and "Doomed Loadout (Correctable)`,
+					`Remove the "Unavailable Mods" optimization type`,
+					`Correct the descriptions of the "Invalid Loadout Configuration" and "Unusable Mods" optimization types`,
+					`Add a new setting to completely ignore specific optimization types`,
+					`Fix a bug where optimization types were improperly applied to loadouts containing FotL masks`,
+					`Notes: These changes to optimization types were made to bring DLB into alignment with DIM on how discounted mods are handled`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-27',
-		version: '2.4.24-BETA',
+		version: '2.4.25-BETA',
 		title: 'Enforce FotL mask when editing a loadout via the analyzer',
 		sections: [
 			{

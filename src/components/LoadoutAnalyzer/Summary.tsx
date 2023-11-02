@@ -1,4 +1,6 @@
+import CustomTooltip from '@dlb/components/CustomTooltip';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import useRichValidLoadouts from '@dlb/hooks/useRichValidLoadouts';
 import {
 	ELoadoutOptimizationTypeId,
 	getLoadoutOptimization,
@@ -23,7 +25,6 @@ import {
 } from '@mui/material';
 import { isEmpty } from 'lodash';
 import { useMemo, useState } from 'react';
-import CustomTooltip from '../CustomTooltip';
 
 function calculateWeightedScore(
 	loadoutCategoryCounts: Partial<Record<ELoadoutOptimizationCategoryId, number>>
@@ -110,7 +111,6 @@ function getGradeColor(letterGrade: string): string {
 }
 
 type SummaryProps = {
-	loadouts: AnalyzableLoadout[];
 	hiddenLoadoutIdList: string[];
 	isAnalyzing: boolean;
 	analysisProgressValue: number;
@@ -473,21 +473,19 @@ const ScoredResults = (props: {
 
 export default function Summary(props: SummaryProps) {
 	const {
-		loadouts,
 		hiddenLoadoutIdList,
 		isAnalyzing,
 		analysisProgressValue,
 		ignoredLoadoutOptimizationTypeIdList,
 	} = props;
 	const theme = useTheme();
+	const loadouts = useRichValidLoadouts();
 
 	return (
 		<Box
 			sx={{
 				display: 'flex',
 				flexDirection: 'column',
-				// alignItems: 'center',
-				marginBottom: theme.spacing(4),
 				gap: '4px',
 				background: 'rgb(50, 50, 50)',
 				padding: theme.spacing(1),

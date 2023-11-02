@@ -9,16 +9,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import AnalyzeIcon from '@mui/icons-material/QueryStats';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShieldIcon from '@mui/icons-material/Shield';
-import {
-	Box,
-	Button,
-	Collapse,
-	Divider,
-	Link,
-	styled,
-	useMediaQuery,
-	useTheme,
-} from '@mui/material';
+import { Box, Button, Collapse, Divider, Link, styled } from '@mui/material';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
@@ -29,6 +20,7 @@ import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDesti
 import IgnoredLoadoutOptimizationTypesSelector from '@dlb/components/IgnoredLoadoutOptimizationTypesSelector';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
+import AnalyzerResultsView from '@dlb/components/LoadoutAnalyzer/AnalyzerResultsView';
 import LoadoutAnalysisWebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/LoadoutAnalysisWebWorkerWrapper';
 import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer/LoadoutAnalyzer';
 import Logout from '@dlb/components/LogOutButton';
@@ -52,6 +44,7 @@ import UseBonusResilienceToggleSwitch from '@dlb/components/UseBonusResilienceTo
 import UseOnlyMasterworkedArmorToggleSwitch from '@dlb/components/UseOnlyMasterworkedArmorToggleSwitch';
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
+import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
 import discord_image from '@dlb/public/discord-mark-white.png';
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
@@ -101,7 +94,7 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { ETabType } from '@dlb/types/Tab';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -495,13 +488,25 @@ export type SmallScreenData = {
 
 type RightSectionProps = {
 	smallScreenData: SmallScreenData;
+	resultsViewType: EResultsViewType;
 };
 
-const RightSectionComponent = ({ smallScreenData }: RightSectionProps) => (
+const RightSectionComponent = ({
+	smallScreenData,
+	resultsViewType,
+}: RightSectionProps) => (
 	<RightSection className="right-section">
-		<ArmorResultsView smallScreenData={smallScreenData} />
+		{resultsViewType === EResultsViewType.Build && (
+			<ArmorResultsView smallScreenData={smallScreenData} />
+		)}
+		{resultsViewType === EResultsViewType.Analyze && <AnalyzerResultsView />}
 	</RightSection>
 );
+
+enum EResultsViewType {
+	Build = 'Build',
+	Analyze = 'Analyze',
+}
 
 const Home: NextPage = () => {
 	const [smallScreenResultsOpen, setSmallScreenResultsOpen] =
@@ -509,9 +514,20 @@ const Home: NextPage = () => {
 	const allDataLoaded = useAppSelector(selectAllDataLoaded);
 	const tabIndex = useAppSelector(selectTabIndex);
 	const processedArmor = useAppSelector(selectProcessedArmor);
-	const theme = useTheme();
-	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+	const isSmallScreen = useIsSmallScreen();
 	const dispatch = useAppDispatch();
+
+	const [resultsViewType, setResultsViewType] =
+		React.useState<EResultsViewType>(EResultsViewType.Build);
+
+	useEffect(() => {
+		if (tabIndex === 0) {
+			setResultsViewType(EResultsViewType.Build);
+		}
+		if (tabIndex === 1) {
+			setResultsViewType(EResultsViewType.Analyze);
+		}
+	}, [tabIndex]);
 
 	const smallScreenData: SmallScreenData = {
 		isSmallScreen,
@@ -535,7 +551,10 @@ const Home: NextPage = () => {
 						{isSmallScreen && (
 							<>
 								{smallScreenResultsOpen && (
-									<RightSectionComponent smallScreenData={smallScreenData} />
+									<RightSectionComponent
+										resultsViewType={resultsViewType}
+										smallScreenData={smallScreenData}
+									/>
 								)}
 								{!smallScreenResultsOpen && (
 									<LeftSectionComponent
@@ -570,7 +589,10 @@ const Home: NextPage = () => {
 									onTabChange={handleTabChange}
 									tabIndex={tabIndex}
 								/>
-								<RightSectionComponent smallScreenData={smallScreenData} />
+								<RightSectionComponent
+									resultsViewType={resultsViewType}
+									smallScreenData={smallScreenData}
+								/>
 							</>
 						)}
 					</>

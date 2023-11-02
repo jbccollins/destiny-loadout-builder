@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-11-02',
+		version: '2.4.27',
+		title: 'Desktop Analyzer Layout',
+		sections: [
+			{
+				items: [
+					`Show the analyzer results in an expanded view on desktop`,
+					`Mobile layout is unchanged`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-28',
 		version: '2.4.26',
 		title: 'New Optimization Types',

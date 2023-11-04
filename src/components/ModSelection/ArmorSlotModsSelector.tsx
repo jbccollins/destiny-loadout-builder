@@ -1,3 +1,4 @@
+import CustomTooltip from '@dlb/components/CustomTooltip';
 import GenericTierRow from '@dlb/components/GenericTierRow';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EModId } from '@dlb/generated/mod/EModId';
@@ -25,6 +26,7 @@ import {
 	hasMutuallyExclusiveMods,
 } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
+import HelpIcon from '@mui/icons-material/Help';
 import {
 	Box,
 	FormControl,
@@ -38,6 +40,9 @@ import ModSelector from './ModSelector';
 const TierRowContainer = styled('div')(({ theme }) => ({
 	paddingTop: '8px',
 	paddingBottom: '6px',
+	display: 'flex',
+	alignItems: 'center',
+	gap: '8px',
 	// transform: 'scaleY(0.3)',
 }));
 
@@ -53,16 +58,33 @@ function MaxPossibleReservedArmorSlotEnergyIndicator({
 }: MaxPossibleReservedArmorSlotEnergyIndicatorProps) {
 	return (
 		<TierRowContainer>
-			<GenericTierRow
-				prefixImageSrc={null}
-				showPrefixImage={false}
-				showValue={false}
-				tiers={tiers}
-				value={value}
-				tierBlockBorderWidth="px"
-				tierBlockBackgroundColor="rgb(50, 50, 50)"
-				tierBlockHeight="8px"
-			/>
+			<Box
+				sx={{
+					flex: 1,
+					marginTop: '4px',
+				}}
+			>
+				<GenericTierRow
+					prefixImageSrc={null}
+					showPrefixImage={false}
+					showValue={false}
+					tiers={tiers}
+					value={value}
+					tierBlockBorderWidth="px"
+					tierBlockBackgroundColor="rgb(50, 50, 50)"
+					tierBlockHeight="8px"
+				/>
+			</Box>
+			<CustomTooltip
+				title={`Minumum Used Armor Energy: ${value}. The filled cells show how much armor energy is GUARANTEED to be used in this armor slot. Depending on how you place "armor slot agnostic" mods (i.e. stat-boosting mods and raid mods) the actual used armor energy may be greater.`}
+			>
+				<HelpIcon
+					sx={{
+						height: '20px',
+						width: '20px',
+					}}
+				/>
+			</CustomTooltip>
 		</TierRowContainer>
 	);
 }

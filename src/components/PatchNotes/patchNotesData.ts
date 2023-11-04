@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-11-04',
+		version: '2.4.28',
+		title: 'Add help tooltip to armor slot armor energy indicator',
+		sections: [
+			{
+				items: [
+					`Add a tooltip to the minimum used armor energy indicator that explains what it means`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-11-02',
 		version: '2.4.27',
 		title: 'Desktop Analyzer Layout',

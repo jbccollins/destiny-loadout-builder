@@ -926,6 +926,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 							background: '#585858',
 							padding: '8px',
 							borderRadius: '4px',
+							maxWidth: '600px',
 						}}
 					>
 						<Box sx={{ fontSize: '20px', fontWeight: 'bold' }}>

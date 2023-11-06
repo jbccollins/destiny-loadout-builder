@@ -185,6 +185,22 @@ const ScoredResults = (props: {
 		return loadoutCategoryCounts;
 	}, [loadouts, hiddenLoadoutIdList]);
 
+	const classSpecificLoadoutCounts = useMemo(() => {
+		const clasSpecificLoadoutCounts: Record<EDestinyClassId, number> = {
+			[EDestinyClassId.Hunter]: 0,
+			[EDestinyClassId.Titan]: 0,
+			[EDestinyClassId.Warlock]: 0,
+		};
+
+		DestinyClassIdList.forEach((destinyClassId) => {
+			clasSpecificLoadoutCounts[destinyClassId] = loadouts.filter(
+				(x) => x.destinyClassId === destinyClassId
+			).length;
+		});
+
+		return clasSpecificLoadoutCounts;
+	}, [loadouts]);
+
 	const classSpecificLoadoutCategoryCounts = useMemo(() => {
 		const classSpecificLoadoutCategoryCounts: Record<
 			EDestinyClassId,
@@ -238,7 +254,7 @@ const ScoredResults = (props: {
 
 	const numHiddenLoadouts = useMemo(
 		() => loadouts.filter((x) => hiddenLoadoutIdList.includes(x.id)).length,
-		[hiddenLoadoutIdList]
+		[loadouts, hiddenLoadoutIdList]
 	);
 
 	const grade = useMemo(() => {
@@ -293,24 +309,31 @@ const ScoredResults = (props: {
 			>
 				<Box
 					sx={{
-						color: gradeColor,
 						backgroundColor: 'black',
 						width: '64px',
-						height: '64px',
+						height: '130px',
 						textAlign: 'center',
-						lineHeight: '64px',
-						alignItems: 'center',
-						borderRadius: '50%',
-						fontSize: '40px',
-						fontWeight: 'bold',
+						borderRadius: '8px',
+
 						marginRight: theme.spacing(1),
 						marginTop: theme.spacing(1),
 						marginBottom: theme.spacing(1),
 						position: 'relative',
 					}}
 				>
-					{grade}
+					<Box
+						sx={{
+							color: gradeColor,
+							fontSize: '40px',
+							fontWeight: 'bold',
+						}}
+					>
+						{grade}
+					</Box>
+					<Box sx={{ fontWeight: 'bold' }}>{loadouts.length}</Box>
+					<Box sx={{ fontSize: '11px' }}>Loadouts Analyzed</Box>
 				</Box>
+
 				<Box>
 					<Box sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
 						<Box
@@ -338,24 +361,34 @@ const ScoredResults = (props: {
 								>
 									<Box
 										sx={{
-											color: classSpecificGradeColors[destinyClassId],
-											fontWeight: 'bold',
-											fontSize: '20px',
-											display: 'flex',
-											gap: '4px',
-											alignItems: 'center',
 											background: 'black',
 											padding: '4px',
 											paddingRight: '8px',
 											borderRadius: '12px',
+											width: '74px',
 										}}
 									>
-										<BungieImage
-											width={40}
-											height={40}
-											src={destinyClass.icon}
-										/>
-										{classSpecificGrades[destinyClassId]}
+										<Box
+											sx={{
+												color: classSpecificGradeColors[destinyClassId],
+												fontWeight: 'bold',
+												fontSize: '20px',
+												display: 'flex',
+												gap: '4px',
+												alignItems: 'center',
+											}}
+										>
+											<BungieImage
+												width={40}
+												height={40}
+												src={destinyClass.icon}
+											/>
+											{classSpecificGrades[destinyClassId]}
+										</Box>
+										<Box sx={{ textAlign: 'center', fontSize: '11px' }}>
+											{classSpecificLoadoutCounts[destinyClassId]}/
+											{loadouts.length}
+										</Box>
 									</Box>
 								</CustomTooltip>
 							);

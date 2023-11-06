@@ -357,6 +357,7 @@ export default function AnalyzerResultsList() {
 						sx={{
 							marginTop: theme.spacing(1),
 							marginBottom: theme.spacing(1),
+							paddingX: theme.spacing(1),
 						}}
 					>
 						<Box

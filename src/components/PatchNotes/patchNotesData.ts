@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-11-06',
+		version: '2.4.29',
+		title: 'Add loadout counts to the analyzer',
+		sections: [
+			{
+				items: [
+					`Show total loadout counts and loadout counts per class in the analyzer`,
+					`Minor spacing changes to the analyzer`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-11-04',
 		version: '2.4.28',
 		title: 'Add help tooltip to armor slot armor energy indicator',

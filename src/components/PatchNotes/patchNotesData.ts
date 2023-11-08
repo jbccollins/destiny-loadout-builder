@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-11-08',
+		version: '2.4.30',
+		title: 'Add masterwork assumption back',
+		sections: [
+			{
+				items: [
+					`Add the masterwork assumption setting back with the caveat that all class items are assumed to be masterworked.`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-11-06',
 		version: '2.4.29',
 		title: 'Add loadout counts to the analyzer',

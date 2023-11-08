@@ -27,4 +27,11 @@
         "editor.tabSize": 2
     },
     "typescript.tsdk": "node_modules/typescript/lib",
+    "cSpell.words": [
+        "destinyitemmanager",
+        "Loadout",
+        "loadouts",
+        "masterworked",
+        "resil"
+    ],
 }

@@ -1,0 +1,428 @@
+{
+	"LoadoutName": {
+		"752612096": {
+			"name": "Gambit",
+			"hash": 752612096,
+			"index": 14,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612097": {
+			"name": "Crucible",
+			"hash": 752612097,
+			"index": 13,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612098": {
+			"name": "Vanguard",
+			"hash": 752612098,
+			"index": 12,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612099": {
+			"name": "Epsilon",
+			"hash": 752612099,
+			"index": 4,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612100": {
+			"name": "Delta",
+			"hash": 752612100,
+			"index": 3,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612101": {
+			"name": "Gamma",
+			"hash": 752612101,
+			"index": 2,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612102": {
+			"name": "Beta",
+			"hash": 752612102,
+			"index": 1,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612103": {
+			"name": "Alpha",
+			"hash": 752612103,
+			"index": 0,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612110": {
+			"name": "Dungeon",
+			"hash": 752612110,
+			"index": 16,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"752612111": {
+			"name": "Raid",
+			"hash": 752612111,
+			"index": 15,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629632": {
+			"name": "Strike",
+			"hash": 2755629632,
+			"index": 19,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629633": {
+			"name": "PvE",
+			"hash": 2755629633,
+			"index": 5,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629634": {
+			"name": "Trials",
+			"hash": 2755629634,
+			"index": 17,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629635": {
+			"name": "Nightfall",
+			"hash": 2755629635,
+			"index": 18,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629636": {
+			"name": "Solar",
+			"hash": 2755629636,
+			"index": 8,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629637": {
+			"name": "Arc",
+			"hash": 2755629637,
+			"index": 9,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629638": {
+			"name": "PvP",
+			"hash": 2755629638,
+			"index": 6,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629639": {
+			"name": "Stasis",
+			"hash": 2755629639,
+			"index": 7,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629642": {
+			"name": "Void",
+			"hash": 2755629642,
+			"index": 10,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"2755629643": {
+			"name": "Strand",
+			"hash": 2755629643,
+			"index": 11,
+			"redacted": false,
+			"blacklisted": false
+		}
+	},
+	"LoadoutColor": {
+		"1693821584": {
+			"colorImagePath": "/common/destiny2_content/icons/1451ed6618513f44596153b844cbd37a.jpg",
+			"hash": 1693821584,
+			"index": 12,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821585": {
+			"colorImagePath": "/common/destiny2_content/icons/2f2d3b324c8f1ab84347748138a9bd52.jpg",
+			"hash": 1693821585,
+			"index": 13,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821586": {
+			"colorImagePath": "/common/destiny2_content/icons/c8e659928b9e438465fb2260763c63c5.jpg",
+			"hash": 1693821586,
+			"index": 10,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821587": {
+			"colorImagePath": "/common/destiny2_content/icons/b9a0183c2d162343d350a17faf42d2f6.jpg",
+			"hash": 1693821587,
+			"index": 11,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821588": {
+			"colorImagePath": "/common/destiny2_content/icons/420d6a33571543174775d1125126126c.jpg",
+			"hash": 1693821588,
+			"index": 16,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821589": {
+			"colorImagePath": "/common/destiny2_content/icons/a819bcb1273db4ff0c596e295e1be77d.jpg",
+			"hash": 1693821589,
+			"index": 17,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821590": {
+			"colorImagePath": "/common/destiny2_content/icons/86805d5f50732e973b3f015897ca0459.jpg",
+			"hash": 1693821590,
+			"index": 14,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821591": {
+			"colorImagePath": "/common/destiny2_content/icons/4435d6227c3da12865d42798069ee54b.jpg",
+			"hash": 1693821591,
+			"index": 15,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821594": {
+			"colorImagePath": "/common/destiny2_content/icons/fca6c522f0d0a343945e9afea80496e7.jpg",
+			"hash": 1693821594,
+			"index": 18,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1693821595": {
+			"colorImagePath": "/common/destiny2_content/icons/2b9d559912a40a56b00670db7686dc7d.jpg",
+			"hash": 1693821595,
+			"index": 19,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954960": {
+			"colorImagePath": "/common/destiny2_content/icons/29de134b43b257f41fa4dfd60fa1869e.jpg",
+			"hash": 3871954960,
+			"index": 7,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954961": {
+			"colorImagePath": "/common/destiny2_content/icons/b1d1261fbe1f4edc03ce1d5a9e80b037.jpg",
+			"hash": 3871954961,
+			"index": 6,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954962": {
+			"colorImagePath": "/common/destiny2_content/icons/7d295d113714cd600fb83cac7cf105c5.jpg",
+			"hash": 3871954962,
+			"index": 5,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954963": {
+			"colorImagePath": "/common/destiny2_content/icons/9db81bdc63a5ff8d60fe5d6d5c440429.jpg",
+			"hash": 3871954963,
+			"index": 4,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954964": {
+			"colorImagePath": "/common/destiny2_content/icons/4b5b2fced9c7cc8e01c215cd1ce0d170.jpg",
+			"hash": 3871954964,
+			"index": 3,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954965": {
+			"colorImagePath": "/common/destiny2_content/icons/210833eb4c2e3d65081b7c9dbaffb46d.jpg",
+			"hash": 3871954965,
+			"index": 2,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954966": {
+			"colorImagePath": "/common/destiny2_content/icons/e22bf6d70cc5c762c82890a70f194159.jpg",
+			"hash": 3871954966,
+			"index": 1,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954967": {
+			"colorImagePath": "/common/destiny2_content/icons/0b86684b965e267ccfe84b633577cf16.jpg",
+			"hash": 3871954967,
+			"index": 0,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954974": {
+			"colorImagePath": "/common/destiny2_content/icons/e986ba26ff6a07978b21a8b6bc9c3beb.jpg",
+			"hash": 3871954974,
+			"index": 9,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"3871954975": {
+			"colorImagePath": "/common/destiny2_content/icons/4255d1a8072565741e8aef86c38be122.jpg",
+			"hash": 3871954975,
+			"index": 8,
+			"redacted": false,
+			"blacklisted": false
+		}
+	},
+	"LoadoutIcon": {
+		"797343696": {
+			"iconImagePath": "/common/destiny2_content/icons/6050810f75b806583e817cb5320761a4.png",
+			"hash": 797343696,
+			"index": 17,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343697": {
+			"iconImagePath": "/common/destiny2_content/icons/87b2cc63569689fb5d5e95b3c5afd52e.png",
+			"hash": 797343697,
+			"index": 16,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343698": {
+			"iconImagePath": "/common/destiny2_content/icons/fa6287ca0b17359d675ee00f9636a621.png",
+			"hash": 797343698,
+			"index": 15,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343699": {
+			"iconImagePath": "/common/destiny2_content/icons/0158cc3fd1ad50dfb3a0773ade516a90.png",
+			"hash": 797343699,
+			"index": 14,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343700": {
+			"iconImagePath": "/common/destiny2_content/icons/4ffe2567ee6d9d60ea69a662afd8c49d.png",
+			"hash": 797343700,
+			"index": 13,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343701": {
+			"iconImagePath": "/common/destiny2_content/icons/7c8d8cfa11c88a39b67d7b5fce9332cf.png",
+			"hash": 797343701,
+			"index": 12,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343702": {
+			"iconImagePath": "/common/destiny2_content/icons/3f566f3d1bb6dcc41bec8f8ee778534c.png",
+			"hash": 797343702,
+			"index": 11,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343703": {
+			"iconImagePath": "/common/destiny2_content/icons/b8adb06372e942f529cf907ceab24840.png",
+			"hash": 797343703,
+			"index": 10,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343710": {
+			"iconImagePath": "/common/destiny2_content/icons/3c1a039d151d1d27bc6b52869bff831b.png",
+			"hash": 797343710,
+			"index": 19,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"797343711": {
+			"iconImagePath": "/common/destiny2_content/icons/28425519f290123a52d2eee8283fee08.png",
+			"hash": 797343711,
+			"index": 18,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786708": {
+			"iconImagePath": "/common/destiny2_content/icons/f4ee04c2733257641ee8c33dabd348e0.png",
+			"hash": 1143786708,
+			"index": 8,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786709": {
+			"iconImagePath": "/common/destiny2_content/icons/e64d62fb407f373b518226ddca900a2b.png",
+			"hash": 1143786709,
+			"index": 9,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786712": {
+			"iconImagePath": "/common/destiny2_content/icons/6c9ea5cd14b20cd2af43522151a9ebbf.png",
+			"hash": 1143786712,
+			"index": 4,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786713": {
+			"iconImagePath": "/common/destiny2_content/icons/5724cfee09280d8d4f725e34281cec8b.png",
+			"hash": 1143786713,
+			"index": 5,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786714": {
+			"iconImagePath": "/common/destiny2_content/icons/e2f88241a0deb487b306679155c5cfeb.png",
+			"hash": 1143786714,
+			"index": 6,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786715": {
+			"iconImagePath": "/common/destiny2_content/icons/f011aeca2806f94efeefa84b85933b8a.png",
+			"hash": 1143786715,
+			"index": 7,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786716": {
+			"iconImagePath": "/common/destiny2_content/icons/86de8b55b6d540861e4971a11a8a99c9.png",
+			"hash": 1143786716,
+			"index": 0,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786717": {
+			"iconImagePath": "/common/destiny2_content/icons/201eb9fd418c89cc560e825c812cd0ae.png",
+			"hash": 1143786717,
+			"index": 1,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786718": {
+			"iconImagePath": "/common/destiny2_content/icons/e0a4d33058adbb90c0499cf84444b4b0.png",
+			"hash": 1143786718,
+			"index": 2,
+			"redacted": false,
+			"blacklisted": false
+		},
+		"1143786719": {
+			"iconImagePath": "/common/destiny2_content/icons/8d9818f39c419bbe081d78397362406d.png",
+			"hash": 1143786719,
+			"index": 3,
+			"redacted": false,
+			"blacklisted": false
+		}
+	}
+}

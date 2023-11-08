@@ -24,6 +24,7 @@ import AnalyzerResultsView from '@dlb/components/LoadoutAnalyzer/AnalyzerResults
 import LoadoutAnalysisWebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/LoadoutAnalysisWebWorkerWrapper';
 import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer/LoadoutAnalyzer';
 import Logout from '@dlb/components/LogOutButton';
+import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import Head from '@dlb/components/Meta/Head';
 import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
@@ -376,8 +377,6 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					{
 						content: (
 							<>
-								{/* <MasterworkAssumptionSelector />
-								<MinimumGearTierSelector /> */}
 								<Box
 									sx={{
 										fontWeight: 'bold',
@@ -388,6 +387,8 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								>
 									Build Settings
 								</Box>
+								<MasterworkAssumptionSelector />
+								{/* <MinimumGearTierSelector />  */}
 								<DimLoadoutsFilterSelector />
 								<InGameLoadoutsFilterSelector />
 								<UseZeroWastedStatsToggleSwitch />

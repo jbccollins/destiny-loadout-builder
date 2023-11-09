@@ -46,9 +46,9 @@ const Subtitle = styled(Box)(({ theme }) => ({
 	marginBottom: theme.spacing(1),
 }));
 
-const Content = styled(Box)(({ theme }) => ({}));
+const Content = styled(Box)(() => ({}));
 
-const ErrorWrapper = styled(Box)(({ theme }) => ({
+const ErrorWrapper = styled(Box)(() => ({
 	whiteSpace: 'pre-line',
 	maxHeight: '80vh',
 	overflow: 'auto',

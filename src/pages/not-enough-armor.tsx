@@ -29,7 +29,7 @@ const Subtitle = styled(Box)(({ theme }) => ({
 	marginBottom: theme.spacing(1),
 }));
 
-const Content = styled(Box)(({ theme }) => ({}));
+const Content = styled(Box)(() => ({}));
 
 function NotEnoughArmor() {
 	return (

@@ -1,18 +1,17 @@
-import axios, { AxiosResponse } from 'axios';
-import lodash from 'lodash';
-import prettier from 'prettier';
-import crypto from 'crypto';
-import path from 'path';
-import { promises as fs } from 'fs';
+import { getArmorStatIdFromBungieHash } from '@dlb/types/ArmorStat';
 import { IBonuses, StatBonus } from '@dlb/types/globals';
 import { EArmorStatId } from '@dlb/types/IdEnums';
+import axios from 'axios';
 import {
 	DestinyArtifactDefinition,
-	DestinyArtifactTierDefinition,
 	DestinyInventoryItemDefinition,
 	DestinySandboxPerkDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-import { getArmorStatIdFromBungieHash } from '@dlb/types/ArmorStat';
+import crypto from 'crypto';
+import { promises as fs } from 'fs';
+import lodash from 'lodash';
+import path from 'path';
+import prettier from 'prettier';
 
 const API_KEY = process.env.NEXT_PUBLIC_BNET_API_KEY;
 const CACHED_DEFINITIONS_DIRECTORY = './src/scripts/cached-definitions/';

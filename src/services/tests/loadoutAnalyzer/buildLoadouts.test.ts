@@ -24,7 +24,6 @@ import { EMasterworkAssumption } from '@dlb/types/IdEnums';
 const testFunction = buildAnalyzableLoadoutsBreakdown;
 
 type TestCaseInput = Parameters<typeof testFunction>;
-type TestCaseOutput = ReturnType<typeof testFunction>;
 
 type TestCase = [name: string, input: TestCaseInput, output: number];
 

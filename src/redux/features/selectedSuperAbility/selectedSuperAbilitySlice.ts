@@ -2,10 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { AppState } from '@dlb/redux/store';
-import {
-	DestinySubclassIdList,
-	getDestinySubclass,
-} from '@dlb/types/DestinySubclass';
+import { DestinySubclassIdList } from '@dlb/types/DestinySubclass';
 import { EDestinySubclassId } from '@dlb/types/IdEnums';
 import { NIL, v4 as uuid } from 'uuid';
 
@@ -20,8 +17,7 @@ export interface SelectedSuperAbilityState {
 
 const getInitialStateValue = (): SelectedSuperAbility => {
 	return DestinySubclassIdList.reduce((accumulator, currentValue) => {
-		const { superAbilityIdList } = getDestinySubclass(currentValue);
-		accumulator[currentValue] = null; // superAbilityIdList[0];
+		accumulator[currentValue] = null;
 		return accumulator;
 	}, {}) as SelectedSuperAbility;
 };

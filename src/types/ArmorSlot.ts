@@ -3,8 +3,6 @@ import {
 	EnumDictionary,
 	IIcon,
 	IIdentifiableName,
-	Mapping,
-	MISSING_ICON,
 	ValidateEnumList,
 } from './globals';
 import { EArmorSlotId } from './IdEnums';

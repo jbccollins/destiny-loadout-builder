@@ -8,6 +8,7 @@ import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { selectAlwaysConsiderCollectionsRolls } from '@dlb/redux/features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectDimLoadoutsFilter } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import { selectExcludeLockedItems } from '@dlb/redux/features/excludeLockedItems/excludeLockedItemsSlice';
 import { selectInGameLoadoutsFilter } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
@@ -28,6 +29,7 @@ import {
 	EIntrinsicArmorPerkOrAttributeId,
 } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
+import ExcludeLockedItemsToggleSwitch from '../ExcludeLockedItemsToggleSwitch';
 
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',
@@ -66,6 +68,7 @@ function NoResults() {
 	const alwaysConsiderCollectionsRolls = useAppSelector(
 		selectAlwaysConsiderCollectionsRolls
 	);
+	const excludeLockedItems = useAppSelector(selectExcludeLockedItems);
 	const selectedRaidMods = useAppSelector(selectSelectedRaidMods);
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
@@ -115,6 +118,7 @@ function NoResults() {
 	const withUseBonusResilience = !useBonusResilience || useZeroWastedStats;
 
 	const hasSettingsToModify =
+		excludeLockedItems ||
 		useOnlyMasterworkedArmor ||
 		withUseBonusResilience ||
 		useZeroWastedStats ||
@@ -174,6 +178,11 @@ function NoResults() {
 								{withUseBonusResilience && (
 									<li>
 										<UseBonusResilienceToggleSwitch />
+									</li>
+								)}
+								{excludeLockedItems && (
+									<li>
+										<ExcludeLockedItemsToggleSwitch />
 									</li>
 								)}
 								{dimLoadoutsFilterId === EDimLoadoutsFilterId.None && (

@@ -1,6 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import { ARTIFICE } from '@dlb/services/processArmor/constants';
+import { getDefaultModPlacements } from '@dlb/services/processArmor/getModCombos';
 import {
 	doProcessArmor,
 	getDefaultProcessedArmorItemMetadataClassItem,
@@ -27,7 +28,6 @@ import {
 } from '@dlb/types/Mod';
 import { describe, expect, test } from '@jest/globals';
 import { cloneDeep } from 'lodash';
-import { getDefaultModPlacements } from '../processArmor/getModCombos';
 
 const testFunction = doProcessArmor;
 
@@ -52,24 +52,10 @@ const defaultArmorItem: ArmorItem = {
 	socketableRaidAndNightmareModTypeId: null,
 	intrinsicArmorPerkOrAttributeId: null,
 	isCollectible: false,
+	isLocked: false,
 };
 
 const getDefaultArmorItem = () => cloneDeep(defaultArmorItem);
-
-const defaultClassItemMetadataWithMasterworkedLegendary: AllClassItemMetadata =
-	{
-		...getDefaultAllClassItemMetadata(),
-		Legendary: {
-			hasMasterworkedVariant: true,
-			items: [
-				{
-					...getDefaultArmorItem(),
-					isMasterworked: true,
-					id: '4',
-				},
-			],
-		},
-	};
 
 const defaultClassItemMetadataWithMasterworkedArtifice: AllClassItemMetadata = {
 	...getDefaultAllClassItemMetadata(),

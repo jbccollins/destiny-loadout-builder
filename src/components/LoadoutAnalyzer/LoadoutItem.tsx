@@ -683,8 +683,8 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 							<Image
 								src={loadoutType === ELoadoutType.DIM ? dimLogo : d2Logo}
 								alt="Loadout Logo"
-								height="20px"
-								width="20px"
+								height={20}
+								width={20}
 							/>
 						</Box>
 					</CustomTooltip>

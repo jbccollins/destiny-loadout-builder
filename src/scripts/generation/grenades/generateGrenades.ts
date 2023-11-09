@@ -5,10 +5,7 @@ import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
 import { IGrenade } from '@dlb/types/generation';
 import { EElementId } from '@dlb/types/IdEnums';
 import { bungieNetPath } from '@dlb/utils/item-utils';
-import {
-	DestinyInventoryItemDefinition,
-	DestinySandboxPerkDefinition,
-} from 'bungie-api-ts-no-const-enum/destiny2';
+import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
 import lodash from 'lodash';
 import path from 'path';
@@ -16,11 +13,10 @@ import { generateGrenadeIdEnumFileString } from './generateGrenadeIdEnum';
 import { generateGrenadeMapping } from './generateGrenadeMapping';
 
 const buildGrenadeData = (
-	grenade: DestinyInventoryItemDefinition,
-	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>
+	grenade: DestinyInventoryItemDefinition
 ): IGrenade => {
 	// TODO: This is pretty janky and fragile. Relying on this random string to work well
-	const [_, unsafeElementString] =
+	const [, unsafeElementString] =
 		grenade.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
 	return {
@@ -34,14 +30,8 @@ const buildGrenadeData = (
 };
 
 export async function run() {
-	const {
-		DestinyInventoryItemDefinition: destinyInventoryItemDefinitions,
-		DestinySandboxPerkDefinition: destinySandboxPerkDefinitions,
-	} = await getDefinitions();
-	const sandboxPerkDefinitions = destinySandboxPerkDefinitions as Record<
-		number,
-		DestinySandboxPerkDefinition
-	>;
+	const { DestinyInventoryItemDefinition: destinyInventoryItemDefinitions } =
+		await getDefinitions();
 
 	console.log('Received definitions');
 	console.log('Finding grenades');
@@ -58,7 +48,7 @@ export async function run() {
 		.value() as DestinyInventoryItemDefinition[];
 
 	allGrenades.forEach((grenade) => {
-		grenades.push(buildGrenadeData(grenade, sandboxPerkDefinitions));
+		grenades.push(buildGrenadeData(grenade));
 	});
 
 	const grenadesPath = ['.', 'src', 'generated', 'grenade'];

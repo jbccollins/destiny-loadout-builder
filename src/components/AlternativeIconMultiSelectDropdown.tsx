@@ -1,11 +1,10 @@
-import * as React from 'react';
+import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Box, styled } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { Avatar, Box, Chip, styled } from '@mui/material';
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -63,7 +62,7 @@ export default function IconMultiSelectDropdown({
 			}
 			renderTags={(tagValue, getTagProps) =>
 				tagValue.map((option, index) => {
-					const { onDelete, key, className, disabled, tabIndex } = getTagProps({
+					const { onDelete, key, className, tabIndex } = getTagProps({
 						index,
 					});
 

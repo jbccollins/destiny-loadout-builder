@@ -70,6 +70,7 @@ export type LocalStorageRecall = {
 		dimLoadoutsFilterId: EDimLoadoutsFilterId;
 		d2LoadoutsFilterId: EInGameLoadoutsFilterId;
 		useZeroWastedStats: boolean;
+		excludeLockedItems: boolean;
 		alwaysConsiderCollectionsRolls: boolean;
 		useOnlyMasterworkedArmor: boolean;
 		useBonusResilience: boolean;
@@ -139,6 +140,7 @@ export const getDefaultLocalStorageRecall = (): LocalStorageRecall => ({
 		alwaysConsiderCollectionsRolls: false,
 		useOnlyMasterworkedArmor: false,
 		useBonusResilience: false,
+		excludeLockedItems: false,
 		ignoredLoadoutOptimizationTypes: [],
 	},
 });

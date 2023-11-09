@@ -71,7 +71,7 @@ const debug = false;
 	const results: Record<string, number[][][]> = {};
 	// Each valid number of artifice mods
 	(debug ? combinations.slice(10000, 10005) : combinations).forEach(
-		(combination, i) => {
+		(combination) => {
 			// combinations.forEach((combination, i) => {
 			// Join numbers, pad single digits with 0 prefix
 			const paddedCombination = combination.map((x) =>

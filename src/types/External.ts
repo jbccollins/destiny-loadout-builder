@@ -1,17 +1,16 @@
 import { BucketHashes, StatHashes } from '@dlb/dim/data/d2/generated-enums';
+import { ItemTierName } from '@dlb/dim/search/d2-known-values';
 import {
 	DestinyClass,
 	DestinyEnergyType,
-	TierType,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import {
-	EDestinyClassId,
 	EArmorSlotId,
 	EArmorStatId,
+	EDestinyClassId,
 	EElementId,
 	EGearTierId,
 } from './IdEnums';
-import { ItemTierName } from '@dlb/dim/search/d2-known-values';
 
 /********* Mapping manifest hashes to our own enums *********/
 // TODO these kinds of mappings don't seem to be type safe.

@@ -11,7 +11,7 @@ import { Box, Collapse, IconButton, styled } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const Container = styled(Box)(({ theme }) => ({
+const Container = styled(Box)(() => ({
 	position: 'absolute',
 	height: '100vh',
 	width: '100vw',

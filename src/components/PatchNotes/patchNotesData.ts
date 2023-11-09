@@ -12,12 +12,26 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-11-08',
+		version: '2.4.31',
+		title: 'Add setting to exclude locked items',
+		sections: [
+			{
+				items: [
+					`Add a setting to exclude items that are locked in-game from the results`,
+					`Upgrade the app from Nextjs 12 => 14. Fingers crossed that nothing breaks.`,
+					`Lots of internal cleanup of unused code`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-11-08',
 		version: '2.4.30',
 		title: 'Add masterwork assumption back',
 		sections: [
 			{
 				items: [
-					`Add the masterwork assumption setting back with the caveat that all class items are assumed to be masterworked.`,
+					`Add the masterwork assumption setting back with the caveat that all class items are assumed to be masterworked`,
 				],
 			},
 		],

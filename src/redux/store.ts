@@ -98,6 +98,7 @@ import disabledArmorSlotModsReducer, {
 import disabledRaidModsReducer, {
 	setDisabledRaidMods,
 } from './features/disabledRaidMods/disabledRaidModsSlice';
+import excludeLockedItemsReducer from './features/excludeLockedItems/excludeLockedItemsSlice';
 import ignoredLoadoutOptimizationTypesReducer from './features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
 import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
@@ -157,6 +158,7 @@ export function makeStore() {
 			dimLoadoutsFilter: dimLoadoutsFilterReducer,
 			disabledArmorSlotMods: disabledArmorSlotModsReducer,
 			disabledRaidMods: disabledRaidModsReducer,
+			excludeLockedItems: excludeLockedItemsReducer,
 			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
 			ignoredLoadoutOptimizationTypes: ignoredLoadoutOptimizationTypesReducer,
 			inGameLoadouts: inGameLoadoutsReducer,
@@ -218,6 +220,7 @@ let reservedArmorSlotEnergyUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
 let useBonusResilienceUuid = NIL;
 let useZeroWastedStatsUuid = NIL;
+let excludeLockedItemsUuid = NIL;
 let useOnlyMasterworkedArmorUuid = NIL;
 let alwaysConsiderCollectionsRollsUuid = NIL;
 let inGameLoadoutsFlatItemIdListUuid = NIL;
@@ -233,7 +236,7 @@ let selectedClassAbilityUuid = NIL;
 let ignoredLoadoutOptimizationTypesUuid = NIL;
 const debugStoreLoop = false;
 
-let previousState: any = null;
+let previousState: ReturnType<typeof store.getState> = null;
 if (debugStoreLoop) {
 	previousState = store.getState();
 }
@@ -307,6 +310,10 @@ function handleChange() {
 			value: useZeroWastedStats,
 			uuid: nextUseZeroWastedStatsUuid,
 		},
+		excludeLockedItems: {
+			value: excludeLockedItems,
+			uuid: nextExcludeLockedItemsUuid,
+		},
 		alwaysConsiderCollectionsRolls: {
 			value: alwaysConsiderCollectionsRolls,
 			uuid: nextAlwaysConsiderCollectionsRollsUuid,
@@ -373,6 +380,7 @@ function handleChange() {
 		useBonusResilienceUuid !== nextUseBonusResilienceUuid ||
 		useOnlyMasterworkedArmorUuid !== nextUseOnlyMasterworkedArmorUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
+		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
 			nextAlwaysConsiderCollectionsRollsUuid;
 
@@ -442,6 +450,7 @@ function handleChange() {
 		localStorageRecall.settings.useOnlyMasterworkedArmor =
 			useOnlyMasterworkedArmor;
 		localStorageRecall.settings.useZeroWastedStats = useZeroWastedStats;
+		localStorageRecall.settings.excludeLockedItems = excludeLockedItems;
 		localStorageRecall.settings.useBonusResilience = useBonusResilience;
 		localStorageRecall.settings.masterworkAssumption = masterworkAssumption;
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
@@ -516,6 +525,7 @@ function handleChange() {
 		useBonusResilienceUuid !== nextUseBonusResilienceUuid ||
 		useOnlyMasterworkedArmorUuid !== nextUseOnlyMasterworkedArmorUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
+		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
 			nextAlwaysConsiderCollectionsRollsUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
@@ -610,6 +620,7 @@ function handleChange() {
 	useBonusResilienceUuid = nextUseBonusResilienceUuid;
 	useOnlyMasterworkedArmorUuid = nextUseOnlyMasterworkedArmorUuid;
 	useZeroWastedStatsUuid = nextUseZeroWastedStatsUuid;
+	excludeLockedItemsUuid = nextExcludeLockedItemsUuid;
 	alwaysConsiderCollectionsRollsUuid = nextAlwaysConsiderCollectionsRollsUuid;
 	inGameLoadoutsFilterUuid = nextInGameLoadoutsFilterUuid;
 	inGameLoadoutsFlatItemIdListUuid = nextInGameLoadoutsFlatItemIdListUuid;
@@ -620,7 +631,6 @@ function handleChange() {
 	const {
 		allClassItemMetadata: { value: allClassItemMetadata },
 		armor: { value: armor },
-		armorMetadata: { value: armorMetadata },
 		desiredArmorStats: { value: desiredArmorStats },
 		dimLoadouts: { value: dimLoadouts },
 		sharedLoadoutDesiredStats: { value: sharedLoadoutDesiredStats },
@@ -688,21 +698,22 @@ function handleChange() {
 	// TODO: no need to preProcessArmor when only the stat slider has changed.
 	// Maybe we don't need to trigger that fake initial dispatch in
 	// the slider component if we fix this?
-	const [preProcessedArmor, _allClassItemMetadata] = preProcessArmor(
-		armor[selectedDestinyClass],
-		selectedExoticArmorItem,
-		dimLoadouts.filter(
+	const [preProcessedArmor, _allClassItemMetadata] = preProcessArmor({
+		armorGroup: armor[selectedDestinyClass],
+		selectedExoticArmor: selectedExoticArmorItem,
+		dimLoadouts: dimLoadouts.filter(
 			(x) =>
 				DestinyClassHashToDestinyClass[x.classType] === selectedDestinyClass
 		),
-		dimLoadoutsFilter,
+		dimLoadoutsFilterId: dimLoadoutsFilter,
 		inGameLoadoutsFlatItemIdList,
-		inGameLoadoutsFilter,
-		selectedMinimumGearTier,
-		allClassItemMetadata[selectedDestinyClass],
+		inGameLoadoutsFilterId: inGameLoadoutsFilter,
+		minimumGearTier: selectedMinimumGearTier,
+		allClassItemMetadata: allClassItemMetadata[selectedDestinyClass],
 		alwaysConsiderCollectionsRolls,
-		useOnlyMasterworkedArmor
-	);
+		useOnlyMasterworkedArmor,
+		excludeLockedItems,
+	});
 	console.log(
 		'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',
 		preProcessedArmor

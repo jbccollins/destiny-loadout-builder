@@ -28,10 +28,13 @@
     },
     "typescript.tsdk": "node_modules/typescript/lib",
     "cSpell.words": [
+        "bungie",
         "destinyitemmanager",
         "Loadout",
         "loadouts",
         "masterworked",
-        "resil"
+        "reduxjs",
+        "resil",
+        "socketable"
     ],
 }

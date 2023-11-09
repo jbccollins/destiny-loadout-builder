@@ -16,6 +16,7 @@ import Image from 'next/image';
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
+import ExcludeLockedItemsToggleSwitch from '@dlb/components/ExcludeLockedItemsToggleSwitch';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
 import IgnoredLoadoutOptimizationTypesSelector from '@dlb/components/IgnoredLoadoutOptimizationTypesSelector';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
@@ -395,6 +396,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<AlwaysConsiderCollectionsRollsToggleSwitch />
 								<UseOnlyMasterworkedArmorToggleSwitch />
 								<UseBonusResilienceToggleSwitch />
+								<ExcludeLockedItemsToggleSwitch />
 								<Divider sx={{ marginTop: '32px' }} />
 								<Box
 									sx={{

@@ -24,6 +24,10 @@ import {
 	preProcessArmor,
 } from '@dlb/services/processArmor';
 import {
+	ArmorStatAndRaidModComboPlacement,
+	getDefaultModPlacements,
+} from '@dlb/services/processArmor/getModCombos';
+import {
 	getWastedStats,
 	roundDown10,
 	sumModCosts,
@@ -107,10 +111,6 @@ import {
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { isEmpty } from 'lodash';
-import {
-	ArmorStatAndRaidModComboPlacement,
-	getDefaultModPlacements,
-} from '../processArmor/getModCombos';
 
 // A loadout that has some armor, mods or subclass options selected is considered valid
 // If a loadout just contains weapons, shaders, etc. then it is considered invalid
@@ -893,18 +893,19 @@ const generatePreProcessedArmor = (
 	);
 
 	const destinyClassId = loadout.destinyClassId;
-	const [preProcessedArmor, _allClassItemMetadata] = preProcessArmor(
-		armor[destinyClassId],
-		selectedExoticArmor,
-		[],
-		EDimLoadoutsFilterId.All,
-		[],
-		EInGameLoadoutsFilterId.All,
-		EGearTierId.Legendary,
-		allClassItemMetadata[destinyClassId],
-		false,
-		false
-	);
+	const [preProcessedArmor, _allClassItemMetadata] = preProcessArmor({
+		armorGroup: armor[destinyClassId],
+		selectedExoticArmor: selectedExoticArmor,
+		dimLoadouts: [],
+		dimLoadoutsFilterId: EDimLoadoutsFilterId.All,
+		inGameLoadoutsFlatItemIdList: [],
+		inGameLoadoutsFilterId: EInGameLoadoutsFilterId.All,
+		minimumGearTier: EGearTierId.Legendary,
+		allClassItemMetadata: allClassItemMetadata[destinyClassId],
+		alwaysConsiderCollectionsRolls: false,
+		useOnlyMasterworkedArmor: false,
+		excludeLockedItems: false,
+	});
 	return {
 		preProcessedArmor,
 		allClassItemMetadata: _allClassItemMetadata,
@@ -987,7 +988,7 @@ const getUnusedModSlots = ({
 					)
 					// Costly logic filter
 					.filter((mod) => {
-						const [_hasMutuallyExclusiveMods, _] = hasMutuallyExclusiveMods([
+						const [_hasMutuallyExclusiveMods] = hasMutuallyExclusiveMods([
 							...currentArmorSlotMods,
 							mod,
 						]);

@@ -8,6 +8,7 @@ import {
 import { ArmorItem } from './Armor';
 import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
 import { DLBConfig } from './DLBConfig';
+import { ValidateEnumList } from './globals';
 import { getDefaultArmorSlotIdToModIdListMapping } from './Mod';
 
 export enum ELoadoutType {
@@ -18,29 +19,36 @@ export enum ELoadoutType {
 export enum ELoadoutOptimizationCategoryId {
 	NONE = 'NONE',
 	COSMETIC = 'COSMETIC',
+	TRANSIENT = 'TRANSIENT',
 	IMPROVEMENT = 'IMPROVEMENT',
 	WARNING = 'WARNING',
 	PROBLEM = 'PROBLEM',
 	ERROR = 'ERROR',
 }
 
-export const OrderedLoadoutOptimizationCategoryIdList = [
-	ELoadoutOptimizationCategoryId.IMPROVEMENT,
-	ELoadoutOptimizationCategoryId.PROBLEM,
-	ELoadoutOptimizationCategoryId.WARNING,
-	ELoadoutOptimizationCategoryId.COSMETIC,
-	ELoadoutOptimizationCategoryId.ERROR,
-	ELoadoutOptimizationCategoryId.NONE,
-];
+export const OrderedLoadoutOptimizationCategoryIdList = ValidateEnumList(
+	Object.values(ELoadoutOptimizationCategoryId),
+	[
+		ELoadoutOptimizationCategoryId.IMPROVEMENT,
+		ELoadoutOptimizationCategoryId.PROBLEM,
+		ELoadoutOptimizationCategoryId.WARNING,
+		ELoadoutOptimizationCategoryId.TRANSIENT,
+		ELoadoutOptimizationCategoryId.COSMETIC,
+		ELoadoutOptimizationCategoryId.ERROR,
+		ELoadoutOptimizationCategoryId.NONE,
+	]
+);
 
-export const SeverityOrderedLoadoutOptimizationCategoryIdList = [
-	ELoadoutOptimizationCategoryId.ERROR,
-	ELoadoutOptimizationCategoryId.PROBLEM,
-	ELoadoutOptimizationCategoryId.WARNING,
-	ELoadoutOptimizationCategoryId.IMPROVEMENT,
-	ELoadoutOptimizationCategoryId.COSMETIC,
-	ELoadoutOptimizationCategoryId.NONE,
-];
+export const SeverityOrderedLoadoutOptimizationCategoryIdList =
+	ValidateEnumList(Object.values(ELoadoutOptimizationCategoryId), [
+		ELoadoutOptimizationCategoryId.ERROR,
+		ELoadoutOptimizationCategoryId.PROBLEM,
+		ELoadoutOptimizationCategoryId.WARNING,
+		ELoadoutOptimizationCategoryId.IMPROVEMENT,
+		ELoadoutOptimizationCategoryId.TRANSIENT,
+		ELoadoutOptimizationCategoryId.COSMETIC,
+		ELoadoutOptimizationCategoryId.NONE,
+	]);
 
 export interface ILoadoutOptimizationCategory {
 	id: ELoadoutOptimizationCategoryId;
@@ -67,6 +75,14 @@ export const LoadoutOptimizerCategoryIdToLoadoutOptimizerCategoryMapping: Record
 		description:
 			'Cosmetic optimizations do not impact gameplay and can be safely ignored. These are primarly for aesthetic purposes.',
 		color: 'lightblue',
+		severity: 0,
+	},
+	[ELoadoutOptimizationCategoryId.TRANSIENT]: {
+		id: ELoadoutOptimizationCategoryId.TRANSIENT,
+		name: 'Transient',
+		description:
+			'Transient optimizations do not impact gameplay and can be safely ignored. These optimizations indicate that there will be problems with this loadout in the future, but at the moment, the loadout is fine.',
+		color: '#33beb7',
 		severity: 0,
 	},
 	[ELoadoutOptimizationCategoryId.IMPROVEMENT]: {
@@ -133,6 +149,7 @@ export type AnalyzableLoadout = {
 	dimStatTierConstraints: ArmorStatMapping;
 	characterId: string;
 	hasBonusResilienceOrnament: boolean;
+	hasHalloweenMask: boolean;
 } & DLBConfig;
 
 export type RichAnalyzableLoadout = AnalyzableLoadout & {
@@ -163,6 +180,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	fragmentIdList: [],
 	grenadeId: null,
 	hasBonusResilienceOrnament: false,
+	hasHalloweenMask: false,
 	icon: null,
 	iconColorImage: null, // Only applicable for InGame Loadouts
 	id: null,
@@ -203,3 +221,13 @@ export const ELoadoutFilterTypeList = [
 	ELoadoutTypeFilter.D2,
 	ELoadoutTypeFilter.DIM,
 ];
+
+export const filterOptimizationTypeList = (
+	optimizationTypeList: ELoadoutOptimizationTypeId[],
+	ignoredLoadoutOptimizationTypeIdList: ELoadoutOptimizationTypeId[]
+) => {
+	return optimizationTypeList.filter(
+		(optimizationType) =>
+			!ignoredLoadoutOptimizationTypeIdList.includes(optimizationType)
+	);
+};

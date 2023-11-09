@@ -1,6 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import { ARTIFICE } from '@dlb/services/processArmor/constants';
+import { getDefaultModPlacements } from '@dlb/services/processArmor/getModCombos';
 import {
 	doProcessArmor,
 	getDefaultProcessedArmorItemMetadataClassItem,
@@ -27,7 +28,6 @@ import {
 } from '@dlb/types/Mod';
 import { describe, expect, test } from '@jest/globals';
 import { cloneDeep } from 'lodash';
-import { getDefaultModPlacements } from '../processArmor/getModCombos';
 
 const testFunction = doProcessArmor;
 
@@ -52,24 +52,10 @@ const defaultArmorItem: ArmorItem = {
 	socketableRaidAndNightmareModTypeId: null,
 	intrinsicArmorPerkOrAttributeId: null,
 	isCollectible: false,
+	isLocked: false,
 };
 
 const getDefaultArmorItem = () => cloneDeep(defaultArmorItem);
-
-const defaultClassItemMetadataWithMasterworkedLegendary: AllClassItemMetadata =
-	{
-		...getDefaultAllClassItemMetadata(),
-		Legendary: {
-			hasMasterworkedVariant: true,
-			items: [
-				{
-					...getDefaultArmorItem(),
-					isMasterworked: true,
-					id: '4',
-				},
-			],
-		},
-	};
 
 const defaultClassItemMetadataWithMasterworkedArtifice: AllClassItemMetadata = {
 	...getDefaultAllClassItemMetadata(),
@@ -224,26 +210,26 @@ const testCases: TestCase[] = [
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
-							[EArmorStatId.Mobility]: 8,
-							[EArmorStatId.Resilience]: 64,
-							[EArmorStatId.Recovery]: 64,
-							[EArmorStatId.Discipline]: 64,
-							[EArmorStatId.Intellect]: 64,
-							[EArmorStatId.Strength]: 8,
+							[EArmorStatId.Mobility]: 10,
+							[EArmorStatId.Resilience]: 66,
+							[EArmorStatId.Recovery]: 66,
+							[EArmorStatId.Discipline]: 66,
+							[EArmorStatId.Intellect]: 66,
+							[EArmorStatId.Strength]: 10,
 						},
 						totalArmorStatMapping: {
-							[EArmorStatId.Mobility]: 8,
-							[EArmorStatId.Resilience]: 64,
-							[EArmorStatId.Recovery]: 64,
-							[EArmorStatId.Discipline]: 64,
-							[EArmorStatId.Intellect]: 64,
-							[EArmorStatId.Strength]: 8,
+							[EArmorStatId.Mobility]: 10,
+							[EArmorStatId.Resilience]: 66,
+							[EArmorStatId.Recovery]: 66,
+							[EArmorStatId.Discipline]: 66,
+							[EArmorStatId.Intellect]: 66,
+							[EArmorStatId.Strength]: 10,
 						},
 						seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 						classItem: getDefaultProcessedArmorItemMetadataClassItem(),
 						totalModCost: 0,
-						totalStatTiers: 24,
-						wastedStats: 32,
+						totalStatTiers: 26,
+						wastedStats: 24,
 					},
 				},
 			],
@@ -251,12 +237,12 @@ const testCases: TestCase[] = [
 			totalItemCount: 1,
 			// TODO: Change max posible desired stat tiers to actual tiers, not values. So divide these by 10
 			maxPossibleDesiredStatTiers: {
-				[EArmorStatId.Mobility]: 50,
+				[EArmorStatId.Mobility]: 60,
 				[EArmorStatId.Resilience]: 100,
 				[EArmorStatId.Recovery]: 100,
 				[EArmorStatId.Discipline]: 100,
 				[EArmorStatId.Intellect]: 100,
-				[EArmorStatId.Strength]: 50,
+				[EArmorStatId.Strength]: 60,
 			},
 			maxPossibleReservedArmorSlotEnergy: {
 				[EArmorSlotId.Head]: 10,
@@ -412,12 +398,12 @@ const testCases: TestCase[] = [
 							hasMasterworkedVariant: true,
 						},
 						baseArmorStatMapping: {
-							[EArmorStatId.Mobility]: 16,
-							[EArmorStatId.Resilience]: 44,
-							[EArmorStatId.Recovery]: 98,
-							[EArmorStatId.Discipline]: 102,
-							[EArmorStatId.Intellect]: 16,
-							[EArmorStatId.Strength]: 32,
+							[EArmorStatId.Mobility]: 18,
+							[EArmorStatId.Resilience]: 46,
+							[EArmorStatId.Recovery]: 100,
+							[EArmorStatId.Discipline]: 104,
+							[EArmorStatId.Intellect]: 18,
+							[EArmorStatId.Strength]: 34,
 						},
 						totalArmorStatMapping: {
 							[EArmorStatId.Mobility]: 18,
@@ -565,26 +551,26 @@ const testCases: TestCase[] = [
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
-							[EArmorStatId.Mobility]: 50,
-							[EArmorStatId.Resilience]: 22,
-							[EArmorStatId.Recovery]: 64,
-							[EArmorStatId.Discipline]: 64,
-							[EArmorStatId.Intellect]: 64,
-							[EArmorStatId.Strength]: 8,
+							[EArmorStatId.Mobility]: 52,
+							[EArmorStatId.Resilience]: 24,
+							[EArmorStatId.Recovery]: 66,
+							[EArmorStatId.Discipline]: 66,
+							[EArmorStatId.Intellect]: 66,
+							[EArmorStatId.Strength]: 10,
 						},
 						totalArmorStatMapping: {
-							[EArmorStatId.Mobility]: 100,
-							[EArmorStatId.Resilience]: 22,
-							[EArmorStatId.Recovery]: 64,
-							[EArmorStatId.Discipline]: 64,
-							[EArmorStatId.Intellect]: 64,
-							[EArmorStatId.Strength]: 8,
+							[EArmorStatId.Mobility]: 102,
+							[EArmorStatId.Resilience]: 24,
+							[EArmorStatId.Recovery]: 66,
+							[EArmorStatId.Discipline]: 66,
+							[EArmorStatId.Intellect]: 66,
+							[EArmorStatId.Strength]: 10,
 						},
 						seenArmorSlotItems: getDefaultSeenArmorSlotItems(),
 						classItem: getDefaultProcessedArmorItemMetadataClassItem(),
 						totalModCost: 15,
-						totalStatTiers: 30,
-						wastedStats: 22,
+						totalStatTiers: 31,
+						wastedStats: 24,
 					},
 				},
 			],
@@ -597,7 +583,7 @@ const testCases: TestCase[] = [
 				[EArmorStatId.Recovery]: 60,
 				[EArmorStatId.Discipline]: 60,
 				[EArmorStatId.Intellect]: 60,
-				[EArmorStatId.Strength]: 0,
+				[EArmorStatId.Strength]: 10,
 			},
 			maxPossibleReservedArmorSlotEnergy: {
 				[EArmorSlotId.Head]: 7,
@@ -727,12 +713,12 @@ const testCases: TestCase[] = [
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
-							[EArmorStatId.Mobility]: 16,
-							[EArmorStatId.Resilience]: 76,
-							[EArmorStatId.Recovery]: 66,
-							[EArmorStatId.Discipline]: 98,
-							[EArmorStatId.Intellect]: 22,
-							[EArmorStatId.Strength]: 31,
+							[EArmorStatId.Mobility]: 18,
+							[EArmorStatId.Resilience]: 78,
+							[EArmorStatId.Recovery]: 68,
+							[EArmorStatId.Discipline]: 100,
+							[EArmorStatId.Intellect]: 24,
+							[EArmorStatId.Strength]: 33,
 						},
 						totalArmorStatMapping: {
 							[EArmorStatId.Mobility]: 18,
@@ -903,12 +889,12 @@ const testCases: TestCase[] = [
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
-							[EArmorStatId.Mobility]: 16,
-							[EArmorStatId.Resilience]: 82,
-							[EArmorStatId.Recovery]: 60,
-							[EArmorStatId.Discipline]: 92,
-							[EArmorStatId.Intellect]: 29,
-							[EArmorStatId.Strength]: 30,
+							[EArmorStatId.Mobility]: 18,
+							[EArmorStatId.Resilience]: 84,
+							[EArmorStatId.Recovery]: 62,
+							[EArmorStatId.Discipline]: 94,
+							[EArmorStatId.Intellect]: 31,
+							[EArmorStatId.Strength]: 32,
 						},
 						totalArmorStatMapping: {
 							[EArmorStatId.Mobility]: 18,
@@ -1080,20 +1066,20 @@ const testCases: TestCase[] = [
 					metadata: {
 						// TODO: Do we actually need to store the baseArmorStatMapping in redux?
 						baseArmorStatMapping: {
-							[EArmorStatId.Mobility]: 0,
-							[EArmorStatId.Resilience]: 0,
-							[EArmorStatId.Recovery]: 0,
-							[EArmorStatId.Discipline]: 0,
-							[EArmorStatId.Intellect]: 0,
-							[EArmorStatId.Strength]: 0,
+							[EArmorStatId.Mobility]: 2,
+							[EArmorStatId.Resilience]: 2,
+							[EArmorStatId.Recovery]: 2,
+							[EArmorStatId.Discipline]: 2,
+							[EArmorStatId.Intellect]: 2,
+							[EArmorStatId.Strength]: 2,
 						},
 						totalArmorStatMapping: {
-							[EArmorStatId.Mobility]: 0,
-							[EArmorStatId.Resilience]: 0,
-							[EArmorStatId.Recovery]: 0,
-							[EArmorStatId.Discipline]: 0,
-							[EArmorStatId.Intellect]: 0,
-							[EArmorStatId.Strength]: 0,
+							[EArmorStatId.Mobility]: 2,
+							[EArmorStatId.Resilience]: 2,
+							[EArmorStatId.Recovery]: 2,
+							[EArmorStatId.Discipline]: 2,
+							[EArmorStatId.Intellect]: 2,
+							[EArmorStatId.Strength]: 2,
 						},
 						seenArmorSlotItems: {
 							...getDefaultSeenArmorSlotItems(),
@@ -1110,7 +1096,7 @@ const testCases: TestCase[] = [
 						},
 						totalModCost: 0,
 						totalStatTiers: 0,
-						wastedStats: 0,
+						wastedStats: 12,
 					},
 				},
 			],
@@ -1136,9 +1122,9 @@ const testCases: TestCase[] = [
 	],
 ];
 
-const nameOfTestToDebug =
-	'It returns results with very tight tolerances and maximum stat mod usage';
-// const nameOfTestToDebug = null;
+// const nameOfTestToDebug =
+// 	'It returns results with very tight tolerances and maximum stat mod usage';
+const nameOfTestToDebug = null;
 describe('doProcessArmor', () => {
 	const filteredTestCases = nameOfTestToDebug
 		? testCases.filter((x) => x[0] === nameOfTestToDebug)

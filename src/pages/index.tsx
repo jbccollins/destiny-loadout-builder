@@ -9,27 +9,23 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import AnalyzeIcon from '@mui/icons-material/QueryStats';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShieldIcon from '@mui/icons-material/Shield';
-import {
-	Box,
-	Button,
-	Collapse,
-	Link,
-	styled,
-	useMediaQuery,
-	useTheme,
-} from '@mui/material';
+import { Box, Button, Collapse, Divider, Link, styled } from '@mui/material';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
+import ExcludeLockedItemsToggleSwitch from '@dlb/components/ExcludeLockedItemsToggleSwitch';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
+import IgnoredLoadoutOptimizationTypesSelector from '@dlb/components/IgnoredLoadoutOptimizationTypesSelector';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
+import AnalyzerResultsView from '@dlb/components/LoadoutAnalyzer/AnalyzerResultsView';
 import LoadoutAnalysisWebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/LoadoutAnalysisWebWorkerWrapper';
 import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer/LoadoutAnalyzer';
 import Logout from '@dlb/components/LogOutButton';
+import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import Head from '@dlb/components/Meta/Head';
 import ArmorSlotModSelector from '@dlb/components/ModSelection/ArmorSlotModsSelector';
 import PatchNotes from '@dlb/components/PatchNotes/PatchNotes';
@@ -50,6 +46,7 @@ import UseBonusResilienceToggleSwitch from '@dlb/components/UseBonusResilienceTo
 import UseOnlyMasterworkedArmorToggleSwitch from '@dlb/components/UseOnlyMasterworkedArmorToggleSwitch';
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
+import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
 import discord_image from '@dlb/public/discord-mark-white.png';
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
@@ -99,7 +96,7 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { ETabType } from '@dlb/types/Tab';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.primary.main,
@@ -381,15 +378,39 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					{
 						content: (
 							<>
-								{/* <MasterworkAssumptionSelector />
-								<MinimumGearTierSelector /> */}
+								<Box
+									sx={{
+										fontWeight: 'bold',
+										fontSize: '1.4rem',
+										marginLeft: '8px',
+										marginBottom: '8px',
+									}}
+								>
+									Build Settings
+								</Box>
+								<MasterworkAssumptionSelector />
+								{/* <MinimumGearTierSelector />  */}
 								<DimLoadoutsFilterSelector />
 								<InGameLoadoutsFilterSelector />
 								<UseZeroWastedStatsToggleSwitch />
 								<AlwaysConsiderCollectionsRollsToggleSwitch />
 								<UseOnlyMasterworkedArmorToggleSwitch />
 								<UseBonusResilienceToggleSwitch />
-								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>
+								<ExcludeLockedItemsToggleSwitch />
+								<Divider sx={{ marginTop: '32px' }} />
+								<Box
+									sx={{
+										fontWeight: 'bold',
+										fontSize: '1.4rem',
+										marginLeft: '8px',
+										marginTop: '16px',
+									}}
+								>
+									Analyzer Settings
+								</Box>
+								<IgnoredLoadoutOptimizationTypesSelector />
+								<Divider sx={{ marginTop: '32px' }} />
+								<Box sx={{ marginTop: '32px', marginLeft: '8px' }}>
 									<Logout />
 								</Box>
 								<Box sx={{ marginTop: '16px', marginLeft: '8px' }}>
@@ -470,13 +491,25 @@ export type SmallScreenData = {
 
 type RightSectionProps = {
 	smallScreenData: SmallScreenData;
+	resultsViewType: EResultsViewType;
 };
 
-const RightSectionComponent = ({ smallScreenData }: RightSectionProps) => (
+const RightSectionComponent = ({
+	smallScreenData,
+	resultsViewType,
+}: RightSectionProps) => (
 	<RightSection className="right-section">
-		<ArmorResultsView smallScreenData={smallScreenData} />
+		{resultsViewType === EResultsViewType.Build && (
+			<ArmorResultsView smallScreenData={smallScreenData} />
+		)}
+		{resultsViewType === EResultsViewType.Analyze && <AnalyzerResultsView />}
 	</RightSection>
 );
+
+enum EResultsViewType {
+	Build = 'Build',
+	Analyze = 'Analyze',
+}
 
 const Home: NextPage = () => {
 	const [smallScreenResultsOpen, setSmallScreenResultsOpen] =
@@ -484,9 +517,20 @@ const Home: NextPage = () => {
 	const allDataLoaded = useAppSelector(selectAllDataLoaded);
 	const tabIndex = useAppSelector(selectTabIndex);
 	const processedArmor = useAppSelector(selectProcessedArmor);
-	const theme = useTheme();
-	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+	const isSmallScreen = useIsSmallScreen();
 	const dispatch = useAppDispatch();
+
+	const [resultsViewType, setResultsViewType] =
+		React.useState<EResultsViewType>(EResultsViewType.Build);
+
+	useEffect(() => {
+		if (tabIndex === 0) {
+			setResultsViewType(EResultsViewType.Build);
+		}
+		if (tabIndex === 1) {
+			setResultsViewType(EResultsViewType.Analyze);
+		}
+	}, [tabIndex]);
 
 	const smallScreenData: SmallScreenData = {
 		isSmallScreen,
@@ -510,7 +554,10 @@ const Home: NextPage = () => {
 						{isSmallScreen && (
 							<>
 								{smallScreenResultsOpen && (
-									<RightSectionComponent smallScreenData={smallScreenData} />
+									<RightSectionComponent
+										resultsViewType={resultsViewType}
+										smallScreenData={smallScreenData}
+									/>
 								)}
 								{!smallScreenResultsOpen && (
 									<LeftSectionComponent
@@ -545,7 +592,10 @@ const Home: NextPage = () => {
 									onTabChange={handleTabChange}
 									tabIndex={tabIndex}
 								/>
-								<RightSectionComponent smallScreenData={smallScreenData} />
+								<RightSectionComponent
+									resultsViewType={resultsViewType}
+									smallScreenData={smallScreenData}
+								/>
 							</>
 						)}
 					</>

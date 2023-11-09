@@ -9,6 +9,10 @@ import {
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import {
+	selectExcludeLockedItems,
+	setExcludeLockedItems,
+} from '@dlb/redux/features/excludeLockedItems/excludeLockedItemsSlice';
+import {
 	selectInGameLoadoutsFilter,
 	setInGameLoadoutsFilter,
 } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
@@ -355,6 +359,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 	const useOnlyMasterworkedArmor = useAppSelector(
 		selectUseOnlyMasterworkedArmor
 	);
+	const excludeLockedItems = useAppSelector(selectExcludeLockedItems);
 	const dimLoadoutsFilterId = useAppSelector(selectDimLoadoutsFilter);
 	const inGameLoadoutsFilterId = useAppSelector(selectInGameLoadoutsFilter);
 	const alwaysConsiderCollectionsRolls = useAppSelector(
@@ -458,6 +463,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 
 	const hasNonDefaultSettings = useMemo(
 		() =>
+			excludeLockedItems ||
 			useOnlyMasterworkedArmor ||
 			useBonusResilience ||
 			useZeroWastedStats ||
@@ -467,6 +473,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 			masterworkAssumption !== EMasterworkAssumption.All ||
 			minimumGearTier !== EGearTierId.Legendary,
 		[
+			excludeLockedItems,
 			useOnlyMasterworkedArmor,
 			useBonusResilience,
 			useZeroWastedStats,
@@ -488,6 +495,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		dispatch(setAlwaysConsiderCollectionsRolls(false));
 		dispatch(setSelectedMasterworkAssumption(EMasterworkAssumption.All));
 		dispatch(setSelectedMinimumGearTier(EGearTierId.Legendary));
+		dispatch(setExcludeLockedItems(false));
 		dispatch(setPerformingBatchUpdate(false));
 	};
 

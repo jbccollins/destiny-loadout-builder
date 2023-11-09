@@ -299,7 +299,7 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		if (combo) {
 			// TODO: This is a bit weird/inefficient. Can we not have to do this conversion?
 			const expandedCombo = convertStatModComboToExpandedStatModCombo(combo);
-			placementCapacity.forEach((placement, i) => {
+			placementCapacity.forEach((placement) => {
 				lowestCostPlacement.placement[placement.armorSlotId].armorStatModId =
 					placement.armorStatModId;
 				lowestCostPlacement.placement[placement.armorSlotId].raidModId =

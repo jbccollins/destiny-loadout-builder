@@ -1,37 +1,25 @@
 import {
-	FormControl,
-	InputLabel,
-	MenuItem,
-	Select,
-	SelectProps,
-	styled,
-} from '@mui/material';
-import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import {
 	selectSelectedMasterworkAssumption,
 	setSelectedMasterworkAssumption,
 } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { EMasterworkAssumption } from '@dlb/types/IdEnums';
+import HelpIcon from '@mui/icons-material/Help';
+import {
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+	styled,
+} from '@mui/material';
+import CustomTooltip from './CustomTooltip';
 
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
+	display: 'flex',
+	alignItems: 'center',
+	gap: theme.spacing(1),
 }));
-
-interface MasterworkAssumptionSelectorOption {
-	icon: string;
-	id: string | number;
-	disabled?: boolean;
-}
-
-type MasterworkAssumptionSelectorProps = {
-	options: MasterworkAssumptionSelectorOption[];
-	getLabel: (option: MasterworkAssumptionSelectorOption) => string;
-	onChange: (value: string) => void;
-	value: string;
-	title?: string;
-	selectComponentProps: SelectProps;
-};
 
 const MasterworkAssumptionSelector = () => {
 	const selectedMasterworkAssumption = useAppSelector(
@@ -67,6 +55,13 @@ const MasterworkAssumptionSelector = () => {
 					</MenuItem>
 				</Select>
 			</FormControl>
+			<CustomTooltip
+				title={
+					'Class items are always assumed to be masterworked regardless of this setting.'
+				}
+			>
+				<HelpIcon />
+			</CustomTooltip>
 		</Container>
 	);
 };

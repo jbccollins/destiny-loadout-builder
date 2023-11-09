@@ -500,14 +500,14 @@ export const getMaxPossibleMetadata = ({
 	const unprocessedArmorStatIds = [...ArmorStatIdList];
 	const unprocessedArmorSlotIds = [...ArmorSlotWithClassItemIdList];
 
-	let totalIterations = 0;
-	let armorSlotIterations = 0;
-	let armorStatIterations = 0;
+	// let totalIterations = 0;
+	// let armorSlotIterations = 0;
+	// let armorStatIterations = 0;
 	for (let i = 10; i > 0; i--) {
 		for (let j = 0; j < processedArmor.length; j++) {
 			for (let k = 0; k < unprocessedArmorSlotIds.length; k++) {
-				totalIterations++;
-				armorSlotIterations++;
+				// totalIterations++;
+				// armorSlotIterations++;
 				const armorSlotId = unprocessedArmorSlotIds[k];
 				const reservedArmorSlotEnergyValue = i;
 				const _reservedArmorSlotEnergy = {
@@ -543,8 +543,8 @@ export const getMaxPossibleMetadata = ({
 			}
 
 			for (let k = 0; k < unprocessedArmorStatIds.length; k++) {
-				totalIterations++;
-				armorStatIterations++;
+				// totalIterations++;
+				// armorStatIterations++;
 				const armorStatId = unprocessedArmorStatIds[k];
 				const desiredStat = i * 10;
 				const _desiredArmorStats = {
@@ -596,20 +596,35 @@ export const getMaxPossibleMetadata = ({
 	return { maxReservedArmorSlotEnergy, maxStatTiers };
 };
 
+type PreProcessArmorParams = {
+	armorGroup: ArmorGroup;
+	selectedExoticArmor: ISelectedExoticArmor;
+	dimLoadouts: Loadout[];
+	dimLoadoutsFilterId: EDimLoadoutsFilterId;
+	inGameLoadoutsFlatItemIdList: string[];
+	inGameLoadoutsFilterId: EInGameLoadoutsFilterId;
+	minimumGearTier: EGearTierId;
+	allClassItemMetadata: AllClassItemMetadata;
+	alwaysConsiderCollectionsRolls: boolean;
+	useOnlyMasterworkedArmor: boolean;
+	excludeLockedItems: boolean;
+};
+
 // Transform the shape of the application's armor to be processed.
 // Filter out any armor items that will definitely not be used.
-export const preProcessArmor = (
-	armorGroup: ArmorGroup,
-	selectedExoticArmor: ISelectedExoticArmor,
-	dimLoadouts: Loadout[],
-	dimLoadoutsFilterId: EDimLoadoutsFilterId,
-	inGameLoadoutsFlatItemIdList: string[],
-	inGameLoadoutsFilterId: EInGameLoadoutsFilterId,
-	minimumGearTier: EGearTierId,
-	allClassItemMetadata: AllClassItemMetadata,
-	alwaysConsiderCollectionsRolls: boolean,
-	useOnlyMasterworkedArmor: boolean
-): [StrictArmorItems, AllClassItemMetadata] => {
+export const preProcessArmor = ({
+	armorGroup,
+	selectedExoticArmor,
+	dimLoadouts,
+	dimLoadoutsFilterId,
+	inGameLoadoutsFlatItemIdList,
+	inGameLoadoutsFilterId,
+	minimumGearTier,
+	allClassItemMetadata,
+	alwaysConsiderCollectionsRolls,
+	useOnlyMasterworkedArmor,
+	excludeLockedItems,
+}: PreProcessArmorParams): [StrictArmorItems, AllClassItemMetadata] => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
 		dimLoadouts.forEach((loadout) =>
@@ -632,6 +647,9 @@ export const preProcessArmor = (
 					if (useOnlyMasterworkedArmor && !item.isMasterworked) {
 						return false;
 					}
+					if (excludeLockedItems && item.isLocked) {
+						return false;
+					}
 					return (
 						!excludedItemIds[item.id] && item.hash === selectedExoticArmor.hash
 					);
@@ -650,6 +668,9 @@ export const preProcessArmor = (
 		strictArmorItems[i] = Object.values(armorGroup[armorSlot].nonExotic).filter(
 			(item) => {
 				if (useOnlyMasterworkedArmor && !item.isMasterworked) {
+					return false;
+				}
+				if (excludeLockedItems && item.isLocked) {
 					return false;
 				}
 				// TODO: Write a better comparator for gear tiers
@@ -679,7 +700,9 @@ export const preProcessArmor = (
 
 		_allClassItemMetadata[requiredClassItemMetadataKey].items =
 			_allClassItemMetadata[requiredClassItemMetadataKey].items.filter(
-				(item) => !excludedItemIds[item.id]
+				(item) =>
+					!excludedItemIds[item.id] &&
+					(excludeLockedItems ? !item.isLocked : true)
 			);
 		_allClassItemMetadata[requiredClassItemMetadataKey].hasMasterworkedVariant =
 			_allClassItemMetadata[requiredClassItemMetadataKey].items.some(

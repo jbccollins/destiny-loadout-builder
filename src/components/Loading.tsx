@@ -56,7 +56,9 @@ import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import { setExcludeLockedItems } from '@dlb/redux/features/excludeLockedItems/excludeLockedItemsSlice';
 import { setHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
+import { setIgnoredLoadoutOptimizationTypes } from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import {
 	setInGameLoadoutsDefinitions,
 	setInGameLoadoutsLoadoutItems,
@@ -626,6 +628,8 @@ function Loading() {
 			useOnlyMasterworkedArmor,
 			useZeroWastedStats,
 			alwaysConsiderCollectionsRolls,
+			ignoredLoadoutOptimizationTypes,
+			excludeLockedItems,
 		} = settings;
 
 		dispatch(setSelectedMasterworkAssumption(masterworkAssumption));
@@ -634,10 +638,18 @@ function Loading() {
 		dispatch(setInGameLoadoutsFilter(d2LoadoutsFilterId));
 		dispatch(setUseBonusResilience(useBonusResilience));
 		dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
+		dispatch(setExcludeLockedItems(excludeLockedItems));
 		dispatch(setUseZeroWastedStats(useZeroWastedStats));
 		dispatch(setAlwaysConsiderCollectionsRolls(alwaysConsiderCollectionsRolls));
+		if (ignoredLoadoutOptimizationTypes) {
+			dispatch(
+				setIgnoredLoadoutOptimizationTypes(ignoredLoadoutOptimizationTypes)
+			);
+		} else {
+			dispatch(setIgnoredLoadoutOptimizationTypes([]));
+		}
 
-		// Diry these things
+		// Dirty these things
 		dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
 		dispatch(
 			setSharedLoadoutConfigStatPriorityOrder(

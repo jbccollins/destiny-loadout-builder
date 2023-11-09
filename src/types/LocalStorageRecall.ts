@@ -12,6 +12,7 @@ import {
 } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import { getDefaultIntrinsicArmorPerkOrAttributeIdList } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { getDefaultRaidModIdList } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
+import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { getDestinySubclassIdListByDestinyClassId } from './DestinyClass';
 import {
 	EDestinyClassId,
@@ -69,9 +70,11 @@ export type LocalStorageRecall = {
 		dimLoadoutsFilterId: EDimLoadoutsFilterId;
 		d2LoadoutsFilterId: EInGameLoadoutsFilterId;
 		useZeroWastedStats: boolean;
+		excludeLockedItems: boolean;
 		alwaysConsiderCollectionsRolls: boolean;
 		useOnlyMasterworkedArmor: boolean;
 		useBonusResilience: boolean;
+		ignoredLoadoutOptimizationTypes: ELoadoutOptimizationTypeId[];
 	};
 };
 
@@ -137,6 +140,8 @@ export const getDefaultLocalStorageRecall = (): LocalStorageRecall => ({
 		alwaysConsiderCollectionsRolls: false,
 		useOnlyMasterworkedArmor: false,
 		useBonusResilience: false,
+		excludeLockedItems: false,
+		ignoredLoadoutOptimizationTypes: [],
 	},
 });
 

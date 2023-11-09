@@ -3,9 +3,7 @@ import {
 	oauthClientId,
 	oauthClientSecret,
 } from '@dlb/dim/bungie-api/bungie-api-utils';
-import { getMembershipData } from '@dlb/dim/bungie-api/destiny2-api';
 import axios from 'axios';
-import { UserInfoCard } from 'bungie-api-ts-no-const-enum/user';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type ReqData = {

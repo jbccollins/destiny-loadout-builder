@@ -155,7 +155,7 @@ const buildModData = (
 export async function run() {
 	const {
 		DestinyInventoryItemDefinition: destinyInventoryItemDefinitions,
-		DestinyArtifactDefinition: destinyArtifactDefinitions,
+		// DestinyArtifactDefinition: destinyArtifactDefinitions,
 		DestinySandboxPerkDefinition: destinySandboxPerkDefinitions,
 		DestinyEnergyTypeDefinition: destinyEnergyTypeDefinitions,
 		DestinyStatDefinition: destinyStatDefinitions,

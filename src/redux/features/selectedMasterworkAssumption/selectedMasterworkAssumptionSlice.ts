@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
-import { EDestinyClassId, EMasterworkAssumption } from '@dlb/types/IdEnums';
-import { v4 as uuid, NIL } from 'uuid';
+import { EMasterworkAssumption } from '@dlb/types/IdEnums';
+import { NIL, v4 as uuid } from 'uuid';
 
 export interface SelectedMasterworkAssumptionState {
 	value: EMasterworkAssumption;

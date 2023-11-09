@@ -11,8 +11,89 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-11-08',
+		version: '2.4.31',
+		title: 'Add setting to exclude locked items',
+		sections: [
+			{
+				items: [
+					`Add a setting to exclude items that are locked in-game from the results`,
+					`Upgrade the app from Nextjs 12 => 14. Fingers crossed that nothing breaks.`,
+					`Lots of internal cleanup of unused code`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-11-08',
+		version: '2.4.30',
+		title: 'Add masterwork assumption back',
+		sections: [
+			{
+				items: [
+					`Add the masterwork assumption setting back with the caveat that all class items are assumed to be masterworked`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-11-06',
+		version: '2.4.29',
+		title: 'Add loadout counts to the analyzer',
+		sections: [
+			{
+				items: [
+					`Show total loadout counts and loadout counts per class in the analyzer`,
+					`Minor spacing changes to the analyzer`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-11-04',
+		version: '2.4.28',
+		title: 'Add help tooltip to armor slot armor energy indicator',
+		sections: [
+			{
+				items: [
+					`Add a tooltip to the minimum used armor energy indicator that explains what it means`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-11-02',
+		version: '2.4.27',
+		title: 'Desktop Analyzer Layout',
+		sections: [
+			{
+				items: [
+					`Show the analyzer results in an expanded view on desktop`,
+					`Mobile layout is unchanged`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-10-28',
+		version: '2.4.26',
+		title: 'New Optimization Types',
+		sections: [
+			{
+				items: [
+					`Add two new optimization types: "Doomed Loadout" and "Doomed Loadout (Correctable)`,
+					`Remove the "Unavailable Mods" optimization type`,
+					`Correct the descriptions of the "Invalid Loadout Configuration" and "Unusable Mods" optimization types`,
+					`Add a new setting to completely ignore specific optimization types`,
+					`Fix a bug where optimization types were improperly applied to loadouts containing FotL masks`,
+					`Notes: These changes to optimization types were made to bring DLB into alignment with DIM on how discounted mods are handled`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-10-27',
-		version: '2.4.24-BETA',
+		version: '2.4.25-BETA',
 		title: 'Enforce FotL mask when editing a loadout via the analyzer',
 		sections: [
 			{

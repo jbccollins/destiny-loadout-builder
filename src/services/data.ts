@@ -194,6 +194,7 @@ export const extractArmor = (
 				intrinsicArmorPerkOrAttributeId:
 					getIntrinsicArmorPerkOrAttributeId(item),
 				isCollectible,
+				isLocked: item.locked,
 			};
 
 			if (armorItem.gearTierId === EGearTierId.Exotic) {

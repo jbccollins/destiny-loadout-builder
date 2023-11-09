@@ -76,6 +76,8 @@ export type ArmorItem = {
 	intrinsicArmorPerkOrAttributeId: EIntrinsicArmorPerkOrAttributeId;
 	// Is this piece of armor the collections version
 	isCollectible: boolean;
+	// Is this piece of armor locked in-game
+	isLocked: boolean;
 };
 
 export const getDefaultArmorItem = (): ArmorItem => ({
@@ -94,6 +96,7 @@ export const getDefaultArmorItem = (): ArmorItem => ({
 	socketableRaidAndNightmareModTypeId: null,
 	intrinsicArmorPerkOrAttributeId: null,
 	isCollectible: false,
+	isLocked: false,
 });
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/

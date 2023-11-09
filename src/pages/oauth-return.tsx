@@ -4,7 +4,7 @@ import { Box, CircularProgress, styled } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-const Container = styled(Box)(({ theme }) => ({
+const Container = styled(Box)(() => ({
 	position: 'fixed',
 	top: '50%',
 	left: '50%',
@@ -14,7 +14,7 @@ const Text = styled(Box)(({ theme }) => ({
 	marginBottom: theme.spacing(4),
 }));
 
-const CircularProgressWrapper = styled(Box)(({ theme }) => ({
+const CircularProgressWrapper = styled(Box)(() => ({
 	margin: 'auto',
 	width: '50%',
 }));

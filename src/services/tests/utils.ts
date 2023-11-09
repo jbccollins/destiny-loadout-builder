@@ -1,6 +1,5 @@
 import { StatList } from '@dlb/types/Armor';
 import { EArmorStatId, EDestinyClassId } from '@dlb/types/IdEnums';
-import { isEmpty, isEqual, xor } from 'lodash';
 
 export const getDefaultDesiredArmorStats = () => {
 	return {

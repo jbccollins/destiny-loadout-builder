@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-export async function POST(request: Request): Promise<Response> {
+export async function GET(request: Request): Promise<Response> {
 	if (process.env.NODE_ENV === 'development') {
 		return Response.json(
 			{ error: null, message: 'Skipping error email in dev' },

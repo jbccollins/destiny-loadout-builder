@@ -20,8 +20,6 @@ export type OauthTokenData =
 	  }
 	| undefined;
 
-const TOKEN_URL = 'https://www.bungie.net/platform/app/oauth/token/';
-
 export async function GET(request: Request): Promise<Response> {
 	const { searchParams } = new URL(request.url);
 	const refreshTokenValue = searchParams.get(
@@ -48,11 +46,15 @@ export async function GET(request: Request): Promise<Response> {
 	});
 
 	try {
-		const response = await axios.post(TOKEN_URL, body, {
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-			},
-		});
+		const response = await axios.post(
+			'https://www.bungie.net/platform/app/oauth/token/',
+			body,
+			{
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+			}
+		);
 
 		return Response.json(response.data, {
 			status: 200,

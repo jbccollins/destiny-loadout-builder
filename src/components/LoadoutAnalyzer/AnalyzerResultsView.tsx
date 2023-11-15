@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Box } from '@mui/material';
 import AnalyzerResultsList from './AnalyzerResultsList';

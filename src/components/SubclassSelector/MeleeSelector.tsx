@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import IconDropdown from '@dlb/components/IconDropdown';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';

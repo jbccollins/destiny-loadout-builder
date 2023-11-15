@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { useSortable } from '@dnd-kit/sortable';
@@ -34,7 +34,7 @@ export function SortableItem(props: SortableItemProps) {
 	return (
 		<Box
 			// onClick={() => {
-			// 	console.log('click');
+			// 	console.log("click");
 			// }}
 			ref={setNodeRef}
 			style={style}

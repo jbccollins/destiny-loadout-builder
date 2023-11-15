@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
@@ -78,7 +78,7 @@ const getExtraContent = (option: AvailableExoticArmorItem) => {
 };
 const StyledPopper = styled(Popper)({
 	maxHeight: '60vh',
-	// maxHeight: '600px',
+	// maxHeight: "600px",
 	['.MuiPaper-root']: {
 		maxHeight: '60vh',
 	},

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Box, styled } from '@mui/material';
 import DestinyClassSelector from './DestinyClassSelector';

@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
 import { EGearTierId } from '@dlb/types/IdEnums';
+import { NIL, v4 as uuid } from 'uuid';
 
 export interface SelectedMinimumGearTierState {
 	value: EGearTierId;

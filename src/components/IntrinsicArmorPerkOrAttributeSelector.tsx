@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
 	selectSelectedIntrinsicArmorPerkOrAttributeIds,
@@ -48,7 +48,7 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 	const last = index === 3;
 	let _options = options.map((x) => {
 		const attribute = getIntrinsicArmorPerkOrAttribute(x.id);
-		// Don't allow duplicates of the same attribute when it's
+		// Don"t allow duplicates of the same attribute when it"s
 		// specific to an armor slot, e.g. GG class item and FotL mask
 		if (otherIds.includes(x.id) && attribute.armorSlotId !== null) {
 			return {

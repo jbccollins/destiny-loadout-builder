@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
@@ -36,16 +36,16 @@ import ExcludeLockedItemsToggleSwitch from '../ExcludeLockedItemsToggleSwitch';
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',
 	width: '100%',
-	// minWidth: '300px',
+	// minWidth: "300px",
 	maxWidth: '475px',
-	//border: '3px solid green',
+	//border: "3px solid green",
 	//padding: theme.spacing(3),
 	height: `calc(100% - 160px)`,
 	position: 'relative',
 }));
 
 const Content = styled(Box)(({ theme }) => ({
-	//border: '3px solid red',
+	//border: "3px solid red",
 	padding: theme.spacing(3),
 	height: `calc(100% - 160px)`,
 	position: 'relative',

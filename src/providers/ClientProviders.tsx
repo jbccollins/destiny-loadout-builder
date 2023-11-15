@@ -1,10 +1,10 @@
 'use client';
 
-import CssBaseline from '@mui/material/CssBaseline';
-import { ReactNode } from 'react';
 import store from '@dlb/redux/store';
-import { Provider } from 'react-redux';
+import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ReactNode } from 'react';
+import { Provider } from 'react-redux';
 
 const darkTheme = createTheme({
 	palette: {

@@ -58,7 +58,7 @@ export const filterRedundantStatModCombos = (
 			}
 
 			if (redundant) {
-				// console.log('>>>>>> filtered redundant combo');
+				// console.log(">>>>>> filtered redundant combo");
 				_combos.splice(j, 1);
 				j--;
 			}

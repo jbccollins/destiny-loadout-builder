@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import BoxCountIndicator from '@dlb/components/BoxCountIndicator';
 import IconDropdown from '@dlb/components/IconDropdown';
@@ -58,7 +58,7 @@ function AspectSelector() {
 					top: '0px',
 					marginRight: '16px',
 					marginTop: '8px',
-					// background: 'rgb(19,19,19)',
+					// background: "rgb(19,19,19)",
 					zIndex: 1,
 				}}
 			>

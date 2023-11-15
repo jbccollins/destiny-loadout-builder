@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import d2Logo from '@/public/d2-logo.png';
 import dimLogo from '@/public/dim-logo.png';
@@ -664,7 +664,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				padding: theme.spacing(1.5),
 				marginBottom: theme.spacing(1),
 				background: 'rgb(50, 50, 50)',
-				//'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+				//"&:nth-of-type(odd)": { background: "rgb(50, 50, 50)" },
 			}}
 		>
 			<Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -800,10 +800,10 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 							sx={{
 								display: 'flex',
 								flexDirection: 'column',
-								// background: 'rgb(19,19,19)',
-								// padding: '8px',
+								// background: "rgb(19,19,19)",
+								// padding: "8px",
 								width: '100%',
-								// borderRadius: '4px',
+								// borderRadius: "4px",
 							}}
 						>
 							<Box
@@ -811,7 +811,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 									marginBottom: '4px',
 									fontSize: '14px',
 									fontStyle: 'italic',
-									// verticalAlign: 'text-top',
+									// verticalAlign: "text-top",
 								}}
 							>
 								Available optimizations:
@@ -864,12 +864,12 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 						<Box
 							sx={{
 								display: 'flex',
-								// background: 'rgb(19,19,19)',
-								// padding: '8px',
+								// background: "rgb(19,19,19)",
+								// padding: "8px",
 								width: '100%',
 								alignItems: 'center',
 								gap: '8px',
-								// borderRadius: '4px',
+								// borderRadius: "4px",
 							}}
 						>
 							<IconPill
@@ -886,7 +886,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 								sx={{
 									fontSize: '14px',
 									fontStyle: 'italic',
-									// verticalAlign: 'text-top',
+									// verticalAlign: "text-top",
 								}}
 							>
 								This loadout is fully optimized

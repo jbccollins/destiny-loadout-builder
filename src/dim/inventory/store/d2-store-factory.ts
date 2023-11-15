@@ -6,8 +6,8 @@ import {
 	DestinyProfileRecordsComponent,
 	DestinyRecordState,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-// import vaultBackground from 'images/vault-background.svg';
-// import vaultIcon from 'images/vault.svg';
+// import vaultBackground from "images/vault-background.svg";
+// import vaultIcon from "images/vault.svg";
 import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { bungieNetPath } from '@dlb/dim/dim-ui/BungieImage';
 import {
@@ -46,7 +46,7 @@ export function makeCharacter(
 		destinyVersion: 2,
 		id: character.characterId,
 		icon: bungieNetPath(character.emblemPath),
-		// name: t('ItemService.StoreName', {
+		// name: t("ItemService.StoreName", {
 		// 	genderRace: raceLocalizedName,
 		// 	className
 		// }),

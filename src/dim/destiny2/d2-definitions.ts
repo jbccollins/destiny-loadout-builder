@@ -185,7 +185,7 @@ export function buildDefinitionsFromManifest(db: AllDestinyManifestComponents) {
 						const requestingEntryInfo =
 							typeof requestor === 'object' ? requestor.hash : requestor;
 						// warnLogCollapsedStack(
-						// 	'invalidHash',
+						// 	"invalidHash",
 						// 	new HashLookupFailure(table, id),
 						// 	{
 						// 		requestingEntryInfo,

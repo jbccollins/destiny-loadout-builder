@@ -2,6 +2,8 @@ import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDestinyClassAbilityStat } from './DestinyClass';
 import { getFragment } from './Fragment';
+import { EArmorStatId, EDestinyClassId } from './IdEnums';
+import { getMod } from './Mod';
 import {
 	EnumDictionary,
 	IHash,
@@ -10,8 +12,6 @@ import {
 	StatBonusStat,
 	ValidateEnumList,
 } from './globals';
-import { EArmorStatId, EDestinyClassId } from './IdEnums';
-import { getMod } from './Mod';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
 	EArmorStatId.Mobility,

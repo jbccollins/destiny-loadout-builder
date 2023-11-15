@@ -1,6 +1,6 @@
+import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 import { emptyArray } from '@dlb/dim/utils/empty';
 import { count, weakMemoize } from '@dlb/dim/utils/util';
-import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 import _ from 'lodash';
 /**
  * Generic helpers for working with whole stores (character inventories) or lists of stores.
@@ -157,7 +157,7 @@ export function potentialSpaceLeftForItem(
 			// by moving the items themselves to a different bucket.
 			return {
 				guaranteed: Math.max(item.maxStackSize - existingAmount, 0),
-				couldMakeSpace: !item.notransfer
+				couldMakeSpace: !item.notransfer,
 			};
 		}
 	}
@@ -169,7 +169,7 @@ export function potentialSpaceLeftForItem(
 		// Stacks and individual items are the same, no conversion required
 		return {
 			guaranteed: openStacks,
-			couldMakeSpace: Boolean(item.bucket.vaultBucket)
+			couldMakeSpace: Boolean(item.bucket.vaultBucket),
 		};
 	} else {
 		// Get the existing amount in individual pieces, not stacks
@@ -182,7 +182,7 @@ export function potentialSpaceLeftForItem(
 		}
 		return {
 			guaranteed: Math.max(openStacks * maxStackSize - existingAmount, 0),
-			couldMakeSpace: Boolean(item.bucket.vaultBucket)
+			couldMakeSpace: Boolean(item.bucket.vaultBucket),
 		};
 	}
 }

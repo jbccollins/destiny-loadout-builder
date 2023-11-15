@@ -2,9 +2,9 @@ import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { FragmentIdToFragmentMapping } from '@dlb/generated/fragment/FragmentMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { getDestinySubclass } from './DestinySubclass';
+import { EDestinySubclassId, EElementId } from './IdEnums';
 import { IFragment } from './generation';
 import { EnumDictionary } from './globals';
-import { EDestinySubclassId, EElementId } from './IdEnums';
 
 export const FragmentIdList = Object.values(EFragmentId);
 

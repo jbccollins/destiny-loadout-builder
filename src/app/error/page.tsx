@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import discord_image from '@/public/discord-mark-white.png';
 import Head from '@dlb/components/Meta/Head';

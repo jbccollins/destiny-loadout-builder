@@ -11,9 +11,9 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2023-11-08',
-		version: '2.4.31',
-		title: 'Add setting to exclude locked items',
+		date: "2023-11-08",
+		version: "2.4.31",
+		title: "Add setting to exclude locked items",
 		sections: [
 			{
 				items: [
@@ -25,9 +25,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-11-08',
-		version: '2.4.30',
-		title: 'Add masterwork assumption back',
+		date: "2023-11-08",
+		version: "2.4.30",
+		title: "Add masterwork assumption back",
 		sections: [
 			{
 				items: [
@@ -37,9 +37,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-11-06',
-		version: '2.4.29',
-		title: 'Add loadout counts to the analyzer',
+		date: "2023-11-06",
+		version: "2.4.29",
+		title: "Add loadout counts to the analyzer",
 		sections: [
 			{
 				items: [
@@ -50,9 +50,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-11-04',
-		version: '2.4.28',
-		title: 'Add help tooltip to armor slot armor energy indicator',
+		date: "2023-11-04",
+		version: "2.4.28",
+		title: "Add help tooltip to armor slot armor energy indicator",
 		sections: [
 			{
 				items: [
@@ -62,9 +62,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-11-02',
-		version: '2.4.27',
-		title: 'Desktop Analyzer Layout',
+		date: "2023-11-02",
+		version: "2.4.27",
+		title: "Desktop Analyzer Layout",
 		sections: [
 			{
 				items: [
@@ -75,9 +75,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-28',
-		version: '2.4.26',
-		title: 'New Optimization Types',
+		date: "2023-10-28",
+		version: "2.4.26",
+		title: "New Optimization Types",
 		sections: [
 			{
 				items: [
@@ -92,9 +92,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-27',
-		version: '2.4.25-BETA',
-		title: 'Enforce FotL mask when editing a loadout via the analyzer',
+		date: "2023-10-27",
+		version: "2.4.25-BETA",
+		title: "Enforce FotL mask when editing a loadout via the analyzer",
 		sections: [
 			{
 				items: [
@@ -104,22 +104,22 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-24',
-		version: '2.4.24-BETA',
-		title: 'Unused Mod Slots Optimization',
+		date: "2023-10-24",
+		version: "2.4.24-BETA",
+		title: "Unused Mod Slots Optimization",
 		sections: [
 			{
 				items: [
 					`Add a new analyzer optimization: "Unused Mod Slots"`,
-					`Note that this optimization needs a bit more testing on my end before I'm sure it's 100% accurate`,
+					`Note that this optimization needs a bit more testing on my end before I"m sure it"s 100% accurate`,
 				],
 			},
 		],
 	},
 	{
-		date: '2023-10-23',
-		version: '2.4.23-BETA',
-		title: 'Analyzer Class Specific Grades',
+		date: "2023-10-23",
+		version: "2.4.23-BETA",
+		title: "Analyzer Class Specific Grades",
 		sections: [
 			{
 				items: [
@@ -134,9 +134,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-22',
-		version: '2.4.22-BETA',
-		title: 'Minor analyzer UI changes',
+		date: "2023-10-22",
+		version: "2.4.22-BETA",
+		title: "Minor analyzer UI changes",
 		sections: [
 			{
 				items: [
@@ -150,9 +150,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-22',
-		version: '2.4.21-BETA',
-		title: 'Fix exotic armor recall bug',
+		date: "2023-10-22",
+		version: "2.4.21-BETA",
+		title: "Fix exotic armor recall bug",
 		sections: [
 			{
 				items: [
@@ -163,9 +163,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-09',
-		version: '2.4.20-BETA',
-		title: 'Fix FotL Mask Bug',
+		date: "2023-10-09",
+		version: "2.4.20-BETA",
+		title: "Fix FotL Mask Bug",
 		sections: [
 			{
 				items: [
@@ -175,9 +175,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-09',
-		version: '2.4.19-BETA',
-		title: 'Remember last used application configuration',
+		date: "2023-10-09",
+		version: "2.4.19-BETA",
+		title: "Remember last used application configuration",
 		sections: [
 			{
 				items: [
@@ -190,9 +190,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-10',
-		version: '2.4.18',
-		title: 'Better loadout details view',
+		date: "2023-10-10",
+		version: "2.4.18",
+		title: "Better loadout details view",
 		sections: [
 			{
 				items: [
@@ -202,9 +202,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-08',
-		version: '2.4.17',
-		title: 'Analyzer crash fix',
+		date: "2023-10-08",
+		version: "2.4.17",
+		title: "Analyzer crash fix",
 		sections: [
 			{
 				items: [
@@ -214,9 +214,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-06',
-		version: '2.4.16',
-		title: 'Mod Placement Details Bug Fixes',
+		date: "2023-10-06",
+		version: "2.4.16",
+		title: "Mod Placement Details Bug Fixes",
 		sections: [
 			{
 				items: [
@@ -226,9 +226,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-06',
-		version: '2.4.15',
-		title: 'Add discord link to main page',
+		date: "2023-10-06",
+		version: "2.4.15",
+		title: "Add discord link to main page",
 		sections: [
 			{
 				items: [
@@ -238,9 +238,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-05',
-		version: '2.4.14',
-		title: 'Add mod placement details to the analyzer tab',
+		date: "2023-10-05",
+		version: "2.4.14",
+		title: "Add mod placement details to the analyzer tab",
 		sections: [
 			{
 				items: [
@@ -250,9 +250,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-05',
-		version: '2.4.13',
-		title: 'Add resolution instructions in the analyzer tab',
+		date: "2023-10-05",
+		version: "2.4.13",
+		title: "Add resolution instructions in the analyzer tab",
 		sections: [
 			{
 				items: [
@@ -262,9 +262,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-04',
-		version: '2.4.12',
-		title: 'Add "only use masterworked armor" setting',
+		date: "2023-10-04",
+		version: "2.4.12",
+		title: "Add 'only use masterworked armor' setting",
 		sections: [
 			{
 				items: [
@@ -274,9 +274,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-04',
-		version: '2.4.11',
-		title: 'Add bonus resilience setting',
+		date: "2023-10-04",
+		version: "2.4.11",
+		title: "Add bonus resilience setting",
 		sections: [
 			{
 				items: [
@@ -289,9 +289,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-10-03',
-		version: '2.4.10',
-		title: 'Manifest caching and other analyzer work',
+		date: "2023-10-03",
+		version: "2.4.10",
+		title: "Manifest caching and other analyzer work",
 		sections: [
 			{
 				items: [
@@ -305,23 +305,23 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-24',
-		version: '2.4.9',
-		title: 'Add the ability to link directly to the analyzer tab',
+		date: "2023-09-24",
+		version: "2.4.9",
+		title: "Add the ability to link directly to the analyzer tab",
 		sections: [
 			{
 				items: [
 					`The analyzer tab can now be linked to directly via the url. For example: https://destinyloadoutbuilder.com/?tab=1`,
-					'Minor UI changes to the analyzer filters UI',
+					"Minor UI changes to the analyzer filters UI",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-09-23',
-		version: '2.4.8',
+		date: "2023-09-23",
+		version: "2.4.8",
 		title:
-			'Fix a bug where not having 10 D2 loadouts would cause the analyzer to show no results',
+			"Fix a bug where not having 10 D2 loadouts would cause the analyzer to show no results",
 		sections: [
 			{
 				items: [`What the title says`],
@@ -329,9 +329,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-23',
-		version: '2.4.7',
-		title: 'Add more analyzer optimization checks',
+		date: "2023-09-23",
+		version: "2.4.7",
+		title: "Add more analyzer optimization checks",
 		sections: [
 			{
 				items: [
@@ -343,9 +343,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-22',
-		version: '2.4.6',
-		title: 'Add search and loadout type filter to analyzer',
+		date: "2023-09-22",
+		version: "2.4.6",
+		title: "Add search and loadout type filter to analyzer",
 		sections: [
 			{
 				items: [
@@ -356,9 +356,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-22',
-		version: '2.4.5',
-		title: 'Add "in-game" loadout analysis',
+		date: "2023-09-22",
+		version: "2.4.5",
+		title: "Add 'in-game' loadout analysis",
 		sections: [
 			{
 				items: [
@@ -369,9 +369,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-22',
-		version: '2.4.4',
-		title: 'Minor Analyzer UI Fixes',
+		date: "2023-09-22",
+		version: "2.4.4",
+		title: "Minor Analyzer UI Fixes",
 		sections: [
 			{
 				items: [
@@ -381,9 +381,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-22',
-		version: '2.4.3',
-		title: 'Prep for "in-game" loadout analysis',
+		date: "2023-09-22",
+		version: "2.4.3",
+		title: "Prep for 'in-game' loadout analysis",
 		sections: [
 			{
 				items: [
@@ -394,9 +394,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-21',
-		version: '2.4.2',
-		title: 'Even More Analyzer Updates',
+		date: "2023-09-21",
+		version: "2.4.2",
+		title: "Even More Analyzer Updates",
 		sections: [
 			{
 				items: [
@@ -410,9 +410,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-20',
-		version: '2.4.1',
-		title: 'Collections Rolls Settings and More Analyzer Updates',
+		date: "2023-09-20",
+		version: "2.4.1",
+		title: "Collections Rolls Settings and More Analyzer Updates",
 		sections: [
 			{
 				items: [
@@ -423,9 +423,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-19',
-		version: '2.4.0',
-		title: 'Add Collections Exotic Rolls',
+		date: "2023-09-19",
+		version: "2.4.0",
+		title: "Add Collections Exotic Rolls",
 		sections: [
 			{
 				items: [
@@ -437,9 +437,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-15',
-		version: '2.3.3',
-		title: 'Add more analyzer optimization checks',
+		date: "2023-09-15",
+		version: "2.3.3",
+		title: "Add more analyzer optimization checks",
 		sections: [
 			{
 				items: [
@@ -450,9 +450,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-12',
-		version: '2.3.2',
-		title: 'Fix Old DIM Loadouts',
+		date: "2023-09-12",
+		version: "2.3.2",
+		title: "Fix Old DIM Loadouts",
 		sections: [
 			{
 				items: [
@@ -462,9 +462,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-11',
-		version: '2.3.1',
-		title: 'Better Error Reporting',
+		date: "2023-09-11",
+		version: "2.3.1",
+		title: "Better Error Reporting",
 		sections: [
 			{
 				items: [
@@ -474,12 +474,12 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-08',
-		version: '2.3.0',
-		title: 'Alpha Loadout Analyzer',
+		date: "2023-09-08",
+		version: "2.3.0",
+		title: "Alpha Loadout Analyzer",
 		sections: [
 			{
-				title: 'Alpha Loadout Analyzer',
+				title: "Alpha Loadout Analyzer",
 				items: [
 					`Add a new "Loadout Analyzer" tool. This tool checks all of your existing DIM loadouts to see if any could reach higher stat tiers while using the same Aspects, Fragments, Mods, etc...`,
 					`Changed the left panel tab navigator to use icons now that there is a fourth tab for the Loadout Analyzer.`,
@@ -487,7 +487,7 @@ export const PatchNotes: PatchNote[] = [
 				],
 			},
 			{
-				title: 'Other Changes',
+				title: "Other Changes",
 				items: [
 					`Fixed a bug where the website favicon was not showing up on all pages`,
 				],
@@ -495,8 +495,8 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-07',
-		version: '2.2.7',
+		date: "2023-09-07",
+		version: "2.2.7",
 		title: "Add Crota's End Raid Mods",
 		sections: [
 			{
@@ -505,9 +505,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-01',
-		version: '2.2.6',
-		title: 'Add S22 Intrinsic Armor Perk: Exhumed Excess',
+		date: "2023-09-01",
+		version: "2.2.6",
+		title: "Add S22 Intrinsic Armor Perk: Exhumed Excess",
 		sections: [
 			{
 				items: [`Add the Exhumed Excess perk to the Armor Attributes section`],
@@ -515,9 +515,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-09-01',
-		version: '2.2.5',
-		title: 'Prioritize higher power class items',
+		date: "2023-09-01",
+		version: "2.2.5",
+		title: "Prioritize higher power class items",
 		sections: [
 			{
 				items: [
@@ -527,9 +527,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-08-25',
-		version: '2.2.4',
-		title: 'Season of the Witch Update',
+		date: "2023-08-25",
+		version: "2.2.4",
+		title: "Season of the Witch Update",
 		sections: [
 			{
 				items: [
@@ -539,66 +539,66 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-07-17',
-		version: '2.2.3',
-		title: 'Add "Show Mod Placement" breakdown',
+		date: "2023-07-17",
+		version: "2.2.3",
+		title: "Add 'Show Mod Placement' breakdown",
 		sections: [
 			{
 				items: [
 					`Add a new section to the results table that shows the mod placement for each armor item`,
-					'Minor behind the scenes code refactoring',
+					"Minor behind the scenes code refactoring",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-07-07',
-		version: '2.2.2',
-		title: 'Add better default sort',
+		date: "2023-07-07",
+		version: "2.2.2",
+		title: "Add better default sort",
 		sections: [
 			{
 				items: [
 					`Add a secondary and tertiary sort to the default sort order for results.
 					Results are now sorted by Total Mod Cost → Total Stat Tiers → Total Wasted Stats`,
 					`Fix a bug introduced in 2.2.0 that broke shared loadout links`,
-					'Update login page text a bit',
+					"Update login page text a bit",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-07-03',
-		version: '2.2.1',
-		title: 'Add Favicon',
+		date: "2023-07-03",
+		version: "2.2.1",
+		title: "Add Favicon",
 		sections: [
 			{
 				items: [
-					'Add a favicon and other meta tags to improve the look of the site when shared on social media',
-					'Add link to d2exotic.com',
+					"Add a favicon and other meta tags to improve the look of the site when shared on social media",
+					"Add link to d2exotic.com",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-06-30',
-		version: '2.2.0',
-		title: 'Add Armor Attributes',
+		date: "2023-06-30",
+		version: "2.2.0",
+		title: "Add Armor Attributes",
 		sections: [
 			{
 				items: [
-					'Add the ability to select armor attributes like "Iron Banner", "Guardian Games Class Item", and "Festival of the Lost Mask" as well as perks like "Sonar Amplifier"',
-					'Remove armor stats from the "Order By" dropdown as they were kinda confusing',
-					'Move Raid Mods to their own section, separate from armor mods',
-					'Rename "Mods" section to "Armor Mods"',
-					'Allow mobile users to view the "No Results" troubleshooting section',
+					"Add the ability to select armor attributes like 'Iron Banner', 'Guardian Games Class Item', and 'Festival of the Lost Mask' as well as perks like 'Sonar Amplifier'",
+					"Remove armor stats from the 'Order By' dropdown as they were kinda confusing",
+					"Move Raid Mods to their own section, separate from armor mods",
+					"Rename 'Mods' section to 'Armor Mods'",
+					"Allow mobile users to view the 'No Results' troubleshooting section",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-06-20',
-		version: '2.1.9',
-		title: 'Consider items in postmaster',
+		date: "2023-06-20",
+		version: "2.1.9",
+		title: "Consider items in postmaster",
 		sections: [
 			{
 				items: [
@@ -608,9 +608,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-20',
-		version: '2.1.8',
-		title: 'Fix rare bug with raid mods',
+		date: "2023-06-20",
+		version: "2.1.8",
+		title: "Fix rare bug with raid mods",
 		sections: [
 			{
 				items: [
@@ -620,9 +620,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-16',
-		version: '2.1.7',
-		title: 'Stop using beta DIM links',
+		date: "2023-06-16",
+		version: "2.1.7",
+		title: "Stop using beta DIM links",
 		sections: [
 			{
 				items: [
@@ -632,9 +632,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-09',
-		version: '2.1.6',
-		title: 'Class and Exotic selecor UI changes',
+		date: "2023-06-09",
+		version: "2.1.6",
+		title: "Class and Exotic selecor UI changes",
 		sections: [
 			{
 				items: [
@@ -645,9 +645,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-06',
-		version: '2.1.5',
-		title: 'Permissions disclosure',
+		date: "2023-06-06",
+		version: "2.1.5",
+		title: "Permissions disclosure",
 		sections: [
 			{
 				items: [
@@ -658,9 +658,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-05',
-		version: '2.1.4',
-		title: 'De-clutter Mod Selection',
+		date: "2023-06-05",
+		version: "2.1.4",
+		title: "De-clutter Mod Selection",
 		sections: [
 			{
 				items: [
@@ -671,9 +671,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-05',
-		version: '2.1.3',
-		title: 'Add Shared Loadout Stat Priority',
+		date: "2023-06-05",
+		version: "2.1.3",
+		title: "Add Shared Loadout Stat Priority",
 		sections: [
 			{
 				items: [
@@ -683,9 +683,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-05',
-		version: '2.1.2',
-		title: 'Class Item Bug Fixes Round 2',
+		date: "2023-06-05",
+		version: "2.1.2",
+		title: "Class Item Bug Fixes Round 2",
 		sections: [
 			{
 				items: [
@@ -695,9 +695,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-04',
-		version: '2.1.1',
-		title: 'Leg Mod Categorization Fixes',
+		date: "2023-06-04",
+		version: "2.1.1",
+		title: "Leg Mod Categorization Fixes",
 		sections: [
 			{
 				items: [`Fix a bug where some leg mods were improperly categorized`],
@@ -705,9 +705,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-06-04',
-		version: '2.1.0',
-		title: 'Class Item Bug Fixes',
+		date: "2023-06-04",
+		version: "2.1.0",
+		title: "Class Item Bug Fixes",
 		sections: [
 			{
 				items: [
@@ -725,9 +725,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-28',
-		version: '2.0.7',
-		title: 'Add exotic perk details to exotic armor selector',
+		date: "2023-05-28",
+		version: "2.0.7",
+		title: "Add exotic perk details to exotic armor selector",
 		sections: [
 			{
 				items: [
@@ -739,9 +739,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-24',
-		version: '2.0.6',
-		title: 'Fix bug where some artifice armor was not considered',
+		date: "2023-05-24",
+		version: "2.0.6",
+		title: "Fix bug where some artifice armor was not considered",
 		sections: [
 			{
 				items: [
@@ -751,9 +751,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-24',
-		version: '2.0.5',
-		title: 'Add new Strand Aspects',
+		date: "2023-05-24",
+		version: "2.0.5",
+		title: "Add new Strand Aspects",
 		sections: [
 			{
 				items: [`Update aspects, mods and such for Season of the Deep`],
@@ -761,9 +761,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-17',
-		version: '2.0.4',
-		title: 'Zero Wasted Stats Setting',
+		date: "2023-05-17",
+		version: "2.0.4",
+		title: "Zero Wasted Stats Setting",
 		sections: [
 			{
 				items: [
@@ -776,9 +776,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-14',
-		version: '2.0.3',
-		title: 'More armor slot mod categories',
+		date: "2023-05-14",
+		version: "2.0.3",
+		title: "More armor slot mod categories",
 		sections: [
 			{
 				items: [
@@ -788,9 +788,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-13',
-		version: '2.0.2',
-		title: 'Aspect and Fragment limits',
+		date: "2023-05-13",
+		version: "2.0.2",
+		title: "Aspect and Fragment limits",
 		sections: [
 			{
 				items: [
@@ -800,9 +800,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-12',
-		version: '2.0.1',
-		title: 'Mod Selection Rework',
+		date: "2023-05-12",
+		version: "2.0.1",
+		title: "Mod Selection Rework",
 		sections: [
 			{
 				items: [
@@ -813,9 +813,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-11',
-		version: '2.0.0',
-		title: 'New armor processing algorithm',
+		date: "2023-05-11",
+		version: "2.0.0",
+		title: "New armor processing algorithm",
 		sections: [
 			{
 				items: [
@@ -827,9 +827,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-05-03',
-		version: '1.4.1',
-		title: 'Fix crash for users without enough armor',
+		date: "2023-05-03",
+		version: "1.4.1",
+		title: "Fix crash for users without enough armor",
 		sections: [
 			{
 				items: [
@@ -839,9 +839,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-04-03',
-		version: '1.4.0',
-		title: 'Raid mods BETA',
+		date: "2023-04-03",
+		version: "1.4.0",
+		title: "Raid mods BETA",
 		sections: [
 			{
 				items: [`Add the ability to select raid mods. This feature is in BETA`],
@@ -849,9 +849,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-04-03',
-		version: '1.3.4',
-		title: 'Allow the selection of reduced cost mods',
+		date: "2023-04-03",
+		version: "1.3.4",
+		title: "Allow the selection of reduced cost mods",
 		sections: [
 			{
 				items: [
@@ -863,9 +863,9 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-04-03',
-		version: '1.3.3',
-		title: 'Fix desired stat preview',
+		date: "2023-04-03",
+		version: "1.3.3",
+		title: "Fix desired stat preview",
 		sections: [
 			{
 				items: [
@@ -878,116 +878,116 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
-		date: '2023-03-31',
-		version: '1.3.2',
-		title: 'Fix melee ability bug',
+		date: "2023-03-31",
+		version: "1.3.2",
+		title: "Fix melee ability bug",
 		sections: [
 			{
 				items: [
-					'Fixed an issue where strand hunters and warlocks had their melee abilities swapped',
+					"Fixed an issue where strand hunters and warlocks had their melee abilities swapped",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-03-28',
-		version: '1.3.1',
-		title: 'Add contributors file',
+		date: "2023-03-28",
+		version: "1.3.1",
+		title: "Add contributors file",
 		sections: [
 			{
 				items: [
-					'Add a markdown file containing all the contributors for this project',
+					"Add a markdown file containing all the contributors for this project",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-03-26',
-		version: '1.3.0',
-		title: 'Handle users with less armor',
+		date: "2023-03-26",
+		version: "1.3.0",
+		title: "Handle users with less armor",
 		sections: [
 			{
 				items: [
-					'Gracefully handle the case where a user does not have exotic armor for each class',
-					'Add a logout button',
+					"Gracefully handle the case where a user does not have exotic armor for each class",
+					"Add a logout button",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-03-25',
-		version: '1.2.3',
-		title: 'No subclass selection defaults',
+		date: "2023-03-25",
+		version: "1.2.3",
+		title: "No subclass selection defaults",
 		sections: [
 			{
 				items: [
-					'Allow the user to create a loadout with no subclass selections',
-					'Add the abiltiy to clear the subclass section',
-					'Fix a crash when the user had a linked profile with no characters',
-					'Fix a crash when the user selected the Nightstalker subclass',
+					"Allow the user to create a loadout with no subclass selections",
+					"Add the abiltiy to clear the subclass section",
+					"Fix a crash when the user had a linked profile with no characters",
+					"Fix a crash when the user selected the Nightstalker subclass",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-03-15',
-		version: '1.2.2',
-		title: 'Add analytics',
+		date: "2023-03-15",
+		version: "1.2.2",
+		title: "Add analytics",
 		sections: [
 			{
-				items: ['Add the base Vercel analytics package'],
+				items: ["Add the base Vercel analytics package"],
 			},
 		],
 	},
 	{
-		date: '2023-03-15',
-		version: '1.2.1',
-		title: 'Find even more armor combinations',
+		date: "2023-03-15",
+		version: "1.2.1",
+		title: "Find even more armor combinations",
 		sections: [
 			{
 				items: [
-					'Fixed another bug that would sometimes prevent certain armor combinations from appearing in the results',
+					"Fixed another bug that would sometimes prevent certain armor combinations from appearing in the results",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-03-12',
-		version: '1.2.0',
-		title: 'Find more armor combinations',
+		date: "2023-03-12",
+		version: "1.2.0",
+		title: "Find more armor combinations",
 		sections: [
 			{
 				items: [
-					'Fixed a bug that would sometimes prevent certain armor combinations from appearing in the results',
-					'Fixed a bug that caused a crash when the user had "classified" armor (Thanks Root of Nightmares)',
-					'Artifice "forged" armor mods are now properly applied when opening the loadout in DIM',
-					'Fixed stasis aspect descriptions',
-					'Added a more helpful error message for crashes instead of just redirecting to the login screen',
-					'Added error logging for help with debugging production crashes',
+					"Fixed a bug that would sometimes prevent certain armor combinations from appearing in the results",
+					"Fixed a bug that caused a crash when the user had 'classified' armor (Thanks Root of Nightmares)",
+					"Artifice 'forged' armor mods are now properly applied when opening the loadout in DIM",
+					"Fixed stasis aspect descriptions",
+					"Added a more helpful error message for crashes instead of just redirecting to the login screen",
+					"Added error logging for help with debugging production crashes",
 				],
 			},
 		],
 	},
 	{
-		date: '2023-02-01',
-		version: '1.1.0',
-		title: 'Add Strand and new armor mods',
+		date: "2023-02-01",
+		version: "1.1.0",
+		title: "Add Strand and new armor mods",
 		sections: [
 			{
 				items: [
-					'Added Strand subclass options',
-					'NB: The Bungie api is returning wonky images for some strand subclass options',
-					'Added patch notes',
-					'Added reworked armor mods',
-					'Added "No Results" UI',
+					"Added Strand subclass options",
+					"NB: The Bungie api is returning wonky images for some strand subclass options",
+					"Added patch notes",
+					"Added reworked armor mods",
+					"Added 'No Results' UI",
 				],
 			},
 		],
 	},
 	{
-		date: '2022-01-23',
-		version: '1.0.0',
-		title: 'Initial Release',
+		date: "2022-01-23",
+		version: "1.0.0",
+		title: "Initial Release",
 		sections: [
 			{
 				items: ["It's Alive!"],

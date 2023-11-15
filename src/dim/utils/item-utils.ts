@@ -3,31 +3,31 @@ import {
 	DimItem,
 	DimMasterwork,
 	DimSocket,
-	PluggableInventoryItemDefinition
+	PluggableInventoryItemDefinition,
 } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 import {
+	EXOTIC_CATALYST_TRAIT,
 	armor2PlugCategoryHashes,
 	energyNamesByEnum,
-	EXOTIC_CATALYST_TRAIT,
 	killTrackerObjectivesByHash,
 	killTrackerSocketTypeHash,
-	modsWithConditionalStats
+	modsWithConditionalStats,
 } from '@dlb/dim/search/d2-known-values';
 import { damageNamesByEnum } from '@dlb/dim/search/search-filter-values';
 import modSocketMetadata, {
 	ModSocketMetadata,
-	modTypeTagByPlugCategoryHash
+	modTypeTagByPlugCategoryHash,
 } from '@dlb/dim/search/specialty-modslots';
 import {
 	DestinyClass,
 	DestinyEnergyType,
-	DestinyInventoryItemDefinition
+	DestinyInventoryItemDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-// import adeptWeaponHashes from 'data/d2/adept-weapon-hashes.json';
-// import enhancedIntrinsics from 'data/d2/crafting-enhanced-intrinsics';
+// import adeptWeaponHashes from "data/d2/adept-weapon-hashes.json";
+// import enhancedIntrinsics from "data/d2/crafting-enhanced-intrinsics";
 import { BucketHashes, StatHashes } from '@dlb/dim/data/d2/generated-enums';
-// import masterworksWithCondStats from 'data/d2/masterworks-with-cond-stats.json';
+// import masterworksWithCondStats from "data/d2/masterworks-with-cond-stats.json";
 import _ from 'lodash';
 import { objectifyArray } from './util';
 
@@ -54,10 +54,10 @@ export const modMetadataByPlugCategoryHash = objectifyArray(
 	'compatiblePlugCategoryHashes'
 );
 
-/** i.e. ['outlaw', 'forge', 'opulent', etc] */
+/** i.e. ["outlaw", "forge", "opulent", etc] */
 export const modSlotTags = modSocketMetadata.map((m) => m.slotTag);
 export const modTypeTags = [
-	...new Set(modSocketMetadata.flatMap((m) => m.compatibleModTags))
+	...new Set(modSocketMetadata.flatMap((m) => m.compatibleModTags)),
 ];
 
 // kind of silly but we are using a list of known mod hashes to identify specialty mod slots below
@@ -169,10 +169,10 @@ export function itemCanBeEquippedByStoreId(
 	return Boolean(
 		item.equipment &&
 			(item.classified
-				? // we can't trust the classType of redacted items! they're all marked titan.
+				? // we can"t trust the classType of redacted items! they"re all marked titan.
 				  // let's assume classified weapons are all-class
 				  item.bucket.inWeapons ||
-				  // if it's equipped by this store, it's obviously equippable to this store!
+				  // if it"s equipped by this store, it"s obviously equippable to this store!
 				  (item.owner === storeId && item.equipped)
 				: // For the right class
 				  item.classType === DestinyClass.Unknown ||
@@ -236,7 +236,7 @@ const getSocketKillTrackerInfo = (
 			return {
 				type,
 				count,
-				trackerDef: installedKillTracker.plugDef
+				trackerDef: installedKillTracker.plugDef,
 			};
 		}
 	}
@@ -252,7 +252,7 @@ const d1YearSourceHashes = {
 	//         tTK       Variks        CoE         FoTL    Kings Fall
 	year2: [2659839637, 512830513, 1537575125, 3475869915, 1662673928],
 	//         RoI       WoTM         FoTl       Dawning    Raid Reprise
-	year3: [2964550958, 4160622434, 3475869915, 3131490494, 4161861381]
+	year3: [2964550958, 4160622434, 3475869915, 3131490494, 4161861381],
 };
 
 // /**

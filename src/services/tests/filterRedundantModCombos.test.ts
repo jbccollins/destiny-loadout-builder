@@ -97,7 +97,7 @@ const testCases: TestCase[] = [
 	],
 ];
 
-/// const nameOfTestToDebug = 'Simple redundant mobility and disipline';
+/// const nameOfTestToDebug = "Simple redundant mobility and disipline";
 const nameOfTestToDebug = null;
 describe('filterRedundantStatModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Box } from '@mui/material';
 import LoadoutTypeFilter from './LoadoutTypeFilter';

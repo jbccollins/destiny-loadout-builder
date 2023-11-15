@@ -1,16 +1,18 @@
+"use client";
+
 import {
 	selectSelectedIntrinsicArmorPerkOrAttributeIds,
 	setSelectedIntrinsicArmorPerkOrAttributeIds,
 } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { MISSING_ICON } from '@dlb/types/globals';
 import { EIntrinsicArmorPerkOrAttributeId } from '@dlb/types/IdEnums';
 import {
-	getIntrinsicArmorPerkOrAttribute,
 	IIntrinsicArmorPerkOrAttribute,
+	getIntrinsicArmorPerkOrAttribute,
 	intrinsicArmorPerkOrAttributeIdList,
 } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
+import { MISSING_ICON } from '@dlb/types/globals';
 import { Box } from '@mui/material';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 

@@ -1,3 +1,5 @@
+"use client";
+
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { SxProps } from '@mui/material';
 import Box from '@mui/material/Box';

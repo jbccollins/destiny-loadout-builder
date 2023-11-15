@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Link } from '@mui/material';
 import Image, { StaticImageData } from 'next/image';
 

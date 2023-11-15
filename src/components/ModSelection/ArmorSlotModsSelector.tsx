@@ -1,3 +1,5 @@
+"use client";
+
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import GenericTierRow from '@dlb/components/GenericTierRow';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
@@ -18,7 +20,6 @@ import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
-import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToArmorSlotModIdListMapping,
@@ -26,6 +27,7 @@ import {
 	hasMutuallyExclusiveMods,
 } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
+import { IMod } from '@dlb/types/generation';
 import HelpIcon from '@mui/icons-material/Help';
 import {
 	Box,

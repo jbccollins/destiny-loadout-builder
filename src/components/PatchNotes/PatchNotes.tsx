@@ -1,12 +1,14 @@
+"use client";
+
+import discord_image from '@/public/discord-mark-white.png';
+import kofi_image from '@/public/kofi-logo.png';
+import twitter_image from '@/public/twitter-logo.png';
 import SocialIcon from '@dlb/components/SocialIcon';
 import {
 	DISCORD_LINK,
 	KOFI_LINK,
-	TWITTER_LINK
+	TWITTER_LINK,
 } from '@dlb/dim/utils/constants';
-import discord_image from '@dlb/public/discord-mark-white.png';
-import kofi_image from '@dlb/public/kofi-logo.png';
-import twitter_image from '@dlb/public/twitter-logo.png';
 import { Box, Link, styled } from '@mui/material';
 import { PatchNotes as patchNotes } from './patchNotesData';
 

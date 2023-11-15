@@ -1,6 +1,8 @@
+"use client";
+
+import d2Logo from '@/public/d2-logo.png';
+import dimLogo from '@/public/dim-logo.png';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import d2Logo from '@dlb/public/d2-logo.png';
-import dimLogo from '@dlb/public/dim-logo.png';
 import {
 	AnalyzableLoadoutsValueState,
 	setHiddenLoadoutIdList,
@@ -16,13 +18,13 @@ import {
 	setSelectedArmorSlotMods,
 } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import {
-	clearSelectedAspects,
 	SelectedAspects,
+	clearSelectedAspects,
 	setSelectedAspects,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import {
-	clearSelectedClassAbility,
 	SelectedClassAbility,
+	clearSelectedClassAbility,
 	setSelectedClassAbility,
 } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
@@ -36,8 +38,8 @@ import {
 	setSelectedFragmentsForDestinySubclass,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import {
-	clearSelectedGrenade,
 	SelectedGrenade,
+	clearSelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import {
@@ -46,13 +48,13 @@ import {
 	setSelectedIntrinsicArmorPerkOrAttributeIds,
 } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
-	clearSelectedJump,
 	SelectedJump,
+	clearSelectedJump,
 	setSelectedJump,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 import {
-	clearSelectedMelee,
 	SelectedMelee,
+	clearSelectedMelee,
 	setSelectedMelee,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import {
@@ -60,8 +62,8 @@ import {
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import {
-	clearSelectedSuperAbility,
 	SelectedSuperAbility,
+	clearSelectedSuperAbility,
 	setSelectedSuperAbility,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
@@ -69,15 +71,15 @@ import { setUseBonusResilience } from '@dlb/redux/features/useBonusResilience/us
 import { useAppDispatch } from '@dlb/redux/hooks';
 import {
 	ELoadoutOptimizationTypeId,
-	getLoadoutOptimization,
 	NoneOptimization,
+	getLoadoutOptimization,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
 	AnalyzableLoadout,
 	ELoadoutOptimizationCategoryId,
 	ELoadoutType,
-	getLoadoutOptimizationCategory,
 	RichAnalyzableLoadout,
+	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';

@@ -1,3 +1,5 @@
+"use client";
+
 import { SmallScreenData } from '@dlb/pages';
 import {
 	selectAlwaysConsiderCollectionsRolls,
@@ -63,8 +65,8 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
-	styled,
 	TablePagination,
+	styled,
 } from '@mui/material';
 import React, { useCallback, useMemo, useState } from 'react';
 import ArmorResultsList from './ArmorResultsList';

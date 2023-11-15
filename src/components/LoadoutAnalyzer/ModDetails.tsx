@@ -1,8 +1,10 @@
+"use client";
+
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ArmorStatAndRaidModComboPlacement } from '@dlb/services/processArmor/getModCombos';
 import { ArmorItem, AvailableExoticArmorItem } from '@dlb/types/Armor';
-import { EMPTY_SOCKET_TEXT, MISSING_ICON } from '@dlb/types/globals';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
+import { EMPTY_SOCKET_TEXT, MISSING_ICON } from '@dlb/types/globals';
 import { Box } from '@mui/material';
 import { useMemo } from 'react';
 import CustomTooltip from '../CustomTooltip';

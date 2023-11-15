@@ -1,10 +1,11 @@
+"use client";
+
 import ModPlacement from '@dlb/components//ModPlacement';
 import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
 import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { DimIcon } from '@dlb/public/dim_logo.svgicon';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
@@ -48,7 +49,6 @@ import {
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
-import { MISSING_ICON } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
 	EArmorStatId,
@@ -57,17 +57,19 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
+import { MISSING_ICON } from '@dlb/types/globals';
 import { getBonusResilienceOrnamentByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
+import { DimIcon } from 'public/dim_logo.svgicon';
 import React from 'react';
-import { getClassItemText, ResultsTableLoadout } from './ArmorResultsTypes';
+import { ResultsTableLoadout, getClassItemText } from './ArmorResultsTypes';
 import {
-	getSortableFieldDisplayName,
 	SortableFieldsDisplayOrder,
+	getSortableFieldDisplayName,
 } from './ArmorResultsView';
 
 type ArmorResultsListProps = {

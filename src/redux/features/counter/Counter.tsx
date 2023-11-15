@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 
 import { useAppSelector, useAppDispatch } from '@dlb/redux/hooks';

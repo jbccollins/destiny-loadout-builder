@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	selectOptimizationTypeFilter,
 	setOptimizationTypeFilter,
@@ -5,8 +7,8 @@ import {
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	ELoadoutOptimizationTypeId,
-	getLoadoutOptimization,
 	OrderedLoadoutOptimizationTypeListWithoutNone,
+	getLoadoutOptimization,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { getLoadoutOptimizationCategory } from '@dlb/types/AnalyzableLoadout';
 import { Box } from '@mui/material';

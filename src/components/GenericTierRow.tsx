@@ -1,3 +1,5 @@
+"use client";
+
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import styled from '@emotion/styled';
 import { Box } from '@mui/material';

@@ -1,3 +1,5 @@
+"use client";
+
 import IconDropdown from '@dlb/components/IconDropdown';
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';

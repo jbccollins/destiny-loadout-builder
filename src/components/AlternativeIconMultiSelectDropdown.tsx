@@ -1,3 +1,5 @@
+"use client";
+
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';

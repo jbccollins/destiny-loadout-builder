@@ -1,3 +1,5 @@
+"use client";
+
 import Loading from '@dlb/components/Loading';
 import StatSelection from '@dlb/components/StatSelection/StatSelection';
 import '@fontsource/roboto/300.css';
@@ -10,7 +12,6 @@ import AnalyzeIcon from '@mui/icons-material/QueryStats';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { Box, Button, Collapse, Divider, Link, styled } from '@mui/material';
-import type { NextPage } from 'next';
 import Image from 'next/image';
 
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
@@ -47,7 +48,7 @@ import UseOnlyMasterworkedArmorToggleSwitch from '@dlb/components/UseOnlyMasterw
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
 import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
-import discord_image from '@dlb/public/discord-mark-white.png';
+import discord_image from '@/public/discord-mark-white.png';
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
@@ -511,7 +512,7 @@ enum EResultsViewType {
 	Analyze = 'Analyze',
 }
 
-const Home: NextPage = () => {
+export default function HomePage() {
 	const [smallScreenResultsOpen, setSmallScreenResultsOpen] =
 		React.useState(false);
 	const allDataLoaded = useAppSelector(selectAllDataLoaded);
@@ -603,6 +604,4 @@ const Home: NextPage = () => {
 			</Container>
 		</>
 	);
-};
-
-export default Home;
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import { NextPage } from 'next';
 
 const GetData: NextPage = () => {

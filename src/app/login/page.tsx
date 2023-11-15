@@ -1,10 +1,12 @@
+"use client";
+
+import discord_image from '@/public/discord-mark-white.png';
 import LoginButton from '@dlb/components/LoginButton';
 import Head from '@dlb/components/Meta/Head';
 import SocialIcon from '@dlb/components/SocialIcon';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
-import discord_image from '@dlb/public/discord-mark-white.png';
 
-import logo_with_padding from '@dlb/public/logo-with-padding.png';
+import logo_with_padding from '@/public/logo-with-padding.png';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Collapse, IconButton, styled } from '@mui/material';

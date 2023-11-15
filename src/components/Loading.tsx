@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	getCharacters,
 	getDestinyAccountsForBungieAccount,
@@ -162,8 +164,8 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
-	getLocalStorageRecall,
 	LocalStorageRecall,
+	getLocalStorageRecall,
 } from '@dlb/types/LocalStorageRecall';
 import { TabTypeList } from '@dlb/types/Tab';
 import { CheckCircleRounded } from '@mui/icons-material';

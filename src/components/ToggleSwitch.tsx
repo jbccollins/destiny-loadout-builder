@@ -1,3 +1,5 @@
+"use client";
+
 import { Help } from '@mui/icons-material';
 import { alpha, Box, styled } from '@mui/material';
 import { blue } from '@mui/material/colors';

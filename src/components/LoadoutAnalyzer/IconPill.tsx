@@ -1,3 +1,5 @@
+"use client";
+
 import { useTheme } from '@emotion/react';
 import { Box } from '@mui/material';
 import { ReactElement } from 'react';

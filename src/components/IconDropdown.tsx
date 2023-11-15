@@ -1,3 +1,5 @@
+"use client";
+
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { MISSING_ICON } from '@dlb/types/globals';
 import {

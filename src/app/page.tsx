@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Loading from '@dlb/components/Loading';
 import StatSelection from '@dlb/components/StatSelection/StatSelection';
@@ -14,6 +14,7 @@ import ShieldIcon from '@mui/icons-material/Shield';
 import { Box, Button, Collapse, Divider, Link, styled } from '@mui/material';
 import Image from 'next/image';
 
+import discord_image from '@/public/discord-mark-white.png';
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
@@ -48,7 +49,6 @@ import UseOnlyMasterworkedArmorToggleSwitch from '@dlb/components/UseOnlyMasterw
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
 import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
-import discord_image from '@/public/discord-mark-white.png';
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
@@ -462,8 +462,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 						alt="me"
 						height="40"
 						width="50"
-						objectFit="contain"
-						objectPosition="left"
+						className="objectFit-contain objectPosition-center"
 					/>
 					<Box
 						sx={{

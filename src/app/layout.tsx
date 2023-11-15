@@ -1,33 +1,22 @@
 import { ReactNode } from 'react';
 import '@dlb/styles/globals.css';
-import store from '@dlb/redux/store';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Analytics } from '@vercel/analytics/react';
-import { Provider } from 'react-redux';
+import { Metadata } from 'next';
+import ClientProviders from '@dlb/providers/ClientProviders';
 
-const darkTheme = createTheme({
-	palette: {
-		mode: 'dark',
-		primary: {
-			main: '#FFFFFF',
-		},
-		secondary: {
-			main: '#FFFFFF',
-		},
+export const metadata: Metadata = {
+	title: {
+		default: 'Destiny Loadout Builder',
+		template: '%s | DLB',
 	},
-});
+	description: 'building optimized loadouts!',
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en">
 			<body>
-				<Provider store={store}>
-					<ThemeProvider theme={darkTheme}>
-						<CssBaseline />
-						{children}
-					</ThemeProvider>
-				</Provider>
+				<ClientProviders>{children}</ClientProviders>
 				<Analytics />
 			</body>
 		</html>

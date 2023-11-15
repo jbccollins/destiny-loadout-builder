@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import discord_image from '@/public/discord-mark-white.png';
 import LoginButton from '@dlb/components/LoginButton';
@@ -57,8 +57,7 @@ function Login() {
 							alt="me"
 							height="100"
 							width="100"
-							objectFit="contain"
-							objectPosition="left"
+							className="objectFit-contain objectPosition-center"
 						/>
 					</Box>
 					<Box

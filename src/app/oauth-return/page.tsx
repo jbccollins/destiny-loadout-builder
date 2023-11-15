@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
 import Head from '@dlb/components/Meta/Head';
 import { getAccessTokenFromCode } from '@dlb/dim/bungie-api/oauth';
 import { Box, CircularProgress, styled } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const Container = styled(Box)(() => ({
@@ -23,7 +23,8 @@ const CircularProgressWrapper = styled(Box)(() => ({
 
 function OauthReturn() {
 	const router = useRouter();
-	const { code } = router.query;
+	const searchParams = useSearchParams();
+	const code = searchParams.get('code');
 
 	useEffect(() => {
 		(async () => {
@@ -47,7 +48,7 @@ function OauthReturn() {
 		return () => {
 			// this now gets called when the component unmounts
 		};
-	}, [code, router, router.query]);
+	}, [code, router, code]);
 
 	return (
 		<>

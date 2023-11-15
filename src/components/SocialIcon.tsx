@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Box, Link } from '@mui/material';
 import Image, { StaticImageData } from 'next/image';
@@ -17,8 +17,7 @@ const SocialIcon = (props: {
 					alt="me"
 					height="40"
 					width="50"
-					objectFit="contain"
-					objectPosition="left"
+					className="objectFit-contain objectPosition-center"
 				/>
 				{text && (
 					<Box

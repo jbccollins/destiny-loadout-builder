@@ -118,7 +118,7 @@ const IconDropdown = ({
 					)}
 					{options.map((option) => {
 						const label = getLabel(option);
-						let description: string | JSX.Element = null;
+						let description: string | JSX.Element | null = null;
 						let hasDescription = false;
 						if (getDescription) {
 							description = getDescription(option);

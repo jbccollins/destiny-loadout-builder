@@ -82,7 +82,9 @@ const IconDropdown = ({
 		if (value == null) {
 			v = value;
 		}
-		onChange(v);
+		if (typeof v === 'string') {
+			onChange(v);
+		}
 	};
 	return (
 		<Container hideSelectedOptionText={hideSelectedOptionText}>

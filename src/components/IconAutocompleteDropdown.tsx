@@ -146,9 +146,12 @@ function IconAutocompleteDropdown({
 
 	useEffect(() => {
 		if (isMobile) {
-			document
+			const inputElement = document
 				.getElementsByClassName(textInputClass)[0]
-				.querySelector('input').disabled = true;
+				?.querySelector('input');
+			if (inputElement) {
+				inputElement.disabled = true;
+			}
 		}
 	}, [textInputClass]);
 

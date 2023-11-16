@@ -802,29 +802,35 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const armorSlotModArmorStatMapppings: Partial<
 		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	> = {};
+
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
-		selectedArmorSlotMods[armorSlotId].forEach((id: EModId) => {
-			const { bonuses } = getMod(id) ?? { bonuses: [] };
-			if (bonuses && bonuses.length > 0) {
-				if (armorSlotModArmorStatMapppings[id]) {
-					armorSlotModArmorStatMapppings[id] = {
-						count: armorSlotModArmorStatMapppings[id].count + 1,
-						armorStatMapping: sumArmorStatMappings([
-							armorSlotModArmorStatMapppings[id].armorStatMapping,
-							getArmorStatMappingFromMods([id], selectedDestinyClass),
-						]),
-					};
-				} else {
-					armorSlotModArmorStatMapppings[id] = {
-						count: 1,
-						armorStatMapping: getArmorStatMappingFromMods(
-							[id],
-							selectedDestinyClass
-						),
-					};
+		// Ensure the array exists before iterating
+		const mods = selectedArmorSlotMods[armorSlotId];
+		if (mods) {
+			mods.forEach((id: EModId) => {
+				const { bonuses } = getMod(id) ?? { bonuses: [] };
+				if (bonuses && bonuses.length > 0) {
+					const existingEntry = armorSlotModArmorStatMapppings[id];
+					if (existingEntry) {
+						armorSlotModArmorStatMapppings[id] = {
+							count: existingEntry.count + 1,
+							armorStatMapping: sumArmorStatMappings([
+								existingEntry.armorStatMapping,
+								getArmorStatMappingFromMods([id], selectedDestinyClass),
+							]),
+						};
+					} else {
+						armorSlotModArmorStatMapppings[id] = {
+							count: 1,
+							armorStatMapping: getArmorStatMappingFromMods(
+								[id],
+								selectedDestinyClass
+							),
+						};
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 
 	return (

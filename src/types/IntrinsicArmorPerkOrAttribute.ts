@@ -8,14 +8,14 @@ export enum EIntrinsicArmorPerkOrAttributeGroupName {
 }
 
 export interface IIntrinsicArmorPerkOrAttribute {
-	id: EIntrinsicArmorPerkOrAttributeId;
+	id: EIntrinsicArmorPerkOrAttributeId | null;
 	name: string;
-	armorSlotId: EArmorSlotId;
-	groupName: EIntrinsicArmorPerkOrAttributeGroupName;
+	armorSlotId: EArmorSlotId | null;
+	groupName: EIntrinsicArmorPerkOrAttributeGroupName | null;
 	icon: string;
 	description?: string;
 	season?: number;
-	abbreviation: string;
+	abbreviation: string | null;
 }
 
 const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: EnumDictionary<

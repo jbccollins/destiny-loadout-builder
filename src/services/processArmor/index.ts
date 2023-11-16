@@ -38,11 +38,12 @@ import {
 	ArmorSlotIdToModIdListMapping,
 	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
+import { Profiler } from '@dlb/utils/profiling';
 import { cloneDeep } from 'lodash';
 import { EXTRA_MASTERWORK_STAT_LIST } from './constants';
 import {
 	ArmorStatAndRaidModComboPlacement,
-	getModCombos,
+	getModCombos as _getModCombos,
 } from './getModCombos';
 import {
 	getDefaultSeenArmorSlotItems,
@@ -62,6 +63,10 @@ import {
 	sumModCosts,
 	sumStatLists,
 } from './utils';
+
+const profiler = Profiler.getInstance();
+
+const getModCombos = profiler.withProfiling(_getModCombos);
 
 const _processArmorRecursiveCase = ({
 	desiredArmorStats,
@@ -281,7 +286,7 @@ type ProcessArmorParams = {
 	allClassItemMetadata: AllClassItemMetadata;
 };
 
-const processArmor = ({
+const _processArmor = ({
 	desiredArmorStats,
 	armorItems,
 	sumOfSeenStats,
@@ -320,6 +325,8 @@ const processArmor = ({
 		allClassItemMetadata,
 	});
 };
+
+const processArmor = profiler.withProfiling(_processArmor);
 
 export type ProcessedArmorItemMetadataClassItem = {
 	requiredClassItemMetadataKey: RequiredClassItemMetadataKey;
@@ -453,6 +460,8 @@ export const doProcessArmor = ({
 
 	const totalItemCount = processedArmor.length;
 
+	profiler.dump();
+	profiler.reset();
 	return {
 		items: processedArmor,
 		totalItemCount,

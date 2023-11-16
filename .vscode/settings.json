@@ -29,10 +29,15 @@
     "typescript.tsdk": "node_modules/typescript/lib",
     "cSpell.words": [
         "bungie",
+        "deletereq",
         "destinyitemmanager",
+        "dexie",
+        "keyval",
+        "KOFI",
         "Loadout",
         "loadouts",
         "masterworked",
+        "openreq",
         "reduxjs",
         "resil",
         "socketable"

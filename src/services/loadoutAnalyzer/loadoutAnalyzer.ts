@@ -1362,6 +1362,7 @@ export const getLoadoutsThatCanBeOptimized = (
 	params: GetLoadoutsThatCanBeOptimizedParams
 ): GetLoadoutsThatCanBeOptimizedOutputItem[] => {
 	const result: GetLoadoutsThatCanBeOptimizedOutputItem[] = [];
+	return result;
 	const {
 		loadouts,
 		armor,

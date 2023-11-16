@@ -1,3 +1,5 @@
+import { unauthenticatedHttpClient } from '@dlb/dim/bungie-api/bungie-service-helper';
+import { HttpStatusError } from '@dlb/dim/bungie-api/http-client';
 import { del, get, set } from '@dlb/dim/utils/idb-keyval';
 import { emptyArray, emptyObject } from '@dlb/dim/utils/util';
 import {
@@ -9,8 +11,6 @@ import {
 	getDestinyManifest,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { deepEqual } from 'fast-equals';
-import { unauthenticatedHttpClient } from '../bungie-api/bungie-service-helper';
-import { HttpStatusError } from '../bungie-api/http-client';
 
 // Module-local state
 const localStorageKey = 'd2-manifest-version';

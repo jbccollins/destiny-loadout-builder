@@ -740,7 +740,9 @@ function handleChange() {
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {
+		// console.profile();
 		const results = truncatedDoProcessArmor(doProcessArmorParams);
+		// console.profileEnd();
 		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
 		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
 		store.dispatch(

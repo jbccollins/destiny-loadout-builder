@@ -1,6 +1,6 @@
 // https://stackoverflow.com/a/37580979
 
-import { uniqWith, isEqual } from 'lodash';
+import { isEqual, uniqWith } from 'lodash';
 
 // Find all the permutations of an array
 export function permute<T>(permutation: T[]): T[][] {

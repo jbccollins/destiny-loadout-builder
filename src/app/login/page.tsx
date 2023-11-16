@@ -1,10 +1,12 @@
+'use client';
+
+import discord_image from '@/public/discord-mark-white.png';
 import LoginButton from '@dlb/components/LoginButton';
 import Head from '@dlb/components/Meta/Head';
 import SocialIcon from '@dlb/components/SocialIcon';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
-import discord_image from '@dlb/public/discord-mark-white.png';
 
-import logo_with_padding from '@dlb/public/logo-with-padding.png';
+import logo_with_padding from '@/public/logo-with-padding.png';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Collapse, IconButton, styled } from '@mui/material';
@@ -38,7 +40,7 @@ function Login() {
 				>
 					<Box
 						sx={{
-							// transform: 'translate(50%, 0%)',
+							// transform: "translate(50%, 0%)",
 							margin: 'auto',
 							marginBottom: '8px',
 							width: 120,
@@ -55,8 +57,7 @@ function Login() {
 							alt="me"
 							height="100"
 							width="100"
-							objectFit="contain"
-							objectPosition="left"
+							className="objectFit-contain objectPosition-center"
 						/>
 					</Box>
 					<Box
@@ -70,11 +71,11 @@ function Login() {
 						Build optimized loadouts for Destiny 2!
 					</Box>
 					{/* <Box
-					sx={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px' }}
+					sx={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}
 				>
 					Permission Required
 				</Box>
-				<Box sx={{ fontSize: '16px', marginBottom: '32px' }}>
+				<Box sx={{ fontSize: "16px", marginBottom: "32px" }}>
 					Allow destinyloadoutbuilder.com to view your Destiny inventory and
 					vault
 				</Box> */}

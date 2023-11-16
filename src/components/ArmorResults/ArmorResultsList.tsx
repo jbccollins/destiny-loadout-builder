@@ -1,10 +1,11 @@
+'use client';
+
 import ModPlacement from '@dlb/components//ModPlacement';
 import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
 import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { DimIcon } from '@dlb/public/dim_logo.svgicon';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
@@ -48,7 +49,6 @@ import {
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
-import { MISSING_ICON } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
 	EArmorStatId,
@@ -57,17 +57,19 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
+import { MISSING_ICON } from '@dlb/types/globals';
 import { getBonusResilienceOrnamentByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
+import { DimIcon } from 'public/dim_logo.svgicon';
 import React from 'react';
-import { getClassItemText, ResultsTableLoadout } from './ArmorResultsTypes';
+import { ResultsTableLoadout, getClassItemText } from './ArmorResultsTypes';
 import {
-	getSortableFieldDisplayName,
 	SortableFieldsDisplayOrder,
+	getSortableFieldDisplayName,
 } from './ArmorResultsView';
 
 type ArmorResultsListProps = {
@@ -174,7 +176,7 @@ const LoadoutDetails = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	height: '350px',
 	marginLeft: '80px',
-	// overflowX: 'auto',
+	// overflowX: "auto",
 }));
 
 const RecommendedLoadoutHeader = styled(Box)(({ theme }) => ({
@@ -241,15 +243,11 @@ function ResultsItem({
 	> = {};
 	const modCounts: Partial<Record<EModId, number>> = {};
 	item.requiredStatModIdList.forEach((id) => {
-		if (!modCounts[id]) {
-			modCounts[id] = 1;
-		} else {
-			modCounts[id] += 1;
-		}
+		modCounts[id] = (modCounts[id] ?? 0) + 1;
 	});
 	Object.keys(modCounts).forEach((armorStatModId: EModId) => {
 		const statModIds: EModId[] = [];
-		const count = modCounts[armorStatModId];
+		const count = modCounts[armorStatModId] ?? 0;
 		for (let i = 0; i < count; i++) {
 			statModIds.push(armorStatModId);
 			armorStatModArmorStatMappings[armorStatModId] = {
@@ -264,11 +262,7 @@ function ResultsItem({
 
 	const artificeModCounts: Partial<Record<EModId, number>> = {};
 	item.requiredArtificeModIdList.forEach((id) => {
-		if (!artificeModCounts[id]) {
-			artificeModCounts[id] = 1;
-		} else {
-			artificeModCounts[id] += 1;
-		}
+		artificeModCounts[id] = (artificeModCounts[id] ?? 0) + 1;
 	});
 
 	const getExtraMasterworkedStatsBreakdown = () => {
@@ -388,8 +382,8 @@ function ResultsItem({
 					(x) => !ArmorStatIdList.includes(x as EArmorStatId)
 				).map((sortableFieldKey) => {
 					return (
-						<Box sx={{ fontWeight: '500' }} key={sortableFieldKey}>
-							{getSortableFieldDisplayName(sortableFieldKey)}:{' '}
+						<Box sx={{ fontWeight: "500" }} key={sortableFieldKey}>
+							{getSortableFieldDisplayName(sortableFieldKey)}:{" "}
 							{item.sortableFields[sortableFieldKey]}
 						</Box>
 					);
@@ -441,7 +435,7 @@ function ResultsItem({
 						flexBasis: '100%',
 						display: 'flex',
 						flexWrap: 'wrap',
-						// justifyContent: 'space-between',
+						// justifyContent: "space-between",
 					}}
 				>
 					<Button
@@ -512,7 +506,7 @@ function ResultsItem({
 			</ResultsSection>
 			<ResultsSection
 				fullWidth
-				// sx={{ marginTop: showModPlacement ? '8px' : '0px' }}
+				// sx={{ marginTop: showModPlacement ? "8px" : "0px" }}
 			>
 				<Box
 					onClick={() =>
@@ -620,13 +614,14 @@ function ResultsItem({
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
 												isZero={
-													fragmentArmorStatMappings[fragmentId][armorStatId] ===
-													0
+													fragmentArmorStatMappings?.[fragmentId]?.[
+														armorStatId
+													] === 0
 												}
 												key={armorStatId}
 												className="stats-breakdown"
 											>
-												{fragmentArmorStatMappings[fragmentId][armorStatId]}
+												{fragmentArmorStatMappings?.[fragmentId]?.[armorStatId]}
 											</StatsBreakdownItem>
 										))}
 										<StatsBreakdownItem>
@@ -653,23 +648,27 @@ function ResultsItem({
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
 												isZero={
-													armorStatModArmorStatMappings[armorStatModId]
-														.armorStatMapping[armorStatId] === 0
+													armorStatModArmorStatMappings?.[armorStatModId]
+														?.armorStatMapping[armorStatId] === 0
 												}
 												key={armorStatId}
 												className="stats-breakdown"
 											>
 												{
-													armorStatModArmorStatMappings[armorStatModId]
-														.armorStatMapping[armorStatId]
+													armorStatModArmorStatMappings?.[armorStatModId]
+														?.armorStatMapping[armorStatId]
 												}
 											</StatsBreakdownItem>
 										))}
 										<StatsBreakdownItem>
 											<Description>
 												{getMod(armorStatModId).name}
-												{armorStatModArmorStatMappings[armorStatModId].count > 1
-													? ` (x${armorStatModArmorStatMappings[armorStatModId].count})`
+												{(armorStatModArmorStatMappings[armorStatModId]
+													?.count ?? 0) > 1
+													? ` (x${
+															armorStatModArmorStatMappings[armorStatModId]
+																?.count ?? 0
+													  })`
 													: ''}
 											</Description>
 										</StatsBreakdownItem>
@@ -803,29 +802,35 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const armorSlotModArmorStatMapppings: Partial<
 		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	> = {};
+
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
-		selectedArmorSlotMods[armorSlotId].forEach((id: EModId) => {
-			const { bonuses } = getMod(id) ?? { bonuses: [] };
-			if (bonuses && bonuses.length > 0) {
-				if (armorSlotModArmorStatMapppings[id]) {
-					armorSlotModArmorStatMapppings[id] = {
-						count: armorSlotModArmorStatMapppings[id].count + 1,
-						armorStatMapping: sumArmorStatMappings([
-							armorSlotModArmorStatMapppings[id].armorStatMapping,
-							getArmorStatMappingFromMods([id], selectedDestinyClass),
-						]),
-					};
-				} else {
-					armorSlotModArmorStatMapppings[id] = {
-						count: 1,
-						armorStatMapping: getArmorStatMappingFromMods(
-							[id],
-							selectedDestinyClass
-						),
-					};
+		// Ensure the array exists before iterating
+		const mods = selectedArmorSlotMods[armorSlotId];
+		if (mods) {
+			mods.forEach((id: EModId) => {
+				const { bonuses } = getMod(id) ?? { bonuses: [] };
+				if (bonuses && bonuses.length > 0) {
+					const existingEntry = armorSlotModArmorStatMapppings[id];
+					if (existingEntry) {
+						armorSlotModArmorStatMapppings[id] = {
+							count: existingEntry.count + 1,
+							armorStatMapping: sumArmorStatMappings([
+								existingEntry.armorStatMapping,
+								getArmorStatMappingFromMods([id], selectedDestinyClass),
+							]),
+						};
+					} else {
+						armorSlotModArmorStatMapppings[id] = {
+							count: 1,
+							armorStatMapping: getArmorStatMappingFromMods(
+								[id],
+								selectedDestinyClass
+							),
+						};
+					}
 				}
-			}
-		});
+			});
+		}
 	});
 
 	return (
@@ -864,21 +869,11 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 								useBonusResilience: _useBonusResilience,
 								destinySubclassId,
 								destinyClassId: selectedDestinyClass,
-								jumpId: destinySubclassId
-									? selectedJump[destinySubclassId]
-									: null,
-								meleeId: destinySubclassId
-									? selectedMelee[destinySubclassId]
-									: null,
-								superAbilityId: destinySubclassId
-									? selectedSuperAbility[destinySubclassId]
-									: null,
-								classAbilityId: destinySubclassId
-									? selectedClassAbility[destinySubclassId]
-									: null,
-								grenadeId: destinySubclassId
-									? selectedGrenade[destinySubclassId]
-									: null,
+								jumpId: selectedJump[destinySubclassId],
+								meleeId: selectedMelee[destinySubclassId],
+								superAbilityId: selectedSuperAbility[destinySubclassId],
+								classAbilityId: selectedClassAbility[destinySubclassId],
+								grenadeId: selectedGrenade[destinySubclassId],
 								classItem: item.classItem,
 								classItemMetadata: classItemMetadata,
 							})}`}

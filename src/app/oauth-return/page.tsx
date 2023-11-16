@@ -1,7 +1,9 @@
+'use client';
+
 import Head from '@dlb/components/Meta/Head';
 import { getAccessTokenFromCode } from '@dlb/dim/bungie-api/oauth';
 import { Box, CircularProgress, styled } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 const Container = styled(Box)(() => ({
@@ -21,7 +23,8 @@ const CircularProgressWrapper = styled(Box)(() => ({
 
 function OauthReturn() {
 	const router = useRouter();
-	const { code } = router.query;
+	const searchParams = useSearchParams();
+	const code = searchParams.get('code');
 
 	useEffect(() => {
 		(async () => {
@@ -31,13 +34,13 @@ function OauthReturn() {
 					router.push('/');
 				} else {
 					// TODO: Better error handling
-					// alert('No code found in url params');
+					// alert("No code found in url params");
 					console.warn('No code found in url params, retrying...');
 				}
 			} catch (e) {
 				// TODO redirect only on the right kind of error
-				// Test by deleting 'authorization' from localStorage
-				// router.push('/login');
+				// Test by deleting "authorization" from localStorage
+				// router.push("/login");
 				// console.error(e);
 			}
 		})();
@@ -45,7 +48,7 @@ function OauthReturn() {
 		return () => {
 			// this now gets called when the component unmounts
 		};
-	}, [code, router, router.query]);
+	}, [code, router, code]);
 
 	return (
 		<>

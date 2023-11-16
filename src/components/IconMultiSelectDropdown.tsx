@@ -1,3 +1,5 @@
+'use client';
+
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { IArmorStat } from '@dlb/types/ArmorStat';
 import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';
@@ -22,8 +24,8 @@ const selectedCheckboxIcon = <CheckBoxIcon fontSize="small" />;
 const Container = styled(Box)(({ theme }) => ({
 	//color: theme.palette.primary.main,
 	padding: theme.spacing(1),
-	// display: 'flex',
-	// justifyContent: 'left',
+	// display: "flex",
+	// justifyContent: "left",
 }));
 
 const MenuItemContent = styled('div')(({ theme }) => ({
@@ -37,13 +39,13 @@ const MenuItemRow = styled('div')(({ theme }) => ({
 	display: 'flex',
 	alignItems: 'center',
 	flexWrap: 'nowrap',
-	// textTransform: 'capitalize'
+	// textTransform: "capitalize"
 }));
 
 const MenuItemText = styled('div')(({ theme }) => ({
 	marginLeft: theme.spacing(1),
 	whiteSpace: 'initial',
-	// textTransform: 'capitalize'
+	// textTransform: "capitalize"
 }));
 
 const Tag = styled(Box)(({ theme }) => ({
@@ -109,7 +111,7 @@ export default function IconMultiSelectDropdown({
 			target: { value },
 		} = event;
 		// On autofill we get a stringified value.
-		// typeof value === 'string' ? value.split(',') : value,
+		// typeof value === "string" ? value.split(",") : value,
 		onChange((value as string[]).filter((id) => id != PLACEHOLDER_OPTION));
 	};
 
@@ -215,9 +217,11 @@ export default function IconMultiSelectDropdown({
 							key={optionValue.id}
 							value={optionValue.id}
 							disabled={
-								!isChecked &&
-								maxSelectionCount &&
-								value.length >= maxSelectionCount
+								!!(
+									!isChecked &&
+									maxSelectionCount &&
+									value.length >= maxSelectionCount
+								)
 							}
 							//style={getStyles(name, personName, theme)}
 						>

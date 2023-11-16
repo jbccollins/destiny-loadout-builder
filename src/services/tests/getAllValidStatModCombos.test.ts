@@ -238,7 +238,7 @@ const testCases: TestCase[] = [
 	],
 	// TODO: Add back in redundancy tests
 	// [
-	// 	'Two stats with redundancy',
+	// 	"Two stats with redundancy",
 	// 	[
 	// 		{
 	// 			targetStatShortfalls: {
@@ -302,7 +302,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	'Four stats with artifice mods and redundancy',
+	// 	"Four stats with artifice mods and redundancy",
 	// 	[
 	// 		{
 	// 			targetStatShortfalls: {
@@ -463,7 +463,7 @@ const testCases: TestCase[] = [
 	// ],
 ];
 
-// const nameOfTestToDebug = 'Base case';
+// const nameOfTestToDebug = "Base case";
 const nameOfTestToDebug = null;
 describe('getAllValidStatModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug

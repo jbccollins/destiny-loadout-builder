@@ -1,7 +1,9 @@
+'use client';
+
+import discord_image from '@/public/discord-mark-white.png';
 import Head from '@dlb/components/Meta/Head';
 import SocialIcon from '@dlb/components/SocialIcon';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
-import discord_image from '@dlb/public/discord-mark-white.png';
 import { selectLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { Box, Button, styled } from '@mui/material';

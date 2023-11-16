@@ -1,116 +1,116 @@
-import { Loadout } from '@destinyitemmanager/dim-api-types';
-import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
-import { UNSET_PLUG_HASH } from '@dlb/dim/utils/constants';
-import { EAspectId } from '@dlb/generated/aspect/EAspectId';
-import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
-import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
-import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
-import { EJumpId } from '@dlb/generated/jump/EJumpId';
-import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
-import { EModId } from '@dlb/generated/mod/EModId';
-import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { Loadout } from "@destinyitemmanager/dim-api-types";
+import { BucketHashes } from "@dlb/dim/data/d2/generated-enums";
+import { UNSET_PLUG_HASH } from "@dlb/dim/utils/constants";
+import { EAspectId } from "@dlb/generated/aspect/EAspectId";
+import { EClassAbilityId } from "@dlb/generated/classAbility/EClassAbilityId";
+import { EFragmentId } from "@dlb/generated/fragment/EFragmentId";
+import { EGrenadeId } from "@dlb/generated/grenade/EGrenadeId";
+import { EJumpId } from "@dlb/generated/jump/EJumpId";
+import { EMeleeId } from "@dlb/generated/melee/EMeleeId";
+import { EModId } from "@dlb/generated/mod/EModId";
+import { ESuperAbilityId } from "@dlb/generated/superAbility/ESuperAbilityId";
 import {
-	InGameLoadoutsDefinitions,
-	InGameLoadoutsMapping,
-} from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+  InGameLoadoutsDefinitions,
+  InGameLoadoutsMapping,
+} from "@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice";
 import {
-	ArmorSlotEnergyMapping,
-	getDefaultArmorSlotEnergyMapping,
-} from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+  ArmorSlotEnergyMapping,
+  getDefaultArmorSlotEnergyMapping,
+} from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
 
 import {
-	doProcessArmor,
-	DoProcessArmorParams,
-	preProcessArmor,
-} from '@dlb/services/processArmor';
+  doProcessArmor,
+  DoProcessArmorParams,
+  preProcessArmor,
+} from "@dlb/services/processArmor";
 import {
-	ArmorStatAndRaidModComboPlacement,
-	getDefaultModPlacements,
-} from '@dlb/services/processArmor/getModCombos';
+  ArmorStatAndRaidModComboPlacement,
+  getDefaultModPlacements,
+} from "@dlb/services/processArmor/getModCombos";
 import {
-	getWastedStats,
-	roundDown10,
-	sumModCosts,
-} from '@dlb/services/processArmor/utils';
+  getWastedStats,
+  roundDown10,
+  sumModCosts,
+} from "@dlb/services/processArmor/utils";
 import {
-	AnalyzableLoadout,
-	AnalyzableLoadoutBreakdown,
-	ELoadoutOptimizationCategoryId,
-	ELoadoutType,
-	getDefaultAnalyzableLoadout,
-	getLoadoutOptimizationCategory,
-	SeverityOrderedLoadoutOptimizationCategoryIdList,
-} from '@dlb/types/AnalyzableLoadout';
+  AnalyzableLoadout,
+  AnalyzableLoadoutBreakdown,
+  ELoadoutOptimizationCategoryId,
+  ELoadoutType,
+  getDefaultAnalyzableLoadout,
+  getLoadoutOptimizationCategory,
+  SeverityOrderedLoadoutOptimizationCategoryIdList,
+} from "@dlb/types/AnalyzableLoadout";
 import {
-	AllClassItemMetadata,
-	Armor,
-	ArmorItem,
-	AvailableExoticArmor,
-	AvailableExoticArmorItem,
-	DestinyClassToAllClassItemMetadataMapping,
-	getExtraMasterworkedStats,
-	StrictArmorItems,
-} from '@dlb/types/Armor';
+  AllClassItemMetadata,
+  Armor,
+  ArmorItem,
+  AvailableExoticArmor,
+  AvailableExoticArmorItem,
+  DestinyClassToAllClassItemMetadataMapping,
+  getExtraMasterworkedStats,
+  StrictArmorItems,
+} from "@dlb/types/Armor";
 import {
-	ArmorSlotIdList,
-	ArmorSlotWithClassItemIdList,
-} from '@dlb/types/ArmorSlot';
+  ArmorSlotIdList,
+  ArmorSlotWithClassItemIdList,
+} from "@dlb/types/ArmorSlot";
 import {
-	ArmorStatIdList,
-	ArmorStatIndices,
-	ArmorStatMapping,
-	getArmorStatIdFromBungieHash,
-	getArmorStatMappingFromFragments,
-	getArmorStatMappingFromMods,
-	getDefaultArmorStatMapping,
-} from '@dlb/types/ArmorStat';
-import { getAspect, getAspectByHash } from '@dlb/types/Aspect';
-import { Character, Characters } from '@dlb/types/Character';
-import { getClassAbilityByHash } from '@dlb/types/ClassAbility';
+  ArmorStatIdList,
+  ArmorStatIndices,
+  ArmorStatMapping,
+  getArmorStatIdFromBungieHash,
+  getArmorStatMappingFromFragments,
+  getArmorStatMappingFromMods,
+  getDefaultArmorStatMapping,
+} from "@dlb/types/ArmorStat";
+import { getAspect, getAspectByHash } from "@dlb/types/Aspect";
+import { Character, Characters } from "@dlb/types/Character";
+import { getClassAbilityByHash } from "@dlb/types/ClassAbility";
 import {
-	DestinyClassIdList,
-	getDestinyClassIdByDestinySubclassId,
-} from '@dlb/types/DestinyClass';
+  DestinyClassIdList,
+  getDestinyClassIdByDestinySubclassId,
+} from "@dlb/types/DestinyClass";
 import {
-	getDestinySubclassByHash,
-	oldToNewSubclassHashes,
-} from '@dlb/types/DestinySubclass';
-import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
-import { getFragmentByHash } from '@dlb/types/Fragment';
-import { EnumDictionary, ValidateEnumList } from '@dlb/types/globals';
-import { getGrenadeByHash } from '@dlb/types/Grenade';
+  getDestinySubclassByHash,
+  oldToNewSubclassHashes,
+} from "@dlb/types/DestinySubclass";
+import { DestinyClassHashToDestinyClass } from "@dlb/types/External";
+import { getFragmentByHash } from "@dlb/types/Fragment";
+import { EnumDictionary, ValidateEnumList } from "@dlb/types/globals";
+import { getGrenadeByHash } from "@dlb/types/Grenade";
 import {
-	EArmorSlotId,
-	EArmorStatId,
-	EDestinyClassId,
-	EDestinySubclassId,
-	EDimLoadoutsFilterId,
-	EGearTierId,
-	EInGameLoadoutsFilterId,
-	EIntrinsicArmorPerkOrAttributeId,
-	EMasterworkAssumption,
-	EModSocketCategoryId,
-} from '@dlb/types/IdEnums';
-import { getJumpByHash } from '@dlb/types/Jump';
-import { getMeleeByHash } from '@dlb/types/Melee';
+  EArmorSlotId,
+  EArmorStatId,
+  EDestinyClassId,
+  EDestinySubclassId,
+  EDimLoadoutsFilterId,
+  EGearTierId,
+  EInGameLoadoutsFilterId,
+  EIntrinsicArmorPerkOrAttributeId,
+  EMasterworkAssumption,
+  EModSocketCategoryId,
+} from "@dlb/types/IdEnums";
+import { getJumpByHash } from "@dlb/types/Jump";
+import { getMeleeByHash } from "@dlb/types/Melee";
 import {
-	ArmorChargeAcquisitionModIdList,
-	ArmorChargeSpendModIdList,
-	ArmorSlotIdToModIdListMapping,
-	FontModIdList,
-	getMod,
-	getModByHash,
-	getValidRaidModArmorSlotPlacements,
-	hasActiveSeasonReducedCostVariantMods,
-	hasAlternateSeasonReducedCostVariantMods,
-	hasMutuallyExclusiveMods,
-	NonArtifactArmorSlotModIdList,
-	replaceAllModsThatDimWillReplace,
-	replaceAllReducedCostVariantMods,
-} from '@dlb/types/Mod';
-import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
-import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
-import { isEmpty } from 'lodash';
+  ArmorChargeAcquisitionModIdList,
+  ArmorChargeSpendModIdList,
+  ArmorSlotIdToModIdListMapping,
+  FontModIdList,
+  getMod,
+  getModByHash,
+  getValidRaidModArmorSlotPlacements,
+  hasActiveSeasonReducedCostVariantMods,
+  hasAlternateSeasonReducedCostVariantMods,
+  hasMutuallyExclusiveMods,
+  NonArtifactArmorSlotModIdList,
+  replaceAllModsThatDimWillReplace,
+  replaceAllReducedCostVariantMods,
+} from "@dlb/types/Mod";
+import { getSuperAbilityByHash } from "@dlb/types/SuperAbility";
+import { getBonusResilienceOrnamentHashByDestinyClassId } from "@dlb/utils/bonus-resilience-ornaments";
+import { isEmpty } from "lodash";
 
 // A loadout that has some armor, mods or subclass options selected is considered valid
 // If a loadout just contains weapons, shaders, etc. then it is considered invalid
@@ -147,7 +147,7 @@ const flattenArmor = (
 	let armorItems: ArmorItem[] = [];
 	DestinyClassIdList.forEach((destinyClassId) => {
 		ArmorSlotIdList.forEach((armorSlotId) => {
-			['exotic', 'nonExotic'].forEach((exoticOrNonExotic) => {
+			["exotic", "nonExotic"].forEach((exoticOrNonExotic) => {
 				armorItems = armorItems.concat(
 					Object.values(armor[destinyClassId][armorSlotId][exoticOrNonExotic])
 				);
@@ -209,7 +209,7 @@ type ExtractDimLoadoutsParams = {
 const extractDimLoadouts = (
 	params: ExtractDimLoadoutsParams
 ): AnalyzableLoadout[] => {
-	console.log('>>>>>> begin extractDimLoadouts');
+	console.log(">>>>>> begin extractDimLoadouts");
 	const {
 		dimLoadouts,
 		armorItems,
@@ -221,7 +221,7 @@ const extractDimLoadouts = (
 		return [];
 	}
 	dimLoadouts.forEach((dimLoadout) => {
-		console.log('>>>>>> dimLoadout', dimLoadout);
+		console.log(">>>>>> dimLoadout", dimLoadout);
 		const destinyClassId =
 			DestinyClassHashToDestinyClass[dimLoadout.classType] || null; // Loadouts with just weapons don't need to have a class type
 
@@ -410,7 +410,7 @@ const extractDimLoadouts = (
 					);
 				}
 				// console.warn({
-				// 	message: 'Could not find mod',
+				// 	message: "Could not find mod",
 				// 	loadoutId: loadout.id,
 				// 	modHash: hash,
 				// });
@@ -423,7 +423,7 @@ const extractDimLoadouts = (
 				);
 				if (idx === -1) {
 					console.warn({
-						message: 'Could not find null value in armorSlotMods',
+						message: "Could not find null value in armorSlotMods",
 						loadoutId: loadout.id,
 						modId: mod.id,
 						armorSlotId: mod.armorSlotId,
@@ -437,7 +437,7 @@ const extractDimLoadouts = (
 				const idx = loadout.raidMods.findIndex((x) => x === null);
 				if (idx === -1) {
 					console.warn({
-						message: 'Could not find null value in raidMods',
+						message: "Could not find null value in raidMods",
 						loadoutId: loadout.id,
 						modId: mod.id,
 					});
@@ -495,7 +495,7 @@ const extractDimLoadouts = (
 		loadout.achievedStats = achievedStats;
 		loadouts.push(loadout);
 	});
-	console.log('>>>>>> end extractDimLoadouts');
+	console.log(">>>>>> end extractDimLoadouts");
 	return loadouts;
 };
 
@@ -525,9 +525,9 @@ const extractDimLoadouts = (
 	11: Fragment
 */
 enum EInGameLoadoutItemType {
-	WEAPON = 'WEAPON',
-	ARMOR = 'ARMOR',
-	SUBCLASS = 'SUBCLASS',
+	WEAPON = "WEAPON",
+	ARMOR = "ARMOR",
+	SUBCLASS = "SUBCLASS",
 }
 const getInGameLoadoutItemTypeFromIndex = (
 	index: number
@@ -560,7 +560,7 @@ type ExtractInGameLoadoutsParams = {
 const extractInGameLoadouts = (
 	params: ExtractInGameLoadoutsParams
 ): AnalyzableLoadout[] => {
-	console.log('>>>>>> begin extractInGameLoadouts');
+	console.log(">>>>>> begin extractInGameLoadouts");
 	const {
 		inGameLoadouts,
 		inGameLoadoutsDefinitions,
@@ -580,7 +580,7 @@ const extractInGameLoadouts = (
 		}
 		const destinyClassId = character.destinyClassId;
 		characterLoadouts.loadouts.forEach((inGameLoadout, index) => {
-			console.log('>>>>>> inGameLoadout', inGameLoadout);
+			console.log(">>>>>> inGameLoadout", inGameLoadout);
 			// This nameHash check catches empty loadouts. It is not possible
 			// to create a loadout without a name in-game.
 			if (!inGameLoadout || inGameLoadout.nameHash === UNSET_PLUG_HASH) {
@@ -674,7 +674,7 @@ const extractInGameLoadouts = (
 									);
 									if (idx === -1) {
 										console.warn({
-											message: 'Could not find null value in armorSlotMods',
+											message: "Could not find null value in armorSlotMods",
 											loadoutId: loadout.id,
 											modId: mod.id,
 											armorSlotId: mod.armorSlotId,
@@ -693,7 +693,7 @@ const extractInGameLoadouts = (
 									const idx = loadout.raidMods.findIndex((x) => x === null);
 									if (idx === -1) {
 										console.warn({
-											message: 'Could not find null value in raidMods',
+											message: "Could not find null value in raidMods",
 											loadoutId: loadout.id,
 											modId: mod.id,
 										});
@@ -812,7 +812,7 @@ const extractInGameLoadouts = (
 			loadouts.push(loadout);
 		});
 	});
-	console.log('>>>>>> end extractInGameLoadouts');
+	console.log(">>>>>> end extractInGameLoadouts");
 	return loadouts;
 };
 
@@ -913,25 +913,25 @@ const generatePreProcessedArmor = (
 };
 
 export enum ELoadoutOptimizationTypeId {
-	HigherStatTier = 'HigherStatTier',
-	LowerCost = 'LowerCost',
-	MissingArmor = 'MissingArmor',
-	NoExoticArmor = 'NoExoticArmor',
-	DeprecatedMods = 'DeprecatedMods',
-	StatsOver100 = 'StatsOver100',
-	UnusedFragmentSlots = 'UnusedFragmentSlots',
-	UnspecifiedAspect = 'UnspecifiedAspect',
-	UnmetDIMStatConstraints = 'UnmetDIMStatConstraints',
-	UnusableMods = 'UnusableMods',
-	UnmasterworkedArmor = 'UnmasterworkedArmor',
-	FewerWastedStats = 'FewerWastedStats',
-	InvalidLoadoutConfiguration = 'InvalidLoadoutConfiguration',
-	MutuallyExclusiveMods = 'MutuallyExclusiveMods',
-	UnusedModSlots = 'UnusedModSlots',
-	Doomed = 'Doomed',
-	ManuallyCorrectableDoomed = 'ManuallyCorrectableDoomed',
-	None = 'None',
-	Error = 'Error',
+	HigherStatTier = "HigherStatTier",
+	LowerCost = "LowerCost",
+	MissingArmor = "MissingArmor",
+	NoExoticArmor = "NoExoticArmor",
+	DeprecatedMods = "DeprecatedMods",
+	StatsOver100 = "StatsOver100",
+	UnusedFragmentSlots = "UnusedFragmentSlots",
+	UnspecifiedAspect = "UnspecifiedAspect",
+	UnmetDIMStatConstraints = "UnmetDIMStatConstraints",
+	UnusableMods = "UnusableMods",
+	UnmasterworkedArmor = "UnmasterworkedArmor",
+	FewerWastedStats = "FewerWastedStats",
+	InvalidLoadoutConfiguration = "InvalidLoadoutConfiguration",
+	MutuallyExclusiveMods = "MutuallyExclusiveMods",
+	UnusedModSlots = "UnusedModSlots",
+	Doomed = "Doomed",
+	ManuallyCorrectableDoomed = "ManuallyCorrectableDoomed",
+	None = "None",
+	Error = "Error",
 }
 
 export interface ILoadoutOptimization {
@@ -1081,134 +1081,134 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 > = {
 	[ELoadoutOptimizationTypeId.HigherStatTier]: {
 		id: ELoadoutOptimizationTypeId.HigherStatTier,
-		name: 'Higher Stat Tier',
+		name: "Higher Stat Tier",
 		description:
-			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve higher stat tiers.',
+			"Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve higher stat tiers.",
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
 	},
 	[ELoadoutOptimizationTypeId.LowerCost]: {
 		id: ELoadoutOptimizationTypeId.LowerCost,
-		name: 'Lower Cost',
+		name: "Lower Cost",
 		description:
-			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers for a lower total stat mod cost.',
+			"Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers for a lower total stat mod cost.",
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
 	},
 	[ELoadoutOptimizationTypeId.FewerWastedStats]: {
 		id: ELoadoutOptimizationTypeId.FewerWastedStats,
-		name: 'Fewer Wasted Stats',
+		name: "Fewer Wasted Stats",
 		description:
-			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers but with fewer wasted stats. Any stat that does not end in a 0 is considered a wasted stat. For example, 89 Recovery provides the same benefit as 80 Recovery so there are 9 wasted stats. Reducing wasted stats may not increase the stat tiers that you are able to achieve, but it does look aesthetically nice to have all your stats end in a 0 :)',
+			"Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers but with fewer wasted stats. Any stat that does not end in a 0 is considered a wasted stat. For example, 89 Recovery provides the same benefit as 80 Recovery so there are 9 wasted stats. Reducing wasted stats may not increase the stat tiers that you are able to achieve, but it does look aesthetically nice to have all your stats end in a 0 :)",
 		category: ELoadoutOptimizationCategoryId.COSMETIC,
 	},
 	[ELoadoutOptimizationTypeId.MissingArmor]: {
 		id: ELoadoutOptimizationTypeId.MissingArmor,
-		name: 'Missing Armor',
+		name: "Missing Armor",
 		description:
-			'This loadout is missing one or more armor pieces. You may have deleted armor pieces that were in this loadout.',
+			"This loadout is missing one or more armor pieces. You may have deleted armor pieces that were in this loadout.",
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.NoExoticArmor]: {
 		id: ELoadoutOptimizationTypeId.NoExoticArmor,
-		name: 'No Exotic Armor',
+		name: "No Exotic Armor",
 		description:
-			'This loadout does not have an exotic armor piece. You may have deleted the exotic armor piece that was in this loadout.',
+			"This loadout does not have an exotic armor piece. You may have deleted the exotic armor piece that was in this loadout.",
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.DeprecatedMods]: {
 		id: ELoadoutOptimizationTypeId.DeprecatedMods,
-		name: 'Deprecated Mods',
+		name: "Deprecated Mods",
 		description:
-			'This loadout uses mods that are no longer in the game. This usually means you had an old "Charged With Light", "Warmind Cell", or "Elemental Well" mod equipped.',
+			"This loadout uses mods that are no longer in the game. This usually means you had an old 'Charged With Light', 'Warmind Cell', or 'Elemental Well' mod equipped.",
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.UnspecifiedAspect]: {
 		id: ELoadoutOptimizationTypeId.UnspecifiedAspect,
-		name: 'Unused Aspect Slot',
+		name: "Unused Aspect Slot",
 		description:
-			'This loadout only specifies one aspect. Consider adding another aspect to this loadout.',
+			"This loadout only specifies one aspect. Consider adding another aspect to this loadout.",
 		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationTypeId.StatsOver100]: {
 		id: ELoadoutOptimizationTypeId.StatsOver100,
-		name: 'Stats Over 100',
+		name: "Stats Over 100",
 		description:
 			"This loadout has one or more stats of 110 or higher. There is likely a way to shuffle mods around to avoid wasting an entire stat tier's worth of stat points.",
 		category: ELoadoutOptimizationCategoryId.COSMETIC,
 	},
 	[ELoadoutOptimizationTypeId.UnusedFragmentSlots]: {
 		id: ELoadoutOptimizationTypeId.UnusedFragmentSlots,
-		name: 'Unused Fragment Slots',
+		name: "Unused Fragment Slots",
 		description:
 			"This loadout has one or more unused fragment slots. Occasionally Bungie adds more fragment slots to an aspect. You may want to add another fragment, it's free real estate!",
 		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationTypeId.UnmetDIMStatConstraints]: {
 		id: ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
-		name: 'Unmet DIM Stat Constraints',
+		name: "Unmet DIM Stat Constraints",
 		description:
-			'[DIM Loadout Specific] This loadout was created using DIM\'s "Loadout Optimizer" tool, or another similar tool. At the time that this loadout was created, you were able to hit higher stat tiers that you can currently hit. This can happen when Bungie adds stat penalties to an existing fragment that is part of your loadout.',
+			"[DIM Loadout Specific] This loadout was created using DIM\"s 'Loadout Optimizer' tool, or another similar tool. At the time that this loadout was created, you were able to hit higher stat tiers that you can currently hit. This can happen when Bungie adds stat penalties to an existing fragment that is part of your loadout.",
 		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationTypeId.UnusableMods]: {
 		id: ELoadoutOptimizationTypeId.UnusableMods,
-		name: 'Unusable Mods',
+		name: "Unusable Mods",
 		description:
-			'[D2 Loadout Specific] This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks.',
+			"[D2 Loadout Specific] This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks.",
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.UnmasterworkedArmor]: {
 		id: ELoadoutOptimizationTypeId.UnmasterworkedArmor,
-		name: 'Unmasterworked Armor',
+		name: "Unmasterworked Armor",
 		description:
-			'This loadout contains unmasterworked armor. Masterworking armor provides a +2 bonus to all stats and adds additional energy capacity to the armor. Masterworking armor in this loadout may allow you to socket more expensive mods which may be beneficial to your build.',
+			"This loadout contains unmasterworked armor. Masterworking armor provides a +2 bonus to all stats and adds additional energy capacity to the armor. Masterworking armor in this loadout may allow you to socket more expensive mods which may be beneficial to your build.",
 		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration]: {
 		id: ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
-		name: 'Invalid Loadout Configuration',
+		name: "Invalid Loadout Configuration",
 		description:
 			"Something about this loadout is not configured correctly and no combination of armor pieces can make it valid. This should theoretically never happen for D2 Loadouts. If this is a DIM loadout, this can happen if you created a loadout using discounted mods from an old season. DIM will automatically attempt swap over to using the full cost variants of such mods. When DIM does such a swap, there sometimes won't be enough armor energy capacity to slot the full cost variants, which results in this optimization type. In rare cases this can happen if you somehow managed to create a loadout where the total mod cost for a given armor slot exceeded 10. This would likely only happen if there was a bug in DIM or another third party loadout creation tool.",
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.MutuallyExclusiveMods]: {
 		id: ELoadoutOptimizationTypeId.MutuallyExclusiveMods,
-		name: 'Mutually Exclusive Mods',
+		name: "Mutually Exclusive Mods",
 		description:
-			'This loadout uses mods that are mutually exclusive. This is rare, but can happen if Bungie decides to make two mods mutually exclusive after you have already equipped both of them together. It can also happen if there is a bug in DIM or another third party loadout creation tool that let you create a loadout with such mods.',
+			"This loadout uses mods that are mutually exclusive. This is rare, but can happen if Bungie decides to make two mods mutually exclusive after you have already equipped both of them together. It can also happen if there is a bug in DIM or another third party loadout creation tool that let you create a loadout with such mods.",
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
 	},
 	[ELoadoutOptimizationTypeId.UnusedModSlots]: {
 		id: ELoadoutOptimizationTypeId.UnusedModSlots,
-		name: 'Unused Mod Slots',
+		name: "Unused Mod Slots",
 		description:
 			"This loadout has space to slot additional mods. It's free real estate!",
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
 	},
 	[ELoadoutOptimizationTypeId.Doomed]: {
 		id: ELoadoutOptimizationTypeId.Doomed,
-		name: 'Doomed Loadout',
+		name: "Doomed Loadout",
 		description:
-			'This loadout uses discounted mods from the current season that will become unavailable once the season ends. If this is a DIM loadout, DIM will not be able to automatically swap such discounted mods for their full cost variants, as the total mod cost would exceed the available armor energy capacity.',
+			"This loadout uses discounted mods from the current season that will become unavailable once the season ends. If this is a DIM loadout, DIM will not be able to automatically swap such discounted mods for their full cost variants, as the total mod cost would exceed the available armor energy capacity.",
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 	},
 	[ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed]: {
 		id: ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed,
-		name: 'Doomed Loadout (Correctable)',
+		name: "Doomed Loadout (Correctable)",
 		description:
-			'[D2 Loadout Specific] This loadout uses discounted mods from the current season that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
+			"[D2 Loadout Specific] This loadout uses discounted mods from the current season that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.",
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 	},
 	[ELoadoutOptimizationTypeId.None]: {
 		id: ELoadoutOptimizationTypeId.None,
-		name: 'No Optimizations Found',
+		name: "No Optimizations Found",
 		description:
-			'No optimizations found. This loadout is as good as it gets :)',
+			"No optimizations found. This loadout is as good as it gets :)",
 		category: ELoadoutOptimizationCategoryId.NONE,
 	},
 	[ELoadoutOptimizationTypeId.Error]: {
 		id: ELoadoutOptimizationTypeId.Error,
-		name: 'Processing Error',
-		description: 'An error occurred while processing this loadout.',
+		name: "Processing Error",
+		description: "An error occurred while processing this loadout.",
 		category: ELoadoutOptimizationCategoryId.ERROR,
 	},
 };
@@ -1276,8 +1276,8 @@ export const IgnorableLoadoutOptimizationTypes =
 // wasted stats
 
 export enum EGetLoadoutsThatCanBeOptimizedProgressType {
-	Progress = 'progress',
-	Error = 'error',
+	Progress = "progress",
+	Error = "error",
 }
 export type GetLoadoutsThatCanBeOptimizedProgressMetadata = {
 	maxPossibleDesiredStatTiers: ArmorStatMapping;
@@ -1329,8 +1329,8 @@ const getFragmentSlots = (aspectIdList: EAspectId[]): number => {
 };
 
 enum EModVariantCheckType {
-	Base = 'Base',
-	Doomed = 'Doomed',
+	Base = "Base",
+	Doomed = "Doomed",
 }
 
 type ModReplacer = (
@@ -1372,7 +1372,7 @@ export const getLoadoutsThatCanBeOptimized = (
 	} = params;
 	Object.values(loadouts).forEach((loadout) => {
 		try {
-			// throw new Error('test');
+			// throw new Error("test");
 			const optimizationTypeList: ELoadoutOptimizationTypeId[] = [
 				...loadout.optimizationTypeList,
 			];
@@ -1725,9 +1725,9 @@ export const getLoadoutsThatCanBeOptimized = (
 
 // Worker types
 export enum EMessageType {
-	Progress = 'progress',
-	Results = 'results',
-	Error = 'error',
+	Progress = "progress",
+	Results = "results",
+	Error = "error",
 }
 
 export type Message = {
@@ -1744,16 +1744,16 @@ export type Progress = {
 
 export type PostMessageParams = Omit<
 	GetLoadoutsThatCanBeOptimizedParams,
-	'progressCallback'
+	"progressCallback"
 >;
 
 export interface GetLoadoutsThatCanBeOptimizedWorker
-	extends Omit<Worker, 'postMessage'> {
+	extends Omit<Worker, "postMessage"> {
 	postMessage(data: PostMessageParams): void;
 }
 
 /* Just some notes here: 
 - DIM Loadouts have a set class item. If we can still use that to achieve the same or higher stat tiers then we should.
-  If that's not possible then c'est la vie. This can happen if the user gets an artifice class item or something.
+  If that"s not possible then c"est la vie. This can happen if the user gets an artifice class item or something.
 
 */

@@ -2,9 +2,9 @@ import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import { GrenadeIdToGrenadeMapping } from '@dlb/generated/grenade/GrenadeMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
 import { getDestinySubclass } from './DestinySubclass';
+import { EDestinySubclassId, EElementId } from './IdEnums';
 import { IGrenade } from './generation';
 import { EnumDictionary } from './globals';
-import { EDestinySubclassId, EElementId } from './IdEnums';
 
 export const GrenadeIdList = Object.values(EGrenadeId);
 

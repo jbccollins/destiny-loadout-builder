@@ -1,3 +1,5 @@
+'use client';
+
 import { EModId } from '@dlb/generated/mod/EModId';
 import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
@@ -7,9 +9,9 @@ import {
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { IMod } from '@dlb/types/generation';
 import { RaidModIdList } from '@dlb/types/Mod';
 import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
+import { IMod } from '@dlb/types/generation';
 import { styled } from '@mui/material';
 import ModSelector from './ModSelection/ModSelector';
 const Container = styled('div')(({ theme }) => ({
@@ -69,9 +71,9 @@ function RaidModSelector() {
 	const dropdownIndices = selectedRaidMods.map((_, i) => i);
 	return (
 		<Container>
-			{/* <Box sx={{ color: 'orange', display: 'flex', marginBottom: '16px' }}>
+			{/* <Box sx={{ color: "orange", display: "flex", marginBottom: "16px" }}>
 				<Warning />
-				<Box sx={{ paddingLeft: '8px' }}>
+				<Box sx={{ paddingLeft: "8px" }}>
 					Raid Mods are in beta. Expect bugs.
 				</Box>
 			</Box> */}
@@ -84,7 +86,7 @@ function RaidModSelector() {
 					key={index}
 					selectedDestinyClass={selectedDestinyClass}
 					availableMods={RaidModIdList}
-					// getTitle={index === 0 ? () => 'Raid and Nightmare Mods' : null}
+					// getTitle={index === 0 ? () => "Raid and Nightmare Mods" : null}
 					selectedMods={selectedRaidMods}
 					handleChange={handleChange}
 					getLabel={getLabel}

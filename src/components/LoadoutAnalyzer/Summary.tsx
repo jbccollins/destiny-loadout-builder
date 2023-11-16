@@ -1,3 +1,5 @@
+'use client';
+
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import useRichValidLoadouts from '@dlb/hooks/useRichValidLoadouts';
@@ -8,8 +10,8 @@ import {
 import {
 	AnalyzableLoadout,
 	ELoadoutOptimizationCategoryId,
-	getLoadoutOptimizationCategory,
 	SeverityOrderedLoadoutOptimizationCategoryIdList,
+	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
@@ -304,7 +306,7 @@ const ScoredResults = (props: {
 					display: 'flex',
 					gap: '4px',
 					flexWrap: 'wrap',
-					// alignItems: 'center',
+					// alignItems: "center",
 				}}
 			>
 				<Box
@@ -419,10 +421,10 @@ const ScoredResults = (props: {
 			<Collapse in={showGradeDetails}>
 				{/* <Box
 					sx={{
-						fontWeight: 'bold',
-						marginTop: '4px',
-						marginBottom: '4px',
-						fontSize: '18px',
+						fontWeight: "bold",
+						marginTop: "4px",
+						marginBottom: "4px",
+						fontSize: "18px",
 					}}
 				>
 					Optimization Categories

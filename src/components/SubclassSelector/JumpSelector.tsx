@@ -1,14 +1,16 @@
-import { styled } from '@mui/material';
+'use client';
+
+import IconDropdown from '@dlb/components/IconDropdown';
+import { EJumpId } from '@dlb/generated/jump/EJumpId';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import {
 	selectSelectedJump,
 	setSelectedJump,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getJump, getJumpIdsByDestinySubclassId } from '@dlb/types/Jump';
-import IconDropdown from '@dlb/components/IconDropdown';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { EJumpId } from '@dlb/generated/jump/EJumpId';
+import { styled } from '@mui/material';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0

@@ -243,11 +243,7 @@ function ResultsItem({
 	> = {};
 	const modCounts: Partial<Record<EModId, number>> = {};
 	item.requiredStatModIdList.forEach((id) => {
-		if (!modCounts[id]) {
-			modCounts[id] = 1;
-		} else {
-			modCounts[id] += 1;
-		}
+		modCounts[id] = (modCounts[id] ?? 0) + 1;
 	});
 	Object.keys(modCounts).forEach((armorStatModId: EModId) => {
 		const statModIds: EModId[] = [];

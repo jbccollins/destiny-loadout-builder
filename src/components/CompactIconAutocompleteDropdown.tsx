@@ -121,9 +121,13 @@ function CompactIconAutocompleteDropdown(
 
 	useEffect(() => {
 		if (isMobile) {
-			document
-				.getElementsByClassName(textFieldClassName)[0]
-				.querySelector("input").disabled = true;
+			const textField = document.getElementsByClassName(textFieldClassName ?? "")[0];
+			if (textField) {
+				const input = textField.querySelector("input");
+				if (input) {
+					input.disabled = true;
+				}
+			}
 		}
 	}, [textFieldClassName]);
 

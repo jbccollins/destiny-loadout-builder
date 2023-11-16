@@ -869,21 +869,11 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 								useBonusResilience: _useBonusResilience,
 								destinySubclassId,
 								destinyClassId: selectedDestinyClass,
-								jumpId: destinySubclassId
-									? selectedJump[destinySubclassId]
-									: null,
-								meleeId: destinySubclassId
-									? selectedMelee[destinySubclassId]
-									: null,
-								superAbilityId: destinySubclassId
-									? selectedSuperAbility[destinySubclassId]
-									: null,
-								classAbilityId: destinySubclassId
-									? selectedClassAbility[destinySubclassId]
-									: null,
-								grenadeId: destinySubclassId
-									? selectedGrenade[destinySubclassId]
-									: null,
+								jumpId: selectedJump[destinySubclassId],
+								meleeId: selectedMelee[destinySubclassId],
+								superAbilityId: selectedSuperAbility[destinySubclassId],
+								classAbilityId: selectedClassAbility[destinySubclassId],
+								grenadeId: selectedGrenade[destinySubclassId],
 								classItem: item.classItem,
 								classItemMetadata: classItemMetadata,
 							})}`}

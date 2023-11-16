@@ -506,7 +506,7 @@ function ResultsItem({
 			</ResultsSection>
 			<ResultsSection
 				fullWidth
-			// sx={{ marginTop: showModPlacement ? "8px" : "0px" }}
+				// sx={{ marginTop: showModPlacement ? "8px" : "0px" }}
 			>
 				<Box
 					onClick={() =>
@@ -614,13 +614,14 @@ function ResultsItem({
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
 												isZero={
-													fragmentArmorStatMappings[fragmentId][armorStatId] ===
-													0
+													fragmentArmorStatMappings?.[fragmentId]?.[
+														armorStatId
+													] === 0
 												}
 												key={armorStatId}
 												className="stats-breakdown"
 											>
-												{fragmentArmorStatMappings[fragmentId][armorStatId]}
+												{fragmentArmorStatMappings?.[fragmentId]?.[armorStatId]}
 											</StatsBreakdownItem>
 										))}
 										<StatsBreakdownItem>
@@ -647,23 +648,27 @@ function ResultsItem({
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
 												isZero={
-													armorStatModArmorStatMappings[armorStatModId]
-														.armorStatMapping[armorStatId] === 0
+													armorStatModArmorStatMappings?.[armorStatModId]
+														?.armorStatMapping[armorStatId] === 0
 												}
 												key={armorStatId}
 												className="stats-breakdown"
 											>
 												{
-													armorStatModArmorStatMappings[armorStatModId]
-														.armorStatMapping[armorStatId]
+													armorStatModArmorStatMappings?.[armorStatModId]
+														?.armorStatMapping[armorStatId]
 												}
 											</StatsBreakdownItem>
 										))}
 										<StatsBreakdownItem>
 											<Description>
 												{getMod(armorStatModId).name}
-												{armorStatModArmorStatMappings[armorStatModId].count > 1
-													? ` (x${armorStatModArmorStatMappings[armorStatModId].count})`
+												{(armorStatModArmorStatMappings[armorStatModId]
+													?.count ?? 0) > 1
+													? ` (x${
+															armorStatModArmorStatMappings[armorStatModId]
+																?.count ?? 0
+													  })`
 													: ''}
 											</Description>
 										</StatsBreakdownItem>
@@ -682,7 +687,7 @@ function ResultsItem({
 										<StatsBreakdownItem
 											isZero={
 												armorSlotModArmorStatMappings[modId].armorStatMapping[
-												armorStatId
+													armorStatId
 												] === 0
 											}
 											key={armorStatId}
@@ -690,7 +695,7 @@ function ResultsItem({
 										>
 											{
 												armorSlotModArmorStatMappings[modId].armorStatMapping[
-												armorStatId
+													armorStatId
 												]
 											}
 										</StatsBreakdownItem>

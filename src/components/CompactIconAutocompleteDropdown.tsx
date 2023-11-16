@@ -175,7 +175,7 @@ function CompactIconAutocompleteDropdown(
 						onChange={(_, value) => {
 							onChange(value as IIconAutocompleteDropdownOption);
 						}}
-						getOptionDisabled={(option) => option.disabled}
+						getOptionDisabled={(option) => !!option.disabled}
 						isOptionEqualToValue={(option, value) => {
 							return getId(option) === getId(value);
 						}}

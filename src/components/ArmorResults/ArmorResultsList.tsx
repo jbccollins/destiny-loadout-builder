@@ -262,11 +262,7 @@ function ResultsItem({
 
 	const artificeModCounts: Partial<Record<EModId, number>> = {};
 	item.requiredArtificeModIdList.forEach((id) => {
-		if (!artificeModCounts[id]) {
-			artificeModCounts[id] = 1;
-		} else {
-			artificeModCounts[id] += 1;
-		}
+		artificeModCounts[id] = (artificeModCounts[id] ?? 0) + 1;
 	});
 
 	const getExtraMasterworkedStatsBreakdown = () => {

@@ -66,7 +66,7 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 		<>
 			<Box sx={{ paddingLeft: '8px', paddingRight: '8px' }}>
 				<IconAutocompleteDropdown
-					options={_options}
+					options={_options as IIntrinsicArmorPerkOrAttribute[]}
 					value={
 						valueId
 							? getIntrinsicArmorPerkOrAttribute(valueId)
@@ -75,12 +75,12 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 					title={''}
 					// value={selectedExoticArmor[selectedDestinyClass]}
 					onChange={onChange}
-					getId={(option: IIntrinsicArmorPerkOrAttribute) => option.id}
+					getId={(option: IIntrinsicArmorPerkOrAttribute) => option.id || ''}
 					getGroupBy={(option: IIntrinsicArmorPerkOrAttribute) =>
-						option.groupName
+						option.groupName || ''
 					}
-					getDescription={(option: IIntrinsicArmorPerkOrAttribute) =>
-						option.description
+					getDescription={
+						(option: IIntrinsicArmorPerkOrAttribute) => option.description || '' // Ensure string is returned
 					}
 					getLabel={(option: IIntrinsicArmorPerkOrAttribute) => option.name}
 					textFieldClassName={`intrinsic-armor-perk-or-attribute-selector-text-field ${
@@ -116,7 +116,7 @@ function IntrinsicArmorPerkOrAttributeSelector() {
 		const res = [
 			...selectedIntrinsicArmorPerkOrAttributeIds,
 		] as EIntrinsicArmorPerkOrAttributeId[];
-		res[index] = value.id;
+		res[index] = value.id as EIntrinsicArmorPerkOrAttributeId;
 		dispatch(setSelectedIntrinsicArmorPerkOrAttributeIds(res));
 	};
 

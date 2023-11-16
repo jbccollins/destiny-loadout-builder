@@ -95,15 +95,15 @@ function ExoticSelector() {
 
 	const options: AvailableExoticArmorItem[] = useMemo(() => {
 		console.log(
-			'>>>>>>>>>>> [Memo] availableExoticArmorItems calcuated <<<<<<<<<<<'
+			'>>>>>>>>>>> [Memo] availableExoticArmorItems calculated <<<<<<<<<<<'
 		);
 		const res: AvailableExoticArmorItem[] = [];
 		if (availableExoticArmor && selectedDestinyClass) {
 			ArmorSlotIdList.forEach((armorSlotId) => {
 				res.push(availableExoticArmor[selectedDestinyClass][armorSlotId]);
 			});
-			return res.flat();
 		}
+		return res.flat();
 	}, [availableExoticArmor, selectedDestinyClass]);
 
 	const handleChange = (armor: AvailableExoticArmorItem) => {

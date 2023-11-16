@@ -1,5 +1,3 @@
-import { infoLog } from '@dlb/dim/utils/log';
-import { dedupePromise } from '@dlb/dim/utils/util';
 import axios from 'axios';
 import { setToken, Token, Tokens } from './oauth-tokens';
 

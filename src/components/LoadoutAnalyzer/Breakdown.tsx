@@ -1,3 +1,5 @@
+'use client';
+
 import ModPlacement from '@dlb/components/ModPlacement';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';

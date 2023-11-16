@@ -1,3 +1,5 @@
+'use client';
+
 import NextHead from 'next/head';
 
 export default function Head() {

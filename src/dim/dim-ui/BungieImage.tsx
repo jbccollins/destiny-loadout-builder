@@ -1,4 +1,7 @@
+'use client';
+
 import clsx from 'clsx';
+import Image from 'next/image';
 import React from 'react';
 
 /**
@@ -18,16 +21,27 @@ export type BungieImageProps = Omit<
  */
 export default React.memo(function BungieImage(props: BungieImageProps) {
 	const { src, ...otherProps } = props;
+
+	// Extract width and height from otherProps if they exist
+	const { width, height, ...rest } = otherProps;
+
+	// Convert width and height to the correct type or set a default value
+	const widthProp = typeof width === 'string' ? parseInt(width, 10) : width || 0;
+	const heightProp = typeof height === 'string' ? parseInt(height, 10) : height || 0;
+	// Ensure placeholder is set to a valid value or not set at all
+	const placeholder = otherProps.placeholder === 'blur' || otherProps.placeholder === 'empty' ? otherProps.placeholder : undefined;
+
 	return (
-		// eslint-disable-next-line @next/next/no-img-element
-		<img
-			// style={{ border: '1px solid green' }}
+		<Image
 			alt="src"
 			src={src}
 			draggable={false}
 			loading="lazy"
-			{...otherProps}
-			className={clsx(otherProps.className, 'no-pointer-events')}
+			width={widthProp}
+			height={heightProp}
+			{...rest}
+			className={clsx(rest.className, 'no-pointer-events')}
+			placeholder='blur'
 		/>
 	);
 });

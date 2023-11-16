@@ -23,8 +23,17 @@ a {
   html {
     color-scheme: dark;
   }
+
   body {
     color: white;
     background: black;
   }
+}
+
+.objectFit-contain {
+  object-fit: contain;
+}
+
+.objectPosition-center {
+  object-position: center;
 }

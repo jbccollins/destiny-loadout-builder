@@ -1,3 +1,5 @@
+'use client';
+
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import GenericTierRow from '@dlb/components/GenericTierRow';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
@@ -18,7 +20,6 @@ import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
-import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToArmorSlotModIdListMapping,
@@ -26,6 +27,7 @@ import {
 	hasMutuallyExclusiveMods,
 } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
+import { IMod } from '@dlb/types/generation';
 import HelpIcon from '@mui/icons-material/Help';
 import {
 	Box,
@@ -43,7 +45,7 @@ const TierRowContainer = styled('div')(({ theme }) => ({
 	display: 'flex',
 	alignItems: 'center',
 	gap: '8px',
-	// transform: 'scaleY(0.3)',
+	// transform: "scaleY(0.3)",
 }));
 
 type MaxPossibleReservedArmorSlotEnergyIndicatorProps = {
@@ -237,10 +239,10 @@ function ArmorSlotModSelector() {
 							<IconDropdownContainer className={'icon-dropdown-container'}>
 								<Box
 									sx={{
-										// paddingTop: '16px',
-										// paddingRight: '6px',
+										// paddingTop: "16px",
+										// paddingRight: "6px",
 										flex: '0 0 100%',
-										// border: '1px solid rgb(50, 50, 50)',
+										// border: "1px solid rgb(50, 50, 50)",
 										padding: '8px',
 										borderRadius: '4px',
 										background: 'rgba(50, 50, 50, 0.5)',
@@ -248,8 +250,8 @@ function ArmorSlotModSelector() {
 								>
 									<Box
 										sx={{
-											// paddingTop: '16px',
-											// paddingRight: '6px',
+											// paddingTop: "16px",
+											// paddingRight: "6px",
 											flex: '0 0 100%',
 										}}
 									>
@@ -264,11 +266,11 @@ function ArmorSlotModSelector() {
 											>
 												<Box
 													sx={{
-														//border: '2px solid rgb(50,50,50)',
+														//border: "2px solid rgb(50,50,50)",
 														display: 'flex',
 														alignItems: 'center',
 														justifyCcontent: 'center',
-														//borderRadius: '50%',
+														//borderRadius: "50%",
 													}}
 												>
 													<BungieImage

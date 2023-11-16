@@ -1,20 +1,20 @@
 /*
 USAGE: From the root directory run "npm run generate"
 */
-import lodash from 'lodash';
-import path from 'path';
-import { EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
-import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
-import { promises as fs } from 'fs';
 import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
-import { IClassAbility } from '@dlb/types/generation';
-import { generateClassAbilityIdEnumFileString } from './generateClassAbilityIdEnum';
-import { generateClassAbilityMapping } from './generateClassAbilityMapping';
-import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	DestinySubclassIdList,
 	getDestinySubclass,
 } from '@dlb/types/DestinySubclass';
+import { EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
+import { IClassAbility } from '@dlb/types/generation';
+import { bungieNetPath } from '@dlb/utils/item-utils';
+import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
+import { promises as fs } from 'fs';
+import lodash from 'lodash';
+import path from 'path';
+import { generateClassAbilityIdEnumFileString } from './generateClassAbilityIdEnum';
+import { generateClassAbilityMapping } from './generateClassAbilityMapping';
 
 const buildClassAbilityData = (
 	classAbility: DestinyInventoryItemDefinition

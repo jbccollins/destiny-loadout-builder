@@ -1,3 +1,5 @@
+'use client';
+
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
 	selectSelectedExoticArmor,
@@ -76,7 +78,7 @@ const getExtraContent = (option: AvailableExoticArmorItem) => {
 };
 const StyledPopper = styled(Popper)({
 	maxHeight: '60vh',
-	// maxHeight: '600px',
+	// maxHeight: "600px",
 	['.MuiPaper-root']: {
 		maxHeight: '60vh',
 	},
@@ -93,15 +95,15 @@ function ExoticSelector() {
 
 	const options: AvailableExoticArmorItem[] = useMemo(() => {
 		console.log(
-			'>>>>>>>>>>> [Memo] availableExoticArmorItems calcuated <<<<<<<<<<<'
+			'>>>>>>>>>>> [Memo] availableExoticArmorItems calculated <<<<<<<<<<<'
 		);
 		const res: AvailableExoticArmorItem[] = [];
 		if (availableExoticArmor && selectedDestinyClass) {
 			ArmorSlotIdList.forEach((armorSlotId) => {
 				res.push(availableExoticArmor[selectedDestinyClass][armorSlotId]);
 			});
-			return res.flat();
 		}
+		return res.flat();
 	}, [availableExoticArmor, selectedDestinyClass]);
 
 	const handleChange = (armor: AvailableExoticArmorItem) => {

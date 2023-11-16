@@ -1,3 +1,5 @@
+'use client';
+
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { MISSING_ICON } from '@dlb/types/globals';
 import {
@@ -38,8 +40,8 @@ const MenuItemContent = styled('div', {
 const MenuItemText = styled('div')(({ theme }) => ({
 	marginLeft: theme.spacing(1),
 
-	// overflow: 'none',
-	// textTransform: 'capitalize'
+	// overflow: "none",
+	// textTransform: "capitalize"
 }));
 
 interface IconDropdownOption {
@@ -77,10 +79,12 @@ const IconDropdown = ({
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		let v = null;
-		if (value !== '') {
+		if (value == null) {
 			v = value;
 		}
-		onChange(v);
+		if (typeof v === 'string') {
+			onChange(v);
+		}
 	};
 	return (
 		<Container hideSelectedOptionText={hideSelectedOptionText}>
@@ -114,7 +118,7 @@ const IconDropdown = ({
 					)}
 					{options.map((option) => {
 						const label = getLabel(option);
-						let description: string | JSX.Element = null;
+						let description: string | JSX.Element | null = null;
 						let hasDescription = false;
 						if (getDescription) {
 							description = getDescription(option);

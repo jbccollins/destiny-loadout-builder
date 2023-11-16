@@ -8,8 +8,8 @@ import {
 import { ArmorItem } from './Armor';
 import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
 import { DLBConfig } from './DLBConfig';
-import { ValidateEnumList } from './globals';
 import { getDefaultArmorSlotIdToModIdListMapping } from './Mod';
+import { ValidateEnumList } from './globals';
 
 export enum ELoadoutType {
 	DIM = 'DIM',

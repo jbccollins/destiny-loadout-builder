@@ -1,3 +1,5 @@
+'use client';
+
 import IconDropdown from '@dlb/components/IconDropdown';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';

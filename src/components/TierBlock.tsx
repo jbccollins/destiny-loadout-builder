@@ -1,3 +1,5 @@
+'use client';
+
 import styled from '@emotion/styled';
 import { Box } from '@mui/material';
 
@@ -32,10 +34,10 @@ export const TierBlock = styled(Box, {
 	}) => ({
 		flex: '1 1 0px', //Ensure all the same width
 		width: 0,
-		// paddingLeft: '3px',
-		// paddingRight: '3px',
-		// paddingTop: '6px',
-		// paddingBottom: '6px',
+		// paddingLeft: "3px",
+		// paddingRight: "3px",
+		// paddingTop: "6px",
+		// paddingBottom: "6px",
 		textAlign: 'center',
 		background: filled
 			? 'white'

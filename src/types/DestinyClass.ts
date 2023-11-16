@@ -27,7 +27,7 @@ const DestinyClassIdToDestinyClassMapping: EnumDictionary<
 		id: EDestinyClassId.Warlock,
 		name: 'Warlock',
 		icon: 'https://raw.githubusercontent.com/justrealmilk/destiny-icons/2e747b9ab94cea9423a001710c35af35c79ff625/general/class_warlock_outline.svg',
-		//icon: 'https://www.bungie.net/common/destiny2_content/icons/67f7bbf158f84c33802b178e463b7037.jpg',
+		//icon: "https://www.bungie.net/common/destiny2_content/icons/67f7bbf158f84c33802b178e463b7037.jpg",
 	},
 	[EDestinyClassId.Hunter]: {
 		id: EDestinyClassId.Hunter,

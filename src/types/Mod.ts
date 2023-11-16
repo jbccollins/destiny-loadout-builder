@@ -8,14 +8,14 @@ import {
 	reducedToNormalMod,
 } from '@dlb/utils/reduced-cost-mod-mapping';
 import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
-import { IMod } from './generation';
-import { EnumDictionary } from './globals';
 import {
 	EArmorSlotId,
 	EArmorStatId,
 	EModCategoryId,
 	EModSocketCategoryId,
 } from './IdEnums';
+import { IMod } from './generation';
+import { EnumDictionary } from './globals';
 
 export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 
@@ -502,7 +502,7 @@ export const getValidRaidModArmorSlotPlacements = (
 			validPlacements.push(validPlacement);
 		}
 	}
-	// console.log('>>>>>>>>+ valid placements:', validPlacements);
+	// console.log(">>>>>>>>+ valid placements:", validPlacements);
 	return validPlacements.length > 0
 		? validPlacements
 		: [getDefaultPotentialRaidModArmorSlotPlacement()];

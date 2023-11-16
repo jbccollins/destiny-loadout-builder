@@ -1,16 +1,18 @@
+'use client';
+
 import {
 	selectSelectedIntrinsicArmorPerkOrAttributeIds,
 	setSelectedIntrinsicArmorPerkOrAttributeIds,
 } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { MISSING_ICON } from '@dlb/types/globals';
 import { EIntrinsicArmorPerkOrAttributeId } from '@dlb/types/IdEnums';
 import {
-	getIntrinsicArmorPerkOrAttribute,
 	IIntrinsicArmorPerkOrAttribute,
+	getIntrinsicArmorPerkOrAttribute,
 	intrinsicArmorPerkOrAttributeIdList,
 } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
+import { MISSING_ICON } from '@dlb/types/globals';
 import { Box } from '@mui/material';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 
@@ -45,16 +47,18 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 	const first = index === 0;
 	const last = index === 3;
 	let _options = options.map((x) => {
-		const attribute = getIntrinsicArmorPerkOrAttribute(x.id);
-		// Don't allow duplicates of the same attribute when it's
-		// specific to an armor slot, e.g. GG class item and FotL mask
-		if (otherIds.includes(x.id) && attribute.armorSlotId !== null) {
-			return {
-				...x,
-				disabled: true,
-			};
+		if (x.id !== null) {
+			const attribute = getIntrinsicArmorPerkOrAttribute(x.id);
+			// Don"t allow duplicates of the same attribute when it"s
+			// specific to an armor slot, e.g. GG class item and FotL mask
+			if (otherIds.includes(x.id) && attribute.armorSlotId !== null) {
+				return {
+					...x,
+					disabled: true,
+				};
+			}
+			return x;
 		}
-		return x;
 	});
 	_options = [placeholderOption, ..._options];
 
@@ -62,7 +66,7 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 		<>
 			<Box sx={{ paddingLeft: '8px', paddingRight: '8px' }}>
 				<IconAutocompleteDropdown
-					options={_options}
+					options={_options as IIntrinsicArmorPerkOrAttribute[]}
 					value={
 						valueId
 							? getIntrinsicArmorPerkOrAttribute(valueId)
@@ -71,12 +75,12 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 					title={''}
 					// value={selectedExoticArmor[selectedDestinyClass]}
 					onChange={onChange}
-					getId={(option: IIntrinsicArmorPerkOrAttribute) => option.id}
+					getId={(option: IIntrinsicArmorPerkOrAttribute) => option.id || ''}
 					getGroupBy={(option: IIntrinsicArmorPerkOrAttribute) =>
-						option.groupName
+						option.groupName || ''
 					}
-					getDescription={(option: IIntrinsicArmorPerkOrAttribute) =>
-						option.description
+					getDescription={
+						(option: IIntrinsicArmorPerkOrAttribute) => option.description || '' // Ensure string is returned
 					}
 					getLabel={(option: IIntrinsicArmorPerkOrAttribute) => option.name}
 					textFieldClassName={`intrinsic-armor-perk-or-attribute-selector-text-field ${
@@ -112,7 +116,7 @@ function IntrinsicArmorPerkOrAttributeSelector() {
 		const res = [
 			...selectedIntrinsicArmorPerkOrAttributeIds,
 		] as EIntrinsicArmorPerkOrAttributeId[];
-		res[index] = value.id;
+		res[index] = value.id as EIntrinsicArmorPerkOrAttributeId;
 		dispatch(setSelectedIntrinsicArmorPerkOrAttributeIds(res));
 	};
 

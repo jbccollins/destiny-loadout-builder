@@ -1,5 +1,7 @@
-import d2Logo from '@dlb/public/d2-logo.png';
-import dimLogo from '@dlb/public/dim-logo.png';
+'use client';
+
+import d2Logo from '@/public/d2-logo.png';
+import dimLogo from '@/public/dim-logo.png';
 import { selectAnalyzableLoadouts } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import {
 	selectAnalyzerSearch,
@@ -26,8 +28,8 @@ import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbi
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	ELoadoutType,
-	filterOptimizationTypeList,
 	LodaoutTypeFilterToLoadoutTypeMapping,
+	filterOptimizationTypeList,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
@@ -306,17 +308,17 @@ export default function AnalyzerResultsList() {
 			<Box
 				sx={
 					{
-						// marginLeft: '-16px',
-						// paddingX: '16px',
-						// background: 'rgba(50, 50, 50, 0.5)',
-						//width: 'calc(100% + 32px)',
+						// marginLeft: "-16px",
+						// paddingX: "16px",
+						// background: "rgba(50, 50, 50, 0.5)",
+						//width: "calc(100% + 32px)",
 					}
 				}
 			>
 				<Box
 					sx={{
-						//marginLeft: '-16px',
-						// width: 'calc(100% + 31px)',
+						//marginLeft: "-16px",
+						// width: "calc(100% + 31px)",
 						width: '100%',
 					}}
 				>

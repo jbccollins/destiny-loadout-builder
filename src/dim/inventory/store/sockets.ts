@@ -297,7 +297,7 @@ function buildDefinedSocket(
 
 				for (const randomPlug of Object.values(plugs)) {
 					const built = buildCachedDefinedPlug(defs, randomPlug.plugItemHash);
-					// we don't want "stat roll" plugs to count as reusablePlugs, but they're almost
+					// we don"t want "stat roll" plugs to count as reusablePlugs, but they"re almost
 					// indistinguishable from exotic intrinsic armor perks, so we stop them here based
 					// on the fact that they have no name
 					if (built?.plugDef.displayProperties.name) {
@@ -506,7 +506,7 @@ const noDefaultSocketCategoryHashes: SocketCategoryHashes[] = [
 // Because we conservatively fall back to `singleInitialItemHash`, we
 // may misinterpret some `singleInitialItemHash`es as the empty plug.
 // If this list gets too large, consider removing the `singleInitialItemHash` fallback,
-// because it's really just a concession to the fact that D2AI can't ever be 100% complete.
+// because it"s really just a concession to the fact that D2AI can"t ever be 100% complete.
 const noDefaultPlugIdentifiers: (string | number)[] = [
 	'enhancements.exotic', // Exotic Armor Perk sockets (Aeons, all options are equivalent)
 	...eventArmorRerollSocketIdentifiers, // Weird rerolling sockets
@@ -591,7 +591,7 @@ function findEmptyPlug(
 	//    D2AI every time a new socket appears -- better to just fix either
 	//    the filters above or the D2AI list when something breaks.
 	//
-	// If there's a very good reason to assume a socket can't be emptied, filter it above.
+	// If there"s a very good reason to assume a socket can"t be emptied, filter it above.
 	return empty ?? (socket.singleInitialItemHash || undefined);
 }
 

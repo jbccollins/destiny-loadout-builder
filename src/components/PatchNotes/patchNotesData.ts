@@ -124,7 +124,7 @@ export const PatchNotes: PatchNote[] = [
 			{
 				items: [
 					`Add a new analyzer optimization: "Unused Mod Slots"`,
-					`Note that this optimization needs a bit more testing on my end before I'm sure it's 100% accurate`,
+					`Note that this optimization needs a bit more testing on my end before I"m sure it"s 100% accurate`,
 				],
 			},
 		],
@@ -277,7 +277,7 @@ export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-10-04',
 		version: '2.4.12',
-		title: 'Add "only use masterworked armor" setting',
+		title: "Add 'only use masterworked armor' setting",
 		sections: [
 			{
 				items: [
@@ -371,7 +371,7 @@ export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-09-22',
 		version: '2.4.5',
-		title: 'Add "in-game" loadout analysis',
+		title: "Add 'in-game' loadout analysis",
 		sections: [
 			{
 				items: [
@@ -396,7 +396,7 @@ export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-09-22',
 		version: '2.4.3',
-		title: 'Prep for "in-game" loadout analysis',
+		title: "Prep for 'in-game' loadout analysis",
 		sections: [
 			{
 				items: [
@@ -554,7 +554,7 @@ export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-07-17',
 		version: '2.2.3',
-		title: 'Add "Show Mod Placement" breakdown',
+		title: "Add 'Show Mod Placement' breakdown",
 		sections: [
 			{
 				items: [
@@ -599,11 +599,11 @@ export const PatchNotes: PatchNote[] = [
 		sections: [
 			{
 				items: [
-					'Add the ability to select armor attributes like "Iron Banner", "Guardian Games Class Item", and "Festival of the Lost Mask" as well as perks like "Sonar Amplifier"',
-					'Remove armor stats from the "Order By" dropdown as they were kinda confusing',
+					"Add the ability to select armor attributes like 'Iron Banner', 'Guardian Games Class Item', and 'Festival of the Lost Mask' as well as perks like 'Sonar Amplifier'",
+					"Remove armor stats from the 'Order By' dropdown as they were kinda confusing",
 					'Move Raid Mods to their own section, separate from armor mods',
-					'Rename "Mods" section to "Armor Mods"',
-					'Allow mobile users to view the "No Results" troubleshooting section',
+					"Rename 'Mods' section to 'Armor Mods'",
+					"Allow mobile users to view the 'No Results' troubleshooting section",
 				],
 			},
 		],
@@ -972,8 +972,8 @@ export const PatchNotes: PatchNote[] = [
 			{
 				items: [
 					'Fixed a bug that would sometimes prevent certain armor combinations from appearing in the results',
-					'Fixed a bug that caused a crash when the user had "classified" armor (Thanks Root of Nightmares)',
-					'Artifice "forged" armor mods are now properly applied when opening the loadout in DIM',
+					"Fixed a bug that caused a crash when the user had 'classified' armor (Thanks Root of Nightmares)",
+					"Artifice 'forged' armor mods are now properly applied when opening the loadout in DIM",
 					'Fixed stasis aspect descriptions',
 					'Added a more helpful error message for crashes instead of just redirecting to the login screen',
 					'Added error logging for help with debugging production crashes',
@@ -992,7 +992,7 @@ export const PatchNotes: PatchNote[] = [
 					'NB: The Bungie api is returning wonky images for some strand subclass options',
 					'Added patch notes',
 					'Added reworked armor mods',
-					'Added "No Results" UI',
+					"Added 'No Results' UI",
 				],
 			},
 		],

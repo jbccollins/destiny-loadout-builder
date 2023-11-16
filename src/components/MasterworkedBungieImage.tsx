@@ -4,7 +4,7 @@ import { Box, styled } from '@mui/material';
 const Container = styled(Box, {
 	shouldForwardProp: (prop) => prop !== 'isMasterworked',
 })<{ isMasterworked?: boolean }>(({ theme, isMasterworked }) => ({
-	border: isMasterworked ? '1px solid gold' : '1px solid transparent',
+	border: isMasterworked ? '1px solid gold' : '1px solid white',
 }));
 
 type MasterworkedBungieImageProps = BungieImageProps & {

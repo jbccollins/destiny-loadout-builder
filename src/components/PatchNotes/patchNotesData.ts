@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-11-10',
+		version: '2.4.32',
+		title:
+			'Add a white border around non-masterworked items in the results view',
+		sections: [
+			{
+				items: [
+					`Previously this border was transparent which made it difficult to tell if an exotic item was masterworked`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-11-08',
 		version: '2.4.31',
 		title: 'Add setting to exclude locked items',

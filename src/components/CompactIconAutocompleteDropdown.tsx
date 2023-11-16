@@ -150,7 +150,6 @@ function CompactIconAutocompleteDropdown(
 						isControlled
 						isOpen={open}
 						onClose={() => handleClose(true)}
-						id={id}
 						showIcon={false}
 						{...props}
 					/>

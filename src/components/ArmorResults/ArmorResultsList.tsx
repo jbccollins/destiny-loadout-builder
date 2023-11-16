@@ -506,7 +506,7 @@ function ResultsItem({
 			</ResultsSection>
 			<ResultsSection
 				fullWidth
-				// sx={{ marginTop: showModPlacement ? "8px" : "0px" }}
+			// sx={{ marginTop: showModPlacement ? "8px" : "0px" }}
 			>
 				<Box
 					onClick={() =>
@@ -682,7 +682,7 @@ function ResultsItem({
 										<StatsBreakdownItem
 											isZero={
 												armorSlotModArmorStatMappings[modId].armorStatMapping[
-													armorStatId
+												armorStatId
 												] === 0
 											}
 											key={armorStatId}
@@ -690,7 +690,7 @@ function ResultsItem({
 										>
 											{
 												armorSlotModArmorStatMappings[modId].armorStatMapping[
-													armorStatId
+												armorStatId
 												]
 											}
 										</StatsBreakdownItem>

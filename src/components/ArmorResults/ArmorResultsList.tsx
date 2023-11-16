@@ -247,7 +247,7 @@ function ResultsItem({
 	});
 	Object.keys(modCounts).forEach((armorStatModId: EModId) => {
 		const statModIds: EModId[] = [];
-		const count = modCounts[armorStatModId];
+		const count = modCounts[armorStatModId] ?? 0;
 		for (let i = 0; i < count; i++) {
 			statModIds.push(armorStatModId);
 			armorStatModArmorStatMappings[armorStatModId] = {

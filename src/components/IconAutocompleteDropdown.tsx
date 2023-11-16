@@ -116,7 +116,9 @@ function IconAutocompleteDropdown({
 	};
 
 	const handleClose = () => {
-		onClose();
+		if (onClose) {
+			onClose();
+		}
 	};
 
 	const controlledProps = isControlled

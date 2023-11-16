@@ -1,6 +1,9 @@
+import hunter_image from '@/public/class_hunter_outline.png';
+import titan_image from '@/public/class_titan_outline.png';
+import warlock_image from '@/public/class_warlock_outline.png';
 import {
 	EnumDictionary,
-	IIcon,
+	IIconStaticImageData,
 	IIdentifiableName,
 	Mapping,
 	ValidateEnumList,
@@ -12,7 +15,9 @@ export const DestinyClassIdList = ValidateEnumList(
 	[EDestinyClassId.Titan, EDestinyClassId.Warlock, EDestinyClassId.Hunter]
 );
 
-export interface IDestinyClass extends IIdentifiableName, IIcon {}
+export interface IDestinyClass
+	extends IIdentifiableName,
+		IIconStaticImageData {}
 
 const DestinyClassIdToDestinyClassMapping: EnumDictionary<
 	EDestinyClassId,
@@ -21,18 +26,17 @@ const DestinyClassIdToDestinyClassMapping: EnumDictionary<
 	[EDestinyClassId.Titan]: {
 		id: EDestinyClassId.Titan,
 		name: 'Titan',
-		icon: 'https://raw.githubusercontent.com/justrealmilk/destiny-icons/2e747b9ab94cea9423a001710c35af35c79ff625/general/class_titan_outline.svg',
+		icon: titan_image,
 	},
 	[EDestinyClassId.Warlock]: {
 		id: EDestinyClassId.Warlock,
 		name: 'Warlock',
-		icon: 'https://raw.githubusercontent.com/justrealmilk/destiny-icons/2e747b9ab94cea9423a001710c35af35c79ff625/general/class_warlock_outline.svg',
-		//icon: "https://www.bungie.net/common/destiny2_content/icons/67f7bbf158f84c33802b178e463b7037.jpg",
+		icon: warlock_image,
 	},
 	[EDestinyClassId.Hunter]: {
 		id: EDestinyClassId.Hunter,
 		name: 'Hunter',
-		icon: 'https://raw.githubusercontent.com/justrealmilk/destiny-icons/2e747b9ab94cea9423a001710c35af35c79ff625/general/class_hunter_outline.svg',
+		icon: hunter_image,
 	},
 };
 

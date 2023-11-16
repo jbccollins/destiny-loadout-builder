@@ -198,7 +198,7 @@ function IconAutocompleteDropdown({
 							>
 								<Box sx={{ display: 'flex', flexWrap: 'nowrap' }}>
 									<DecoratedBungieIcon
-										getCost={getCost ? () => getCost(option) : null}
+										getCost={getCost ? () => getCost(option) : undefined}
 										icon={option.icon}
 										elementOverlayIcon={option.elementOverlayIcon}
 										getAltText={() => getLabel(option)}
@@ -252,7 +252,7 @@ function IconAutocompleteDropdown({
 											}}
 										>
 											<DecoratedBungieIcon
-												getCost={getCost ? () => getCost(value) : null}
+												getCost={getCost ? () => getCost(value) : undefined}
 												icon={value.icon}
 												elementOverlayIcon={value.elementOverlayIcon}
 												getAltText={() => getLabel(value)}

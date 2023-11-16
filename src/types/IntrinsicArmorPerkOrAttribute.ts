@@ -138,5 +138,8 @@ export const intrinsicArmorPerkOrAttributeIdList = Object.values(
 	if (aVal.season && bVal.season) {
 		return bVal.season - aVal.season;
 	}
-	return aVal.groupName.localeCompare(bVal.groupName);
+	if (aVal.groupName && bVal.groupName) {
+		return aVal.groupName.localeCompare(bVal.groupName);
+	}
+	return 0;
 });

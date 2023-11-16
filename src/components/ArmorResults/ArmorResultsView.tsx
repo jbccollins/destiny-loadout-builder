@@ -1,6 +1,6 @@
 'use client';
 
-import { SmallScreenData } from '@dlb/pages';
+import { SmallScreenData } from '@dlb/app/page';
 import {
 	selectAlwaysConsiderCollectionsRolls,
 	setAlwaysConsiderCollectionsRolls,

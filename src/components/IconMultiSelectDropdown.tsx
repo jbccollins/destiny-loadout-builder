@@ -217,9 +217,11 @@ export default function IconMultiSelectDropdown({
 							key={optionValue.id}
 							value={optionValue.id}
 							disabled={
-								!isChecked &&
-								maxSelectionCount &&
-								value.length >= maxSelectionCount
+								!!(
+									!isChecked &&
+									maxSelectionCount &&
+									value.length >= maxSelectionCount
+								)
 							}
 							//style={getStyles(name, personName, theme)}
 						>

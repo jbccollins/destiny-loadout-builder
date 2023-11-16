@@ -79,7 +79,7 @@ const IconDropdown = ({
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		let v = null;
-		if (value !== '') {
+		if (value == null) {
 			v = value;
 		}
 		onChange(v);

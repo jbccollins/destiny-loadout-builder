@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Help } from '@mui/icons-material';
 import { alpha, Box, styled } from '@mui/material';

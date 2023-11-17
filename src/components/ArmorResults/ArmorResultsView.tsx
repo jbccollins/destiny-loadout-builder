@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { SmallScreenData } from '@dlb/app/page';
 import {

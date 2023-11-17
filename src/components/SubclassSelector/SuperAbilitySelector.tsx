@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import IconDropdown from '@dlb/components/IconDropdown';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';

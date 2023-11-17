@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';

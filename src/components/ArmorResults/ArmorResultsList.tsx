@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { DimIcon } from '@/public/dim_logo.svgicon';
 import ModPlacement from '@dlb/components//ModPlacement';

@@ -1,6 +1,3 @@
 {
-    "recommendations": [
-        "d2api.d2-defs-lookup",
-        "mikestead.dotenv"
-    ]
+	"recommendations": ["d2api.d2-defs-lookup", "mikestead.dotenv"]
 }

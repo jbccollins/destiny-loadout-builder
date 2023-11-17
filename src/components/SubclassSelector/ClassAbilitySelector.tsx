@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import IconDropdown from '@dlb/components/IconDropdown';
 import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { RichAnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
 import { getAspect } from '@dlb/types/Aspect';

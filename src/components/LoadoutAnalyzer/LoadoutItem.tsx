@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import d2Logo from '@/public/d2-logo.png';
 import dimLogo from '@/public/dim-logo.png';

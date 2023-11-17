@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import styled from '@emotion/styled';
 import { Box } from '@mui/material';

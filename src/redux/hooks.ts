@@ -17,7 +17,7 @@ export const useForm =
 			.reduce(
 				(object, element) => ({
 					...object,
-					[`${element.getAttribute('name')}`]: element.value
+					[`${element.getAttribute('name')}`]: element.value,
 				}),
 				defaultValues
 			);

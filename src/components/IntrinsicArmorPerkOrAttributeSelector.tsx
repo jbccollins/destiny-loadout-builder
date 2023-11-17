@@ -1,16 +1,18 @@
+'use client';
+
 import {
 	selectSelectedIntrinsicArmorPerkOrAttributeIds,
 	setSelectedIntrinsicArmorPerkOrAttributeIds,
 } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { MISSING_ICON } from '@dlb/types/globals';
 import { EIntrinsicArmorPerkOrAttributeId } from '@dlb/types/IdEnums';
 import {
-	getIntrinsicArmorPerkOrAttribute,
 	IIntrinsicArmorPerkOrAttribute,
+	getIntrinsicArmorPerkOrAttribute,
 	intrinsicArmorPerkOrAttributeIdList,
 } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
+import { MISSING_ICON } from '@dlb/types/globals';
 import { Box } from '@mui/material';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 
@@ -46,7 +48,7 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 	const last = index === 3;
 	let _options = options.map((x) => {
 		const attribute = getIntrinsicArmorPerkOrAttribute(x.id);
-		// Don't allow duplicates of the same attribute when it's
+		// Don"t allow duplicates of the same attribute when it"s
 		// specific to an armor slot, e.g. GG class item and FotL mask
 		if (otherIds.includes(x.id) && attribute.armorSlotId !== null) {
 			return {

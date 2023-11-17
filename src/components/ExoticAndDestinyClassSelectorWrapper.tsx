@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, styled } from '@mui/material';
 import DestinyClassSelector from './DestinyClassSelector';
 import ExoticSelector from './ExoticSelector';

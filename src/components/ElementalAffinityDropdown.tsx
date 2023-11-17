@@ -1,4 +1,6 @@
-import { styled, Theme, SxProps } from '@mui/material';
+'use client';
+
+import { SxProps, Theme, styled } from '@mui/material';
 import IconDropdown from './IconDropdown';
 const Container = styled('div')(({ theme }) => ({
 	// padding: theme.spacing(1),

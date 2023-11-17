@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { v4 as uuid, NIL } from 'uuid';
+import { NIL, v4 as uuid } from 'uuid';
 
 import {
 	ArmorStatMapping,

@@ -1,20 +1,16 @@
-import { styled } from '@mui/material';
+'use client';
+
+import IconDropdown from '@dlb/components/IconDropdown';
+import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import {
 	selectSelectedMelee,
 	setSelectedMelee,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import {
-	MeleeIdList,
-	getMelee,
-	getMeleeIdsByDestinySubclassId,
-} from '@dlb/types/Melee';
-import IconDropdown from '@dlb/components/IconDropdown';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
-import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
-import { Description } from '@mui/icons-material';
+import { getMelee, getMeleeIdsByDestinySubclassId } from '@dlb/types/Melee';
+import { styled } from '@mui/material';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0

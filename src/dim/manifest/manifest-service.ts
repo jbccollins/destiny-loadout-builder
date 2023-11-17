@@ -36,7 +36,7 @@ async function saveManifestToIndexedDB(
 }
 
 type Mutable<T> = { -readonly [P in keyof T]: Mutable<T[P]> };
-/** Functions that can reduce the size of a table after it's downloaded but before it's saved to cache. */
+/** Functions that can reduce the size of a table after it"s downloaded but before it"s saved to cache. */
 const tableTrimmers = {
 	DestinyInventoryItemDefinition(table: {
 		[hash: number]: DestinyInventoryItemDefinition;
@@ -99,7 +99,7 @@ async function loadManifest(
 		// Bungie can update the manifest file without changing that version.
 		version = path;
 	} catch (e) {
-		// If we can't get info about the current manifest, try to just use whatever's already saved.
+		// If we can"t get info about the current manifest, try to just use whatever"s already saved.
 		version = localStorage.getItem(localStorageKey);
 		if (version) {
 			return await loadManifestFromCache(version, tableAllowList);
@@ -141,7 +141,7 @@ export async function downloadManifestComponents(
 	// Adding a cache buster to work around bad cached CloudFlare data: https://github.com/DestinyItemManager/DIM/issues/5101
 	// try canonical component URL which should likely be already cached,
 	// then fall back to appending "?bust" then "?bust-[random numbers]",
-	// in case cloudflare has inappropriately cached another domain's CORS headers or a 404 that's no longer a 404
+	// in case cloudflare has inappropriately cached another domain"s CORS headers or a 404 that"s no longer a 404
 	const cacheBusterStrings = [
 		'',
 		'?bust',

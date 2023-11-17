@@ -1,3 +1,5 @@
+'use client';
+
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { MISSING_ICON } from '@dlb/types/globals';
 import {
@@ -38,8 +40,8 @@ const MenuItemContent = styled('div', {
 const MenuItemText = styled('div')(({ theme }) => ({
 	marginLeft: theme.spacing(1),
 
-	// overflow: 'none',
-	// textTransform: 'capitalize'
+	// overflow: "none",
+	// textTransform: "capitalize"
 }));
 
 interface IconDropdownOption {

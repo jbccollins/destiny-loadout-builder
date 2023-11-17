@@ -1,5 +1,7 @@
-import { useRef, useEffect, useCallback } from 'react';
-// import derp from '../../../worker'
+'use client';
+
+import { useCallback, useEffect, useRef } from 'react';
+// import derp from "../../../worker"
 
 type WebWorkerTestProps = Readonly<{ derp: boolean }>;
 

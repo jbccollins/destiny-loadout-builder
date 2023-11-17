@@ -2,8 +2,8 @@
 USAGE: From the root directory run "npm run generate"
 */
 import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
-import { IGrenade } from '@dlb/types/generation';
 import { EElementId } from '@dlb/types/IdEnums';
+import { IGrenade } from '@dlb/types/generation';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';

@@ -1,3 +1,5 @@
+'use client';
+
 import { Box } from '@mui/material';
 import AnalyzerResultsList from './AnalyzerResultsList';
 export default function AnalyzerResultsView() {

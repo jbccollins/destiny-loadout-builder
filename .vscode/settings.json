@@ -1,40 +1,38 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": false
-    },
-    "eslint.validate": [
-        "typescript"
-    ],
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnPaste": false,
-        "editor.formatOnSave": true,
-        "editor.tabSize": 2,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnPaste": false,
-        "editor.formatOnSave": true,
-        "editor.tabSize": 2,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-    "[json]": {
-        "editor.tabSize": 2
-    },
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "cSpell.words": [
-        "bungie",
-        "destinyitemmanager",
-        "Loadout",
-        "loadouts",
-        "masterworked",
-        "reduxjs",
-        "resil",
-        "socketable"
-    ],
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": false
+	},
+	"eslint.validate": ["typescript"],
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": true,
+		"editor.tabSize": 2,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": true
+		}
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": true,
+		"editor.tabSize": 2,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": true
+		}
+	},
+	"[json]": {
+		"editor.tabSize": 2
+	},
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"cSpell.words": [
+		"bungie",
+		"destinyitemmanager",
+		"Loadout",
+		"loadouts",
+		"masterworked",
+		"reduxjs",
+		"resil",
+		"socketable"
+	]
 }

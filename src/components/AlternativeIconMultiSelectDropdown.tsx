@@ -1,3 +1,5 @@
+'use client';
+
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -121,11 +123,11 @@ export default function IconMultiSelectDropdown({
 // 				onChange={handleChange}
 // 				getId={(option: IFragment) => option.id}
 // 				getGroupBy={
-// 					(option: IFragment) => '' // ArmorSlotIdToArmorSlot.get(option.armorSlot).name
+// 					(option: IFragment) => "" // ArmorSlotIdToArmorSlot.get(option.armorSlot).name
 // 				}
 // 				getLabel={(option: IFragment) => option.name}
-// 				title={'Fragments'}
-// 				id={'fragment-selector'}
+// 				title={"Fragments"}
+// 				id={"fragment-selector"}
 // 			/>
 // 		</Container>
 // 	);

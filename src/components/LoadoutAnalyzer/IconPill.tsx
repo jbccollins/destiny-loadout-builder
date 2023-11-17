@@ -1,3 +1,5 @@
+'use client';
+
 import { useTheme } from '@emotion/react';
 import { Box } from '@mui/material';
 import { ReactElement } from 'react';
@@ -22,7 +24,7 @@ export default function IconPill({
 					display: 'inline-flex',
 					//padding: theme.spacing(0.5),
 					borderRadius: '16px',
-					// paddingTop: '10px',
+					// paddingTop: "10px",
 					height: '32px',
 					width: '32px',
 					alignItems: 'center',

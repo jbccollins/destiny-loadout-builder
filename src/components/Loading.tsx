@@ -1,3 +1,5 @@
+'use client';
+
 import {
 	getCharacters,
 	getDestinyAccountsForBungieAccount,
@@ -34,7 +36,7 @@ import {
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 
-// import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+// import { getDefinitions } from "@dlb/dim/destiny2/d2-definitions";
 import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
@@ -162,13 +164,13 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
-	getLocalStorageRecall,
 	LocalStorageRecall,
+	getLocalStorageRecall,
 } from '@dlb/types/LocalStorageRecall';
 import { TabTypeList } from '@dlb/types/Tab';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, Card, CircularProgress, styled } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const Container = styled(Card)(({ theme }) => ({
@@ -747,7 +749,7 @@ function Loading() {
 				let hasDimLoadoutsError = false;
 				let dimProfile = null;
 				try {
-					// throw 'heck';
+					// throw "heck";
 					dimProfile = await getDimApiProfile(mostRecentPlatform);
 					dispatch(setDimLoadouts(dimProfile.loadouts));
 				} catch (e) {
@@ -815,7 +817,7 @@ function Loading() {
 						for (const armorSlotId of ArmorSlotIdList) {
 							// TODO: this lookup of className in the availableExoticArmor const is not
 							// typesafe and is not picked up by intellisense. remove all such mapping consts
-							// availableExoticArmor['derp'] is not caught!!!!!
+							// availableExoticArmor["derp"] is not caught!!!!!
 							if (
 								availableExoticArmor[destinyClassId][armorSlotId].length > 0
 							) {
@@ -961,7 +963,7 @@ function Loading() {
 				log('end', null, false);
 			} catch (error) {
 				// TODO redirect only on the right kind of error
-				// Test by deleting 'authorization' from localStorage
+				// Test by deleting "authorization" from localStorage
 				localStorage.removeItem('authorization');
 				console.error(error);
 				const errorMessage = error.toString();

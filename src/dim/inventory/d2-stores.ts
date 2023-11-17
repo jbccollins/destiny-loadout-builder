@@ -58,7 +58,7 @@ export const loadStoresData = (
 	account: DestinyAccount
 ): Promise<LoadStoresDataResult> => {
 	const promise = (async () => {
-		// TODO: if we've already loaded profile recently, don't load it again
+		// TODO: if we"ve already loaded profile recently, don"t load it again
 
 		try {
 			// const { mockProfileData, readOnly } = getState().inventory;
@@ -379,10 +379,10 @@ export const fakeCharacterStatHashes = {
 // 		const { equippable, unrestricted } = maxLightItemSet(allItems, store);
 
 // 		// // ALL WEAPONS count toward your drops. armor on another character doesn't count.
-// 		// // (maybe just because it's on a different class? who knows. can't test.)
+// 		// // (maybe just because it"s on a different class? who knows. can"t test.)
 // 		// const dropPowerItemSet = maxLightItemSet(
 // 		// 	allItems.filter(
-// 		// 		(i) => i.bucket.inWeapons || i.owner === 'vault' || i.owner === store.id
+// 		// 		(i) => i.bucket.inWeapons || i.owner === "vault" || i.owner === store.id
 // 		// 	),
 // 		// 	store
 // 		// ).unrestricted;
@@ -392,7 +392,7 @@ export const fakeCharacterStatHashes = {
 // 		const unrestrictedPowerFloor = Math.floor(unrestrictedMaxGearPower);
 // 		const equippableMaxGearPower = getLight(store, equippable);
 
-// 		const statProblems: DimCharacterStat['statProblems'] = {};
+// 		const statProblems: DimCharacterStat["statProblems"] = {};
 
 // 		statProblems.notEquippable =
 // 			unrestrictedMaxGearPower !== equippableMaxGearPower;
@@ -408,30 +408,30 @@ export const fakeCharacterStatHashes = {
 
 // 		store.stats.maxGearPower = {
 // 			hash: fakeCharacterStatHashes.maxGearPower,
-// 			name: 'Stats.MaxGearPowerAll',
-// 			// used to be t('Stats.MaxGearPower'), a translation i don't want to lose yet
+// 			name: "Stats.MaxGearPowerAll",
+// 			// used to be t("Stats.MaxGearPower"), a translation i don't want to lose yet
 // 			statProblems,
-// 			description: '',
+// 			description: "",
 // 			richTooltip: ItemPowerSet(unrestricted, unrestrictedPowerFloor),
 // 			value: unrestrictedMaxGearPower,
-// 			icon: 'helmet-icon' // helmetIcon
+// 			icon: "helmet-icon" // helmetIcon
 // 		};
 
 // 		const artifactPower = getArtifactBonus(store);
 // 		store.stats.powerModifier = {
 // 			hash: fakeCharacterStatHashes.powerBonus,
-// 			name: 'Stats.PowerModifier',
-// 			description: '',
+// 			name: "Stats.PowerModifier",
+// 			description: "",
 // 			richTooltip: ArtifactXP(characterProgress, bonusPowerProgressionHash),
 // 			value: artifactPower,
-// 			icon: 'xp-icon' // xpIcon
+// 			icon: "xp-icon" // xpIcon
 // 		};
 
 // 		store.stats.maxTotalPower = {
 // 			hash: fakeCharacterStatHashes.maxTotalPower,
-// 			name: 'Stats.MaxTotalPower',
+// 			name: "Stats.MaxTotalPower",
 // 			statProblems,
-// 			description: '',
+// 			description: "",
 // 			value: unrestrictedMaxGearPower + artifactPower,
 // 			icon: bungieNetPath(def.displayProperties.icon)
 // 		};

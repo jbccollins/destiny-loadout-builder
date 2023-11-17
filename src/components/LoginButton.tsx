@@ -1,3 +1,5 @@
+'use client';
+
 import { oauthClientId } from '@dlb/dim/bungie-api/bungie-api-utils';
 import { Button } from '@mui/material';
 import Link from 'next/link';

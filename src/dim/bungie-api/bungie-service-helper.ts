@@ -1,4 +1,4 @@
-//import { showNotification } from 'app/notifications/notifications';
+//import { showNotification } from "app/notifications/notifications";
 import { errorLog, infoLog } from '@dlb/dim/utils/log';
 import { PlatformErrorCodes } from 'bungie-api-ts-no-const-enum/destiny2';
 import { HttpClient, HttpClientConfig } from 'bungie-api-ts-no-const-enum/http';
@@ -7,9 +7,9 @@ import { fetchWithBungieOAuth } from './authenticated-fetch';
 import { API_KEY } from './bungie-api-utils';
 import {
 	BungieError,
+	HttpStatusError,
 	createFetchWithNonStoppingTimeout,
 	createHttpClient,
-	HttpStatusError,
 	responsivelyThrottleHttpClient,
 	sentryTraceHttpClient,
 } from './http-client';
@@ -26,9 +26,9 @@ const notifyTimeout = _.throttle(
 		) {
 			console.warn('BungieService.Slow');
 			// showNotification({
-			// 	type: 'warning',
-			// 	title: 'BungieService.Slow',
-			// 	body: 'BungieService.SlowDetails',
+			// 	type: "warning",
+			// 	title: "BungieService.Slow",
+			// 	body: "BungieService.SlowDetails",
 			// 	duration: 15000
 			// });
 		}
@@ -82,12 +82,12 @@ export const unauthenticatedHttpClient = dimErrorHandledHttpClient(
 	)
 );
 
-// const request: Request = new Request('fake');
+// const request: Request = new Request("fake");
 // const fakeBungieError: BungieError = new BungieError(
 // 	{
-// 		Message: 'fake',
+// 		Message: "fake",
 // 		ErrorCode: PlatformErrorCodes.SystemDisabled,
-// 		ErrorStatus: 'fake',
+// 		ErrorStatus: "fake",
 // 	},
 // 	request
 // );

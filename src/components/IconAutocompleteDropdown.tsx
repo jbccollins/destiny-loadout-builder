@@ -1,3 +1,5 @@
+'use client';
+
 import {
 	Autocomplete,
 	Box,
@@ -35,7 +37,7 @@ const Container = styled('div')(({ theme }) => ({
 
 	['.raid-mod-selector-text-field, .armor-slot-mod-selector-text-field, .intrinsic-armor-perk-or-attribute-selector-text-field']:
 		{
-			//borderRadius: '0px',
+			//borderRadius: "0px",
 			['fieldset']: {
 				marginTop: '-1px',
 				borderRadius: '0px',

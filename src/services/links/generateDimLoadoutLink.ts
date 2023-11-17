@@ -64,7 +64,7 @@ export const generateDimQuery = (
 ): string => {
 	let query = armorList
 		.map((armorItem) => {
-			return `id:'${armorItem.id}'`;
+			return `id:"${armorItem.id}"`;
 		})
 		.join(' or ');
 	if (classItem.requiredClassItemMetadataKey !== null) {
@@ -72,7 +72,7 @@ export const generateDimQuery = (
 			classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id
 		}'`;
 	} else {
-		query += ` or id:'${classItemMetadata.Legendary.items[0].id}'`;
+		query += ` or id:"${classItemMetadata.Legendary.items[0].id}"`;
 	}
 
 	return query;
@@ -236,7 +236,7 @@ export const generateDimLink = (
 
 	if (destinySubclassId) {
 		loadout.equipped.push({
-			id: '12345', // This doesn't matter and will be overriden but apparently it's required and must be numeric. Idfk.
+			id: '12345', // This doesn"t matter and will be overriden but apparently it"s required and must be numeric. Idfk.
 			hash: getDestinySubclass(destinySubclassId).hash,
 			socketOverrides,
 		});

@@ -1,13 +1,15 @@
+'use client';
+
 import { RichAnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
 import { getAspect } from '@dlb/types/Aspect';
 import { getClassAbility } from '@dlb/types/ClassAbility';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
 import { getFragment } from '@dlb/types/Fragment';
-import { EMPTY_SOCKET_TEXT, MISSING_ICON } from '@dlb/types/globals';
 import { getGrenade } from '@dlb/types/Grenade';
 import { getJump } from '@dlb/types/Jump';
 import { getMelee } from '@dlb/types/Melee';
 import { getSuperAbility } from '@dlb/types/SuperAbility';
+import { EMPTY_SOCKET_TEXT, MISSING_ICON } from '@dlb/types/globals';
 import { Box, styled } from '@mui/material';
 import CustomTooltip from '../CustomTooltip';
 import { Socket } from '../Socket';
@@ -26,8 +28,8 @@ const Description = styled(Box)(({ theme }) => ({
 const CondensedSubclassItemsWrapper = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	gap: '4px',
-	// height: '120px',
-	//paddingLeft: '40px',
+	// height: "120px",
+	//paddingLeft: "40px",
 }));
 
 const CondensedSubclassItemWrapper = styled(Box)(({ theme }) => ({

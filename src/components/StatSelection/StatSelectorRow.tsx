@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, styled } from '@mui/material';
 import { Mark } from './StatSelection';
 

@@ -1,11 +1,11 @@
 import {
 	EnumDictionary,
+	IHash,
 	IIcon,
 	IIdentifiableName,
-	ValidateEnumList,
 	Mapping,
 	MISSING_ICON,
-	IHash,
+	ValidateEnumList,
 } from './globals';
 import { EElementId } from './IdEnums';
 

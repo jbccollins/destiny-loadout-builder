@@ -9,10 +9,10 @@ import {
 	ArmorGroup,
 	ArmorIdList,
 	ArmorItems,
-	getDefaultAllClassItemMetadata,
 	ISelectedExoticArmor,
 	StatList,
 	StrictArmorItems,
+	getDefaultAllClassItemMetadata,
 } from '@dlb/types/Armor';
 import {
 	ArmorSlotIdList,
@@ -45,10 +45,12 @@ import {
 	getModCombos,
 } from './getModCombos';
 import {
-	getDefaultSeenArmorSlotItems,
 	SeenArmorSlotItems,
+	getDefaultSeenArmorSlotItems,
 } from './seenArmorSlotItems';
 import {
+	RequiredClassItemMetadataKey,
+	RequiredClassItemMetadataKeyList,
 	getArmorStatMappingFromArtificeModIdList,
 	getArmorStatMappingFromStatList,
 	getExtraSumOfSeenStats,
@@ -57,8 +59,6 @@ import {
 	getTotalModCost,
 	getTotalStatTiers,
 	getWastedStats,
-	RequiredClassItemMetadataKey,
-	RequiredClassItemMetadataKeyList,
 	sumModCosts,
 	sumStatLists,
 } from './utils';
@@ -151,16 +151,16 @@ const _processArmorBaseCase = ({
 		// // How to debug a specific armor combo
 		// if (
 		// 	isEqual(armorIdList, [
-		// 		'6917529863666127626',
-		// 		'6917529740344211114',
-		// 		'6917529863973030380',
-		// 		'6917529863876854947',
+		// 		"6917529863666127626",
+		// 		"6917529740344211114",
+		// 		"6917529863973030380",
+		// 		"6917529863876854947",
 		// 	]) &&
 		// 	desiredArmorStats[EArmorStatId.Resilience] === 100 &&
 		// 	desiredArmorStats[EArmorStatId.Recovery] === 90 &&
 		// 	desiredArmorStats[EArmorStatId.Discipline] === 80
 		// ) {
-		// 	console.log('>>>> Specific Combo');
+		// 	console.log(">>>> Specific Combo");
 		// }
 		const modCombosList = getModCombos({
 			sumOfSeenStats: finalSumOfSeenStats,
@@ -584,11 +584,11 @@ export const getMaxPossibleMetadata = ({
 			processedArmorSlotCount === ArmorSlotWithClassItemIdList.length &&
 			processedArmorStatCount === ArmorStatIdList.length
 		) {
-			// console.log('>>> break', totalIterations);
+			// console.log(">>> break", totalIterations);
 			break;
 		}
 	}
-	// console.log('>>> iterations', {
+	// console.log(">>> iterations", {
 	// 	totalIterations,
 	// 	armorSlotIterations,
 	// 	armorStatIterations,

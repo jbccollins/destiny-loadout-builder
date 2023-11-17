@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev-open-browser": "npm run open-browser && npx local-ssl-proxy --source 4001 --target 3001 --cert localhost.pem --key localhost-key.pem & next dev -p 3001",
-    "dev": "NODE_ENV=development npx local-ssl-proxy --source 4001 --target 3002 --cert localhost.pem --key localhost-key.pem & next dev -p 3002",
+    "dev": "next dev --experimental-https -p 4000",
     "open-browser": "open https://localhost:4001",
     "build": "next build",
     "start": "next start",
@@ -47,7 +47,7 @@
     "lodash": "4.17.21",
     "lodash.compact": "^3.0.1",
     "memoize-one": "6.0.0",
-    "next": "14.0.1",
+    "next": "14.0.3",
     "nodemailer": "6.9.1",
     "react": "18.2.0",
     "react-device-detect": "^2.2.3",

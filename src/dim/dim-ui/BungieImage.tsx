@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import Image from 'next/image';
+import Image, { ImageProps } from 'next/image';
 import React from 'react';
 
 /**
@@ -9,39 +9,24 @@ import React from 'react';
  */
 export type BungieImagePath = string;
 
-export type BungieImageProps = Omit<
-	React.ImgHTMLAttributes<HTMLImageElement>,
-	'onClick'
-> & {
-	src: BungieImagePath;
-};
-
 /**
  * An image tag that links its src to bungie.net. Other props pass through to the underlying image.
  */
-export default React.memo(function BungieImage(props: BungieImageProps) {
+export default React.memo(function BungieImage(props: ImageProps) {
 	const { src, ...otherProps } = props;
-
-	// Extract width and height from otherProps if they exist
-	const { width, height, ...rest } = otherProps;
-
-	// Convert width and height to the correct type or set a default value
-	const widthProp = typeof width === 'string' ? parseInt(width, 10) : width || 0;
-	const heightProp = typeof height === 'string' ? parseInt(height, 10) : height || 0;
-	// Ensure placeholder is set to a valid value or not set at all
-	const placeholder = otherProps.placeholder === 'blur' || otherProps.placeholder === 'empty' ? otherProps.placeholder : undefined;
-
 	return (
+		// eslint-disable-next-line @next/next/no-img-element
 		<Image
+			// style={{ border: '1px solid green' }}
 			alt="src"
 			src={src}
 			draggable={false}
 			loading="lazy"
-			width={widthProp}
-			height={heightProp}
-			{...rest}
-			className={clsx(rest.className, 'no-pointer-events')}
-			placeholder='blur'
+			className={clsx(otherProps.className, 'no-pointer-events')}
+			width={otherProps.width}
+			height={otherProps.height}
+			placeholder="empty"
+			{...otherProps}
 		/>
 	);
 });

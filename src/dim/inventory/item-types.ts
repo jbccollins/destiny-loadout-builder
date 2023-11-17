@@ -22,7 +22,7 @@ import {
 	DestinySandboxPerkDefinition,
 	DestinySocketCategoryDefinition,
 	DestinyStat,
-	DestinyStatDefinition
+	DestinyStatDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { InventoryBucket } from './inventory-buckets';
 

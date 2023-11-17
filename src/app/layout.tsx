@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import ClientProviders from '@dlb/providers/ClientProviders';
 import '@dlb/styles/globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
-import ClientProviders from '@dlb/providers/ClientProviders';
+import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
 	title: {

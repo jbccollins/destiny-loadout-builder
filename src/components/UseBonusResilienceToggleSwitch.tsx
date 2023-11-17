@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
 	selectUseBonusResilience,
@@ -21,7 +21,7 @@ export default function UseBonusResilienceToggleSwitch() {
 				onChange={handleChange}
 				value={useBonusResilience}
 				helpText={
-					'If enabled, builds that do not use an exotic chestpiece will have a bonus +1 resilience applied to them. To achive this bonus you must equip the blue "Solstice (Rekindled)" ornament on your chestpiece.'
+					"If enabled, builds that do not use an exotic chestpiece will have a bonus +1 resilience applied to them. To achive this bonus you must equip the blue 'Solstice (Rekindled)' ornament on your chestpiece."
 				}
 			/>
 		</Box>

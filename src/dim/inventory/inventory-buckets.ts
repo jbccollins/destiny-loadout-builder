@@ -1,6 +1,6 @@
 import type {
 	D2AdditionalBucketTypes,
-	D2BucketTypes
+	D2BucketTypes,
 } from '@dlb/dim/destiny2/d2-buckets';
 import { BucketCategory } from 'bungie-api-ts-no-const-enum/destiny2';
 

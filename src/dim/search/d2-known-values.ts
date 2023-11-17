@@ -1,14 +1,14 @@
 import {
-	DestinyEnergyType,
-	TierType
-} from 'bungie-api-ts-no-const-enum/destiny2';
-import {
 	BreakerTypeHashes,
 	BucketHashes,
 	ItemCategoryHashes,
 	PlugCategoryHashes,
-	StatHashes
+	StatHashes,
 } from '@dlb/dim/data/d2/generated-enums';
+import {
+	DestinyEnergyType,
+	TierType,
+} from 'bungie-api-ts-no-const-enum/destiny2';
 
 // ✨ magic values ✨
 // this file has non-programatically decided information
@@ -36,7 +36,7 @@ export const DEFAULT_GLOW = 3807544519; // InventoryItem "Remove Armor Glow"
 export const DEFAULT_ORNAMENTS: number[] = [
 	2931483505, // InventoryItem "Default Ornament" Restores your weapon to its default appearance.
 	1959648454, // InventoryItem "Default Ornament" Restores your weapon to its default appearance.
-	702981643 // InventoryItem "Default Ornament" Restores your armor to its default appearance.
+	702981643, // InventoryItem "Default Ornament" Restores your armor to its default appearance.
 ];
 
 /** if a socket contains these, consider it empty */
@@ -45,7 +45,7 @@ export const emptySocketHashes = [
 	2600899007, // InventoryItem "Empty Mod Socket"
 	1835369552, // InventoryItem "Empty Mod Socket"
 	3851138800, // InventoryItem "Empty Mod Socket"
-	791435474 // InventoryItem "Empty Activity Mod Socket"
+	791435474, // InventoryItem "Empty Activity Mod Socket"
 ];
 
 export const armor2PlugCategoryHashesByName = {
@@ -54,7 +54,7 @@ export const armor2PlugCategoryHashesByName = {
 	gauntlets: PlugCategoryHashes.EnhancementsV2Arms,
 	chest: PlugCategoryHashes.EnhancementsV2Chest,
 	leg: PlugCategoryHashes.EnhancementsV2Legs,
-	classitem: PlugCategoryHashes.EnhancementsV2ClassItem
+	classitem: PlugCategoryHashes.EnhancementsV2ClassItem,
 } as const;
 
 /** The consistent armour 2 mod category hashes. This excludes raid, combat and legacy slots as they tend to change. */
@@ -72,7 +72,7 @@ export const killTrackerObjectivesByHash: Record<
 	73837075: 'pve', // Objective "Enemies Defeated" found inside InventoryItem[905869860] "Kill Tracker"
 	90275515: 'pve', // Objective "Enemies Defeated" found inside InventoryItem[2240097604] "Kill Tracker"
 	2579044636: 'pve', // Objective "Enemies Defeated" found inside InventoryItem[2302094943] "Kill Tracker"
-	2285418970: undefined //
+	2285418970: undefined, //
 };
 export const killTrackerSocketTypeHash = 1282012138;
 
@@ -81,7 +81,7 @@ export const weaponMasterworkY2SocketTypeHash = 2218962841;
 export const universalOrnamentPlugSetHashes: number[] = [
 	26360131, 71785814, 709078552, 1133647128, 1323117612, 1742798175, 2093871133,
 	2203626505, 2425516788, 2568801218, 2733810650, 3024995628, 3479876793,
-	4014441445, 4178224051
+	4014441445, 4178224051,
 ];
 
 //
@@ -96,7 +96,7 @@ export const CUSTOM_TOTAL_STAT_HASH = -1100;
 export const D2LightStats = [
 	StatHashes.Attack,
 	StatHashes.Defense,
-	StatHashes.Power
+	StatHashes.Power,
 ];
 
 /** these stats canonically exist on D2 armor */
@@ -106,7 +106,7 @@ export const D2ArmorStatHashByName = {
 	recovery: StatHashes.Recovery,
 	discipline: StatHashes.Discipline,
 	intellect: StatHashes.Intellect,
-	strength: StatHashes.Strength
+	strength: StatHashes.Strength,
 };
 
 /** Stats that all (D2) armor should have. */
@@ -131,7 +131,7 @@ export const D2WeaponStatHashByName = {
 	drawtime: StatHashes.DrawTime,
 	zoom: StatHashes.Zoom,
 	airborne: StatHashes.AirborneEffectiveness,
-	accuracy: StatHashes.Accuracy
+	accuracy: StatHashes.Accuracy,
 };
 
 export const swordStatsByName = {
@@ -140,7 +140,7 @@ export const swordStatsByName = {
 	guardresistance: StatHashes.GuardResistance,
 	chargerate: StatHashes.ChargeRate,
 	guardendurance: StatHashes.GuardEndurance,
-	ammocapacity: StatHashes.AmmoCapacity
+	ammocapacity: StatHashes.AmmoCapacity,
 };
 
 //
@@ -160,7 +160,7 @@ export const D2ItemCategoryHashesByName = {
 	transmat: ItemCategoryHashes.ShipModsTransmatEffects,
 	weaponmod: ItemCategoryHashes.WeaponMods,
 	armormod: ItemCategoryHashes.ArmorMods,
-	reptoken: ItemCategoryHashes.ReputationTokens
+	reptoken: ItemCategoryHashes.ReputationTokens,
 };
 
 /** powerful rewards listed in quests or bounties */
@@ -183,11 +183,11 @@ export const powerfulSources = [
 	3114385605, // Tier 1
 	4039143015, // Powerful
 	3114385606, // Tier 2
-	3114385607 // Tier 3
+	3114385607, // Tier 3
 ];
 
 export const pinnacleSources = [
-	73143230 // Pinnacle
+	73143230, // Pinnacle
 ];
 
 //
@@ -206,7 +206,7 @@ export const armorBuckets = {
 	gauntlets: BucketHashes.Gauntlets,
 	chest: BucketHashes.ChestArmor,
 	leg: BucketHashes.LegArmor,
-	classitem: BucketHashes.ClassArmor
+	classitem: BucketHashes.ClassArmor,
 };
 
 // these aren't really normal equipment,
@@ -216,7 +216,7 @@ export const armorBuckets = {
 export const uniqueEquipBuckets = [
 	BucketHashes.SeasonalArtifact,
 	BucketHashes.Emotes_Invisible,
-	BucketHashes.Finishers
+	BucketHashes.Finishers,
 ];
 
 //
@@ -238,7 +238,7 @@ export const RAID_ACTIVITY_TYPE_HASH = 2043403989;
 
 // milestones to manually mark as raid, because they don't adequately identify themselves in defs
 export const RAID_MILESTONE_HASHES = [
-	2712317338 // Milestone "Garden of Salvation" has no associated activities to check for raid-ness
+	2712317338, // Milestone "Garden of Salvation" has no associated activities to check for raid-ness
 ];
 
 export const VENDORS = {
@@ -261,7 +261,7 @@ export const VENDORS = {
 	 * but every season this vendor is updated with the new contents
 	 * of that season's artifact
 	 */
-	ARTIFACT: 2894222926
+	ARTIFACT: 2894222926,
 };
 
 /** used to snag the icon for display */
@@ -280,7 +280,7 @@ export const energyNamesByEnum: Record<DestinyEnergyType, string> = {
 	[DestinyEnergyType.Void]: 'void',
 	[DestinyEnergyType.Ghost]: 'ghost',
 	[DestinyEnergyType.Subclass]: 'subclass',
-	[DestinyEnergyType.Stasis]: 'stasis'
+	[DestinyEnergyType.Stasis]: 'stasis',
 };
 
 /**
@@ -303,7 +303,7 @@ export const D2ItemTiers = {
 	Legendary: TierType.Superior,
 	[TierType.Superior]: 'Legendary',
 	Exotic: TierType.Exotic,
-	[TierType.Exotic]: 'Exotic'
+	[TierType.Exotic]: 'Exotic',
 } as const;
 
 export type ItemTierName =
@@ -321,7 +321,7 @@ export const breakerTypes = {
 	any: [
 		BreakerTypeHashes.Stagger,
 		BreakerTypeHashes.Disruption,
-		BreakerTypeHashes.ShieldPiercing
+		BreakerTypeHashes.ShieldPiercing,
 	],
 	barrier: [BreakerTypeHashes.ShieldPiercing],
 	antibarrier: [BreakerTypeHashes.ShieldPiercing],
@@ -329,7 +329,7 @@ export const breakerTypes = {
 	overload: [BreakerTypeHashes.Disruption],
 	disruption: [BreakerTypeHashes.Disruption],
 	unstoppable: [BreakerTypeHashes.Stagger],
-	stagger: [BreakerTypeHashes.Stagger]
+	stagger: [BreakerTypeHashes.Stagger],
 };
 
 export const modsWithConditionalStats = {
@@ -339,5 +339,5 @@ export const modsWithConditionalStats = {
 	elementalCapacitor: 3511092054,
 	echoOfPersistence: 2272984671,
 	enhancedElementalCapacitor: 711234314,
-	sparkOfFocus: 1727069360
+	sparkOfFocus: 1727069360,
 } as const;

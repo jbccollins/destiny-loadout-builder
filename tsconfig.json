@@ -24,7 +24,6 @@
 				"name": "next"
 			}
 		],
-		"strictNullChecks": true
 	},
 	// This is potentially an alternative way to run scripts directly...
 	"ts-node": {

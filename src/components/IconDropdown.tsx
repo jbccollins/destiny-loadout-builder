@@ -79,10 +79,12 @@ const IconDropdown = ({
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		let v = null;
-		if (value !== '') {
+		if (value == null) {
 			v = value;
 		}
-		onChange(v);
+		if (typeof v === 'string') {
+			onChange(v);
+		}
 	};
 	return (
 		<Container hideSelectedOptionText={hideSelectedOptionText}>
@@ -116,7 +118,7 @@ const IconDropdown = ({
 					)}
 					{options.map((option) => {
 						const label = getLabel(option);
-						let description: string | JSX.Element = null;
+						let description: string | JSX.Element | null = null;
 						let hasDescription = false;
 						if (getDescription) {
 							description = getDescription(option);

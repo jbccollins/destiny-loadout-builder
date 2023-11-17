@@ -121,9 +121,13 @@ function CompactIconAutocompleteDropdown(
 
 	useEffect(() => {
 		if (isMobile) {
-			document
-				.getElementsByClassName(textFieldClassName)[0]
-				.querySelector("input").disabled = true;
+			const textField = document.getElementsByClassName(textFieldClassName ?? "")[0];
+			if (textField) {
+				const input = textField.querySelector("input");
+				if (input) {
+					input.disabled = true;
+				}
+			}
 		}
 	}, [textFieldClassName]);
 
@@ -146,7 +150,6 @@ function CompactIconAutocompleteDropdown(
 						isControlled
 						isOpen={open}
 						onClose={() => handleClose(true)}
-						id={id}
 						showIcon={false}
 						{...props}
 					/>
@@ -172,7 +175,7 @@ function CompactIconAutocompleteDropdown(
 						onChange={(_, value) => {
 							onChange(value as IIconAutocompleteDropdownOption);
 						}}
-						getOptionDisabled={(option) => option.disabled}
+						getOptionDisabled={(option) => !!option.disabled}
 						isOptionEqualToValue={(option, value) => {
 							return getId(option) === getId(value);
 						}}
@@ -195,7 +198,7 @@ function CompactIconAutocompleteDropdown(
 								>
 									<Box sx={{ display: "flex", flexWrap: "nowrap" }}>
 										<DecoratedBungieIcon
-											getCost={getCost ? () => getCost(option) : null}
+											getCost={getCost ? () => getCost(option) : undefined}
 											icon={option.icon}
 											elementOverlayIcon={option.elementOverlayIcon}
 											getAltText={() => getLabel(option)}
@@ -247,7 +250,7 @@ function CompactIconAutocompleteDropdown(
 												}}
 											>
 												<DecoratedBungieIcon
-													getCost={getCost ? () => getCost(value) : null}
+													getCost={getCost ? () => getCost(value) : undefined}
 													icon={value.icon}
 													elementOverlayIcon={value.elementOverlayIcon}
 													getAltText={() => getLabel(value)}

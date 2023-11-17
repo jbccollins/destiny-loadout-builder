@@ -116,7 +116,9 @@ function IconAutocompleteDropdown({
 	};
 
 	const handleClose = () => {
-		onClose();
+		if (onClose) {
+			onClose();
+		}
 	};
 
 	const controlledProps = isControlled
@@ -144,9 +146,12 @@ function IconAutocompleteDropdown({
 
 	useEffect(() => {
 		if (isMobile) {
-			document
+			const inputElement = document
 				.getElementsByClassName(textInputClass)[0]
-				.querySelector('input').disabled = true;
+				?.querySelector('input');
+			if (inputElement) {
+				inputElement.disabled = true;
+			}
 		}
 	}, [textInputClass]);
 
@@ -170,7 +175,7 @@ function IconAutocompleteDropdown({
 					onChange={(_, value) => {
 						onChange(value as IIconAutocompleteDropdownOption);
 					}}
-					getOptionDisabled={(option) => option.disabled}
+					getOptionDisabled={(option) => !!option.disabled}
 					isOptionEqualToValue={(option, value) => {
 						return getId(option) === getId(value);
 					}}
@@ -193,7 +198,7 @@ function IconAutocompleteDropdown({
 							>
 								<Box sx={{ display: 'flex', flexWrap: 'nowrap' }}>
 									<DecoratedBungieIcon
-										getCost={getCost ? () => getCost(option) : null}
+										getCost={getCost ? () => getCost(option) : undefined}
 										icon={option.icon}
 										elementOverlayIcon={option.elementOverlayIcon}
 										getAltText={() => getLabel(option)}
@@ -247,7 +252,7 @@ function IconAutocompleteDropdown({
 											}}
 										>
 											<DecoratedBungieIcon
-												getCost={getCost ? () => getCost(value) : null}
+												getCost={getCost ? () => getCost(value) : undefined}
 												icon={value.icon}
 												elementOverlayIcon={value.elementOverlayIcon}
 												getAltText={() => getLabel(value)}

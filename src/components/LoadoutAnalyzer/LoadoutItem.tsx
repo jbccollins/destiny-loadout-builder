@@ -18,13 +18,13 @@ import {
 	setSelectedArmorSlotMods,
 } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import {
-	SelectedAspects,
 	clearSelectedAspects,
+	SelectedAspects,
 	setSelectedAspects,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import {
-	SelectedClassAbility,
 	clearSelectedClassAbility,
+	SelectedClassAbility,
 	setSelectedClassAbility,
 } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
@@ -38,8 +38,8 @@ import {
 	setSelectedFragmentsForDestinySubclass,
 } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import {
-	SelectedGrenade,
 	clearSelectedGrenade,
+	SelectedGrenade,
 	setSelectedGrenade,
 } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
 import {
@@ -48,13 +48,13 @@ import {
 	setSelectedIntrinsicArmorPerkOrAttributeIds,
 } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import {
-	SelectedJump,
 	clearSelectedJump,
+	SelectedJump,
 	setSelectedJump,
 } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 import {
-	SelectedMelee,
 	clearSelectedMelee,
+	SelectedMelee,
 	setSelectedMelee,
 } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import {
@@ -62,8 +62,8 @@ import {
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import {
-	SelectedSuperAbility,
 	clearSelectedSuperAbility,
+	SelectedSuperAbility,
 	setSelectedSuperAbility,
 } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
@@ -71,15 +71,15 @@ import { setUseBonusResilience } from '@dlb/redux/features/useBonusResilience/us
 import { useAppDispatch } from '@dlb/redux/hooks';
 import {
 	ELoadoutOptimizationTypeId,
-	NoneOptimization,
 	getLoadoutOptimization,
+	NoneOptimization,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
 	AnalyzableLoadout,
 	ELoadoutOptimizationCategoryId,
 	ELoadoutType,
-	RichAnalyzableLoadout,
 	getLoadoutOptimizationCategory,
+	RichAnalyzableLoadout,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
@@ -711,7 +711,6 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 								src={bungieNetPath(iconColorImage)}
 								width={inGameLoadoutIconSize}
 								height={inGameLoadoutIconSize}
-								alt="Loadout Icon"
 							/>
 						</Box>
 						<Box
@@ -725,7 +724,6 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 								src={bungieNetPath(icon)}
 								width={inGameLoadoutIconSize}
 								height={inGameLoadoutIconSize}
-								alt="Loadout Icon"
 							/>
 						</Box>
 						<Box

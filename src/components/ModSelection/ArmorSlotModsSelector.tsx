@@ -20,6 +20,7 @@ import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
+import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToArmorSlotModIdListMapping,
@@ -27,7 +28,6 @@ import {
 	hasMutuallyExclusiveMods,
 } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
-import { IMod } from '@dlb/types/generation';
 import HelpIcon from '@mui/icons-material/Help';
 import {
 	Box,
@@ -274,8 +274,8 @@ function ArmorSlotModSelector() {
 													}}
 												>
 													<BungieImage
-														width={'30px'}
-														height={'30px'}
+														width={30}
+														height={30}
 														src={getArmorSlot(armorSlotId).icon}
 													/>
 													{/* {`(${usedArmorEnergy}/10)`} */}

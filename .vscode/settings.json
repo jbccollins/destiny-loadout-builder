@@ -3,6 +3,7 @@
 		"source.fixAll.eslint": false
 	},
 	"eslint.validate": ["typescript"],
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
 	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnPaste": false,

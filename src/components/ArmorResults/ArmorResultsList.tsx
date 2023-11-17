@@ -1,5 +1,6 @@
 'use client';
 
+import { DimIcon } from '@/public/dim_logo.svgicon';
 import ModPlacement from '@dlb/components//ModPlacement';
 import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
 import StatTiers from '@dlb/components/StatTiers';
@@ -49,6 +50,7 @@ import {
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
+import { MISSING_ICON } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
 	EArmorStatId,
@@ -57,19 +59,17 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
-import { MISSING_ICON } from '@dlb/types/globals';
 import { getBonusResilienceOrnamentByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
-import { DimIcon } from 'public/dim_logo.svgicon';
 import React from 'react';
-import { ResultsTableLoadout, getClassItemText } from './ArmorResultsTypes';
+import { getClassItemText, ResultsTableLoadout } from './ArmorResultsTypes';
 import {
-	SortableFieldsDisplayOrder,
 	getSortableFieldDisplayName,
+	SortableFieldsDisplayOrder,
 } from './ArmorResultsView';
 
 type ArmorResultsListProps = {
@@ -277,8 +277,8 @@ function ResultsItem({
 					<StatsBreakdownItem>
 						<MasterworkedBungieImage
 							isMasterworked={true}
-							width={'20px'}
-							height={'20px'}
+							width={20}
+							height={20}
 							src={MISSING_ICON}
 						/>
 					</StatsBreakdownItem>
@@ -309,8 +309,8 @@ function ResultsItem({
 				<StatsBreakdownItem>
 					<MasterworkedBungieImage
 						isMasterworked={false}
-						width={'20px'}
-						height={'20px'}
+						width={20}
+						height={20}
 						src={icon}
 					/>
 				</StatsBreakdownItem>
@@ -344,8 +344,8 @@ function ResultsItem({
 						<IconTextContainer key={armorItem.hash}>
 							<MasterworkedBungieImage
 								isMasterworked={armorItem.isMasterworked}
-								width={'40px'}
-								height={'40px'}
+								width={40}
+								height={40}
 								src={armorItem.icon}
 							/>
 							<IconText>{armorItem.name}</IconText>
@@ -355,8 +355,8 @@ function ResultsItem({
 				<IconTextContainer>
 					<MasterworkedBungieImage
 						isMasterworked={item.classItem.hasMasterworkedVariant}
-						width={'40px'}
-						height={'40px'}
+						width={40}
+						height={40}
 						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 					/>
 					<IconText>{getClassItemText(item)}</IconText>
@@ -559,8 +559,8 @@ function ResultsItem({
 								<StatsBreakdownItem>
 									<MasterworkedBungieImage
 										isMasterworked={armorItem.isMasterworked}
-										width={'20px'}
-										height={'20px'}
+										width={20}
+										height={20}
 										src={armorItem.icon}
 									/>
 								</StatsBreakdownItem>
@@ -582,8 +582,8 @@ function ResultsItem({
 							<StatsBreakdownItem>
 								<MasterworkedBungieImage
 									isMasterworked={item.classItem.hasMasterworkedVariant}
-									width={'20px'}
-									height={'20px'}
+									width={20}
+									height={20}
 									src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 								/>
 							</StatsBreakdownItem>

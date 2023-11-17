@@ -28,8 +28,8 @@ import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbi
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	ELoadoutType,
-	LodaoutTypeFilterToLoadoutTypeMapping,
 	filterOptimizationTypeList,
+	LodaoutTypeFilterToLoadoutTypeMapping,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
@@ -217,7 +217,7 @@ export default function AnalyzerResultsList() {
 			tabs.push({
 				index,
 				title: destinyClass.name,
-				icon: destinyClass.icon,
+				icon: destinyClass.icon.src,
 				content: (
 					<Box>
 						{visibleClassSpecificRichValidLoadouts.length === 0 && (

@@ -11,6 +11,7 @@ import {
 	SelectProps,
 	styled,
 } from '@mui/material';
+import { StaticImageData } from 'next/image';
 
 const Container = styled(Box, {
 	shouldForwardProp: (prop) => prop !== 'hideSelectedOptionText',
@@ -45,7 +46,7 @@ const MenuItemText = styled('div')(({ theme }) => ({
 }));
 
 interface IconDropdownOption {
-	icon: string;
+	icon: string | StaticImageData;
 	id: string | number;
 	disabled?: boolean;
 }
@@ -79,12 +80,10 @@ const IconDropdown = ({
 }: IconDropdownProps) => {
 	const handleChange = (value: string) => {
 		let v = null;
-		if (value == null) {
+		if (value !== '') {
 			v = value;
 		}
-		if (typeof v === 'string') {
-			onChange(v);
-		}
+		onChange(v);
 	};
 	return (
 		<Container hideSelectedOptionText={hideSelectedOptionText}>

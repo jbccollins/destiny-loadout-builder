@@ -1,54 +1,54 @@
-"use client";
+'use client';
 
 import {
 	Autocomplete,
 	Box,
 	FormControl,
 	Popper,
-	TextField,
 	styled,
+	TextField,
 	useTheme,
-} from "@mui/material";
-import match from "autosuggest-highlight/match";
-import parse from "autosuggest-highlight/parse";
-import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
-import DecoratedBungieIcon from "./DecoratedBungieIcon";
-import IconAutocompleteDropdown from "./IconAutocompleteDropdown";
+} from '@mui/material';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import DecoratedBungieIcon from './DecoratedBungieIcon';
+import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 
 const StyledPopper = styled(Popper)({
-	display: "none",
+	display: 'none',
 });
 
-const Container = styled("div", {
-	shouldForwardProp: (prop) => prop !== "open",
+const Container = styled('div', {
+	shouldForwardProp: (prop) => prop !== 'open',
 })<{ open: boolean }>(({ theme, open }) => ({
 	color: theme.palette.secondary.main,
-	[".armor-slot-mod-selector-text-field"]: {
-		["fieldset"]: {
-			marginLeft: "-1px",
-			borderRadius: "0px",
-			borderColor: open ? "white" : "",
-			borderWidth: open ? "2px" : "",
+	['.armor-slot-mod-selector-text-field']: {
+		['fieldset']: {
+			marginLeft: '-1px',
+			borderRadius: '0px',
+			borderColor: open ? 'white' : '',
+			borderWidth: open ? '2px' : '',
 		},
-		["&.first fieldset"]: {
+		['&.first fieldset']: {
 			marginLeft: 0,
-			borderTopLeftRadius: "inherit",
-			borderBottomLeftRadius: "inherit",
+			borderTopLeftRadius: 'inherit',
+			borderBottomLeftRadius: 'inherit',
 		},
-		["&.last fieldset"]: {
-			borderTopRightRadius: "inherit",
-			borderBottomRightRadius: "inherit",
+		['&.last fieldset']: {
+			borderTopRightRadius: 'inherit',
+			borderBottomRightRadius: 'inherit',
 		},
 	},
 
-	[".outer-text-field input"]: {
-		maxWidth: "0px !important",
-		minWidth: "0px !important",
-		padding: "0px !important",
+	['.outer-text-field input']: {
+		maxWidth: '0px !important',
+		minWidth: '0px !important',
+		padding: '0px !important',
 	},
-	[".outer-text-field > div"]: {
-		cursor: "pointer",
+	['.outer-text-field > div']: {
+		cursor: 'pointer',
 	},
 }));
 
@@ -121,9 +121,11 @@ function CompactIconAutocompleteDropdown(
 
 	useEffect(() => {
 		if (isMobile) {
-			const textField = document.getElementsByClassName(textFieldClassName ?? "")[0];
+			const textField = document.getElementsByClassName(
+				textFieldClassName ?? ''
+			)[0];
 			if (textField) {
-				const input = textField.querySelector("input");
+				const input = textField.querySelector('input');
 				if (input) {
 					input.disabled = true;
 				}
@@ -137,13 +139,13 @@ function CompactIconAutocompleteDropdown(
 				<Box
 					className="dropdown-wrapper"
 					sx={{
-						background: "rgb(19, 19, 19)", // TODO: Fix this color
-						position: "absolute",
+						background: 'rgb(19, 19, 19)', // TODO: Fix this color
+						position: 'absolute',
 						top: `calc(100% - ${theme.spacing(1)})`,
-						width: "100%",
-						zIndex: "300",
-						left: "0px",
-						marginTop: "-2px",
+						width: '100%',
+						zIndex: '300',
+						left: '0px',
+						marginTop: '-2px',
 					}}
 				>
 					<IconAutocompleteDropdown
@@ -156,7 +158,7 @@ function CompactIconAutocompleteDropdown(
 				</Box>
 			)}
 			<Container open={open}>
-				<FormControl fullWidth sx={{ cursor: "pointer !important" }}>
+				<FormControl fullWidth sx={{ cursor: 'pointer !important' }}>
 					<Autocomplete
 						// forcePopupIcon={false}
 						// forcePopupIcon={showPopupIcon ? true : false}
@@ -170,7 +172,7 @@ function CompactIconAutocompleteDropdown(
 						autoHighlight
 						value={value}
 						disableClearable
-						sx={{ maxHeight: "80vh" }}
+						sx={{ maxHeight: '80vh' }}
 						groupBy={(option) => getGroupBy(option)}
 						onChange={(_, value) => {
 							onChange(value as IIconAutocompleteDropdownOption);
@@ -191,23 +193,22 @@ function CompactIconAutocompleteDropdown(
 								<Box
 									component="li"
 									sx={{
-										"& > img": { mr: 2, flexShrink: 0 },
-										flexWrap: "wrap",
+										'& > img': { mr: 2, flexShrink: 0 },
+										flexWrap: 'wrap',
 									}}
 									{...props}
 								>
-									<Box sx={{ display: "flex", flexWrap: "nowrap" }}>
+									<Box sx={{ display: 'flex', flexWrap: 'nowrap' }}>
 										<DecoratedBungieIcon
 											getCost={getCost ? () => getCost(option) : undefined}
 											icon={option.icon}
 											elementOverlayIcon={option.elementOverlayIcon}
-											getAltText={() => getLabel(option)}
 										/>
 										<div
 											style={{
-												paddingTop: "8px",
-												paddingLeft: "6px",
-												whiteSpace: "nowrap",
+												paddingTop: '8px',
+												paddingLeft: '6px',
+												whiteSpace: 'nowrap',
 											}}
 										>
 											{parts.map((part, index) => (
@@ -241,11 +242,11 @@ function CompactIconAutocompleteDropdown(
 										startAdornment: (
 											<Box
 												sx={{
-													position: "relative",
-													marginTop: "3px",
-													marginBottom: "2px",
-													marginLeft: "5px",
-													paddingRight: "6px",
+													position: 'relative',
+													marginTop: '3px',
+													marginBottom: '2px',
+													marginLeft: '5px',
+													paddingRight: '6px',
 													// cursor: "pointer",
 												}}
 											>
@@ -253,7 +254,6 @@ function CompactIconAutocompleteDropdown(
 													getCost={getCost ? () => getCost(value) : undefined}
 													icon={value.icon}
 													elementOverlayIcon={value.elementOverlayIcon}
-													getAltText={() => getLabel(value)}
 												/>
 											</Box>
 										),
@@ -266,7 +266,7 @@ function CompactIconAutocompleteDropdown(
 										// 		)}
 										// 	</Box>
 										// ),
-										autoComplete: "new-password", // disable autocomplete and autofill
+										autoComplete: 'new-password', // disable autocomplete and autofill
 									}}
 								/>
 							);

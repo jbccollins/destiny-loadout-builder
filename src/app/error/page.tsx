@@ -8,7 +8,7 @@ import { selectLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { Box, Button, styled } from '@mui/material';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const sendErrorEmail = async (error: string): Promise<void> => {

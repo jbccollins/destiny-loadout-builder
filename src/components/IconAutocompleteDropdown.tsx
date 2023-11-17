@@ -201,7 +201,6 @@ function IconAutocompleteDropdown({
 										getCost={getCost ? () => getCost(option) : undefined}
 										icon={option.icon}
 										elementOverlayIcon={option.elementOverlayIcon}
-										getAltText={() => getLabel(option)}
 									/>
 									<div
 										style={{
@@ -255,7 +254,6 @@ function IconAutocompleteDropdown({
 												getCost={getCost ? () => getCost(value) : undefined}
 												icon={value.icon}
 												elementOverlayIcon={value.elementOverlayIcon}
-												getAltText={() => getLabel(value)}
 											/>
 										</Box>
 									) : null,

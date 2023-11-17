@@ -9,10 +9,15 @@ import React from 'react';
  */
 export type BungieImagePath = string;
 
+export type BungieImageProps = Omit<ImageProps, 'alt'> & {
+	height: number;
+	width: number;
+};
+
 /**
  * An image tag that links its src to bungie.net. Other props pass through to the underlying image.
  */
-export default React.memo(function BungieImage(props: ImageProps) {
+export default React.memo(function BungieImage(props: BungieImageProps) {
 	const { src, ...otherProps } = props;
 	return (
 		// eslint-disable-next-line @next/next/no-img-element

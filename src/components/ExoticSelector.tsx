@@ -26,8 +26,8 @@ const getExtraContent = (option: AvailableExoticArmorItem) => {
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>
 						<Box>
 							<BungieImage
-								width={'25px'}
-								height={'25px'}
+								width={25}
+								height={25}
 								src={option.exoticPerk.icon}
 							/>
 						</Box>
@@ -44,7 +44,7 @@ const getExtraContent = (option: AvailableExoticArmorItem) => {
 				<Box>
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>
 						<Box>
-							<BungieImage width={'25px'} height={'25px'} src={MISSING_ICON} />
+							<BungieImage width={25} height={25} src={MISSING_ICON} />
 						</Box>
 						<Box
 							sx={{ marginLeft: '4px', fontSize: '14px', marginTop: '-5px' }}

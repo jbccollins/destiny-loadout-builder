@@ -7,7 +7,6 @@ interface IDecoratedBungieIconProps {
 	icon: string;
 	elementOverlayIcon?: string;
 	getCost?: () => number;
-	getAltText: () => string;
 }
 
 // TODO: The styling for this component is very messy and fragile. Pls fix
@@ -43,18 +42,13 @@ function DecoratedBungieIcon({
 	icon,
 	elementOverlayIcon,
 	getCost,
-	getAltText,
 }: IDecoratedBungieIconProps) {
 	return (
 		<Container>
-			<BungieImage width="40" src={icon} alt={getAltText()} />
+			<BungieImage width={40} height={40} src={icon} />
 			{elementOverlayIcon && (
 				<ElementOverlay>
-					<BungieImage
-						width="40"
-						src={elementOverlayIcon}
-						alt={`${getAltText}-element-overlay`}
-					/>
+					<BungieImage width={40} height={40} src={elementOverlayIcon} />
 				</ElementOverlay>
 			)}
 			{getCost && getCost() > 0 && <CostOverlay>{getCost()}</CostOverlay>}

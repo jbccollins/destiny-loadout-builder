@@ -133,7 +133,7 @@ export default function IconMultiSelectDropdown({
 					if (options.length === 1 && options[0] === PLACEHOLDER_OPTION) {
 						return (
 							<Tag>
-								<BungieImage src={MISSING_ICON} width={'40px'} />
+								<BungieImage src={MISSING_ICON} width={40} height={40} />
 								<MenuItemText>
 									{disabled
 										? 'Subclass Selection Required...'

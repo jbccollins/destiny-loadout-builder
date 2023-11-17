@@ -331,7 +331,7 @@
         "count": 2,
         "exoticPerk": {
           "name": "Auto-Loading Link",
-          "description": "Steadily reloads a portion of your equipped Auto Rifle"s or Machine Gun"s magazine from reserves. Provides a moderate benefit to the airborne effectiveness stat of Auto Rifles and Machine Guns.",
+          "description": "Steadily reloads a portion of your equipped Auto Rifle's or Machine Gun's magazine from reserves. Provides a moderate benefit to the airborne effectiveness stat of Auto Rifles and Machine Guns.",
           "icon": "https://www.bungie.net/common/destiny2_content/icons/da340d0b0754087bb15d64a8897f5e3b.png",
           "hash": 1667892711
         }
@@ -1615,7 +1615,7 @@
         "count": 2,
         "exoticPerk": {
           "name": "Tome of Dawn",
-          "description": "When Dawnblade is equipped, aiming weapons while you"re midair suspends you there for a short time, reducing incoming flinch and granting damage resistance. Weapon hits extend this effect"s duration, and weapon final blows reload your Solar weapons from reserves. Provides a large benefit to the airborne effectiveness stat of all weapons.",
+          "description": "When Dawnblade is equipped, aiming weapons while you're midair suspends you there for a short time, reducing incoming flinch and granting damage resistance. Weapon hits extend this effect's duration, and weapon final blows reload your Solar weapons from reserves. Provides a large benefit to the airborne effectiveness stat of all weapons.",
           "icon": "https://www.bungie.net/common/destiny2_content/icons/bca803e50002410309460be0966fabe9.png",
           "hash": 926349160
         }

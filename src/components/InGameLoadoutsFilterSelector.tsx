@@ -1,5 +1,6 @@
 'use client';
 
+import d2_logo_image from '@/public/d2-logo.png';
 import {
 	selectInGameLoadoutsFilter,
 	setInGameLoadoutsFilter,
@@ -7,8 +8,8 @@ import {
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { EInGameLoadoutsFilterId } from '@dlb/types/IdEnums';
 import {
-	InGameLoadoutsFilterIdList,
 	getInGameLoadoutsFilter,
+	InGameLoadoutsFilterIdList,
 } from '@dlb/types/InGameLoadoutsFilter';
 import { styled } from '@mui/material';
 import IconDropdown from './IconDropdown';
@@ -32,8 +33,7 @@ const options = InGameLoadoutsFilterIdList.map((inGameLoadoutsFilterId) => {
 	const { id, description } = getInGameLoadoutsFilter(inGameLoadoutsFilterId);
 	return {
 		label: description,
-		// TODO: Change this external icon lol
-		icon: 'https://i.imgur.com/JQMoN1R.png',
+		icon: d2_logo_image,
 		id: id,
 	};
 });

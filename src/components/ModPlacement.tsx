@@ -8,6 +8,7 @@ import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
+import { ARTIFICE_ICON, EMPTY_SOCKET_TEXT } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
 	EIntrinsicArmorPerkOrAttributeId,
@@ -18,7 +19,6 @@ import {
 } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
 import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
-import { ARTIFICE_ICON, EMPTY_SOCKET_TEXT } from '@dlb/types/globals';
 import { styled } from '@mui/material';
 import { Box } from '@mui/system';
 import CustomTooltip from './CustomTooltip';
@@ -260,8 +260,8 @@ const ModPlacement = (props: ModPlacementProps) => {
 									<Box sx={{ marginLeft: '-2px', marginTop: '-2px' }}>
 										<MasterworkedBungieImage
 											src={_currentArmorItem.icon}
-											width={'40px'}
-											height={'40px'}
+											width={40}
+											height={40}
 											isMasterworked={_currentArmorItem.isMasterworked}
 										/>
 									</Box>

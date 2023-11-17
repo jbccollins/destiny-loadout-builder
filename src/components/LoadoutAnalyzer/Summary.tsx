@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
@@ -306,7 +306,7 @@ const ScoredResults = (props: {
 					display: 'flex',
 					gap: '4px',
 					flexWrap: 'wrap',
-					// alignItems: "center",
+					// alignItems: 'center',
 				}}
 			>
 				<Box
@@ -421,10 +421,10 @@ const ScoredResults = (props: {
 			<Collapse in={showGradeDetails}>
 				{/* <Box
 					sx={{
-						fontWeight: "bold",
-						marginTop: "4px",
-						marginBottom: "4px",
-						fontSize: "18px",
+						fontWeight: 'bold',
+						marginTop: '4px',
+						marginBottom: '4px',
+						fontSize: '18px',
 					}}
 				>
 					Optimization Categories

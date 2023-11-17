@@ -17,23 +17,23 @@ import { intrinsicArmorPerkOrAttributeIdList } from '@dlb/types/IntrinsicArmorPe
 import {
 	ArmorSlotCapacity,
 	ArmorSlotIdToModIdListMapping,
-	PotentialRaidModArmorSlotPlacement,
 	getArmorSlotEnergyCapacity,
 	getDefaultPotentialRaidModArmorSlotPlacement,
 	getMod,
+	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
 import { cloneDeep } from 'lodash';
 import { ARTIFICE } from './constants';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
-	StatModCombo,
 	getDefaultStatModCombo,
 	getStatModCombosFromDesiredStats,
+	StatModCombo,
 } from './getStatModCombosFromDesiredStats';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import {
-	RequiredClassItemMetadataKey,
 	getItemCountsFromSeenArmorSlotItems,
+	RequiredClassItemMetadataKey,
 	sumModCosts,
 } from './utils';
 
@@ -519,7 +519,7 @@ const isValidModCombo = ({
 	armorSlotMods,
 	reservedArmorSlotEnergy,
 }: IsValidModComboParams): IsValidModComboResult => {
-	// If we don"t need any mods and don"t have any raid mods then we're done
+	// If we don't need any mods and don't have any raid mods then we're done
 	if (
 		statModComboList.length === 0 &&
 		Object.values(potentialRaidModArmorSlotPlacement).filter((x) => x !== null)

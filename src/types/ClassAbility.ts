@@ -1,9 +1,9 @@
 import { ClassAbilityIdToClassAbilityMapping } from '@dlb/generated/classAbility/ClassAbilityMapping';
 import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
-import { EDestinySubclassId } from './IdEnums';
 import { IClassAbility } from './generation';
 import { EnumDictionary } from './globals';
+import { EDestinySubclassId } from './IdEnums';
 
 export const ClassAbilityIdList = Object.values(EClassAbilityId);
 

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import d2Logo from '@/public/d2-logo.png';
 import dimLogo from '@/public/dim-logo.png';
@@ -308,17 +308,17 @@ export default function AnalyzerResultsList() {
 			<Box
 				sx={
 					{
-						// marginLeft: "-16px",
-						// paddingX: "16px",
-						// background: "rgba(50, 50, 50, 0.5)",
-						//width: "calc(100% + 32px)",
+						// marginLeft: '-16px',
+						// paddingX: '16px',
+						// background: 'rgba(50, 50, 50, 0.5)',
+						//width: 'calc(100% + 32px)',
 					}
 				}
 			>
 				<Box
 					sx={{
-						//marginLeft: "-16px",
-						// width: "calc(100% + 31px)",
+						//marginLeft: '-16px',
+						// width: 'calc(100% + 31px)',
 						width: '100%',
 					}}
 				>

@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
+import { v4 as uuid, NIL } from 'uuid';
 import {
 	ArmorSlotModViolations,
 	getDefaultArmorSlotModViolations,
 } from '@dlb/types/ModViolation';
-import { NIL, v4 as uuid } from 'uuid';
 
 export interface SelectedArmorSlotModViolationsState {
 	value: ArmorSlotModViolations;

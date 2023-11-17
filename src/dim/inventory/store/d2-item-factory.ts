@@ -26,9 +26,9 @@ import {
 	ItemState,
 	TransferStatuses,
 } from 'bungie-api-ts-no-const-enum/destiny2';
-// import enhancedIntrinsics from "data/d2/crafting-enhanced-intrinsics";
+// import enhancedIntrinsics from 'data/d2/crafting-enhanced-intrinsics';
 import extendedBreaker from '@dlb/dim/data/d2/extended-breaker.json';
-// import extendedFoundry from "data/d2/extended-foundry.json";
+// import extendedFoundry from 'data/d2/extended-foundry.json';
 import extendedICH from '@dlb/dim/data/d2/extended-ich.json';
 import {
 	BucketHashes,
@@ -37,14 +37,14 @@ import {
 } from '@dlb/dim/data/d2/generated-enums';
 import _ from 'lodash';
 import memoizeOne from 'memoize-one';
-// import { reportException } from "@dlb/dim/utils/exceptions";
+// import { reportException } from '@dlb/dim/utils/exceptions';
 import { InventoryBuckets } from '@dlb/dim/inventory/inventory-buckets';
 import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
-// import { getVault } from "@dlb/dim/inventory/stores-helpers";
-// import { buildCatalystInfo } from "./catalyst";
-// import { buildCraftedInfo } from "./crafted";
-// import { buildDeepsightInfo } from "./deepsight";
+// import { getVault } from '@dlb/dim/inventory/stores-helpers';
+// import { buildCatalystInfo } from './catalyst';
+// import { buildCraftedInfo } from './crafted';
+// import { buildDeepsightInfo } from './deepsight';
 import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { createItemIndex } from '@dlb/dim/inventory/store/item-index';
 import { buildMasterwork } from './masterwork';
@@ -113,7 +113,7 @@ export function processItems(
 			// dummies and invisible items are not a big deal
 
 			const bucketDef = defs.InventoryBucket.get(item.bucketHash);
-			// if it"s a named, non-invisible bucket, it may be a problem that the item wasn"t generated
+			// if it's a named, non-invisible bucket, it may be a problem that the item wasn't generated
 			if (
 				bucketDef &&
 				bucketDef.category !== BucketCategory.Invisible &&
@@ -320,7 +320,7 @@ export function makeItem(
 	// present in the Vault, taking up space. so: we'll claim they are Consumables.
 	// (so that they show up in DIM, but don't cause a whole separate inventory section)
 
-	// they aren"t transferrable, and stop existing if removed from the vault, so they won"t
+	// they aren't transferrable, and stop existing if removed from the vault, so they won't
 	// interfere with the 50 consumables bucket limit.
 	const needsShaderFix =
 		itemDef.inventory!.bucketTypeHash === THE_FORBIDDEN_BUCKET &&
@@ -399,7 +399,7 @@ export function makeItem(
 		};
 	}
 
-	// if a damageType isn"t found, use the item"s energy capacity element instead
+	// if a damageType isn't found, use the item's energy capacity element instead
 	const element =
 		(itemInstanceData.damageTypeHash !== undefined &&
 			defs.DamageType.get(itemInstanceData.damageTypeHash)) ||
@@ -450,7 +450,7 @@ export function makeItem(
 		? defs.Collectible.get(collectibleHash, itemDef.hash)?.sourceHash
 		: undefined;
 
-	// items" appearance can be overridden at bungie"s request
+	// items' appearance can be overridden at bungie's request
 	let overrideStyleItem = item.overrideStyleItemHash
 		? defs.InventoryItem.get(item.overrideStyleItemHash)
 		: null;
@@ -713,13 +713,13 @@ export function makeItem(
 	// 	);
 	// } catch (e) {
 	// 	errorLog(
-	// 		"d2-stores",
+	// 		'd2-stores',
 	// 		`Error building objectives for ${createdItem.name}`,
 	// 		item,
 	// 		itemDef,
 	// 		e
 	// 	);
-	// 	reportException("Objectives", e, { itemHash: item.itemHash });
+	// 	reportException('Objectives', e, { itemHash: item.itemHash });
 	// }
 
 	const statData = itemComponents.perks.data || {};

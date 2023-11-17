@@ -22,7 +22,7 @@ import {
 	DestinySandboxPerkDefinition,
 	DestinySocketCategoryDefinition,
 	DestinyStat,
-	DestinyStatDefinition,
+	DestinyStatDefinition
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { InventoryBucket } from './inventory-buckets';
 
@@ -36,9 +36,9 @@ import { InventoryBucket } from './inventory-buckets';
 // TODO: This interface is clearly too large - break out interfaces for common subsets
 // TODO: separate out "mutable" vs "immutable" data
 export interface DimItem {
-	// Static data - this won"t ever change for the lifetime of the item, because it"s derived from the definition or is intrinsic to the item's identity. These would only change if the manifest updates.
+	// Static data - this won't ever change for the lifetime of the item, because it's derived from the definition or is intrinsic to the item's identity. These would only change if the manifest updates.
 
-	/** A synthetic unique ID used to help React tell items apart. Use this as a "key" property. We can"t just use "id" because some items don"t have one. */
+	/** A synthetic unique ID used to help React tell items apart. Use this as a "key" property. We can't just use "id" because some items don't have one. */
 	index: string;
 	/** Item instance id. Non-instanced items have id "0" for D1 compatibility. */
 	id: string;
@@ -84,7 +84,7 @@ export interface DimItem {
 	 * If defined, this is the label used to check if the character has other items of
 	 * matching types already equipped.
 	 *
-	 * For instance, when you aren"t allowed to equip more than one Exotic Weapon, that"s
+	 * For instance, when you aren't allowed to equip more than one Exotic Weapon, that's
 	 * because all exotic weapons have identical labels and the game checks the
 	 * to-be-equipped item's label vs. all other already equipped items (other
 	 * than the item in the slot that's about to be occupied).
@@ -132,7 +132,7 @@ export interface DimItem {
 	loreHash?: number;
 	/** Metrics that can be used with this item. */
 	availableMetricCategoryNodeHashes?: number[];
-	/** If this exists, it"s the limit of an item"s PL. If NOT, display no information. Maybe it"s unlimited PL. Maybe it"s a weird item. */
+	/** If this exists, it's the limit of an item's PL. If NOT, display no information. Maybe it's unlimited PL. Maybe it's a weird item. */
 	powerCap: number | null;
 	/** Information about how this item works with infusion. */
 	infusionQuality: DestinyItemQualityBlockDefinition | null;
@@ -195,7 +195,7 @@ export interface DimItem {
 	percentComplete: number;
 	/** D2 items use sockets and plugs to represent everything from perks to mods to ornaments and shaders. */
 	sockets: DimSockets | null;
-	/** Sometimes the API doesn"t return socket info. This tells whether the item *should* have socket info but doesn"t. */
+	/** Sometimes the API doesn't return socket info. This tells whether the item *should* have socket info but doesn't. */
 	missingSockets: boolean;
 	/** Detailed stats for the item. */
 	stats: DimStat[] | null;

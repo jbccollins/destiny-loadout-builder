@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { SxProps, Theme, styled } from '@mui/material';
 import IconDropdown from './IconDropdown';

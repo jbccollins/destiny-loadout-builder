@@ -1,6 +1,5 @@
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
-import { EDestinyClassId, EDestinySubclassId, EElementId } from './IdEnums';
 import {
 	EnumDictionary,
 	IHash,
@@ -8,6 +7,7 @@ import {
 	IIdentifiableName,
 	ValidateEnumList,
 } from './globals';
+import { EDestinyClassId, EDestinySubclassId, EElementId } from './IdEnums';
 
 // Sorted by [hunter, warlock, titan] and then alphabetically
 export const DestinySubclassIdList = ValidateEnumList(

@@ -1,20 +1,20 @@
 /*
 USAGE: From the root directory run "npm run generate"
 */
+import lodash from 'lodash';
+import path from 'path';
+import { EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
+import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
+import { promises as fs } from 'fs';
 import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
+import { IMelee } from '@dlb/types/generation';
+import { generateMeleeIdEnumFileString } from './generateMeleeIdEnum';
+import { generateMeleeMapping } from './generateMeleeMapping';
+import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	DestinySubclassIdList,
 	getDestinySubclass,
 } from '@dlb/types/DestinySubclass';
-import { EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
-import { IMelee } from '@dlb/types/generation';
-import { bungieNetPath } from '@dlb/utils/item-utils';
-import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
-import { promises as fs } from 'fs';
-import lodash from 'lodash';
-import path from 'path';
-import { generateMeleeIdEnumFileString } from './generateMeleeIdEnum';
-import { generateMeleeMapping } from './generateMeleeMapping';
 
 const buildMeleeData = (melee: DestinyInventoryItemDefinition): IMelee => {
 	// TODO: This is pretty janky and fragile. Relying on this random string to work well
@@ -55,7 +55,7 @@ export async function run() {
 		.values()
 		.filter((v) => v.plug?.plugCategoryIdentifier)
 		.filter((v) =>
-			// v.plug.plugCategoryIdentifier.includes("shared.") &&
+			// v.plug.plugCategoryIdentifier.includes('shared.') &&
 			v.plug.plugCategoryIdentifier.includes('.melee')
 		)
 		.value() as DestinyInventoryItemDefinition[];

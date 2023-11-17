@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { selectAnalyzableLoadouts } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { selectIgnoredLoadoutOptimizationTypes } from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
@@ -184,7 +184,7 @@ export default function LoadoutAnalyzer() {
 					<Box
 						sx={{
 							marginLeft: 'auto',
-							// marginTop: "-4px",
+							// marginTop: '-4px',
 							display: 'flex',
 							alignItems: 'center',
 							gabp: '4px',
@@ -219,10 +219,10 @@ export default function LoadoutAnalyzer() {
 									sx={{
 										width: '34px',
 										height: '80px',
-										// borderLeft: "17px solid transparent",
-										// borderRight: "17px solid transparent",
-										// borderTop: "80px solid rgb(50, 50, 50)",
-										// borderTop: "80px solid red",
+										// borderLeft: '17px solid transparent',
+										// borderRight: '17px solid transparent',
+										// borderTop: '80px solid rgb(50, 50, 50)',
+										// borderTop: '80px solid red',
 										position: 'absolute',
 										top: 0,
 										right: 0,
@@ -283,7 +283,7 @@ export default function LoadoutAnalyzer() {
 					sx={{
 						marginTop: '32px',
 						marginLeft: '-16px',
-						// paddingX: "16px",
+						// paddingX: '16px',
 						background: 'rgba(50, 50, 50, 0.5)',
 						width: 'calc(100% + 32px)',
 					}}

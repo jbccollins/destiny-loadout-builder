@@ -1,12 +1,12 @@
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
 import { EModId } from '@dlb/generated/mod/EModId';
+import { EnumDictionary, IIdentifiableName } from './globals';
 import {
 	EElementId,
 	EModCategoryId,
 	ERaidAndNightMareModTypeId,
 } from './IdEnums';
-import { EnumDictionary, IIdentifiableName } from './globals';
 
 enum EAuthorizedAbility {
 	Melee = 'Melee',

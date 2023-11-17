@@ -49,7 +49,7 @@ export class RateLimiterQueue {
 			request,
 			options,
 			resolver,
-			rejecter,
+			rejecter
 		});
 		this.processQueue();
 

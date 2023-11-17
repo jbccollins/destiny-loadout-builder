@@ -27,8 +27,8 @@ export async function GET(request: Request): Promise<Response> {
 	const code = searchParams.get('code') as ReqData['code'];
 
 	if (!code) {
-		return new Response(
-			JSON.stringify({ error: 'Missing required parameter: code' }),
+		return Response.json(
+			{ error: 'Missing required parameter: code' },
 			{
 				status: 400,
 				headers: {
@@ -52,7 +52,7 @@ export async function GET(request: Request): Promise<Response> {
 			},
 		});
 
-		return new Response(JSON.stringify(response.data), {
+		return Response.json(response.data, {
 			status: 200,
 			headers: {
 				'Content-Type': 'application/json',
@@ -60,8 +60,8 @@ export async function GET(request: Request): Promise<Response> {
 		});
 	} catch (error) {
 		console.error(error?.response?.data || error);
-		return new Response(
-			JSON.stringify({ error: 'Failed to retrieve OAuth token' }),
+		return Response.json(
+			{ error: 'Failed to retrieve OAuth token' },
 			{
 				status: error?.response?.status || 500,
 				headers: {

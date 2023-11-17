@@ -2,7 +2,7 @@ import { DimItem } from '@dlb/dim/inventory/item-types';
 import { DimStore } from '@dlb/dim/inventory/store-types';
 import { v4 as uuid } from 'uuid';
 
-// import { D2ManifestDefinitions } from "@dlb/dim/destiny2/d2-definitions";
+// import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import {
 	Armor,
@@ -119,7 +119,7 @@ export const extractArmor = (
 	const processDimItem = (item: DimItem, isCollectible: boolean) => {
 		// Filter out all items that don't have an element. These are really old armor
 		// TODO: Is this element filter really safe now that armor affinity is gone?
-		// I"m worried to take out that check since I don"t have any Armor 1.0 exotics
+		// I'm worried to take out that check since I don't have any Armor 1.0 exotics
 		// But this does seem to work for white armor 1.0 which I do have.
 		if (
 			// 20 is the category hash for armor.
@@ -170,14 +170,14 @@ export const extractArmor = (
 			const armorItem: ArmorItem = {
 				name: item.name,
 				icon: bungieNetPath(item.icon),
-				// Collectibles all have an id of "0" so we need to create a unique one
+				// Collectibles all have an id of '0' so we need to create a unique one
 				id: isCollectible ? uuid() : item.id,
-				// TODO: checking "Stats.Total" is jank
+				// TODO: checking 'Stats.Total' is jank
 				baseStatTotal: item.stats.find(
 					(x) => x.displayProperties.name === 'Stats.Total'
 				).base,
 				power: item.power,
-				// TODO: checking "Stats.Total" is jank
+				// TODO: checking 'Stats.Total' is jank
 				stats: item.stats
 					.filter((x) => x.displayProperties.name !== 'Stats.Total')
 					.map((x) => x.base) as StatList,

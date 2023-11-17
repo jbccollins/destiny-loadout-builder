@@ -164,7 +164,7 @@ const testCases: TestCase[] = [
 ];
 
 // const nameOfTestToDebug =
-// 	"With complex raid mods it returns multiple placements";
+// 	'With complex raid mods it returns multiple placements';
 const nameOfTestToDebug = null;
 describe('filterValidRaidModArmorSlotPlacements', () => {
 	const filteredTestCases = nameOfTestToDebug

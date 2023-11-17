@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import discord_image from '@/public/discord-mark-white.png';
 import kofi_image from '@/public/kofi-logo.png';

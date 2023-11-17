@@ -60,7 +60,7 @@ const testCases: TestCase[] = [
 	],
 ];
 
-// const nameOfTestToDebug = "Base";
+// const nameOfTestToDebug = 'Base';
 const nameOfTestToDebug = null;
 describe.skip('getLoadoutsThatCanBeOptimized', () => {
 	const filteredTestCases = nameOfTestToDebug

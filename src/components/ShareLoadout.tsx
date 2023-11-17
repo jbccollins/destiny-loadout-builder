@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectSelectedArmorSlotMods } from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
@@ -215,9 +215,9 @@ const ShareLoadout = () => {
 					sx={{
 						cursor: 'pointer',
 						marginTop: '16px',
-						// position: "absolute",
-						// left: "50%",
-						// transform: "translate(-50%, 0)",
+						// position: 'absolute',
+						// left: '50%',
+						// transform: 'translate(-50%, 0)',
 					}}
 				>
 					Show Advanced Share Options

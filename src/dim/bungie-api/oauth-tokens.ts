@@ -82,7 +82,7 @@ export function removeAccessToken() {
 }
 
 /**
- * Get an absolute UTC epoch milliseconds timestamp for either the "expires" property.
+ * Get an absolute UTC epoch milliseconds timestamp for either the 'expires' property.
  * @return UTC epoch milliseconds timestamp
  */
 function getTokenExpiration(token?: Token): number {
@@ -99,7 +99,7 @@ function getTokenExpiration(token?: Token): number {
 }
 
 /**
- * Has the token expired, based on its "expires" property?
+ * Has the token expired, based on its 'expires' property?
  */
 export function hasTokenExpired(token?: Token) {
 	if (!token) {

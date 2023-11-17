@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
 import {
 	AvailableExoticArmor,
 	generateAvailableExoticArmorGroup,
 } from '@dlb/types/Armor';
-import { EDestinyClassId } from '@dlb/types/IdEnums';
 
 export interface AvailableExoticArmorState {
 	value: AvailableExoticArmor;

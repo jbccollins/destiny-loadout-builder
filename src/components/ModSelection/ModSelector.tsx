@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import CompactIconAutocompleteDropdown from '@dlb/components/CompactIconAutocompleteDropdown';
 import IconAutocompleteDropdown from '@dlb/components/IconAutocompleteDropdown';
@@ -45,10 +45,10 @@ const getExtraContent = (
 			<Box
 				className="description-wrapper"
 				// sx={{
-				// 	position: "absolute",
-				// 	top: "50%",
-				// 	transform: "translateY(-50%)",
-				// 	width: "100%",
+				// 	position: 'absolute',
+				// 	top: '50%',
+				// 	transform: 'translateY(-50%)',
+				// 	width: '100%',
 				// }}
 			>
 				{option.description}

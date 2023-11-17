@@ -44,7 +44,7 @@ export function makeCharacter(
 		destinyVersion: 2,
 		id: character.characterId,
 		icon: bungieNetPath(character.emblemPath),
-		// name: t("ItemService.StoreName", {
+		// name: t('ItemService.StoreName', {
 		// 	genderRace: raceLocalizedName,
 		// 	className
 		// }),

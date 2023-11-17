@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { RichAnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
 import { getAspect } from '@dlb/types/Aspect';
@@ -28,8 +28,8 @@ const Description = styled(Box)(({ theme }) => ({
 const CondensedSubclassItemsWrapper = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	gap: '4px',
-	// height: "120px",
-	//paddingLeft: "40px",
+	// height: '120px',
+	//paddingLeft: '40px',
 }));
 
 const CondensedSubclassItemWrapper = styled(Box)(({ theme }) => ({

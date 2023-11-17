@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import IconDropdown from '@dlb/components/IconDropdown';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';

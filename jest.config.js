@@ -7,7 +7,7 @@ module.exports = {
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
     collectCoverage: false,
     moduleNameMapper: {
-		"^@dlb/(.*)$": "<rootDir>/src/$1"
+		'^@dlb/(.*)$': '<rootDir>/src/$1'
 	},
     transform: {
         "^.+\\.[tj]s$": "ts-jest"

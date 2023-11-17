@@ -6,11 +6,11 @@ import { AppState } from '@dlb/redux/store';
 // (e.g, maxPossibleStats, selectedDestinyClass, selectedExoticArmor, etc...)
 // To use a single reducer with one uuid. Or....... keep it as is and just
 // Keep track of a single uuid in the store? idk... that might be harder to code around...
+import { v4 as uuid, NIL } from 'uuid';
 import {
 	ArmorStatMapping,
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
-import { NIL, v4 as uuid } from 'uuid';
 
 export interface MaxPossibleStatsState {
 	value: ArmorStatMapping;

@@ -58,7 +58,7 @@ export type ArmorItem = {
 	stats: StatList;
 	// One of [head, arm, chest, leg, classItem]
 	armorSlot: EArmorSlotId;
-	// Non-unique identifier. For example all "Necrotic Grip" items will have the same hash
+	// Non-unique identifier. For example all 'Necrotic Grip' items will have the same hash
 	hash: number;
 	// The english display name of the class [titan, warlock, hunter]
 	destinyClassName: EDestinyClassId;
@@ -101,7 +101,7 @@ export const getDefaultArmorItem = (): ArmorItem => ({
 
 /********** AvailableExoticArmor is all the exotic armor that the user has ***********/
 // TODO: Could we do this more cleanly by pulling from the Armor directly? I think this is probably
-// fine though. It"s a bit more explicit and easier to code with, even if it isn"t very DRY.
+// fine though. It's a bit more explicit and easier to code with, even if it isn't very DRY.
 // [STORED] All available exotic armor
 export type AvailableExoticArmor = {
 	[EDestinyClassId.Titan]: AvailableExoticArmorGroup;

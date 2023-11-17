@@ -11,9 +11,9 @@ import {
 	DimStat,
 } from '@dlb/dim/inventory/item-types';
 import {
+	armorStats,
 	CUSTOM_TOTAL_STAT_HASH,
 	TOTAL_STAT_HASH,
-	armorStats,
 } from '@dlb/dim/search/d2-known-values';
 import { compareBy } from '@dlb/dim/utils/comparators';
 import { isPlugStatActive } from '@dlb/dim/utils/item-utils';
@@ -294,7 +294,7 @@ function buildStat(
 }
 
 /**
- * mutates an item"s stats according to the item"s plugged sockets
+ * mutates an item's stats according to the item's plugged sockets
  * (accounting for mods, masterworks, etc)
  *
  * also adds the projected stat changes to non-selected DimPlugs
@@ -328,7 +328,7 @@ function applyPlugsToStats(
 	// loop through sockets looking for plugs that modify an item's investmentStats
 	for (const [affectsBase, socketList] of socketLists) {
 		for (const socket of socketList) {
-			// skip this socket+plug if it"s disabled or doesn"t affect stats
+			// skip this socket+plug if it's disabled or doesn't affect stats
 			if (!socket.plugged?.enabled || !socket.plugged.plugDef.investmentStats) {
 				continue;
 			}
@@ -411,12 +411,12 @@ function attachPlugStats(
 	// The plug that is currently inserted into the socket
 	const activePlug = socket.plugged;
 
-	// This holds the item"s "base' investment stat values without any plug additions.
+	// This holds the item's 'base' investment stat values without any plug additions.
 	const baseItemInvestmentStats: DimPlug['stats'] = {};
 
 	// The active plug is already contributing to the item's stats in statsByHash. Thus we treat it separately
 	// here for two reasons,
-	// 1. We need to calculate the "base" investment stat value (without this plug's contribution) for the
+	// 1. We need to calculate the 'base' investment stat value (without this plug's contribution) for the
 	// item's stats so that we can calculate correct values for the inactive plugs.
 	// 2. By utilizing the fact that the item's stats already include this, we can do one less interpolation
 	// per stat to figure out the active plug's stat contribution.
@@ -632,7 +632,7 @@ export function interpolateStatValue(
 
 	const interpValue = start.weight + t * (end.weight - start.weight);
 
-	// vthorn has a hunch that magazine size doesn"t use banker"s rounding, but the rest definitely do:
+	// vthorn has a hunch that magazine size doesn't use banker's rounding, but the rest definitely do:
 	// https://github.com/Bungie-net/api/issues/1029#issuecomment-531849137
 	return statDisplay.statHash === StatHashes.Magazine
 		? Math.round(interpValue)

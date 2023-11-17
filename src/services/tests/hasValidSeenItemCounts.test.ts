@@ -265,7 +265,7 @@ const testCases: TestCase[] = [
 ];
 
 // const nameOfTestToDebug =
-// 	"With one raid mod and no matching seenArmorSlotItems it returns false";
+// 	'With one raid mod and no matching seenArmorSlotItems it returns false';
 const nameOfTestToDebug = null;
 describe('hasValidSeenItemCounts', () => {
 	const filteredTestCases = nameOfTestToDebug

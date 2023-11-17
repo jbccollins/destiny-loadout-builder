@@ -100,7 +100,7 @@ const testCases: TestCase[] = [
 	],
 	// TODO: Add these tests in once we support intrinsic class armor filters
 	// [
-	// 	"Intrinsic",
+	// 	'Intrinsic',
 	// 	[
 	// 		{
 	// 			...getDefaultResultsTableLoadout(),
@@ -111,10 +111,10 @@ const testCases: TestCase[] = [
 	// 			},
 	// 		},
 	// 	],
-	// 	"Any PT Class Item",
+	// 	'Any PT Class Item',
 	// ],
 	// [
-	// 	"Masterworked Intrinsic",
+	// 	'Masterworked Intrinsic',
 	// 	[
 	// 		{
 	// 			...getDefaultResultsTableLoadout(),
@@ -126,12 +126,12 @@ const testCases: TestCase[] = [
 	// 			},
 	// 		},
 	// 	],
-	// 	"Any Masterworked PT Class Item",
+	// 	'Any Masterworked PT Class Item',
 	// ],
 ];
 
 // const nameOfTestToDebug =
-// 	"With one raid mod and no matching seenArmorSlotItems it returns false";
+// 	'With one raid mod and no matching seenArmorSlotItems it returns false';
 const nameOfTestToDebug = null;
 describe('getClassItemText', () => {
 	const filteredTestCases = nameOfTestToDebug

@@ -24,6 +24,7 @@
 			{ "allowSameFolder": true }
 		],
 		"comma-dangle": "off",
-		"@typescript-eslint/comma-dangle": ["warn", "only-multiline"]
+		"@typescript-eslint/comma-dangle": ["warn", "only-multiline"],
+		"@typescript-eslint/no-explicit-any": "off"
 	}
 }

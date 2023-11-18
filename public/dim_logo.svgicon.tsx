@@ -1,6 +1,7 @@
 import { SvgIcon } from '@mui/material';
+import type { SvgIconProps } from '@mui/material';
 
-export const DimIcon = (props) => {
+export const DimIcon = (props: SvgIconProps) => {
 	return (
 		<SvgIcon {...props}>
 			<svg

@@ -176,7 +176,6 @@ const LoadoutDetails = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	height: '350px',
 	marginLeft: '80px',
-	// overflowX: 'auto',
 }));
 
 const RecommendedLoadoutHeader = styled(Box)(({ theme }) => ({
@@ -376,19 +375,6 @@ function ResultsItem({
 					);
 				})}
 			</ResultsSection>
-			{/* <ResultsSection>
-				<Title>Metadata</Title>
-				{SortableFieldsDisplayOrder.filter(
-					(x) => !ArmorStatIdList.includes(x as EArmorStatId)
-				).map((sortableFieldKey) => {
-					return (
-						<Box sx={{ fontWeight: '500' }} key={sortableFieldKey}>
-							{getSortableFieldDisplayName(sortableFieldKey)}:{' '}
-							{item.sortableFields[sortableFieldKey]}
-						</Box>
-					);
-				})}
-			</ResultsSection> */}
 			<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
 				{item.requiredStatModIdList.length > 0 && (
 					<ResultsSection>
@@ -435,7 +421,6 @@ function ResultsItem({
 						flexBasis: '100%',
 						display: 'flex',
 						flexWrap: 'wrap',
-						// justifyContent: 'space-between',
 					}}
 				>
 					<Button
@@ -504,10 +489,7 @@ function ResultsItem({
 					/>
 				</Collapse>
 			</ResultsSection>
-			<ResultsSection
-				fullWidth
-				// sx={{ marginTop: showModPlacement ? '8px' : '0px' }}
-			>
+			<ResultsSection fullWidth>
 				<Box
 					onClick={() =>
 						setShowDetailedStatBreakdown(!showDetailedStatBreakdown)

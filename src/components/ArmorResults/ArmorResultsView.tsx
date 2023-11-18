@@ -65,22 +65,19 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
-	TablePagination,
 	styled,
+	TablePagination,
 } from '@mui/material';
 import React, { useCallback, useMemo, useState } from 'react';
 import ArmorResultsList from './ArmorResultsList';
 import { ResultsTableLoadout, SortableFields } from './ArmorResultsTypes';
 import NoResults from './NoResults';
-const Container = styled(Box)(({ theme }) => ({
-	// padding: theme.spacing(1)
+const Container = styled(Box)(() => ({
 	position: 'relative',
 	height: '100%',
-	// overflowY: 'hidden',
 }));
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
-	// padding: theme.spacing(1)
 	height: '80px',
 	display: 'flex',
 	padding: theme.spacing(1.5),
@@ -117,9 +114,7 @@ const FooterContainer = styled(Box)(({ theme }) => ({
 const OrderContainer = styled(Box)(({ theme }) => ({
 	display: 'flex',
 }));
-const PaginationContainer = styled(Box)(({ theme }) => ({
-	// flex: '1',
-}));
+const PaginationContainer = styled(Box)(({ theme }) => ({}));
 
 const OrderByFieldFormControl = styled(FormControl)(({ theme }) => ({
 	['fieldset']: {

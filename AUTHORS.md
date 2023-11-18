@@ -11,8 +11,10 @@ They have admin access to the repo and provide support reviewing issues and pull
 To contributors: please add your name to the list when you submit a patch to the project.
 
 - **[IceCubes](https://github.com/IceCubesYo)**
-
   - Bug reports and debugging
 
 - **[nokynokes](https://github.com/nokynokes)**
   - Documentation and bug fixes
+
+- **[M7ilan](https://github.com/M7ilan)**
+  - Code and app upgrades

@@ -58,7 +58,7 @@ export async function GET(request: Request): Promise<Response> {
 				'Content-Type': 'application/json',
 			},
 		});
-	} catch (error) {
+	} catch (error: any) {
 		console.error(error?.response?.data || error);
 		return new Response(JSON.stringify(
 			{ error: 'Failed to retrieve OAuth token' }),

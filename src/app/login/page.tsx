@@ -40,7 +40,7 @@ function Login() {
 				>
 					<Box
 						sx={{
-							// transform: 'translate(50%, 0%)',
+							// transform: "translate(50%, 0%)",
 							margin: 'auto',
 							marginBottom: '8px',
 							width: 120,
@@ -71,11 +71,11 @@ function Login() {
 						Build optimized loadouts for Destiny 2!
 					</Box>
 					{/* <Box
-					sx={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px' }}
+					sx={{ fontSize: "20px", fontWeight: "bold", marginBottom: "16px" }}
 				>
 					Permission Required
 				</Box>
-				<Box sx={{ fontSize: '16px', marginBottom: '32px' }}>
+				<Box sx={{ fontSize: "16px", marginBottom: "32px" }}>
 					Allow destinyloadoutbuilder.com to view your Destiny inventory and
 					vault
 				</Box> */}

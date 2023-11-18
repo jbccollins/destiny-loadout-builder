@@ -65,8 +65,8 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
-	TablePagination,
 	styled,
+	TablePagination,
 } from '@mui/material';
 import React, { useCallback, useMemo, useState } from 'react';
 import ArmorResultsList from './ArmorResultsList';

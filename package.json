@@ -10,7 +10,7 @@
 		"dev": "next dev --experimental-https -p 4001",
 		"open-browser": "open https://localhost:4001",
 		"build": "next build",
-		"start": "next start -p 4001",
+		"start": "next start",
 		"lint": "next lint",
 		"lint:fix": "next lint --fix",
 		"test": "jest --silent",

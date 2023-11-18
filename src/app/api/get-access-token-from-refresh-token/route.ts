@@ -27,8 +27,10 @@ export async function GET(request: Request): Promise<Response> {
 	) as ReqData['refreshTokenValue'];
 
 	if (!refreshTokenValue) {
-		return Response.json(
-			{ error: 'Missing required parameter: refreshTokenValue' },
+		return new Response(
+			JSON.stringify({
+				error: 'Missing required parameter: refreshTokenValue',
+			}),
 			{
 				status: 400,
 				headers: {
@@ -56,7 +58,7 @@ export async function GET(request: Request): Promise<Response> {
 			}
 		);
 
-		return Response.json(response.data, {
+		return new Response(JSON.stringify(response.data), {
 			status: 200,
 			headers: {
 				'Content-Type': 'application/json',
@@ -64,8 +66,8 @@ export async function GET(request: Request): Promise<Response> {
 		});
 	} catch (error) {
 		console.error(error?.response?.data || error);
-		return Response.json(
-			{ error: 'Failed to refresh OAuth token' },
+		return new Response(
+			JSON.stringify({ error: 'Failed to refresh OAuth token' }),
 			{
 				status: error?.response?.status || 500,
 				headers: {

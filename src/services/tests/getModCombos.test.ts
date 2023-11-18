@@ -110,7 +110,7 @@ const testCases: TestCase[] = [
 	// TODO: These tests are failing because we assume the class item is always masterworked.
 	// Once that bug is fixed, these tests should pass.
 	// [
-	// 	"Lots of stats",
+	// 	'Lots of stats',
 	// 	[
 	// 		{
 	// 			sumOfSeenStats: [12, 45, 18, 60, 23, 41],
@@ -217,7 +217,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Just Masterworked Legendary Class Item",
+	// 	'Just Masterworked Legendary Class Item',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -243,7 +243,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Just Unmasterworked Artifice Class Item (No Desired Stats)",
+	// 	'Just Unmasterworked Artifice Class Item (No Desired Stats)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -269,7 +269,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Just Unmasterworked Artifice Class Item (+3 Single Desired Stat)",
+	// 	'Just Unmasterworked Artifice Class Item (+3 Single Desired Stat)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -305,7 +305,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Unmasterworked Artifice & Masterworked Legendary (+3 Single Desired Stat)",
+	// 	'Unmasterworked Artifice & Masterworked Legendary (+3 Single Desired Stat)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -350,7 +350,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Unmasterworked Artifice & Masterworked Legendary (+2 Single Desired Stat)",
+	// 	'Unmasterworked Artifice & Masterworked Legendary (+2 Single Desired Stat)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -390,7 +390,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Unmasterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)",
+	// 	'Unmasterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -432,7 +432,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Unmasterworked Artifice & Masterworked Legendary (No Desired Stats)",
+	// 	'Unmasterworked Artifice & Masterworked Legendary (No Desired Stats)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -468,7 +468,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Masterworked Artifice & Masterworked Legendary (No Desired Stats)",
+	// 	'Masterworked Artifice & Masterworked Legendary (No Desired Stats)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -503,7 +503,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Masterworked Artifice & Masterworked Legendary (+2 Single Desired Stat)",
+	// 	'Masterworked Artifice & Masterworked Legendary (+2 Single Desired Stat)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -543,7 +543,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Masterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)",
+	// 	'Masterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -585,7 +585,7 @@ const testCases: TestCase[] = [
 	// 	],
 	// ],
 	// [
-	// 	"Masterworked Artifice & Masterworked Legendary (+3 Single Desired Stat)",
+	// 	'Masterworked Artifice & Masterworked Legendary (+3 Single Desired Stat)',
 	// 	[
 	// 		{
 	// 			...getDefaultTestCaseInput(),
@@ -632,7 +632,7 @@ const testCases: TestCase[] = [
 ];
 
 // const nameOfTestToDebug =
-// 	"Unmasterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)";
+// 	'Unmasterworked Artifice & Masterworked Legendary (+2 Multiple Desired Stats)';
 const nameOfTestToDebug = null;
 describe('getModCombos', () => {
 	const filteredTestCases = nameOfTestToDebug

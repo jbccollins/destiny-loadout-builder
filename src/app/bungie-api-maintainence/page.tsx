@@ -8,17 +8,17 @@ import { Box, Button, Link, styled } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 const Container = styled(Box)(({ theme }) => ({
-	// position: "fixed",
-	// top: "50%",
-	// left: "50%",
-	// transform: "translate(-50%, -50%)",
+	// position: 'fixed',
+	// top: '50%',
+	// left: '50%',
+	// transform: 'translate(-50%, -50%)',
 	margin: 'auto',
 	width: '100vw',
 	height: '100vh',
 	overflowY: 'auto',
 	justifyItems: 'center',
 	maxWidth: '1400px',
-	// width: "calc(100vw - 40px)",
+	// width: 'calc(100vw - 40px)',
 	display: 'grid',
 	gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
 	padding: theme.spacing(5),

@@ -41,8 +41,8 @@ const MenuItemContent = styled('div', {
 const MenuItemText = styled('div')(({ theme }) => ({
 	marginLeft: theme.spacing(1),
 
-	// overflow: "none",
-	// textTransform: "capitalize"
+	// overflow: 'none',
+	// textTransform: 'capitalize'
 }));
 
 interface IconDropdownOption {

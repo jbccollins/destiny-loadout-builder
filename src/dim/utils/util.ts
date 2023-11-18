@@ -1,5 +1,5 @@
 import _ from 'lodash';
-// import { tempContainer } from "./temp-container";
+// import { tempContainer } from './temp-container';
 
 /**
  * Count the number of values in the list that pass the predicate.
@@ -21,9 +21,9 @@ type PropertiesOfType<T, PropType> = keyof {
  * This is similar to _.keyBy, but it specifically handles keying multiple times per item, where
  * the keys come from an array property.
  *
- * given the key "key", turns
+ * given the key 'key', turns
  * [           { key: [1, 3] },      { key: [2, 4] } ]
- * into { "1": { key: [1, 3] }, "2": { key: [2, 4], "3": { key: [1, 3] }, "4": { key: [2, 4] } }
+ * into { '1': { key: [1, 3] }, '2': { key: [2, 4], '3': { key: [1, 3] }, '4': { key: [2, 4] } }
  */
 export function objectifyArray<T>(
 	array: T[],
@@ -90,9 +90,9 @@ export function copyString(str: string) {
 
 // /** Download a string as a file */
 // export function download(data: string, filename: string, type: string) {
-//   const a = document.createElement("a");
-//   a.setAttribute("href", `data:${type};charset=utf-8,${encodeURIComponent(data)}`);
-//   a.setAttribute("download", filename);
+//   const a = document.createElement('a');
+//   a.setAttribute('href', `data:${type};charset=utf-8,${encodeURIComponent(data)}`);
+//   a.setAttribute('download', filename);
 //   tempContainer.appendChild(a);
 //   a.click();
 //   setTimeout(() => tempContainer.removeChild(a));

@@ -10,13 +10,13 @@ import {
 	getDescription,
 } from '@dlb/scripts/generation/utils';
 import { getArmorSlotIdByHash } from '@dlb/types/ArmorSlot';
+import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import {
 	getModCategoryId,
 	getRaidAndNightmareModTypeId,
 } from '@dlb/types/ModCategory';
 import { getModSocketCategoryIdByModDisplayNameId } from '@dlb/types/ModSocketCategory';
-import { IMod } from '@dlb/types/generation';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	DestinyEnergyTypeDefinition,
@@ -32,7 +32,7 @@ import { generateModIdEnumFileString } from './generateModIdEnum';
 import { generateModMapping } from './generateModMapping';
 
 // TODO: The bungie manifest currently is not including the
-// "itemTypeDisplayName" field for these mods that come from the
+// 'itemTypeDisplayName' field for these mods that come from the
 // artifact. When that is fixed we can delete this.
 const specialArtifactStatModNames = [
 	'Minor Mobility Mod',
@@ -112,7 +112,7 @@ const buildModData = (
 
 	let displayNameId = generateId(mod.itemTypeDisplayName) as EModDisplayNameId;
 
-	//TODO: Get rid of this when the manifest returns proper "itemTypeDisplayNames" for these mods
+	//TODO: Get rid of this when the manifest returns proper 'itemTypeDisplayNames' for these mods
 	if (
 		displayNameId === EModDisplayNameId.Unknown &&
 		specialArtifactStatModNames.includes(mod.displayProperties.name)
@@ -189,7 +189,7 @@ export async function run() {
 		.filter((v) => v.displayProperties)
 		.filter((v) => !v.displayProperties.description.includes('deprecated'))
 		.filter((v) => v.itemCategoryHashes.includes(4104513227)) // armor mods
-		// exclude ornaments while still including the no-cost artifce "forged" mods
+		// exclude ornaments while still including the no-cost artifce 'forged' mods
 		.filter(
 			(v) =>
 				v.plug &&

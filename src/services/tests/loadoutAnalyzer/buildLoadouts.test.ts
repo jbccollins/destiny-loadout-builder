@@ -68,7 +68,7 @@ const testCases: TestCase[] = [
 	],
 ];
 
-// const nameOfTestToDebug = "Base 2";
+// const nameOfTestToDebug = 'Base 2';
 const nameOfTestToDebug = null;
 describe('buildLoadouts', () => {
 	const filteredTestCases = nameOfTestToDebug

@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es2015",
+		"target": "ES6",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -23,7 +23,7 @@
 			{
 				"name": "next"
 			}
-		],
+		]
 	},
 	// This is potentially an alternative way to run scripts directly...
 	"ts-node": {

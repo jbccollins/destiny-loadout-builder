@@ -169,10 +169,10 @@ export function itemCanBeEquippedByStoreId(
 	return Boolean(
 		item.equipment &&
 			(item.classified
-				? // we can"t trust the classType of redacted items! they"re all marked titan.
+				? // we can't trust the classType of redacted items! they're all marked titan.
 				  // let's assume classified weapons are all-class
 				  item.bucket.inWeapons ||
-				  // if it"s equipped by this store, it"s obviously equippable to this store!
+				  // if it's equipped by this store, it's obviously equippable to this store!
 				  (item.owner === storeId && item.equipped)
 				: // For the right class
 				  item.classType === DestinyClass.Unknown ||

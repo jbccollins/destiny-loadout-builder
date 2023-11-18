@@ -1,38 +1,38 @@
-import { getArmorStatIdFromBungieHash } from "@dlb/types/ArmorStat";
-import { IBonuses, StatBonus } from "@dlb/types/globals";
-import { EArmorStatId } from "@dlb/types/IdEnums";
-import axios from "axios";
+import { getArmorStatIdFromBungieHash } from '@dlb/types/ArmorStat';
+import { IBonuses, StatBonus } from '@dlb/types/globals';
+import { EArmorStatId } from '@dlb/types/IdEnums';
+import axios from 'axios';
 import {
 	DestinyArtifactDefinition,
 	DestinyInventoryItemDefinition,
 	DestinySandboxPerkDefinition,
-} from "bungie-api-ts-no-const-enum/destiny2";
-import crypto from "crypto";
-import { promises as fs } from "fs";
-import lodash from "lodash";
-import path from "path";
-import prettier from "prettier";
+} from 'bungie-api-ts-no-const-enum/destiny2';
+import crypto from 'crypto';
+import { promises as fs } from 'fs';
+import lodash from 'lodash';
+import path from 'path';
+import prettier from 'prettier';
 
 const API_KEY = process.env.NEXT_PUBLIC_BNET_API_KEY;
-const CACHED_DEFINITIONS_DIRECTORY = "./src/scripts/cached-definitions/";
+const CACHED_DEFINITIONS_DIRECTORY = './src/scripts/cached-definitions/';
 
 const fileExists = async (path: string) =>
 	!!(await fs.stat(path).catch(() => false));
 
 const hashString = (string: string) =>
-	crypto.createHash("md5").update(string).digest("hex");
+	crypto.createHash('md5').update(string).digest('hex');
 
 export async function getDefinitions() {
 	try {
 		await fs.access(CACHED_DEFINITIONS_DIRECTORY);
 	} catch (e) {
-		console.log("Creating the cached-definitions directory");
+		console.log('Creating the cached-definitions directory');
 		await fs.mkdir(CACHED_DEFINITIONS_DIRECTORY);
 	}
 
 	const manifestResponse = await axios.get(
-		"https://www.bungie.net/Platform/Destiny2/Manifest/",
-		{ headers: { "x-api-key": API_KEY } }
+		'https://www.bungie.net/Platform/Destiny2/Manifest/',
+		{ headers: { 'x-api-key': API_KEY } }
 	);
 
 	const definitonsPath =
@@ -50,27 +50,27 @@ export async function getDefinitions() {
 	let tempDefinitions: unknown;
 
 	if (await fileExists(cachedDefinitionsFilePath)) {
-		console.log("Reading cached definitions");
+		console.log('Reading cached definitions');
 		try {
 			const tempDefinitionsFile = await fs.readFile(cachedDefinitionsFilePath);
 			tempDefinitions = JSON.parse(tempDefinitionsFile.toString());
 		} catch (e) {
-			console.error("Error parsing out cached definitions");
+			console.error('Error parsing out cached definitions');
 		}
 
 		if (tempDefinitions) {
 			return tempDefinitions;
 		} else {
-			console.error("Cached definitions are falsey");
+			console.error('Cached definitions are falsey');
 		}
 	}
 
 	console.log(
-		"No cached definitions found. Requesting definitions from remote"
+		'No cached definitions found. Requesting definitions from remote'
 	);
 
 	const definitionsResponse = await axios.get(definitionsUrl, {
-		headers: { "x-api-key": API_KEY },
+		headers: { 'x-api-key': API_KEY },
 	});
 	// .catch((e) => {
 	// 	console.error(`Failed to fetch definitions. Error: ${e}`);
@@ -79,7 +79,7 @@ export async function getDefinitions() {
 	const definitions = definitionsResponse.data;
 
 	try {
-		console.log("Caching definitions");
+		console.log('Caching definitions');
 
 		for (const file of await fs.readdir(CACHED_DEFINITIONS_DIRECTORY)) {
 			console.log(`Removing old definitions file: ${file}`);
@@ -114,19 +114,19 @@ export const collectRewardsFromArtifacts = (
 // King's Fall => KingsFall
 // Vault of Glass => VaultOfGlass
 export const generateId = (name: string): string => {
-	const words = name.split(" ");
+	const words = name.split(' ');
 	return words
 		.map((word) => {
-			if (word === "") {
-				return "Unknown";
+			if (word === '') {
+				return 'Unknown';
 			}
 			return (word[0].toUpperCase() + word.substring(1)).replace(
 				// Replace all non-alphanumeric characters
 				/[^a-zA-Z0-9]/g,
-				""
+				''
 			);
 		})
-		.join("");
+		.join('');
 };
 
 // usage getEnumKeyByEnumValue(EArmorSlotId, armorSlotId)
@@ -138,10 +138,10 @@ export function getEnumKeyByEnumValue<
 	const keys = (Object.keys(myEnum) as TEnumKey[]).filter(
 		(x) => myEnum[x] === enumValue
 	);
-	return keys.length > 0 ? keys[0] : "";
+	return keys.length > 0 ? keys[0] : '';
 }
 
-const SERIALIZED = "SERIALIZED";
+const SERIALIZED = 'SERIALIZED';
 
 export function getSerializableValue<
 	TEnumKey extends string, // EArmorSlotId
@@ -160,8 +160,8 @@ export function getSerializableValue<
 }
 
 // Replace all unquoted and quoted instances of SERIALIZEDEArmorSlotId.Arm with ArmorSlotId.Arm
-const replaceRegexString = `[""]*${SERIALIZED}([A-Za-z.0-9]*)[""]*`;
-const replaceRegex = new RegExp(replaceRegexString, "g");
+const replaceRegexString = `['"]*${SERIALIZED}([A-Za-z.0-9]*)['"]*`;
+const replaceRegex = new RegExp(replaceRegexString, 'g');
 
 export const formatStringForFile = (s: string) => {
 	let deSerializedString = `${s}`;
@@ -170,11 +170,11 @@ export const formatStringForFile = (s: string) => {
 		matches.forEach((match) => {
 			const replacementValue = match
 				.replace(/["']/g, '')
-				.replace(SERIALIZED, "");
+				.replace(SERIALIZED, '');
 			deSerializedString = deSerializedString.replace(match, replacementValue);
 		});
 	}
-	return prettier.format(deSerializedString, { parser: "typescript" });
+	return prettier.format(deSerializedString, { parser: 'typescript' });
 };
 
 // Pull the extraction of bonuses out into a common function that can be used by mods and fragments
@@ -183,14 +183,14 @@ export const getBonuses = (
 ): StatBonus[] => {
 	const bonuses: StatBonus[] = [];
 	// TODO: This is a super fragile hack. Checking this length is just checking
-	// to see if this has three bonuses. If it does I"m assuming it"s the three
+	// to see if this has three bonuses. If it does I'm assuming it's the three
 	// class ability stat bonuses. I can't figure out a better way to determine this
 	// Relevant discord discussion:
 	// https://discord.com/channels/296008008956248066/296008136785920001/1072704762367184966
 	if (item.investmentStats.length === 4) {
 		// Just pick a random value... in theory they should all be the same
 		bonuses.push({
-			stat: "ClassAbilityStat",
+			stat: 'ClassAbilityStat',
 			value: item.investmentStats[3].value,
 		});
 	} else {
@@ -211,27 +211,27 @@ export const getSerializedBonusStats = (
 	const bonuses: Record<number, string> = {};
 	// TODO: Pull the serialization of bounses out into a common function to be used by mods and fragments
 	item.bonuses.forEach((bonus, i) => {
-		if (bonus.stat === "ClassAbilityStat") {
-			bonuses[i] = "ClassAbilityStat";
+		if (bonus.stat === 'ClassAbilityStat') {
+			bonuses[i] = 'ClassAbilityStat';
 			return;
 		}
 		const serializedBonusStat = getSerializableValue(
 			bonus.stat,
 			EArmorStatId,
-			"EArmorStatId"
+			'EArmorStatId'
 		);
 		bonuses[i] = serializedBonusStat;
 	});
 	return bonuses;
 };
 
-// TODO: The description ordering of "Into the Fray" is different than every other
+// TODO: The description ordering of 'Into the Fray' is different than every other
 // description. So we can't just check perks[0]. We have to check all perks :(
 export const getDescription = (
 	item: DestinyInventoryItemDefinition,
 	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>
 ) => {
-	let description = "No description found";
+	let description = 'No description found';
 	for (const perk of item.perks) {
 		const desc =
 			sandboxPerkDefinitions[perk.perkHash].displayProperties.description;
@@ -247,9 +247,9 @@ export const getDescription = (
 export type Enumerate<
 	N extends number,
 	Acc extends number[] = []
-> = Acc["length"] extends N
+> = Acc['length'] extends N
 	? Acc[number]
-	: Enumerate<N, [...Acc, Acc["length"]]>;
+	: Enumerate<N, [...Acc, Acc['length']]>;
 
 export type IntRange<F extends number, T extends number> = Exclude<
 	Enumerate<T>,

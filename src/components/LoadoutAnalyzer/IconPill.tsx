@@ -24,7 +24,7 @@ export default function IconPill({
 					display: 'inline-flex',
 					//padding: theme.spacing(0.5),
 					borderRadius: '16px',
-					// paddingTop: "10px",
+					// paddingTop: '10px',
 					height: '32px',
 					width: '32px',
 					alignItems: 'center',

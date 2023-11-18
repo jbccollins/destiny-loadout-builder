@@ -181,7 +181,7 @@ async function getAuthToken(): Promise<DimAuthToken> {
 }
 
 /**
- * Has the token expired, based on its "expires" property?
+ * Has the token expired, based on its 'expires' property?
  */
 function hasTokenExpired(token?: DimAuthToken) {
 	if (!token) {

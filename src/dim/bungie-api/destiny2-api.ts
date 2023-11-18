@@ -117,15 +117,15 @@ export async function getDestinyAccountsForBungieAccount(
 		const platforms = await generatePlatforms(linkedAccounts);
 		if (platforms.length === 0) {
 			// showNotification({
-			// 	type: "warning",
-			// 	title: t("Accounts.NoCharacters")
+			// 	type: 'warning',
+			// 	title: t('Accounts.NoCharacters')
 			// });
 			// removeToken();
 			// dispatch(loggedOut());
 		}
 		return platforms;
 	} catch (e) {
-		//reportException("getDestinyAccountsForBungieAccount", e);
+		//reportException('getDestinyAccountsForBungieAccount', e);
 		throw e;
 	}
 }
@@ -176,7 +176,7 @@ export async function getMembershipData() {
 	}
 
 	const bannedUsers = [
-		// "4611686018444338689", // Lord Wiegraf#7296 (Bagging)
+		// '4611686018444338689', // Lord Wiegraf#7296 (Bagging)
 	];
 	if (bannedUsers.includes(result.membershipId)) {
 		alert('Go fuck yourself 😘');

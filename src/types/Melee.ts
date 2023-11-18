@@ -1,9 +1,9 @@
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { MeleeIdToMeleeMapping } from '@dlb/generated/melee/MeleeMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
-import { EDestinySubclassId } from './IdEnums';
 import { IMelee } from './generation';
 import { EnumDictionary } from './globals';
+import { EDestinySubclassId } from './IdEnums';
 
 export const MeleeIdList = Object.values(EMeleeId);
 

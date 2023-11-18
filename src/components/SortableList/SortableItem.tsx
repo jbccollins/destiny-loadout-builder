@@ -34,7 +34,7 @@ export function SortableItem(props: SortableItemProps) {
 	return (
 		<Box
 			// onClick={() => {
-			// 	console.log("click");
+			// 	console.log('click');
 			// }}
 			ref={setNodeRef}
 			style={style}

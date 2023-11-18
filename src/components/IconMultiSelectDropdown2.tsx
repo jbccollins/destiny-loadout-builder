@@ -26,8 +26,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const Container = styled(Box)(({ theme }) => ({
 	//color: theme.palette.primary.main,
 	padding: theme.spacing(1),
-	// display: "flex",
-	// justifyContent: "left",
+	// display: 'flex',
+	// justifyContent: 'left',
 }));
 
 const MenuItemContent = styled('div')(({ theme }) => ({
@@ -41,13 +41,13 @@ const MenuItemRow = styled('div')(({ theme }) => ({
 	display: 'flex',
 	alignItems: 'center',
 	flexWrap: 'nowrap',
-	// textTransform: "capitalize"
+	// textTransform: 'capitalize'
 }));
 
 const MenuItemText = styled('div')(({ theme }) => ({
 	marginLeft: theme.spacing(1),
 	whiteSpace: 'initial',
-	// textTransform: "capitalize"
+	// textTransform: 'capitalize'
 }));
 
 const Tag = styled(Box)(({ theme }) => ({
@@ -67,7 +67,7 @@ const MenuProps = {
 	PaperProps: {
 		style: {
 			// maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			// maxHeight: "70vh",
+			// maxHeight: '70vh',
 			width: 250,
 		},
 	},
@@ -108,7 +108,7 @@ export default function IconMultiSelectDropdown({
 }: IIconMultiSelectDropdownProps) {
 	const handleChange = (event: unknown, value: any) => {
 		// On autofill we get a stringified value.
-		// typeof value === "string" ? value.split(",") : value,
+		// typeof value === 'string' ? value.split(',') : value,
 		// onChange(value.filter(({ id }) => id != PLACEHOLDER_OPTION));
 	};
 

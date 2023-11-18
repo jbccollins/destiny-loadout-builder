@@ -119,7 +119,7 @@ const defaultClassItemMetadataWithUnMasterworkedRaidClassItem: AllClassItemMetad
 // ].classItem.LastWish = {
 // 	exists: true,
 // 	isMasterworked: true,
-// 	exampleId: "1",
+// 	exampleId: '1',
 // };
 
 const testCases: TestCase[] = [
@@ -1123,7 +1123,7 @@ const testCases: TestCase[] = [
 ];
 
 // const nameOfTestToDebug =
-// 	"It returns results with very tight tolerances and maximum stat mod usage";
+// 	'It returns results with very tight tolerances and maximum stat mod usage';
 const nameOfTestToDebug = null;
 describe('doProcessArmor', () => {
 	const filteredTestCases = nameOfTestToDebug

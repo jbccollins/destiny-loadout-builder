@@ -176,7 +176,7 @@ const LoadoutDetails = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	height: '350px',
 	marginLeft: '80px',
-	// overflowX: "auto",
+	// overflowX: 'auto',
 }));
 
 const RecommendedLoadoutHeader = styled(Box)(({ theme }) => ({
@@ -382,8 +382,8 @@ function ResultsItem({
 					(x) => !ArmorStatIdList.includes(x as EArmorStatId)
 				).map((sortableFieldKey) => {
 					return (
-						<Box sx={{ fontWeight: "500" }} key={sortableFieldKey}>
-							{getSortableFieldDisplayName(sortableFieldKey)}:{" "}
+						<Box sx={{ fontWeight: '500' }} key={sortableFieldKey}>
+							{getSortableFieldDisplayName(sortableFieldKey)}:{' '}
 							{item.sortableFields[sortableFieldKey]}
 						</Box>
 					);
@@ -435,7 +435,7 @@ function ResultsItem({
 						flexBasis: '100%',
 						display: 'flex',
 						flexWrap: 'wrap',
-						// justifyContent: "space-between",
+						// justifyContent: 'space-between',
 					}}
 				>
 					<Button
@@ -506,7 +506,7 @@ function ResultsItem({
 			</ResultsSection>
 			<ResultsSection
 				fullWidth
-				// sx={{ marginTop: showModPlacement ? "8px" : "0px" }}
+				// sx={{ marginTop: showModPlacement ? '8px' : '0px' }}
 			>
 				<Box
 					onClick={() =>

@@ -26,13 +26,13 @@ import MasterworkedBungieImage from './MasterworkedBungieImage';
 import { Socket } from './Socket';
 
 // const Container = styled(Box)(({ theme }) => ({
-// 	display: "flex",
-// 	flexDirection: "column",
-// 	flexWrap: "wrap",
-// 	position: "relative",
-// 	height: "320px",
-// 	paddingLeft: "2px",
-// 	paddingTop: "2px",
+// 	display: 'flex',
+// 	flexDirection: 'column',
+// 	flexWrap: 'wrap',
+// 	position: 'relative',
+// 	height: '320px',
+// 	paddingLeft: '2px',
+// 	paddingTop: '2px',
 // }));
 
 const Container = styled(Box, {

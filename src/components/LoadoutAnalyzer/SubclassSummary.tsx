@@ -28,8 +28,8 @@ const Description = styled(Box)(({ theme }) => ({
 const CondensedSubclassItemsWrapper = styled(Box)(({ theme }) => ({
 	display: 'flex',
 	gap: '4px',
-	// height: "120px",
-	//paddingLeft: "40px",
+	// height: '120px',
+	//paddingLeft: '40px',
 }));
 
 const CondensedSubclassItemWrapper = styled(Box)(({ theme }) => ({

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
 import {
-  selectUseBonusResilience,
-  setUseBonusResilience,
-} from "@dlb/redux/features/useBonusResilience/useBonusResilienceSlice";
-import { useAppDispatch, useAppSelector } from "@dlb/redux/hooks";
-import { Box } from "@mui/material";
-import ToggleSwitch from "./ToggleSwitch";
+	selectUseBonusResilience,
+	setUseBonusResilience,
+} from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { Box } from '@mui/material';
+import ToggleSwitch from './ToggleSwitch';
 
 export default function UseBonusResilienceToggleSwitch() {
 	const useBonusResilience = useAppSelector(selectUseBonusResilience);
@@ -15,9 +15,9 @@ export default function UseBonusResilienceToggleSwitch() {
 		dispatch(setUseBonusResilience(value));
 	};
 	return (
-		<Box sx={{ paddingLeft: "8px" }}>
+		<Box sx={{ paddingLeft: '8px' }}>
 			<ToggleSwitch
-				title={"Assume +1 bonus resilience"}
+				title={'Assume +1 bonus resilience'}
 				onChange={handleChange}
 				value={useBonusResilience}
 				helpText={

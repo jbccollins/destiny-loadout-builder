@@ -71,9 +71,9 @@ function RaidModSelector() {
 	const dropdownIndices = selectedRaidMods.map((_, i) => i);
 	return (
 		<Container>
-			{/* <Box sx={{ color: "orange", display: "flex", marginBottom: "16px" }}>
+			{/* <Box sx={{ color: 'orange', display: 'flex', marginBottom: '16px' }}>
 				<Warning />
-				<Box sx={{ paddingLeft: "8px" }}>
+				<Box sx={{ paddingLeft: '8px' }}>
 					Raid Mods are in beta. Expect bugs.
 				</Box>
 			</Box> */}
@@ -86,7 +86,7 @@ function RaidModSelector() {
 					key={index}
 					selectedDestinyClass={selectedDestinyClass}
 					availableMods={RaidModIdList}
-					// getTitle={index === 0 ? () => "Raid and Nightmare Mods" : null}
+					// getTitle={index === 0 ? () => 'Raid and Nightmare Mods' : null}
 					selectedMods={selectedRaidMods}
 					handleChange={handleChange}
 					getLabel={getLabel}

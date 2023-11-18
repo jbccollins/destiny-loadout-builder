@@ -123,11 +123,11 @@ export default function IconMultiSelectDropdown({
 // 				onChange={handleChange}
 // 				getId={(option: IFragment) => option.id}
 // 				getGroupBy={
-// 					(option: IFragment) => "" // ArmorSlotIdToArmorSlot.get(option.armorSlot).name
+// 					(option: IFragment) => '' // ArmorSlotIdToArmorSlot.get(option.armorSlot).name
 // 				}
 // 				getLabel={(option: IFragment) => option.name}
-// 				title={"Fragments"}
-// 				id={"fragment-selector"}
+// 				title={'Fragments'}
+// 				id={'fragment-selector'}
 // 			/>
 // 		</Container>
 // 	);

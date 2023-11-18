@@ -422,10 +422,10 @@ function handleChange() {
 		// ].forEach(([previousUuid, nextUuid], index) => {
 		// 	if (previousUuid !== nextUuid) {
 		// 		console.log(
-		// 			">>>>>> [STORE] Mismatched localStorageRecallId <<<<<<",
+		// 			'>>>>>> [STORE] Mismatched localStorageRecallId <<<<<<',
 		// 			previousUuid,
 		// 			nextUuid,
-		// 			">> index",
+		// 			'>> index',
 		// 			index
 		// 		);
 		// 	}
@@ -441,7 +441,7 @@ function handleChange() {
 
 		const localStorageRecall = getLocalStorageRecall();
 		// console.log(
-		// 	">>>>>>>>>>> [STORE] localStorageRecall <<<<<<<<<<<",
+		// 	'>>>>>>>>>>> [STORE] localStorageRecall <<<<<<<<<<<',
 		// 	localStorageRecall
 		// );
 		// Settings
@@ -578,21 +578,21 @@ function handleChange() {
 	// 		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid,
 	// 	].forEach((uuid, index) => {
 	// 		if (uuid === NIL) {
-	// 			console.log(">>>>> NIL uuid <<<<<", index);
+	// 			console.log('>>>>> NIL uuid <<<<<', index);
 	// 		}
 	// 	});
 	// }
 
 	// console.log(
-	// 	">>>>> hasAllDataLoaded",
+	// 	'>>>>> hasAllDataLoaded',
 	// 	hasAllDataLoaded,
-	// 	"hasMismatchedUuids",
+	// 	'hasMismatchedUuids',
 	// 	hasMismatchedUuids,
-	// 	"hasNonDefaultUuids",
+	// 	'hasNonDefaultUuids',
 	// 	hasNonDefaultUuids,
-	// 	"performingBatchUpdate",
+	// 	'performingBatchUpdate',
 	// 	performingBatchUpdate,
-	// 	"<<<<<<<<<"
+	// 	'<<<<<<<<<'
 	// );
 
 	if (

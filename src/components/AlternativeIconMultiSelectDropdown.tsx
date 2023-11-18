@@ -78,12 +78,6 @@ export default function IconMultiSelectDropdown({
 							<BungieImage src={option.icon} width={40} height={40} />
 							<div>{getLabel(option as IIconMultiSelectDropdownOption)}</div>
 						</Tag>
-						// <Chip
-						// 	avatar={<Avatar alt={option.name} src={option.icon} />}
-						// 	label={getLabel(option as IIconMultiSelectDropdownOption)}
-						// 	{...getTagProps({ index })}
-						// 	//disabled={fixedOptions.indexOf(option) !== -1}
-						// />
 					);
 				})
 			}
@@ -105,30 +99,3 @@ export default function IconMultiSelectDropdown({
 		/>
 	);
 }
-
-// const options = FragmentIdList.map((id) => getFragment(id));
-
-// const FragmentSelector = () => {
-// 	const [value, setValue] = React.useState<any>([options[0]]);
-
-// 	const handleChange = (fragments: IFragment) => {
-// 		setValue(fragments);
-// 	};
-
-// 	return (
-// 		<Container>
-// 			<IconMultiSelectDropdown
-// 				options={options}
-// 				value={value}
-// 				onChange={handleChange}
-// 				getId={(option: IFragment) => option.id}
-// 				getGroupBy={
-// 					(option: IFragment) => '' // ArmorSlotIdToArmorSlot.get(option.armorSlot).name
-// 				}
-// 				getLabel={(option: IFragment) => option.name}
-// 				title={'Fragments'}
-// 				id={'fragment-selector'}
-// 			/>
-// 		</Container>
-// 	);
-// };

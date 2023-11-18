@@ -5,6 +5,7 @@
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": true,
+		"strictNullChecks": false,
 		"forceConsistentCasingInFileNames": true,
 		"noEmit": true,
 		"esModuleInterop": true,
@@ -24,7 +25,6 @@
 				"name": "next"
 			}
 		],
-		"strictNullChecks": false
 	},
 	// This is potentially an alternative way to run scripts directly...
 	"ts-node": {

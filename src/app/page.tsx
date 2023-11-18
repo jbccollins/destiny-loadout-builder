@@ -113,8 +113,6 @@ const Container = styled(Box)(({ theme }) => ({
 
 const LeftSection = styled(Box)(({ theme }) => ({
 	padding: theme.spacing(2),
-	// width: '400px',
-	// minWidth: '400px',
 	height: '100vh',
 	overflowY: 'auto',
 	[theme.breakpoints.up('md')]: {
@@ -122,7 +120,7 @@ const LeftSection = styled(Box)(({ theme }) => ({
 		width: '400px',
 	},
 	[theme.breakpoints.down('md')]: {
-		width: '100%', //`calc(100vw - ${theme.spacing(4)})`,
+		width: '100%',
 		paddingBottom: '180px',
 	},
 }));
@@ -130,12 +128,8 @@ const LeftSection = styled(Box)(({ theme }) => ({
 const RightSection = styled(Box)(({ theme }) => ({
 	flexGrow: 1,
 	height: '100vh',
-	// [theme.breakpoints.up('md')]: {
-	// 	height: '100vh',
-	// },
 	[theme.breakpoints.down('md')]: {
 		width: '100vw',
-		// height: `calc(100vh - 170px)`,
 	},
 }));
 
@@ -438,7 +432,6 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 			<Link
 				sx={{
 					zIndex: 1,
-					//background: 'red',
 					display: 'block',
 					position: 'absolute',
 					top: '24px',
@@ -478,7 +471,6 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					</Box>
 				</Box>
 			</Link>
-			{/* <ArmorSlotRestrictions /> */}
 		</LeftSection>
 	);
 };

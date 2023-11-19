@@ -1,10 +1,10 @@
-// Next.js Route Handlers Docs: https://nextjs.org/docs/app/building-your-application/routing/route-handlers
-
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {
 	oauthClientId,
 	oauthClientSecret,
 } from '@dlb/dim/bungie-api/bungie-api-utils';
 import axios from 'axios';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 type ReqData = {
 	code: string;
@@ -22,22 +22,11 @@ export type OauthTokenData =
 
 const TOKEN_URL = 'https://www.bungie.net/platform/app/oauth/token/';
 
-export async function GET(request: Request): Promise<Response> {
-	const { searchParams } = new URL(request.url);
-	const code = searchParams.get('code') as ReqData['code'];
-
-	if (!code) {
-		return new Response(
-			JSON.stringify({ error: 'Missing required parameter: code' }),
-			{
-				status: 400,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		);
-	}
-
+export default async function handler(
+	req: NextApiRequest,
+	res: NextApiResponse<OauthTokenData>
+) {
+	const { code } = req.query as ReqData;
 	const body = new URLSearchParams({
 		grant_type: 'authorization_code',
 		code,
@@ -45,29 +34,20 @@ export async function GET(request: Request): Promise<Response> {
 		client_secret: oauthClientSecret(),
 	});
 
-	try {
-		const response = await axios.post(TOKEN_URL, body, {
+	const response = await axios
+		.post(TOKEN_URL, body, {
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
 			},
+		})
+		.then((res) => res.data)
+		.catch(function (error) {
+			if (error.response) {
+				console.error(error.response.data);
+			}
 		});
 
-		return new Response(JSON.stringify(response.data), {
-			status: 200,
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-	} catch (error) {
-		console.error(error?.response?.data || error);
-		return new Response(JSON.stringify(
-			{ error: 'Failed to retrieve OAuth token' }),
-			{
-				status: error?.response?.status || 500,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		);
-	}
+	res.status(200).json(response);
 }
+
+// Probably just need this to effectively do whatever getAccessTokenFromCode is currently doing.

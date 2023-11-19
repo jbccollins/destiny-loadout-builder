@@ -25,8 +25,8 @@ const transporter = nodemailer.createTransport({
 
 export async function GET(request: Request): Promise<Response> {
 	if (process.env.NODE_ENV === 'development') {
-		return new Response(
-			JSON.stringify({ error: null, message: 'Skipping error email in dev' }),
+		return Response.json(
+			{ error: null, message: 'Skipping error email in dev' },
 			{
 				status: 200,
 				headers: { 'Content-Type': 'application/json' },
@@ -47,16 +47,16 @@ export async function GET(request: Request): Promise<Response> {
 
 	try {
 		const info = await transporter.sendMail(mailOptions);
-		return new Response(
-			JSON.stringify({ error: null, message: JSON.stringify(info) }),
+		return Response.json(
+			{ error: null, message: JSON.stringify(info) },
 			{
 				status: 200,
 				headers: { 'Content-Type': 'application/json' },
 			}
 		);
 	} catch (err) {
-		return new Response(
-			JSON.stringify({ error: `Failed to send email: ${err}`, message: null }),
+		return Response.json(
+			{ error: `Failed to send email: ${err}`, message: null },
 			{
 				status: 500,
 				headers: { 'Content-Type': 'application/json' },

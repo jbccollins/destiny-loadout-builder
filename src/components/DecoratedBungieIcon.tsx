@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { Box, styled } from '@mui/material';

@@ -1,16 +1,19 @@
 import { DestinyVersion } from '@destinyitemmanager/dim-api-types';
-// import { ThunkResult } from "app/store/types";
-// import { DimError } from "app/utils/dim-error";
+// import { ThunkResult } from 'app/store/types';
+// import { DimError } from 'app/utils/dim-error';
+import { errorLog } from '@dlb/dim/utils/log';
 import {
 	BungieMembershipType,
 	DestinyGameVersions,
 	DestinyLinkedProfilesResponse,
-	DestinyProfileUserInfoCard,
+	DestinyProfileUserInfoCard
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { UserInfoCard } from 'bungie-api-ts-no-const-enum/user';
 import _ from 'lodash';
-//import { reportException } from "@dlb/dim/utils/exceptions";
-// import { loggedOut } from "./actions";
+import { getLinkedAccounts } from '@dlb/dim/bungie-api/destiny2-api';
+import { removeToken } from '@dlb/dim/bungie-api/oauth-tokens';
+//import { reportException } from '@dlb/dim/utils/exceptions';
+// import { loggedOut } from './actions';
 
 // See https://github.com/Bungie-net/api/wiki/FAQ:-Cross-Save-pre-launch-testing,-and-how-it-may-affect-you for more info
 
@@ -25,7 +28,7 @@ const PLATFORM_LABELS = {
 	[BungieMembershipType.TigerSteam]: 'Steam',
 	[BungieMembershipType.TigerStadia]: 'Stadia',
 	[BungieMembershipType.TigerEgs]: 'Epic',
-	[BungieMembershipType.BungieNext]: 'Bungie.net',
+	[BungieMembershipType.BungieNext]: 'Bungie.net'
 };
 
 /** A specific Destiny account (one per platform and Destiny version) */
@@ -70,17 +73,17 @@ export interface DestinyAccount {
 // 			const platforms = await generatePlatforms(linkedAccounts);
 // 			if (platforms.length === 0) {
 // 				// showNotification({
-// 				//   type: "warning",
-// 				//   title: t("Accounts.NoCharacters"),
+// 				//   type: 'warning',
+// 				//   title: t('Accounts.NoCharacters'),
 // 				// });
-// 				console.warn("Accounts.NoCharacters");
+// 				console.warn('Accounts.NoCharacters');
 // 				removeToken();
 // 				// dispatch(loggedOut());
 // 			}
 // 			return platforms;
 // 		} catch (e) {
-// 			console.error("getDestinyAccountsForBungieAccount", e);
-// 			// reportException("getDestinyAccountsForBungieAccount", e);
+// 			console.error('getDestinyAccountsForBungieAccount', e);
+// 			// reportException('getDestinyAccountsForBungieAccount', e);
 // 			throw e;
 // 		}
 // 	};
@@ -113,7 +116,7 @@ async function generatePlatforms(
 			platformLabel: PLATFORM_LABELS[destinyAccount.membershipType],
 			destinyVersion: 2,
 			platforms: destinyAccount.applicableMembershipTypes,
-			lastPlayed: new Date(destinyAccount.dateLastPlayed),
+			lastPlayed: new Date(destinyAccount.dateLastPlayed)
 		};
 
 		return [account];

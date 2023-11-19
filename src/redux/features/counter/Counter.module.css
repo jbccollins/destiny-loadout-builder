@@ -60,6 +60,7 @@
 }
 
 .asyncButton:after {
+<<<<<<< HEAD
 	content: '';
 	background-color: rgba(112, 76, 182, 0.15);
 	display: block;
@@ -70,6 +71,18 @@
 	top: 0;
 	opacity: 0;
 	transition: width 1s linear, opacity 0.5s ease 1s;
+=======
+  content: '';
+  background-color: rgba(112, 76, 182, 0.15);
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: width 1s linear, opacity 0.5s ease 1s;
+>>>>>>> parent of ed5fcbe (Fix code formatting)
 }
 
 .asyncButton:active:after {

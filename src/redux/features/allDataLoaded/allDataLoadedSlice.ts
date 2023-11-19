@@ -7,7 +7,7 @@ export interface AllDataLoadedState {
 }
 
 const initialState: AllDataLoadedState = {
-	value: false,
+	value: false
 };
 
 export const allDataLoadedSlice = createSlice({
@@ -16,8 +16,8 @@ export const allDataLoadedSlice = createSlice({
 	reducers: {
 		setAllDataLoaded: (state, action: PayloadAction<boolean>) => {
 			state.value = action.payload;
-		},
-	},
+		}
+	}
 });
 
 export const { setAllDataLoaded } = allDataLoadedSlice.actions;

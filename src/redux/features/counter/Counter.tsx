@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import styles from './Counter.module.css';
+import { useAppSelector, useAppDispatch } from '@dlb/redux/hooks';
 import {
 	decrement,
 	increment,
-	incrementAsync,
 	incrementByAmount,
+	incrementAsync,
 	incrementIfOdd,
 	selectCount,
 } from './counterSlice';
+import styles from './Counter.module.css';
 
 function Counter() {
 	const dispatch = useAppDispatch();

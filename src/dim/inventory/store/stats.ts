@@ -11,9 +11,9 @@ import {
 	DimStat,
 } from '@dlb/dim/inventory/item-types';
 import {
+	armorStats,
 	CUSTOM_TOTAL_STAT_HASH,
 	TOTAL_STAT_HASH,
-	armorStats,
 } from '@dlb/dim/search/d2-known-values';
 import { compareBy } from '@dlb/dim/utils/comparators';
 import { isPlugStatActive } from '@dlb/dim/utils/item-utils';
@@ -416,7 +416,7 @@ function attachPlugStats(
 
 	// The active plug is already contributing to the item's stats in statsByHash. Thus we treat it separately
 	// here for two reasons,
-	// 1. We need to calculate the "base" investment stat value (without this plug's contribution) for the
+	// 1. We need to calculate the 'base' investment stat value (without this plug's contribution) for the
 	// item's stats so that we can calculate correct values for the inactive plugs.
 	// 2. By utilizing the fact that the item's stats already include this, we can do one less interpolation
 	// per stat to figure out the active plug's stat contribution.

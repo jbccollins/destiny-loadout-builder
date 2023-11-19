@@ -121,15 +121,9 @@ function CompactIconAutocompleteDropdown(
 
 	useEffect(() => {
 		if (isMobile) {
-			const textField = document.getElementsByClassName(
-				textFieldClassName ?? ''
-			)[0];
-			if (textField) {
-				const input = textField.querySelector('input');
-				if (input) {
-					input.disabled = true;
-				}
-			}
+			document
+				.getElementsByClassName(textFieldClassName)[0]
+				.querySelector('input').disabled = true;
 		}
 	}, [textFieldClassName]);
 

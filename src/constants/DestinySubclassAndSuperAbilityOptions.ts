@@ -1,12 +1,12 @@
-import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import {
 	DestinyClassIdList,
 	getDestinySubclassIdListByDestinyClassId,
 } from '@dlb/types/DestinyClass';
 import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { getSuperAbility } from '@dlb/types/SuperAbility';
 import { ElementIdToElement } from '@dlb/types/Element';
 import { EDestinyClassId, EDestinySubclassId } from '@dlb/types/IdEnums';
-import { getSuperAbility } from '@dlb/types/SuperAbility';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 
 export type DestinySubclassAndSuperAbilityOption = {
 	superAbilityId: ESuperAbilityId;

@@ -1,21 +1,21 @@
+import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+import { getFirstSocketByCategoryHash } from '@dlb/dim/utils/socket-utils';
+import { DamageType, DestinyClass } from 'bungie-api-ts-no-const-enum/destiny2';
 import { emptyPlugHashes } from '@dlb/dim/data/d2/empty-plug-hashes';
 import {
 	ItemCategoryHashes,
 	PlugCategoryHashes,
-	SocketCategoryHashes,
+	SocketCategoryHashes
 } from '@dlb/dim/data/d2/generated-enums';
-import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
-import { getFirstSocketByCategoryHash } from '@dlb/dim/utils/socket-utils';
-import { DamageType, DestinyClass } from 'bungie-api-ts-no-const-enum/destiny2';
-// import subclassArc from "images/subclass-arc.png";
-// import subclassSolar from "images/subclass-solar.png";
-// import subclassStasisAlt from "images/subclass-stasis-alt.png";
-// import subclassStasis from "images/subclass-stasis.png";
-// import subclassVoidAlt from "images/subclass-void-alt.png";
-// import subclassVoid from "images/subclass-void.png";
+// import subclassArc from 'images/subclass-arc.png';
+// import subclassSolar from 'images/subclass-solar.png';
+// import subclassStasisAlt from 'images/subclass-stasis-alt.png';
+// import subclassStasis from 'images/subclass-stasis.png';
+// import subclassVoidAlt from 'images/subclass-void-alt.png';
+// import subclassVoid from 'images/subclass-void.png';
 import memoizeOne from 'memoize-one';
-import { StaticImageData } from 'next/image';
 import { DimItem, PluggableInventoryItemDefinition } from './item-types';
+import { StaticImageData } from 'next/image';
 
 interface SubclassInfo {
 	damageType: DamageType;
@@ -27,7 +27,7 @@ function subclass(
 ): SubclassInfo {
 	return {
 		damageType,
-		characterClass,
+		characterClass
 	};
 }
 
@@ -44,7 +44,7 @@ const subclassInfoByHash: Record<number, SubclassInfo> = {
 	3941205951: subclass(DamageType.Thermal, DestinyClass.Warlock), // Dawnblade (v3)
 	2328211300: subclass(DamageType.Arc, DestinyClass.Hunter), // Arcstrider (v3)
 	2932390016: subclass(DamageType.Arc, DestinyClass.Titan), // Striker (v3)
-	3168997075: subclass(DamageType.Arc, DestinyClass.Warlock), // Stormcaller (v3)
+	3168997075: subclass(DamageType.Arc, DestinyClass.Warlock) // Stormcaller (v3)
 };
 
 interface SubclassPlugCategory {
@@ -98,7 +98,7 @@ export const getSubclassPlugCategories = memoizeOne(
 						results.set(plugCategoryHash, {
 							compatibleSubclassHashes: [subclassHash],
 							damageType: subclassInfo.damageType,
-							socketCategoryHash,
+							socketCategoryHash
 						});
 					}
 				}
@@ -112,7 +112,7 @@ const baseImagesByDamageType: Partial<Record<DamageType, StaticImageData>> = {
 	[DamageType.Arc]: null, //subclassArc,
 	[DamageType.Thermal]: null, //subclassSolar,
 	[DamageType.Void]: null, //subclassVoid,
-	[DamageType.Stasis]: null, //subclassStasis
+	[DamageType.Stasis]: null //subclassStasis
 };
 
 /*
@@ -122,7 +122,7 @@ that the super icons include.
 const altBaseImagesByDamageType: Partial<Record<DamageType, StaticImageData>> =
 	{
 		[DamageType.Void]: null, //subclassVoidAlt,
-		[DamageType.Stasis]: null, //subclassStasisAlt
+		[DamageType.Stasis]: null //subclassStasisAlt
 	};
 
 interface SubclassIconInfo {
@@ -148,7 +148,7 @@ export function getSubclassIconInfo(
 		if (superIcon) {
 			return {
 				base,
-				super: superIcon,
+				super: superIcon
 			};
 		}
 	}

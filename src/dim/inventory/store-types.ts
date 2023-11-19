@@ -2,7 +2,7 @@ import { DestinyVersion } from '@destinyitemmanager/dim-api-types';
 import {
 	DestinyClass,
 	DestinyColor,
-	DestinyDisplayPropertiesDefinition,
+	DestinyDisplayPropertiesDefinition
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import React from 'react';
 import { DimItem } from './item-types';
@@ -16,7 +16,7 @@ import { DimItem } from './item-types';
 export interface DimStore<Item = DimItem> {
 	// Static data - these properties will never change after the character/store is created
 
-	/** An ID for the store. Character ID or "vault". */
+	/** An ID for the store. Character ID or 'vault'. */
 	id: string;
 	/** Localized name for the store. */
 	name: string;
@@ -34,7 +34,7 @@ export interface DimStore<Item = DimItem> {
 	race: string;
 	/** Localized gender and race together. */
 	genderRace: string;
-	/** String gender name: "male" | "female" | "", used exclusively for i18n when translating to gendered languages */
+	/** String gender name: 'male' | 'female' | '', used exclusively for i18n when translating to gendered languages */
 	genderName: 'male' | 'female' | '';
 
 	// "Mutable" data - this may be changed by moving the item around, lock/unlock, etc. Any place DIM updates its view of the world without a profile refresh.

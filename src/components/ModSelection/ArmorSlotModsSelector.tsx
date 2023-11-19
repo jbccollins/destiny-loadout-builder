@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import GenericTierRow from '@dlb/components/GenericTierRow';

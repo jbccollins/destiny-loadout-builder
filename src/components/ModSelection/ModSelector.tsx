@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import CompactIconAutocompleteDropdown from '@dlb/components/CompactIconAutocompleteDropdown';
 import IconAutocompleteDropdown from '@dlb/components/IconAutocompleteDropdown';

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { EModId } from '@dlb/generated/mod/EModId';
 import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';

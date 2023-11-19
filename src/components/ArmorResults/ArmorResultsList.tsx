@@ -1,6 +1,5 @@
 'use client';
 
-import { DimIcon } from '@/public/dim_logo.svgicon';
 import ModPlacement from '@dlb/components//ModPlacement';
 import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
 import StatTiers from '@dlb/components/StatTiers';
@@ -65,6 +64,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
+import { DimIcon } from '@public/dim_logo.svgicon';
 import React from 'react';
 import { getClassItemText, ResultsTableLoadout } from './ArmorResultsTypes';
 import {

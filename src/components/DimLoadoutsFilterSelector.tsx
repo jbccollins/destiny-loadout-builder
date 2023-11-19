@@ -1,8 +1,8 @@
-import dim_logo_image from '@/public/dim-logo.png';
 import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import dim_logo_image from '@public/dim-logo.png';
 
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {

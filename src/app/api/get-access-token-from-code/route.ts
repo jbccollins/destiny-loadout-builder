@@ -4,11 +4,7 @@ import {
 	oauthClientSecret,
 } from '@dlb/dim/bungie-api/bungie-api-utils';
 import axios from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
-
-type ReqData = {
-	code: string;
-};
+import { NextRequest, NextResponse } from 'next/server';
 
 export type OauthTokenData =
 	| {
@@ -22,11 +18,9 @@ export type OauthTokenData =
 
 const TOKEN_URL = 'https://www.bungie.net/platform/app/oauth/token/';
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse<OauthTokenData>
-) {
-	const { code } = req.query as ReqData;
+export async function GET(req: NextRequest) {
+	const url = new URL(req.url);
+	const code = url.searchParams.get('code');
 	const body = new URLSearchParams({
 		grant_type: 'authorization_code',
 		code,
@@ -47,7 +41,7 @@ export default async function handler(
 			}
 		});
 
-	res.status(200).json(response);
+	return NextResponse.json(response);
 }
 
 // Probably just need this to effectively do whatever getAccessTokenFromCode is currently doing.

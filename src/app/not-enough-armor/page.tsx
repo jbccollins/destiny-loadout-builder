@@ -1,8 +1,10 @@
-import discord_image from '@/public/discord-mark-white.png';
+'use client';
+
 import Head from '@dlb/components/Meta/Head';
 import SocialIcon from '@dlb/components/SocialIcon';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
 import { Box, styled } from '@mui/material';
+import discord_image from '@public/discord-mark-white.png';
 
 const Container = styled(Box)(({ theme }) => ({
 	position: 'fixed',

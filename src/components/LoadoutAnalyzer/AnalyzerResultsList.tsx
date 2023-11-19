@@ -1,5 +1,3 @@
-import d2Logo from '@/public/d2-logo.png';
-import dimLogo from '@/public/dim-logo.png';
 import { selectAnalyzableLoadouts } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import {
 	selectAnalyzerSearch,
@@ -34,6 +32,8 @@ import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 import { Help } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import d2Logo from '@public/d2-logo.png';
+import dimLogo from '@public/dim-logo.png';
 
 import { Box, Collapse, IconButton, SxProps, useTheme } from '@mui/material';
 import Image from 'next/image';

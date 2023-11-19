@@ -14,7 +14,6 @@ import ShieldIcon from '@mui/icons-material/Shield';
 import { Box, Button, Collapse, Divider, Link, styled } from '@mui/material';
 import Image from 'next/image';
 
-import discord_image from '@/public/discord-mark-white.png';
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
@@ -97,6 +96,7 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { ETabType } from '@dlb/types/Tab';
+import discord_image from '@public/discord-mark-white.png';
 import React, { useEffect } from 'react';
 
 const Container = styled(Box)(({ theme }) => ({

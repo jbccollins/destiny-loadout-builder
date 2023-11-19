@@ -1,10 +1,10 @@
-// Next.js Route Handlers Docs: https://nextjs.org/docs/app/building-your-application/routing/route-handlers
-
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import {
 	oauthClientId,
 	oauthClientSecret,
 } from '@dlb/dim/bungie-api/bungie-api-utils';
 import axios from 'axios';
+import { NextRequest, NextResponse } from 'next/server';
 
 type ReqData = {
 	refreshTokenValue: string;
@@ -20,24 +20,12 @@ export type OauthTokenData =
 	  }
 	| undefined;
 
-export async function GET(request: Request): Promise<Response> {
-	const { searchParams } = new URL(request.url);
-	const refreshTokenValue = searchParams.get(
-		'refreshTokenValue'
-	) as ReqData['refreshTokenValue'];
+// TODO: Pull this out into a common constant
+const TOKEN_URL = 'https://www.bungie.net/platform/app/oauth/token/';
 
-	if (!refreshTokenValue) {
-		return Response.json(
-			{ error: 'Missing required parameter: refreshTokenValue' },
-			{
-				status: 400,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			}
-		);
-	}
-
+export async function GET(req: NextRequest) {
+	const url = new URL(req.url);
+	const refreshTokenValue = url.searchParams.get('refreshTokenValue');
 	const body = new URLSearchParams({
 		grant_type: 'refresh_token',
 		refresh_token: refreshTokenValue,
@@ -45,33 +33,22 @@ export async function GET(request: Request): Promise<Response> {
 		client_secret: oauthClientSecret(),
 	});
 
-	try {
-		const response = await axios.post(
-			'https://www.bungie.net/platform/app/oauth/token/',
-			body,
-			{
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-			}
-		);
-
-		return Response.json(response.data, {
-			status: 200,
+	const response = await axios
+		.post(TOKEN_URL, body, {
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': 'application/x-www-form-urlencoded',
 			},
-		});
-	} catch (error) {
-		console.error(error?.response?.data || error);
-		return Response.json(
-			{ error: 'Failed to refresh OAuth token' },
-			{
-				status: error?.response?.status || 500,
-				headers: {
-					'Content-Type': 'application/json',
-				},
+		})
+		.then((res) => res.data)
+		.catch(function (error) {
+			if (error.response) {
+				console.error(error.response.data);
+				// console.error(error.response.status);
+				// console.error(error.response.headers);
 			}
-		);
-	}
+		});
+
+	console.log(JSON.stringify(response));
+
+	return NextResponse.json(response);
 }

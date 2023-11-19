@@ -1,5 +1,3 @@
-import d2Logo from '@/public/d2-logo.png';
-import dimLogo from '@/public/dim-logo.png';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import {
 	AnalyzableLoadoutsValueState,
@@ -101,6 +99,8 @@ import {
 	styled,
 	useTheme,
 } from '@mui/material';
+import d2Logo from '@public/d2-logo.png';
+import dimLogo from '@public/dim-logo.png';
 import Image from 'next/image';
 import { useState } from 'react';
 import CustomTooltip from '../CustomTooltip';

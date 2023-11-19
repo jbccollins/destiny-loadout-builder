@@ -1,6 +1,6 @@
-import hunter_icon from '@/public/class_hunter_outline.png';
-import titan_icon from '@/public/class_titan_outline.png';
-import warlock_icon from '@/public/class_warlock_outline.png';
+import hunter_icon from '@public/class_hunter_outline.png';
+import titan_icon from '@public/class_titan_outline.png';
+import warlock_icon from '@public/class_warlock_outline.png';
 import {
 	EnumDictionary,
 	IIconStaticImageData,

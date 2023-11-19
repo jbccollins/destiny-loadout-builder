@@ -1,4 +1,3 @@
-import d2_logo_image from '@/public/d2-logo.png';
 import {
 	selectInGameLoadoutsFilter,
 	setInGameLoadoutsFilter,
@@ -10,6 +9,7 @@ import {
 	InGameLoadoutsFilterIdList,
 } from '@dlb/types/InGameLoadoutsFilter';
 import { styled } from '@mui/material';
+import d2_logo_image from '@public/d2-logo.png';
 import IconDropdown from './IconDropdown';
 
 const Container = styled('div')(({ theme }) => ({

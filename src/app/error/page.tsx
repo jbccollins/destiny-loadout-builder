@@ -1,10 +1,12 @@
-import discord_image from '@/public/discord-mark-white.png';
+'use client';
+
 import Head from '@dlb/components/Meta/Head';
 import SocialIcon from '@dlb/components/SocialIcon';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
 import { selectLoadError } from '@dlb/redux/features/loadError/loadErrorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { Box, Button, styled } from '@mui/material';
+import discord_image from '@public/discord-mark-white.png';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

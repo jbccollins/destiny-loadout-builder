@@ -1,11 +1,10 @@
-// Next.js Route Handlers Docs: https://nextjs.org/docs/app/building-your-application/routing/route-handlers
-// (NOT_TESTED)
-
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 type ResData = {
-	error: string | null;
-	message: string | null;
+	error: string;
+	message: string;
 };
 
 type ReqData = {
@@ -23,44 +22,36 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-export async function GET(request: Request): Promise<Response> {
+export async function POST(req: NextRequest) {
 	if (process.env.NODE_ENV === 'development') {
-		return Response.json(
-			{ error: null, message: 'Skipping error email in dev' },
-			{
-				status: 200,
-				headers: { 'Content-Type': 'application/json' },
-			}
-		);
+		return NextResponse.json({
+			error: null,
+			message: 'Skipping error email in dev',
+		});
 	}
-
-	const reqData: ReqData = await request.json();
-	const error = reqData.error;
-	const message = `<div style="white-space: pre-line;">${error}</div>`;
+	const url = new URL(req.url);
+	const error = url.searchParams.get('error');
+	const message = `
+    <div style="white-space: pre-line;">${error}</div>
+  `;
 
 	const mailOptions = {
 		from: 'destinyloadoutbuilder@gmail.com', // sender address
 		to: process.env.EMAIL_ADDRESS, // list of receivers
 		subject: `Destiny Loadout Builder Error Email`, // Subject line
-		html: message, // HTML body
+		html: message, // plain text body
 	};
 
-	try {
-		const info = await transporter.sendMail(mailOptions);
-		return Response.json(
-			{ error: null, message: JSON.stringify(info) },
-			{
-				status: 200,
-				headers: { 'Content-Type': 'application/json' },
-			}
-		);
-	} catch (err) {
-		return Response.json(
-			{ error: `Failed to send email: ${err}`, message: null },
-			{
-				status: 500,
-				headers: { 'Content-Type': 'application/json' },
-			}
-		);
-	}
+	transporter.sendMail(mailOptions, function (err, info) {
+		if (err) {
+			return NextResponse.json({
+				error: `Failed to send email: ${err}`,
+				message: null,
+			});
+		}
+		return NextResponse.json({
+			error: null,
+			message: JSON.stringify(info),
+		});
+	});
 }

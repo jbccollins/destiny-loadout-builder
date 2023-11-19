@@ -60,8 +60,8 @@ export async function GET(request: Request): Promise<Response> {
 		});
 	} catch (error: any) {
 		console.error(error?.response?.data || error);
-		return new Response(JSON.stringify(
-			{ error: 'Failed to retrieve OAuth token' }),
+		return new Response(
+			JSON.stringify({ error: 'Failed to retrieve OAuth token' }),
 			{
 				status: error?.response?.status || 500,
 				headers: {

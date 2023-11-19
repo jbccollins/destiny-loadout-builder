@@ -24,7 +24,7 @@
 			{
 				"name": "next"
 			}
-		],
+		]
 	},
 	// This is potentially an alternative way to run scripts directly...
 	"ts-node": {

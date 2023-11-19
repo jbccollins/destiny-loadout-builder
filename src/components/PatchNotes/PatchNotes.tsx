@@ -1,5 +1,3 @@
-'use client';
-
 import SocialIcon from '@dlb/components/SocialIcon';
 import {
 	DISCORD_LINK,

@@ -1,5 +1,3 @@
-'use client';
-
 import clsx from 'clsx';
 import Image, { ImageProps } from 'next/image';
 import React from 'react';

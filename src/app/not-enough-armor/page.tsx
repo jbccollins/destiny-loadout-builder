@@ -1,5 +1,4 @@
 'use client';
-
 import Head from '@dlb/components/Meta/Head';
 import SocialIcon from '@dlb/components/SocialIcon';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';

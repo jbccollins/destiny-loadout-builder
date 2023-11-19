@@ -1,5 +1,3 @@
-'use client';
-
 import ModPlacement from '@dlb/components//ModPlacement';
 import MasterworkedBungieImage from '@dlb/components/MasterworkedBungieImage';
 import StatTiers from '@dlb/components/StatTiers';

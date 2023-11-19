@@ -1,5 +1,4 @@
 'use client';
-
 import Loading from '@dlb/components/Loading';
 import StatSelection from '@dlb/components/StatSelection/StatSelection';
 import '@fontsource/roboto/300.css';
@@ -462,8 +461,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 						alt="me"
 						height="40"
 						width="50"
-						objectFit="contain"
-						objectPosition="left"
+						className="objectFit-contain, objectPosition-center"
 					/>
 					<Box
 						sx={{

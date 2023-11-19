@@ -1,5 +1,3 @@
-'use client';
-
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import useRichValidLoadouts from '@dlb/hooks/useRichValidLoadouts';

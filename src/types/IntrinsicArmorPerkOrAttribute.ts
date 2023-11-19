@@ -8,14 +8,14 @@ export enum EIntrinsicArmorPerkOrAttributeGroupName {
 }
 
 export interface IIntrinsicArmorPerkOrAttribute {
-	id: EIntrinsicArmorPerkOrAttributeId | null;
+	id: EIntrinsicArmorPerkOrAttributeId;
 	name: string;
-	armorSlotId: EArmorSlotId | null;
-	groupName: EIntrinsicArmorPerkOrAttributeGroupName | null;
+	armorSlotId: EArmorSlotId;
+	groupName: EIntrinsicArmorPerkOrAttributeGroupName;
 	icon: string;
 	description?: string;
 	season?: number;
-	abbreviation: string | null;
+	abbreviation: string;
 }
 
 const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: EnumDictionary<
@@ -138,8 +138,5 @@ export const intrinsicArmorPerkOrAttributeIdList = Object.values(
 	if (aVal.season && bVal.season) {
 		return bVal.season - aVal.season;
 	}
-	if (aVal.groupName && bVal.groupName) {
-		return aVal.groupName.localeCompare(bVal.groupName);
-	}
-	return 0;
+	return aVal.groupName.localeCompare(bVal.groupName);
 });

@@ -1,5 +1,4 @@
 'use client';
-
 import LoginButton from '@dlb/components/LoginButton';
 import Head from '@dlb/components/Meta/Head';
 import SocialIcon from '@dlb/components/SocialIcon';
@@ -57,8 +56,7 @@ function Login() {
 							alt="me"
 							height="100"
 							width="100"
-							objectFit="contain"
-							objectPosition="left"
+							className="objectFit-contain, objectPosition-center"
 						/>
 					</Box>
 					<Box

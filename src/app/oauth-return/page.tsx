@@ -1,5 +1,4 @@
 'use client';
-
 import Head from '@dlb/components/Meta/Head';
 import { getAccessTokenFromCode } from '@dlb/dim/bungie-api/oauth';
 import { Box, CircularProgress, styled } from '@mui/material';

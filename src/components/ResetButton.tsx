@@ -1,5 +1,3 @@
-'use client';
-
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Button, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';

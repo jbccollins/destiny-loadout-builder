@@ -1,5 +1,3 @@
-'use client';
-
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { IArmorStat } from '@dlb/types/ArmorStat';
 import { MISSING_ICON, StatBonus, StatBonusStat } from '@dlb/types/globals';

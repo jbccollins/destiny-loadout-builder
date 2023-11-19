@@ -1,5 +1,3 @@
-"use client";
-
 import d2Logo from '@/public/d2-logo.png';
 import dimLogo from '@/public/dim-logo.png';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';

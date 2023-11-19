@@ -1,5 +1,3 @@
-"use client";
-
 import CompactIconAutocompleteDropdown from '@dlb/components/CompactIconAutocompleteDropdown';
 import IconAutocompleteDropdown from '@dlb/components/IconAutocompleteDropdown';
 import { EModId } from '@dlb/generated/mod/EModId';

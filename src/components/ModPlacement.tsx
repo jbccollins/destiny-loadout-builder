@@ -1,5 +1,3 @@
-"use client";
-
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { ArmorStatAndRaidModComboPlacement } from '@dlb/services/processArmor/getModCombos';

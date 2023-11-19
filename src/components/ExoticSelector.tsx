@@ -1,5 +1,3 @@
-"use client";
-
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
 	selectSelectedExoticArmor,

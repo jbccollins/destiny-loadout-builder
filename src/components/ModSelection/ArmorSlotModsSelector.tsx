@@ -1,5 +1,3 @@
-"use client";
-
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import GenericTierRow from '@dlb/components/GenericTierRow';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';

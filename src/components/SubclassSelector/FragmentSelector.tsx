@@ -1,5 +1,3 @@
-"use client";
-
 import BoxCountIndicator from '@dlb/components/BoxCountIndicator';
 import IconMultiSelectDropdown from '@dlb/components/IconMultiSelectDropdown';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';

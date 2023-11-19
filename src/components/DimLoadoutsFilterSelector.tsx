@@ -1,5 +1,3 @@
-"use client";
-
 import dim_logo_image from '@/public/dim-logo.png';
 import {
 	selectDimLoadoutsFilter,

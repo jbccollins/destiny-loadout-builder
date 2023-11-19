@@ -1,5 +1,3 @@
-"use client";
-
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import {
 	addAnalysisResult,

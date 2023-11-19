@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
@@ -10,8 +10,8 @@ import {
 import {
 	AnalyzableLoadout,
 	ELoadoutOptimizationCategoryId,
-	SeverityOrderedLoadoutOptimizationCategoryIdList,
 	getLoadoutOptimizationCategory,
+	SeverityOrderedLoadoutOptimizationCategoryIdList,
 } from '@dlb/types/AnalyzableLoadout';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 import { EDestinyClassId } from '@dlb/types/IdEnums';

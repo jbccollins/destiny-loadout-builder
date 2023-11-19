@@ -1,5 +1,3 @@
-"use client";
-
 // This is just a mui tooltip with some default props
 import { Box, ClickAwayListener, Tooltip, TooltipProps } from '@mui/material';
 import { useState } from 'react';

@@ -1,5 +1,3 @@
-"use client";
-
 import BoxCountIndicator from '@dlb/components/BoxCountIndicator';
 import IconDropdown from '@dlb/components/IconDropdown';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';

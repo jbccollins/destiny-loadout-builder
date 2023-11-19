@@ -1,5 +1,3 @@
-"use client";
-
 import IconDropdown from '@dlb/components/IconDropdown';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';

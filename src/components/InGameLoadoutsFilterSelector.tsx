@@ -1,5 +1,3 @@
-"use client";
-
 import d2_logo_image from '@/public/d2-logo.png';
 import {
 	selectInGameLoadoutsFilter,

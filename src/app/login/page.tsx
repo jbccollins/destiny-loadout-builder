@@ -57,7 +57,8 @@ function Login() {
 							alt="me"
 							height="100"
 							width="100"
-							className="objectFit-contain objectPosition-center"
+							objectFit="contain"
+							objectPosition="left"
 						/>
 					</Box>
 					<Box

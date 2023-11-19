@@ -1,5 +1,3 @@
-"use client";
-
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';

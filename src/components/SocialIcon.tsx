@@ -17,7 +17,8 @@ const SocialIcon = (props: {
 					alt="me"
 					height="40"
 					width="50"
-					className="objectFit-contain objectPosition-center"
+					objectFit="contain"
+					objectPosition="left"
 				/>
 				{text && (
 					<Box

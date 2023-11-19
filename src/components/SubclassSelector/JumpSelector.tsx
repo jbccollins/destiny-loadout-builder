@@ -1,5 +1,3 @@
-"use client";
-
 import IconDropdown from '@dlb/components/IconDropdown';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';

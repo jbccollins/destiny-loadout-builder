@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
 	selectSelectedIntrinsicArmorPerkOrAttributeIds,
@@ -6,13 +6,13 @@ import {
 } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { MISSING_ICON } from '@dlb/types/globals';
 import { EIntrinsicArmorPerkOrAttributeId } from '@dlb/types/IdEnums';
 import {
-	IIntrinsicArmorPerkOrAttribute,
 	getIntrinsicArmorPerkOrAttribute,
+	IIntrinsicArmorPerkOrAttribute,
 	intrinsicArmorPerkOrAttributeIdList,
 } from '@dlb/types/IntrinsicArmorPerkOrAttribute';
-import { MISSING_ICON } from '@dlb/types/globals';
 import { Box } from '@mui/material';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 
@@ -64,7 +64,7 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 		<>
 			<Box sx={{ paddingLeft: '8px', paddingRight: '8px' }}>
 				<IconAutocompleteDropdown
-					options={_options as IIntrinsicArmorPerkOrAttribute[]}
+					options={_options}
 					value={
 						valueId
 							? getIntrinsicArmorPerkOrAttribute(valueId)
@@ -73,12 +73,12 @@ function IntrinsicArmorPerkOrAttributeDropdown({
 					title={''}
 					// value={selectedExoticArmor[selectedDestinyClass]}
 					onChange={onChange}
-					getId={(option: IIntrinsicArmorPerkOrAttribute) => option.id || ''}
+					getId={(option: IIntrinsicArmorPerkOrAttribute) => option.id}
 					getGroupBy={(option: IIntrinsicArmorPerkOrAttribute) =>
-						option.groupName || ''
+						option.groupName
 					}
-					getDescription={
-						(option: IIntrinsicArmorPerkOrAttribute) => option.description || '' // Ensure string is returned
+					getDescription={(option: IIntrinsicArmorPerkOrAttribute) =>
+						option.description
 					}
 					getLabel={(option: IIntrinsicArmorPerkOrAttribute) => option.name}
 					textFieldClassName={`intrinsic-armor-perk-or-attribute-selector-text-field ${
@@ -114,7 +114,7 @@ function IntrinsicArmorPerkOrAttributeSelector() {
 		const res = [
 			...selectedIntrinsicArmorPerkOrAttributeIds,
 		] as EIntrinsicArmorPerkOrAttributeId[];
-		res[index] = value.id as EIntrinsicArmorPerkOrAttributeId;
+		res[index] = value.id;
 		dispatch(setSelectedIntrinsicArmorPerkOrAttributeIds(res));
 	};
 

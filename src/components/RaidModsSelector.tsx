@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { EModId } from '@dlb/generated/mod/EModId';
 import { selectDisabledRaidMods } from '@dlb/redux/features/disabledRaidMods/disabledRaidModsSlice';
@@ -9,9 +9,9 @@ import {
 	setSelectedRaidMods,
 } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { IMod } from '@dlb/types/generation';
 import { RaidModIdList } from '@dlb/types/Mod';
 import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
-import { IMod } from '@dlb/types/generation';
 import { styled } from '@mui/material';
 import ModSelector from './ModSelection/ModSelector';
 const Container = styled('div')(({ theme }) => ({

@@ -1,5 +1,3 @@
-"use client";
-
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, IconButton, TextField, TextFieldProps } from '@mui/material';
 

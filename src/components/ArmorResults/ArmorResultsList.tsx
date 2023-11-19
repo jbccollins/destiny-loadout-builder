@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { DimIcon } from '@/public/dim_logo.svgicon';
 import ModPlacement from '@dlb/components//ModPlacement';
@@ -243,11 +243,15 @@ function ResultsItem({
 	> = {};
 	const modCounts: Partial<Record<EModId, number>> = {};
 	item.requiredStatModIdList.forEach((id) => {
-		modCounts[id] = (modCounts[id] ?? 0) + 1;
+		if (!modCounts[id]) {
+			modCounts[id] = 1;
+		} else {
+			modCounts[id] += 1;
+		}
 	});
 	Object.keys(modCounts).forEach((armorStatModId: EModId) => {
 		const statModIds: EModId[] = [];
-		const count = modCounts[armorStatModId] ?? 0;
+		const count = modCounts[armorStatModId];
 		for (let i = 0; i < count; i++) {
 			statModIds.push(armorStatModId);
 			armorStatModArmorStatMappings[armorStatModId] = {
@@ -262,7 +266,11 @@ function ResultsItem({
 
 	const artificeModCounts: Partial<Record<EModId, number>> = {};
 	item.requiredArtificeModIdList.forEach((id) => {
-		artificeModCounts[id] = (artificeModCounts[id] ?? 0) + 1;
+		if (!artificeModCounts[id]) {
+			artificeModCounts[id] = 1;
+		} else {
+			artificeModCounts[id] += 1;
+		}
 	});
 
 	const getExtraMasterworkedStatsBreakdown = () => {
@@ -614,14 +622,13 @@ function ResultsItem({
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
 												isZero={
-													fragmentArmorStatMappings?.[fragmentId]?.[
-														armorStatId
-													] === 0
+													fragmentArmorStatMappings[fragmentId][armorStatId] ===
+													0
 												}
 												key={armorStatId}
 												className="stats-breakdown"
 											>
-												{fragmentArmorStatMappings?.[fragmentId]?.[armorStatId]}
+												{fragmentArmorStatMappings[fragmentId][armorStatId]}
 											</StatsBreakdownItem>
 										))}
 										<StatsBreakdownItem>
@@ -648,27 +655,23 @@ function ResultsItem({
 										{ArmorStatIdList.map((armorStatId) => (
 											<StatsBreakdownItem
 												isZero={
-													armorStatModArmorStatMappings?.[armorStatModId]
-														?.armorStatMapping[armorStatId] === 0
+													armorStatModArmorStatMappings[armorStatModId]
+														.armorStatMapping[armorStatId] === 0
 												}
 												key={armorStatId}
 												className="stats-breakdown"
 											>
 												{
-													armorStatModArmorStatMappings?.[armorStatModId]
-														?.armorStatMapping[armorStatId]
+													armorStatModArmorStatMappings[armorStatModId]
+														.armorStatMapping[armorStatId]
 												}
 											</StatsBreakdownItem>
 										))}
 										<StatsBreakdownItem>
 											<Description>
 												{getMod(armorStatModId).name}
-												{(armorStatModArmorStatMappings[armorStatModId]
-													?.count ?? 0) > 1
-													? ` (x${
-															armorStatModArmorStatMappings[armorStatModId]
-																?.count ?? 0
-													  })`
+												{armorStatModArmorStatMappings[armorStatModId].count > 1
+													? ` (x${armorStatModArmorStatMappings[armorStatModId].count})`
 													: ''}
 											</Description>
 										</StatsBreakdownItem>
@@ -804,33 +807,28 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	> = {};
 
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
-		// Ensure the array exists before iterating
-		const mods = selectedArmorSlotMods[armorSlotId];
-		if (mods) {
-			mods.forEach((id: EModId) => {
-				const { bonuses } = getMod(id) ?? { bonuses: [] };
-				if (bonuses && bonuses.length > 0) {
-					const existingEntry = armorSlotModArmorStatMapppings[id];
-					if (existingEntry) {
-						armorSlotModArmorStatMapppings[id] = {
-							count: existingEntry.count + 1,
-							armorStatMapping: sumArmorStatMappings([
-								existingEntry.armorStatMapping,
-								getArmorStatMappingFromMods([id], selectedDestinyClass),
-							]),
-						};
-					} else {
-						armorSlotModArmorStatMapppings[id] = {
-							count: 1,
-							armorStatMapping: getArmorStatMappingFromMods(
-								[id],
-								selectedDestinyClass
-							),
-						};
-					}
+		selectedArmorSlotMods[armorSlotId].forEach((id: EModId) => {
+			const { bonuses } = getMod(id) ?? { bonuses: [] };
+			if (bonuses && bonuses.length > 0) {
+				if (armorSlotModArmorStatMapppings[id]) {
+					armorSlotModArmorStatMapppings[id] = {
+						count: armorSlotModArmorStatMapppings[id].count + 1,
+						armorStatMapping: sumArmorStatMappings([
+							armorSlotModArmorStatMapppings[id].armorStatMapping,
+							getArmorStatMappingFromMods([id], selectedDestinyClass),
+						]),
+					};
+				} else {
+					armorSlotModArmorStatMapppings[id] = {
+						count: 1,
+						armorStatMapping: getArmorStatMappingFromMods(
+							[id],
+							selectedDestinyClass
+						),
+					};
 				}
-			});
-		}
+			}
+		});
 	});
 
 	return (
@@ -869,11 +867,21 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 								useBonusResilience: _useBonusResilience,
 								destinySubclassId,
 								destinyClassId: selectedDestinyClass,
-								jumpId: selectedJump[destinySubclassId],
-								meleeId: selectedMelee[destinySubclassId],
-								superAbilityId: selectedSuperAbility[destinySubclassId],
-								classAbilityId: selectedClassAbility[destinySubclassId],
-								grenadeId: selectedGrenade[destinySubclassId],
+								jumpId: destinySubclassId
+									? selectedJump[destinySubclassId]
+									: null,
+								meleeId: destinySubclassId
+									? selectedMelee[destinySubclassId]
+									: null,
+								superAbilityId: destinySubclassId
+									? selectedSuperAbility[destinySubclassId]
+									: null,
+								classAbilityId: destinySubclassId
+									? selectedClassAbility[destinySubclassId]
+									: null,
+								grenadeId: destinySubclassId
+									? selectedGrenade[destinySubclassId]
+									: null,
 								classItem: item.classItem,
 								classItemMetadata: classItemMetadata,
 							})}`}

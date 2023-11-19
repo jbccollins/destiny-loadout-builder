@@ -146,6 +146,7 @@ function CompactIconAutocompleteDropdown(
 						isControlled
 						isOpen={open}
 						onClose={() => handleClose(true)}
+						id={id}
 						showIcon={false}
 						{...props}
 					/>
@@ -171,7 +172,7 @@ function CompactIconAutocompleteDropdown(
 						onChange={(_, value) => {
 							onChange(value as IIconAutocompleteDropdownOption);
 						}}
-						getOptionDisabled={(option) => !!option.disabled}
+						getOptionDisabled={(option) => option.disabled}
 						isOptionEqualToValue={(option, value) => {
 							return getId(option) === getId(value);
 						}}
@@ -194,7 +195,7 @@ function CompactIconAutocompleteDropdown(
 								>
 									<Box sx={{ display: 'flex', flexWrap: 'nowrap' }}>
 										<DecoratedBungieIcon
-											getCost={getCost ? () => getCost(option) : undefined}
+											getCost={getCost ? () => getCost(option) : null}
 											icon={option.icon}
 											elementOverlayIcon={option.elementOverlayIcon}
 										/>
@@ -245,7 +246,7 @@ function CompactIconAutocompleteDropdown(
 												}}
 											>
 												<DecoratedBungieIcon
-													getCost={getCost ? () => getCost(value) : undefined}
+													getCost={getCost ? () => getCost(value) : null}
 													icon={value.icon}
 													elementOverlayIcon={value.elementOverlayIcon}
 												/>

@@ -462,7 +462,8 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 						alt="me"
 						height="40"
 						width="50"
-						className="objectFit-contain objectPosition-center"
+						objectFit="contain"
+						objectPosition="left"
 					/>
 					<Box
 						sx={{

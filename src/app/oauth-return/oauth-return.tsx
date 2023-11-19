@@ -34,13 +34,13 @@ function OauthReturn() {
 					router.push('/');
 				} else {
 					// TODO: Better error handling
-					// alert("No code found in url params");
+					// alert('No code found in url params');
 					console.warn('No code found in url params, retrying...');
 				}
 			} catch (e) {
 				// TODO redirect only on the right kind of error
-				// Test by deleting "authorization" from localStorage
-				// router.push("/login");
+				// Test by deleting 'authorization' from localStorage
+				// router.push('/login');
 				// console.error(e);
 			}
 		})();

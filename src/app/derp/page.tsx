@@ -1,5 +1,3 @@
-"use client";
-
 import { NextPage } from 'next';
 
 const Derp: NextPage = () => {

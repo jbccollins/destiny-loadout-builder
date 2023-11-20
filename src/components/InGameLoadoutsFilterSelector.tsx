@@ -5,8 +5,8 @@ import {
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { EInGameLoadoutsFilterId } from '@dlb/types/IdEnums';
 import {
-	getInGameLoadoutsFilter,
 	InGameLoadoutsFilterIdList,
+	getInGameLoadoutsFilter,
 } from '@dlb/types/InGameLoadoutsFilter';
 import { styled } from '@mui/material';
 import d2_logo_image from '@public/d2-logo.png';

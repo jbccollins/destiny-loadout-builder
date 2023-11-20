@@ -4,6 +4,7 @@ import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
+import { DimIcon } from '@public/dim_logo.svgicon';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
@@ -62,7 +63,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
-import { DimIcon } from '@public/dim_logo.svgicon';
 import React from 'react';
 import { getClassItemText, ResultsTableLoadout } from './ArmorResultsTypes';
 import {

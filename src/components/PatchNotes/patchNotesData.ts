@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-11-20',
+		version: '2.5.0',
+		title: 'Major Internal Refactor',
+		sections: [
+			{
+				items: [
+					`Many under the hood changes to the way the app is built`,
+					`Massive shoutout to @M7ilan for doing the heavy lifting on this one`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-11-10',
 		version: '2.4.32',
 		title:

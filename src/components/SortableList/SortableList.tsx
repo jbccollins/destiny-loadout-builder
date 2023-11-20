@@ -1,14 +1,14 @@
 import {
-	closestCenter,
 	DndContext,
 	KeyboardSensor,
 	PointerSensor,
+	closestCenter,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
 import {
-	arrayMove,
 	SortableContext,
+	arrayMove,
 	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';

@@ -1,10 +1,3 @@
-import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
-import { bungieNetPath } from '@dlb/dim/dim-ui/BungieImage';
-import {
-	DimCharacterStat,
-	DimStore,
-	DimTitle,
-} from '@dlb/dim/inventory/store-types';
 import { armorStats } from '@dlb/dim/search/d2-known-values';
 import {
 	DestinyCharacterComponent,
@@ -13,6 +6,15 @@ import {
 	DestinyProfileRecordsComponent,
 	DestinyRecordState,
 } from 'bungie-api-ts-no-const-enum/destiny2';
+// import vaultBackground from 'images/vault-background.svg';
+// import vaultIcon from 'images/vault.svg';
+import { D2ManifestDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+import { bungieNetPath } from '@dlb/dim/dim-ui/BungieImage';
+import {
+	DimCharacterStat,
+	DimStore,
+	DimTitle,
+} from '@dlb/dim/inventory/store-types';
 
 /**
  * A factory service for producing "stores" (characters or the vault).

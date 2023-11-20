@@ -1,17 +1,19 @@
-import IconDropdown from '@dlb/components/IconDropdown';
-import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
+import { styled } from '@mui/material';
 import {
 	selectSelectedClassAbility,
 	setSelectedClassAbility,
 } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
-import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
+	ClassAbilityIdList,
 	getClassAbility,
 	getClassAbilityIdsByDestinySubclassId,
 } from '@dlb/types/ClassAbility';
-import { styled } from '@mui/material';
+import IconDropdown from '@dlb/components/IconDropdown';
+import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
+import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
+import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
 	// paddingRight: 0

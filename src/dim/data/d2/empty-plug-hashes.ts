@@ -84,5 +84,5 @@ export const emptyPlugHashes = new Set<number>([
 	2503665585, // Empty Traits Socket (crafting.recipes.empty_socket)
 	819232495, // Empty Tubes Socket (crafting.recipes.empty_socket)
 	4216349042, // Experience Mod Socket (Experience Ghost Mod, enhancements.ghosts_experience)
-	760030801, // Tracking Mod Socket (Tracking Ghost Mod, enhancements.ghosts_tracking)
+	760030801 // Tracking Mod Socket (Tracking Ghost Mod, enhancements.ghosts_tracking)
 ]);

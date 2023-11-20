@@ -3,8 +3,8 @@ import {
 	Box,
 	FormControl,
 	Popper,
-	styled,
 	TextField,
+	styled,
 	useTheme,
 } from '@mui/material';
 import match from 'autosuggest-highlight/match';

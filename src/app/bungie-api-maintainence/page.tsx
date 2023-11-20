@@ -2,8 +2,8 @@
 import Head from '@dlb/components/Meta/Head';
 import SocialIcon from '@dlb/components/SocialIcon';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
-import { Box, Button, Link, styled } from '@mui/material';
 import discord_image from '@public/discord-mark-white.png';
+import { Box, Button, Link, styled } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 const Container = styled(Box)(({ theme }) => ({

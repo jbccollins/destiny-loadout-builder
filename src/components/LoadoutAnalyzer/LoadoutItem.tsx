@@ -1,4 +1,6 @@
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import d2Logo from '@public/d2-logo.png';
+import dimLogo from '@public/dim-logo.png';
 import {
 	AnalyzableLoadoutsValueState,
 	setHiddenLoadoutIdList,
@@ -99,11 +101,9 @@ import {
 	styled,
 	useTheme,
 } from '@mui/material';
-import d2Logo from '@public/d2-logo.png';
-import dimLogo from '@public/dim-logo.png';
 import Image from 'next/image';
 import { useState } from 'react';
-import CustomTooltip from '../CustomTooltip';
+import CustomTooltip from '@dlb/components/CustomTooltip';
 import Breakdown from './Breakdown';
 import IconPill from './IconPill';
 import { loadoutOptimizationIconMapping } from './LoadoutAnalyzer';

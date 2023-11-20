@@ -1,16 +1,16 @@
 import {
-	selectSelectedMinimumGearTier,
-	setSelectedMinimumGearTier,
-} from '@dlb/redux/features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
-import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { EGearTierId } from '@dlb/types/IdEnums';
-import {
 	FormControl,
 	InputLabel,
 	MenuItem,
 	Select,
 	styled,
 } from '@mui/material';
+import {
+	selectSelectedMinimumGearTier,
+	setSelectedMinimumGearTier,
+} from '@dlb/redux/features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { EGearTierId } from '@dlb/types/IdEnums';
 
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),

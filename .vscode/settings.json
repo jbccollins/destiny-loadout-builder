@@ -25,15 +25,5 @@
 	"[json]": {
 		"editor.tabSize": 2
 	},
-	"typescript.tsdk": "node_modules/typescript/lib",
-	"cSpell.words": [
-		"bungie",
-		"destinyitemmanager",
-		"Loadout",
-		"loadouts",
-		"masterworked",
-		"reduxjs",
-		"resil",
-		"socketable"
-	]
+	"typescript.tsdk": "node_modules/typescript/lib"
 }

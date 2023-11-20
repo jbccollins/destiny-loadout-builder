@@ -1,9 +1,5 @@
-import hunter_icon from '@public/class_hunter_outline.png';
-import titan_icon from '@public/class_titan_outline.png';
-import warlock_icon from '@public/class_warlock_outline.png';
 import {
 	EnumDictionary,
-	IIconStaticImageData,
 	IIdentifiableName,
 	Mapping,
 	ValidateEnumList,
@@ -15,39 +11,32 @@ export const DestinyClassIdList = ValidateEnumList(
 	[EDestinyClassId.Titan, EDestinyClassId.Warlock, EDestinyClassId.Hunter]
 );
 
-export interface IDestinyClass
-	extends IIdentifiableName,
-		IIconStaticImageData {}
-
 const DestinyClassIdToDestinyClassMapping: EnumDictionary<
 	EDestinyClassId,
-	IDestinyClass
+	IIdentifiableName
 > = {
 	[EDestinyClassId.Titan]: {
 		id: EDestinyClassId.Titan,
 		name: 'Titan',
-		icon: titan_icon,
 	},
 	[EDestinyClassId.Warlock]: {
 		id: EDestinyClassId.Warlock,
 		name: 'Warlock',
-		icon: warlock_icon,
 	},
 	[EDestinyClassId.Hunter]: {
 		id: EDestinyClassId.Hunter,
 		name: 'Hunter',
-		icon: hunter_icon,
 	},
 };
 
 export const DestinyClassIdToDestinyClass: Mapping<
 	EDestinyClassId,
-	IDestinyClass
+	IIdentifiableName
 > = {
 	get: (key: EDestinyClassId) => DestinyClassIdToDestinyClassMapping[key],
 };
 
-export const getDestinyClass = (id: EDestinyClassId): IDestinyClass =>
+export const getDestinyClass = (id: EDestinyClassId): IIdentifiableName =>
 	DestinyClassIdToDestinyClassMapping[id];
 
 /****** Related Mappings *****/

@@ -40,8 +40,7 @@
 		"**/*.ts",
 		"**/*.tsx",
 		"jest.setup.js",
-		".next/types/**/*.ts",
-		"**/*.png"
+		".next/types/**/*.ts"
 	],
 	"exclude": ["node_modules"]
 }

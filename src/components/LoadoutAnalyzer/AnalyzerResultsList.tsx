@@ -35,6 +35,8 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import d2Logo from '@public/d2-logo.png';
 import dimLogo from '@public/dim-logo.png';
 
+import { getDestinyClassIcon } from '@dlb/types/DestinyClassIcon';
+import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { Box, Collapse, IconButton, SxProps, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
@@ -43,6 +45,7 @@ import CustomTooltip from '../CustomTooltip';
 import TabContainer, { TabContainerItem } from '../TabContainer';
 import LoadoutCriteria from './LoadoutCriteria';
 import { LoadoutItem, LoadoutItemProps } from './LoadoutItem';
+
 const iconStyle: SxProps = {
 	height: '20px',
 	width: '20px',
@@ -215,7 +218,7 @@ export default function AnalyzerResultsList() {
 			tabs.push({
 				index,
 				title: destinyClass.name,
-				icon: destinyClass.icon.src,
+				icon: getDestinyClassIcon(destinyClass.id as EDestinyClassId).src,
 				content: (
 					<Box>
 						{visibleClassSpecificRichValidLoadouts.length === 0 && (

@@ -23,7 +23,9 @@
 		}
 	},
 	"[json]": {
-		"editor.tabSize": 2
+		"editor.tabSize": 2,
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": true,
 	},
 	"typescript.tsdk": "node_modules/typescript/lib"
 }

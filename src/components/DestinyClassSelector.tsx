@@ -8,6 +8,7 @@ import {
 	DestinyClassIdList,
 	DestinyClassIdToDestinyClass,
 } from '@dlb/types/DestinyClass';
+import { getDestinyClassIcon } from '@dlb/types/DestinyClassIcon';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { styled } from '@mui/material';
 import { useMemo } from 'react';
@@ -45,11 +46,10 @@ function DestinyClassSelector() {
 
 	const options = useMemo(() => {
 		return DestinyClassIdList.map((destinyClassId) => {
-			const { name, id, icon } =
-				DestinyClassIdToDestinyClass.get(destinyClassId);
+			const { name, id } = DestinyClassIdToDestinyClass.get(destinyClassId);
 			return {
 				label: name,
-				icon: icon,
+				icon: getDestinyClassIcon(destinyClassId),
 				id: id,
 				disabled: !validDestinyClassIds.includes(destinyClassId),
 			};

@@ -73,7 +73,7 @@ export default function IconMultiSelectDropdown({
 							className={className}
 							tabIndex={tabIndex}
 						>
-							<BungieImage src={option.icon} width={'40px'} />
+							<BungieImage src={option.icon} width={40} height={40} />
 							<div>{getLabel(option as IIconMultiSelectDropdownOption)}</div>
 						</Tag>
 						// <Chip

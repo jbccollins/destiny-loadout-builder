@@ -17,7 +17,7 @@ export const Socket = (props: SocketProps) => {
 				opacity: icon === MISSING_ICON ? 0.6 : 1,
 			}}
 		>
-			<BungieImage src={icon} width={'40px'} height={'40px'} />
+			<BungieImage src={icon} width={40} height={40} />
 		</Box>
 	);
 };

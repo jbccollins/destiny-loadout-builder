@@ -4,7 +4,7 @@ import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { DimIcon } from '@dlb/public/dim_logo.svgicon';
+import { DimIcon } from '@public/dim_logo.svgicon';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
@@ -283,8 +283,8 @@ function ResultsItem({
 					<StatsBreakdownItem>
 						<MasterworkedBungieImage
 							isMasterworked={true}
-							width={'20px'}
-							height={'20px'}
+							width={20}
+							height={20}
 							src={MISSING_ICON}
 						/>
 					</StatsBreakdownItem>
@@ -315,8 +315,8 @@ function ResultsItem({
 				<StatsBreakdownItem>
 					<MasterworkedBungieImage
 						isMasterworked={false}
-						width={'20px'}
-						height={'20px'}
+						width={20}
+						height={20}
 						src={icon}
 					/>
 				</StatsBreakdownItem>
@@ -350,8 +350,8 @@ function ResultsItem({
 						<IconTextContainer key={armorItem.hash}>
 							<MasterworkedBungieImage
 								isMasterworked={armorItem.isMasterworked}
-								width={'40px'}
-								height={'40px'}
+								width={40}
+								height={40}
 								src={armorItem.icon}
 							/>
 							<IconText>{armorItem.name}</IconText>
@@ -361,8 +361,8 @@ function ResultsItem({
 				<IconTextContainer>
 					<MasterworkedBungieImage
 						isMasterworked={item.classItem.hasMasterworkedVariant}
-						width={'40px'}
-						height={'40px'}
+						width={40}
+						height={40}
 						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 					/>
 					<IconText>{getClassItemText(item)}</IconText>
@@ -565,8 +565,8 @@ function ResultsItem({
 								<StatsBreakdownItem>
 									<MasterworkedBungieImage
 										isMasterworked={armorItem.isMasterworked}
-										width={'20px'}
-										height={'20px'}
+										width={20}
+										height={20}
 										src={armorItem.icon}
 									/>
 								</StatsBreakdownItem>
@@ -588,8 +588,8 @@ function ResultsItem({
 							<StatsBreakdownItem>
 								<MasterworkedBungieImage
 									isMasterworked={item.classItem.hasMasterworkedVariant}
-									width={'20px'}
-									height={'20px'}
+									width={20}
+									height={20}
 									src={getArmorSlot(EArmorSlotId.ClassItem).icon}
 								/>
 							</StatsBreakdownItem>
@@ -803,6 +803,7 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const armorSlotModArmorStatMapppings: Partial<
 		Record<EModId, { armorStatMapping: ArmorStatMapping; count: number }>
 	> = {};
+
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 		selectedArmorSlotMods[armorSlotId].forEach((id: EModId) => {
 			const { bonuses } = getMod(id) ?? { bonuses: [] };

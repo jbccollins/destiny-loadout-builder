@@ -12,6 +12,7 @@ import {
 	SeverityOrderedLoadoutOptimizationCategoryIdList,
 } from '@dlb/types/AnalyzableLoadout';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
+import { getDestinyClassIcon } from '@dlb/types/DestinyClassIcon';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
 import HelpIcon from '@mui/icons-material/Help';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -381,7 +382,7 @@ const ScoredResults = (props: {
 											<BungieImage
 												width={40}
 												height={40}
-												src={destinyClass.icon}
+												src={getDestinyClassIcon(destinyClassId)}
 											/>
 											{classSpecificGrades[destinyClassId]}
 										</Box>

@@ -9,6 +9,7 @@ import {
 	getInGameLoadoutsFilter,
 } from '@dlb/types/InGameLoadoutsFilter';
 import { styled } from '@mui/material';
+import d2_logo_image from '@public/d2-logo.png';
 import IconDropdown from './IconDropdown';
 
 const Container = styled('div')(({ theme }) => ({
@@ -30,8 +31,7 @@ const options = InGameLoadoutsFilterIdList.map((inGameLoadoutsFilterId) => {
 	const { id, description } = getInGameLoadoutsFilter(inGameLoadoutsFilterId);
 	return {
 		label: description,
-		// TODO: Change this external icon lol
-		icon: 'https://i.imgur.com/JQMoN1R.png',
+		icon: d2_logo_image,
 		id: id,
 	};
 });

@@ -2,6 +2,8 @@ import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
+import dim_logo_image from '@public/dim-logo.png';
+
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	DimLoadoutsFilterIdList,
@@ -31,7 +33,7 @@ const options = DimLoadoutsFilterIdList.map((dimLoadoutsFilterId) => {
 	return {
 		label: description,
 		// TODO: Change this external icon lol
-		icon: 'https://avatars.githubusercontent.com/u/29512594?s=48&v=4',
+		icon: dim_logo_image,
 		id: id,
 	};
 });

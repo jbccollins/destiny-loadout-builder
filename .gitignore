@@ -26,7 +26,8 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env*.local
+.env
+.env.local
 
 # vercel
 .vercel
@@ -40,3 +41,4 @@ cached-definitions/
 
 # Ignore experimental generated files*
 /generated/experiments/all-combinations.json
+certificates

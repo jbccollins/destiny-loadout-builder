@@ -3,7 +3,6 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
-	SelectProps,
 	styled,
 } from '@mui/material';
 import {

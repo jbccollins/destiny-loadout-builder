@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2023-11-28',
+		version: '2.4.33',
+		title: 'Update everything for Season of the Wish',
+		sections: [
+			{
+				items: [
+					`Update all aspects, fragments, mods, etc... to match the new season`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-11-10',
 		version: '2.4.32',
 		title:

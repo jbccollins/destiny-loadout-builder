@@ -28,7 +28,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Icarus Dash",
     id: EAspectId.IcarusDash,
     description:
-      "[Air Dodge]  : Dodge quickly while airborne.\n\nWhile Heat Rises is active, you have an additional dodge.",
+      "[Air Dodge]  : Dodge quickly while airborne.\n\nWhile Heat Rises is active, you have an additional dodge.\n\nWhile airborne, rapidly defeating targets with your Super or weapons cures you.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/55a690bbd9cd53777df674a279422865.jpg",
     hash: 83039195,
     fragmentSlots: 2,
@@ -270,7 +270,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Feed the Void",
     id: EAspectId.FeedTheVoid,
     description:
-      "Defeat a target with a Void ability to activate Devour.\n\nWhile Devour is active, final blows restore health and extend Devour.",
+      "Defeat a target with a Void ability to activate Devour.\n\nYour Devour effects are improved, restoring additional health and grenade energy.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/178bb0e78e55c5b960aa6f42660b9b66.jpg",
     hash: 2321824284,
     fragmentSlots: 2,

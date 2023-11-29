@@ -6,7 +6,7 @@ type Hashable = {
 export default function generateHashToIdMapping<
 	E extends string,
 	H extends Hashable
->(mapping: EnumDictionary<E, H>): Record<number, E> {
+>(mapping: Partial<EnumDictionary<E, H>>): Record<number, E> {
 	const hashToIdMapping: Record<number, E> = {};
 	for (const [id, item] of Object.entries(mapping)) {
 		hashToIdMapping[(item as H).hash] = id as E;

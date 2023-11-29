@@ -25,7 +25,7 @@ const currentSeasonAuthorizedAbilities: EAuthorizedAbility[] = [
 ];
 
 const currentSeasonAuthorizedModCategories: EModCategoryId[] = [
-	EModCategoryId.Scavenger,
+	// EModCategoryId.Scavenger,
 ];
 
 const AuthorizedAbilityMapping: Record<EAuthorizedAbility, EModId[]> = {

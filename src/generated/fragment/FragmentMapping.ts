@@ -190,7 +190,12 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
       "Damaging targets with a [Stasis] Stasis melee reloads your stowed weapons and grants you a temporary boost to weapon ready speed.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/710c5e3aec26f0e3e468c656a2669e0d.png",
     hash: 537774543,
-    bonuses: [],
+    bonuses: [
+      {
+        stat: EArmorStatId.Resilience,
+        value: 10,
+      },
+    ],
     elementId: EElementId.Stasis,
   },
   [EFragmentId.EmberOfEruption]: {
@@ -546,12 +551,8 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     hash: 2483898431,
     bonuses: [
       {
-        stat: EArmorStatId.Mobility,
-        value: -10,
-      },
-      {
-        stat: EArmorStatId.Recovery,
-        value: -10,
+        stat: EArmorStatId.Strength,
+        value: -20,
       },
     ],
     elementId: EElementId.Stasis,
@@ -748,12 +749,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
       "Dramatically increases weapon stability, weapon aim assist, weapon airborne effectiveness, mobility, resilience, and recovery after freezing a target with [Stasis] Stasis.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/70b60b70634c6e539a531d47e58e1b9f.png",
     hash: 3469412970,
-    bonuses: [
-      {
-        stat: EArmorStatId.Strength,
-        value: -10,
-      },
-    ],
+    bonuses: [],
     elementId: EElementId.Stasis,
   },
   [EFragmentId.WhisperOfFissures]: {
@@ -774,10 +770,6 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
     hash: 3469412974,
     bonuses: [
       {
-        stat: EArmorStatId.Discipline,
-        value: -10,
-      },
-      {
         stat: EArmorStatId.Intellect,
         value: -10,
       },
@@ -791,12 +783,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
       "Shattering a [Stasis] Stasis crystal temporarily boosts your grenade recharge rate. Shattering additional [Stasis] Stasis crystals increases the duration of this benefit.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/5fa98c6e62d008621119d1b394e9cae9.png",
     hash: 3469412975,
-    bonuses: [
-      {
-        stat: EArmorStatId.Resilience,
-        value: 10,
-      },
-    ],
+    bonuses: [],
     elementId: EElementId.Stasis,
   },
   [EFragmentId.SparkOfInstinct]: {

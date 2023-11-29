@@ -144,7 +144,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     name: "Well of Radiance",
     id: ESuperAbilityId.WellOfRadiance,
     description:
-      "Thrust your Sword into the ground, damaging and scorching nearby targets. The Sword projects a continuous aura, granting restoration and radiant effects to nearby allies, protecting them from the effects of Stasis.",
+      "Thrust your sword into the ground, damaging and scorching nearby combatants. The sword projects a continuous aura, granting radiant effects and restoration to nearby allies, protecting them from the effects of Stasis.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/2f3615ddcd86ab7c50653d2d1847c3bf.png",
     hash: 2274196887,
     elementId: EElementId.Solar,

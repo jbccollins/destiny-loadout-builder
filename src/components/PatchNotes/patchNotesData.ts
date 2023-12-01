@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2023-11-28',
+		version: '2.4.34',
+		title: 'Add "Ascendant Protector" Intrinsic Armor Perk',
+		sections: [
+			{
+				items: [
+					`Add the "Ascendant Protector" intrinsic armor perk to the armor attributes section`,
+				],
+			},
+		],
+	},
+	{
+		date: '2023-11-28',
 		version: '2.4.33',
 		title: 'Update everything for Season of the Wish',
 		sections: [

@@ -458,6 +458,7 @@ const QueensFavoriteSocketHash = 1101259514;
 const VisageOfTheReaperSocketHash = 2271511880;
 const SonarAmplifierSocketHash = 2779380852;
 const ExhumedExcessSocketHash = 717722696;
+const AscendantProtectorSocketHash = 1493063130;
 
 // From: https://github.com/DestinyItemManager/DIM/blob/4be7854f229d76108e3ebbff41545bc6f9abeaf4/src/data/d2/source-info.ts#LL552C11-L552C11
 const GuardianGamesSourceHashes = [
@@ -504,6 +505,9 @@ const getIntrinsicArmorPerkOrAttributeId = (
 	}
 	if (hasSocketHash(item, VisageOfTheReaperSocketHash)) {
 		return EIntrinsicArmorPerkOrAttributeId.VisageOfTheReaper;
+	}
+	if (hasSocketHash(item, AscendantProtectorSocketHash)) {
+		return EIntrinsicArmorPerkOrAttributeId.AscendantProtector;
 	}
 	if (item.typeName === 'Festival Mask') {
 		return EIntrinsicArmorPerkOrAttributeId.HalloweenMask;

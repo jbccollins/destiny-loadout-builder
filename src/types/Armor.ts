@@ -335,6 +335,8 @@ const ArmorMetadataItem: ArmorMetadataItem = {
 				getDefaultArmorSlotMetadata(),
 			[EIntrinsicArmorPerkOrAttributeId.ExhumedExcess]:
 				getDefaultArmorSlotMetadata(),
+			[EIntrinsicArmorPerkOrAttributeId.AscendantProtector]:
+				getDefaultArmorSlotMetadata(),
 		},
 	},
 };
@@ -357,6 +359,8 @@ const allClassItemMetadata: AllClassItemMetadata = {
 	[EIntrinsicArmorPerkOrAttributeId.SonarAmplifier]:
 		getDefaultClassItemMetadata(),
 	[EIntrinsicArmorPerkOrAttributeId.ExhumedExcess]:
+		getDefaultClassItemMetadata(),
+	[EIntrinsicArmorPerkOrAttributeId.AscendantProtector]:
 		getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.LastWish]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.GardenOfSalvation]: getDefaultClassItemMetadata(),
@@ -411,6 +415,7 @@ const defaultItemCounts: ItemCounts = {
 	[EIntrinsicArmorPerkOrAttributeId.VisageOfTheReaper]: 0,
 	[EIntrinsicArmorPerkOrAttributeId.SonarAmplifier]: 0,
 	[EIntrinsicArmorPerkOrAttributeId.ExhumedExcess]: 0,
+	[EIntrinsicArmorPerkOrAttributeId.AscendantProtector]: 0,
 	Artifice: 0,
 	Legendary: 0,
 };

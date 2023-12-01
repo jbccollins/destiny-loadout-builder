@@ -111,6 +111,10 @@
       "hasMasterworkedVariant": false,
       "items": []
     },
+		"AscendantProtector": {
+      "hasMasterworkedVariant": false,
+      "items": []
+    },
     "LastWish": {
       "hasMasterworkedVariant": false,
       "items": [
@@ -734,6 +738,10 @@
       "items": []
     },
     "ExhumedExcess": {
+      "hasMasterworkedVariant": false,
+      "items": []
+    },
+		"AscendantProtector": {
       "hasMasterworkedVariant": false,
       "items": []
     },
@@ -1406,6 +1414,10 @@
       "items": []
     },
     "ExhumedExcess": {
+      "hasMasterworkedVariant": false,
+      "items": []
+    },
+		"AscendantProtector": {
       "hasMasterworkedVariant": false,
       "items": []
     },

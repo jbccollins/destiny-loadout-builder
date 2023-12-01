@@ -117,6 +117,7 @@ export enum EIntrinsicArmorPerkOrAttributeId {
 	SeraphSensorArray = 'SeraphSensorArray',
 	SonarAmplifier = 'SonarAmplifier',
 	VisageOfTheReaper = 'VisageOfTheReaper',
+	AscendantProtector = 'AscendantProtector',
 	// Attributes
 	IronBanner = 'IronBanner',
 	HalloweenMask = 'HalloweenMask',

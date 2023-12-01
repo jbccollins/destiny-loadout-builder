@@ -57,6 +57,17 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 			'Increases your chances of creating an additional offering during activities. Each piece of armor you are wearing with this perk increases this bonus, to a maximum of 4 items.',
 		abbreviation: 'S22',
 	},
+	[EIntrinsicArmorPerkOrAttributeId.AscendantProtector]: {
+		id: EIntrinsicArmorPerkOrAttributeId.AscendantProtector,
+		name: 'Ascendant Protector',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/e083d8a85c2c60825204d14b9e9263b7.png',
+		armorSlotId: null,
+		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Perk,
+		season: 23,
+		description:
+			'Grants 3% additional Spirit of Riven vendor reputation from all sources. For each piece of armor equipped with this perk, this bonus increases to a maximum of 12% (4 pieces).',
+		abbreviation: 'S23',
+	},
 	[EIntrinsicArmorPerkOrAttributeId.SonarAmplifier]: {
 		id: EIntrinsicArmorPerkOrAttributeId.SonarAmplifier,
 		name: 'Sonar Amplifier',

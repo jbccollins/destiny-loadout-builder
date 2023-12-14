@@ -143,20 +143,23 @@ type ModPlacementProps = {
 	showHelpText?: boolean;
 };
 
-const ModPlacement = (props: ModPlacementProps) => {
-	const {
-		classItem,
-		armorItems,
-		onlyShowArmorSlotMods,
-		withArmorItemIcons,
-		showHelpText,
-	} = props;
+const ModPlacement = ({
+	modPlacement,
+	artificeModIdList,
+	armorItems,
+	classItem,
+	exoticArmorItem,
+	armorSlotMods,
+	onlyShowArmorSlotMods,
+	withArmorItemIcons,
+	showHelpText = true,
+}: ModPlacementProps) => {
 	const finalizedModPlacement = getFinalizedModPlacement({
-		modPlacement: props.modPlacement,
-		artificeModIdList: props.artificeModIdList,
-		armorItems: props.armorItems,
-		classItem: props.classItem,
-		armorSlotMods: props.armorSlotMods,
+		modPlacement,
+		artificeModIdList,
+		armorItems,
+		classItem,
+		armorSlotMods,
 	});
 	const showPerkIcons = !onlyShowArmorSlotMods;
 	const showArmorStatModSlot = !onlyShowArmorSlotMods;
@@ -170,7 +173,7 @@ const ModPlacement = (props: ModPlacementProps) => {
 		ArmorSlotWithClassItemIdList.some(
 			(armorSlotId) => !!finalizedModPlacement[armorSlotId].raidModId
 		);
-	const exoticPerk = props.exoticArmorItem?.exoticPerk;
+	const exoticPerk = exoticArmorItem?.exoticPerk;
 	return (
 		<Container showHelpText={showHelpText}>
 			{ArmorSlotWithClassItemIdList.map((armorSlotId) => {
@@ -200,7 +203,7 @@ const ModPlacement = (props: ModPlacementProps) => {
 						? currentArmorItem.intrinsicArmorPerkOrAttributeId
 						: null;
 
-				const isExotic = props.exoticArmorItem?.armorSlot === armorSlotId;
+				const isExotic = exoticArmorItem?.armorSlot === armorSlotId;
 				const { name: armorSlotName, icon: armorSlotIcon } =
 					getArmorSlot(armorSlotId);
 				const { name: armorStatModName, icon: armorStatModIcon } =
@@ -222,13 +225,13 @@ const ModPlacement = (props: ModPlacementProps) => {
 
 				// Fallback icon
 				const { icon: exoticIcon } = isExotic
-					? props.exoticArmorItem
+					? exoticArmorItem
 					: { icon: null };
 
 				const _currentArmorItem =
 					isExotic && !currentArmorItem
 						? {
-								...props.exoticArmorItem,
+								...exoticArmorItem,
 								isMasterworked: false,
 						  }
 						: currentArmorItem;
@@ -258,8 +261,8 @@ const ModPlacement = (props: ModPlacementProps) => {
 									<Box sx={{ marginLeft: '-2px', marginTop: '-2px' }}>
 										<MasterworkedBungieImage
 											src={_currentArmorItem.icon}
-											width={'40px'}
-											height={'40px'}
+											width={40}
+											height={40}
 											isMasterworked={_currentArmorItem.isMasterworked}
 										/>
 									</Box>
@@ -399,9 +402,6 @@ const ModPlacement = (props: ModPlacementProps) => {
 			)}
 		</Container>
 	);
-};
-ModPlacement.defaultProps = {
-	showHelpText: true,
 };
 
 export default ModPlacement;

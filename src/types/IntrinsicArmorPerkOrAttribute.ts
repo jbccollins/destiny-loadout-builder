@@ -41,7 +41,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 	[EIntrinsicArmorPerkOrAttributeId.IronBanner]: {
 		id: EIntrinsicArmorPerkOrAttributeId.IronBanner,
 		name: 'Iron Banner',
-		icon: 'https://bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_fe57052d7cf971f7502daa75a2ca2437.png',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyActivityModeDefinition_fe57052d7cf971f7502daa75a2ca2437.png',
 		armorSlotId: null,
 		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Event,
 		abbreviation: 'IB',

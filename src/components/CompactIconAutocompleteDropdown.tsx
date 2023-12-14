@@ -196,7 +196,6 @@ function CompactIconAutocompleteDropdown(
 											getCost={getCost ? () => getCost(option) : null}
 											icon={option.icon}
 											elementOverlayIcon={option.elementOverlayIcon}
-											getAltText={() => getLabel(option)}
 										/>
 										<div
 											style={{
@@ -248,7 +247,6 @@ function CompactIconAutocompleteDropdown(
 													getCost={getCost ? () => getCost(value) : null}
 													icon={value.icon}
 													elementOverlayIcon={value.elementOverlayIcon}
-													getAltText={() => getLabel(value)}
 												/>
 											</Box>
 										),

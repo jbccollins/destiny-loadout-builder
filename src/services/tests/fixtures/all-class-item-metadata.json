@@ -1,1914 +1,1424 @@
 {
-  "Hunter": {
-    "GuardianGames": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Medal Mantle",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
-          "id": "6917529740046863373",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 223597399,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Serpent's Glory Mantle",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/0a09e783e85ea294a572f4b06c63932b.jpg",
-          "id": "6917529898074107043",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 366019830,
-          "destinyClassName": "Hunter",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        }
-      ]
-    },
-    "HalloweenMask": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "IronBanner": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Iron Forerunner Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/6dba415d9b50072514bf3c1572b7b04e.jpg",
-          "id": "6917529745130764627",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 4266736482,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "IronBanner"
-        }
-      ]
-    },
-    "PlunderersTrappings": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "QueensFavor": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "SeraphSensorArray": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "UniformedOfficer": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "VisageOfTheReaper": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "SonarAmplifier": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "ExhumedExcess": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
+	"Hunter": {
+		"GuardianGames": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Medal Mantle",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
+					"id": "6917529740046863373",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 223597399,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Serpent's Glory Mantle",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/0a09e783e85ea294a572f4b06c63932b.jpg",
+					"id": "6917529898074107043",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 366019830,
+					"destinyClassName": "Hunter",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				}
+			]
+		},
+		"HalloweenMask": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"IronBanner": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Iron Forerunner Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/6dba415d9b50072514bf3c1572b7b04e.jpg",
+					"id": "6917529745130764627",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 4266736482,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "IronBanner"
+				}
+			]
+		},
+		"PlunderersTrappings": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"QueensFavor": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"SeraphSensorArray": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"UniformedOfficer": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"VisageOfTheReaper": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"SonarAmplifier": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"ExhumedExcess": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
 		"AscendantProtector": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "LastWish": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Cloak of the Great Hunt",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03aed4195f29dbfa3024b992af09f2ac.jpg",
-          "id": "6917529906214478252",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 877968616,
-          "destinyClassName": "Hunter",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "LastWish",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "GardenOfSalvation": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Cloak of Temptation",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/ef642a26f864fc00ceb06fd795993f9d.jpg",
-          "id": "6917529906755481456",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2861892194,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "DeepStoneCrypt": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Legacy's Oath Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
-          "id": "6917529211327720129",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1021060724,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "VaultOfGlass": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Shattered Vault Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
-          "id": "6917529404433328899",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3339387242,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VaultOfGlass",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "VowOfTheDisciple": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Resonant Fury Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/cad952fe45a5540e0d351ea73e2efa09.jpg",
-          "id": "6917529914573003403",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 4124357755,
-          "destinyClassName": "Hunter",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "KingsFall": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Darkhollow Mantle",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/faa46c988ec72e4c5b012e97b2846305.jpg",
-          "id": "6917529836266983263",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2868448385,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "KingsFall",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "RootOfNightmares": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Cloak of Trepidation",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/d22ae8b07b61ff80695dd483267dafad.jpg",
-          "id": "6917529881339902322",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 621315878,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "RootOfNightmares",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "CrotasEnd" : {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "NightmareHunt": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "Legendary": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Cloak of Temptation",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/ef642a26f864fc00ceb06fd795993f9d.jpg",
-          "id": "6917529906755481456",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2861892194,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Cloak of the Great Hunt",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03aed4195f29dbfa3024b992af09f2ac.jpg",
-          "id": "6917529906214478252",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 877968616,
-          "destinyClassName": "Hunter",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "LastWish",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Cloak of Trepidation",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/d22ae8b07b61ff80695dd483267dafad.jpg",
-          "id": "6917529881339902322",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 621315878,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "RootOfNightmares",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Darkhollow Mantle",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/faa46c988ec72e4c5b012e97b2846305.jpg",
-          "id": "6917529836266983263",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2868448385,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "KingsFall",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Deep Explorer Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
-          "id": "6917529862978077670",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2797334754,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": true,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Iron Forerunner Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/6dba415d9b50072514bf3c1572b7b04e.jpg",
-          "id": "6917529745130764627",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 4266736482,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "IronBanner"
-        },
-        {
-          "name": "Legacy's Oath Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
-          "id": "6917529211327720129",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1021060724,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Medal Mantle",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
-          "id": "6917529740046863373",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 223597399,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Resonant Fury Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/cad952fe45a5540e0d351ea73e2efa09.jpg",
-          "id": "6917529914573003403",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 4124357755,
-          "destinyClassName": "Hunter",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Serpent's Glory Mantle",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/0a09e783e85ea294a572f4b06c63932b.jpg",
-          "id": "6917529898074107043",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 366019830,
-          "destinyClassName": "Hunter",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Shattered Vault Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
-          "id": "6917529404433328899",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3339387242,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VaultOfGlass",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Sunlit Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/b9d9ad9ac146b347f4aff4d6313293d8.jpg",
-          "id": "6917529920833196124",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2750411529,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "Artifice": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Deep Explorer Cloak",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
-          "id": "6917529862978077670",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2797334754,
-          "destinyClassName": "Hunter",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": true,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    }
-  },
-  "Warlock": {
-    "GuardianGames": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Medal Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/051af2d0ed1d911be13c9d688f77fa01.jpg",
-          "id": "6917529733535358692",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1599443272,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Phoenix's Ascent Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/953553ad60028d8d5c04a1fec97b6f1c.jpg",
-          "id": "6917529896614629533",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1013401891,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        }
-      ]
-    },
-    "HalloweenMask": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "IronBanner": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Iron Forerunner Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/09731249ad3a1239f27c6469bb7f1a0f.jpg",
-          "id": "6917529706717913680",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1045743955,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "IronBanner"
-        }
-      ]
-    },
-    "PlunderersTrappings": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "QueensFavor": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "SeraphSensorArray": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "UniformedOfficer": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "VisageOfTheReaper": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "SonarAmplifier": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "ExhumedExcess": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"LastWish": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Cloak of the Great Hunt",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03aed4195f29dbfa3024b992af09f2ac.jpg",
+					"id": "6917529906214478252",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 877968616,
+					"destinyClassName": "Hunter",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "LastWish",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"GardenOfSalvation": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Cloak of Temptation",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/ef642a26f864fc00ceb06fd795993f9d.jpg",
+					"id": "6917529906755481456",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2861892194,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"DeepStoneCrypt": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Legacy's Oath Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
+					"id": "6917529211327720129",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1021060724,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"VaultOfGlass": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Shattered Vault Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
+					"id": "6917529404433328899",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3339387242,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VaultOfGlass",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"VowOfTheDisciple": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Resonant Fury Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/cad952fe45a5540e0d351ea73e2efa09.jpg",
+					"id": "6917529914573003403",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 4124357755,
+					"destinyClassName": "Hunter",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"KingsFall": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Darkhollow Mantle",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/faa46c988ec72e4c5b012e97b2846305.jpg",
+					"id": "6917529836266983263",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2868448385,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "KingsFall",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"RootOfNightmares": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Cloak of Trepidation",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/d22ae8b07b61ff80695dd483267dafad.jpg",
+					"id": "6917529881339902322",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 621315878,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "RootOfNightmares",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"CrotasEnd": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"NightmareHunt": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"Legendary": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Cloak of Temptation",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/ef642a26f864fc00ceb06fd795993f9d.jpg",
+					"id": "6917529906755481456",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2861892194,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Cloak of the Great Hunt",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03aed4195f29dbfa3024b992af09f2ac.jpg",
+					"id": "6917529906214478252",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 877968616,
+					"destinyClassName": "Hunter",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "LastWish",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Cloak of Trepidation",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/d22ae8b07b61ff80695dd483267dafad.jpg",
+					"id": "6917529881339902322",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 621315878,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "RootOfNightmares",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Darkhollow Mantle",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/faa46c988ec72e4c5b012e97b2846305.jpg",
+					"id": "6917529836266983263",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2868448385,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "KingsFall",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Deep Explorer Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
+					"id": "6917529862978077670",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2797334754,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": true,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Iron Forerunner Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/6dba415d9b50072514bf3c1572b7b04e.jpg",
+					"id": "6917529745130764627",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 4266736482,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "IronBanner"
+				},
+				{
+					"name": "Legacy's Oath Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
+					"id": "6917529211327720129",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1021060724,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Medal Mantle",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
+					"id": "6917529740046863373",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 223597399,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Resonant Fury Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/cad952fe45a5540e0d351ea73e2efa09.jpg",
+					"id": "6917529914573003403",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 4124357755,
+					"destinyClassName": "Hunter",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Serpent's Glory Mantle",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/0a09e783e85ea294a572f4b06c63932b.jpg",
+					"id": "6917529898074107043",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 366019830,
+					"destinyClassName": "Hunter",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Shattered Vault Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
+					"id": "6917529404433328899",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3339387242,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VaultOfGlass",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Sunlit Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/b9d9ad9ac146b347f4aff4d6313293d8.jpg",
+					"id": "6917529920833196124",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2750411529,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"Artifice": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Deep Explorer Cloak",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/03330bf6ea268445cc18667008d38cbf.jpg",
+					"id": "6917529862978077670",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2797334754,
+					"destinyClassName": "Hunter",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": true,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		}
+	},
+	"Warlock": {
+		"GuardianGames": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Medal Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/051af2d0ed1d911be13c9d688f77fa01.jpg",
+					"id": "6917529733535358692",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1599443272,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Phoenix's Ascent Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/953553ad60028d8d5c04a1fec97b6f1c.jpg",
+					"id": "6917529896614629533",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1013401891,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				}
+			]
+		},
+		"HalloweenMask": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"IronBanner": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Iron Forerunner Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/09731249ad3a1239f27c6469bb7f1a0f.jpg",
+					"id": "6917529706717913680",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1045743955,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "IronBanner"
+				}
+			]
+		},
+		"PlunderersTrappings": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"QueensFavor": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"SeraphSensorArray": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"UniformedOfficer": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"VisageOfTheReaper": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"SonarAmplifier": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"ExhumedExcess": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
 		"AscendantProtector": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "LastWish": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Bond of the Great Hunt",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/42a98e2899a0de554316233b2547c15e.jpg",
-          "id": "6917529928236942382",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3570956455,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "LastWish",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "GardenOfSalvation": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Temptation's Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/4629e1c5011e8a526545d7479b2ef6de.jpg",
-          "id": "6917529211643841280",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1141217085,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "DeepStoneCrypt": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Legacy's Oath Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/7cae3eb18f9352a0c7b3765357c24dc5.jpg",
-          "id": "6917529248515530961",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2902277629,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "VaultOfGlass": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Fragment of the Prime",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/a8efbfd10e8653519aa467474c0790b2.jpg",
-          "id": "6917529391003021928",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2253382795,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VaultOfGlass",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "VowOfTheDisciple": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Resonant Fury Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/96dfda921d5f4d391da214fbfca8bcb0.jpg",
-          "id": "6917529862176221139",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2422261368,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "KingsFall": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Bond of the Wormlore",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/c8d7455cd3550d9b12f7933cd9757ae8.jpg",
-          "id": "6917529812738917328",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 766618550,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "KingsFall",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "RootOfNightmares": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Bond of Detestation",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/cb80b0acaaa9883e4c7c88383c2065da.jpg",
-          "id": "6917529876544040731",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2915322487,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "RootOfNightmares",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "CrotasEnd" : {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "NightmareHunt": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "Legendary": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Bond of Detestation",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/cb80b0acaaa9883e4c7c88383c2065da.jpg",
-          "id": "6917529876544040731",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2915322487,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "RootOfNightmares",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Bond of the Great Hunt",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/42a98e2899a0de554316233b2547c15e.jpg",
-          "id": "6917529928236942382",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3570956455,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "LastWish",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Bond of the Wormlore",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/c8d7455cd3550d9b12f7933cd9757ae8.jpg",
-          "id": "6917529812738917328",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 766618550,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "KingsFall",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Corrupting Echo Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/8914ff561505ae05295e62f66111b703.jpg",
-          "id": "6917529731031341804",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 4217390949,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": true,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Ego Talon Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/3d042449d14650dcf465137e91ce978e.jpg",
-          "id": "6917529891096602887",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 761884895,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Fragment of the Prime",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/a8efbfd10e8653519aa467474c0790b2.jpg",
-          "id": "6917529391003021928",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2253382795,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VaultOfGlass",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Iron Forerunner Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/09731249ad3a1239f27c6469bb7f1a0f.jpg",
-          "id": "6917529706717913680",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1045743955,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "IronBanner"
-        },
-        {
-          "name": "Legacy's Oath Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/7cae3eb18f9352a0c7b3765357c24dc5.jpg",
-          "id": "6917529248515530961",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2902277629,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Medal Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/051af2d0ed1d911be13c9d688f77fa01.jpg",
-          "id": "6917529733535358692",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1599443272,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Phoenix's Ascent Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/953553ad60028d8d5c04a1fec97b6f1c.jpg",
-          "id": "6917529896614629533",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1013401891,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Resonant Fury Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/96dfda921d5f4d391da214fbfca8bcb0.jpg",
-          "id": "6917529862176221139",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2422261368,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Sunlit Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/1fba7543d636183f879a33de26a3dee1.jpg",
-          "id": "6917529921633720729",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 4119622018,
-          "destinyClassName": "Warlock",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Temptation's Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/4629e1c5011e8a526545d7479b2ef6de.jpg",
-          "id": "6917529211643841280",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1141217085,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "Artifice": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Corrupting Echo Bond",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/8914ff561505ae05295e62f66111b703.jpg",
-          "id": "6917529731031341804",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 4217390949,
-          "destinyClassName": "Warlock",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": true,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    }
-  },
-  "Titan": {
-    "GuardianGames": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Lion's Reign Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
-          "id": "6917529896462724451",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 537041732,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Mighty Rivalry Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
-          "id": "6917529600254863550",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 967781090,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        }
-      ]
-    },
-    "HalloweenMask": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "IronBanner": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Iron Forerunner Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/79283764bd9ca19a57f3312edfd4bfc7.jpg",
-          "id": "6917529799053310295",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3591512190,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "IronBanner"
-        },
-        {
-          "name": "Iron Forerunner Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/7b47d9daf2158637fe8792bbfdcbea59.jpg",
-          "id": "6917529455005502786",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3591512190,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "IronBanner"
-        }
-      ]
-    },
-    "PlunderersTrappings": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "QueensFavor": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "SeraphSensorArray": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "UniformedOfficer": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "VisageOfTheReaper": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "SonarAmplifier": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "ExhumedExcess": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"LastWish": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Bond of the Great Hunt",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/42a98e2899a0de554316233b2547c15e.jpg",
+					"id": "6917529928236942382",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3570956455,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "LastWish",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"GardenOfSalvation": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Temptation's Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/4629e1c5011e8a526545d7479b2ef6de.jpg",
+					"id": "6917529211643841280",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1141217085,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"DeepStoneCrypt": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Legacy's Oath Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/7cae3eb18f9352a0c7b3765357c24dc5.jpg",
+					"id": "6917529248515530961",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2902277629,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"VaultOfGlass": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Fragment of the Prime",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/a8efbfd10e8653519aa467474c0790b2.jpg",
+					"id": "6917529391003021928",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2253382795,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VaultOfGlass",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"VowOfTheDisciple": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Resonant Fury Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/96dfda921d5f4d391da214fbfca8bcb0.jpg",
+					"id": "6917529862176221139",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2422261368,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"KingsFall": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Bond of the Wormlore",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/c8d7455cd3550d9b12f7933cd9757ae8.jpg",
+					"id": "6917529812738917328",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 766618550,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "KingsFall",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"RootOfNightmares": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Bond of Detestation",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/cb80b0acaaa9883e4c7c88383c2065da.jpg",
+					"id": "6917529876544040731",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2915322487,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "RootOfNightmares",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"CrotasEnd": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"NightmareHunt": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"Legendary": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Bond of Detestation",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/cb80b0acaaa9883e4c7c88383c2065da.jpg",
+					"id": "6917529876544040731",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2915322487,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "RootOfNightmares",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Bond of the Great Hunt",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/42a98e2899a0de554316233b2547c15e.jpg",
+					"id": "6917529928236942382",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3570956455,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "LastWish",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Bond of the Wormlore",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/c8d7455cd3550d9b12f7933cd9757ae8.jpg",
+					"id": "6917529812738917328",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 766618550,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "KingsFall",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Corrupting Echo Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/8914ff561505ae05295e62f66111b703.jpg",
+					"id": "6917529731031341804",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 4217390949,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": true,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Ego Talon Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/3d042449d14650dcf465137e91ce978e.jpg",
+					"id": "6917529891096602887",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 761884895,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Fragment of the Prime",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/a8efbfd10e8653519aa467474c0790b2.jpg",
+					"id": "6917529391003021928",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2253382795,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VaultOfGlass",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Iron Forerunner Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/09731249ad3a1239f27c6469bb7f1a0f.jpg",
+					"id": "6917529706717913680",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1045743955,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "IronBanner"
+				},
+				{
+					"name": "Legacy's Oath Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/7cae3eb18f9352a0c7b3765357c24dc5.jpg",
+					"id": "6917529248515530961",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2902277629,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Medal Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/051af2d0ed1d911be13c9d688f77fa01.jpg",
+					"id": "6917529733535358692",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1599443272,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Phoenix's Ascent Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/953553ad60028d8d5c04a1fec97b6f1c.jpg",
+					"id": "6917529896614629533",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1013401891,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Resonant Fury Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/96dfda921d5f4d391da214fbfca8bcb0.jpg",
+					"id": "6917529862176221139",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2422261368,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Sunlit Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/1fba7543d636183f879a33de26a3dee1.jpg",
+					"id": "6917529921633720729",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 4119622018,
+					"destinyClassName": "Warlock",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Temptation's Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/4629e1c5011e8a526545d7479b2ef6de.jpg",
+					"id": "6917529211643841280",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1141217085,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"Artifice": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Corrupting Echo Bond",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/8914ff561505ae05295e62f66111b703.jpg",
+					"id": "6917529731031341804",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 4217390949,
+					"destinyClassName": "Warlock",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": true,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		}
+	},
+	"Titan": {
+		"GuardianGames": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Lion's Reign Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
+					"id": "6917529896462724451",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 537041732,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Mighty Rivalry Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
+					"id": "6917529600254863550",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 967781090,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				}
+			]
+		},
+		"HalloweenMask": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"IronBanner": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Iron Forerunner Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/79283764bd9ca19a57f3312edfd4bfc7.jpg",
+					"id": "6917529799053310295",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3591512190,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "IronBanner"
+				},
+				{
+					"name": "Iron Forerunner Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/7b47d9daf2158637fe8792bbfdcbea59.jpg",
+					"id": "6917529455005502786",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3591512190,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "IronBanner"
+				}
+			]
+		},
+		"PlunderersTrappings": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"QueensFavor": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"SeraphSensorArray": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"UniformedOfficer": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"VisageOfTheReaper": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"SonarAmplifier": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"ExhumedExcess": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
 		"AscendantProtector": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "LastWish": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Mark of the Great Hunt",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/96f0dfb309fcae47e779f6d27586520a.jpg",
-          "id": "6917529792218051761",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3351877674,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "LastWish",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "GardenOfSalvation": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Temptation's Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/ced1ac57e10a72266de103ac9d7f582c.jpg",
-          "id": "6917529211161979392",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1043419184,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "DeepStoneCrypt": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Legacy's Oath Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
-          "id": "6917529211806768242",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2956588906,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "VaultOfGlass": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Light of the Great Prism",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/7b47d9daf2158637fe8792bbfdcbea59.jpg",
-          "id": "6917529374021170755",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3012927512,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VaultOfGlass",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "VowOfTheDisciple": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "Resonant Fury Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/366f9700c370b36f040a3181cdabbfde.jpg",
-          "id": "6917529823925897445",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2370089583,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "KingsFall": {
-      "hasMasterworkedVariant": false,
-      "items": [
-        {
-          "name": "War Numen's Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/bb3da19b52d4a838247d6fe00a9fc9a7.jpg",
-          "id": "6917529823137071642",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 376168733,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "KingsFall",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "RootOfNightmares": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "CrotasEnd" : {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "NightmareHunt": {
-      "hasMasterworkedVariant": false,
-      "items": []
-    },
-    "Legendary": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Descending Echo Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
-          "id": "6917529556561048799",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3500810712,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": true,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Iron Forerunner Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/79283764bd9ca19a57f3312edfd4bfc7.jpg",
-          "id": "6917529799053310295",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3591512190,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "IronBanner"
-        },
-        {
-          "name": "Iron Forerunner Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/7b47d9daf2158637fe8792bbfdcbea59.jpg",
-          "id": "6917529455005502786",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3591512190,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "IronBanner"
-        },
-        {
-          "name": "Legacy's Oath Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
-          "id": "6917529211806768242",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2956588906,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Light of the Great Prism",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/7b47d9daf2158637fe8792bbfdcbea59.jpg",
-          "id": "6917529374021170755",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3012927512,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VaultOfGlass",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Lion's Reign Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
-          "id": "6917529896462724451",
-          "baseStatTotal": 0,
-          "power": 1800,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 537041732,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Mark of the Great Hunt",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/96f0dfb309fcae47e779f6d27586520a.jpg",
-          "id": "6917529792218051761",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3351877674,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "LastWish",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Mighty Rivalry Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
-          "id": "6917529600254863550",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 967781090,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": "GuardianGames"
-        },
-        {
-          "name": "Resonant Fury Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/366f9700c370b36f040a3181cdabbfde.jpg",
-          "id": "6917529823925897445",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 2370089583,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Sunlit Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/4a80cc7898c2e510cb3e6c4a42982c42.jpg",
-          "id": "6917529921633716859",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3386596901,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "Temptation's Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/ced1ac57e10a72266de103ac9d7f582c.jpg",
-          "id": "6917529211161979392",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 1043419184,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
-          "intrinsicArmorPerkOrAttributeId": null
-        },
-        {
-          "name": "War Numen's Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/bb3da19b52d4a838247d6fe00a9fc9a7.jpg",
-          "id": "6917529823137071642",
-          "baseStatTotal": 0,
-          "power": 1600,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 376168733,
-          "destinyClassName": "Titan",
-          "isMasterworked": false,
-          "gearTierId": "Legendary",
-          "isArtifice": false,
-          "socketableRaidAndNightmareModTypeId": "KingsFall",
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    },
-    "Artifice": {
-      "hasMasterworkedVariant": true,
-      "items": [
-        {
-          "name": "Descending Echo Mark",
-          "icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
-          "id": "6917529556561048799",
-          "baseStatTotal": 0,
-          "power": 1810,
-          "stats": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          ],
-          "armorSlot": "ClassItem",
-          "hash": 3500810712,
-          "destinyClassName": "Titan",
-          "isMasterworked": true,
-          "gearTierId": "Legendary",
-          "isArtifice": true,
-          "socketableRaidAndNightmareModTypeId": null,
-          "intrinsicArmorPerkOrAttributeId": null
-        }
-      ]
-    }
-  }
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"LastWish": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Mark of the Great Hunt",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/96f0dfb309fcae47e779f6d27586520a.jpg",
+					"id": "6917529792218051761",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3351877674,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "LastWish",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"GardenOfSalvation": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Temptation's Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/ced1ac57e10a72266de103ac9d7f582c.jpg",
+					"id": "6917529211161979392",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1043419184,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"DeepStoneCrypt": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Legacy's Oath Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
+					"id": "6917529211806768242",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2956588906,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"VaultOfGlass": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Light of the Great Prism",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/7b47d9daf2158637fe8792bbfdcbea59.jpg",
+					"id": "6917529374021170755",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3012927512,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VaultOfGlass",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"VowOfTheDisciple": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "Resonant Fury Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/366f9700c370b36f040a3181cdabbfde.jpg",
+					"id": "6917529823925897445",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2370089583,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"KingsFall": {
+			"hasMasterworkedVariant": false,
+			"items": [
+				{
+					"name": "War Numen's Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/bb3da19b52d4a838247d6fe00a9fc9a7.jpg",
+					"id": "6917529823137071642",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 376168733,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "KingsFall",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"RootOfNightmares": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"CrotasEnd": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"NightmareHunt": {
+			"hasMasterworkedVariant": false,
+			"items": []
+		},
+		"Legendary": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Descending Echo Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
+					"id": "6917529556561048799",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3500810712,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": true,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Iron Forerunner Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/79283764bd9ca19a57f3312edfd4bfc7.jpg",
+					"id": "6917529799053310295",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3591512190,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "IronBanner"
+				},
+				{
+					"name": "Iron Forerunner Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/7b47d9daf2158637fe8792bbfdcbea59.jpg",
+					"id": "6917529455005502786",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3591512190,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "IronBanner"
+				},
+				{
+					"name": "Legacy's Oath Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
+					"id": "6917529211806768242",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2956588906,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "DeepStoneCrypt",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Light of the Great Prism",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/7b47d9daf2158637fe8792bbfdcbea59.jpg",
+					"id": "6917529374021170755",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3012927512,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VaultOfGlass",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Lion's Reign Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
+					"id": "6917529896462724451",
+					"baseStatTotal": 0,
+					"power": 1800,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 537041732,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Mark of the Great Hunt",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/96f0dfb309fcae47e779f6d27586520a.jpg",
+					"id": "6917529792218051761",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3351877674,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "LastWish",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Mighty Rivalry Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
+					"id": "6917529600254863550",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 967781090,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": "GuardianGames"
+				},
+				{
+					"name": "Resonant Fury Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/366f9700c370b36f040a3181cdabbfde.jpg",
+					"id": "6917529823925897445",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 2370089583,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "VowOfTheDisciple",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Sunlit Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/4a80cc7898c2e510cb3e6c4a42982c42.jpg",
+					"id": "6917529921633716859",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3386596901,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "Temptation's Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/ced1ac57e10a72266de103ac9d7f582c.jpg",
+					"id": "6917529211161979392",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 1043419184,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "GardenOfSalvation",
+					"intrinsicArmorPerkOrAttributeId": null
+				},
+				{
+					"name": "War Numen's Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/bb3da19b52d4a838247d6fe00a9fc9a7.jpg",
+					"id": "6917529823137071642",
+					"baseStatTotal": 0,
+					"power": 1600,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 376168733,
+					"destinyClassName": "Titan",
+					"isMasterworked": false,
+					"gearTierId": "Legendary",
+					"isArtifice": false,
+					"socketableRaidAndNightmareModTypeId": "KingsFall",
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		},
+		"Artifice": {
+			"hasMasterworkedVariant": true,
+			"items": [
+				{
+					"name": "Descending Echo Mark",
+					"icon": "https://www.bungie.net/common/destiny2_content/icons/46846499b0905ddee6c6cad00bcec75f.jpg",
+					"id": "6917529556561048799",
+					"baseStatTotal": 0,
+					"power": 1810,
+					"stats": [0, 0, 0, 0, 0, 0],
+					"armorSlot": "ClassItem",
+					"hash": 3500810712,
+					"destinyClassName": "Titan",
+					"isMasterworked": true,
+					"gearTierId": "Legendary",
+					"isArtifice": true,
+					"socketableRaidAndNightmareModTypeId": null,
+					"intrinsicArmorPerkOrAttributeId": null
+				}
+			]
+		}
+	}
 }

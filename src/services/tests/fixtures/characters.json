@@ -1,26 +1,26 @@
 [
-  {
-      "background": "https://www.bungie.net/common/destiny2_content/icons/296b11af221b2d5dda5f379cc22d7241.jpg",
-      "destinyClassId": "Warlock",
-      "name": "Warlock",
-      "genderRace": "Exo Male",
-      "icon": "https://www.bungie.net/common/destiny2_content/icons/756242d0ef5b42d343abdabaae941ff7.jpg",
-      "id": "2305843009270496918"
-  },
-  {
-      "background": "https://www.bungie.net/common/destiny2_content/icons/bc6631a30e4d7ea340ed65c95bacec60.jpg",
-      "destinyClassId": "Titan",
-      "name": "Titan",
-      "genderRace": "Human Male",
-      "icon": "https://www.bungie.net/common/destiny2_content/icons/41dfcad1288ac3a5373ec8c7e5fff72f.jpg",
-      "id": "2305843009364755562"
-  },
-  {
-      "background": "https://www.bungie.net/common/destiny2_content/icons/bc6631a30e4d7ea340ed65c95bacec60.jpg",
-      "destinyClassId": "Hunter",
-      "name": "Hunter",
-      "genderRace": "Human Female",
-      "icon": "https://www.bungie.net/common/destiny2_content/icons/41dfcad1288ac3a5373ec8c7e5fff72f.jpg",
-      "id": "2305843009732594848"
-  }
+	{
+		"background": "https://www.bungie.net/common/destiny2_content/icons/296b11af221b2d5dda5f379cc22d7241.jpg",
+		"destinyClassId": "Warlock",
+		"name": "Warlock",
+		"genderRace": "Exo Male",
+		"icon": "https://www.bungie.net/common/destiny2_content/icons/756242d0ef5b42d343abdabaae941ff7.jpg",
+		"id": "2305843009270496918"
+	},
+	{
+		"background": "https://www.bungie.net/common/destiny2_content/icons/bc6631a30e4d7ea340ed65c95bacec60.jpg",
+		"destinyClassId": "Titan",
+		"name": "Titan",
+		"genderRace": "Human Male",
+		"icon": "https://www.bungie.net/common/destiny2_content/icons/41dfcad1288ac3a5373ec8c7e5fff72f.jpg",
+		"id": "2305843009364755562"
+	},
+	{
+		"background": "https://www.bungie.net/common/destiny2_content/icons/bc6631a30e4d7ea340ed65c95bacec60.jpg",
+		"destinyClassId": "Hunter",
+		"name": "Hunter",
+		"genderRace": "Human Female",
+		"icon": "https://www.bungie.net/common/destiny2_content/icons/41dfcad1288ac3a5373ec8c7e5fff72f.jpg",
+		"id": "2305843009732594848"
+	}
 ]

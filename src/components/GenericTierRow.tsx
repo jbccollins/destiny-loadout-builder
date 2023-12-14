@@ -45,7 +45,7 @@ function GenericTierRow({
 	return (
 		<GenericTierRowContainer>
 			{showPrefixImage && (
-				<BungieImage src={prefixImageSrc} width={'24px'} height={'24px'} />
+				<BungieImage src={prefixImageSrc} width={24} height={24} />
 			)}
 			<TierContainer width={tierContainerWidth}>
 				{tiers.map((t, i) => {

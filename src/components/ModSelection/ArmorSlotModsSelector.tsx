@@ -272,8 +272,8 @@ function ArmorSlotModSelector() {
 													}}
 												>
 													<BungieImage
-														width={'30px'}
-														height={'30px'}
+														width={30}
+														height={30}
 														src={getArmorSlot(armorSlotId).icon}
 													/>
 													{/* {`(${usedArmorEnergy}/10)`} */}

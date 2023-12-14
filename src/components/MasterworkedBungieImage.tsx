@@ -9,8 +9,8 @@ const Container = styled(Box, {
 
 type MasterworkedBungieImageProps = BungieImageProps & {
 	isMasterworked: boolean;
-	width: string;
-	height: string;
+	width: number;
+	height: number;
 };
 
 function MasterworkedBungieImage(props: MasterworkedBungieImageProps) {
@@ -19,8 +19,8 @@ function MasterworkedBungieImage(props: MasterworkedBungieImageProps) {
 		<Container
 			isMasterworked={isMasterworked}
 			sx={{
-				width: `calc(${width} + 2px)`,
-				height: `calc(${height} + 2px)`,
+				width: `calc(${width}px + 2px)`,
+				height: `calc(${height}px + 2px)`,
 			}}
 		>
 			<BungieImage width={width} height={height} {...rest} />

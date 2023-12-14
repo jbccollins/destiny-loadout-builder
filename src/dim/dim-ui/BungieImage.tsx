@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import Image, { ImageProps } from 'next/image';
 import React from 'react';
 
 /**
@@ -6,11 +7,9 @@ import React from 'react';
  */
 export type BungieImagePath = string;
 
-export type BungieImageProps = Omit<
-	React.ImgHTMLAttributes<HTMLImageElement>,
-	'onClick'
-> & {
-	src: BungieImagePath;
+export type BungieImageProps = Omit<ImageProps, 'alt'> & {
+	height: number;
+	width: number;
 };
 
 /**
@@ -20,14 +19,17 @@ export default React.memo(function BungieImage(props: BungieImageProps) {
 	const { src, ...otherProps } = props;
 	return (
 		// eslint-disable-next-line @next/next/no-img-element
-		<img
+		<Image
 			// style={{ border: '1px solid green' }}
 			alt="src"
 			src={src}
 			draggable={false}
 			loading="lazy"
-			{...otherProps}
 			className={clsx(otherProps.className, 'no-pointer-events')}
+			width={otherProps.width}
+			height={otherProps.height}
+			placeholder="empty"
+			{...otherProps}
 		/>
 	);
 });

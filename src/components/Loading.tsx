@@ -6,10 +6,7 @@ import {
 import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
 import { setAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setArmor } from '@dlb/redux/features/armor/armorSlice';
-import {
-	selectAvailableExoticArmor,
-	setAvailableExoticArmor,
-} from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
+import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
@@ -85,6 +82,10 @@ import {
 	setSelectedAspects,
 	setSelectedAspectsForDestinySubclass,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import {
+	selectSelectedAssumedStatValues,
+	setSelectedAssumedStatValues,
+} from '@dlb/redux/features/selectedAssumedStatValues/selectedAssumedStatValuesSlice';
 import {
 	selectSelectedClassAbility,
 	setSelectedClassAbility,
@@ -162,8 +163,8 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
-	getLocalStorageRecall,
 	LocalStorageRecall,
+	getLocalStorageRecall,
 } from '@dlb/types/LocalStorageRecall';
 import { TabTypeList } from '@dlb/types/Tab';
 import { CheckCircleRounded } from '@mui/icons-material';
@@ -266,7 +267,9 @@ function Loading() {
 	const sharedLoadoutConfigStatPriorityOrder = useAppSelector(
 		selectSharedLoadoutConfigStatPriorityOrder
 	);
-	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
+	const selectedAssumedStatValues = useAppSelector(
+		selectSelectedAssumedStatValues
+	);
 
 	const defaultSelectedDestinySubclass: Record<
 		EDestinyClassId,
@@ -932,6 +935,8 @@ function Loading() {
 				}
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				log('dirtyDesiredArmorStats', null, false);
+				dispatch(setSelectedAssumedStatValues(selectedAssumedStatValues));
+				log('dirtySelectedAssumedStatValues', null, false);
 
 				if (hasDimLoadoutsError) {
 					dispatch(setDimLoadouts([]));

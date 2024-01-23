@@ -262,8 +262,7 @@ export const stripNonRaidSeenArmorSlotItems = (
 };
 
 export const getExtraSumOfSeenStats = (
-	fragmentArmorStatMapping: ArmorStatMapping,
-	modArmorStatMapping: ArmorStatMapping,
+	statMappings: ArmorStatMapping[],
 	useBonusResilience: boolean
 ): StatList => {
 	const sumOfSeenStats: StatList = [0, 0, 0, 0, 0, 0];
@@ -272,10 +271,9 @@ export const getExtraSumOfSeenStats = (
 		sumOfSeenStats[1] = 1;
 	}
 	ArmorStatIdList.forEach((id, i) => {
-		sumOfSeenStats[i] =
-			sumOfSeenStats[i] +
-			fragmentArmorStatMapping[id] +
-			modArmorStatMapping[id];
+		statMappings.forEach((statMapping) => {
+			sumOfSeenStats[i] = sumOfSeenStats[i] + statMapping[id];
+		});
 	});
 	return sumOfSeenStats;
 };

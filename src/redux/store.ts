@@ -25,6 +25,7 @@ import reservedArmorSlotEnergyReducer, {
 } from './features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
+import selectedAssumedStatValuesReducer from './features/selectedAssumedStatValues/selectedAssumedStatValuesSlice';
 import selectedClassAbilityReducer from './features/selectedClassAbility/selectedClassAbilitySlice';
 import selectedDestinyClassReducer from './features/selectedDestinyClass/selectedDestinyClassSlice';
 import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
@@ -176,6 +177,7 @@ export function makeStore() {
 			resultsPagination: resultsPaginationReducer,
 			selectedArmorSlotMods: selectedArmorSlotModsReducer,
 			selectedAspects: selectedAspectsReducer,
+			selectedAssumedStatValues: selectedAssumedStatValuesReducer,
 			selectedClassAbility: selectedClassAbilityReducer,
 			selectedDestinyClass: selectedDestinyClassReducer,
 			selectedDestinySubclass: selectedDestinySubclassReducer,
@@ -234,6 +236,7 @@ let selectedMeleeUuid = NIL;
 let selectedSuperAbilityUuid = NIL;
 let selectedClassAbilityUuid = NIL;
 let ignoredLoadoutOptimizationTypesUuid = NIL;
+let selectedAssumedStatValuesUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: ReturnType<typeof store.getState> = null;
@@ -349,7 +352,10 @@ function handleChange() {
 			value: ignoredLoadoutOptimizationTypes,
 			uuid: nextIgnoredLoadoutOptimizationTypesUuid,
 		},
-
+		selectedAssumedStatValues: {
+			value: selectedAssumedStatValues,
+			uuid: nextSelectedAssumedStatValuesUuid,
+		},
 		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -531,7 +537,8 @@ function handleChange() {
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
 		inGameLoadoutsFlatItemIdListUuid !== nextInGameLoadoutsFlatItemIdListUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
-			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid;
+			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
+		selectedAssumedStatValuesUuid !== nextSelectedAssumedStatValuesUuid;
 	const hasNonDefaultUuids =
 		nextAllClassItemMetadataUuid !== NIL &&
 		nextDesiredArmorStatsUuid !== NIL &&
@@ -550,7 +557,8 @@ function handleChange() {
 		nextUseZeroWastedStatsUuid !== NIL &&
 		nextInGameLoadoutsFilterUuid !== NIL &&
 		nextInGameLoadoutsFlatItemIdListUuid !== NIL &&
-		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid !== NIL;
+		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid !== NIL &&
+		nextSelectedAssumedStatValuesUuid !== NIL;
 
 	// if (hasAllDataLoaded) {
 	// 	// log any next uuids that are NIL
@@ -626,6 +634,7 @@ function handleChange() {
 	inGameLoadoutsFlatItemIdListUuid = nextInGameLoadoutsFlatItemIdListUuid;
 	selectedIntrinsicArmorPerkOrAttributeIdsUuid =
 		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid;
+	selectedAssumedStatValuesUuid = nextSelectedAssumedStatValuesUuid;
 
 	// TODO: Move this out of the store file
 	const {
@@ -737,6 +746,7 @@ function handleChange() {
 		selectedExoticArmorItem,
 		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata: _allClassItemMetadata,
+		assumedStatValuesStatMapping: selectedAssumedStatValues,
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {

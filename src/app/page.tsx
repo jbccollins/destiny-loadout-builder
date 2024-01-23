@@ -33,6 +33,7 @@ import RaidModSelector from '@dlb/components/RaidModsSelector';
 import ResetButton from '@dlb/components/ResetButton';
 import SelectionControlGroup from '@dlb/components/SectionControlGroup';
 import ShareLoadout from '@dlb/components/ShareLoadout';
+import AdvancedOptions from '@dlb/components/StatSelection/AdvancedOptions';
 import AspectSelector from '@dlb/components/SubclassSelector/AspectSelector';
 import ClassAbilitySelector from '@dlb/components/SubclassSelector/ClassAbilitySelector';
 import DestinySubclassSelector from '@dlb/components/SubclassSelector/DestinySubclassSelector';
@@ -47,7 +48,6 @@ import UseOnlyMasterworkedArmorToggleSwitch from '@dlb/components/UseOnlyMasterw
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
 import { DISCORD_LINK } from '@dlb/dim/utils/constants';
 import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
-import discord_image from '@public/discord-mark-white.png';
 import { selectAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
@@ -96,6 +96,7 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { getDefaultArmorStatMapping } from '@dlb/types/ArmorStat';
 import { getDefaultArmorSlotIdToModIdListMapping } from '@dlb/types/Mod';
 import { ETabType } from '@dlb/types/Tab';
+import discord_image from '@public/discord-mark-white.png';
 import React, { useEffect } from 'react';
 
 const Container = styled(Box)(({ theme }) => ({
@@ -292,6 +293,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 									clearHandler={clearDesiredStatTiers}
 								>
 									<StatSelection />
+									<AdvancedOptions />
 								</SelectionControlGroup>
 								<SelectionControlGroup
 									title="Subclass Options"

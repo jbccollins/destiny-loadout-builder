@@ -8,8 +8,8 @@ import {
 import {
 	AnalyzableLoadout,
 	ELoadoutOptimizationCategoryId,
-	getLoadoutOptimizationCategory,
 	SeverityOrderedLoadoutOptimizationCategoryIdList,
+	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 import { getDestinyClassIcon } from '@dlb/types/DestinyClassIcon';
@@ -408,7 +408,8 @@ const ScoredResults = (props: {
 			>
 				Show Grade Details
 				{(numHiddenLoadouts > 0 ||
-					ignoredLoadoutOptimizationTypeIdList.length) > 0 && '*'}
+					ignoredLoadoutOptimizationTypeIdList.length > 0) &&
+					'*'}
 				<IconButton aria-label="expand row" size="small">
 					{showGradeDetails ? (
 						<KeyboardArrowUpIcon />

@@ -1492,6 +1492,7 @@ export const getLoadoutsThatCanBeOptimized = (
 					),
 					alwaysConsiderCollectionsRolls: false,
 					allClassItemMetadata: _allClassItemMetadata,
+					assumedStatValuesStatMapping: getDefaultArmorStatMapping(),
 				};
 				const sumOfCurrentStatModsCost = sumModCosts(loadout.armorStatMods);
 				const processedArmor = doProcessArmor(doProcessArmorParams);

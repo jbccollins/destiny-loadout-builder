@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-01-22',
+		version: '2.5.1',
+		title: 'Add "Assume starting stat values" advanced option',
+		sections: [
+			{
+				items: [
+					`Add a new advanced option to the desired stat tiers selector that allows the user to assume that they are starting with X amount of any stat`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-11-20',
 		version: '2.5.0',
 		title: 'Major Internal Refactor',

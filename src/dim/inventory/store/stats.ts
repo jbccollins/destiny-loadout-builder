@@ -11,9 +11,9 @@ import {
 	DimStat,
 } from '@dlb/dim/inventory/item-types';
 import {
-	armorStats,
 	CUSTOM_TOTAL_STAT_HASH,
 	TOTAL_STAT_HASH,
+	armorStats,
 } from '@dlb/dim/search/d2-known-values';
 import { compareBy } from '@dlb/dim/utils/comparators';
 import { isPlugStatActive } from '@dlb/dim/utils/item-utils';
@@ -168,7 +168,7 @@ export function buildStats(
 		investmentStats.push(tStat);
 		const cStat =
 			createdItem.bucket.hash !== BucketHashes.ClassArmor &&
-			customStat(investmentStats, createdItem.classType);
+			customStat(investmentStats, createdItem.classType as DestinyClass);
 		if (cStat) {
 			investmentStats.push(cStat);
 		}

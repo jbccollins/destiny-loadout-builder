@@ -1,8 +1,8 @@
 {
+	"terminal.integrated.rightClickBehavior": "default",
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "never"
 	},
-	"eslint.validate": ["typescript"],
 	"typescript.tsserver.log": "verbose",
 	"typescript.tsserver.experimental.enableProjectDiagnostics": true,
 	"[typescript]": {

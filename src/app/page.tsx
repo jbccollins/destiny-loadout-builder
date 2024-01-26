@@ -461,8 +461,8 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					<Image
 						src={discord_image}
 						alt="me"
-						height="40"
-						width="50"
+						height="25"
+						width="35"
 						className="objectFit-contain, objectPosition-center"
 					/>
 					<Box

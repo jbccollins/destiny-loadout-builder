@@ -15,6 +15,7 @@ import Image from 'next/image';
 
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
+import DimImportDialog from '@dlb/components/DimImportDialog';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExcludeLockedItemsToggleSwitch from '@dlb/components/ExcludeLockedItemsToggleSwitch';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
@@ -284,7 +285,14 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 				tabs={[
 					{
 						content: (
-							<>
+							<Box
+								sx={{
+									position: 'relative',
+								}}
+							>
+								<Box sx={{ position: 'absolute', top: 0, right: '8px' }}>
+									<DimImportDialog />
+								</Box>
 								<SelectionControlGroup title="Class and Exotic">
 									<ExoticAndDestinyClassSelectorWrapper />
 								</SelectionControlGroup>
@@ -361,7 +369,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 									</Collapse>
 								</SelectionControlGroup>
 								<ShareLoadout />
-							</>
+							</Box>
 						),
 						index: ETabType.BUILD,
 						title: 'Build',

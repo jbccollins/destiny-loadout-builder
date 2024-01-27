@@ -140,7 +140,7 @@ const isEditableLoadout = (loadout: AnalyzableLoadout): boolean => {
 	);
 };
 
-const flattenArmor = (
+export const flattenArmor = (
 	armor: Armor,
 	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping
 ): ArmorItem[] => {
@@ -200,6 +200,283 @@ const findAvailableExoticArmorItem = (
 	return null;
 };
 
+type ExtractDimLoadoutParams = {
+	dimLoadout: Loadout;
+	armorItems: ArmorItem[];
+	masterworkAssumption: EMasterworkAssumption;
+	availableExoticArmor: AvailableExoticArmor;
+};
+
+export function extractDimLoadout(params: ExtractDimLoadoutParams) {
+	const { dimLoadout, armorItems, masterworkAssumption, availableExoticArmor } =
+		params;
+	console.log('>>>>>> dimLoadout', dimLoadout);
+	const destinyClassId =
+		DestinyClassHashToDestinyClass[dimLoadout.classType] || null; // Loadouts with just weapons don't need to have a class type
+
+	const loadout: AnalyzableLoadout = {
+		...getDefaultAnalyzableLoadout(),
+		id: dimLoadout.id,
+		name: dimLoadout.name,
+		loadoutType: ELoadoutType.DIM,
+		destinyClassId,
+	};
+
+	const desiredStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
+	const achievedStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
+	const achievedStats: ArmorStatMapping = getDefaultArmorStatMapping();
+	const dimStatTierConstraints: ArmorStatMapping = getDefaultArmorStatMapping();
+
+	const chestArmorModsByBucket =
+		dimLoadout.parameters?.modsByBucket?.[BucketHashes.ChestArmor] || [];
+	const bonusResilienceOrnamentHash =
+		getBonusResilienceOrnamentHashByDestinyClassId(destinyClassId);
+	const hasBonusResilienceOrnament =
+		chestArmorModsByBucket.some(
+			(hash) => hash === bonusResilienceOrnamentHash
+		) || false;
+
+	loadout.hasBonusResilienceOrnament = hasBonusResilienceOrnament;
+	if (hasBonusResilienceOrnament) {
+		achievedStatTiers[EArmorStatId.Resilience] += 1;
+		achievedStats[EArmorStatId.Resilience] += 1;
+		desiredStatTiers[EArmorStatId.Resilience] += 1;
+	}
+
+	// TODO: Stat constraints are DIM Loadout specific and may not respect
+	// fragment bonus changes. Stat constraints are saved when creating or editing
+	// a DIM loadout.
+	// If a loadout was created, then later bungie adds a penalty to a fragment
+	// that loadout may no longer be able to reach the stat constraints
+	// If the user is unable to reach the stat constraints, then we should
+	// mark the loadout as one that the user might want to check on
+	const hasStatConstraints = !!dimLoadout.parameters?.statConstraints;
+	if (hasStatConstraints) {
+		const statConstraints = dimLoadout.parameters.statConstraints;
+		statConstraints.forEach((statConstraint) => {
+			const tier = (statConstraint.minTier || 0) * 10;
+			const armorStatId = getArmorStatIdFromBungieHash(statConstraint.statHash);
+			dimStatTierConstraints[armorStatId] = tier;
+		});
+		loadout.dimStatTierConstraints = dimStatTierConstraints;
+	}
+	let hasHalloweenMask = false;
+	dimLoadout.equipped.forEach((equippedItem) => {
+		const armorItem = armorItems.find(
+			(armorItem) => armorItem.id === equippedItem.id
+		);
+		if (armorItem) {
+			if (armorItem.gearTierId === EGearTierId.Exotic) {
+				loadout.exoticHash = armorItem.hash;
+			}
+			if (
+				armorItem.intrinsicArmorPerkOrAttributeId ===
+				EIntrinsicArmorPerkOrAttributeId.HalloweenMask
+			) {
+				hasHalloweenMask = true;
+			}
+			loadout.armor.push(armorItem);
+
+			const extraMasterworkedStats = getExtraMasterworkedStats(
+				armorItem,
+				masterworkAssumption
+			);
+			ArmorStatIdList.forEach((armorStatId) => {
+				desiredStatTiers[armorStatId] +=
+					armorItem.stats[ArmorStatIndices[armorStatId]] +
+					extraMasterworkedStats;
+				achievedStatTiers[armorStatId] +=
+					armorItem.stats[ArmorStatIndices[armorStatId]] +
+					extraMasterworkedStats;
+				achievedStats[armorStatId] +=
+					armorItem.stats[ArmorStatIndices[armorStatId]] +
+					extraMasterworkedStats;
+			});
+		} else if (destinyClassId !== null) {
+			// If the user deleted the exotic armor piece that they
+			// had in their loadout, then we try to find a replacement
+			const potentialExoticArmorHash = equippedItem.hash;
+			const exoticArmorItem = findAvailableExoticArmorItem(
+				potentialExoticArmorHash,
+				destinyClassId,
+				availableExoticArmor
+			);
+			if (exoticArmorItem) {
+				loadout.exoticHash = exoticArmorItem.hash;
+			}
+		}
+
+		// This is the subclass definition. Contains all the aspects and fragments
+		// TODO: Is this safe? Will this always be a subclass?
+		// can other things have socketOverrides?
+		if (equippedItem.socketOverrides) {
+			let subclassHash = equippedItem.hash;
+			const classAbilityHash = equippedItem.socketOverrides[0] || null;
+			const jumpHash = equippedItem.socketOverrides[1] || null;
+			const superAbilityHash = equippedItem.socketOverrides[2] || null;
+			const meleeHash = equippedItem.socketOverrides[3] || null;
+			const grenadeHash = equippedItem.socketOverrides[4] || null;
+			const aspectHashes = [
+				equippedItem.socketOverrides[5],
+				equippedItem.socketOverrides[6],
+			].filter((x) => !!x);
+			const fragmentHashes = [
+				equippedItem.socketOverrides[7],
+				equippedItem.socketOverrides[8],
+				equippedItem.socketOverrides[9],
+				equippedItem.socketOverrides[10],
+				equippedItem.socketOverrides[11],
+			].filter((x) => !!x);
+
+			// Ensure that loadouts that were created with old 2.0 subclasses
+			// are still processed correctly with 3.0 versions
+			const newSubclassHash = oldToNewSubclassHashes[subclassHash];
+			if (newSubclassHash) {
+				subclassHash = newSubclassHash;
+			}
+
+			const destinySubclass = getDestinySubclassByHash(subclassHash);
+			loadout.destinySubclassId = destinySubclass
+				? (destinySubclass.id as EDestinySubclassId)
+				: null;
+
+			if (loadout.destinySubclassId) {
+				const destinyClassId = getDestinyClassIdByDestinySubclassId(
+					loadout.destinySubclassId
+				);
+				loadout.destinyClassId = destinyClassId || null;
+			}
+
+			const classAbility = getClassAbilityByHash(classAbilityHash);
+			loadout.classAbilityId = classAbility
+				? (classAbility.id as EClassAbilityId)
+				: null;
+
+			const jump = getJumpByHash(jumpHash);
+			loadout.jumpId = jump ? (jump.id as EJumpId) : null;
+
+			const superAbility = getSuperAbilityByHash(superAbilityHash);
+			loadout.superAbilityId = superAbility
+				? (superAbility.id as ESuperAbilityId)
+				: null;
+
+			const melee = getMeleeByHash(meleeHash);
+			loadout.meleeId = melee ? (melee.id as EMeleeId) : null;
+
+			const grenade = getGrenadeByHash(grenadeHash);
+			loadout.grenadeId = grenade ? (grenade.id as EGrenadeId) : null;
+
+			aspectHashes.forEach((hash) => {
+				const aspect = getAspectByHash(hash);
+				if (!!aspect) {
+					loadout.aspectIdList.push(aspect.id as EAspectId);
+				}
+			});
+
+			fragmentHashes.forEach((hash) => {
+				const fragment = getFragmentByHash(hash);
+				if (!!fragment) {
+					loadout.fragmentIdList.push(fragment.id as EFragmentId);
+				}
+			});
+		}
+	});
+	loadout.hasHalloweenMask = hasHalloweenMask;
+	dimLoadout.parameters?.mods?.forEach((hash) => {
+		const mod = getModByHash(hash);
+		if (!mod) {
+			// This means a deprecated mod like "Protective Light". Mark this as an optimization
+			if (
+				!loadout.optimizationTypeList.includes(
+					ELoadoutOptimizationTypeId.DeprecatedMods
+				)
+			) {
+				loadout.optimizationTypeList.push(
+					ELoadoutOptimizationTypeId.DeprecatedMods
+				);
+			}
+			// console.warn({
+			// 	message: 'Could not find mod',
+			// 	loadoutId: loadout.id,
+			// 	modHash: hash,
+			// });
+			return;
+		}
+		if (mod.modSocketCategoryId === EModSocketCategoryId.ArmorSlot) {
+			// Repace first null value with this mod id
+			const idx = loadout.armorSlotMods[mod.armorSlotId].findIndex(
+				(x) => x === null
+			);
+			if (idx === -1) {
+				console.warn({
+					message: 'Could not find null value in armorSlotMods',
+					loadoutId: loadout.id,
+					modId: mod.id,
+					armorSlotId: mod.armorSlotId,
+				});
+				return;
+			}
+			loadout.armorSlotMods[mod.armorSlotId][idx] = mod.id;
+		} else if (mod.modSocketCategoryId === EModSocketCategoryId.Stat) {
+			loadout.armorStatMods.push(mod.id);
+		} else if (mod.modSocketCategoryId === EModSocketCategoryId.Raid) {
+			const idx = loadout.raidMods.findIndex((x) => x === null);
+			if (idx === -1) {
+				console.warn({
+					message: 'Could not find null value in raidMods',
+					loadoutId: loadout.id,
+					modId: mod.id,
+				});
+				return;
+			}
+			loadout.raidMods[idx] = mod.id;
+		} else if (mod.modSocketCategoryId === EModSocketCategoryId.ArtificeStat) {
+			loadout.artificeModIdList.push(mod.id);
+		}
+		// TODO: Currently no armor slot mods give bonuses so this is safe.
+		// But there have been mods in the past that did give bonuses.
+		// We should handle those in the future...
+		// Specifically, handle the case where we are not considering mods
+		// when processing armor so that mod cost doesn't limit the stat mod availability
+		mod.bonuses.forEach((bonus) => {
+			desiredStatTiers[bonus.stat] += bonus.value;
+			achievedStatTiers[bonus.stat] += bonus.value;
+			achievedStats[bonus.stat] += bonus.value;
+		});
+	});
+	// Coerce the mod list that is in the DIM json to contain the mods that the user
+	// actually sees in DIM itself. DIM swaps out out-of-season discounted mods with their
+	// full cost variants, and swaps in-season full cost mods with their discounted variants.
+	loadout.armorSlotMods = replaceAllModsThatDimWillReplace(
+		loadout.armorSlotMods
+	);
+	const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
+		loadout.fragmentIdList,
+		loadout.destinyClassId
+	);
+	ArmorStatIdList.forEach((armorStatId) => {
+		desiredStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
+		achievedStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
+		achievedStats[armorStatId] += fragmentArmorStatMapping[armorStatId];
+	});
+	ArmorStatIdList.forEach((armorStatId) => {
+		desiredStatTiers[armorStatId] = roundDown10(desiredStatTiers[armorStatId]);
+		// Clamp desired stat tiers to 100
+		desiredStatTiers[armorStatId] = Math.min(
+			desiredStatTiers[armorStatId],
+			100
+		);
+		// achievedStatTiers are not clamped
+		achievedStatTiers[armorStatId] = roundDown10(
+			achievedStatTiers[armorStatId]
+		);
+		// achievedStats are not rounded
+	});
+	loadout.desiredStatTiers = desiredStatTiers;
+	loadout.achievedStatTiers = achievedStatTiers;
+	loadout.achievedStats = achievedStats;
+	return loadout;
+}
 type ExtractDimLoadoutsParams = {
 	armorItems: ArmorItem[];
 	dimLoadouts: Loadout[];
@@ -221,279 +498,14 @@ const extractDimLoadouts = (
 		return [];
 	}
 	dimLoadouts.forEach((dimLoadout) => {
-		console.log('>>>>>> dimLoadout', dimLoadout);
-		const destinyClassId =
-			DestinyClassHashToDestinyClass[dimLoadout.classType] || null; // Loadouts with just weapons don't need to have a class type
-
-		const loadout: AnalyzableLoadout = {
-			...getDefaultAnalyzableLoadout(),
-			id: dimLoadout.id,
-			name: dimLoadout.name,
-			loadoutType: ELoadoutType.DIM,
-			destinyClassId,
-		};
-
-		const desiredStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
-		const achievedStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
-		const achievedStats: ArmorStatMapping = getDefaultArmorStatMapping();
-		const dimStatTierConstraints: ArmorStatMapping =
-			getDefaultArmorStatMapping();
-
-		const chestArmorModsByBucket =
-			dimLoadout.parameters?.modsByBucket?.[BucketHashes.ChestArmor] || [];
-		const bonusResilienceOrnamentHash =
-			getBonusResilienceOrnamentHashByDestinyClassId(destinyClassId);
-		const hasBonusResilienceOrnament =
-			chestArmorModsByBucket.some(
-				(hash) => hash === bonusResilienceOrnamentHash
-			) || false;
-
-		loadout.hasBonusResilienceOrnament = hasBonusResilienceOrnament;
-		if (hasBonusResilienceOrnament) {
-			achievedStatTiers[EArmorStatId.Resilience] += 1;
-			achievedStats[EArmorStatId.Resilience] += 1;
-			desiredStatTiers[EArmorStatId.Resilience] += 1;
-		}
-
-		// TODO: Stat constraints are DIM Loadout specific and may not respect
-		// fragment bonus changes. Stat constraints are saved when creating or editing
-		// a DIM loadout.
-		// If a loadout was created, then later bungie adds a penalty to a fragment
-		// that loadout may no longer be able to reach the stat constraints
-		// If the user is unable to reach the stat constraints, then we should
-		// mark the loadout as one that the user might want to check on
-		const hasStatConstraints = !!dimLoadout.parameters?.statConstraints;
-		if (hasStatConstraints) {
-			const statConstraints = dimLoadout.parameters.statConstraints;
-			statConstraints.forEach((statConstraint) => {
-				const tier = (statConstraint.minTier || 0) * 10;
-				const armorStatId = getArmorStatIdFromBungieHash(
-					statConstraint.statHash
-				);
-				dimStatTierConstraints[armorStatId] = tier;
-			});
-			loadout.dimStatTierConstraints = dimStatTierConstraints;
-		}
-		let hasHalloweenMask = false;
-		dimLoadout.equipped.forEach((equippedItem) => {
-			const armorItem = armorItems.find(
-				(armorItem) => armorItem.id === equippedItem.id
-			);
-			if (armorItem) {
-				if (armorItem.gearTierId === EGearTierId.Exotic) {
-					loadout.exoticHash = armorItem.hash;
-				}
-				if (
-					armorItem.intrinsicArmorPerkOrAttributeId ===
-					EIntrinsicArmorPerkOrAttributeId.HalloweenMask
-				) {
-					hasHalloweenMask = true;
-				}
-				loadout.armor.push(armorItem);
-
-				const extraMasterworkedStats = getExtraMasterworkedStats(
-					armorItem,
-					masterworkAssumption
-				);
-				ArmorStatIdList.forEach((armorStatId) => {
-					desiredStatTiers[armorStatId] +=
-						armorItem.stats[ArmorStatIndices[armorStatId]] +
-						extraMasterworkedStats;
-					achievedStatTiers[armorStatId] +=
-						armorItem.stats[ArmorStatIndices[armorStatId]] +
-						extraMasterworkedStats;
-					achievedStats[armorStatId] +=
-						armorItem.stats[ArmorStatIndices[armorStatId]] +
-						extraMasterworkedStats;
-				});
-			} else if (destinyClassId !== null) {
-				// If the user deleted the exotic armor piece that they
-				// had in their loadout, then we try to find a replacement
-				const potentialExoticArmorHash = equippedItem.hash;
-				const exoticArmorItem = findAvailableExoticArmorItem(
-					potentialExoticArmorHash,
-					destinyClassId,
-					availableExoticArmor
-				);
-				if (exoticArmorItem) {
-					loadout.exoticHash = exoticArmorItem.hash;
-				}
-			}
-
-			// This is the subclass definition. Contains all the aspects and fragments
-			// TODO: Is this safe? Will this always be a subclass?
-			// can other things have socketOverrides?
-			if (equippedItem.socketOverrides) {
-				let subclassHash = equippedItem.hash;
-				const classAbilityHash = equippedItem.socketOverrides[0] || null;
-				const jumpHash = equippedItem.socketOverrides[1] || null;
-				const superAbilityHash = equippedItem.socketOverrides[2] || null;
-				const meleeHash = equippedItem.socketOverrides[3] || null;
-				const grenadeHash = equippedItem.socketOverrides[4] || null;
-				const aspectHashes = [
-					equippedItem.socketOverrides[5],
-					equippedItem.socketOverrides[6],
-				].filter((x) => !!x);
-				const fragmentHashes = [
-					equippedItem.socketOverrides[7],
-					equippedItem.socketOverrides[8],
-					equippedItem.socketOverrides[9],
-					equippedItem.socketOverrides[10],
-					equippedItem.socketOverrides[11],
-				].filter((x) => !!x);
-
-				// Ensure that loadouts that were created with old 2.0 subclasses
-				// are still processed correctly with 3.0 versions
-				const newSubclassHash = oldToNewSubclassHashes[subclassHash];
-				if (newSubclassHash) {
-					subclassHash = newSubclassHash;
-				}
-
-				const destinySubclass = getDestinySubclassByHash(subclassHash);
-				loadout.destinySubclassId = destinySubclass
-					? (destinySubclass.id as EDestinySubclassId)
-					: null;
-
-				if (loadout.destinySubclassId) {
-					const destinyClassId = getDestinyClassIdByDestinySubclassId(
-						loadout.destinySubclassId
-					);
-					loadout.destinyClassId = destinyClassId || null;
-				}
-
-				const classAbility = getClassAbilityByHash(classAbilityHash);
-				loadout.classAbilityId = classAbility
-					? (classAbility.id as EClassAbilityId)
-					: null;
-
-				const jump = getJumpByHash(jumpHash);
-				loadout.jumpId = jump ? (jump.id as EJumpId) : null;
-
-				const superAbility = getSuperAbilityByHash(superAbilityHash);
-				loadout.superAbilityId = superAbility
-					? (superAbility.id as ESuperAbilityId)
-					: null;
-
-				const melee = getMeleeByHash(meleeHash);
-				loadout.meleeId = melee ? (melee.id as EMeleeId) : null;
-
-				const grenade = getGrenadeByHash(grenadeHash);
-				loadout.grenadeId = grenade ? (grenade.id as EGrenadeId) : null;
-
-				aspectHashes.forEach((hash) => {
-					const aspect = getAspectByHash(hash);
-					if (!!aspect) {
-						loadout.aspectIdList.push(aspect.id as EAspectId);
-					}
-				});
-
-				fragmentHashes.forEach((hash) => {
-					const fragment = getFragmentByHash(hash);
-					if (!!fragment) {
-						loadout.fragmentIdList.push(fragment.id as EFragmentId);
-					}
-				});
-			}
-		});
-		loadout.hasHalloweenMask = hasHalloweenMask;
-		dimLoadout.parameters?.mods?.forEach((hash) => {
-			const mod = getModByHash(hash);
-			if (!mod) {
-				// This means a deprecated mod like "Protective Light". Mark this as an optimization
-				if (
-					!loadout.optimizationTypeList.includes(
-						ELoadoutOptimizationTypeId.DeprecatedMods
-					)
-				) {
-					loadout.optimizationTypeList.push(
-						ELoadoutOptimizationTypeId.DeprecatedMods
-					);
-				}
-				// console.warn({
-				// 	message: 'Could not find mod',
-				// 	loadoutId: loadout.id,
-				// 	modHash: hash,
-				// });
-				return;
-			}
-			if (mod.modSocketCategoryId === EModSocketCategoryId.ArmorSlot) {
-				// Repace first null value with this mod id
-				const idx = loadout.armorSlotMods[mod.armorSlotId].findIndex(
-					(x) => x === null
-				);
-				if (idx === -1) {
-					console.warn({
-						message: 'Could not find null value in armorSlotMods',
-						loadoutId: loadout.id,
-						modId: mod.id,
-						armorSlotId: mod.armorSlotId,
-					});
-					return;
-				}
-				loadout.armorSlotMods[mod.armorSlotId][idx] = mod.id;
-			} else if (mod.modSocketCategoryId === EModSocketCategoryId.Stat) {
-				loadout.armorStatMods.push(mod.id);
-			} else if (mod.modSocketCategoryId === EModSocketCategoryId.Raid) {
-				const idx = loadout.raidMods.findIndex((x) => x === null);
-				if (idx === -1) {
-					console.warn({
-						message: 'Could not find null value in raidMods',
-						loadoutId: loadout.id,
-						modId: mod.id,
-					});
-					return;
-				}
-				loadout.raidMods[idx] = mod.id;
-			} else if (
-				mod.modSocketCategoryId === EModSocketCategoryId.ArtificeStat
-			) {
-				loadout.artificeModIdList.push(mod.id);
-			}
-			// TODO: Currently no armor slot mods give bonuses so this is safe.
-			// But there have been mods in the past that did give bonuses.
-			// We should handle those in the future...
-			// Specifically, handle the case where we are not considering mods
-			// when processing armor so that mod cost doesn't limit the stat mod availability
-			mod.bonuses.forEach((bonus) => {
-				desiredStatTiers[bonus.stat] += bonus.value;
-				achievedStatTiers[bonus.stat] += bonus.value;
-				achievedStats[bonus.stat] += bonus.value;
-			});
-		});
-		// Coerce the mod list that is in the DIM json to contain the mods that the user
-		// actually sees in DIM itself. DIM swaps out out-of-season discounted mods with their
-		// full cost variants, and swaps in-season full cost mods with their discounted variants.
-		loadout.armorSlotMods = replaceAllModsThatDimWillReplace(
-			loadout.armorSlotMods
+		loadouts.push(
+			extractDimLoadout({
+				dimLoadout,
+				armorItems,
+				masterworkAssumption,
+				availableExoticArmor,
+			})
 		);
-		const fragmentArmorStatMapping = getArmorStatMappingFromFragments(
-			loadout.fragmentIdList,
-			loadout.destinyClassId
-		);
-		ArmorStatIdList.forEach((armorStatId) => {
-			desiredStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
-			achievedStatTiers[armorStatId] += fragmentArmorStatMapping[armorStatId];
-			achievedStats[armorStatId] += fragmentArmorStatMapping[armorStatId];
-		});
-		ArmorStatIdList.forEach((armorStatId) => {
-			desiredStatTiers[armorStatId] = roundDown10(
-				desiredStatTiers[armorStatId]
-			);
-			// Clamp desired stat tiers to 100
-			desiredStatTiers[armorStatId] = Math.min(
-				desiredStatTiers[armorStatId],
-				100
-			);
-			// achievedStatTiers are not clamped
-			achievedStatTiers[armorStatId] = roundDown10(
-				achievedStatTiers[armorStatId]
-			);
-			// achievedStats are not rounded
-		});
-		loadout.desiredStatTiers = desiredStatTiers;
-		loadout.achievedStatTiers = achievedStatTiers;
-		loadout.achievedStats = achievedStats;
-		loadouts.push(loadout);
 	});
 	console.log('>>>>>> end extractDimLoadouts');
 	return loadouts;

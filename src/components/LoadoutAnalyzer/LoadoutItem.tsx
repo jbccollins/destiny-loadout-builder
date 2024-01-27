@@ -1,83 +1,27 @@
+import CustomTooltip from '@dlb/components/CustomTooltip';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import d2Logo from '@public/d2-logo.png';
-import dimLogo from '@public/dim-logo.png';
+import useApplyAnalyzableLoadout from '@dlb/hooks/useApplyAnalyzableLoadout';
 import {
 	AnalyzableLoadoutsValueState,
 	setHiddenLoadoutIdList,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
-import {
-	clearDesiredArmorStats,
-	setDesiredArmorStats,
-} from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
-import { setPerformingBatchUpdate } from '@dlb/redux/features/performingBatchUpdate/performingBatchUpdateSlice';
-import { clearReservedArmorSlotEnergy } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
-import {
-	clearArmorSlotMods,
-	setSelectedArmorSlotMods,
-} from '@dlb/redux/features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
-import {
-	clearSelectedAspects,
-	SelectedAspects,
-	setSelectedAspects,
-} from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
-import {
-	clearSelectedClassAbility,
-	SelectedClassAbility,
-	setSelectedClassAbility,
-} from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
-import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
-import {
-	clearSelectedDestinySubclass,
-	setSelectedDestinySubclass,
-} from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
-import { setSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
-import {
-	clearSelectedFragments,
-	setSelectedFragmentsForDestinySubclass,
-} from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
-import {
-	clearSelectedGrenade,
-	SelectedGrenade,
-	setSelectedGrenade,
-} from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
-import {
-	clearSelectedIntrinsicArmorPerkOrAttributeIds,
-	getDefaultIntrinsicArmorPerkOrAttributeIdList,
-	setSelectedIntrinsicArmorPerkOrAttributeIds,
-} from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
-import {
-	clearSelectedJump,
-	SelectedJump,
-	setSelectedJump,
-} from '@dlb/redux/features/selectedJump/selectedJumpSlice';
-import {
-	clearSelectedMelee,
-	SelectedMelee,
-	setSelectedMelee,
-} from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
-import {
-	clearSelectedRaidMods,
-	setSelectedRaidMods,
-} from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import {
-	clearSelectedSuperAbility,
-	SelectedSuperAbility,
-	setSelectedSuperAbility,
-} from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
-import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
-import { setUseBonusResilience } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
+import { SelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
+import { SelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
+import { SelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGrenadeSlice';
+import { SelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
+import { SelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
+import { SelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppDispatch } from '@dlb/redux/hooks';
 import {
 	ELoadoutOptimizationTypeId,
-	getLoadoutOptimization,
 	NoneOptimization,
+	getLoadoutOptimization,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
-	AnalyzableLoadout,
 	ELoadoutOptimizationCategoryId,
 	ELoadoutType,
-	getLoadoutOptimizationCategory,
 	RichAnalyzableLoadout,
+	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
@@ -86,7 +30,6 @@ import {
 	EArmorSlotId,
 	EDestinyClassId,
 	EDestinySubclassId,
-	EIntrinsicArmorPerkOrAttributeId,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
 import { bungieNetPath } from '@dlb/utils/item-utils';
@@ -101,9 +44,10 @@ import {
 	styled,
 	useTheme,
 } from '@mui/material';
+import d2Logo from '@public/d2-logo.png';
+import dimLogo from '@public/dim-logo.png';
 import Image from 'next/image';
 import { useState } from 'react';
-import CustomTooltip from '@dlb/components/CustomTooltip';
 import Breakdown from './Breakdown';
 import IconPill from './IconPill';
 import { loadoutOptimizationIconMapping } from './LoadoutAnalyzer';
@@ -460,20 +404,7 @@ export type LoadoutItemProps = {
 	analyzeableLoadouts: AnalyzableLoadoutsValueState;
 };
 export const LoadoutItem = (props: LoadoutItemProps) => {
-	const {
-		loadout,
-		isHidden,
-		selectedExoticArmor,
-		flatAvailableExoticArmor,
-		selectedDestinySubclass,
-		selectedSuperAbility,
-		selectedAspects,
-		selectedGrenade,
-		selectedMelee,
-		selectedClassAbility,
-		selectedJump,
-		analyzeableLoadouts,
-	} = props;
+	const { loadout, isHidden, analyzeableLoadouts } = props;
 	const {
 		loadoutType,
 		id,
@@ -482,146 +413,16 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 		optimizationTypeList,
 		iconColorImage,
 		index,
-		metadata,
 	} = loadout;
 	const { analysisResults, hiddenLoadoutIdList } = analyzeableLoadouts;
 	const [inspectingOptimizationType, setInspectingOptimizationType] =
 		useState<ELoadoutOptimizationTypeId | null>(null);
 	const theme = useTheme();
 	const dispatch = useAppDispatch();
-	const clearApplicationState = () => {
-		dispatch(clearDesiredArmorStats());
-		dispatch(clearArmorSlotMods());
-		dispatch(clearSelectedRaidMods());
-		dispatch(clearSelectedIntrinsicArmorPerkOrAttributeIds());
-		dispatch(clearReservedArmorSlotEnergy());
-		dispatch(clearSelectedDestinySubclass());
-		dispatch(clearSelectedSuperAbility());
-		dispatch(clearSelectedAspects());
-		dispatch(clearSelectedFragments());
-		dispatch(clearSelectedGrenade());
-		dispatch(clearSelectedMelee());
-		dispatch(clearSelectedClassAbility());
-		dispatch(clearSelectedJump());
-		dispatch(setTabIndex(0));
-	};
-	const setApplicationState = (loadout: AnalyzableLoadout) => {
-		if (!loadout) {
-			throw new Error('wtf');
-		}
-		dispatch(setPerformingBatchUpdate(true));
-		clearApplicationState();
-		const {
-			exoticHash,
-			destinyClassId,
-			destinySubclassId,
-			aspectIdList,
-			fragmentIdList,
-			superAbilityId,
-			classAbilityId,
-			jumpId,
-			grenadeId,
-			meleeId,
-			desiredStatTiers,
-			armorSlotMods,
-			raidMods,
-			armor,
-		} = loadout;
 
-		const newSelectedExoticArmor = { ...selectedExoticArmor };
-		if (exoticHash) {
-			newSelectedExoticArmor[destinyClassId] = flatAvailableExoticArmor.find(
-				(x) => x.hash === exoticHash
-			);
-			dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
-		}
-		dispatch(setSelectedDestinyClass(destinyClassId));
-		dispatch(setDesiredArmorStats(desiredStatTiers));
-		dispatch(setSelectedArmorSlotMods(armorSlotMods));
-		dispatch(setSelectedRaidMods(raidMods));
+	const applyLoadout = useApplyAnalyzableLoadout();
 
-		if (destinySubclassId) {
-			dispatch(
-				setSelectedDestinySubclass({
-					...selectedDestinySubclass,
-					[destinyClassId]: destinySubclassId,
-				})
-			);
-			if (superAbilityId) {
-				dispatch(
-					setSelectedSuperAbility({
-						...selectedSuperAbility,
-						[destinySubclassId]: superAbilityId,
-					})
-				);
-			}
-			if (aspectIdList.length > 0) {
-				dispatch(
-					setSelectedAspects({
-						...selectedAspects,
-						[destinySubclassId]: [0, 1].map((i) => aspectIdList[i] || null),
-					})
-				);
-			}
-			if (fragmentIdList.length > 0) {
-				dispatch(
-					setSelectedFragmentsForDestinySubclass({
-						destinySubclassId,
-						fragments: fragmentIdList,
-					})
-				);
-			}
-			if (grenadeId) {
-				dispatch(
-					setSelectedGrenade({
-						...selectedGrenade,
-						[destinySubclassId]: grenadeId,
-					})
-				);
-			}
-			if (meleeId) {
-				dispatch(
-					setSelectedMelee({
-						...selectedMelee,
-						[destinySubclassId]: meleeId,
-					})
-				);
-			}
-			if (classAbilityId) {
-				dispatch(
-					setSelectedClassAbility({
-						...selectedClassAbility,
-						[destinySubclassId]: classAbilityId,
-					})
-				);
-			}
-			if (jumpId) {
-				dispatch(
-					setSelectedJump({
-						...selectedJump,
-						[destinySubclassId]: jumpId,
-					})
-				);
-			}
-		}
-
-		if (loadout.hasBonusResilienceOrnament) {
-			dispatch(setUseBonusResilience(true));
-		}
-		if (loadout.hasHalloweenMask) {
-			const newSelectedIntrinsicArmorPerkOrAttributeIds =
-				getDefaultIntrinsicArmorPerkOrAttributeIdList();
-			newSelectedIntrinsicArmorPerkOrAttributeIds[0] =
-				EIntrinsicArmorPerkOrAttributeId.HalloweenMask;
-			dispatch(
-				setSelectedIntrinsicArmorPerkOrAttributeIds(
-					newSelectedIntrinsicArmorPerkOrAttributeIds
-				)
-			);
-		}
-		dispatch(setTabIndex(0));
-		dispatch(setPerformingBatchUpdate(false));
-	};
+	const handleEditClick = () => applyLoadout(loadout, true);
 
 	const hideAnalyzableLoadout = (loadoutId: string) => {
 		dispatch(
@@ -751,7 +552,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				}}
 			>
 				<CustomTooltip title="Edit this loadout" hideOnMobile>
-					<IconButton onClick={() => setApplicationState(loadout)} size="small">
+					<IconButton onClick={handleEditClick} size="small">
 						<EditIcon />
 					</IconButton>
 				</CustomTooltip>

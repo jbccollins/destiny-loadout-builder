@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-01-26',
+		version: '2.5.2',
+		title: 'Add DIM Loadout Import',
+		sections: [
+			{
+				items: [
+					`Add the ability to paste in a DIM loadout share url and automatically populate the app with the DIM loadout data`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-01-22',
 		version: '2.5.1',
 		title: 'Add "Assume starting stat values" advanced option',

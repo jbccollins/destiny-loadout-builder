@@ -142,6 +142,7 @@ import {
 	setSharedLoadoutDesiredStats,
 } from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
+import { setUseBetaDimLinks } from '@dlb/redux/features/useBetaDimLinks/useBetaDimLinksSlice';
 import {
 	selectUseBonusResilience,
 	setUseBonusResilience,
@@ -627,6 +628,7 @@ function Loading() {
 			minimumGearTierId,
 			dimLoadoutsFilterId,
 			d2LoadoutsFilterId,
+			useBetaDimLinks,
 			useBonusResilience,
 			useOnlyMasterworkedArmor,
 			useZeroWastedStats,
@@ -639,6 +641,7 @@ function Loading() {
 		dispatch(setSelectedMinimumGearTier(minimumGearTierId));
 		dispatch(setDimLoadoutsFilter(dimLoadoutsFilterId));
 		dispatch(setInGameLoadoutsFilter(d2LoadoutsFilterId));
+		dispatch(setUseBetaDimLinks(useBetaDimLinks));
 		dispatch(setUseBonusResilience(useBonusResilience));
 		dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
 		dispatch(setExcludeLockedItems(excludeLockedItems));

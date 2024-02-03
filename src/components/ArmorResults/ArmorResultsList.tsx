@@ -4,7 +4,6 @@ import StatTiers from '@dlb/components/StatTiers';
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EModId } from '@dlb/generated/mod/EModId';
-import { DimIcon } from '@public/dim_logo.svgicon';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
 import { selectHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
@@ -21,6 +20,7 @@ import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selected
 import { selectSelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
+import { selectUseBetaDimLinks } from '@dlb/redux/features/useBetaDimLinks/useBetaDimLinksSlice';
 import { selectUseBonusResilience } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import {
@@ -48,7 +48,6 @@ import {
 	sumArmorStatMappings,
 } from '@dlb/types/ArmorStat';
 import { getFragment } from '@dlb/types/Fragment';
-import { MISSING_ICON } from '@dlb/types/globals';
 import {
 	EArmorSlotId,
 	EArmorStatId,
@@ -57,17 +56,19 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { ArmorSlotIdToModIdListMapping, getMod } from '@dlb/types/Mod';
+import { MISSING_ICON } from '@dlb/types/globals';
 import { getBonusResilienceOrnamentByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
 import { copyToClipboard } from '@dlb/utils/copy-to-clipboard';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Button, Collapse, IconButton, styled } from '@mui/material';
+import { DimIcon } from '@public/dim_logo.svgicon';
 import React from 'react';
-import { getClassItemText, ResultsTableLoadout } from './ArmorResultsTypes';
+import { ResultsTableLoadout, getClassItemText } from './ArmorResultsTypes';
 import {
-	getSortableFieldDisplayName,
 	SortableFieldsDisplayOrder,
+	getSortableFieldDisplayName,
 } from './ArmorResultsView';
 
 type ArmorResultsListProps = {
@@ -85,6 +86,7 @@ type ResultsItemProps = {
 	dimLink: string;
 	dimQuery: string;
 	isRecommendedLoadout: boolean;
+	useBetaDimLinks: boolean;
 	useBonusResilience: boolean;
 	exoticArmorItem: AvailableExoticArmorItem;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
@@ -224,6 +226,7 @@ function ResultsItem({
 	dimLink,
 	dimQuery,
 	isRecommendedLoadout,
+	useBetaDimLinks,
 	useBonusResilience,
 	exoticArmorItem,
 	armorSlotMods,
@@ -450,7 +453,12 @@ function ResultsItem({
 						variant="contained"
 						target={'_blank'}
 						href={dimLink}
-						startIcon={<DimIcon sx={{ marginTop: '-2px' }} />}
+						startIcon={
+							<DimIcon
+								isBetaIconStyle={useBetaDimLinks}
+								sx={{ marginTop: '-2px' }}
+							/>
+						}
 					>
 						Open loadout in DIM
 					</Button>
@@ -459,7 +467,12 @@ function ResultsItem({
 						sx={{ width: 180, marginBottom: '8px' }}
 						variant="contained"
 						onClick={() => handleCopyDimQueryClick(dimQuery)}
-						startIcon={<DimIcon sx={{ marginTop: '-2px' }} />}
+						startIcon={
+							<DimIcon
+								isBetaIconStyle={useBetaDimLinks}
+								sx={{ marginTop: '-2px' }}
+							/>
+						}
 					>
 						Copy DIM Query
 					</Button>
@@ -761,6 +774,7 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
 	);
+	const useBetaDimLinks = useAppSelector(selectUseBetaDimLinks);
 	const useBonusResilience = useAppSelector(selectUseBonusResilience);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
 	const selectedDestinySubclass = useAppSelector(selectSelectedDestinySubclass);
@@ -851,7 +865,9 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							useBonusResilience={_useBonusResilience}
 							exoticArmorItem={exoticArmorItem}
 							armorSlotMods={selectedArmorSlotMods}
+							useBetaDimLinks={useBetaDimLinks}
 							dimLink={`${generateDimLink({
+								useBetaDimLinks,
 								raidModIdList: selectedRaidMods,
 								armorStatModIdList: item.requiredStatModIdList,
 								artificeModIdList: item.requiredArtificeModIdList,

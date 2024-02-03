@@ -44,6 +44,7 @@ import JumpSelector from '@dlb/components/SubclassSelector/JumpSelector';
 import MeleeSelector from '@dlb/components/SubclassSelector/MeleeSelector';
 import SuperAbilitySelector from '@dlb/components/SubclassSelector/SuperAbilitySelector';
 import TabContainer from '@dlb/components/TabContainer';
+import UseBetaDimLinksToggleSwitch from '@dlb/components/UseBetaDimLinksToggleSwitch';
 import UseBonusResilienceToggleSwitch from '@dlb/components/UseBonusResilienceToggleSwitch';
 import UseOnlyMasterworkedArmorToggleSwitch from '@dlb/components/UseOnlyMasterworkedArmorToggleSwitch';
 import UseZeroWastedStatsToggleSwitch from '@dlb/components/UseZeroWastedStatsToggleSwitch';
@@ -407,6 +408,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 								<UseOnlyMasterworkedArmorToggleSwitch />
 								<UseBonusResilienceToggleSwitch />
 								<ExcludeLockedItemsToggleSwitch />
+								<UseBetaDimLinksToggleSwitch />
 								<Divider sx={{ marginTop: '32px' }} />
 								<Box
 									sx={{

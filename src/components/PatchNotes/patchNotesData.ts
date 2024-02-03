@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-02-02',
+		version: '2.5.3',
+		title: 'Support Beta DIM Links',
+		sections: [
+			{
+				items: [
+					`Add a setting to use Beta DIM links when opening loadouts in DIM`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-01-26',
 		version: '2.5.2',
 		title: 'Add DIM Loadout Import',

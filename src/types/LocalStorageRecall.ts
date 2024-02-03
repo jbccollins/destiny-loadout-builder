@@ -73,6 +73,7 @@ export type LocalStorageRecall = {
 		excludeLockedItems: boolean;
 		alwaysConsiderCollectionsRolls: boolean;
 		useOnlyMasterworkedArmor: boolean;
+		useBetaDimLinks: boolean;
 		useBonusResilience: boolean;
 		ignoredLoadoutOptimizationTypes: ELoadoutOptimizationTypeId[];
 	};
@@ -139,6 +140,7 @@ export const getDefaultLocalStorageRecall = (): LocalStorageRecall => ({
 		useZeroWastedStats: false,
 		alwaysConsiderCollectionsRolls: false,
 		useOnlyMasterworkedArmor: false,
+		useBetaDimLinks: false,
 		useBonusResilience: false,
 		excludeLockedItems: false,
 		ignoredLoadoutOptimizationTypes: [],

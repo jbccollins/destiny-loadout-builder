@@ -48,6 +48,7 @@ export type DimLoadoutConfiguration = {
 	exoticArmor: AvailableExoticArmorItem;
 	stats: ArmorStatMapping;
 	masterworkAssumption: EMasterworkAssumption;
+	useBetaDimLinks: boolean;
 	useBonusResilience: boolean;
 	destinySubclassId: EDestinySubclassId;
 	destinyClassId: EDestinyClassId;
@@ -90,6 +91,7 @@ export const generateDimLink = (
 		exoticArmor,
 		stats,
 		masterworkAssumption,
+		useBetaDimLinks,
 		useBonusResilience,
 		destinyClassId,
 		destinySubclassId,
@@ -176,9 +178,7 @@ export const generateDimLink = (
 
 	const loadout: Loadout = {
 		id: 'dlb', // this doesn't matter and will be replaced
-		name: `${
-			destinySubclassId ? getDestinySubclass(destinySubclassId).name + ' ' : ''
-		}${exoticArmor.name} [DLB GENERATED]`,
+		name: `DLB_GENERATED`,
 		classType: DestinyClassIdToDestinyClassHash[destinyClassId],
 		parameters: data,
 		equipped: (armorList || []).map(({ hash, id }) => ({
@@ -242,9 +242,10 @@ export const generateDimLink = (
 		});
 	}
 
-	const url =
-		'https://app.destinyitemmanager.com/loadouts?loadout=' +
-		encodeURIComponent(JSON.stringify(loadout));
-
+	const url = `https://${
+		useBetaDimLinks ? 'beta' : 'app'
+	}.destinyitemmanager.com/loadouts?loadout=${encodeURIComponent(
+		JSON.stringify(loadout)
+	)}`;
 	return url;
 };

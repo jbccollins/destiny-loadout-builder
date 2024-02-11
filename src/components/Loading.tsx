@@ -795,6 +795,7 @@ function Loading() {
 					armorMetadata,
 					allClassItemMetadata,
 				] = extractArmor(stores, exoticArmorCollectibles, manifest);
+				log('armorMetadata', armorMetadata, false);
 				log('allClassItemMetadata', allClassItemMetadata, false);
 
 				dispatch(setArmor({ ...armor }));

@@ -9,10 +9,10 @@ import {
 	ArmorGroup,
 	ArmorIdList,
 	ArmorItems,
-	getDefaultAllClassItemMetadata,
 	ISelectedExoticArmor,
 	StatList,
 	StrictArmorItems,
+	getDefaultAllClassItemMetadata,
 } from '@dlb/types/Armor';
 import {
 	ArmorSlotIdList,
@@ -45,10 +45,12 @@ import {
 	getModCombos,
 } from './getModCombos';
 import {
-	getDefaultSeenArmorSlotItems,
 	SeenArmorSlotItems,
+	getDefaultSeenArmorSlotItems,
 } from './seenArmorSlotItems';
 import {
+	RequiredClassItemMetadataKey,
+	RequiredClassItemMetadataKeyList,
 	getArmorStatMappingFromArtificeModIdList,
 	getArmorStatMappingFromStatList,
 	getExtraSumOfSeenStats,
@@ -57,8 +59,6 @@ import {
 	getTotalModCost,
 	getTotalStatTiers,
 	getWastedStats,
-	RequiredClassItemMetadataKey,
-	RequiredClassItemMetadataKeyList,
 	sumModCosts,
 	sumStatLists,
 } from './utils';
@@ -373,6 +373,7 @@ export type DoProcessArmorParams = {
 	selectedExoticArmorItem: ISelectedExoticArmor;
 	alwaysConsiderCollectionsRolls: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
+	assumedStatValuesStatMapping: ArmorStatMapping;
 };
 /**
  * @param {StrictArmorItems} armorItems - [heads, arms, chests, legs]
@@ -397,6 +398,7 @@ export const doProcessArmor = ({
 	selectedExoticArmorItem,
 	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
+	assumedStatValuesStatMapping,
 }: DoProcessArmorParams): DoProcessArmorOutput => {
 	// Bonus resil does not apply to exotic chest armor loadouts
 	const _useBonusResilience =
@@ -404,13 +406,17 @@ export const doProcessArmor = ({
 		selectedExoticArmorItem.armorSlot !== EArmorSlotId.Chest;
 	const sumOfSeenStats = sumStatLists([
 		getExtraSumOfSeenStats(
-			fragmentArmorStatMapping,
-			modArmorStatMapping,
+			[
+				fragmentArmorStatMapping,
+				modArmorStatMapping,
+				assumedStatValuesStatMapping,
+			],
 			_useBonusResilience
 		),
 		// Assume every class item is masterworked
 		EXTRA_MASTERWORK_STAT_LIST,
 	]);
+	console.log('sumOfSeenStats', sumOfSeenStats);
 
 	const seenArmorSlotItems = getDefaultSeenArmorSlotItems();
 	const processArmorParams: ProcessArmorParams = {

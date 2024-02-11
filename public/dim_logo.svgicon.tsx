@@ -1,8 +1,24 @@
-import { SvgIcon } from '@mui/material';
+import { SvgIcon, SvgIconProps } from '@mui/material';
 
-export const DimIcon = (props) => {
+export const DimIcon = (
+	props: SvgIconProps & { isBetaIconStyle?: boolean }
+) => {
+	const { isBetaIconStyle, ...rest } = props;
+
+	// if beta icon style is true, return the beta icon
+	// filter: hue-rotate(160deg) brightness(107%);
+	const restSx = rest.sx || {};
+
 	return (
-		<SvgIcon {...props}>
+		<SvgIcon
+			{...rest}
+			sx={{
+				...restSx,
+				filter: isBetaIconStyle
+					? 'hue-rotate(160deg) brightness(107%)'
+					: undefined,
+			}}
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 320 320"

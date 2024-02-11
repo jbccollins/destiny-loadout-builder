@@ -11,7 +11,7 @@ export function emptyObject<
 	return EMPTY_OBJ as T;
 }
 
-const EMPTY_ARRAY: readonly unknown[] = Object.freeze<unknown>([]);
+const EMPTY_ARRAY: readonly unknown[] = Object.freeze<unknown[]>([]);
 export function emptyArray<T>(): T[] {
 	return EMPTY_ARRAY as T[];
 }

@@ -11,6 +11,42 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-02-02',
+		version: '2.5.3',
+		title: 'Support Beta DIM Links',
+		sections: [
+			{
+				items: [
+					`Add a setting to use Beta DIM links when opening loadouts in DIM`,
+				],
+			},
+		],
+	},
+	{
+		date: '2024-01-26',
+		version: '2.5.2',
+		title: 'Add DIM Loadout Import',
+		sections: [
+			{
+				items: [
+					`Add the ability to paste in a DIM loadout share url and automatically populate the app with the DIM loadout data`,
+				],
+			},
+		],
+	},
+	{
+		date: '2024-01-22',
+		version: '2.5.1',
+		title: 'Add "Assume starting stat values" advanced option',
+		sections: [
+			{
+				items: [
+					`Add a new advanced option to the desired stat tiers selector that allows the user to assume that they are starting with X amount of any stat`,
+				],
+			},
+		],
+	},
+	{
 		date: '2023-11-20',
 		version: '2.5.0',
 		title: 'Major Internal Refactor',

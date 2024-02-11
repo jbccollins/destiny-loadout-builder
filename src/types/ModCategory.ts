@@ -1,12 +1,12 @@
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
 import { EModId } from '@dlb/generated/mod/EModId';
-import { EnumDictionary, IIdentifiableName } from './globals';
 import {
 	EElementId,
 	EModCategoryId,
 	ERaidAndNightMareModTypeId,
 } from './IdEnums';
+import { EnumDictionary, IIdentifiableName } from './globals';
 
 enum EAuthorizedAbility {
 	Melee = 'Melee',
@@ -109,11 +109,6 @@ const ModCategoryIdToModCategoryMapping: EnumDictionary<
 	[EModCategoryId.WeaponSurge]: {
 		id: EModCategoryId.WeaponSurge,
 		name: 'Weapon Surge',
-		description: '',
-	},
-	[EModCategoryId.Siphon]: {
-		id: EModCategoryId.Siphon,
-		name: 'Siphon',
 		description: '',
 	},
 	[EModCategoryId.Resistance]: {

@@ -24,10 +24,9 @@ import { selectSelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbi
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	ELoadoutType,
-	filterOptimizationTypeList,
 	LodaoutTypeFilterToLoadoutTypeMapping,
+	filterOptimizationTypeList,
 } from '@dlb/types/AnalyzableLoadout';
-import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 import { Help } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -38,6 +37,7 @@ import dimLogo from '@public/dim-logo.png';
 import CustomTextField from '@dlb/components/CustomTextField';
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import TabContainer, { TabContainerItem } from '@dlb/components/TabContainer';
+import useFlatAvailableExoticArmor from '@dlb/hooks/useFlatAvailableExoticArmor';
 import { getDestinyClassIcon } from '@dlb/types/DestinyClassIcon';
 import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { Box, Collapse, IconButton, SxProps, useTheme } from '@mui/material';
@@ -99,16 +99,7 @@ export default function AnalyzerResultsList() {
 		dispatch(setAnalyzerSearch(value));
 	};
 
-	const flatAvailableExoticArmor: AvailableExoticArmorItem[] = useMemo(() => {
-		let flatAvailableExoticArmor: AvailableExoticArmorItem[] = [];
-		DestinyClassIdList.forEach((destinyClassId) => {
-			Object.values(availableExoticArmor[destinyClassId]).forEach((x) => {
-				flatAvailableExoticArmor = flatAvailableExoticArmor.concat(x);
-			});
-		});
-
-		return flatAvailableExoticArmor;
-	}, [availableExoticArmor]);
+	const flatAvailableExoticArmor = useFlatAvailableExoticArmor();
 
 	const numValidLoadouts = useMemo(
 		() => Object.entries(validLoadouts).length,

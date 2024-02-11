@@ -25,6 +25,7 @@ import reservedArmorSlotEnergyReducer, {
 } from './features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import selectedArmorSlotModsReducer from './features/selectedArmorSlotMods/selectedArmorSlotModsSlice';
 import selectedAspectsReducer from './features/selectedAspects/selectedAspectsSlice';
+import selectedAssumedStatValuesReducer from './features/selectedAssumedStatValues/selectedAssumedStatValuesSlice';
 import selectedClassAbilityReducer from './features/selectedClassAbility/selectedClassAbilitySlice';
 import selectedDestinyClassReducer from './features/selectedDestinyClass/selectedDestinyClassSlice';
 import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
@@ -110,6 +111,7 @@ import processedArmorReducer, {
 	setProcessedArmor,
 } from './features/processedArmor/processedArmorSlice';
 import selectedMinimumGearTierReducer from './features/selectedMinimumGearTier/selectedMinimumGearTierSlice';
+import useBetaDimLinksReducer from './features/useBetaDimLinks/useBetaDimLinksSlice';
 import useBonusResilienceReducer from './features/useBonusResilience/useBonusResilienceSlice';
 import useOnlyMasterworkedArmorReducer from './features/useOnlyMasterworkedArmor/useOnlyMasterworkedArmorSlice';
 import useZeroWastedStatsReducer from './features/useZeroWastedStats/useZeroWastedStatsSlice';
@@ -176,6 +178,7 @@ export function makeStore() {
 			resultsPagination: resultsPaginationReducer,
 			selectedArmorSlotMods: selectedArmorSlotModsReducer,
 			selectedAspects: selectedAspectsReducer,
+			selectedAssumedStatValues: selectedAssumedStatValuesReducer,
 			selectedClassAbility: selectedClassAbilityReducer,
 			selectedDestinyClass: selectedDestinyClassReducer,
 			selectedDestinySubclass: selectedDestinySubclassReducer,
@@ -194,6 +197,7 @@ export function makeStore() {
 				sharedLoadoutConfigStatPriorityOrderReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
 			tabIndex: tabIndexReducer,
+			useBetaDimLinks: useBetaDimLinksReducer,
 			useBonusResilience: useBonusResilienceReducer,
 			useOnlyMasterworkedArmor: useOnlyMasterworkedArmorReducer,
 			useZeroWastedStats: useZeroWastedStatsReducer,
@@ -218,6 +222,7 @@ let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
+let useBetaDimLinksUuid = NIL;
 let useBonusResilienceUuid = NIL;
 let useZeroWastedStatsUuid = NIL;
 let excludeLockedItemsUuid = NIL;
@@ -234,6 +239,7 @@ let selectedMeleeUuid = NIL;
 let selectedSuperAbilityUuid = NIL;
 let selectedClassAbilityUuid = NIL;
 let ignoredLoadoutOptimizationTypesUuid = NIL;
+let selectedAssumedStatValuesUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: ReturnType<typeof store.getState> = null;
@@ -298,6 +304,7 @@ function handleChange() {
 			uuid: nextReservedArmorSlotEnergyUuid,
 		},
 		sharedLoadoutDesiredStats: { uuid: nextSharedLoadoutDesiredStatsUuid },
+		useBetaDimLinks: { value: useBetaDimLinks, uuid: nextUseBetaDimLinksUuid },
 		useBonusResilience: {
 			value: useBonusResilience,
 			uuid: nextUseBonusResilienceUuid,
@@ -349,7 +356,10 @@ function handleChange() {
 			value: ignoredLoadoutOptimizationTypes,
 			uuid: nextIgnoredLoadoutOptimizationTypesUuid,
 		},
-
+		selectedAssumedStatValues: {
+			value: selectedAssumedStatValues,
+			uuid: nextSelectedAssumedStatValuesUuid,
+		},
 		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -378,6 +388,7 @@ function handleChange() {
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
 		useBonusResilienceUuid !== nextUseBonusResilienceUuid ||
+		useBetaDimLinksUuid !== nextUseBetaDimLinksUuid ||
 		useOnlyMasterworkedArmorUuid !== nextUseOnlyMasterworkedArmorUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
@@ -390,67 +401,24 @@ function handleChange() {
 		!performingBatchUpdate
 	) {
 		console.log('>>>>>> [STORE] Mismatched localStorageRecallIds <<<<<<');
-		// [
-		// 	[selectedDestinyClassUuid, nextSelectedDestinyClassUuid],
-		// 	[selectedDestinySubclassUuid, nextSelectedDestinySubclassUuid],
-		// 	[selectedExoticArmorUuid, nextSelectedExoticArmorUuid],
-		// 	[selectedAspectsUuid, nextSelectedAspectsUuid],
-		// 	[selectedFragmentsUuid, nextSelectedFragmentsUuid],
-		// 	[selectedJumpUuid, nextSelectedJumpUuid],
-		// 	[selectedMeleeUuid, nextSelectedMeleeUuid],
-		// 	[selectedGrenadeUuid, nextSelectedGrenadeUuid],
-		// 	[selectedSuperAbilityUuid, nextSelectedSuperAbilityUuid],
-		// 	[selectedClassAbilityUuid, nextSelectedClassAbilityUuid],
-		// 	[selectedRaidModsUuid, nextSelectedRaidModsUuid],
-		// 	[selectedArmorSlotModsUuid, nextSelectedArmorSlotModsUuid],
-		// 	[
-		// 		selectedIntrinsicArmorPerkOrAttributeIdsUuid,
-		// 		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid,
-		// 	],
-		// 	[selectedMasterworkAssumptionUuid, nextSelectedMasterworkAssumptionUuid],
-		// 	[selectedMinimumGearTierUuid, nextSelectedMinimumGearTierUuid],
-		// 	[dimLoadoutsFilterUuid, nextDimLoadoutsFilterUuid],
-		// 	[inGameLoadoutsFilterUuid, nextInGameLoadoutsFilterUuid],
-		// 	[reservedArmorSlotEnergyUuid, nextReservedArmorSlotEnergyUuid],
-		// 	[useBonusResilienceUuid, nextUseBonusResilienceUuid],
-		// 	[useOnlyMasterworkedArmorUuid, nextUseOnlyMasterworkedArmorUuid],
-		// 	[useZeroWastedStatsUuid, nextUseZeroWastedStatsUuid],
-		// 	[
-		// 		alwaysConsiderCollectionsRollsUuid,
-		// 		nextAlwaysConsiderCollectionsRollsUuid,
-		// 	],
-		// ].forEach(([previousUuid, nextUuid], index) => {
-		// 	if (previousUuid !== nextUuid) {
-		// 		console.log(
-		// 			'>>>>>> [STORE] Mismatched localStorageRecallId <<<<<<',
-		// 			previousUuid,
-		// 			nextUuid,
-		// 			'>> index',
-		// 			index
-		// 		);
-		// 	}
-		// });
 		selectedAspectsUuid = nextSelectedAspectsUuid;
 		selectedJumpUuid = nextSelectedJumpUuid;
 		selectedMeleeUuid = nextSelectedMeleeUuid;
 		selectedGrenadeUuid = nextSelectedGrenadeUuid;
 		selectedSuperAbilityUuid = nextSelectedSuperAbilityUuid;
 		selectedClassAbilityUuid = nextSelectedClassAbilityUuid;
+		useBetaDimLinksUuid = nextUseBetaDimLinksUuid;
 		ignoredLoadoutOptimizationTypesUuid =
 			nextIgnoredLoadoutOptimizationTypesUuid;
 
 		const localStorageRecall = getLocalStorageRecall();
-		// console.log(
-		// 	'>>>>>>>>>>> [STORE] localStorageRecall <<<<<<<<<<<',
-		// 	localStorageRecall
-		// );
-		// Settings
 		localStorageRecall.settings.alwaysConsiderCollectionsRolls =
 			alwaysConsiderCollectionsRolls;
 		localStorageRecall.settings.useOnlyMasterworkedArmor =
 			useOnlyMasterworkedArmor;
 		localStorageRecall.settings.useZeroWastedStats = useZeroWastedStats;
 		localStorageRecall.settings.excludeLockedItems = excludeLockedItems;
+		localStorageRecall.settings.useBetaDimLinks = useBetaDimLinks;
 		localStorageRecall.settings.useBonusResilience = useBonusResilience;
 		localStorageRecall.settings.masterworkAssumption = masterworkAssumption;
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
@@ -531,7 +499,8 @@ function handleChange() {
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
 		inGameLoadoutsFlatItemIdListUuid !== nextInGameLoadoutsFlatItemIdListUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
-			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid;
+			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
+		selectedAssumedStatValuesUuid !== nextSelectedAssumedStatValuesUuid;
 	const hasNonDefaultUuids =
 		nextAllClassItemMetadataUuid !== NIL &&
 		nextDesiredArmorStatsUuid !== NIL &&
@@ -550,7 +519,8 @@ function handleChange() {
 		nextUseZeroWastedStatsUuid !== NIL &&
 		nextInGameLoadoutsFilterUuid !== NIL &&
 		nextInGameLoadoutsFlatItemIdListUuid !== NIL &&
-		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid !== NIL;
+		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid !== NIL &&
+		nextSelectedAssumedStatValuesUuid !== NIL;
 
 	// if (hasAllDataLoaded) {
 	// 	// log any next uuids that are NIL
@@ -626,6 +596,7 @@ function handleChange() {
 	inGameLoadoutsFlatItemIdListUuid = nextInGameLoadoutsFlatItemIdListUuid;
 	selectedIntrinsicArmorPerkOrAttributeIdsUuid =
 		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid;
+	selectedAssumedStatValuesUuid = nextSelectedAssumedStatValuesUuid;
 
 	// TODO: Move this out of the store file
 	const {
@@ -737,6 +708,7 @@ function handleChange() {
 		selectedExoticArmorItem,
 		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata: _allClassItemMetadata,
+		assumedStatValuesStatMapping: selectedAssumedStatValues,
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {

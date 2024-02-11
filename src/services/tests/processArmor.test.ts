@@ -140,6 +140,7 @@ const testCases: TestCase[] = [
 					[EArmorStatId.Strength]: 0,
 				},
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
+				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
 					getDefaultPotentialRaidModArmorSlotPlacement(),
@@ -274,6 +275,7 @@ const testCases: TestCase[] = [
 					[EArmorStatId.Strength]: 0,
 				},
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
+				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
 					getDefaultPotentialRaidModArmorSlotPlacement(),
@@ -453,6 +455,7 @@ const testCases: TestCase[] = [
 					[EArmorStatId.Strength]: 0,
 				},
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
+				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
 					getDefaultPotentialRaidModArmorSlotPlacement(),
@@ -611,6 +614,7 @@ const testCases: TestCase[] = [
 					[EArmorStatId.Strength]: 0,
 				},
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
+				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
 					getDefaultPotentialRaidModArmorSlotPlacement(),
@@ -782,6 +786,7 @@ const testCases: TestCase[] = [
 					[EArmorStatId.Strength]: 0,
 				},
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
+				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
 					getDefaultPotentialRaidModArmorSlotPlacement(),
@@ -965,6 +970,7 @@ const testCases: TestCase[] = [
 					[EArmorStatId.Strength]: 0,
 				},
 				fragmentArmorStatMapping: getDefaultArmorStatMapping(),
+				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),
 				modArmorStatMapping: getDefaultArmorStatMapping(),
 				potentialRaidModArmorSlotPlacements: [
 					{

@@ -6,10 +6,7 @@ import {
 import { loadStoresData } from '@dlb/dim/inventory/d2-stores';
 import { setAllDataLoaded } from '@dlb/redux/features/allDataLoaded/allDataLoadedSlice';
 import { setArmor } from '@dlb/redux/features/armor/armorSlice';
-import {
-	selectAvailableExoticArmor,
-	setAvailableExoticArmor,
-} from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
+import { setAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { setCharacters } from '@dlb/redux/features/characters/charactersSlice';
 import { setSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import {
@@ -86,6 +83,10 @@ import {
 	setSelectedAspectsForDestinySubclass,
 } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import {
+	selectSelectedAssumedStatValues,
+	setSelectedAssumedStatValues,
+} from '@dlb/redux/features/selectedAssumedStatValues/selectedAssumedStatValuesSlice';
+import {
 	selectSelectedClassAbility,
 	setSelectedClassAbility,
 	setSelectedClassAbilityForDestinySubclass,
@@ -141,6 +142,7 @@ import {
 	setSharedLoadoutDesiredStats,
 } from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
+import { setUseBetaDimLinks } from '@dlb/redux/features/useBetaDimLinks/useBetaDimLinksSlice';
 import {
 	selectUseBonusResilience,
 	setUseBonusResilience,
@@ -162,8 +164,8 @@ import {
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
-	getLocalStorageRecall,
 	LocalStorageRecall,
+	getLocalStorageRecall,
 } from '@dlb/types/LocalStorageRecall';
 import { TabTypeList } from '@dlb/types/Tab';
 import { CheckCircleRounded } from '@mui/icons-material';
@@ -266,7 +268,9 @@ function Loading() {
 	const sharedLoadoutConfigStatPriorityOrder = useAppSelector(
 		selectSharedLoadoutConfigStatPriorityOrder
 	);
-	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
+	const selectedAssumedStatValues = useAppSelector(
+		selectSelectedAssumedStatValues
+	);
 
 	const defaultSelectedDestinySubclass: Record<
 		EDestinyClassId,
@@ -624,6 +628,7 @@ function Loading() {
 			minimumGearTierId,
 			dimLoadoutsFilterId,
 			d2LoadoutsFilterId,
+			useBetaDimLinks,
 			useBonusResilience,
 			useOnlyMasterworkedArmor,
 			useZeroWastedStats,
@@ -636,6 +641,7 @@ function Loading() {
 		dispatch(setSelectedMinimumGearTier(minimumGearTierId));
 		dispatch(setDimLoadoutsFilter(dimLoadoutsFilterId));
 		dispatch(setInGameLoadoutsFilter(d2LoadoutsFilterId));
+		dispatch(setUseBetaDimLinks(useBetaDimLinks));
 		dispatch(setUseBonusResilience(useBonusResilience));
 		dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
 		dispatch(setExcludeLockedItems(excludeLockedItems));
@@ -789,6 +795,7 @@ function Loading() {
 					armorMetadata,
 					allClassItemMetadata,
 				] = extractArmor(stores, exoticArmorCollectibles, manifest);
+				log('armorMetadata', armorMetadata, false);
 				log('allClassItemMetadata', allClassItemMetadata, false);
 
 				dispatch(setArmor({ ...armor }));
@@ -932,6 +939,8 @@ function Loading() {
 				}
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				log('dirtyDesiredArmorStats', null, false);
+				dispatch(setSelectedAssumedStatValues(selectedAssumedStatValues));
+				log('dirtySelectedAssumedStatValues', null, false);
 
 				if (hasDimLoadoutsError) {
 					dispatch(setDimLoadouts([]));

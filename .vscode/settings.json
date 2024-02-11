@@ -1,8 +1,9 @@
 {
+	"terminal.integrated.rightClickBehavior": "default",
 	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": false
+		"source.fixAll.eslint": "never"
 	},
-	"eslint.validate": ["typescript"],
+	"typescript.tsserver.log": "verbose",
 	"typescript.tsserver.experimental.enableProjectDiagnostics": true,
 	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -27,5 +28,10 @@
 		"editor.formatOnPaste": false,
 		"editor.formatOnSave": true,
 	},
-	"typescript.tsdk": "node_modules/typescript/lib"
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"[typescript][typescriptreact]": {
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "explicit"
+		}
+	}
 }

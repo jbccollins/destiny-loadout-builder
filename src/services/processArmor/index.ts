@@ -416,7 +416,6 @@ export const doProcessArmor = ({
 		// Assume every class item is masterworked
 		EXTRA_MASTERWORK_STAT_LIST,
 	]);
-	console.log('sumOfSeenStats', sumOfSeenStats);
 
 	const seenArmorSlotItems = getDefaultSeenArmorSlotItems();
 	const processArmorParams: ProcessArmorParams = {

@@ -88,7 +88,7 @@ export default function LoadoutAnalysisWebWorkerWrapper() {
 						dispatch(incrementProgressCompletionCount());
 						const payload = e.data
 							.payload as GetLoadoutsThatCanBeOptimizedProgress;
-						console.log('progress', e.data.payload);
+						// console.log('progress', e.data.payload);
 						if (payload.canBeOptimized) {
 							dispatch(incrementProgressCanBeOptimizedCount());
 						}

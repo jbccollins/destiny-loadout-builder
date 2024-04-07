@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import { JSXElementConstructor, useEffect } from 'react';
+import { HTMLAttributes, JSXElementConstructor, useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
 import { v4 as uuid } from 'uuid';
 import DecoratedBungieIcon from './DecoratedBungieIcon';
@@ -180,6 +180,11 @@ function IconAutocompleteDropdown({
 							insideWords: true,
 						});
 						const parts = parse(getLabel(option), matches);
+						// Fixes a dumb console warning about spreading a key prop
+						// Might be able to get rid of this spread with React 19
+						const { key, ...rest } = props as HTMLAttributes<HTMLLIElement> & {
+							key: string;
+						};
 						return (
 							<Box
 								component="li"
@@ -187,7 +192,8 @@ function IconAutocompleteDropdown({
 									'& > img': { mr: 2, flexShrink: 0 },
 									flexWrap: 'wrap',
 								}}
-								{...props}
+								key={key}
+								{...rest}
 							>
 								<Box sx={{ display: 'flex', flexWrap: 'nowrap' }}>
 									<DecoratedBungieIcon

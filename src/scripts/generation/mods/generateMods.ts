@@ -10,13 +10,13 @@ import {
 	getDescription,
 } from '@dlb/scripts/generation/utils';
 import { getArmorSlotIdByHash } from '@dlb/types/ArmorSlot';
-import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import {
 	getModCategoryId,
 	getRaidAndNightmareModTypeId,
 } from '@dlb/types/ModCategory';
 import { getModSocketCategoryIdByModDisplayNameId } from '@dlb/types/ModSocketCategory';
+import { IMod } from '@dlb/types/generation';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import {
 	DestinyEnergyTypeDefinition,
@@ -105,8 +105,8 @@ const buildModData = (
 		}`
 	) as EModId;
 
-	if ((modId as string) === 'Unknown') {
-		console.warn('Skipping unknown modId');
+	if ((modId as string) == 'Unknown') {
+		console.warn('Skipping unknown mod hash: ', mod.hash);
 		return null;
 	}
 
@@ -213,12 +213,6 @@ export async function run() {
 	allMods
 		.filter((mod) => !excludedModHashes.includes(mod.hash))
 		.forEach((mod) => {
-			if (mod.displayProperties.name === 'Recovery-Forged') {
-				console.log('recovery forged');
-			}
-			if (mod.itemTypeDisplayName === '') {
-				console.log('bad', mod.displayProperties.name);
-			}
 			modDisplayNames.add(generateId(mod.itemTypeDisplayName));
 			const m = buildModData(
 				mod,
@@ -228,6 +222,11 @@ export async function run() {
 				artifactMods
 			);
 			if (m) {
+				// 'Unknown' or 'ArtifactUnknown' are not valid mod ids
+				if (m.id.includes('Unknown')) {
+					console.log('Unknown mod:', m.name, m.id, m.hash);
+					return;
+				}
 				mods.push(m);
 			}
 		});

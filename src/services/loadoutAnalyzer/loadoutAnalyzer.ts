@@ -1216,7 +1216,7 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		id: ELoadoutOptimizationTypeId.UnstackableMods,
 		name: 'Unstackable Mods',
 		description:
-			'This loadout uses multiple copies of mods with benefits that do not stack when equipping multiple copies.',
+			'This loadout uses multiple copies of mods with benefits that do not stack.',
 		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
 	[ELoadoutOptimizationTypeId.None]: {

@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2024-04-07',
+		version: '2.5.5',
+		title: 'Fix Exotic Armor Icon Bug',
+		sections: [
+			{
+				items: [
+					`Fix a bug where the exotic selector would sometimes show the icon for an exotic armor ornament instead of the icon for base exotic armor piece`,
+				],
+			},
+		],
+	},
+	{
+		date: '2024-04-07',
 		version: '2.5.4',
 		title: 'Add "Unstackable Mods" Support',
 		sections: [

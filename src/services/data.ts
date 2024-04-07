@@ -134,6 +134,9 @@ export const extractArmor = (
 			] as EDestinyClassId;
 			const armorSlot = BucketHashToArmorSlot[item.bucket.hash] as EArmorSlotId;
 
+			const manifestItem = manifest.InventoryItem.get(item.hash);
+			const iconUrl = manifestItem.displayProperties.icon || item.icon;
+
 			if (item.isExotic) {
 				if (seenExotics[item.hash]) {
 					seenExotics[item.hash].count++;
@@ -158,7 +161,7 @@ export const extractArmor = (
 					seenExotics[item.hash] = {
 						hash: item.hash,
 						name: item.name,
-						icon: bungieNetPath(item.icon),
+						icon: bungieNetPath(iconUrl),
 						armorSlot: DestinyArmorTypeToArmorSlotId[item.type],
 						destinyClassName:
 							DestinyClassStringToDestinyClassId[item.classTypeNameLocalized],

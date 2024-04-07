@@ -18,14 +18,15 @@ import {
 	ArmorSlotWithClassItemIdList,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
-import { IMod } from '@dlb/types/generation';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import {
 	ArmorSlotIdToArmorSlotModIdListMapping,
 	getMod,
 	hasMutuallyExclusiveMods,
+	hasUnstackableMods,
 } from '@dlb/types/Mod';
 import { getModCategory } from '@dlb/types/ModCategory';
+import { IMod } from '@dlb/types/generation';
 import HelpIcon from '@mui/icons-material/Help';
 import {
 	Box,
@@ -202,9 +203,16 @@ function ArmorSlotModSelector() {
 		const _selectedMods = [...selectedMods, mod.id]
 			.filter((x) => !!x)
 			.map((x) => getMod(x));
+
 		const [_hasMutuallyExclusiveMods, _] =
 			hasMutuallyExclusiveMods(_selectedMods);
 		if (_hasMutuallyExclusiveMods) {
+			return true;
+		}
+
+		const [_hasUnstackableMods, unstackableModIdList] =
+			hasUnstackableMods(_selectedMods);
+		if (_hasUnstackableMods && unstackableModIdList.includes(mod.id)) {
 			return true;
 		}
 	};

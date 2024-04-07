@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-04-07',
+		version: '2.5.4',
+		title: 'Add "Unstackable Mods" Support',
+		sections: [
+			{
+				items: [
+					`Prevent users from selecting multiple copies of mods that do not stack`,
+					`Add a new analyzer optimization type to check for loadouts that contain unstackable mods`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-02-02',
 		version: '2.5.3',
 		title: 'Support Beta DIM Links',

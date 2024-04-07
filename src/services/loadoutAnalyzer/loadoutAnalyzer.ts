@@ -104,6 +104,7 @@ import {
 	hasActiveSeasonReducedCostVariantMods,
 	hasAlternateSeasonReducedCostVariantMods,
 	hasMutuallyExclusiveMods,
+	hasUnstackableMods,
 	NonArtifactArmorSlotModIdList,
 	replaceAllModsThatDimWillReplace,
 	replaceAllReducedCostVariantMods,
@@ -942,6 +943,7 @@ export enum ELoadoutOptimizationTypeId {
 	UnusedModSlots = 'UnusedModSlots',
 	Doomed = 'Doomed',
 	ManuallyCorrectableDoomed = 'ManuallyCorrectableDoomed',
+	UnstackableMods = 'UnstackableMods',
 	None = 'None',
 	Error = 'Error',
 }
@@ -1062,7 +1064,7 @@ export const humanizeOptimizationTypes = (
 				].includes(x)
 		);
 	}
-	// Higher stat tier takes precendence over fewer wasted stats
+	// Higher stat tier takes precedence over fewer wasted stats
 	if (
 		filteredOptimizationTypeList.includes(
 			ELoadoutOptimizationTypeId.HigherStatTier
@@ -1210,6 +1212,13 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 			'[D2 Loadout Specific] This loadout uses discounted mods from the current season that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 	},
+	[ELoadoutOptimizationTypeId.UnstackableMods]: {
+		id: ELoadoutOptimizationTypeId.UnstackableMods,
+		name: 'Unstackable Mods',
+		description:
+			'This loadout uses multiple copies of mods with benefits that do not stack when equipping multiple copies.',
+		category: ELoadoutOptimizationCategoryId.WARNING,
+	},
 	[ELoadoutOptimizationTypeId.None]: {
 		id: ELoadoutOptimizationTypeId.None,
 		name: 'No Optimizations Found',
@@ -1240,6 +1249,7 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 		ELoadoutOptimizationTypeId.UnspecifiedAspect,
 		ELoadoutOptimizationTypeId.UnmasterworkedArmor,
 		ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
+		ELoadoutOptimizationTypeId.UnstackableMods,
 		ELoadoutOptimizationTypeId.Doomed,
 		ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed,
 		ELoadoutOptimizationTypeId.StatsOver100,
@@ -1299,6 +1309,7 @@ export type GetLoadoutsThatCanBeOptimizedProgressMetadata = {
 	lowestWastedStats: number;
 	currentWastedStats: number;
 	mutuallyExclusiveModGroups: string[]; // TODO: Rework this to contain the actual mod ids
+	unstackableModIdList: EModId[];
 	modPlacement: ArmorStatAndRaidModComboPlacement;
 	unusedModSlots: Partial<Record<EArmorSlotId, number>>;
 };
@@ -1388,7 +1399,7 @@ export const getLoadoutsThatCanBeOptimized = (
 			const optimizationTypeList: ELoadoutOptimizationTypeId[] = [
 				...loadout.optimizationTypeList,
 			];
-			const metadata = {
+			const metadata: GetLoadoutsThatCanBeOptimizedProgressMetadata = {
 				maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
 				maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				lowestCost: Infinity,
@@ -1396,6 +1407,7 @@ export const getLoadoutsThatCanBeOptimized = (
 				lowestWastedStats: Infinity,
 				currentWastedStats: Infinity,
 				mutuallyExclusiveModGroups: [],
+				unstackableModIdList: [],
 				modPlacement: getDefaultModPlacements().placement,
 				unusedModSlots: {},
 			};
@@ -1534,6 +1546,8 @@ export const getLoadoutsThatCanBeOptimized = (
 					let hasInvalidLoadoutConfiguration = false;
 					let _hasMutuallyExclusiveMods = false;
 					let _mutuallyExclusiveModGroups: string[] = [];
+					let _hasUnstackableMods = false;
+					let _unstackableModIdList: EModId[] = [];
 
 					// In one loop find the lowest cost and lowest wasted stats
 					processedArmor.items.forEach((x) => {
@@ -1610,9 +1624,14 @@ export const getLoadoutsThatCanBeOptimized = (
 					hasUnmasterworkedArmor = loadout.armor.some((x) => !x.isMasterworked);
 					hasUnspecifiedAspect = loadout.aspectIdList.length === 1;
 					hasInvalidLoadoutConfiguration = processedArmor.items.length === 0;
+
 					[_hasMutuallyExclusiveMods, _mutuallyExclusiveModGroups] =
 						hasMutuallyExclusiveMods(flattenedMods);
 					metadata.mutuallyExclusiveModGroups = _mutuallyExclusiveModGroups;
+
+					[_hasUnstackableMods, _unstackableModIdList] =
+						hasUnstackableMods(flattenedMods);
+					metadata.unstackableModIdList = _unstackableModIdList;
 
 					if (hasHigherStatTiers) {
 						optimizationTypeList.push(
@@ -1661,6 +1680,11 @@ export const getLoadoutsThatCanBeOptimized = (
 					if (_hasMutuallyExclusiveMods) {
 						optimizationTypeList.push(
 							ELoadoutOptimizationTypeId.MutuallyExclusiveMods
+						);
+					}
+					if (_hasUnstackableMods) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.UnstackableMods
 						);
 					}
 					if (hasUnusedModSlots) {

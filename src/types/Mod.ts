@@ -1,4 +1,5 @@
 import mutuallyExclusiveMods from '@dlb/dim/data/d2/mutually-exclusive-mods.json';
+import unstackableMods from '@dlb/dim/data/d2/unstackable-mods.json';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ModIdToModMapping } from '@dlb/generated/mod/ModMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
@@ -8,14 +9,14 @@ import {
 	reducedToNormalMod,
 } from '@dlb/utils/reduced-cost-mod-mapping';
 import { ArmorSlotWithClassItemIdList } from './ArmorSlot';
-import { IMod } from './generation';
-import { EnumDictionary } from './globals';
 import {
 	EArmorSlotId,
 	EArmorStatId,
 	EModCategoryId,
 	EModSocketCategoryId,
 } from './IdEnums';
+import { IMod } from './generation';
+import { EnumDictionary } from './globals';
 
 export const getMod = (id: EModId): IMod => ModIdToModMapping[id];
 
@@ -535,6 +536,23 @@ export function hasMutuallyExclusiveMods(mods: IMod[]): [boolean, string[]] {
 		return [true, exclusionGroups];
 	}
 	return [false, []];
+}
+
+export function hasUnstackableMods(mods: IMod[]): [boolean, EModId[]] {
+	let _hasUnstackableMods = false;
+	const unstackableModIdList: EModId[] = [];
+	const uniqueModIdList = [...new Set(mods.map((mod) => mod.id))];
+	uniqueModIdList.forEach((modId) => {
+		const mod = getMod(modId);
+		if (
+			unstackableMods.includes(mod.hash) &&
+			mods.filter((x) => x.id === modId).length > 1
+		) {
+			_hasUnstackableMods = true;
+			unstackableModIdList.push(modId);
+		}
+	});
+	return [_hasUnstackableMods, unstackableModIdList];
 }
 
 export const hasAlternateSeasonReducedCostVariantMods = (

@@ -22,6 +22,7 @@ import GppBadIcon from '@mui/icons-material/GppBad';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import LayersIcon from '@mui/icons-material/Layers';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
@@ -101,6 +102,9 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	[ELoadoutOptimizationTypeId.Doomed]: <ScheduleIcon key={0} sx={iconStyle} />,
 	[ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed]: (
 		<MoreTimeIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.UnstackableMods]: (
+		<LayersIcon key={0} sx={iconStyle} />
 	),
 };
 

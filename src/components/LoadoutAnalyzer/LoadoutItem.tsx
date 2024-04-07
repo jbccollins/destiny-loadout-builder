@@ -24,7 +24,11 @@ import {
 	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
-import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
+import {
+	ArmorSlotIdList,
+	IArmorSlot,
+	getArmorSlot,
+} from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
@@ -32,6 +36,7 @@ import {
 	EDestinySubclassId,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
+import { IMod } from '@dlb/types/generation';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import EditIcon from '@mui/icons-material/Edit';
 import ShowIcon from '@mui/icons-material/Visibility';
@@ -51,6 +56,46 @@ import { useState } from 'react';
 import Breakdown from './Breakdown';
 import IconPill from './IconPill';
 import { loadoutOptimizationIconMapping } from './LoadoutAnalyzer';
+
+type ArmorSlotModListProps = {
+	modList: IMod[];
+	armorSlot: IArmorSlot;
+};
+const ArmorSlotModList = ({ modList, armorSlot }: ArmorSlotModListProps) => {
+	return modList.length > 0 ? (
+		<Box
+			sx={{
+				display: 'flex',
+				alignItems: 'center',
+				gap: '4px',
+				background: 'rgba(30,30,30,0.5)',
+				'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
+				padding: '4px',
+			}}
+		>
+			<Box sx={{ width: '26px', height: '26px', display: 'flex' }}>
+				<BungieImage src={armorSlot.icon} width={26} height={26} />
+			</Box>
+
+			<Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+				{modList.map((mod, i) => (
+					<Box
+						key={i}
+						sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+					>
+						<Box sx={{ width: '26px', height: '26px' }}>
+							<BungieImage src={mod.icon} width={26} height={26} />
+						</Box>
+						<Box>
+							{mod.name}
+							{mod.isArtifactMod ? ' (Artifact)' : ''}
+						</Box>
+					</Box>
+				))}
+			</Box>
+		</Box>
+	) : null;
+};
 
 const InspectingOptimizationDetailsHelp = styled(Box)(({ theme }) => ({
 	marginBottom: theme.spacing(0.5),
@@ -116,13 +161,13 @@ const InspectingOptimizationDetails = (
 					ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed) && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
-						{optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-							(optimizationType === ELoadoutOptimizationTypeId.Doomed && (
-								<Box>
-									Remove the following mods from the loadout to resolve this
-									optimization:
-								</Box>
-							))}
+						{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
+							optimizationType === ELoadoutOptimizationTypeId.Doomed) && (
+							<Box>
+								Remove the following mods from the loadout to resolve this
+								optimization:
+							</Box>
+						)}
 						{optimizationType ===
 							ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed && (
 							<Box>
@@ -133,45 +178,19 @@ const InspectingOptimizationDetails = (
 					</InspectingOptimizationDetailsHelp>
 					{ArmorSlotIdList.map((armorSlotId, i) => {
 						const armorSlot = getArmorSlot(armorSlotId);
+						// TODO: Is this actually the right logic? Won't this render the
+						// current season artifact mods as well? Which is wrong for "Unusable Mods"
 						const artifactModList = loadout.armorSlotMods[armorSlotId]
 							.filter((x) => x !== null)
 							.map((modId) => getMod(modId))
 							.filter((mod) => mod.isArtifactMod);
-						return artifactModList.length > 0 ? (
-							<Box
+						return (
+							<ArmorSlotModList
 								key={armorSlotId}
-								sx={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: '4px',
-									background: 'rgba(30,30,30,0.5)',
-									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
-									padding: '4px',
-								}}
-							>
-								<Box sx={{ width: '26px', height: '26px', display: 'flex' }}>
-									<BungieImage src={armorSlot.icon} width={26} height={26} />
-								</Box>
-
-								<Box
-									sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
-								>
-									{artifactModList.map((mod, i) => (
-										<Box
-											key={i}
-											sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-										>
-											<Box sx={{ width: '26px', height: '26px' }}>
-												<BungieImage src={mod.icon} width={26} height={26} />
-											</Box>
-											<Box>
-												{mod.name} {'(Artifact)'}
-											</Box>
-										</Box>
-									))}
-								</Box>
-							</Box>
-						) : null;
+								modList={artifactModList}
+								armorSlot={armorSlot}
+							/>
+						);
 					})}
 				</Box>
 			)}
@@ -371,6 +390,28 @@ const InspectingOptimizationDetails = (
 					{loadout.metadata.mutuallyExclusiveModGroups.join(' and ')} mods.
 					Remove mutually exclusive mods to resolve this optimization.
 				</InspectingOptimizationDetailsHelp>
+			)}
+			{optimizationType === ELoadoutOptimizationTypeId.UnstackableMods && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						Remove redundant copies of the following mods to resolve this
+						optimization:
+					</InspectingOptimizationDetailsHelp>
+					{ArmorSlotIdList.map((armorSlotId, i) => {
+						const armorSlot = getArmorSlot(armorSlotId);
+						const modIdList = metadata.unstackableModIdList
+							.filter((x) => x !== null)
+							.map((modId) => getMod(modId))
+							.filter((mod) => mod.armorSlotId === armorSlotId);
+						return (
+							<ArmorSlotModList
+								key={armorSlotId}
+								modList={modIdList}
+								armorSlot={armorSlot}
+							/>
+						);
+					})}
+				</Box>
 			)}
 			{optimizationType == ELoadoutOptimizationTypeId.NoExoticArmor && (
 				<InspectingOptimizationDetailsHelp>

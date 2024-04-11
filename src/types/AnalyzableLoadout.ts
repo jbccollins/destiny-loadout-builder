@@ -8,8 +8,8 @@ import {
 import { ArmorItem } from './Armor';
 import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
 import { DLBConfig } from './DLBConfig';
-import { ValidateEnumList } from './globals';
 import { getDefaultArmorSlotIdToModIdListMapping } from './Mod';
+import { ValidateEnumList } from './globals';
 
 export enum ELoadoutType {
 	DIM = 'DIM',
@@ -135,7 +135,6 @@ export type AnalysisResults = Record<
 
 export type AnalyzableLoadout = {
 	armor: ArmorItem[];
-	id: string;
 	loadoutType: ELoadoutType;
 	icon: string;
 	iconColorImage: string;
@@ -150,6 +149,7 @@ export type AnalyzableLoadout = {
 	characterId: string;
 	hasBonusResilienceOrnament: boolean;
 	hasHalloweenMask: boolean;
+	dlbGeneratedId: string;
 } & DLBConfig;
 
 export type RichAnalyzableLoadout = AnalyzableLoadout & {
@@ -183,7 +183,6 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	hasHalloweenMask: false,
 	icon: null,
 	iconColorImage: null, // Only applicable for InGame Loadouts
-	id: null,
 	index: -1, // Only applicable for InGame Loadouts
 	jumpId: null,
 	loadoutType: ELoadoutType.DIM,
@@ -193,6 +192,7 @@ export const getDefaultAnalyzableLoadout = (): AnalyzableLoadout => ({
 	raidMods: getDefaultRaidModIdList(),
 	superAbilityId: null,
 	artificeModIdList: [],
+	dlbGeneratedId: '',
 });
 
 export const getDefaultAnalyzableLoadoutBreakdown =

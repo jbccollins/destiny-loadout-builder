@@ -1,4 +1,3 @@
-import { Loadout } from '@destinyitemmanager/dim-api-types';
 import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
 import { UNSET_PLUG_HASH } from '@dlb/dim/utils/constants';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
@@ -9,9 +8,10 @@ import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { EModId } from '@dlb/generated/mod/EModId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import {
 	InGameLoadoutsDefinitions,
-	InGameLoadoutsMapping,
+	InGameLoadoutsWithIdMapping,
 } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import {
 	ArmorSlotEnergyMapping,
@@ -202,7 +202,7 @@ const findAvailableExoticArmorItem = (
 };
 
 type ExtractDimLoadoutParams = {
-	dimLoadout: Loadout;
+	dimLoadout: DimLoadoutWithId;
 	armorItems: ArmorItem[];
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
@@ -217,10 +217,10 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 
 	const loadout: AnalyzableLoadout = {
 		...getDefaultAnalyzableLoadout(),
-		id: dimLoadout.id,
 		name: dimLoadout.name,
 		loadoutType: ELoadoutType.DIM,
 		destinyClassId,
+		dlbGeneratedId: dimLoadout.dlbGeneratedId,
 	};
 
 	const desiredStatTiers: ArmorStatMapping = getDefaultArmorStatMapping();
@@ -398,7 +398,7 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 			}
 			// console.warn({
 			// 	message: 'Could not find mod',
-			// 	loadoutId: loadout.id,
+			// 	loadoutId: loadout.dlbGeneratedId,
 			// 	modHash: hash,
 			// });
 			return;
@@ -411,7 +411,7 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 			if (idx === -1) {
 				console.warn({
 					message: 'Could not find null value in armorSlotMods',
-					loadoutId: loadout.id,
+					loadoutId: loadout.dlbGeneratedId,
 					modId: mod.id,
 					armorSlotId: mod.armorSlotId,
 				});
@@ -425,7 +425,7 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 			if (idx === -1) {
 				console.warn({
 					message: 'Could not find null value in raidMods',
-					loadoutId: loadout.id,
+					loadoutId: loadout.dlbGeneratedId,
 					modId: mod.id,
 				});
 				return;
@@ -480,7 +480,7 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 }
 type ExtractDimLoadoutsParams = {
 	armorItems: ArmorItem[];
-	dimLoadouts: Loadout[];
+	dimLoadouts: DimLoadoutWithId[];
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
 };
@@ -565,7 +565,7 @@ const getInGameLoadoutItemTypeFromIndex = (
 
 type ExtractInGameLoadoutsParams = {
 	armorItems: ArmorItem[];
-	inGameLoadouts: InGameLoadoutsMapping;
+	inGameLoadoutsWithId: InGameLoadoutsWithIdMapping;
 	masterworkAssumption: EMasterworkAssumption;
 	characters: Characters;
 	inGameLoadoutsDefinitions: InGameLoadoutsDefinitions;
@@ -575,18 +575,18 @@ const extractInGameLoadouts = (
 ): AnalyzableLoadout[] => {
 	console.log('>>>>>> begin extractInGameLoadouts');
 	const {
-		inGameLoadouts,
+		inGameLoadoutsWithId,
 		inGameLoadoutsDefinitions,
 		armorItems,
 		masterworkAssumption,
 		characters,
 	} = params;
 	const loadouts: AnalyzableLoadout[] = [];
-	if (!inGameLoadouts || Object.keys(inGameLoadouts).length === 0) {
+	if (!inGameLoadoutsWithId || Object.keys(inGameLoadoutsWithId).length === 0) {
 		return [];
 	}
-	Object.keys(inGameLoadouts).forEach((characterId) => {
-		const characterLoadouts = inGameLoadouts[characterId];
+	Object.keys(inGameLoadoutsWithId).forEach((characterId) => {
+		const characterLoadouts = inGameLoadoutsWithId[characterId];
 		const character = characters.find((x) => x.id === characterId) as Character;
 		if (!character) {
 			return;
@@ -601,7 +601,6 @@ const extractInGameLoadouts = (
 			}
 			const loadout: AnalyzableLoadout = {
 				...getDefaultAnalyzableLoadout(),
-				id: `${characterId}-${index}`,
 				name: inGameLoadoutsDefinitions.LoadoutName[inGameLoadout.nameHash]
 					.name,
 				icon: inGameLoadoutsDefinitions.LoadoutIcon[inGameLoadout.iconHash]
@@ -613,6 +612,7 @@ const extractInGameLoadouts = (
 				destinyClassId,
 				characterId,
 				index: index + 1,
+				dlbGeneratedId: inGameLoadout.dlbGeneratedId,
 			};
 
 			const bonusResilienceOrnamentHash =
@@ -688,7 +688,7 @@ const extractInGameLoadouts = (
 									if (idx === -1) {
 										console.warn({
 											message: 'Could not find null value in armorSlotMods',
-											loadoutId: loadout.id,
+											loadoutId: loadout.dlbGeneratedId,
 											modId: mod.id,
 											armorSlotId: mod.armorSlotId,
 										});
@@ -707,7 +707,7 @@ const extractInGameLoadouts = (
 									if (idx === -1) {
 										console.warn({
 											message: 'Could not find null value in raidMods',
-											loadoutId: loadout.id,
+											loadoutId: loadout.dlbGeneratedId,
 											modId: mod.id,
 										});
 										return;
@@ -831,9 +831,9 @@ const extractInGameLoadouts = (
 
 type BuildAnalyzableLoadoutsBreakdownParams = {
 	characters: Characters;
-	inGameLoadouts: InGameLoadoutsMapping;
+	inGameLoadoutsWithId: InGameLoadoutsWithIdMapping;
 	inGameLoadoutsDefinitions: InGameLoadoutsDefinitions;
-	dimLoadouts: Loadout[];
+	dimLoadouts: DimLoadoutWithId[];
 	armor: Armor;
 	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
 	masterworkAssumption: EMasterworkAssumption;
@@ -844,7 +844,7 @@ export const buildAnalyzableLoadoutsBreakdown = (
 ): AnalyzableLoadoutBreakdown => {
 	const {
 		dimLoadouts,
-		inGameLoadouts,
+		inGameLoadoutsWithId,
 		armor,
 		allClassItemMetadata,
 		masterworkAssumption,
@@ -864,7 +864,7 @@ export const buildAnalyzableLoadoutsBreakdown = (
 		: [];
 	const analyzableInGameLoadouts = extractInGameLoadouts({
 		armorItems,
-		inGameLoadouts,
+		inGameLoadoutsWithId,
 		masterworkAssumption,
 		characters,
 		inGameLoadoutsDefinitions,
@@ -874,9 +874,9 @@ export const buildAnalyzableLoadoutsBreakdown = (
 
 	[...analyzableInGameLoadouts, ...analyzableDimLoadouts].forEach((x) => {
 		if (isEditableLoadout(x)) {
-			validLoadouts[x.id] = x;
+			validLoadouts[x.dlbGeneratedId] = x;
 		} else {
-			invalidLoadouts[x.id] = x;
+			invalidLoadouts[x.dlbGeneratedId] = x;
 		}
 	});
 	return {
@@ -1417,12 +1417,12 @@ export const getLoadoutsThatCanBeOptimized = (
 				optimizationTypeList.push(ELoadoutOptimizationTypeId.NoExoticArmor);
 				result.push({
 					optimizationTypeList: optimizationTypeList,
-					loadoutId: loadout.id,
+					loadoutId: loadout.dlbGeneratedId,
 				});
 				progressCallback({
 					type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
 					canBeOptimized: true,
-					loadoutId: loadout.id,
+					loadoutId: loadout.dlbGeneratedId,
 					optimizationTypeList: optimizationTypeList,
 					metadata: metadata,
 				});
@@ -1728,12 +1728,12 @@ export const getLoadoutsThatCanBeOptimized = (
 			if (humanizedOptimizationTypes.length > 0) {
 				result.push({
 					optimizationTypeList: humanizedOptimizationTypes,
-					loadoutId: loadout.id,
+					loadoutId: loadout.dlbGeneratedId,
 				});
 				progressCallback({
 					type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
 					canBeOptimized: true,
-					loadoutId: loadout.id,
+					loadoutId: loadout.dlbGeneratedId,
 					optimizationTypeList: humanizedOptimizationTypes,
 					metadata,
 				});
@@ -1742,7 +1742,7 @@ export const getLoadoutsThatCanBeOptimized = (
 				progressCallback({
 					type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
 					canBeOptimized: false,
-					loadoutId: loadout.id,
+					loadoutId: loadout.dlbGeneratedId,
 					optimizationTypeList: [],
 					metadata,
 				});
@@ -1751,7 +1751,7 @@ export const getLoadoutsThatCanBeOptimized = (
 		} catch (e) {
 			progressCallback({
 				type: EGetLoadoutsThatCanBeOptimizedProgressType.Error,
-				loadoutId: loadout.id,
+				loadoutId: loadout.dlbGeneratedId,
 				optimizationTypeList: [ELoadoutOptimizationTypeId.Error],
 			});
 		}

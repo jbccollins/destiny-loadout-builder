@@ -32,6 +32,7 @@ import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { DestinyClassIdList, getDestinyClass } from '@dlb/types/DestinyClass';
 
 // import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
+import { ProfileResponse } from '@destinyitemmanager/dim-api-types';
 import { getDefinitions } from '@dlb/dim/destiny2/d2-definitions';
 import { getDimApiProfile } from '@dlb/dim/dim-api/dim-api';
 import { setAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
@@ -42,13 +43,17 @@ import {
 import {
 	setAnalyzableLoadoutsBreakdown,
 	setHiddenLoadoutIdList,
+	setLoadoutSpecificIgnoredOptimizationTypes,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
-import { setDimLoadouts } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import {
+	DimLoadoutWithId,
+	setDimLoadouts,
+} from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
@@ -57,6 +62,8 @@ import { setExcludeLockedItems } from '@dlb/redux/features/excludeLockedItems/ex
 import { setHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
 import { setIgnoredLoadoutOptimizationTypes } from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import {
+	InGameLoadoutsWithIdMapping,
+	LoadoutWithId,
 	setInGameLoadoutsDefinitions,
 	setInGameLoadoutsLoadoutItems,
 } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
@@ -170,7 +177,9 @@ import {
 import { TabTypeList } from '@dlb/types/Tab';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { Box, Card, CircularProgress, styled } from '@mui/material';
+import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/navigation';
+import hash from 'object-hash';
 import { useEffect, useState } from 'react';
 
 const Container = styled(Card)(({ theme }) => ({
@@ -736,6 +745,32 @@ function Loading() {
 					}
 				}
 
+				const loadoutSpecificIgnoredOptimizationTypesString =
+					localStorage.getItem('loadoutSpecificIgnoredOptimizationTypes');
+				if (loadoutSpecificIgnoredOptimizationTypesString) {
+					log(
+						'loadoutSpecificIgnoredOptimizationTypesString',
+						loadoutSpecificIgnoredOptimizationTypesString
+					);
+					try {
+						const loadoutSpecificIgnoredOptimizationTypes = JSON.parse(
+							loadoutSpecificIgnoredOptimizationTypesString
+						);
+						dispatch(
+							setLoadoutSpecificIgnoredOptimizationTypes({
+								loadoutSpecificIgnoredOptimizationTypes,
+								validate: false,
+							})
+						);
+						log(
+							'loadoutSpecificIgnoredOptimizationTypes',
+							loadoutSpecificIgnoredOptimizationTypes
+						);
+					} catch (e) {
+						localStorage.removeItem('loadoutSpecificIgnoredOptimizationTypes');
+					}
+				}
+
 				let hasSharedLoadoutString = !!sharedLoadoutString;
 				let hasTabString = !!tabString;
 				const localStorageRecall = getLocalStorageRecall();
@@ -751,11 +786,18 @@ function Loading() {
 				log('platform', membershipData);
 
 				let hasDimLoadoutsError = false;
-				let dimProfile = null;
+				let dimProfile: ProfileResponse | null = null;
+				let dimLoadouts: DimLoadoutWithId[] = [];
 				try {
 					// throw 'heck';
 					dimProfile = await getDimApiProfile(mostRecentPlatform);
-					dispatch(setDimLoadouts(dimProfile.loadouts));
+					dimLoadouts = dimProfile.loadouts.map((l) => {
+						return {
+							...cloneDeep(l),
+							dlbGeneratedId: `${l.id}/${hash(l)}`,
+						};
+					});
+					dispatch(setDimLoadouts(dimLoadouts));
 				} catch (e) {
 					console.warn(
 						'Unable to load DIM loadouts. Error:',
@@ -787,7 +829,21 @@ function Loading() {
 				log('inGameLoadouts', inGameLoadouts, true);
 				dispatch(setInGameLoadoutsDefinitions(inGameLoadoutsDefinitions));
 				dispatch(setInGameLoadoutsFlatItemIdList(inGameLoadoutsFlatItemIdList));
-				dispatch(setInGameLoadoutsLoadoutItems(inGameLoadouts));
+				const inGameLoadoutsWithId: InGameLoadoutsWithIdMapping = {};
+				Object.keys(inGameLoadouts).forEach((characterId) => {
+					inGameLoadoutsWithId[characterId] = {
+						loadouts: [],
+					};
+					inGameLoadouts[characterId].loadouts.forEach((loadout, i) => {
+						const l: LoadoutWithId = {
+							...cloneDeep(loadout),
+							dlbGeneratedId: `${characterId}/${i}/${hash(loadout)}`,
+						};
+						inGameLoadoutsWithId[characterId].loadouts.push(l);
+					});
+				});
+
+				dispatch(setInGameLoadoutsLoadoutItems(inGameLoadoutsWithId));
 				setHasStores(true);
 				const [
 					armor,
@@ -950,9 +1006,9 @@ function Loading() {
 				try {
 					const analyzableLoadoutsBreakdown = buildAnalyzableLoadoutsBreakdown({
 						characters,
-						inGameLoadouts,
+						inGameLoadoutsWithId,
 						inGameLoadoutsDefinitions,
-						dimLoadouts: dimProfile?.loadouts || [],
+						dimLoadouts,
 						armor,
 						allClassItemMetadata,
 						masterworkAssumption: EMasterworkAssumption.All,

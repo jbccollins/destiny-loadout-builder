@@ -198,11 +198,11 @@ export default function AnalyzerResultsList() {
 			);
 			const visibleClassSpecificRichValidLoadouts =
 				classSpecificRichValidLoadouts.filter(
-					(x) => !hiddenLoadoutIdList.includes(x.id)
+					(x) => !hiddenLoadoutIdList.includes(x.dlbGeneratedId)
 				);
 			const hiddenClassSpecificRichValidLoadouts =
 				classSpecificRichValidLoadouts.filter((x) =>
-					hiddenLoadoutIdList.includes(x.id)
+					hiddenLoadoutIdList.includes(x.dlbGeneratedId)
 				);
 			const destinyClass = getDestinyClass(destinyClassId);
 			tabs.push({
@@ -226,7 +226,7 @@ export default function AnalyzerResultsList() {
 						)}
 						{visibleClassSpecificRichValidLoadouts.map((loadout, index) => (
 							<Box
-								key={loadout.id}
+								key={loadout.dlbGeneratedId}
 								sx={{
 									'&:first-of-type': {
 										marginTop: '-16px',
@@ -270,7 +270,7 @@ export default function AnalyzerResultsList() {
 										(loadout, index) => (
 											<LoadoutItem
 												{...defaultLoadoutItemProps}
-												key={loadout.id}
+												key={loadout.dlbGeneratedId}
 												loadout={loadout}
 												isHidden={true}
 											/>
@@ -390,7 +390,7 @@ export default function AnalyzerResultsList() {
 								marginBottom: theme.spacing(1),
 								'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
 							}}
-							key={value.id}
+							key={value.dlbGeneratedId}
 						>
 							<Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
 								<Box

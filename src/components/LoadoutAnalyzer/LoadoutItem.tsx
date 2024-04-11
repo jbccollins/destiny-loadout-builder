@@ -3,7 +3,9 @@ import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import useApplyAnalyzableLoadout from '@dlb/hooks/useApplyAnalyzableLoadout';
 import {
 	AnalyzableLoadoutsValueState,
+	selectAnalyzableLoadouts,
 	setHiddenLoadoutIdList,
+	setLoadoutSpecificIgnoredOptimizationTypes,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { SelectedAspects } from '@dlb/redux/features/selectedAspects/selectedAspectsSlice';
 import { SelectedClassAbility } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
@@ -11,7 +13,7 @@ import { SelectedGrenade } from '@dlb/redux/features/selectedGrenade/selectedGre
 import { SelectedJump } from '@dlb/redux/features/selectedJump/selectedJumpSlice';
 import { SelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSlice';
 import { SelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
-import { useAppDispatch } from '@dlb/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
 	ELoadoutOptimizationTypeId,
 	NoneOptimization,
@@ -43,6 +45,7 @@ import ShowIcon from '@mui/icons-material/Visibility';
 import HideIcon from '@mui/icons-material/VisibilityOff';
 import {
 	Box,
+	Button,
 	CircularProgress,
 	Collapse,
 	IconButton,
@@ -113,6 +116,45 @@ const InspectingOptimizationDetails = (
 ) => {
 	const { loadout, optimizationType } = props;
 	const { metadata } = loadout;
+	const dispatch = useAppDispatch();
+
+	const { loadoutSpecificIgnoredOptimizationTypes } = useAppSelector(
+		selectAnalyzableLoadouts
+	);
+	const ignoredOptimizationTypes =
+		loadoutSpecificIgnoredOptimizationTypes[loadout.dlbGeneratedId] || [];
+
+	const isIgnored = ignoredOptimizationTypes.includes(optimizationType);
+
+	const hide = () => {
+		dispatch(
+			setLoadoutSpecificIgnoredOptimizationTypes({
+				loadoutSpecificIgnoredOptimizationTypes: {
+					...loadoutSpecificIgnoredOptimizationTypes,
+					[loadout.dlbGeneratedId]: [
+						...ignoredOptimizationTypes,
+						optimizationType,
+					],
+				},
+				validate: true,
+			})
+		);
+	};
+
+	const show = () => {
+		dispatch(
+			setLoadoutSpecificIgnoredOptimizationTypes({
+				loadoutSpecificIgnoredOptimizationTypes: {
+					...loadoutSpecificIgnoredOptimizationTypes,
+					[loadout.dlbGeneratedId]: ignoredOptimizationTypes.filter(
+						(x) => x !== optimizationType
+					),
+				},
+				validate: true,
+			})
+		);
+	};
+
 	return (
 		<Box>
 			<Box sx={{ fontSize: '18px', fontWeight: 'bold' }}>
@@ -176,7 +218,7 @@ const InspectingOptimizationDetails = (
 							</Box>
 						)}
 					</InspectingOptimizationDetailsHelp>
-					{ArmorSlotIdList.map((armorSlotId, i) => {
+					{ArmorSlotIdList.map((armorSlotId) => {
 						const armorSlot = getArmorSlot(armorSlotId);
 						// TODO: Is this actually the right logic? Won't this render the
 						// current season artifact mods as well? Which is wrong for "Unusable Mods"
@@ -397,7 +439,7 @@ const InspectingOptimizationDetails = (
 						Remove redundant copies of the following mods to resolve this
 						optimization:
 					</InspectingOptimizationDetailsHelp>
-					{ArmorSlotIdList.map((armorSlotId, i) => {
+					{ArmorSlotIdList.map((armorSlotId) => {
 						const armorSlot = getArmorSlot(armorSlotId);
 						const modIdList = metadata.unstackableModIdList
 							.filter((x) => x !== null)
@@ -426,6 +468,27 @@ const InspectingOptimizationDetails = (
 					Tiers&quot; selector to try and resolve this optimization.
 				</InspectingOptimizationDetailsHelp>
 			)}
+			<Box
+				sx={{
+					marginTop: '8px',
+				}}
+			>
+				<CustomTooltip
+					title={
+						isIgnored
+							? 'This optimization is ignored for this specific loadout. Click this button to stop ignoring this optimization.'
+							: 'This optimization is recognized (AKA "Not Ignored") for this specific loadout. Click this button to ignore this optimization.'
+					}
+				>
+					<Button
+						variant="text"
+						onClick={() => (isIgnored ? show() : hide())}
+						startIcon={isIgnored ? <ShowIcon /> : <HideIcon />}
+					>
+						{isIgnored ? 'Stop Ignoring' : 'Ignore'}
+					</Button>
+				</CustomTooltip>
+			</Box>
 		</Box>
 	);
 };
@@ -448,7 +511,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 	const { loadout, isHidden, analyzeableLoadouts } = props;
 	const {
 		loadoutType,
-		id,
+		dlbGeneratedId,
 		icon,
 		name,
 		optimizationTypeList,
@@ -458,8 +521,29 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 	const { analysisResults, hiddenLoadoutIdList } = analyzeableLoadouts;
 	const [inspectingOptimizationType, setInspectingOptimizationType] =
 		useState<ELoadoutOptimizationTypeId | null>(null);
+
+	const [showIgnoredOptimizationTypes, setShowIgnoredOptimizationTypes] =
+		useState(false);
 	const theme = useTheme();
 	const dispatch = useAppDispatch();
+
+	const { loadoutSpecificIgnoredOptimizationTypes } = useAppSelector(
+		selectAnalyzableLoadouts
+	);
+	const loadoutSpecificIgnoredOptimizationTypeIdList =
+		loadoutSpecificIgnoredOptimizationTypes[loadout.dlbGeneratedId] || [];
+
+	const hasIgnoredOptimizations =
+		loadoutSpecificIgnoredOptimizationTypeIdList.some((x) =>
+			optimizationTypeList?.includes(x)
+		);
+
+	const filteredOptimizationTypeList =
+		showIgnoredOptimizationTypes || !hasIgnoredOptimizations
+			? optimizationTypeList
+			: optimizationTypeList?.filter(
+					(x) => !loadoutSpecificIgnoredOptimizationTypeIdList.includes(x)
+			  );
 
 	const applyLoadout = useApplyAnalyzableLoadout();
 
@@ -496,6 +580,12 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 	const inspectingOptimization = inspectingOptimizationType
 		? getLoadoutOptimization(inspectingOptimizationType)
 		: null;
+
+	const inspectingOptimizationIsIgnored =
+		inspectingOptimizationType &&
+		loadoutSpecificIgnoredOptimizationTypeIdList.includes(
+			inspectingOptimizationType
+		);
 
 	const inGameLoadoutIconSize = 40;
 	return (
@@ -603,7 +693,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 						hideOnMobile
 					>
 						<IconButton
-							onClick={() => hideAnalyzableLoadout(id)}
+							onClick={() => hideAnalyzableLoadout(dlbGeneratedId)}
 							size="small"
 							sx={{ marginRight: theme.spacing(0.5) }}
 						>
@@ -614,7 +704,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				{isHidden && (
 					<CustomTooltip title="Show this loadout in the list of loadouts that can be optimized.">
 						<IconButton
-							onClick={() => unHideAnalyzableLoadout(id)}
+							onClick={() => unHideAnalyzableLoadout(dlbGeneratedId)}
 							size="small"
 							sx={{ marginRight: theme.spacing(0.5) }}
 						>
@@ -632,8 +722,8 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				}}
 			>
 				{/* This loadout has been analyzed and has optimizations */}
-				{!!analysisResults[id]?.optimizationTypeList &&
-					optimizationTypeList?.length > 0 && (
+				{!!analysisResults[dlbGeneratedId]?.optimizationTypeList &&
+					filteredOptimizationTypeList?.length > 0 && (
 						<Box
 							sx={{
 								display: 'flex',
@@ -655,7 +745,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 								Available optimizations:
 							</Box>
 							<Box sx={{ display: 'flex', gap: '4px' }}>
-								{optimizationTypeList?.map((x, i) => {
+								{filteredOptimizationTypeList?.map((x) => {
 									const { category, name } = getLoadoutOptimization(x);
 									const { color } = getLoadoutOptimizationCategory(category);
 									return (
@@ -697,8 +787,8 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 						</Box>
 					)}
 				{/* This loadout has been analyzed and has NO optimizations */}
-				{!!analysisResults[id]?.optimizationTypeList &&
-					optimizationTypeList?.length === 0 && (
+				{!!analysisResults[dlbGeneratedId]?.optimizationTypeList &&
+					filteredOptimizationTypeList?.length === 0 && (
 						<Box
 							sx={{
 								display: 'flex',
@@ -728,11 +818,12 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 								}}
 							>
 								This loadout is fully optimized
+								{hasIgnoredOptimizations ? ' (with ignored optimizations)' : ''}
 							</Box>
 						</Box>
 					)}
 				{/* This loadout has not been analyzed yet */}
-				{!analysisResults[id]?.optimizationTypeList && (
+				{!analysisResults[dlbGeneratedId]?.optimizationTypeList && (
 					<>
 						<Box
 							sx={{
@@ -756,31 +847,56 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				)}
 			</Box>
 			<Collapse in={!!inspectingOptimization}>
-				{inspectingOptimization && (
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							gap: '8px',
-							marginTop: '8px',
-							background: '#585858',
-							padding: '8px',
-							borderRadius: '4px',
-							maxWidth: '600px',
-						}}
-					>
-						<Box sx={{ fontSize: '20px', fontWeight: 'bold' }}>
-							{inspectingOptimization.name}
+				{inspectingOptimization &&
+					(!inspectingOptimizationIsIgnored ||
+						showIgnoredOptimizationTypes) && (
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'column',
+								gap: '8px',
+								marginTop: '8px',
+								background: '#585858',
+								padding: '8px',
+								borderRadius: '4px',
+								maxWidth: '600px',
+							}}
+						>
+							<Box sx={{ fontSize: '20px', fontWeight: 'bold' }}>
+								{inspectingOptimization.name}
+							</Box>
+							<Box>{inspectingOptimization.description}</Box>
+							<InspectingOptimizationDetails
+								loadout={loadout}
+								optimizationType={inspectingOptimizationType}
+							/>
 						</Box>
-						<Box>{inspectingOptimization.description}</Box>
-						<InspectingOptimizationDetails
-							loadout={loadout}
-							optimizationType={inspectingOptimizationType}
-						/>
-					</Box>
-				)}
+					)}
 			</Collapse>
-
+			{hasIgnoredOptimizations && (
+				<Box
+					sx={{
+						marginTop: '16px',
+					}}
+				>
+					<CustomTooltip
+						title={`${
+							showIgnoredOptimizationTypes ? 'Hide' : 'Show'
+						} the ignored optimizations for this loadout`}
+					>
+						<Button
+							variant="text"
+							onClick={() => setShowIgnoredOptimizationTypes((x) => !x)}
+							startIcon={
+								showIgnoredOptimizationTypes ? <HideIcon /> : <ShowIcon />
+							}
+						>
+							{showIgnoredOptimizationTypes ? 'Hide' : 'Show'} Ignored
+							Optimization Types
+						</Button>
+					</CustomTooltip>
+				</Box>
+			)}
 			<Breakdown loadout={loadout} />
 		</Box>
 	);

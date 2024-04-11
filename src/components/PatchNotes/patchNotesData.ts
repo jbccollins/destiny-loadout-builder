@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-04-10',
+		version: '2.5.6',
+		title: 'Add "Ignore Loadout Specific Optimization" Feature',
+		sections: [
+			{
+				items: [
+					`Give users the ability to ignore optimziation types on a per loadout basis. This can help when the user decides "I know this loadout is suboptimal but I like it".`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-04-07',
 		version: '2.5.5',
 		title: 'Fix Exotic Armor Icon Bug',

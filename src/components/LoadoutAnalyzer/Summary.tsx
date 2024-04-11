@@ -116,14 +116,22 @@ type SummaryProps = {
 	isAnalyzing: boolean;
 	analysisProgressValue: number;
 	ignoredLoadoutOptimizationTypeIdList: ELoadoutOptimizationTypeId[];
+	loadoutSpecificIgnoredOptimizationTypes: Record<
+		string,
+		ELoadoutOptimizationTypeId[]
+	>;
 };
 
 const gradingHelpText = `
 Your grade is calculated based on the weighted average of the
 optimizations that can be made to your loadouts. The more severe the
 optimization, the higher the weighting and the more it will negatively
-affect your grade. Hidden loadouts are not included in the
+affect your grade. Hidden loadouts and ignored optimization types are not included in the
 calculation.
+`;
+
+const gradeDisclaimerHelpText = `
+* You have chosen to hide some loadouts and/or ignore some optimizations. This may affect your grade.
 `;
 
 const Progress = (props: { value: number }) => {
@@ -141,6 +149,10 @@ const ScoredResults = (props: {
 	loadouts: AnalyzableLoadout[];
 	hiddenLoadoutIdList: string[];
 	ignoredLoadoutOptimizationTypeIdList: ELoadoutOptimizationTypeId[];
+	loadoutSpecificIgnoredOptimizationTypes: Record<
+		string,
+		ELoadoutOptimizationTypeId[]
+	>;
 }) => {
 	const theme = useTheme();
 	const [showGradeDetails, setShowGradeDetails] = useState(false);
@@ -148,19 +160,29 @@ const ScoredResults = (props: {
 		loadouts,
 		hiddenLoadoutIdList,
 		ignoredLoadoutOptimizationTypeIdList,
+		loadoutSpecificIgnoredOptimizationTypes,
 	} = props;
+
 	const loadoutCategoryCounts = useMemo(() => {
 		const loadoutCategoryCounts: Partial<
 			Record<ELoadoutOptimizationCategoryId, number>
 		> = {};
 		loadouts
-			.filter((x) => !hiddenLoadoutIdList.includes(x.id))
+			.filter((x) => !hiddenLoadoutIdList.includes(x.dlbGeneratedId))
 			.forEach((loadout) => {
 				const { optimizationTypeList } = loadout;
+
+				const filteredOptimizationTypeList = optimizationTypeList.filter(
+					(x) =>
+						!loadoutSpecificIgnoredOptimizationTypes[
+							loadout.dlbGeneratedId
+						]?.includes(x)
+				);
+
 				let highestSeverityOptimizationTypeId: ELoadoutOptimizationTypeId =
 					ELoadoutOptimizationTypeId.None;
 
-				optimizationTypeList.forEach((optimizationType) => {
+				filteredOptimizationTypeList.forEach((optimizationType) => {
 					const { category: categoryId } =
 						getLoadoutOptimization(optimizationType);
 					const category = getLoadoutOptimizationCategory(categoryId);
@@ -184,7 +206,7 @@ const ScoredResults = (props: {
 					: 1;
 			});
 		return loadoutCategoryCounts;
-	}, [loadouts, hiddenLoadoutIdList]);
+	}, [loadouts, hiddenLoadoutIdList, loadoutSpecificIgnoredOptimizationTypes]);
 
 	const classSpecificLoadoutCounts = useMemo(() => {
 		const clasSpecificLoadoutCounts: Record<EDestinyClassId, number> = {
@@ -216,14 +238,20 @@ const ScoredResults = (props: {
 				.filter(
 					(x) =>
 						x.destinyClassId === destinyClassId &&
-						!hiddenLoadoutIdList.includes(x.id)
+						!hiddenLoadoutIdList.includes(x.dlbGeneratedId)
 				)
 				.forEach((loadout) => {
 					const { optimizationTypeList } = loadout;
+					const filteredOptimizationTypeList = optimizationTypeList.filter(
+						(x) =>
+							!loadoutSpecificIgnoredOptimizationTypes[
+								loadout.dlbGeneratedId
+							]?.includes(x)
+					);
 					let highestSeverityOptimizationTypeId: ELoadoutOptimizationTypeId =
 						ELoadoutOptimizationTypeId.None;
 
-					optimizationTypeList.forEach((optimizationType) => {
+					filteredOptimizationTypeList.forEach((optimizationType) => {
 						const { category: categoryId } =
 							getLoadoutOptimization(optimizationType);
 						const category = getLoadoutOptimizationCategory(categoryId);
@@ -251,12 +279,22 @@ const ScoredResults = (props: {
 		});
 
 		return classSpecificLoadoutCategoryCounts;
-	}, [loadouts, hiddenLoadoutIdList]);
+	}, [loadouts, hiddenLoadoutIdList, loadoutSpecificIgnoredOptimizationTypes]);
 
 	const numHiddenLoadouts = useMemo(
-		() => loadouts.filter((x) => hiddenLoadoutIdList.includes(x.id)).length,
+		() =>
+			loadouts.filter((x) => hiddenLoadoutIdList.includes(x.dlbGeneratedId))
+				.length,
 		[loadouts, hiddenLoadoutIdList]
 	);
+
+	// TODO: Don't consider if the user has ignored stuff with 0 weight
+	const hasIgnoredOptimizations =
+		numHiddenLoadouts > 0 ||
+		ignoredLoadoutOptimizationTypeIdList.length > 0 ||
+		Object.values(loadoutSpecificIgnoredOptimizationTypes).some(
+			(x) => x.length > 0
+		);
 
 	const grade = useMemo(() => {
 		const weightedScore = calculateWeightedScore(loadoutCategoryCounts);
@@ -301,18 +339,36 @@ const ScoredResults = (props: {
 	return (
 		<Box>
 			<Box
-				sx={{
-					display: 'flex',
-					gap: '4px',
-					flexWrap: 'wrap',
-					// alignItems: 'center',
-				}}
+				sx={
+					{
+						// display: 'flex',
+						// gap: '4px',
+						// flexWrap: 'wrap',
+						// alignItems: 'center',
+					}
+				}
 			>
+				<Box sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+					<Box
+						sx={{
+							fontWeight: 'bold',
+							fontSize: '20px',
+							marginTop: theme.spacing(1),
+							marginBottom: theme.spacing(1),
+						}}
+					>
+						Loadout Health Grade
+					</Box>
+
+					<CustomTooltip title={gradingHelpText}>
+						<HelpIcon />
+					</CustomTooltip>
+				</Box>
 				<Box
 					sx={{
 						backgroundColor: 'black',
-						width: '64px',
-						height: '130px',
+						width: '100%',
+						height: '120px',
 						textAlign: 'center',
 						borderRadius: '8px',
 
@@ -334,67 +390,56 @@ const ScoredResults = (props: {
 					<Box sx={{ fontWeight: 'bold' }}>{loadouts.length}</Box>
 					<Box sx={{ fontSize: '11px' }}>Loadouts Analyzed</Box>
 				</Box>
-
-				<Box>
-					<Box sx={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-						<Box
-							sx={{
-								fontWeight: 'bold',
-								fontSize: '20px',
-								marginTop: theme.spacing(1),
-								marginBottom: theme.spacing(1),
-							}}
-						>
-							Loadout Health Grade
-						</Box>
-
-						<CustomTooltip title={gradingHelpText}>
-							<HelpIcon />
-						</CustomTooltip>
-					</Box>
-					<Box sx={{ display: 'flex', gap: '8px', cursor: 'default' }}>
-						{DestinyClassIdList.map((destinyClassId) => {
-							const destinyClass = getDestinyClass(destinyClassId);
-							return (
-								<CustomTooltip
-									key={destinyClassId}
-									title={`${destinyClass.name} sub-grade`}
+				<Box
+					sx={{
+						display: 'flex',
+						gap: '8px',
+						cursor: 'default',
+						justifyContent: 'center',
+					}}
+				>
+					{DestinyClassIdList.map((destinyClassId) => {
+						const destinyClass = getDestinyClass(destinyClassId);
+						return (
+							<CustomTooltip
+								key={destinyClassId}
+								title={`${destinyClass.name} sub-grade`}
+							>
+								<Box
+									sx={{
+										background: 'black',
+										padding: '4px',
+										paddingRight: '8px',
+										borderRadius: '12px',
+										width: '100px',
+									}}
 								>
 									<Box
 										sx={{
-											background: 'black',
-											padding: '4px',
-											paddingRight: '8px',
-											borderRadius: '12px',
-											width: '74px',
+											color: classSpecificGradeColors[destinyClassId],
+											fontWeight: 'bold',
+											fontSize: '20px',
+											display: 'flex',
+											gap: '4px',
+											justifyContent: 'center',
+											alignItems: 'center',
 										}}
 									>
-										<Box
-											sx={{
-												color: classSpecificGradeColors[destinyClassId],
-												fontWeight: 'bold',
-												fontSize: '20px',
-												display: 'flex',
-												gap: '4px',
-												alignItems: 'center',
-											}}
-										>
-											<BungieImage
-												width={40}
-												height={40}
-												src={getDestinyClassIcon(destinyClassId)}
-											/>
-											{classSpecificGrades[destinyClassId]}
-										</Box>
-										<Box sx={{ textAlign: 'center', fontSize: '11px' }}>
-											{classSpecificLoadoutCounts[destinyClassId]}/
-											{loadouts.length}
-										</Box>
+										<BungieImage
+											width={40}
+											height={40}
+											src={getDestinyClassIcon(destinyClassId)}
+										/>
+										{classSpecificGrades[destinyClassId]}
 									</Box>
-								</CustomTooltip>
-							);
-						})}
-					</Box>
+									<Box sx={{ textAlign: 'center', fontSize: '11px' }}>
+										{classSpecificLoadoutCounts[destinyClassId]}/
+										{loadouts.length}
+									</Box>
+								</Box>
+							</CustomTooltip>
+						);
+					})}
 				</Box>
 			</Box>
 
@@ -407,9 +452,7 @@ const ScoredResults = (props: {
 				}}
 			>
 				Show Grade Details
-				{(numHiddenLoadouts > 0 ||
-					ignoredLoadoutOptimizationTypeIdList.length > 0) &&
-					'*'}
+				{hasIgnoredOptimizations && '*'}
 				<IconButton aria-label="expand row" size="small">
 					{showGradeDetails ? (
 						<KeyboardArrowUpIcon />
@@ -438,6 +481,16 @@ const ScoredResults = (props: {
 				>
 					{gradingHelpText}
 				</Box>
+				{hasIgnoredOptimizations && (
+					<Box
+						sx={{
+							marginTop: '8px',
+							fontSize: '12px',
+						}}
+					>
+						{gradeDisclaimerHelpText}
+					</Box>
+				)}
 				<Box
 					sx={{
 						marginTop: theme.spacing(2),
@@ -480,26 +533,6 @@ const ScoredResults = (props: {
 							);
 						}
 					)}
-					{numHiddenLoadouts > 0 && (
-						<Box
-							sx={{
-								marginTop: '8px',
-							}}
-						>
-							<Box>
-								{numHiddenLoadouts} loadout{numHiddenLoadouts > 1 && 's'} hidden
-							</Box>
-							<Box
-								sx={{
-									marginTop: '4px',
-									fontSize: '12px',
-								}}
-							>
-								*Hidden loadouts are not included in the calculation of your
-								Loadout Health Grade.
-							</Box>
-						</Box>
-					)}
 				</Box>
 			</Collapse>
 		</Box>
@@ -512,6 +545,7 @@ export default function Summary(props: SummaryProps) {
 		isAnalyzing,
 		analysisProgressValue,
 		ignoredLoadoutOptimizationTypeIdList,
+		loadoutSpecificIgnoredOptimizationTypes,
 	} = props;
 	const theme = useTheme();
 	const loadouts = useRichValidLoadouts();
@@ -537,6 +571,9 @@ export default function Summary(props: SummaryProps) {
 					hiddenLoadoutIdList={hiddenLoadoutIdList}
 					ignoredLoadoutOptimizationTypeIdList={
 						ignoredLoadoutOptimizationTypeIdList
+					}
+					loadoutSpecificIgnoredOptimizationTypes={
+						loadoutSpecificIgnoredOptimizationTypes
 					}
 				/>
 			)}

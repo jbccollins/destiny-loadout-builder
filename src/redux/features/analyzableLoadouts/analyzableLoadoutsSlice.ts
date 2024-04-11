@@ -2,7 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { GetLoadoutsThatCanBeOptimizedProgress } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import {
+	ELoadoutOptimizationTypeId,
+	GetLoadoutsThatCanBeOptimizedProgress,
+} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
 	AnalysisResults,
 	AnalyzableLoadoutBreakdown,
@@ -19,6 +22,10 @@ export type AnalyzableLoadoutsValueState = {
 	progressErroredCount: number;
 	analysisResults: AnalysisResults;
 	hiddenLoadoutIdList: string[];
+	loadoutSpecificIgnoredOptimizationTypes: Record<
+		string,
+		ELoadoutOptimizationTypeId[]
+	>;
 };
 
 export interface AnalyzableLoadoutsState {
@@ -36,6 +43,7 @@ const initialState: AnalyzableLoadoutsState = {
 		progressErroredCount: 0,
 		analysisResults: {},
 		hiddenLoadoutIdList: [],
+		loadoutSpecificIgnoredOptimizationTypes: {},
 	},
 	uuid: NIL,
 };
@@ -124,6 +132,46 @@ export const analyzableLoadoutsSlice = createSlice({
 			state.value.hiddenLoadoutIdList = validHiddenIdList;
 			state.uuid = uuid();
 		},
+		setLoadoutSpecificIgnoredOptimizationTypes: (
+			state,
+			action: PayloadAction<{
+				loadoutSpecificIgnoredOptimizationTypes: Record<
+					string,
+					ELoadoutOptimizationTypeId[]
+				>;
+				validate: boolean;
+			}>
+		) => {
+			const { loadoutSpecificIgnoredOptimizationTypes, validate } =
+				action.payload;
+			const validLoadoutSpecificIgnoredOptimizationTypes = validate
+				? Object.keys(loadoutSpecificIgnoredOptimizationTypes).reduce(
+						(obj, loadoutId) => {
+							if (
+								!!state.value.analyzableLoadoutBreakdown.validLoadouts[
+									loadoutId
+								] ||
+								!!state.value.analyzableLoadoutBreakdown.invalidLoadouts[
+									loadoutId
+								]
+							) {
+								obj[loadoutId] =
+									loadoutSpecificIgnoredOptimizationTypes[loadoutId];
+							}
+							return obj;
+						},
+						{} as Record<string, ELoadoutOptimizationTypeId[]>
+				  )
+				: loadoutSpecificIgnoredOptimizationTypes;
+
+			localStorage.setItem(
+				'loadoutSpecificIgnoredOptimizationTypes',
+				JSON.stringify(validLoadoutSpecificIgnoredOptimizationTypes)
+			);
+			state.value.loadoutSpecificIgnoredOptimizationTypes =
+				validLoadoutSpecificIgnoredOptimizationTypes;
+			state.uuid = uuid();
+		},
 	},
 });
 
@@ -140,6 +188,7 @@ export const {
 	setAnalysisResults,
 	addAnalysisResult,
 	setHiddenLoadoutIdList,
+	setLoadoutSpecificIgnoredOptimizationTypes,
 } = analyzableLoadoutsSlice.actions;
 
 export const selectAnalyzableLoadouts = (state: AppState) =>

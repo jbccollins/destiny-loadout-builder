@@ -124,6 +124,7 @@ export default function LoadoutAnalyzer() {
 		progressCompletionCount,
 		analyzableLoadoutBreakdown,
 		hiddenLoadoutIdList,
+		loadoutSpecificIgnoredOptimizationTypes,
 	} = analyzableLoadouts;
 	const { validLoadouts } = analyzableLoadoutBreakdown;
 	const dispatch = useAppDispatch();
@@ -250,6 +251,9 @@ export default function LoadoutAnalyzer() {
 					hiddenLoadoutIdList={hiddenLoadoutIdList}
 					ignoredLoadoutOptimizationTypeIdList={
 						ignoredLoadoutOptimizationTypeIdList
+					}
+					loadoutSpecificIgnoredOptimizationTypes={
+						loadoutSpecificIgnoredOptimizationTypes
 					}
 				/>
 				{hasActiveFilters && (

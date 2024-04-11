@@ -42,7 +42,8 @@ const testCases: TestCase[] = [
 				inGameLoadoutsDefinitions:
 					inGameLoadoutsDefinitions as unknown as InGameLoadoutsDefinitions,
 				characters: characters as unknown as Characters,
-				inGameLoadouts: inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
+				inGameLoadoutsWithId:
+					inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
 			},
 		],
 		95,
@@ -61,7 +62,8 @@ const testCases: TestCase[] = [
 				inGameLoadoutsDefinitions:
 					inGameLoadoutsDefinitions as unknown as InGameLoadoutsDefinitions,
 				characters: characters as unknown as Characters,
-				inGameLoadouts: inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
+				inGameLoadoutsWithId:
+					inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
 			},
 		],
 		52,

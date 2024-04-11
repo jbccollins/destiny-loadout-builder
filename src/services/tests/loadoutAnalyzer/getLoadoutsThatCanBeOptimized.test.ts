@@ -37,7 +37,7 @@ const loadouts = buildAnalyzableLoadoutsBreakdown({
 	inGameLoadoutsDefinitions:
 		inGameLoadoutsDefinitions as unknown as InGameLoadoutsDefinitions,
 	characters: characters as unknown as Characters,
-	inGameLoadouts: inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
+	inGameLoadoutsWithId: inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
 });
 
 // TODO: This test takes way too long to run. Find a better way to test this.

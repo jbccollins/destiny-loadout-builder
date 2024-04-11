@@ -3,6 +3,7 @@ import useApplyAnalyzableLoadout from '@dlb/hooks/useApplyAnalyzableLoadout';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
+import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import {
 	extractDimLoadout,
@@ -63,8 +64,13 @@ export default function DimImportDialog() {
 		const shareId = urlParts[3];
 		try {
 			const dimLoadout = await getSharedLoadout(shareId);
+			const dimLoadoutWithId: DimLoadoutWithId = {
+				...dimLoadout,
+				dlbGeneratedId: '',
+			};
+
 			const loadout = extractDimLoadout({
-				dimLoadout,
+				dimLoadout: dimLoadoutWithId,
 				armorItems,
 				masterworkAssumption: EMasterworkAssumption.All,
 				availableExoticArmor,

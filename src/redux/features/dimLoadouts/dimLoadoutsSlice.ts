@@ -5,8 +5,12 @@ import { AppState } from '@dlb/redux/store';
 import { Loadout } from '@destinyitemmanager/dim-api-types';
 import { NIL, v4 as uuid } from 'uuid';
 
+export type DimLoadoutWithId = Loadout & {
+	dlbGeneratedId: string;
+};
+
 export interface DimLoadoutsState {
-	value: Loadout[];
+	value: DimLoadoutWithId[];
 	uuid: string;
 }
 
@@ -19,7 +23,7 @@ export const dimLoadoutsSlice = createSlice({
 	name: 'dimLoadouts',
 	initialState,
 	reducers: {
-		setDimLoadouts: (state, action: PayloadAction<Loadout[]>) => {
+		setDimLoadouts: (state, action: PayloadAction<DimLoadoutWithId[]>) => {
 			state.value = action.payload;
 			state.uuid = uuid();
 		},

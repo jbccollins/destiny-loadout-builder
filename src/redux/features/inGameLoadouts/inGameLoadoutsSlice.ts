@@ -4,11 +4,22 @@ import { AppState } from '@dlb/redux/store';
 
 import {
 	DestinyLoadoutColorDefinition,
+	DestinyLoadoutComponent,
 	DestinyLoadoutIconDefinition,
 	DestinyLoadoutNameDefinition,
 	DestinyLoadoutsComponent,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { NIL, v4 as uuid } from 'uuid';
+
+export type LoadoutWithId = DestinyLoadoutComponent & {
+	dlbGeneratedId: string;
+};
+
+export type InGameLoadoutsWithIdMapping = {
+	[key: string]: {
+		loadouts: LoadoutWithId[];
+	};
+};
 
 export type InGameLoadoutsMapping = {
 	[key: string]: DestinyLoadoutsComponent;
@@ -21,7 +32,7 @@ export type InGameLoadoutsDefinitions = {
 };
 
 export type InGameLoadoutsContext = {
-	loadoutItems: InGameLoadoutsMapping;
+	loadoutItems: InGameLoadoutsWithIdMapping;
 	definitions: InGameLoadoutsDefinitions;
 };
 
@@ -50,7 +61,7 @@ export const inGameLoadoutsSlice = createSlice({
 	reducers: {
 		setInGameLoadoutsLoadoutItems: (
 			state,
-			action: PayloadAction<InGameLoadoutsMapping>
+			action: PayloadAction<InGameLoadoutsWithIdMapping>
 		) => {
 			state.value.loadoutItems = action.payload;
 			state.uuid = uuid();

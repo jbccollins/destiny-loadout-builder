@@ -78,6 +78,8 @@ export default function LoadoutAnalysisWebWorkerWrapper() {
 		});
 	};
 
+	const debugging = isDebugging();
+
 	useEffect(() => {
 		if (window.Worker) {
 			getLoadoutsThatCanBeOptimizedWorker.onmessage = (
@@ -88,7 +90,9 @@ export default function LoadoutAnalysisWebWorkerWrapper() {
 						dispatch(incrementProgressCompletionCount());
 						const payload = e.data
 							.payload as GetLoadoutsThatCanBeOptimizedProgress;
-						// console.log('progress', e.data.payload);
+						if (debugging) {
+							console.log('progress', e.data.payload);
+						}
 						if (payload.canBeOptimized) {
 							dispatch(incrementProgressCanBeOptimizedCount());
 						}

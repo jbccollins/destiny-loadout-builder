@@ -7,7 +7,6 @@ import {
 	selectAnalyzerTabIndex,
 	setAnalyzerTabIndex,
 } from '@dlb/redux/features/analyzerTabIndex/analyzerTabIndexSlice';
-import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { selectDimLoadouts } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import { selectIgnoredLoadoutOptimizationTypes } from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import { selectInGameLoadouts } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
@@ -43,6 +42,7 @@ import { EDestinyClassId } from '@dlb/types/IdEnums';
 import { Box, Collapse, IconButton, SxProps, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
+import ToggleSwitch from '../ToggleSwitch';
 import LoadoutCriteria from './LoadoutCriteria';
 import { LoadoutItem, LoadoutItemProps } from './LoadoutItem';
 const iconStyle: SxProps = {
@@ -52,7 +52,7 @@ const iconStyle: SxProps = {
 
 export default function AnalyzerResultsList() {
 	const [hiddenLoadoutsOpen, setHiddenLoadoutsOpen] = useState(false);
-	const [showFilters, setShowFilters] = useState(false);
+	const [hideOptimizedLoadouts, setHideOptimizedLoadouts] = useState(false);
 	const theme = useTheme();
 	const dimLoadouts = useAppSelector(selectDimLoadouts);
 	const inGameLoadouts = useAppSelector(selectInGameLoadouts);
@@ -64,7 +64,6 @@ export default function AnalyzerResultsList() {
 	const selectedMelee = useAppSelector(selectSelectedMelee);
 	const selectedJump = useAppSelector(selectSelectedJump);
 	const selectedClassAbility = useAppSelector(selectSelectedClassAbility);
-	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const analyzeableLoadouts = useAppSelector(selectAnalyzableLoadouts);
 	const analyzerTabIndex = useAppSelector(selectAnalyzerTabIndex);
 	const analyzerSearch = useAppSelector(selectAnalyzerSearch);
@@ -97,6 +96,10 @@ export default function AnalyzerResultsList() {
 
 	const handleSearchChange = (value: string) => {
 		dispatch(setAnalyzerSearch(value));
+	};
+
+	const handleToggleHideOptimizedLoadoutsChange = (value: boolean) => {
+		setHideOptimizedLoadouts(value);
 	};
 
 	const flatAvailableExoticArmor = useFlatAvailableExoticArmor();
@@ -180,6 +183,7 @@ export default function AnalyzerResultsList() {
 			analyzeableLoadouts,
 			loadout: null,
 			isHidden: false,
+			hideOptimizedLoadouts,
 		};
 		DestinyClassIdList.forEach((destinyClassId, index) => {
 			if (!destinyClassId) {
@@ -237,6 +241,7 @@ export default function AnalyzerResultsList() {
 									{...defaultLoadoutItemProps}
 									loadout={loadout}
 									isHidden={false}
+									hideOptimizedLoadouts={hideOptimizedLoadouts}
 								/>
 							</Box>
 						))}
@@ -328,6 +333,22 @@ export default function AnalyzerResultsList() {
 						value={analyzerSearch}
 						onChange={handleSearchChange}
 						label=""
+					/>
+				</Box>
+				<Box
+					sx={{
+						width: '100%',
+						px: theme.spacing(1),
+						textAlign: 'right',
+					}}
+				>
+					<ToggleSwitch
+						title={'Hide Fully Optimized Loadouts'}
+						onChange={handleToggleHideOptimizedLoadoutsChange}
+						value={hideOptimizedLoadouts}
+						helpText={
+							'If enabled, loadouts that are fully optimized will be hidden from this list.'
+						}
 					/>
 				</Box>
 				<Box

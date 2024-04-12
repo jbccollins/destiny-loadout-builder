@@ -42,6 +42,7 @@ import {
 } from '@dlb/redux/features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
 import {
 	setAnalyzableLoadoutsBreakdown,
+	setBuggedAlternateSeasonModIdList,
 	setHiddenLoadoutIdList,
 	setLoadoutSpecificIgnoredOptimizationTypes,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
@@ -824,11 +825,20 @@ function Loading() {
 					inGameLoadouts,
 					inGameLoadoutsDefinitions,
 					exoticArmorCollectibles,
+					buggedAlternateSeasonModIdList,
 				} = await loadStoresData(mostRecentPlatform);
 				log('exoticArmorCollectibles', exoticArmorCollectibles, false);
 				log('inGameLoadouts', inGameLoadouts, true);
+				log(
+					'buggedAlternateSeasonModIdList',
+					buggedAlternateSeasonModIdList,
+					true
+				);
 				dispatch(setInGameLoadoutsDefinitions(inGameLoadoutsDefinitions));
 				dispatch(setInGameLoadoutsFlatItemIdList(inGameLoadoutsFlatItemIdList));
+				dispatch(
+					setBuggedAlternateSeasonModIdList(buggedAlternateSeasonModIdList)
+				);
 				const inGameLoadoutsWithId: InGameLoadoutsWithIdMapping = {};
 				Object.keys(inGameLoadouts).forEach((characterId) => {
 					inGameLoadoutsWithId[characterId] = {

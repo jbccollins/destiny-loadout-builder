@@ -118,9 +118,10 @@ const InspectingOptimizationDetails = (
 	const { metadata } = loadout;
 	const dispatch = useAppDispatch();
 
-	const { loadoutSpecificIgnoredOptimizationTypes } = useAppSelector(
-		selectAnalyzableLoadouts
-	);
+	const {
+		loadoutSpecificIgnoredOptimizationTypes,
+		buggedAlternateSeasonModIdList,
+	} = useAppSelector(selectAnalyzableLoadouts);
 	const ignoredOptimizationTypes =
 		loadoutSpecificIgnoredOptimizationTypes[loadout.dlbGeneratedId] || [];
 
@@ -225,7 +226,11 @@ const InspectingOptimizationDetails = (
 						const artifactModList = loadout.armorSlotMods[armorSlotId]
 							.filter((x) => x !== null)
 							.map((modId) => getMod(modId))
-							.filter((mod) => mod.isArtifactMod);
+							.filter(
+								(mod) =>
+									mod.isArtifactMod &&
+									!buggedAlternateSeasonModIdList.includes(mod.id)
+							);
 						return (
 							<ArmorSlotModList
 								key={armorSlotId}
@@ -468,6 +473,32 @@ const InspectingOptimizationDetails = (
 					Tiers&quot; selector to try and resolve this optimization.
 				</InspectingOptimizationDetailsHelp>
 			)}
+			{optimizationType ==
+				ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod && (
+				<Box>
+					<InspectingOptimizationDetailsHelp>
+						There is nothing you can do to resolve this. This is a bug on
+						Bungie&apos;s end. Bungie may fix this at any time. Here are the
+						mods that are affected:
+					</InspectingOptimizationDetailsHelp>
+					{ArmorSlotIdList.map((armorSlotId) => {
+						const armorSlot = getArmorSlot(armorSlotId);
+						const artifactModList = loadout.armorSlotMods[armorSlotId]
+							.filter((x) => x !== null)
+							.map((modId) => getMod(modId))
+							.filter((mod) => buggedAlternateSeasonModIdList.includes(mod.id));
+
+						// TODO: This does not include artifact mods that are armor slot agnostic
+						return (
+							<ArmorSlotModList
+								key={armorSlotId}
+								modList={artifactModList}
+								armorSlot={armorSlot}
+							/>
+						);
+					})}
+				</Box>
+			)}
 			<Box
 				sx={{
 					marginTop: '8px',
@@ -506,9 +537,11 @@ export type LoadoutItemProps = {
 	selectedClassAbility: SelectedClassAbility;
 	selectedJump: SelectedJump;
 	analyzeableLoadouts: AnalyzableLoadoutsValueState;
+	hideOptimizedLoadouts: boolean;
 };
 export const LoadoutItem = (props: LoadoutItemProps) => {
-	const { loadout, isHidden, analyzeableLoadouts } = props;
+	const { loadout, isHidden, analyzeableLoadouts, hideOptimizedLoadouts } =
+		props;
 	const {
 		loadoutType,
 		dlbGeneratedId,
@@ -587,7 +620,16 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 			inspectingOptimizationType
 		);
 
+	const loadoutIsFullyOptimized =
+		!!analysisResults[dlbGeneratedId]?.optimizationTypeList &&
+		filteredOptimizationTypeList?.length === 0;
+
 	const inGameLoadoutIconSize = 40;
+
+	if (loadoutIsFullyOptimized && hideOptimizedLoadouts) {
+		return null;
+	}
+
 	return (
 		<Box
 			sx={{
@@ -722,106 +764,104 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				}}
 			>
 				{/* This loadout has been analyzed and has optimizations */}
-				{!!analysisResults[dlbGeneratedId]?.optimizationTypeList &&
-					filteredOptimizationTypeList?.length > 0 && (
+				{!loadoutIsFullyOptimized && (
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							// background: 'rgb(19,19,19)',
+							// padding: '8px',
+							width: '100%',
+							// borderRadius: '4px',
+						}}
+					>
 						<Box
 							sx={{
-								display: 'flex',
-								flexDirection: 'column',
-								// background: 'rgb(19,19,19)',
-								// padding: '8px',
-								width: '100%',
-								// borderRadius: '4px',
+								marginBottom: '4px',
+								fontSize: '14px',
+								fontStyle: 'italic',
+								// verticalAlign: 'text-top',
 							}}
 						>
-							<Box
-								sx={{
-									marginBottom: '4px',
-									fontSize: '14px',
-									fontStyle: 'italic',
-									// verticalAlign: 'text-top',
-								}}
-							>
-								Available optimizations:
-							</Box>
-							<Box sx={{ display: 'flex', gap: '4px' }}>
-								{filteredOptimizationTypeList?.map((x) => {
-									const { category, name } = getLoadoutOptimization(x);
-									const { color } = getLoadoutOptimizationCategory(category);
-									return (
+							Available optimizations:
+						</Box>
+						<Box sx={{ display: 'flex', gap: '4px' }}>
+							{filteredOptimizationTypeList?.map((x) => {
+								const { category, name } = getLoadoutOptimization(x);
+								const { color } = getLoadoutOptimizationCategory(category);
+								return (
+									<Box
+										key={x}
+										sx={{
+											position: 'relative',
+										}}
+									>
 										<Box
-											key={x}
 											sx={{
+												cursor: 'pointer',
+												zIndex: 1,
 												position: 'relative',
 											}}
+											onClick={() => handleInspectingOptimizationType(x)}
 										>
+											<IconPill key={x} color={color} tooltipText={name}>
+												{loadoutOptimizationIconMapping[x]}
+											</IconPill>
+										</Box>
+										{inspectingOptimizationType === x && (
 											<Box
 												sx={{
-													cursor: 'pointer',
-													zIndex: 1,
-													position: 'relative',
+													zIndex: 0,
+													position: 'absolute',
+													top: '16px',
+													left: '0px',
+													width: '32px',
+													height: '32px',
+													background: '#585858',
 												}}
-												onClick={() => handleInspectingOptimizationType(x)}
-											>
-												<IconPill key={x} color={color} tooltipText={name}>
-													{loadoutOptimizationIconMapping[x]}
-												</IconPill>
-											</Box>
-											{inspectingOptimizationType === x && (
-												<Box
-													sx={{
-														zIndex: 0,
-														position: 'absolute',
-														top: '16px',
-														left: '0px',
-														width: '32px',
-														height: '32px',
-														background: '#585858',
-													}}
-												/>
-											)}
-										</Box>
-									);
-								})}
-							</Box>
+											/>
+										)}
+									</Box>
+								);
+							})}
 						</Box>
-					)}
+					</Box>
+				)}
 				{/* This loadout has been analyzed and has NO optimizations */}
-				{!!analysisResults[dlbGeneratedId]?.optimizationTypeList &&
-					filteredOptimizationTypeList?.length === 0 && (
+				{loadoutIsFullyOptimized && (
+					<Box
+						sx={{
+							display: 'flex',
+							// background: 'rgb(19,19,19)',
+							// padding: '8px',
+							width: '100%',
+							alignItems: 'center',
+							gap: '8px',
+							// borderRadius: '4px',
+						}}
+					>
+						<IconPill
+							color={
+								getLoadoutOptimizationCategory(
+									ELoadoutOptimizationCategoryId.NONE
+								).color
+							}
+							tooltipText={NoneOptimization.name}
+						>
+							{loadoutOptimizationIconMapping[NoneOptimization.id]}
+						</IconPill>
 						<Box
 							sx={{
-								display: 'flex',
-								// background: 'rgb(19,19,19)',
-								// padding: '8px',
-								width: '100%',
-								alignItems: 'center',
-								gap: '8px',
-								// borderRadius: '4px',
+								fontSize: '14px',
+								fontStyle: 'italic',
+								// verticalAlign: 'text-top',
 							}}
 						>
-							<IconPill
-								color={
-									getLoadoutOptimizationCategory(
-										ELoadoutOptimizationCategoryId.NONE
-									).color
-								}
-								tooltipText={NoneOptimization.name}
-							>
-								{loadoutOptimizationIconMapping[NoneOptimization.id]}
-							</IconPill>
-							<Box
-								sx={{
-									fontSize: '14px',
-									fontStyle: 'italic',
-									// verticalAlign: 'text-top',
-								}}
-							>
-								This loadout is fully optimized
-								{hasIgnoredOptimizations ? ' (with ignored optimizations)' : ''}
-							</Box>
+							This loadout is fully optimized
+							{hasIgnoredOptimizations ? ' (with ignored optimizations)' : ''}
 						</Box>
-					)}
+					</Box>
+				)}
 				{/* This loadout has not been analyzed yet */}
 				{!analysisResults[dlbGeneratedId]?.optimizationTypeList && (
 					<>

@@ -11,13 +11,26 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-04-11',
+		version: '2.5.7',
+		title: 'Add "Bugged Alternate Season Mod" Support',
+		sections: [
+			{
+				items: [
+					`Add a new analyzer optimization type to check for loadouts that contain bugged discounted mods from old seasons. This is a complicated one to explain but the end result is that users affected by this bug will no longer get a worse grade for it.`,
+					`Add a way for users to filter the analyzer results to hide fully optimized loadouts`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-04-10',
 		version: '2.5.6',
 		title: 'Add "Ignore Loadout Specific Optimization" Feature',
 		sections: [
 			{
 				items: [
-					`Give users the ability to ignore optimziation types on a per loadout basis. This can help when the user decides "I know this loadout is suboptimal but I like it".`,
+					`Give users the ability to ignore optimization types on a per loadout basis. This can help when the user decides "I know this loadout is suboptimal but I like it".`,
 				],
 			},
 		],

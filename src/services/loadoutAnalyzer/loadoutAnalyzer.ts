@@ -89,6 +89,7 @@ import {
 	EInGameLoadoutsFilterId,
 	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
+	EModCategoryId,
 	EModSocketCategoryId,
 } from '@dlb/types/IdEnums';
 import { getJumpByHash } from '@dlb/types/Jump';
@@ -944,6 +945,7 @@ export enum ELoadoutOptimizationTypeId {
 	Doomed = 'Doomed',
 	ManuallyCorrectableDoomed = 'ManuallyCorrectableDoomed',
 	UnstackableMods = 'UnstackableMods',
+	BuggedAlternateSeasonMod = 'BuggedAlternateSeasonMod',
 	None = 'None',
 	Error = 'Error',
 }
@@ -1104,7 +1106,7 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 		id: ELoadoutOptimizationTypeId.LowerCost,
 		name: 'Lower Cost',
 		description:
-			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers for a lower total stat mod cost.',
+			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers for a lower total stat mod cost. This may allow you to socket more mods or more expensive mods.',
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
 	},
 	[ELoadoutOptimizationTypeId.FewerWastedStats]: {
@@ -1219,6 +1221,13 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 			'This loadout uses multiple copies of mods with benefits that do not stack.',
 		category: ELoadoutOptimizationCategoryId.WARNING,
 	},
+	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod]: {
+		id: ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod,
+		name: 'Bugged Alternate Season Mod',
+		description:
+			'This loadout contains a bugged mod. The Bungie API has a bug where some players have access to discounted mods that were available via artifact unlocks in a previous season. If you are affected by this bug there is nothing you can do to fix it, but this will only ever be a positive thing for your current builds since the discounted mods are cheaper. However, this may break your build in the future if Bungie ever fixes this bug.',
+		category: ELoadoutOptimizationCategoryId.TRANSIENT,
+	},
 	[ELoadoutOptimizationTypeId.None]: {
 		id: ELoadoutOptimizationTypeId.None,
 		name: 'No Optimizations Found',
@@ -1252,6 +1261,7 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 		ELoadoutOptimizationTypeId.UnstackableMods,
 		ELoadoutOptimizationTypeId.Doomed,
 		ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed,
+		ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod,
 		ELoadoutOptimizationTypeId.StatsOver100,
 		ELoadoutOptimizationTypeId.FewerWastedStats,
 		ELoadoutOptimizationTypeId.Error,
@@ -1330,6 +1340,7 @@ export type GetLoadoutsThatCanBeOptimizedParams = {
 		progress: GetLoadoutsThatCanBeOptimizedProgress
 	) => unknown;
 	availableExoticArmor: AvailableExoticArmor;
+	buggedAlternateSeasonModIdList: EModId[];
 };
 export type GetLoadoutsThatCanBeOptimizedOutputItem = {
 	optimizationTypeList: ELoadoutOptimizationTypeId[];
@@ -1392,6 +1403,7 @@ export const getLoadoutsThatCanBeOptimized = (
 		allClassItemMetadata,
 		progressCallback,
 		availableExoticArmor,
+		buggedAlternateSeasonModIdList,
 	} = params;
 	Object.values(loadouts).forEach((loadout) => {
 		try {
@@ -1442,6 +1454,23 @@ export const getLoadoutsThatCanBeOptimized = (
 					modVariantCheckType: EModVariantCheckType.Base,
 				},
 			];
+
+			const allLoadoutModsIdList = flattenMods(loadout);
+
+			const loadoutSpecificBuggedAlternateSeasonModIdList =
+				buggedAlternateSeasonModIdList.filter((x) =>
+					allLoadoutModsIdList.includes(x)
+				);
+			const hasBuggedAlternateSeasonMod =
+				loadoutSpecificBuggedAlternateSeasonModIdList.length > 0;
+			const hasNonBuggedAlternateSeasonMod = allLoadoutModsIdList.some((x) => {
+				const mod = getMod(x);
+				return (
+					mod.isArtifactMod &&
+					mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact &&
+					!loadoutSpecificBuggedAlternateSeasonModIdList.includes(x)
+				);
+			});
 
 			const _hasAlternateSeasonReducedCostVariantMods =
 				hasAlternateSeasonReducedCostVariantMods(loadout.armorSlotMods);
@@ -1692,8 +1721,18 @@ export const getLoadoutsThatCanBeOptimized = (
 							ELoadoutOptimizationTypeId.UnusedModSlots
 						);
 					}
-					if (_hasAlternateSeasonReducedCostVariantMods) {
+					// Only add the unusable mods optimization type if we are sure that
+					// the unusable mods aren't also bugged alternate season mods
+					if (
+						_hasAlternateSeasonReducedCostVariantMods &&
+						hasNonBuggedAlternateSeasonMod
+					) {
 						optimizationTypeList.push(ELoadoutOptimizationTypeId.UnusableMods);
+					}
+					if (hasBuggedAlternateSeasonMod) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod
+						);
 					}
 				} else if (modVariantCheckType === EModVariantCheckType.Doomed) {
 					const isDoomedLoadout =

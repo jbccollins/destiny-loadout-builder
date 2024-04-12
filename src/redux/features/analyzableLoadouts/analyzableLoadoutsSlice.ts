@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
+import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	ELoadoutOptimizationTypeId,
 	GetLoadoutsThatCanBeOptimizedProgress,
@@ -26,6 +27,7 @@ export type AnalyzableLoadoutsValueState = {
 		string,
 		ELoadoutOptimizationTypeId[]
 	>;
+	buggedAlternateSeasonModIdList: EModId[];
 };
 
 export interface AnalyzableLoadoutsState {
@@ -44,6 +46,7 @@ const initialState: AnalyzableLoadoutsState = {
 		analysisResults: {},
 		hiddenLoadoutIdList: [],
 		loadoutSpecificIgnoredOptimizationTypes: {},
+		buggedAlternateSeasonModIdList: [],
 	},
 	uuid: NIL,
 };
@@ -172,6 +175,15 @@ export const analyzableLoadoutsSlice = createSlice({
 				validLoadoutSpecificIgnoredOptimizationTypes;
 			state.uuid = uuid();
 		},
+		setBuggedAlternateSeasonModIdList: (
+			state,
+			action: PayloadAction<EModId[]>
+		) => {
+			const buggedAlternateSeasonModIdList = action.payload;
+			state.value.buggedAlternateSeasonModIdList =
+				buggedAlternateSeasonModIdList;
+			state.uuid = uuid();
+		},
 	},
 });
 
@@ -189,6 +201,7 @@ export const {
 	addAnalysisResult,
 	setHiddenLoadoutIdList,
 	setLoadoutSpecificIgnoredOptimizationTypes,
+	setBuggedAlternateSeasonModIdList,
 } = analyzableLoadoutsSlice.actions;
 
 export const selectAnalyzableLoadouts = (state: AppState) =>

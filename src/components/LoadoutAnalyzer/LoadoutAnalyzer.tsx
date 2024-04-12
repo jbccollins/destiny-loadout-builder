@@ -15,6 +15,7 @@ import { EnumDictionary } from '@dlb/types/globals';
 import { Help } from '@mui/icons-material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import BugIcon from '@mui/icons-material/BugReport';
 import CheckIcon from '@mui/icons-material/Check';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import FilterIcon from '@mui/icons-material/FilterAlt';
@@ -105,6 +106,9 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.UnstackableMods]: (
 		<LayersIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod]: (
+		<BugIcon key={0} sx={iconStyle} />
 	),
 };
 

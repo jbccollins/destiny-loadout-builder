@@ -34,8 +34,12 @@ export default function LoadoutAnalysisWebWorkerWrapper() {
 	);
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const analyzeableLoadouts = useAppSelector(selectAnalyzableLoadouts);
-	const { isAnalyzed, isAnalyzing, analyzableLoadoutBreakdown } =
-		analyzeableLoadouts;
+	const {
+		isAnalyzed,
+		isAnalyzing,
+		analyzableLoadoutBreakdown,
+		buggedAlternateSeasonModIdList,
+	} = analyzeableLoadouts;
 	const { validLoadouts } = analyzableLoadoutBreakdown;
 	const dispatch = useAppDispatch();
 
@@ -75,6 +79,7 @@ export default function LoadoutAnalysisWebWorkerWrapper() {
 			masterworkAssumption,
 			allClassItemMetadata,
 			availableExoticArmor,
+			buggedAlternateSeasonModIdList,
 		});
 	};
 

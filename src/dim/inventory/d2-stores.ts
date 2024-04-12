@@ -23,10 +23,15 @@ import {
 	makeFakeItem,
 	processItems,
 } from '@dlb/dim/inventory/store/d2-item-factory';
+import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	InGameLoadoutsDefinitions,
 	InGameLoadoutsMapping,
 } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	getModByHash,
+	isAlternateSeasonReducedCostVariantMod,
+} from '@dlb/types/Mod';
 import { InventoryBuckets } from './inventory-buckets';
 import { DimItem } from './item-types';
 import { makeCharacter, makeVault } from './store/d2-store-factory';
@@ -52,6 +57,7 @@ export type LoadStoresDataResult = {
 	inGameLoadouts: InGameLoadoutsMapping;
 	inGameLoadoutsDefinitions: InGameLoadoutsDefinitions;
 	exoticArmorCollectibles: DimItem[];
+	buggedAlternateSeasonModIdList: EModId[];
 };
 
 export const loadStoresData = (
@@ -77,14 +83,36 @@ export const loadStoresData = (
 			const buckets = getBuckets(defs);
 			const stores = buildStores(defs, buckets, profileInfo);
 
-			const currencies = processCurrencies(profileInfo, defs);
-
 			// This was not in DIM. It was written for DLB
 			const exoticArmorCollectibles = processExoticArmorCollectibles(
 				defs,
 				buckets,
 				profileInfo
 			);
+
+			// This was not in DIM. It was written for DLB
+			const plugSets = profileInfo.characterPlugSets.data || null;
+			const plugItemHashes = new Set<number>();
+			if (plugSets) {
+				Object.values(plugSets).forEach(({ plugs }) => {
+					Object.values(plugs).forEach((plug) => {
+						plug.forEach((p) => {
+							plugItemHashes.add(p.plugItemHash);
+						});
+					});
+				});
+			}
+
+			// This accounts for the bug in the Bungie API that allows some users to keep
+			// artifact unlocks for discounted mods from previous seasons.
+			const buggedAlternateSeasonModIdList: EModId[] = [];
+			plugItemHashes.forEach((plugItemHash) => {
+				const mod = getModByHash(plugItemHash);
+				if (mod && isAlternateSeasonReducedCostVariantMod(mod)) {
+					buggedAlternateSeasonModIdList.push(mod.id);
+				}
+			});
+
 			// This was not in DIM. It was written for DLB
 			const { inGameLoadoutsFlatItemIdList, inGameLoadouts } =
 				processInGameLoadouts(profileInfo);
@@ -99,6 +127,7 @@ export const loadStoresData = (
 				inGameLoadouts,
 				exoticArmorCollectibles,
 				inGameLoadoutsDefinitions,
+				buggedAlternateSeasonModIdList,
 			};
 
 			return result;

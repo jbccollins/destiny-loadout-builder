@@ -13,6 +13,7 @@ import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadou
 import { ELoadoutTypeFilter } from '@dlb/types/AnalyzableLoadout';
 import { EnumDictionary } from '@dlb/types/globals';
 import { Help } from '@mui/icons-material';
+import AlarmIcon from '@mui/icons-material/Alarm';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import BugIcon from '@mui/icons-material/BugReport';
@@ -100,9 +101,14 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.None]: <CheckIcon key={0} sx={iconStyle} />,
 	[ELoadoutOptimizationTypeId.Error]: <ReportIcon key={0} sx={iconStyle} />,
-	[ELoadoutOptimizationTypeId.Doomed]: <ScheduleIcon key={0} sx={iconStyle} />,
-	[ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed]: (
+	[ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods]: (
+		<ScheduleIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable]: (
 		<MoreTimeIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.HasSeasonalMods]: (
+		<AlarmIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.UnstackableMods]: (
 		<LayersIcon key={0} sx={iconStyle} />

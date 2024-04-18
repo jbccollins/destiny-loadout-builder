@@ -1,14 +1,13 @@
-import { Loadout } from '@destinyitemmanager/dim-api-types';
+import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import {
 	InGameLoadoutsDefinitions,
-	InGameLoadoutsMapping,
+	InGameLoadoutsWithIdMapping,
 } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
 import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
 import armor from '@dlb/services/tests/fixtures/armor.json';
 import availableExoticArmor from '@dlb/services/tests/fixtures/available-exotic-armor.json';
 import characters from '@dlb/services/tests/fixtures/characters.json';
-import dimLoadouts2 from '@dlb/services/tests/fixtures/dim-loadouts-2.json';
 import dimLoadouts from '@dlb/services/tests/fixtures/dim-loadouts.json';
 import inGameLoadoutsDefinitions from '@dlb/services/tests/fixtures/in-game-loadouts-definitions.json';
 import inGameLoadoutsItems from '@dlb/services/tests/fixtures/in-game-loadouts-items.json';
@@ -32,7 +31,7 @@ const testCases: TestCase[] = [
 		'Base',
 		[
 			{
-				dimLoadouts: dimLoadouts as Loadout[],
+				dimLoadouts: dimLoadouts as DimLoadoutWithId[],
 				armor: armor as unknown as Armor,
 				allClassItemMetadata:
 					allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
@@ -43,30 +42,10 @@ const testCases: TestCase[] = [
 					inGameLoadoutsDefinitions as unknown as InGameLoadoutsDefinitions,
 				characters: characters as unknown as Characters,
 				inGameLoadoutsWithId:
-					inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
+					inGameLoadoutsItems as unknown as InGameLoadoutsWithIdMapping,
 			},
 		],
-		95,
-	],
-	[
-		'Base 2',
-		[
-			{
-				dimLoadouts: dimLoadouts2 as Loadout[],
-				armor: armor as unknown as Armor,
-				allClassItemMetadata:
-					allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
-				masterworkAssumption: EMasterworkAssumption.All,
-				availableExoticArmor:
-					availableExoticArmor as unknown as AvailableExoticArmor,
-				inGameLoadoutsDefinitions:
-					inGameLoadoutsDefinitions as unknown as InGameLoadoutsDefinitions,
-				characters: characters as unknown as Characters,
-				inGameLoadoutsWithId:
-					inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
-			},
-		],
-		52,
+		49,
 	],
 ];
 

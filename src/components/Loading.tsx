@@ -798,6 +798,7 @@ function Loading() {
 							dlbGeneratedId: `${l.id}/${hash(l)}`,
 						};
 					});
+					log('dimLoadouts (with dlbGeneratedId)', dimLoadouts, true);
 					dispatch(setDimLoadouts(dimLoadouts));
 				} catch (e) {
 					console.warn(
@@ -853,6 +854,7 @@ function Loading() {
 					});
 				});
 
+				log('inGameLoadoutsWithId', inGameLoadoutsWithId, true);
 				dispatch(setInGameLoadoutsLoadoutItems(inGameLoadoutsWithId));
 				setHasStores(true);
 				const [

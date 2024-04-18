@@ -110,8 +110,10 @@ import {
 	replaceAllModsThatDimWillReplace,
 	replaceAllReducedCostVariantMods,
 } from '@dlb/types/Mod';
+import { ActiveSeasonArtifactModIdList } from '@dlb/types/ModCategory';
 import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
 import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
+import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
 import { isEmpty } from 'lodash';
 
 // A loadout that has some armor, mods or subclass options selected is considered valid
@@ -942,8 +944,9 @@ export enum ELoadoutOptimizationTypeId {
 	InvalidLoadoutConfiguration = 'InvalidLoadoutConfiguration',
 	MutuallyExclusiveMods = 'MutuallyExclusiveMods',
 	UnusedModSlots = 'UnusedModSlots',
-	Doomed = 'Doomed',
-	ManuallyCorrectableDoomed = 'ManuallyCorrectableDoomed',
+	HasSeasonalMods = 'HasSeasonalMods',
+	HasDiscountedSeasonalMods = 'HasDiscountedSeasonalMods',
+	HasDiscountedSeasonalModsCorrectable = 'HasDiscountedSeasonalModsCorrectable',
 	UnstackableMods = 'UnstackableMods',
 	BuggedAlternateSeasonMod = 'BuggedAlternateSeasonMod',
 	None = 'None',
@@ -1200,18 +1203,25 @@ const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary<
 			"This loadout has space to slot additional mods. It's free real estate!",
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
 	},
-	[ELoadoutOptimizationTypeId.Doomed]: {
-		id: ELoadoutOptimizationTypeId.Doomed,
-		name: 'Doomed Loadout',
+	[ELoadoutOptimizationTypeId.HasSeasonalMods]: {
+		id: ELoadoutOptimizationTypeId.HasSeasonalMods,
+		name: 'Has Seasonal Mods',
 		description:
-			'This loadout uses discounted mods from the current season that will become unavailable once the season ends. If this is a DIM loadout, DIM will not be able to automatically swap such discounted mods for their full cost variants, as the total mod cost would exceed the available armor energy capacity.',
+			'This loadout uses mods unlocked via the current seasonal artifact that will become unavailable once the season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 	},
-	[ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed]: {
-		id: ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed,
-		name: 'Doomed Loadout (Correctable)',
+	[ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods]: {
+		id: ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods,
+		name: 'Has Discounted Seasonal Mods',
 		description:
-			'[D2 Loadout Specific] This loadout uses discounted mods from the current season that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
+			'This loadout uses discounted mods unlocked via the current seasonal artifact that will become unavailable once the season ends. If this is a DIM loadout, DIM will not be able to automatically swap such discounted mods for their full cost variants, as the total mod cost would exceed the available armor energy capacity.',
+		category: ELoadoutOptimizationCategoryId.TRANSIENT,
+	},
+	[ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable]: {
+		id: ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable,
+		name: 'Has Discounted Seasonal Mods (Correctable)',
+		description:
+			'[D2 Loadout Specific] This loadout uses discounted mods unlocked via the current seasonal artifact that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 	},
 	[ELoadoutOptimizationTypeId.UnstackableMods]: {
@@ -1259,8 +1269,9 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 		ELoadoutOptimizationTypeId.UnmasterworkedArmor,
 		ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
 		ELoadoutOptimizationTypeId.UnstackableMods,
-		ELoadoutOptimizationTypeId.Doomed,
-		ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed,
+		ELoadoutOptimizationTypeId.HasSeasonalMods,
+		ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods,
+		ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable,
 		ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod,
 		ELoadoutOptimizationTypeId.StatsOver100,
 		ELoadoutOptimizationTypeId.FewerWastedStats,
@@ -1364,7 +1375,7 @@ const getFragmentSlots = (aspectIdList: EAspectId[]): number => {
 
 enum EModVariantCheckType {
 	Base = 'Base',
-	Doomed = 'Doomed',
+	Seasonal = 'Seasonal',
 }
 
 type ModReplacer = (
@@ -1376,7 +1387,7 @@ const ModVariantCheckTypeToModReplacerMapping: Record<
 	ModReplacer
 > = {
 	[EModVariantCheckType.Base]: (armorSlotMods) => armorSlotMods,
-	[EModVariantCheckType.Doomed]: replaceAllReducedCostVariantMods,
+	[EModVariantCheckType.Seasonal]: replaceAllReducedCostVariantMods,
 };
 
 type ArmorSlotModsVariants = {
@@ -1387,7 +1398,7 @@ type ArmorSlotModsVariants = {
 // We assume that the DIM mods will be swapped appropriately
 // before the analyzer even runs. This is how DIM behaves internally
 // and we want to mimic that behavior.
-// "Doomed D2" doesn't require any mod swapping. Just check if the loadout contains an in-seaon reduced cost mod
+// "Seasonal D2" doesn't require any mod swapping. Just check if the loadout contains an in-season reduced cost mod
 // "Unusable Mods" should be D2 specific. DIM loadouts will never have unusable mods since we pre-swap the mods on initial DIM loadout ingestion.
 // "Unavailable Mods" is gone. DIM loadouts will never have unavailable mods since we pre-swap the mods on initial DIM loadout ingestion.
 // "Invalid Loadout Configuration" might need to be DIM specific. The description should mention that the user may have initially created that loadout using reduced cost mods that are now out-of-season
@@ -1461,23 +1472,26 @@ export const getLoadoutsThatCanBeOptimized = (
 				buggedAlternateSeasonModIdList.filter((x) =>
 					allLoadoutModsIdList.includes(x)
 				);
+
 			const hasBuggedAlternateSeasonMod =
 				loadoutSpecificBuggedAlternateSeasonModIdList.length > 0;
+
 			const hasNonBuggedAlternateSeasonMod = allLoadoutModsIdList.some((x) => {
 				const mod = getMod(x);
 				return (
 					mod.isArtifactMod &&
 					mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact &&
+					!ActiveSeasonArtifactModIdList.includes(x) &&
 					!loadoutSpecificBuggedAlternateSeasonModIdList.includes(x)
 				);
 			});
 
 			const _hasAlternateSeasonReducedCostVariantMods =
-				hasAlternateSeasonReducedCostVariantMods(loadout.armorSlotMods);
+				hasAlternateSeasonReducedCostVariantMods(allLoadoutModsIdList);
 			const _hasActiveSeasonReducedCostVariantMods =
-				hasActiveSeasonReducedCostVariantMods(loadout.armorSlotMods);
-			// The alternate check overrides the doomed check
-			// So don't even bother checking for doomed loadouts if
+				hasActiveSeasonReducedCostVariantMods(allLoadoutModsIdList);
+			// The alternate check overrides the seasonal check
+			// So don't even bother checking for seasonal loadouts if
 			// the base variant mods contain alternate season reduced cost mods
 			if (
 				!_hasAlternateSeasonReducedCostVariantMods &&
@@ -1485,11 +1499,18 @@ export const getLoadoutsThatCanBeOptimized = (
 			) {
 				armorSlotModsVariants.push({
 					armorSlotMods: ModVariantCheckTypeToModReplacerMapping[
-						EModVariantCheckType.Doomed
+						EModVariantCheckType.Seasonal
 					](loadout.armorSlotMods),
-					modVariantCheckType: EModVariantCheckType.Doomed,
+					modVariantCheckType: EModVariantCheckType.Seasonal,
 				});
 			}
+
+			const hasActiveSeasonArtifactModsWithNoFullCostVariant =
+				ActiveSeasonArtifactModIdList.some(
+					(x) =>
+						allLoadoutModsIdList.includes(x) &&
+						!reducedToNormalMod[getMod(x).hash]
+				);
 
 			for (let i = 0; i < armorSlotModsVariants.length; i++) {
 				const { armorSlotMods, modVariantCheckType } = armorSlotModsVariants[i];
@@ -1734,26 +1755,35 @@ export const getLoadoutsThatCanBeOptimized = (
 							ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod
 						);
 					}
-				} else if (modVariantCheckType === EModVariantCheckType.Doomed) {
-					const isDoomedLoadout =
+					if (hasActiveSeasonArtifactModsWithNoFullCostVariant) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.HasSeasonalMods
+						);
+					}
+				} else if (modVariantCheckType === EModVariantCheckType.Seasonal) {
+					const hasNoVariantSwapResults =
 						hasBaseVariantModsResults && // The base check returned results
 						processedArmor.items.length === 0; // We have no results on the second pass
-					let isManuallyCorrectableDoomedLoadout = false;
+
+					let hasCorrectableSeasonalMods = false;
 					// DIM will auto-correct the loadout if it can
 					// But in-game loadouts must be manually corrected
 					if (loadout.loadoutType === ELoadoutType.InGame) {
-						isManuallyCorrectableDoomedLoadout =
-							!isDoomedLoadout && _hasActiveSeasonReducedCostVariantMods;
+						hasCorrectableSeasonalMods =
+							!hasNoVariantSwapResults &&
+							_hasActiveSeasonReducedCostVariantMods;
 					}
-					if (isManuallyCorrectableDoomedLoadout) {
+					if (hasCorrectableSeasonalMods) {
 						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed
+							ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable
 						);
 					}
 
-					// Don't add both "Doomed" and "ManuallyCorrectableDoomed"
-					if (isDoomedLoadout && !isManuallyCorrectableDoomedLoadout) {
-						optimizationTypeList.push(ELoadoutOptimizationTypeId.Doomed);
+					// Don't add both "HasSeasonalMods" and "HasSeasonalModsCorrectable"
+					if (hasNoVariantSwapResults && !hasCorrectableSeasonalMods) {
+						optimizationTypeList.push(
+							ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods
+						);
 					}
 				}
 			}

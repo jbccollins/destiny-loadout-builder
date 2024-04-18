@@ -199,20 +199,25 @@ const InspectingOptimizationDetails = (
 				</Box>
 			)}
 			{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-				optimizationType === ELoadoutOptimizationTypeId.Doomed ||
 				optimizationType ===
-					ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed) && (
+					ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods ||
+				optimizationType ===
+					ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable ||
+				optimizationType === ELoadoutOptimizationTypeId.HasSeasonalMods) && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
 						{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-							optimizationType === ELoadoutOptimizationTypeId.Doomed) && (
+							optimizationType ===
+								ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods ||
+							optimizationType ===
+								ELoadoutOptimizationTypeId.HasSeasonalMods) && (
 							<Box>
 								Remove the following mods from the loadout to resolve this
 								optimization:
 							</Box>
 						)}
 						{optimizationType ===
-							ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed && (
+							ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable && (
 							<Box>
 								Replace the following mods from the loadout with their
 								respective full cost variants to resolve this optimization:
@@ -620,9 +625,12 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 			inspectingOptimizationType
 		);
 
-	const loadoutIsFullyOptimized =
-		!!analysisResults[dlbGeneratedId]?.optimizationTypeList &&
-		filteredOptimizationTypeList?.length === 0;
+	const loadoutIsAnalyzed =
+		!!analysisResults[dlbGeneratedId]?.optimizationTypeList;
+
+	const loadoutHasOptimizations = filteredOptimizationTypeList?.length > 0;
+
+	const loadoutIsFullyOptimized = loadoutIsAnalyzed && !loadoutHasOptimizations;
 
 	const inGameLoadoutIconSize = 40;
 
@@ -764,7 +772,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				}}
 			>
 				{/* This loadout has been analyzed and has optimizations */}
-				{!loadoutIsFullyOptimized && (
+				{!loadoutIsFullyOptimized && loadoutIsAnalyzed && (
 					<Box
 						sx={{
 							display: 'flex',
@@ -863,7 +871,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 					</Box>
 				)}
 				{/* This loadout has not been analyzed yet */}
-				{!analysisResults[dlbGeneratedId]?.optimizationTypeList && (
+				{!loadoutIsAnalyzed && (
 					<>
 						<Box
 							sx={{

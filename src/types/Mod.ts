@@ -15,6 +15,7 @@ import {
 	EModCategoryId,
 	EModSocketCategoryId,
 } from './IdEnums';
+import { ActiveSeasonArtifactModIdList } from './ModCategory';
 import { IMod } from './generation';
 import { EnumDictionary } from './globals';
 
@@ -28,16 +29,9 @@ export const getModByHash = (hash: number): IMod => {
 
 export const ModIdList = Object.values(EModId);
 
-// export const ArmorSlotModIdList = ModIdList.filter(
-// 	(id) => getMod(id)?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot
-// );
-// TODO: Figure out a way to properly show/hide the artifact variations of mods
 export const ArmorSlotModIdList = ModIdList.filter((id) => {
 	const mod = getMod(id);
-	return (
-		mod?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot // &&
-		// !mod?.isArtifactMod
-	);
+	return mod?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot;
 });
 
 export const NonArtifactArmorSlotModIdList = ArmorSlotModIdList.filter(
@@ -48,8 +42,18 @@ export const ActiveSeasonReducedCostVariantModIdList =
 	ArmorSlotModIdList.filter((id) => {
 		const mod = getMod(id);
 		return (
+			ActiveSeasonArtifactModIdList.includes(mod.id) &&
+			!!reducedToNormalMod[mod.hash]
+		);
+	});
+
+export const AlternateSeasonReducedCostVariantModIdList =
+	ArmorSlotModIdList.filter((id) => {
+		const mod = getMod(id);
+		return (
 			mod.isArtifactMod &&
-			!(mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact)
+			mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact &&
+			!!reducedToNormalMod[mod.hash]
 		);
 	});
 
@@ -556,55 +560,32 @@ export function hasUnstackableMods(mods: IMod[]): [boolean, EModId[]] {
 }
 
 export const hasAlternateSeasonReducedCostVariantMods = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
+	modIdList: EModId[]
 ): boolean => {
-	return Object.values(armorSlotMods).some((modIdList) => {
-		return modIdList.some((modId) => {
-			const mod = getMod(modId);
-			if (!mod) {
-				return false;
-			}
-			return (
-				mod.isArtifactMod &&
-				mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact
-			);
-		});
+	return modIdList.some((modId) => {
+		const mod = getMod(modId);
+		if (!mod) {
+			return false;
+		}
+		return (
+			!ActiveSeasonArtifactModIdList.includes(mod.id) &&
+			!!reducedToNormalMod[mod.hash]
+		);
 	});
 };
 
 export const hasActiveSeasonReducedCostVariantMods = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
+	modIdList: EModId[]
 ): boolean => {
-	return Object.values(armorSlotMods).some((modIdList) => {
-		return modIdList.some((modId) => {
-			const mod = getMod(modId);
-			if (!mod) {
-				return false;
-			}
-
-			return (
-				mod.isArtifactMod &&
-				mod.modCategoryId !== EModCategoryId.AlternateSeasonalArtifact
-			);
-		});
-	});
-};
-
-export const hasActiveSeasonFullCostVariantMods = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
-): boolean => {
-	return Object.values(armorSlotMods).some((modIdList) => {
-		return modIdList.some((modId) => {
-			const mod = getMod(modId);
-			if (!mod) {
-				return false;
-			}
-			// Bit of a reduncant check I know...
-			return (
-				!mod.isArtifactMod &&
-				ActiveSeasonFullCostVariantModIdList.includes(mod.id)
-			);
-		});
+	return modIdList.some((modId) => {
+		const mod = getMod(modId);
+		if (!mod) {
+			return false;
+		}
+		return (
+			ActiveSeasonArtifactModIdList.includes(modId) &&
+			!!reducedToNormalMod[modId]
+		);
 	});
 };
 
@@ -662,21 +643,15 @@ const isActiveSeasonFullCostVariantMod = (mod: IMod): boolean => {
 	return ActiveSeasonFullCostVariantModIdList.includes(mod.id);
 };
 const isActiveSeasonReducedCostVariantMod = (mod: IMod): boolean => {
-	return (
-		mod.isArtifactMod &&
-		mod.modCategoryId !== EModCategoryId.AlternateSeasonalArtifact
-	);
+	return ActiveSeasonReducedCostVariantModIdList.includes(mod.id);
 };
 
 export const isAlternateSeasonReducedCostVariantMod = (mod: IMod): boolean => {
-	return (
-		mod.isArtifactMod &&
-		mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact
-	);
+	return AlternateSeasonReducedCostVariantModIdList.includes(mod.id);
 };
 
-const isReducedCostVariantMod = (mod: IMod): boolean => {
-	return mod.isArtifactMod;
+const isReducedCostVariantArtifactMod = (mod: IMod): boolean => {
+	return mod.isArtifactMod && !!reducedToNormalMod[mod.hash];
 };
 
 export const replaceActiveSeasonFullCostVariantMods = (
@@ -714,7 +689,7 @@ export const replaceAllReducedCostVariantMods = (
 ) => {
 	return modReplacer(
 		armorSlotMods,
-		isReducedCostVariantMod,
+		isReducedCostVariantArtifactMod,
 		doReplace(reducedToNormalMod)
 	);
 };

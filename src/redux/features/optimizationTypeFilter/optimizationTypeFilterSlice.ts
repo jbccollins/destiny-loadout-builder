@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppState } from '@dlb/redux/store';
 
-import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { ELoadoutOptimizationTypeId } from '@dlb/types/AnalyzableLoadout';
 import { NIL, v4 as uuid } from 'uuid';
 
 export interface OptimizationTypeFilterState {

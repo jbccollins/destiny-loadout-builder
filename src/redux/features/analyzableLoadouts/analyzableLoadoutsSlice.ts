@@ -4,12 +4,12 @@ import { AppState } from '@dlb/redux/store';
 
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
-	ELoadoutOptimizationTypeId,
 	GetLoadoutsThatCanBeOptimizedProgress,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import {
 	AnalysisResults,
 	AnalyzableLoadoutBreakdown,
+	ELoadoutOptimizationTypeId,
 	getDefaultAnalyzableLoadoutBreakdown,
 } from '@dlb/types/AnalyzableLoadout';
 import { NIL, v4 as uuid } from 'uuid';

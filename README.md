@@ -77,6 +77,8 @@ Open [http://localhost:4001](http://localhost:4001) in your browser to see the r
 
 You can start editing any file and see your changes automatically propagate to the browser.
 
+In chrome you may need to enable this flag: chrome://flags/#allow-insecure-localhost
+
 ## Deploy on Vercel
 
 Just push to master. It will deploy automatically [here](https://vercel.com/jbccollins/destiny-loadout-builder).

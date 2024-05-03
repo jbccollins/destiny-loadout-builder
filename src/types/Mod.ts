@@ -603,40 +603,27 @@ const doReplace = (
 };
 
 const modReplacer = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping,
+	modIdList: EModId[],
 	shouldReplace: (mod: IMod) => boolean,
 	doReplace: (mod: IMod) => IMod | null
-): ArmorSlotIdToModIdListMapping => {
-	const newArmorSlotMods = getDefaultArmorSlotIdToModIdListMapping();
-	Object.entries(armorSlotMods).forEach(([armorSlotId, modIdList]) => {
-		modIdList.forEach((modId) => {
-			const mod = getMod(modId);
-			if (!mod) {
-				return;
+): EModId[] => {
+	const newModIdList: EModId[] = [];
+	modIdList.forEach((modId) => {
+		const mod = getMod(modId);
+		if (!mod) {
+			return;
+		}
+		if (shouldReplace(mod)) {
+			const newMod = doReplace(mod);
+			if (newMod) {
+				newModIdList.push(newMod.id);
 			}
-			// Repace first null value with this mod id
-			const idx = newArmorSlotMods[mod.armorSlotId].findIndex(
-				(x) => x === null
-			);
-			if (idx === -1) {
-				console.warn({
-					message: 'Could not find null value in armorSlotMods',
-					modId: mod.id,
-					armorSlotId: mod.armorSlotId,
-				});
-				return;
-			}
-			if (shouldReplace(mod)) {
-				const newMod = doReplace(mod);
-				if (newMod) {
-					newArmorSlotMods[armorSlotId][idx] = newMod.id;
-				}
-			} else {
-				newArmorSlotMods[armorSlotId][idx] = modId;
-			}
-		});
+		} else {
+			newModIdList.push(modId);
+		}
 	});
-	return newArmorSlotMods;
+
+	return newModIdList;
 };
 
 const isActiveSeasonFullCostVariantMod = (mod: IMod): boolean => {
@@ -650,46 +637,46 @@ export const isAlternateSeasonReducedCostVariantMod = (mod: IMod): boolean => {
 	return AlternateSeasonReducedCostVariantModIdList.includes(mod.id);
 };
 
-const isReducedCostVariantArtifactMod = (mod: IMod): boolean => {
-	return mod.isArtifactMod && !!reducedToNormalMod[mod.hash];
+const isReducedCostVariantMod = (mod: IMod): boolean => {
+	return !!reducedToNormalMod[mod.hash];
 };
 
 export const replaceActiveSeasonFullCostVariantMods = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
+	modIdList: EModId[]
 ) => {
 	return modReplacer(
-		armorSlotMods,
+		modIdList,
 		isActiveSeasonFullCostVariantMod,
 		doReplace(normalToReducedMod)
 	);
 };
 
 export const replaceActiveSeasonReducedCostVariantMods = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
+	modIdList: EModId[]
 ) => {
 	return modReplacer(
-		armorSlotMods,
+		modIdList,
 		isActiveSeasonReducedCostVariantMod,
 		doReplace(reducedToNormalMod)
 	);
 };
 
 export const replaceAlternateSeasonReducedCostVariantMods = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
+	modIdList: EModId[]
 ) => {
 	return modReplacer(
-		armorSlotMods,
+		modIdList,
 		isAlternateSeasonReducedCostVariantMod,
 		doReplace(reducedToNormalMod)
 	);
 };
 
 export const replaceAllReducedCostVariantMods = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
+	modIdList: EModId[]
 ) => {
 	return modReplacer(
-		armorSlotMods,
-		isReducedCostVariantArtifactMod,
+		modIdList,
+		isReducedCostVariantMod,
 		doReplace(reducedToNormalMod)
 	);
 };
@@ -698,9 +685,9 @@ export const replaceAllReducedCostVariantMods = (
 // Replace out-of-season reduced cost variants with active full cost variants
 // In-season reduced cost variants are left alone
 export const replaceAllModsThatDimWillReplace = (
-	armorSlotMods: ArmorSlotIdToModIdListMapping
+	modIdList: EModId[]
 ) => {
 	return replaceAlternateSeasonReducedCostVariantMods(
-		replaceActiveSeasonFullCostVariantMods(armorSlotMods)
+		replaceActiveSeasonFullCostVariantMods(modIdList)
 	);
 };

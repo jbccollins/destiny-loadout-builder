@@ -6,7 +6,7 @@
 	"typescript.tsserver.log": "verbose",
 	"typescript.tsserver.experimental.enableProjectDiagnostics": true,
 	"[typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.defaultFormatter": "vscode.typescript-language-features",
 		"editor.formatOnPaste": false,
 		"editor.formatOnSave": true,
 		"editor.tabSize": 2,

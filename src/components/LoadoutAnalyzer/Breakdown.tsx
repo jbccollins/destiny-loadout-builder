@@ -1,9 +1,8 @@
 import ModPlacement from '@dlb/components/ModPlacement';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
-import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
-import { RichAnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
+import { ELoadoutOptimizationTypeId, RichAnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { EArmorSlotId, EGearTierId } from '@dlb/types/IdEnums';

@@ -1,12 +1,10 @@
 import {
+	ELoadoutOptimizationCategoryId,
 	ELoadoutOptimizationTypeId,
 	getLoadoutOptimization,
-	OrderedLoadoutOptimizationTypeList,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import {
-	ELoadoutOptimizationCategoryId,
 	getLoadoutOptimizationCategory,
 	OrderedLoadoutOptimizationCategoryIdList,
+	OrderedLoadoutOptimizationTypeList,
 } from '@dlb/types/AnalyzableLoadout';
 import { Help } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';

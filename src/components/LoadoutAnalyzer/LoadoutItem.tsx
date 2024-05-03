@@ -15,14 +15,12 @@ import { SelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSl
 import { SelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
-	ELoadoutOptimizationTypeId,
-	NoneOptimization,
-	getLoadoutOptimization,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import {
 	ELoadoutOptimizationCategoryId,
+	ELoadoutOptimizationTypeId,
 	ELoadoutType,
+	NoneOptimization,
 	RichAnalyzableLoadout,
+	getLoadoutOptimization,
 	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';

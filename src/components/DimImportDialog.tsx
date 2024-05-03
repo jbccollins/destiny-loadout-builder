@@ -5,10 +5,8 @@ import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
-import {
-	extractDimLoadout,
-	flattenArmor,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { extractDimLoadout } from '@dlb/services/loadoutAnalyzer/loadoutExtraction';
+import { flattenArmor } from '@dlb/services/loadoutAnalyzer/utils';
 import { AnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
 import { EMasterworkAssumption } from '@dlb/types/IdEnums';
 import DownloadIcon from '@mui/icons-material/Download';

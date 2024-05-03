@@ -9,8 +9,7 @@ import {
 	setOptimizationTypeFilter,
 } from '@dlb/redux/features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import { ELoadoutTypeFilter } from '@dlb/types/AnalyzableLoadout';
+import { ELoadoutOptimizationTypeId, ELoadoutTypeFilter } from '@dlb/types/AnalyzableLoadout';
 import { EnumDictionary } from '@dlb/types/globals';
 import { Help } from '@mui/icons-material';
 import AlarmIcon from '@mui/icons-material/Alarm';

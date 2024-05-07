@@ -574,6 +574,39 @@ export const hasAlternateSeasonReducedCostVariantMods = (
 	});
 };
 
+export const hasAlternateSeasonMods = (modIdList: EModId[]): boolean => {
+	return modIdList.some((modId) => {
+		const mod = getMod(modId);
+		if (!mod) {
+			return false;
+		}
+		return (
+			mod.isArtifactMod &&
+			mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact &&
+			!ActiveSeasonArtifactModIdList.includes(mod.id)
+		);
+	});
+}
+
+export const hasNonBuggedAlternateSeasonMods = (modIdList: EModId[], buggedAlternateSeasonModIdList: EModId[]): boolean => {
+	return modIdList.some((x) => {
+		const mod = getMod(x);
+		return (
+			mod.isArtifactMod &&
+			mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact &&
+			!ActiveSeasonArtifactModIdList.includes(x) &&
+			!buggedAlternateSeasonModIdList.includes(x)
+		);
+	});
+}
+
+export const hasActiveSeasonArtifactModsWithNoFullCostVariant = (modIdList: EModId[]): boolean =>
+	ActiveSeasonArtifactModIdList.some(
+		(x) =>
+			modIdList.includes(x) &&
+			!reducedToNormalMod[getMod(x).hash]
+	);
+
 export const hasActiveSeasonReducedCostVariantMods = (
 	modIdList: EModId[]
 ): boolean => {

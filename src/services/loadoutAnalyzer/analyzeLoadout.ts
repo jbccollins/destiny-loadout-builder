@@ -12,9 +12,9 @@ import { isEmpty } from "lodash";
 import { DoProcessArmorParams, doProcessArmor } from "../processArmor";
 import { getDefaultModPlacements } from "../processArmor/getModCombos";
 import { getWastedStats, roundDown10, sumModCosts } from "../processArmor/utils";
-import { generatePreProcessedArmor } from "./generatePreProcessedArmor";
+import { generatePreProcessedArmor } from "./helpers/generatePreProcessedArmor";
+import { findAvailableExoticArmorItem, flattenMods, getFragmentSlots, getUnusedModSlots } from "./helpers/utils";
 import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "./loadoutAnalyzer";
-import { findAvailableExoticArmorItem, flattenMods, getFragmentSlots, getUnusedModSlots } from "./utils";
 
 export enum EModVariantCheckType {
   Base = 'Base',
@@ -322,7 +322,7 @@ export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoa
 
       if (hasHigherStatTiers) {
         optimizationTypeList.push(
-          ELoadoutOptimizationTypeId.HigherStatTier
+          ELoadoutOptimizationTypeId.HigherStatTiers
         );
       }
       if (hasLowerCost) {
@@ -332,7 +332,7 @@ export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoa
         optimizationTypeList.push(ELoadoutOptimizationTypeId.MissingArmor);
       }
       if (hasStatOver100) {
-        optimizationTypeList.push(ELoadoutOptimizationTypeId.StatsOver100);
+        optimizationTypeList.push(ELoadoutOptimizationTypeId.WastedStatTiers);
       }
       if (hasUnusedFragmentSlots) {
         optimizationTypeList.push(
@@ -389,12 +389,12 @@ export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoa
       }
       if (hasBuggedAlternateSeasonMod) {
         optimizationTypeList.push(
-          ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod
+          ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods
         );
       }
       if (hasActiveSeasonArtifactModsWithNoFullCostVariant) {
         optimizationTypeList.push(
-          ELoadoutOptimizationTypeId.HasSeasonalMods
+          ELoadoutOptimizationTypeId.SeasonalMods
         );
       }
     } else if (modVariantCheckType === EModVariantCheckType.Seasonal) {
@@ -412,14 +412,14 @@ export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoa
       }
       if (hasCorrectableSeasonalMods) {
         optimizationTypeList.push(
-          ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable
+          ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable
         );
       }
 
       // Don't add both "HasSeasonalMods" and "HasSeasonalModsCorrectable"
       if (hasNoVariantSwapResults && !hasCorrectableSeasonalMods) {
         optimizationTypeList.push(
-          ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods
+          ELoadoutOptimizationTypeId.DiscountedSeasonalMods
         );
       }
     }

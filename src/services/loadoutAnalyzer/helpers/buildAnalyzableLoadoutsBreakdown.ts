@@ -34,11 +34,11 @@ export const buildAnalyzableLoadoutsBreakdown = (
 	const armorItems = flattenArmor(armor, allClassItemMetadata);
 	const analyzableDimLoadouts = hasDimLoadouts
 		? extractDimLoadouts({
-				armorItems,
-				dimLoadouts,
-				masterworkAssumption,
-				availableExoticArmor,
-		  })
+			armorItems,
+			dimLoadouts,
+			masterworkAssumption,
+			availableExoticArmor,
+		})
 		: [];
 	const analyzableInGameLoadouts = extractInGameLoadouts({
 		armorItems,

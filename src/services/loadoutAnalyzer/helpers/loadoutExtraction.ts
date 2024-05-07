@@ -9,6 +9,7 @@ import { EMeleeId } from "@dlb/generated/melee/EMeleeId";
 import { ESuperAbilityId } from "@dlb/generated/superAbility/ESuperAbilityId";
 import { DimLoadoutWithId } from "@dlb/redux/features/dimLoadouts/dimLoadoutsSlice";
 import { InGameLoadoutsDefinitions, InGameLoadoutsWithIdMapping } from "@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice";
+import { roundDown10 } from "@dlb/services/processArmor/utils";
 import { AnalyzableLoadout, ELoadoutOptimizationTypeId, ELoadoutType, getDefaultAnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
 import { ArmorItem, AvailableExoticArmor, getExtraMasterworkedStats } from "@dlb/types/Armor";
 import { ArmorStatIdList, ArmorStatIndices, ArmorStatMapping, getArmorStatIdFromBungieHash, getArmorStatMappingFromFragments, getDefaultArmorStatMapping } from "@dlb/types/ArmorStat";
@@ -26,7 +27,6 @@ import { getMeleeByHash } from "@dlb/types/Melee";
 import { getModByHash, replaceAllModsThatDimWillReplace } from "@dlb/types/Mod";
 import { getSuperAbilityByHash } from "@dlb/types/SuperAbility";
 import { getBonusResilienceOrnamentHashByDestinyClassId } from "@dlb/utils/bonus-resilience-ornaments";
-import { roundDown10 } from "../processArmor/utils";
 import { findAvailableExoticArmorItem, flattenMods, unflattenMods } from "./utils";
 
 type ExtractDimLoadoutParams = {

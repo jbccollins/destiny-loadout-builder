@@ -1,15 +1,29 @@
+import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout2";
+import { getDefaultModPlacements } from "@dlb/services/processArmor/getModCombos";
+import { TestCase } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/analyzeLoadout.test";
+import { getBaseOutput, getBaseParams } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/fixtureHelpers";
 import { ELoadoutOptimizationTypeId } from "@dlb/types/AnalyzableLoadout";
-import { TestCase } from "../analyzeLoadout.test";
-import { getBaseOutput, getBaseParams } from "../fixtureHelpers";
+import { cloneDeep } from "lodash";
 
-const params = getBaseParams();
+const params = cloneDeep(getBaseParams());
+
 params.loadout.armor.splice(1, 1);
+
+const baseOutput = getBaseOutput();
+
+const output: AnalyzeLoadoutResult = {
+  ...baseOutput,
+  metadata: {
+    ...baseOutput.metadata,
+    modPlacement: getDefaultModPlacements().placement,
+  }
+}
 
 const testCase: TestCase = [
   'MissingArmor',
   [params],
   {
-    ...getBaseOutput(),
+    ...output,
     canBeOptimized: true,
     optimizationTypeList: [ELoadoutOptimizationTypeId.MissingArmor],
   },

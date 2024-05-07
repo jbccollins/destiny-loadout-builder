@@ -4,14 +4,17 @@
 
 import { EAspectId } from "@dlb/generated/aspect/EAspectId";
 import { EModId } from "@dlb/generated/mod/EModId";
-import { ArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
+import { ArmorSlotEnergyMapping, getDefaultArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
+import { getDefaultModPlacements } from "@dlb/services/processArmor/getModCombos";
 import { AnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
 import { Armor, ArmorItem, AvailableExoticArmor, AvailableExoticArmorItem, DestinyClassToAllClassItemMetadataMapping } from "@dlb/types/Armor";
 import { ArmorSlotIdList, ArmorSlotWithClassItemIdList } from "@dlb/types/ArmorSlot";
+import { getDefaultArmorStatMapping } from "@dlb/types/ArmorStat";
 import { getAspect } from "@dlb/types/Aspect";
 import { DestinyClassIdList } from "@dlb/types/DestinyClass";
 import { EArmorSlotId, EDestinyClassId, EGearTierId, EModSocketCategoryId } from "@dlb/types/IdEnums";
 import { ArmorChargeAcquisitionModIdList, ArmorChargeSpendModIdList, ArmorSlotIdToModIdListMapping, FontModIdList, NonArtifactArmorSlotModIdList, getMod, hasMutuallyExclusiveMods } from "@dlb/types/Mod";
+import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "../loadoutAnalyzer";
 
 export const isEditableLoadout = (loadout: AnalyzableLoadout): boolean => {
 	const nonClassItemArmor = loadout.armor.filter(
@@ -95,7 +98,7 @@ export const unflattenMods = (modIdList: EModId[]): UnflattenModsOutput => {
 	};
 	const raidMods: [EModId, EModId, EModId, EModId] = [null, null, null, null];
 	const armorStatMods: EModId[] = [];
-	let artificeModIdList: EModId[] = [];
+	const artificeModIdList: EModId[] = [];
 
 	modIdList.forEach((modId) => {
 		const mod = getMod(modId);
@@ -132,7 +135,6 @@ export const unflattenMods = (modIdList: EModId[]): UnflattenModsOutput => {
 		armorStatMods,
 		artificeModIdList,
 	};
-
 }
 
 export const findAvailableExoticArmorItem = (
@@ -188,7 +190,7 @@ export const getUnusedModSlots = ({
 				(x) => x.armorSlotId === armorSlotId
 			);
 
-			const potentialReccomendedMods =
+			const potentialRecommendedMods =
 				// Only recommend mods that are NOT discounted via the seasonal artifact
 				nonArtifactArmorSlotMods
 					// Cheap sanity pre-filter
@@ -228,7 +230,7 @@ export const getUnusedModSlots = ({
 							meetsArmorChargeSpendModConstraints
 						);
 					});
-			if (potentialReccomendedMods.length > 0) {
+			if (potentialRecommendedMods.length > 0) {
 				unusedModSlots[armorSlotId] = maxReservedArmorSlotEnergy;
 			}
 		}
@@ -250,3 +252,18 @@ export const getFragmentSlots = (aspectIdList: EAspectId[]): number => {
 	});
 	return fragmentSlots;
 };
+
+export const getInitialMetadata = (): GetLoadoutsThatCanBeOptimizedProgressMetadata => {
+	return ({
+		maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
+		maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+		lowestCost: Infinity,
+		currentCost: Infinity,
+		lowestWastedStats: Infinity,
+		currentWastedStats: Infinity,
+		mutuallyExclusiveModGroups: [],
+		unstackableModIdList: [],
+		modPlacement: getDefaultModPlacements().placement,
+		unusedModSlots: {},
+	})
+}

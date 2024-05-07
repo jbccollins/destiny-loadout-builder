@@ -1,14 +1,17 @@
+import { EModId } from "@dlb/generated/mod/EModId";
+import { getDefaultArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
 import { AnalyzeLoadoutParams, AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout2";
 import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "@dlb/services/loadoutAnalyzer/loadoutAnalyzer";
 import { getDefaultModPlacements } from "@dlb/services/processArmor/getModCombos";
 import { AnalyzableLoadout, getDefaultAnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
 import { Armor, ArmorGroup, ArmorItem, ArmorRaritySplit, AvailableExoticArmor, DestinyClassToAllClassItemMetadataMapping, StatList, generateAvailableExoticArmorGroup, getDefaultAllClassItemMetadata, getDefaultAvailableExoticArmorItem } from "@dlb/types/Armor";
 import { ArmorSlotWithClassItemIdList } from "@dlb/types/ArmorSlot";
+import { getDefaultArmorStatMapping } from "@dlb/types/ArmorStat";
 import { DestinyClassIdList } from "@dlb/types/DestinyClass";
 import { EArmorSlotId, EArmorStatId, EDestinyClassId, EGearTierId, EMasterworkAssumption } from "@dlb/types/IdEnums";
 import { v4 } from "uuid";
 
-const getBaseArmorItem = (): ArmorItem => {
+export const getBaseArmorItem = (): ArmorItem => {
   return {
     name: '',
     icon: '',
@@ -149,6 +152,27 @@ const getBaseAnalyzeableLoadout = (): AnalyzableLoadout => {
   loadout.armor = getBaseArmorItems();
   loadout.exoticHash = Head.hash;
   loadout.destinyClassId = EDestinyClassId.Hunter;
+  loadout.armorStatMods = [
+    EModId.MobilityMod,
+    EModId.MobilityMod,
+    EModId.MobilityMod,
+    EModId.MobilityMod,
+    EModId.MobilityMod,
+  ];
+  loadout.achievedStats = {
+    [EArmorStatId.Mobility]: 100,
+    [EArmorStatId.Resilience]: 50,
+    [EArmorStatId.Recovery]: 50,
+    [EArmorStatId.Discipline]: 50,
+    [EArmorStatId.Intellect]: 50,
+    [EArmorStatId.Strength]: 50,
+  };
+  loadout.achievedStatTiers = {
+    ...loadout.achievedStats,
+  };
+  loadout.desiredStatTiers = {
+    ...loadout.achievedStats,
+  };
   return loadout;
 }
 
@@ -168,26 +192,47 @@ const getBaseGetLoadoutsThatCanBeOptimizedProgressMetadata = (): GetLoadoutsThat
   return ({
     maxPossibleDesiredStatTiers: {
       [EArmorStatId.Mobility]: 100,
-      [EArmorStatId.Resilience]: 100,
-      [EArmorStatId.Recovery]: 100,
-      [EArmorStatId.Discipline]: 100,
-      [EArmorStatId.Intellect]: 100,
-      [EArmorStatId.Strength]: 100,
+      [EArmorStatId.Resilience]: 50,
+      [EArmorStatId.Recovery]: 50,
+      [EArmorStatId.Discipline]: 50,
+      [EArmorStatId.Intellect]: 50,
+      [EArmorStatId.Strength]: 50,
     },
     maxPossibleReservedArmorSlotEnergy: {
-      [EArmorSlotId.Head]: 10,
-      [EArmorSlotId.Arm]: 10,
-      [EArmorSlotId.Chest]: 10,
-      [EArmorSlotId.Leg]: 10,
-      [EArmorSlotId.ClassItem]: 10,
+      [EArmorSlotId.Head]: 7,
+      [EArmorSlotId.Arm]: 7,
+      [EArmorSlotId.Chest]: 7,
+      [EArmorSlotId.Leg]: 7,
+      [EArmorSlotId.ClassItem]: 7,
     },
-    lowestCost: 0,
-    currentCost: Infinity,
+    lowestCost: 15,
+    currentCost: 15,
     lowestWastedStats: 0,
-    currentWastedStats: Infinity,
+    currentWastedStats: 0,
     mutuallyExclusiveModGroups: [],
     unstackableModIdList: [],
-    modPlacement: getDefaultModPlacements().placement,
+    modPlacement: {
+      [EArmorSlotId.Head]: {
+        ...getDefaultModPlacements().placement.Head,
+        armorStatModId: EModId.MobilityMod,
+      },
+      [EArmorSlotId.Arm]: {
+        ...getDefaultModPlacements().placement.Arm,
+        armorStatModId: EModId.MobilityMod,
+      },
+      [EArmorSlotId.Chest]: {
+        ...getDefaultModPlacements().placement.Chest,
+        armorStatModId: EModId.MobilityMod,
+      },
+      [EArmorSlotId.Leg]: {
+        ...getDefaultModPlacements().placement.Leg,
+        armorStatModId: EModId.MobilityMod,
+      },
+      [EArmorSlotId.ClassItem]: {
+        ...getDefaultModPlacements().placement.ClassItem,
+        armorStatModId: EModId.MobilityMod,
+      },
+    },
     unusedModSlots: {},
   })
 }
@@ -197,6 +242,23 @@ export const getBaseOutput = (): AnalyzeLoadoutResult => {
     optimizationTypeList: [],
     metadata: getBaseGetLoadoutsThatCanBeOptimizedProgressMetadata(),
     canBeOptimized: false,
+  }
+}
+
+export const getUnprocessableBaseOutput = (): AnalyzeLoadoutResult => {
+  const baseOutput = getBaseOutput();
+  return {
+    ...baseOutput,
+    metadata: {
+      ...baseOutput.metadata,
+      modPlacement: getDefaultModPlacements().placement,
+      maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
+      maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+      currentCost: 15,
+      currentWastedStats: 0,
+      lowestCost: Infinity,
+      lowestWastedStats: Infinity,
+    }
   }
 }
 

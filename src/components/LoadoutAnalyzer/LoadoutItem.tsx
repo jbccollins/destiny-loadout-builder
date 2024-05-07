@@ -159,7 +159,7 @@ const InspectingOptimizationDetails = (
 			<Box sx={{ fontSize: '18px', fontWeight: 'bold' }}>
 				Resolution Instructions:
 			</Box>
-			{optimizationType === ELoadoutOptimizationTypeId.HigherStatTier && (
+			{optimizationType === ELoadoutOptimizationTypeId.HigherStatTiers && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
 						Use the &quot;Desired Stat Tiers&quot; selector to resolve this
@@ -198,24 +198,23 @@ const InspectingOptimizationDetails = (
 			)}
 			{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
 				optimizationType ===
-					ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods ||
+					ELoadoutOptimizationTypeId.DiscountedSeasonalMods ||
 				optimizationType ===
-					ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable ||
-				optimizationType === ELoadoutOptimizationTypeId.HasSeasonalMods) && (
+					ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable ||
+				optimizationType === ELoadoutOptimizationTypeId.SeasonalMods) && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
 						{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
 							optimizationType ===
-								ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods ||
-							optimizationType ===
-								ELoadoutOptimizationTypeId.HasSeasonalMods) && (
+								ELoadoutOptimizationTypeId.DiscountedSeasonalMods ||
+							optimizationType === ELoadoutOptimizationTypeId.SeasonalMods) && (
 							<Box>
 								Remove the following mods from the loadout to resolve this
 								optimization:
 							</Box>
 						)}
 						{optimizationType ===
-							ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable && (
+							ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable && (
 							<Box>
 								Replace the following mods from the loadout with their
 								respective full cost variants to resolve this optimization:
@@ -469,7 +468,7 @@ const InspectingOptimizationDetails = (
 					piece to resolve this optimization.
 				</InspectingOptimizationDetailsHelp>
 			)}
-			{optimizationType == ELoadoutOptimizationTypeId.StatsOver100 && (
+			{optimizationType == ELoadoutOptimizationTypeId.WastedStatTiers && (
 				<InspectingOptimizationDetailsHelp>
 					This may or may not be something that can be resolved given obtained
 					armor and selected mods. Play around with the &quot;Desired Stat
@@ -477,7 +476,7 @@ const InspectingOptimizationDetails = (
 				</InspectingOptimizationDetailsHelp>
 			)}
 			{optimizationType ==
-				ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod && (
+				ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
 						There is nothing you can do to resolve this. This is a bug on

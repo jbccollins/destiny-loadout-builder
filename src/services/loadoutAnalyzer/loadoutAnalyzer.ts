@@ -57,8 +57,8 @@ import {
 import { ActiveSeasonArtifactModIdList } from '@dlb/types/ModCategory';
 import { reducedToNormalMod } from '@dlb/utils/reduced-cost-mod-mapping';
 import { isEmpty } from 'lodash';
-import { generatePreProcessedArmor } from './generatePreProcessedArmor';
-import { findAvailableExoticArmorItem, flattenMods, getFragmentSlots, getUnusedModSlots } from './utils';
+import { generatePreProcessedArmor } from './helpers/generatePreProcessedArmor';
+import { findAvailableExoticArmorItem, flattenMods, getFragmentSlots, getUnusedModSlots } from './helpers/utils';
 
 // Return all AnalyzableLoadouts that can reach higher stat tiers or that
 // can reach the same stat tiers, but for cheaper.
@@ -72,6 +72,7 @@ export enum EGetLoadoutsThatCanBeOptimizedProgressType {
 export type GetLoadoutsThatCanBeOptimizedProgressMetadata = {
 	maxPossibleDesiredStatTiers: ArmorStatMapping;
 	maxPossibleReservedArmorSlotEnergy: ArmorSlotEnergyMapping;
+	// maxStatTierDiff: number;
 	lowestCost: number;
 	currentCost: number;
 	lowestWastedStats: number;
@@ -417,7 +418,7 @@ export const getLoadoutsThatCanBeOptimized = (
 
 					if (hasHigherStatTiers) {
 						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.HigherStatTier
+							ELoadoutOptimizationTypeId.HigherStatTiers
 						);
 					}
 					if (hasLowerCost) {
@@ -427,7 +428,7 @@ export const getLoadoutsThatCanBeOptimized = (
 						optimizationTypeList.push(ELoadoutOptimizationTypeId.MissingArmor);
 					}
 					if (hasStatOver100) {
-						optimizationTypeList.push(ELoadoutOptimizationTypeId.StatsOver100);
+						optimizationTypeList.push(ELoadoutOptimizationTypeId.WastedStatTiers);
 					}
 					if (hasUnusedFragmentSlots) {
 						optimizationTypeList.push(
@@ -484,12 +485,12 @@ export const getLoadoutsThatCanBeOptimized = (
 					}
 					if (hasBuggedAlternateSeasonMod) {
 						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod
+							ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods
 						);
 					}
 					if (hasActiveSeasonArtifactModsWithNoFullCostVariant) {
 						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.HasSeasonalMods
+							ELoadoutOptimizationTypeId.SeasonalMods
 						);
 					}
 				} else if (modVariantCheckType === EModVariantCheckType.Seasonal) {
@@ -507,14 +508,14 @@ export const getLoadoutsThatCanBeOptimized = (
 					}
 					if (hasCorrectableSeasonalMods) {
 						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable
+							ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable
 						);
 					}
 
 					// Don't add both "HasSeasonalMods" and "HasSeasonalModsCorrectable"
 					if (hasNoVariantSwapResults && !hasCorrectableSeasonalMods) {
 						optimizationTypeList.push(
-							ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods
+							ELoadoutOptimizationTypeId.DiscountedSeasonalMods
 						);
 					}
 				}
@@ -571,9 +572,9 @@ export enum EMessageType {
 export type Message = {
 	type: EMessageType;
 	payload:
-		| GetLoadoutsThatCanBeOptimizedProgress
-		| GetLoadoutsThatCanBeOptimizedOutputItem[]
-		| Error;
+	| GetLoadoutsThatCanBeOptimizedProgress
+	| GetLoadoutsThatCanBeOptimizedOutputItem[]
+	| Error;
 };
 
 export type Progress = {
@@ -592,6 +593,6 @@ export interface GetLoadoutsThatCanBeOptimizedWorker
 
 /* Just some notes here: 
 - DIM Loadouts have a set class item. If we can still use that to achieve the same or higher stat tiers then we should.
-  If that's not possible then c'est la vie. This can happen if the user gets an artifice class item or something.
+	If that's not possible then c'est la vie. This can happen if the user gets an artifice class item or something.
 
 */

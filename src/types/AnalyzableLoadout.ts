@@ -5,11 +5,20 @@ import {
 	GetLoadoutsThatCanBeOptimizedProgress,
 	GetLoadoutsThatCanBeOptimizedProgressMetadata,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import { default as buggedAlternateSeasonModChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonMod';
+import { default as buggedAlternateSeasonModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonMods';
+import { default as fewerWastedStatsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/FewerWastedStats';
+import { default as higherStatTiersChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/HigherStatTiers';
+import { default as invalidLoadoutConfigurationChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/InvalidLoadoutConfiguration';
+import { default as lowerCostChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/LowerCost';
 import { default as missingArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/MissingArmor';
+import { default as mutuallyExclusiveModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/MutuallyExclusiveMods';
 import { default as noExoticArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/NoExoticArmor';
+import { default as unmasterworkedArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmasterworkedArmor';
 import { default as unmetDIMStatConstraintsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmetDIMStatConstraints';
 import { default as unspecifiedAspectChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnspecifiedAspect';
+import { default as unusableModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusableMods';
+import { default as unusedFragmentSlotsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedFragmentSlots';
+import { default as wastedStatTiersChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/WastedStatTiers';
 import { ArmorItem } from './Armor';
 import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
 import { DLBConfig } from './DLBConfig';
@@ -240,12 +249,12 @@ export const filterOptimizationTypeList = (
 };
 
 export enum ELoadoutOptimizationTypeId {
-	HigherStatTier = 'HigherStatTier',
+	HigherStatTiers = 'HigherStatTiers',
 	LowerCost = 'LowerCost',
 	MissingArmor = 'MissingArmor',
 	NoExoticArmor = 'NoExoticArmor',
 	DeprecatedMods = 'DeprecatedMods',
-	StatsOver100 = 'StatsOver100',
+	WastedStatTiers = 'WastedStatTiers',
 	UnusedFragmentSlots = 'UnusedFragmentSlots',
 	UnspecifiedAspect = 'UnspecifiedAspect',
 	UnmetDIMStatConstraints = 'UnmetDIMStatConstraints',
@@ -255,11 +264,11 @@ export enum ELoadoutOptimizationTypeId {
 	InvalidLoadoutConfiguration = 'InvalidLoadoutConfiguration',
 	MutuallyExclusiveMods = 'MutuallyExclusiveMods',
 	UnusedModSlots = 'UnusedModSlots',
-	HasSeasonalMods = 'HasSeasonalMods',
-	HasDiscountedSeasonalMods = 'HasDiscountedSeasonalMods',
-	HasDiscountedSeasonalModsCorrectable = 'HasDiscountedSeasonalModsCorrectable',
+	SeasonalMods = 'SeasonalMods',
+	DiscountedSeasonalMods = 'DiscountedSeasonalMods',
+	DiscountedSeasonalModsCorrectable = 'DiscountedSeasonalModsCorrectable',
 	UnstackableMods = 'UnstackableMods',
-	BuggedAlternateSeasonMod = 'BuggedAlternateSeasonMod',
+	BuggedAlternateSeasonMods = 'BuggedAlternateSeasonMods',
 	None = 'None',
 	Error = 'Error',
 }
@@ -272,6 +281,12 @@ export type LoadoutOptimziationTypeCheckerOutput = {
 export type LoadoutOptimziationTypeCheckerParams = AnalyzeLoadoutParams & {
 	modIdList: EModId[];
 	metadata: GetLoadoutsThatCanBeOptimizedProgressMetadata;
+	hasResults: boolean;
+	maxStatTierDiff: number;
+	usesAlternateSeasonMods: boolean;
+	usesBuggedAlternateSeasonMods: boolean;
+	usesNonBuggedAlternateSeasonMods: boolean;
+	usesMutuallyExclusiveMods: boolean;
 }
 
 export type LoadoutOptimizationTypeChecker = (params: LoadoutOptimziationTypeCheckerParams) => LoadoutOptimziationTypeCheckerOutput
@@ -284,7 +299,7 @@ export interface ILoadoutOptimization {
 	checker: LoadoutOptimizationTypeChecker;
 }
 
-const TEMP_CHECKER: LoadoutOptimizationTypeChecker = () => {
+const NOOP_CHECKER: LoadoutOptimizationTypeChecker = () => {
 	return {
 		meetsOptimizationCriteria: false,
 		shortCircuit: false,
@@ -295,13 +310,13 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 	ELoadoutOptimizationTypeId,
 	ILoadoutOptimization
 > = {
-	[ELoadoutOptimizationTypeId.HigherStatTier]: {
-		id: ELoadoutOptimizationTypeId.HigherStatTier,
+	[ELoadoutOptimizationTypeId.HigherStatTiers]: {
+		id: ELoadoutOptimizationTypeId.HigherStatTiers,
 		name: 'Higher Stat Tier',
 		description:
 			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve higher stat tiers.',
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
-		checker: TEMP_CHECKER
+		checker: higherStatTiersChecker
 	},
 	[ELoadoutOptimizationTypeId.LowerCost]: {
 		id: ELoadoutOptimizationTypeId.LowerCost,
@@ -309,7 +324,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers for a lower total stat mod cost. This may allow you to socket more mods or more expensive mods.',
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
-		checker: TEMP_CHECKER
+		checker: lowerCostChecker
 	},
 	[ELoadoutOptimizationTypeId.FewerWastedStats]: {
 		id: ELoadoutOptimizationTypeId.FewerWastedStats,
@@ -317,7 +332,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve the same stat tiers but with fewer wasted stats. Any stat that does not end in a 0 is considered a wasted stat. For example, 89 Recovery provides the same benefit as 80 Recovery so there are 9 wasted stats. Reducing wasted stats may not increase the stat tiers that you are able to achieve, but it does look aesthetically nice to have all your stats end in a 0 :)',
 		category: ELoadoutOptimizationCategoryId.COSMETIC,
-		checker: TEMP_CHECKER
+		checker: fewerWastedStatsChecker
 	},
 	[ELoadoutOptimizationTypeId.MissingArmor]: {
 		id: ELoadoutOptimizationTypeId.MissingArmor,
@@ -341,7 +356,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'This loadout uses mods that are no longer in the game. This usually means you had an old "Charged With Light", "Warmind Cell", or "Elemental Well" mod equipped.',
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
-		checker: TEMP_CHECKER
+		checker: NOOP_CHECKER // Intentional. This check happens before the loadout is every analyzed since deprecated mods mess up armor processing
 	},
 	[ELoadoutOptimizationTypeId.UnspecifiedAspect]: {
 		id: ELoadoutOptimizationTypeId.UnspecifiedAspect,
@@ -351,13 +366,13 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		category: ELoadoutOptimizationCategoryId.WARNING,
 		checker: unspecifiedAspectChecker
 	},
-	[ELoadoutOptimizationTypeId.StatsOver100]: {
-		id: ELoadoutOptimizationTypeId.StatsOver100,
-		name: 'Stats Over 100',
+	[ELoadoutOptimizationTypeId.WastedStatTiers]: {
+		id: ELoadoutOptimizationTypeId.WastedStatTiers,
+		name: 'Wasted Stat Tiers',
 		description:
 			"This loadout has one or more stats of 110 or higher. There is likely a way to shuffle mods around to avoid wasting an entire stat tier's worth of stat points.",
-		category: ELoadoutOptimizationCategoryId.COSMETIC,
-		checker: TEMP_CHECKER
+		category: ELoadoutOptimizationCategoryId.WARNING,
+		checker: wastedStatTiersChecker
 	},
 	[ELoadoutOptimizationTypeId.UnusedFragmentSlots]: {
 		id: ELoadoutOptimizationTypeId.UnusedFragmentSlots,
@@ -365,7 +380,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			"This loadout has one or more unused fragment slots. Occasionally Bungie adds more fragment slots to an aspect. You may want to add another fragment, it's free real estate!",
 		category: ELoadoutOptimizationCategoryId.WARNING,
-		checker: TEMP_CHECKER
+		checker: unusedFragmentSlotsChecker
 	},
 	[ELoadoutOptimizationTypeId.UnmetDIMStatConstraints]: {
 		id: ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
@@ -379,9 +394,9 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		id: ELoadoutOptimizationTypeId.UnusableMods,
 		name: 'Unusable Mods',
 		description:
-			'[D2 Loadout Specific] This loadout uses mods that are no longer available. This usually happens when you were using a discounted mod that was available in a previous season via artifact unlocks.',
+			'This loadout uses mods that are no longer available. This usually happens when you were using a mod that was available during a previous season via artifact unlocks.',
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
-		checker: TEMP_CHECKER
+		checker: unusableModsChecker
 	},
 	[ELoadoutOptimizationTypeId.UnmasterworkedArmor]: {
 		id: ELoadoutOptimizationTypeId.UnmasterworkedArmor,
@@ -389,7 +404,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'This loadout contains unmasterworked armor. Masterworking armor provides a +2 bonus to all stats and adds additional energy capacity to the armor. Masterworking armor in this loadout may allow you to socket more expensive mods which may be beneficial to your build.',
 		category: ELoadoutOptimizationCategoryId.WARNING,
-		checker: TEMP_CHECKER
+		checker: unmasterworkedArmorChecker
 	},
 	[ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration]: {
 		id: ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
@@ -397,7 +412,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			"Something about this loadout is not configured correctly and no combination of armor pieces can make it valid. This should theoretically never happen for D2 Loadouts. If this is a DIM loadout, this can happen if you created a loadout using discounted mods from an old season. DIM will automatically attempt swap over to using the full cost variants of such mods. When DIM does such a swap, there sometimes won't be enough armor energy capacity to slot the full cost variants, which results in this optimization type. In rare cases this can happen if you somehow managed to create a loadout where the total mod cost for a given armor slot exceeded 10. This would likely only happen if there was a bug in DIM or another third party loadout creation tool.",
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
-		checker: TEMP_CHECKER
+		checker: invalidLoadoutConfigurationChecker
 	},
 	[ELoadoutOptimizationTypeId.MutuallyExclusiveMods]: {
 		id: ELoadoutOptimizationTypeId.MutuallyExclusiveMods,
@@ -405,7 +420,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'This loadout uses mods that are mutually exclusive. This is rare, but can happen if Bungie decides to make two mods mutually exclusive after you have already equipped both of them together. It can also happen if there is a bug in DIM or another third party loadout creation tool that let you create a loadout with such mods.',
 		category: ELoadoutOptimizationCategoryId.PROBLEM,
-		checker: TEMP_CHECKER
+		checker: mutuallyExclusiveModsChecker
 	},
 	[ELoadoutOptimizationTypeId.UnusedModSlots]: {
 		id: ELoadoutOptimizationTypeId.UnusedModSlots,
@@ -413,31 +428,31 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			"This loadout has space to slot additional mods. It's free real estate!",
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
-		checker: TEMP_CHECKER
+		checker: NOOP_CHECKER
 	},
-	[ELoadoutOptimizationTypeId.HasSeasonalMods]: {
-		id: ELoadoutOptimizationTypeId.HasSeasonalMods,
-		name: 'Has Seasonal Mods',
+	[ELoadoutOptimizationTypeId.SeasonalMods]: {
+		id: ELoadoutOptimizationTypeId.SeasonalMods,
+		name: 'Seasonal Mods',
 		description:
 			'This loadout uses mods unlocked via the current seasonal artifact that will become unavailable once the season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
-		checker: TEMP_CHECKER
+		checker: NOOP_CHECKER
 	},
-	[ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods]: {
-		id: ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods,
-		name: 'Has Discounted Seasonal Mods',
+	[ELoadoutOptimizationTypeId.DiscountedSeasonalMods]: {
+		id: ELoadoutOptimizationTypeId.DiscountedSeasonalMods,
+		name: 'Discounted Seasonal Mods',
 		description:
 			'This loadout uses discounted mods unlocked via the current seasonal artifact that will become unavailable once the season ends. If this is a DIM loadout, DIM will not be able to automatically swap such discounted mods for their full cost variants, as the total mod cost would exceed the available armor energy capacity.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
-		checker: TEMP_CHECKER
+		checker: NOOP_CHECKER
 	},
-	[ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable]: {
-		id: ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable,
-		name: 'Has Discounted Seasonal Mods (Correctable)',
+	[ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable]: {
+		id: ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable,
+		name: 'Discounted Seasonal Mods (Correctable)',
 		description:
 			'[D2 Loadout Specific] This loadout uses discounted mods unlocked via the current seasonal artifact that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
-		checker: TEMP_CHECKER
+		checker: NOOP_CHECKER
 	},
 	[ELoadoutOptimizationTypeId.UnstackableMods]: {
 		id: ELoadoutOptimizationTypeId.UnstackableMods,
@@ -445,15 +460,15 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'This loadout uses multiple copies of mods with benefits that do not stack.',
 		category: ELoadoutOptimizationCategoryId.WARNING,
-		checker: TEMP_CHECKER
+		checker: NOOP_CHECKER
 	},
-	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod]: {
-		id: ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod,
+	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods]: {
+		id: ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
 		name: 'Bugged Alternate Season Mod',
 		description:
 			'This loadout contains a bugged mod. The Bungie API has a bug where some players have access to discounted mods that were available via artifact unlocks in a previous season. If you are affected by this bug there is nothing you can do to fix it, but this will only ever be a positive thing for your current builds since the discounted mods are cheaper. However, this may break your build in the future if Bungie ever fixes this bug.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
-		checker: buggedAlternateSeasonModChecker
+		checker: buggedAlternateSeasonModsChecker
 	},
 	[ELoadoutOptimizationTypeId.None]: {
 		id: ELoadoutOptimizationTypeId.None,
@@ -461,20 +476,20 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'No optimizations found. This loadout is as good as it gets :)',
 		category: ELoadoutOptimizationCategoryId.NONE,
-		checker: TEMP_CHECKER
+		checker: NOOP_CHECKER
 	},
 	[ELoadoutOptimizationTypeId.Error]: {
 		id: ELoadoutOptimizationTypeId.Error,
 		name: 'Processing Error',
 		description: 'An error occurred while processing this loadout.',
 		category: ELoadoutOptimizationCategoryId.ERROR,
-		checker: TEMP_CHECKER
+		checker: NOOP_CHECKER
 	},
 };
 
 export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 	ValidateEnumList(Object.values(ELoadoutOptimizationTypeId), [
-		ELoadoutOptimizationTypeId.HigherStatTier,
+		ELoadoutOptimizationTypeId.HigherStatTiers,
 		ELoadoutOptimizationTypeId.LowerCost,
 		ELoadoutOptimizationTypeId.UnusedModSlots,
 		ELoadoutOptimizationTypeId.MissingArmor,
@@ -488,11 +503,11 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 		ELoadoutOptimizationTypeId.UnmasterworkedArmor,
 		ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
 		ELoadoutOptimizationTypeId.UnstackableMods,
-		ELoadoutOptimizationTypeId.HasSeasonalMods,
-		ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods,
-		ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable,
-		ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod,
-		ELoadoutOptimizationTypeId.StatsOver100,
+		ELoadoutOptimizationTypeId.SeasonalMods,
+		ELoadoutOptimizationTypeId.DiscountedSeasonalMods,
+		ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable,
+		ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
+		ELoadoutOptimizationTypeId.WastedStatTiers,
 		ELoadoutOptimizationTypeId.FewerWastedStats,
 		ELoadoutOptimizationTypeId.Error,
 		ELoadoutOptimizationTypeId.None,
@@ -553,7 +568,7 @@ export const humanizeOptimizationTypes = (
 		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(
 			(x) =>
 				![
-					ELoadoutOptimizationTypeId.HigherStatTier,
+					ELoadoutOptimizationTypeId.HigherStatTiers,
 					ELoadoutOptimizationTypeId.LowerCost,
 					ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
 					ELoadoutOptimizationTypeId.FewerWastedStats,
@@ -563,7 +578,7 @@ export const humanizeOptimizationTypes = (
 	// Higher stat tier takes precedence over fewer wasted stats
 	if (
 		filteredOptimizationTypeList.includes(
-			ELoadoutOptimizationTypeId.HigherStatTier
+			ELoadoutOptimizationTypeId.HigherStatTiers
 		)
 	) {
 		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(

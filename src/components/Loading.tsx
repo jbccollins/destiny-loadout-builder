@@ -813,6 +813,7 @@ function Loading() {
 				log('dimProfile', dimProfile);
 
 				const manifest = await getDefinitions();
+				``;
 				log('manifest', manifest, false);
 				setHasManifest(true);
 

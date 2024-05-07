@@ -1,19 +1,18 @@
 import { EModId } from "@dlb/generated/mod/EModId";
 import { getDefaultArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
+import { DoProcessArmorParams, doProcessArmor } from "@dlb/services/processArmor";
 import { AnalyzableLoadout, ELoadoutOptimizationTypeId, LoadoutOptimizationTypeToLoadoutOptimizationMapping } from "@dlb/types/AnalyzableLoadout";
 import { Armor, AvailableExoticArmor, DestinyClassToAllClassItemMetadataMapping } from "@dlb/types/Armor";
 import { ArmorSlotWithClassItemIdList } from "@dlb/types/ArmorSlot";
 import { getArmorStatMappingFromFragments, getArmorStatMappingFromMods, getDefaultArmorStatMapping } from "@dlb/types/ArmorStat";
 import { EIntrinsicArmorPerkOrAttributeId, EMasterworkAssumption } from "@dlb/types/IdEnums";
-import { getValidRaidModArmorSlotPlacements, hasActiveSeasonReducedCostVariantMods, hasAlternateSeasonReducedCostVariantMods, replaceAllReducedCostVariantMods } from "@dlb/types/Mod";
-import { isEmpty } from "lodash";
-import { DoProcessArmorParams, doProcessArmor } from "../processArmor";
-import { getDefaultModPlacements } from "../processArmor/getModCombos";
-import { sumModCosts } from "../processArmor/utils";
-import extractProcessedArmorData from "./extractProcessedArmorData";
-import { generatePreProcessedArmor } from "./generatePreProcessedArmor";
+import { getValidRaidModArmorSlotPlacements, replaceAllReducedCostVariantMods } from "@dlb/types/Mod";
+import { cloneDeep, isEmpty } from "lodash";
+import extractMetadataPostArmorProcessing from "./helpers/extractMetadataPostArmorProecessing";
+import extractMetadataPreArmorProcessing from "./helpers/extractMetadataPreArmorProcessing";
+import { generatePreProcessedArmor } from "./helpers/generatePreProcessedArmor";
+import { findAvailableExoticArmorItem, unflattenMods } from "./helpers/utils";
 import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "./loadoutAnalyzer";
-import { findAvailableExoticArmorItem, flattenMods, unflattenMods } from "./utils";
 
 export enum EModVariantCheckType {
   Base = 'Base',
@@ -31,8 +30,8 @@ export const ModVariantCheckOrder: Record<EModVariantCheckType, ModVariantCheckS
     beforeProcessing: [
       ELoadoutOptimizationTypeId.NoExoticArmor,
       ELoadoutOptimizationTypeId.MissingArmor,
-      ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod,
-      ELoadoutOptimizationTypeId.StatsOver100,
+      ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
+      ELoadoutOptimizationTypeId.WastedStatTiers,
       ELoadoutOptimizationTypeId.UnusedFragmentSlots,
       ELoadoutOptimizationTypeId.UnspecifiedAspect,
       ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
@@ -41,24 +40,21 @@ export const ModVariantCheckOrder: Record<EModVariantCheckType, ModVariantCheckS
       ELoadoutOptimizationTypeId.DeprecatedMods,
       ELoadoutOptimizationTypeId.MutuallyExclusiveMods,
       ELoadoutOptimizationTypeId.UnusedModSlots,
-      ELoadoutOptimizationTypeId.HasSeasonalMods,
-      ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods,
+      ELoadoutOptimizationTypeId.SeasonalMods,
+      ELoadoutOptimizationTypeId.DiscountedSeasonalMods,
       ELoadoutOptimizationTypeId.UnstackableMods,
     ],
     afterProcessing: [
-      ELoadoutOptimizationTypeId.HigherStatTier,
+      ELoadoutOptimizationTypeId.HigherStatTiers,
       ELoadoutOptimizationTypeId.LowerCost,
       ELoadoutOptimizationTypeId.FewerWastedStats,
       ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
     ]
   },
   [EModVariantCheckType.Seasonal]: {
-
-    beforeProcessing: [
-      ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable,
-      // Should UnmetDIMStatConstraints be here?
-    ],
+    beforeProcessing: [],
     afterProcessing: [
+      ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable,
     ]
   },
 }
@@ -95,29 +91,26 @@ export type AnalyzeLoadoutResult = {
   canBeOptimized: boolean;
 }
 
-export const getInitialMetadata = (): GetLoadoutsThatCanBeOptimizedProgressMetadata => {
-  return ({
-    maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
-    maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
-    lowestCost: Infinity,
-    currentCost: Infinity,
-    lowestWastedStats: Infinity,
-    currentWastedStats: Infinity,
-    mutuallyExclusiveModGroups: [],
-    unstackableModIdList: [],
-    modPlacement: getDefaultModPlacements().placement,
-    unusedModSlots: {},
-  })
-}
+
 
 export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoadoutResult {
-  const { loadout, armor, allClassItemMetadata, availableExoticArmor, masterworkAssumption } = params;
+  const { loadout, armor, allClassItemMetadata, availableExoticArmor, masterworkAssumption, buggedAlternateSeasonModIdList } = params;
 
-  let metadata = getInitialMetadata();
+  const {
+    allLoadoutModsIdList,
+    usesAlternateSeasonReducedCostVariantMods,
+    usesActiveSeasonReducedCostVariantMods,
+    usesAlternateSeasonMods,
+    usesNonBuggedAlternateSeasonMods,
+    usesBuggedAlternateSeasonMods,
+    usesMutuallyExclusiveMods,
+    ...rest
+  } = extractMetadataPreArmorProcessing({
+    loadout,
+    buggedAlternateSeasonModIdList
+  })
 
-  const allLoadoutModsIdList = flattenMods(loadout);
-
-  // TODO: Pull the variant creation logic out into a separate function
+  let metadata = cloneDeep(rest.metadata);
 
   // DIM Loadouts will try to auto-correct any discounted mods from previous seasons
   // by replacing them with the full cost variants. Sometimes there is not enough
@@ -132,10 +125,6 @@ export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoa
     },
   ];
 
-  const usesAlternateSeasonReducedCostVariantMods =
-    hasAlternateSeasonReducedCostVariantMods(allLoadoutModsIdList);
-  const usesActiveSeasonReducedCostVariantMods =
-    hasActiveSeasonReducedCostVariantMods(allLoadoutModsIdList);
   // The alternate check overrides the seasonal check
   // So don't even bother checking for seasonal loadouts if
   // the base variant mods contain alternate season reduced cost mods
@@ -151,9 +140,12 @@ export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoa
     });
   }
 
-  const optimizationTypeIdList: ELoadoutOptimizationTypeId[] = [];
+  const optimizationTypeIdList: ELoadoutOptimizationTypeId[] = [...loadout.optimizationTypeList];
+
   armorSlotModsVariants.forEach(({ modIdList, modVariantCheckType }) => {
     const { armorSlotMods, armorStatMods, artificeModIdList, raidMods } = unflattenMods(modIdList)
+    let hasResults = false;
+    let maxStatTierDiff = -Infinity;
 
     // Replace the mods in the loadout with the mods from the variant
     const _loadout: AnalyzableLoadout = {
@@ -168,7 +160,18 @@ export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoa
       let shortCircuit = false;
       for (const optimizationType of optimizationTypes) {
         const checker = LoadoutOptimizationTypeToLoadoutOptimizationMapping[optimizationType].checker;
-        const result = checker({ ...params, loadout: _loadout, modIdList, metadata });
+        const result = checker({
+          ...params,
+          loadout: _loadout,
+          modIdList,
+          metadata,
+          hasResults,
+          maxStatTierDiff,
+          usesAlternateSeasonMods,
+          usesNonBuggedAlternateSeasonMods,
+          usesBuggedAlternateSeasonMods,
+          usesMutuallyExclusiveMods,
+        });
         if (result.meetsOptimizationCriteria) {
           optimizationTypeIdList.push(optimizationType);
           if (result.shortCircuit) {
@@ -243,20 +246,18 @@ export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoa
 
     const processedArmor = doProcessArmor(doProcessArmorParams);
 
-    const { hasResults, metadata: _metadata } = extractProcessedArmorData(
+    const postProcessingData = extractMetadataPostArmorProcessing(
       {
         processedArmor,
         loadout,
+        preArmorProcessingMetadata: metadata,
       }
     );
 
-    metadata = {
-      ...metadata,
-      ..._metadata,
-    }
+    hasResults = postProcessingData.hasResults;
+    maxStatTierDiff = postProcessingData.maxStatTierDiff;
 
-    const sumOfCurrentStatModsCost = sumModCosts(loadout.armorStatMods);
-
+    metadata = cloneDeep(postProcessingData.metadata);
 
     doChecks(ModVariantCheckOrder[modVariantCheckType].afterProcessing)
   })

@@ -9,7 +9,10 @@ import {
 	setOptimizationTypeFilter,
 } from '@dlb/redux/features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { ELoadoutOptimizationTypeId, ELoadoutTypeFilter } from '@dlb/types/AnalyzableLoadout';
+import {
+	ELoadoutOptimizationTypeId,
+	ELoadoutTypeFilter,
+} from '@dlb/types/AnalyzableLoadout';
 import { EnumDictionary } from '@dlb/types/globals';
 import { Help } from '@mui/icons-material';
 import AlarmIcon from '@mui/icons-material/Alarm';
@@ -53,7 +56,7 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	ELoadoutOptimizationTypeId,
 	ReactElement
 > = {
-	[ELoadoutOptimizationTypeId.HigherStatTier]: (
+	[ELoadoutOptimizationTypeId.HigherStatTiers]: (
 		<KeyboardDoubleArrowUpIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.LowerCost]: (
@@ -71,7 +74,7 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	[ELoadoutOptimizationTypeId.DeprecatedMods]: (
 		<WbTwilightIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationTypeId.StatsOver100]: (
+	[ELoadoutOptimizationTypeId.WastedStatTiers]: (
 		<RestoreFromTrashIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.UnusedFragmentSlots]: (
@@ -100,19 +103,19 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.None]: <CheckIcon key={0} sx={iconStyle} />,
 	[ELoadoutOptimizationTypeId.Error]: <ReportIcon key={0} sx={iconStyle} />,
-	[ELoadoutOptimizationTypeId.HasDiscountedSeasonalMods]: (
+	[ELoadoutOptimizationTypeId.DiscountedSeasonalMods]: (
 		<ScheduleIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationTypeId.HasDiscountedSeasonalModsCorrectable]: (
+	[ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable]: (
 		<MoreTimeIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationTypeId.HasSeasonalMods]: (
+	[ELoadoutOptimizationTypeId.SeasonalMods]: (
 		<AlarmIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.UnstackableMods]: (
 		<LayersIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod]: (
+	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods]: (
 		<BugIcon key={0} sx={iconStyle} />
 	),
 };

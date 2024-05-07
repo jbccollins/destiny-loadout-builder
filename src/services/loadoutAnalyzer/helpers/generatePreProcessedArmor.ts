@@ -1,7 +1,7 @@
 import { AnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
 import { AllClassItemMetadata, Armor, AvailableExoticArmor, DestinyClassToAllClassItemMetadataMapping, StrictArmorItems } from "@dlb/types/Armor";
 import { EDimLoadoutsFilterId, EGearTierId, EInGameLoadoutsFilterId } from "@dlb/types/IdEnums";
-import { preProcessArmor } from "../processArmor";
+import { preProcessArmor } from "../../processArmor";
 import { findAvailableExoticArmorItem } from "./utils";
 
 type GeneratePreProcessedArmorParams = {

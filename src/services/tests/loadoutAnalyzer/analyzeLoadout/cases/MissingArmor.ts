@@ -1,4 +1,4 @@
-import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout";
+import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/helpers/types";
 import { getDefaultModPlacements } from "@dlb/services/processArmor/getModCombos";
 import { TestCase } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/analyzeLoadout.test";
 import { getBaseOutput, getBaseParams } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/fixtureHelpers";

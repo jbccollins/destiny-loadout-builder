@@ -1,7 +1,6 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultRaidModIdList } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { AnalyzeLoadoutParams, EModVariantCheckType } from '@dlb/services/loadoutAnalyzer/analyzeLoadout';
-import { GetLoadoutsThatCanBeOptimizedProgress, GetLoadoutsThatCanBeOptimizedProgressMetadata } from '@dlb/services/loadoutAnalyzer/helpers/types';
+import { AnalyzeLoadoutParams, EModVariantCheckType, GetLoadoutsThatCanBeOptimizedProgress, GetLoadoutsThatCanBeOptimizedProgressMetadata } from '@dlb/services/loadoutAnalyzer/helpers/types';
 import { default as buggedAlternateSeasonModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonMods';
 import { default as fewerWastedStatsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/FewerWastedStats';
 import { default as higherStatTiersChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/HigherStatTiers';
@@ -498,11 +497,11 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 		ELoadoutOptimizationTypeId.UnspecifiedAspect,
 		ELoadoutOptimizationTypeId.UnmasterworkedArmor,
 		ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
+		ELoadoutOptimizationTypeId.WastedStatTiers,
 		ELoadoutOptimizationTypeId.UnstackableMods,
 		ELoadoutOptimizationTypeId.SeasonalMods,
 		ELoadoutOptimizationTypeId.SeasonalModsCorrectable,
 		ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
-		ELoadoutOptimizationTypeId.WastedStatTiers,
 		ELoadoutOptimizationTypeId.FewerWastedStats,
 		ELoadoutOptimizationTypeId.Error,
 		ELoadoutOptimizationTypeId.None,

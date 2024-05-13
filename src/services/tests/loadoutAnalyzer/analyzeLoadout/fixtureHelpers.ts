@@ -1,7 +1,6 @@
 import { EModId } from "@dlb/generated/mod/EModId";
 import { getDefaultArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
-import { AnalyzeLoadoutParams, AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout";
-import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "@dlb/services/loadoutAnalyzer/helpers/types";
+import { AnalyzeLoadoutParams, AnalyzeLoadoutResult, GetLoadoutsThatCanBeOptimizedProgressMetadata } from "@dlb/services/loadoutAnalyzer/helpers/types";
 import { getDefaultModPlacements } from "@dlb/services/processArmor/getModCombos";
 import { AnalyzableLoadout, getDefaultAnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
 import { Armor, ArmorGroup, ArmorItem, ArmorRaritySplit, AvailableExoticArmor, DestinyClassToAllClassItemMetadataMapping, StatList, generateAvailableExoticArmorGroup, getDefaultAllClassItemMetadata, getDefaultAvailableExoticArmorItem } from "@dlb/types/Armor";

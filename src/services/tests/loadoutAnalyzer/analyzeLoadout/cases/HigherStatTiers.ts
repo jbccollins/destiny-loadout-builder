@@ -1,5 +1,5 @@
 import { EModId } from "@dlb/generated/mod/EModId";
-import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout";
+import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/helpers/types";
 import { TestCase } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/analyzeLoadout.test";
 import { getBaseOutput, getBaseParams } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/fixtureHelpers";
 import { ELoadoutOptimizationTypeId } from "@dlb/types/AnalyzableLoadout";

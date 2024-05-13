@@ -1,5 +1,5 @@
-import { EModVariantCheckType } from "@dlb/services/loadoutAnalyzer/analyzeLoadout";
 import { ELoadoutType, LoadoutOptimizationTypeChecker } from "@dlb/types/AnalyzableLoadout";
+import { EModVariantCheckType } from "../helpers/types";
 
 const checker: LoadoutOptimizationTypeChecker = (params) => {
   const {

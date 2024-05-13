@@ -1,28 +1,17 @@
-import { EModId } from "@dlb/generated/mod/EModId";
 import { getDefaultArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
 import { DoProcessArmorParams, doProcessArmor } from "@dlb/services/processArmor";
 import { AnalyzableLoadout, ELoadoutOptimizationTypeId, LoadoutOptimizationTypeToLoadoutOptimizationMapping } from "@dlb/types/AnalyzableLoadout";
-import { Armor, AvailableExoticArmor, DestinyClassToAllClassItemMetadataMapping } from "@dlb/types/Armor";
 import { ArmorSlotWithClassItemIdList } from "@dlb/types/ArmorSlot";
 import { getArmorStatMappingFromFragments, getArmorStatMappingFromMods, getDefaultArmorStatMapping } from "@dlb/types/ArmorStat";
-import { EIntrinsicArmorPerkOrAttributeId, EMasterworkAssumption } from "@dlb/types/IdEnums";
+import { EIntrinsicArmorPerkOrAttributeId } from "@dlb/types/IdEnums";
 import { getValidRaidModArmorSlotPlacements, replaceAllReducedCostVariantMods } from "@dlb/types/Mod";
 import { cloneDeep, isEmpty } from "lodash";
 import extractMetadataPostArmorProcessing, { getDefaultPostArmorProcessingInfo } from "./helpers/extractMetadataPostArmorProecessing";
 import extractMetadataPreArmorProcessing from "./helpers/extractMetadataPreArmorProcessing";
 import { generatePreProcessedArmor } from "./helpers/generatePreProcessedArmor";
-import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "./helpers/types";
+import { AnalyzeLoadoutParams, AnalyzeLoadoutResult, EModVariantCheckType, ModReplacer, ModVariantCheckSplit, ModVariants } from "./helpers/types";
 import { findAvailableExoticArmorItem, unflattenMods } from "./helpers/utils";
 
-export enum EModVariantCheckType {
-  Base = 'Base',
-  Seasonal = 'Seasonal',
-}
-
-export type ModVariantCheckSplit = {
-  beforeProcessing: ELoadoutOptimizationTypeId[];
-  afterProcessing: ELoadoutOptimizationTypeId[];
-}
 
 // Order matters here for short-circuiting
 export const ModVariantCheckOrder: Record<EModVariantCheckType, ModVariantCheckSplit> = {
@@ -58,9 +47,7 @@ export const ModVariantCheckOrder: Record<EModVariantCheckType, ModVariantCheckS
   },
 }
 
-export type ModReplacer = (
-  modIdList: EModId[]
-) => EModId[];
+
 
 export const ModVariantCheckTypeToModReplacerMapping: Record<
   EModVariantCheckType,
@@ -70,25 +57,6 @@ export const ModVariantCheckTypeToModReplacerMapping: Record<
   [EModVariantCheckType.Seasonal]: replaceAllReducedCostVariantMods,
 };
 
-export type ModVariants = {
-  modIdList: EModId[];
-  modVariantCheckType: EModVariantCheckType;
-}[];
-
-export type AnalyzeLoadoutParams = {
-  armor: Armor;
-  masterworkAssumption: EMasterworkAssumption;
-  allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
-  availableExoticArmor: AvailableExoticArmor;
-  buggedAlternateSeasonModIdList: EModId[];
-  loadout: AnalyzableLoadout;
-}
-
-export type AnalyzeLoadoutResult = {
-  optimizationTypeList: ELoadoutOptimizationTypeId[];
-  metadata: GetLoadoutsThatCanBeOptimizedProgressMetadata;
-  canBeOptimized: boolean;
-}
 
 export default function analyzeLoadout(params: AnalyzeLoadoutParams): AnalyzeLoadoutResult {
   const { loadout, armor, allClassItemMetadata, availableExoticArmor, masterworkAssumption, buggedAlternateSeasonModIdList } = params;

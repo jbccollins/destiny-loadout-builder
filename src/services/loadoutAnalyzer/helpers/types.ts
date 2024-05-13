@@ -47,6 +47,42 @@ export type GetLoadoutsThatCanBeOptimizedOutputItem = {
   loadoutId: string;
 };
 
+
+export enum EModVariantCheckType {
+  Base = 'Base',
+  Seasonal = 'Seasonal',
+}
+
+export type ModVariantCheckSplit = {
+  beforeProcessing: ELoadoutOptimizationTypeId[];
+  afterProcessing: ELoadoutOptimizationTypeId[];
+}
+
+export type ModVariants = {
+  modIdList: EModId[];
+  modVariantCheckType: EModVariantCheckType;
+}[];
+
+export type ModReplacer = (
+  modIdList: EModId[]
+) => EModId[];
+
+export type AnalyzeLoadoutParams = {
+  armor: Armor;
+  masterworkAssumption: EMasterworkAssumption;
+  allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
+  availableExoticArmor: AvailableExoticArmor;
+  buggedAlternateSeasonModIdList: EModId[];
+  loadout: AnalyzableLoadout;
+}
+
+export type AnalyzeLoadoutResult = {
+  optimizationTypeList: ELoadoutOptimizationTypeId[];
+  metadata: GetLoadoutsThatCanBeOptimizedProgressMetadata;
+  canBeOptimized: boolean;
+}
+
+
 // Worker types
 export enum EMessageType {
   Progress = 'progress',
@@ -75,3 +111,4 @@ export interface GetLoadoutsThatCanBeOptimizedWorker
   extends Omit<Worker, 'postMessage'> {
   postMessage(data: PostMessageParams): void;
 }
+

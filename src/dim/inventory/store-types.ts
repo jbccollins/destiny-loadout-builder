@@ -2,7 +2,7 @@ import { DestinyVersion } from '@destinyitemmanager/dim-api-types';
 import {
 	DestinyClass,
 	DestinyColor,
-	DestinyDisplayPropertiesDefinition
+	DestinyDisplayPropertiesDefinition,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import React from 'react';
 import { DimItem } from './item-types';

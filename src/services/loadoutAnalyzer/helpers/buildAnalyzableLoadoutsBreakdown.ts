@@ -1,11 +1,21 @@
-import { DimLoadoutWithId } from "@dlb/redux/features/dimLoadouts/dimLoadoutsSlice";
-import { InGameLoadoutsDefinitions, InGameLoadoutsWithIdMapping } from "@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice";
-import { AnalyzableLoadout, AnalyzableLoadoutBreakdown } from "@dlb/types/AnalyzableLoadout";
-import { Armor, AvailableExoticArmor, DestinyClassToAllClassItemMetadataMapping } from "@dlb/types/Armor";
-import { Characters } from "@dlb/types/Character";
-import { EMasterworkAssumption } from "@dlb/types/IdEnums";
-import { extractDimLoadouts, extractInGameLoadouts } from "./loadoutExtraction";
-import { flattenArmor, isEditableLoadout } from "./utils";
+import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import {
+	InGameLoadoutsDefinitions,
+	InGameLoadoutsWithIdMapping,
+} from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	AnalyzableLoadout,
+	AnalyzableLoadoutBreakdown,
+} from '@dlb/types/AnalyzableLoadout';
+import {
+	Armor,
+	AvailableExoticArmor,
+	DestinyClassToAllClassItemMetadataMapping,
+} from '@dlb/types/Armor';
+import { Characters } from '@dlb/types/Character';
+import { EMasterworkAssumption } from '@dlb/types/IdEnums';
+import { extractDimLoadouts, extractInGameLoadouts } from './loadoutExtraction';
+import { flattenArmor, isEditableLoadout } from './utils';
 
 type BuildAnalyzableLoadoutsBreakdownParams = {
 	characters: Characters;
@@ -34,11 +44,11 @@ export const buildAnalyzableLoadoutsBreakdown = (
 	const armorItems = flattenArmor(armor, allClassItemMetadata);
 	const analyzableDimLoadouts = hasDimLoadouts
 		? extractDimLoadouts({
-			armorItems,
-			dimLoadouts,
-			masterworkAssumption,
-			availableExoticArmor,
-		})
+				armorItems,
+				dimLoadouts,
+				masterworkAssumption,
+				availableExoticArmor,
+		  })
 		: [];
 	const analyzableInGameLoadouts = extractInGameLoadouts({
 		armorItems,

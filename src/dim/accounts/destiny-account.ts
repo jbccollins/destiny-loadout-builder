@@ -6,7 +6,7 @@ import {
 	BungieMembershipType,
 	DestinyGameVersions,
 	DestinyLinkedProfilesResponse,
-	DestinyProfileUserInfoCard
+	DestinyProfileUserInfoCard,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { UserInfoCard } from 'bungie-api-ts-no-const-enum/user';
 import _ from 'lodash';
@@ -28,7 +28,7 @@ const PLATFORM_LABELS = {
 	[BungieMembershipType.TigerSteam]: 'Steam',
 	[BungieMembershipType.TigerStadia]: 'Stadia',
 	[BungieMembershipType.TigerEgs]: 'Epic',
-	[BungieMembershipType.BungieNext]: 'Bungie.net'
+	[BungieMembershipType.BungieNext]: 'Bungie.net',
 };
 
 /** A specific Destiny account (one per platform and Destiny version) */
@@ -116,7 +116,7 @@ async function generatePlatforms(
 			platformLabel: PLATFORM_LABELS[destinyAccount.membershipType],
 			destinyVersion: 2,
 			platforms: destinyAccount.applicableMembershipTypes,
-			lastPlayed: new Date(destinyAccount.dateLastPlayed)
+			lastPlayed: new Date(destinyAccount.dateLastPlayed),
 		};
 
 		return [account];

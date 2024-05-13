@@ -1,5 +1,10 @@
-import { EMessageType, GetLoadoutsThatCanBeOptimizedProgress, Message, PostMessageParams } from "./helpers/types";
-import { getLoadoutsThatCanBeOptimized } from "./loadoutAnalyzer";
+import {
+	EMessageType,
+	GetLoadoutsThatCanBeOptimizedProgress,
+	Message,
+	PostMessageParams,
+} from './helpers/types';
+import { getLoadoutsThatCanBeOptimized } from './loadoutAnalyzer';
 
 self.onmessage = (e: MessageEvent<PostMessageParams>) => {
 	const getLoadoutsThatCanBeOptimizedProgressCallback = (
@@ -29,5 +34,4 @@ self.onmessage = (e: MessageEvent<PostMessageParams>) => {
 	console.log('[getLoadoutsThatCanBeOptimizedWorker] done');
 };
 
-export { };
-
+export {};

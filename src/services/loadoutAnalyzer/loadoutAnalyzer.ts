@@ -1,11 +1,13 @@
-
 import {
 	ELoadoutOptimizationTypeId,
-	humanizeOptimizationTypes
+	humanizeOptimizationTypes,
 } from '@dlb/types/AnalyzableLoadout';
 import analyzeLoadout from './analyzeLoadout';
-import { EGetLoadoutsThatCanBeOptimizedProgressType, GetLoadoutsThatCanBeOptimizedOutputItem, GetLoadoutsThatCanBeOptimizedParams } from './helpers/types';
-
+import {
+	EGetLoadoutsThatCanBeOptimizedProgressType,
+	GetLoadoutsThatCanBeOptimizedOutputItem,
+	GetLoadoutsThatCanBeOptimizedParams,
+} from './helpers/types';
 
 // We assume that the DIM mods will be swapped appropriately
 // before the analyzer even runs. This is how DIM behaves internally
@@ -31,17 +33,14 @@ export const getLoadoutsThatCanBeOptimized = (
 	Object.values(loadouts).forEach((loadout) => {
 		try {
 			// throw new Error('test');
-			const {
-				optimizationTypeList,
-				metadata,
-			} = analyzeLoadout({
+			const { optimizationTypeList, metadata } = analyzeLoadout({
 				armor,
 				masterworkAssumption,
 				allClassItemMetadata,
 				availableExoticArmor,
 				buggedAlternateSeasonModIdList,
 				loadout,
-			})
+			});
 
 			const humanizedOptimizationTypes =
 				humanizeOptimizationTypes(optimizationTypeList);
@@ -83,4 +82,3 @@ export const getLoadoutsThatCanBeOptimized = (
 
 	return result;
 };
-

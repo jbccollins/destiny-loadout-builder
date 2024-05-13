@@ -1,6 +1,6 @@
-import { LoadoutOptimziationTypeCheckerOutput } from "@dlb/types/AnalyzableLoadout";
+import { LoadoutOptimziationTypeCheckerOutput } from '@dlb/types/AnalyzableLoadout';
 
 export const noMatchResult: LoadoutOptimziationTypeCheckerOutput = {
-  meetsOptimizationCriteria: false,
-  shortCircuit: false
-}
+	meetsOptimizationCriteria: false,
+	shortCircuit: false,
+};

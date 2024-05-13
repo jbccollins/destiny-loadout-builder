@@ -117,14 +117,14 @@ export const analyzableLoadoutsSlice = createSlice({
 			// Deleted loadout ids get removed here
 			const validHiddenIdList = validate
 				? loadoutIdList.filter(
-					(loadoutId) =>
-						!!state.value.analyzableLoadoutBreakdown.validLoadouts[
-						loadoutId
-						] ||
-						!!state.value.analyzableLoadoutBreakdown.invalidLoadouts[
-						loadoutId
-						]
-				)
+						(loadoutId) =>
+							!!state.value.analyzableLoadoutBreakdown.validLoadouts[
+								loadoutId
+							] ||
+							!!state.value.analyzableLoadoutBreakdown.invalidLoadouts[
+								loadoutId
+							]
+				  )
 				: loadoutIdList;
 			localStorage.setItem(
 				'hiddenLoadoutIdList',
@@ -147,22 +147,22 @@ export const analyzableLoadoutsSlice = createSlice({
 				action.payload;
 			const validLoadoutSpecificIgnoredOptimizationTypes = validate
 				? Object.keys(loadoutSpecificIgnoredOptimizationTypes).reduce(
-					(obj, loadoutId) => {
-						if (
-							!!state.value.analyzableLoadoutBreakdown.validLoadouts[
-							loadoutId
-							] ||
-							!!state.value.analyzableLoadoutBreakdown.invalidLoadouts[
-							loadoutId
-							]
-						) {
-							obj[loadoutId] =
-								loadoutSpecificIgnoredOptimizationTypes[loadoutId];
-						}
-						return obj;
-					},
-					{} as Record<string, ELoadoutOptimizationTypeId[]>
-				)
+						(obj, loadoutId) => {
+							if (
+								!!state.value.analyzableLoadoutBreakdown.validLoadouts[
+									loadoutId
+								] ||
+								!!state.value.analyzableLoadoutBreakdown.invalidLoadouts[
+									loadoutId
+								]
+							) {
+								obj[loadoutId] =
+									loadoutSpecificIgnoredOptimizationTypes[loadoutId];
+							}
+							return obj;
+						},
+						{} as Record<string, ELoadoutOptimizationTypeId[]>
+				  )
 				: loadoutSpecificIgnoredOptimizationTypes;
 
 			localStorage.setItem(

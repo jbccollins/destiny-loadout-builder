@@ -1,6 +1,4 @@
-import {
-	getLoadoutsThatCanBeOptimized,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { getLoadoutsThatCanBeOptimized } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
 import armor from '@dlb/services/tests/fixtures/armor.json';
 import availableExoticArmor from '@dlb/services/tests/fixtures/available-exotic-armor.json';

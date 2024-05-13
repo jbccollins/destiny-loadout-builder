@@ -574,7 +574,9 @@ export const hasAlternateSeasonReducedCostVariantMods = (
 	});
 };
 
-export const hasAlternateSeasonArtifactMods = (modIdList: EModId[]): boolean => {
+export const hasAlternateSeasonArtifactMods = (
+	modIdList: EModId[]
+): boolean => {
 	return modIdList.some((modId) => {
 		const mod = getMod(modId);
 		if (!mod) {
@@ -586,9 +588,12 @@ export const hasAlternateSeasonArtifactMods = (modIdList: EModId[]): boolean => 
 			!getActiveSeasonArtifactModIdList().includes(mod.id)
 		);
 	});
-}
+};
 
-export const hasNonBuggedAlternateSeasonMods = (modIdList: EModId[], buggedAlternateSeasonModIdList: EModId[]): boolean => {
+export const hasNonBuggedAlternateSeasonMods = (
+	modIdList: EModId[],
+	buggedAlternateSeasonModIdList: EModId[]
+): boolean => {
 	return modIdList.some((x) => {
 		const mod = getMod(x);
 		return (
@@ -598,19 +603,16 @@ export const hasNonBuggedAlternateSeasonMods = (modIdList: EModId[], buggedAlter
 			!buggedAlternateSeasonModIdList.includes(x)
 		);
 	});
-}
+};
 
 export const hasActiveSeasonArtifactMods = (modIdList: EModId[]): boolean =>
-	getActiveSeasonArtifactModIdList().some(
-		(x) =>
-			modIdList.includes(x)
-	);
+	getActiveSeasonArtifactModIdList().some((x) => modIdList.includes(x));
 
-export const hasActiveSeasonArtifactModsWithNoFullCostVariant = (modIdList: EModId[]): boolean =>
+export const hasActiveSeasonArtifactModsWithNoFullCostVariant = (
+	modIdList: EModId[]
+): boolean =>
 	getActiveSeasonArtifactModIdList().some(
-		(x) =>
-			modIdList.includes(x) &&
-			!reducedToNormalMod[getMod(x).hash]
+		(x) => modIdList.includes(x) && !reducedToNormalMod[getMod(x).hash]
 	);
 
 export const hasActiveSeasonReducedCostVariantMods = (
@@ -627,7 +629,6 @@ export const hasActiveSeasonReducedCostVariantMods = (
 		);
 	});
 };
-
 
 const doReplace = (
 	mapping: Record<number, number>
@@ -681,9 +682,7 @@ const isReducedCostVariantMod = (mod: IMod): boolean => {
 	return !!reducedToNormalMod[mod.hash];
 };
 
-export const replaceActiveSeasonFullCostVariantMods = (
-	modIdList: EModId[]
-) => {
+export const replaceActiveSeasonFullCostVariantMods = (modIdList: EModId[]) => {
 	return modReplacer(
 		modIdList,
 		isActiveSeasonFullCostVariantMod,
@@ -711,9 +710,7 @@ export const replaceAlternateSeasonReducedCostVariantMods = (
 	);
 };
 
-export const replaceAllReducedCostVariantMods = (
-	modIdList: EModId[]
-) => {
+export const replaceAllReducedCostVariantMods = (modIdList: EModId[]) => {
 	return modReplacer(
 		modIdList,
 		isReducedCostVariantMod,
@@ -724,9 +721,7 @@ export const replaceAllReducedCostVariantMods = (
 // Replace active full cost variants with active reduced cost variants
 // Replace out-of-season reduced cost variants with active full cost variants
 // In-season reduced cost variants are left alone
-export const replaceAllModsThatDimWillReplace = (
-	modIdList: EModId[]
-) => {
+export const replaceAllModsThatDimWillReplace = (modIdList: EModId[]) => {
 	return replaceAlternateSeasonReducedCostVariantMods(
 		replaceActiveSeasonFullCostVariantMods(modIdList)
 	);

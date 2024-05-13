@@ -15,14 +15,12 @@ import { SelectedMelee } from '@dlb/redux/features/selectedMelee/selectedMeleeSl
 import { SelectedSuperAbility } from '@dlb/redux/features/selectedSuperAbility/selectedSuperAbilitySlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import {
-	ELoadoutOptimizationTypeId,
-	NoneOptimization,
-	getLoadoutOptimization,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import {
 	ELoadoutOptimizationCategoryId,
+	ELoadoutOptimizationTypeId,
 	ELoadoutType,
+	NoneOptimization,
 	RichAnalyzableLoadout,
+	getLoadoutOptimization,
 	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
@@ -161,7 +159,7 @@ const InspectingOptimizationDetails = (
 			<Box sx={{ fontSize: '18px', fontWeight: 'bold' }}>
 				Resolution Instructions:
 			</Box>
-			{optimizationType === ELoadoutOptimizationTypeId.HigherStatTier && (
+			{optimizationType === ELoadoutOptimizationTypeId.HigherStatTiers && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
 						Use the &quot;Desired Stat Tiers&quot; selector to resolve this
@@ -199,20 +197,20 @@ const InspectingOptimizationDetails = (
 				</Box>
 			)}
 			{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-				optimizationType === ELoadoutOptimizationTypeId.Doomed ||
 				optimizationType ===
-					ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed) && (
+					ELoadoutOptimizationTypeId.SeasonalModsCorrectable ||
+				optimizationType === ELoadoutOptimizationTypeId.SeasonalMods) && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
 						{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-							optimizationType === ELoadoutOptimizationTypeId.Doomed) && (
+							optimizationType === ELoadoutOptimizationTypeId.SeasonalMods) && (
 							<Box>
 								Remove the following mods from the loadout to resolve this
 								optimization:
 							</Box>
 						)}
 						{optimizationType ===
-							ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed && (
+							ELoadoutOptimizationTypeId.SeasonalModsCorrectable && (
 							<Box>
 								Replace the following mods from the loadout with their
 								respective full cost variants to resolve this optimization:
@@ -466,7 +464,7 @@ const InspectingOptimizationDetails = (
 					piece to resolve this optimization.
 				</InspectingOptimizationDetailsHelp>
 			)}
-			{optimizationType == ELoadoutOptimizationTypeId.StatsOver100 && (
+			{optimizationType == ELoadoutOptimizationTypeId.WastedStatTiers && (
 				<InspectingOptimizationDetailsHelp>
 					This may or may not be something that can be resolved given obtained
 					armor and selected mods. Play around with the &quot;Desired Stat
@@ -474,7 +472,7 @@ const InspectingOptimizationDetails = (
 				</InspectingOptimizationDetailsHelp>
 			)}
 			{optimizationType ==
-				ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod && (
+				ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
 						There is nothing you can do to resolve this. This is a bug on
@@ -620,9 +618,12 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 			inspectingOptimizationType
 		);
 
-	const loadoutIsFullyOptimized =
-		!!analysisResults[dlbGeneratedId]?.optimizationTypeList &&
-		filteredOptimizationTypeList?.length === 0;
+	const loadoutIsAnalyzed =
+		!!analysisResults[dlbGeneratedId]?.optimizationTypeList;
+
+	const loadoutHasOptimizations = filteredOptimizationTypeList?.length > 0;
+
+	const loadoutIsFullyOptimized = loadoutIsAnalyzed && !loadoutHasOptimizations;
 
 	const inGameLoadoutIconSize = 40;
 
@@ -764,7 +765,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 				}}
 			>
 				{/* This loadout has been analyzed and has optimizations */}
-				{!loadoutIsFullyOptimized && (
+				{!loadoutIsFullyOptimized && loadoutIsAnalyzed && (
 					<Box
 						sx={{
 							display: 'flex',
@@ -863,7 +864,7 @@ export const LoadoutItem = (props: LoadoutItemProps) => {
 					</Box>
 				)}
 				{/* This loadout has not been analyzed yet */}
-				{!analysisResults[dlbGeneratedId]?.optimizationTypeList && (
+				{!loadoutIsAnalyzed && (
 					<>
 						<Box
 							sx={{

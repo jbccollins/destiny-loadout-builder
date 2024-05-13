@@ -12,7 +12,7 @@ import {
 } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
 import { getDefaultIntrinsicArmorPerkOrAttributeIdList } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
 import { getDefaultRaidModIdList } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { ELoadoutOptimizationTypeId } from './AnalyzableLoadout';
 import { getDestinySubclassIdListByDestinyClassId } from './DestinyClass';
 import {
 	EDestinyClassId,

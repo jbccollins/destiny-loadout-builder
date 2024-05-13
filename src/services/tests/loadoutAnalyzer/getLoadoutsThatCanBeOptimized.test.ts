@@ -1,6 +1,4 @@
-import { Loadout } from '@destinyitemmanager/dim-api-types';
 import {
-	buildAnalyzableLoadoutsBreakdown,
 	getLoadoutsThatCanBeOptimized,
 } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
@@ -11,10 +9,12 @@ import dimLoadouts from '@dlb/services/tests/fixtures/dim-loadouts.json';
 import inGameLoadoutsDefinitions from '@dlb/services/tests/fixtures/in-game-loadouts-definitions.json';
 import inGameLoadoutsItems from '@dlb/services/tests/fixtures/in-game-loadouts-items.json';
 
+import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import {
 	InGameLoadoutsDefinitions,
-	InGameLoadoutsMapping,
+	InGameLoadoutsWithIdMapping,
 } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/helpers/buildAnalyzableLoadoutsBreakdown';
 import {
 	Armor,
 	AvailableExoticArmor,
@@ -28,7 +28,7 @@ type TestCaseInput = Parameters<typeof testFunction>;
 
 type TestCase = [name: string, input: TestCaseInput, output: number];
 const loadouts = buildAnalyzableLoadoutsBreakdown({
-	dimLoadouts: dimLoadouts as Loadout[],
+	dimLoadouts: dimLoadouts as DimLoadoutWithId[],
 	armor: armor as unknown as Armor,
 	allClassItemMetadata:
 		allClassItemMetadata as unknown as DestinyClassToAllClassItemMetadataMapping,
@@ -37,7 +37,8 @@ const loadouts = buildAnalyzableLoadoutsBreakdown({
 	inGameLoadoutsDefinitions:
 		inGameLoadoutsDefinitions as unknown as InGameLoadoutsDefinitions,
 	characters: characters as unknown as Characters,
-	inGameLoadoutsWithId: inGameLoadoutsItems as unknown as InGameLoadoutsMapping,
+	inGameLoadoutsWithId:
+		inGameLoadoutsItems as unknown as InGameLoadoutsWithIdMapping,
 });
 
 // TODO: This test takes way too long to run. Find a better way to test this.
@@ -54,6 +55,7 @@ const testCases: TestCase[] = [
 				progressCallback: () => null,
 				availableExoticArmor:
 					availableExoticArmor as unknown as AvailableExoticArmor,
+				buggedAlternateSeasonModIdList: [],
 			},
 		],
 		83,

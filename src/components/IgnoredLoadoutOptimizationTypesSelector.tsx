@@ -3,10 +3,7 @@ import {
 	setIgnoredLoadoutOptimizationTypes,
 } from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import {
-	ELoadoutOptimizationTypeId,
-	IgnorableLoadoutOptimizationTypes,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { ELoadoutOptimizationTypeId, IgnorableLoadoutOptimizationTypes } from '@dlb/types/AnalyzableLoadout';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {

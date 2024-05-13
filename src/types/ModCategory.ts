@@ -1,57 +1,15 @@
 import { EModDisplayNameId } from '@dlb/generated/mod/EModDisplayNameId';
 
 import { EModId } from '@dlb/generated/mod/EModId';
-import {
-	EElementId,
-	EModCategoryId,
-	ERaidAndNightMareModTypeId,
-} from './IdEnums';
+import { EModCategoryId, ERaidAndNightMareModTypeId } from './IdEnums';
 import { EnumDictionary, IIdentifiableName } from './globals';
 
-enum EAuthorizedAbility {
-	Melee = 'Melee',
-	Grenade = 'Grenade',
-	ClassAbility = 'ClassAbility',
+export const getActiveSeasonArtifactModIdList: () => EModId[] = () => {
+	return [
+		EModId.ArtifactThermodynamicSiphon,
+		EModId.ArtifactSolarStrandDualSiphon
+	]
 }
-
-// TODO: Figure out how to generate these programatically
-const currentSeasonAuthorizedElements: EElementId[] = [
-	// EElementId.Arc,
-	// EElementId.Void,
-	// EElementId.Strand,
-];
-const currentSeasonAuthorizedAbilities: EAuthorizedAbility[] = [
-	// EAuthorizedAbility.Melee,
-];
-
-const currentSeasonAuthorizedModCategories: EModCategoryId[] = [
-	// EModCategoryId.Scavenger,
-];
-
-const AuthorizedAbilityMapping: Record<EAuthorizedAbility, EModId[]> = {
-	[EAuthorizedAbility.Melee]: [
-		EModId.ArtifactHandsOn,
-		EModId.ArtifactHeavyHanded,
-		EModId.ArtifactFocusingStrike,
-		EModId.ArtifactMeleeKickstart,
-		EModId.ArtifactMomentumTransfer,
-	],
-	[EAuthorizedAbility.Grenade]: [],
-	[EAuthorizedAbility.ClassAbility]: [],
-};
-
-const AuthorizedElementalModCategories: EModCategoryId[] = [
-	EModCategoryId.AmmoFinder,
-	EModCategoryId.Scavenger,
-	EModCategoryId.Reserves,
-	EModCategoryId.Targeting,
-	EModCategoryId.Dexterity,
-	EModCategoryId.Holster,
-	EModCategoryId.Loader,
-	EModCategoryId.Unflinching,
-	EModCategoryId.WeaponSurge,
-	EModCategoryId.Siphon,
-];
 
 export interface IModCategory extends IIdentifiableName {
 	description: string;
@@ -171,10 +129,6 @@ export const getModCategoryId = (
 	modId: EModId,
 	isArtifactMod: boolean
 ): EModCategoryId => {
-	// TODO: Fix this. Actually figure out which dual siphon mods are authorized
-	if (modId.includes('DualSiphon')) {
-		return EModCategoryId.AlternateSeasonalArtifact;
-	}
 	if (displayNameId === EModDisplayNameId.ArtificeArmorMod) {
 		return EModCategoryId.ArtificeArmorStat;
 	}
@@ -248,41 +202,8 @@ export const getModCategoryId = (
 			termModCategory = EModCategoryId.Resistance;
 			break;
 	}
-	let isInCurrentSeasonArtifact = false;
-
-	if (termModCategory) {
-		if (
-			isArtifactMod &&
-			currentSeasonAuthorizedModCategories.includes(termModCategory)
-		) {
-			return termModCategory;
-		}
-		// Hacky check to see if the element is in the mod id
-		if (
-			isArtifactMod &&
-			AuthorizedElementalModCategories.includes(termModCategory)
-		) {
-			for (let i = 0; i < currentSeasonAuthorizedElements.length; i++) {
-				const element = currentSeasonAuthorizedElements[i];
-				if (modId.includes(element)) {
-					isInCurrentSeasonArtifact = true;
-					break;
-				}
-			}
-			if (!isInCurrentSeasonArtifact) {
-				return EModCategoryId.AlternateSeasonalArtifact;
-			}
-		}
-	} else if (isArtifactMod) {
-		// Hacky check to see if the ability is authorized in the current artifact
-		for (let i = 0; i < currentSeasonAuthorizedAbilities.length; i++) {
-			const ability = currentSeasonAuthorizedAbilities[i];
-			if (AuthorizedAbilityMapping[ability].includes(modId)) {
-				isInCurrentSeasonArtifact = true;
-				break;
-			}
-		}
-	}
+	const isInCurrentSeasonArtifact =
+		getActiveSeasonArtifactModIdList().includes(modId);
 
 	if (isArtifactMod && !isInCurrentSeasonArtifact) {
 		return EModCategoryId.AlternateSeasonalArtifact;

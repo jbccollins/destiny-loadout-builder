@@ -165,7 +165,7 @@ import {
 } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
-import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/helpers/buildAnalyzableLoadoutsBreakdown';
 import {
 	EDestinyClassId,
 	EDestinySubclassId,
@@ -798,6 +798,7 @@ function Loading() {
 							dlbGeneratedId: `${l.id}/${hash(l)}`,
 						};
 					});
+					log('dimLoadouts (with dlbGeneratedId)', dimLoadouts, true);
 					dispatch(setDimLoadouts(dimLoadouts));
 				} catch (e) {
 					console.warn(
@@ -812,6 +813,7 @@ function Loading() {
 				log('dimProfile', dimProfile);
 
 				const manifest = await getDefinitions();
+				``;
 				log('manifest', manifest, false);
 				setHasManifest(true);
 
@@ -853,6 +855,7 @@ function Loading() {
 					});
 				});
 
+				log('inGameLoadoutsWithId', inGameLoadoutsWithId, true);
 				dispatch(setInGameLoadoutsLoadoutItems(inGameLoadoutsWithId));
 				setHasStores(true);
 				const [

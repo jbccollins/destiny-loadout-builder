@@ -3,12 +3,7 @@ import {
 	setOptimizationTypeFilter,
 } from '@dlb/redux/features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import {
-	ELoadoutOptimizationTypeId,
-	getLoadoutOptimization,
-	OrderedLoadoutOptimizationTypeListWithoutNone,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import { getLoadoutOptimizationCategory } from '@dlb/types/AnalyzableLoadout';
+import { ELoadoutOptimizationTypeId, OrderedLoadoutOptimizationTypeListWithoutNone, getLoadoutOptimization, getLoadoutOptimizationCategory } from '@dlb/types/AnalyzableLoadout';
 import { Box } from '@mui/material';
 import IconMultiSelectDropdown, { IOption } from '../IconMultiSelectDropdown';
 import IconPill from './IconPill';

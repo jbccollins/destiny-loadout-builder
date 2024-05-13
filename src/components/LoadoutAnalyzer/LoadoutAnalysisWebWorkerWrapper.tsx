@@ -21,7 +21,7 @@ import {
 	GetLoadoutsThatCanBeOptimizedProgress,
 	GetLoadoutsThatCanBeOptimizedWorker,
 	Message,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+} from '@dlb/services/loadoutAnalyzer/helpers/types';
 import { AnalyzableLoadoutMapping } from '@dlb/types/AnalyzableLoadout';
 import { isDebugging } from '@dlb/utils/debugging';
 import { useEffect, useMemo } from 'react';

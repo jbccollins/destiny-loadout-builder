@@ -12,6 +12,20 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2024-04-11',
+		version: '2.5.8',
+		title: 'Analyzer Improvements',
+		sections: [
+			{
+				items: [
+					`Completely re-wrote the analyzer under the hood`,
+					`Fixed a bug where "Unusable Mods" was not captured for mods that did not have a "Full Cost" variant (Stuff like dual siphon mods)`,
+					`Removed the "Stats Over 100" optimization type. This has been replaced by a new Optimization type "Wasted Stat Tiers" which checks for stats over 110`,
+				],
+			},
+		],
+	},
+	{
+		date: '2024-04-11',
 		version: '2.5.7',
 		title: 'Add "Bugged Alternate Season Mod" Support',
 		sections: [

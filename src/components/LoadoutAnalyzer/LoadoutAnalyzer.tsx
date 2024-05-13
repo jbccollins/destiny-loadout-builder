@@ -9,10 +9,13 @@ import {
 	setOptimizationTypeFilter,
 } from '@dlb/redux/features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
-import { ELoadoutOptimizationTypeId } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
-import { ELoadoutTypeFilter } from '@dlb/types/AnalyzableLoadout';
+import {
+	ELoadoutOptimizationTypeId,
+	ELoadoutTypeFilter,
+} from '@dlb/types/AnalyzableLoadout';
 import { EnumDictionary } from '@dlb/types/globals';
 import { Help } from '@mui/icons-material';
+import AlarmIcon from '@mui/icons-material/Alarm';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import BugIcon from '@mui/icons-material/BugReport';
@@ -33,7 +36,6 @@ import ReportIcon from '@mui/icons-material/Report';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RuleIcon from '@mui/icons-material/Rule';
-import ScheduleIcon from '@mui/icons-material/Schedule';
 
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
@@ -53,7 +55,7 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	ELoadoutOptimizationTypeId,
 	ReactElement
 > = {
-	[ELoadoutOptimizationTypeId.HigherStatTier]: (
+	[ELoadoutOptimizationTypeId.HigherStatTiers]: (
 		<KeyboardDoubleArrowUpIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.LowerCost]: (
@@ -71,7 +73,7 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	[ELoadoutOptimizationTypeId.DeprecatedMods]: (
 		<WbTwilightIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationTypeId.StatsOver100]: (
+	[ELoadoutOptimizationTypeId.WastedStatTiers]: (
 		<RestoreFromTrashIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.UnusedFragmentSlots]: (
@@ -100,14 +102,16 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.None]: <CheckIcon key={0} sx={iconStyle} />,
 	[ELoadoutOptimizationTypeId.Error]: <ReportIcon key={0} sx={iconStyle} />,
-	[ELoadoutOptimizationTypeId.Doomed]: <ScheduleIcon key={0} sx={iconStyle} />,
-	[ELoadoutOptimizationTypeId.ManuallyCorrectableDoomed]: (
+	[ELoadoutOptimizationTypeId.SeasonalModsCorrectable]: (
 		<MoreTimeIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.SeasonalMods]: (
+		<AlarmIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.UnstackableMods]: (
 		<LayersIcon key={0} sx={iconStyle} />
 	),
-	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMod]: (
+	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods]: (
 		<BugIcon key={0} sx={iconStyle} />
 	),
 };

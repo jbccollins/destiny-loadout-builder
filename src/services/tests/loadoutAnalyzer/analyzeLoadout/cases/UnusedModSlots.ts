@@ -5,16 +5,13 @@ import { cloneDeep } from "lodash";
 
 const params = cloneDeep(getBaseParams());
 
-// This test is a bit silly. Just test that the analyzer passed the optimization type through.
-params.loadout.optimizationTypeList = [ELoadoutOptimizationTypeId.DeprecatedMods];
-
 const testCase: TestCase = [
-  'DeprecatedMods',
+  'UnusedModSlots',
   [params],
   {
     ...getBaseOutput(),
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.DeprecatedMods, ELoadoutOptimizationTypeId.UnusedModSlots],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.UnusedModSlots],
   },
 ]
 

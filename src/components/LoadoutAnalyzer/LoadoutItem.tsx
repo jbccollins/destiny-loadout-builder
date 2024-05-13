@@ -198,15 +198,11 @@ const InspectingOptimizationDetails = (
 			)}
 			{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
 				optimizationType ===
-					ELoadoutOptimizationTypeId.DiscountedSeasonalMods ||
-				optimizationType ===
-					ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable ||
+					ELoadoutOptimizationTypeId.SeasonalModsCorrectable ||
 				optimizationType === ELoadoutOptimizationTypeId.SeasonalMods) && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
 						{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-							optimizationType ===
-								ELoadoutOptimizationTypeId.DiscountedSeasonalMods ||
 							optimizationType === ELoadoutOptimizationTypeId.SeasonalMods) && (
 							<Box>
 								Remove the following mods from the loadout to resolve this
@@ -214,7 +210,7 @@ const InspectingOptimizationDetails = (
 							</Box>
 						)}
 						{optimizationType ===
-							ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable && (
+							ELoadoutOptimizationTypeId.SeasonalModsCorrectable && (
 							<Box>
 								Replace the following mods from the loadout with their
 								respective full cost variants to resolve this optimization:

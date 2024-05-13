@@ -165,7 +165,7 @@ import {
 } from '@dlb/redux/features/useZeroWastedStats/useZeroWastedStatsSlice';
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
-import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/buildAnalyzableLoadoutsBreakdown';
+import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/helpers/buildAnalyzableLoadoutsBreakdown';
 import {
 	EDestinyClassId,
 	EDestinySubclassId,

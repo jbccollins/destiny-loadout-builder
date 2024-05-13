@@ -1,4 +1,4 @@
-import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout2";
+import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout";
 import { TestCase } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/analyzeLoadout.test";
 import { getBaseArmorItem, getBaseOutput, getBaseParams } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/fixtureHelpers";
 import { ELoadoutOptimizationTypeId } from "@dlb/types/AnalyzableLoadout";
@@ -27,7 +27,14 @@ const output: AnalyzeLoadoutResult = {
       [EArmorSlotId.Chest]: 9,
       [EArmorSlotId.Leg]: 9,
       [EArmorSlotId.ClassItem]: 9,
-    }
+    },
+    unusedModSlots: {
+      [EArmorSlotId.Head]: 9,
+      [EArmorSlotId.Arm]: 9,
+      [EArmorSlotId.Chest]: 9,
+      [EArmorSlotId.Leg]: 9,
+      [EArmorSlotId.ClassItem]: 9,
+    },
   },
 }
 
@@ -39,7 +46,7 @@ const testCase: TestCase = [
   {
     ...output,
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.LowerCost],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.UnusedModSlots, ELoadoutOptimizationTypeId.LowerCost],
   },
 ]
 

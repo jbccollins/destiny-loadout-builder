@@ -2,6 +2,7 @@ import { EModId } from "@dlb/generated/mod/EModId";
 import { TestCase } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/analyzeLoadout.test";
 import { getBaseOutput, getBaseParams } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/fixtureHelpers";
 import { ELoadoutOptimizationTypeId } from "@dlb/types/AnalyzableLoadout";
+import { EArmorSlotId } from "@dlb/types/IdEnums";
 import { cloneDeep } from "lodash";
 
 const params = cloneDeep(getBaseParams());
@@ -18,12 +19,18 @@ const testCase: TestCase = [
       ...getBaseOutput().metadata,
       maxPossibleReservedArmorSlotEnergy: {
         ...getBaseOutput().metadata.maxPossibleReservedArmorSlotEnergy,
-        ClassItem: 5,
+        [EArmorSlotId.ClassItem]: 5,
       },
-      mutuallyExclusiveModGroups: ["finisher"]
+      mutuallyExclusiveModGroups: ["finisher"],
+      unusedModSlots: {
+        [EArmorSlotId.Head]: 7,
+        [EArmorSlotId.Arm]: 7,
+        [EArmorSlotId.Chest]: 7,
+        [EArmorSlotId.Leg]: 7,
+      }
     },
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.MutuallyExclusiveMods],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.MutuallyExclusiveMods, ELoadoutOptimizationTypeId.UnusedModSlots],
   },
 ]
 

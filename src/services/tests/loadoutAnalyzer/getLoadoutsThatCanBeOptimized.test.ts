@@ -14,7 +14,7 @@ import {
 	InGameLoadoutsDefinitions,
 	InGameLoadoutsWithIdMapping,
 } from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
-import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/buildAnalyzableLoadoutsBreakdown';
+import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/helpers/buildAnalyzableLoadoutsBreakdown';
 import {
 	Armor,
 	AvailableExoticArmor,

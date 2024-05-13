@@ -6,27 +6,19 @@ import { EArmorSlotId } from "@dlb/types/IdEnums";
 import { cloneDeep } from "lodash";
 
 const params = cloneDeep(getBaseParams());
+const output = cloneDeep(getBaseOutput())
 
-params.loadout.armorSlotMods.Head[0] = EModId.ArtifactVoidStrandDualSiphon
+params.loadout.armorSlotMods.Head[0] = EModId.ArtifactSolarStrandDualSiphon
+output.metadata.maxPossibleReservedArmorSlotEnergy[EArmorSlotId.Head] = 4
+output.metadata.unusedModSlots[EArmorSlotId.Head] = 4
 
 const testCase: TestCase = [
-  'UnusableMods',
+  'SeasonalMods',
   [params],
   {
-    ...getBaseOutput(),
-    metadata: {
-      ...getBaseOutput().metadata,
-      maxPossibleReservedArmorSlotEnergy: {
-        ...getBaseOutput().metadata.maxPossibleReservedArmorSlotEnergy,
-        [EArmorSlotId.Head]: 4,
-      },
-      unusedModSlots: {
-        ...getBaseOutput().metadata.unusedModSlots,
-        [EArmorSlotId.Head]: 4,
-      },
-    },
+    ...output,
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.UnusableMods, ELoadoutOptimizationTypeId.UnusedModSlots],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.UnusedModSlots, ELoadoutOptimizationTypeId.SeasonalMods],
   },
 ]
 

@@ -19,7 +19,7 @@ const testCase: TestCase = [
   {
     ...getBaseOutput(),
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.UnmetDIMStatConstraints],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.UnmetDIMStatConstraints, ELoadoutOptimizationTypeId.UnusedModSlots],
   },
 ]
 

@@ -1,8 +1,10 @@
 import { LoadoutOptimizationTypeChecker } from "@dlb/types/AnalyzableLoadout";
 
 const checker: LoadoutOptimizationTypeChecker = (params) => {
-  const { usesAlternateSeasonArtifactMods, usesAlternateSeasonNonBuggedArtifactMods } = params;
-  const meetsOptimizationCriteria = usesAlternateSeasonArtifactMods && usesAlternateSeasonNonBuggedArtifactMods;
+  const { hasUnusedModSlots } = params;
+
+  const meetsOptimizationCriteria = hasUnusedModSlots;
+
   return {
     meetsOptimizationCriteria,
     shortCircuit: false,

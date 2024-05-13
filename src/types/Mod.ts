@@ -15,7 +15,7 @@ import {
 	EModCategoryId,
 	EModSocketCategoryId,
 } from './IdEnums';
-import { ActiveSeasonArtifactModIdList } from './ModCategory';
+import { getActiveSeasonArtifactModIdList } from './ModCategory';
 import { IMod } from './generation';
 import { EnumDictionary } from './globals';
 
@@ -42,7 +42,7 @@ export const ActiveSeasonReducedCostVariantModIdList =
 	ArmorSlotModIdList.filter((id) => {
 		const mod = getMod(id);
 		return (
-			ActiveSeasonArtifactModIdList.includes(mod.id) &&
+			getActiveSeasonArtifactModIdList().includes(mod.id) &&
 			!!reducedToNormalMod[mod.hash]
 		);
 	});
@@ -568,13 +568,13 @@ export const hasAlternateSeasonReducedCostVariantMods = (
 			return false;
 		}
 		return (
-			!ActiveSeasonArtifactModIdList.includes(mod.id) &&
+			!getActiveSeasonArtifactModIdList().includes(mod.id) &&
 			!!reducedToNormalMod[mod.hash]
 		);
 	});
 };
 
-export const hasAlternateSeasonMods = (modIdList: EModId[]): boolean => {
+export const hasAlternateSeasonArtifactMods = (modIdList: EModId[]): boolean => {
 	return modIdList.some((modId) => {
 		const mod = getMod(modId);
 		if (!mod) {
@@ -583,7 +583,7 @@ export const hasAlternateSeasonMods = (modIdList: EModId[]): boolean => {
 		return (
 			mod.isArtifactMod &&
 			mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact &&
-			!ActiveSeasonArtifactModIdList.includes(mod.id)
+			!getActiveSeasonArtifactModIdList().includes(mod.id)
 		);
 	});
 }
@@ -594,14 +594,20 @@ export const hasNonBuggedAlternateSeasonMods = (modIdList: EModId[], buggedAlter
 		return (
 			mod.isArtifactMod &&
 			mod.modCategoryId === EModCategoryId.AlternateSeasonalArtifact &&
-			!ActiveSeasonArtifactModIdList.includes(x) &&
+			!getActiveSeasonArtifactModIdList().includes(x) &&
 			!buggedAlternateSeasonModIdList.includes(x)
 		);
 	});
 }
 
+export const hasActiveSeasonArtifactMods = (modIdList: EModId[]): boolean =>
+	getActiveSeasonArtifactModIdList().some(
+		(x) =>
+			modIdList.includes(x)
+	);
+
 export const hasActiveSeasonArtifactModsWithNoFullCostVariant = (modIdList: EModId[]): boolean =>
-	ActiveSeasonArtifactModIdList.some(
+	getActiveSeasonArtifactModIdList().some(
 		(x) =>
 			modIdList.includes(x) &&
 			!reducedToNormalMod[getMod(x).hash]
@@ -616,11 +622,12 @@ export const hasActiveSeasonReducedCostVariantMods = (
 			return false;
 		}
 		return (
-			ActiveSeasonArtifactModIdList.includes(modId) &&
-			!!reducedToNormalMod[modId]
+			getActiveSeasonArtifactModIdList().includes(modId) &&
+			!!reducedToNormalMod[mod.hash]
 		);
 	});
 };
+
 
 const doReplace = (
 	mapping: Record<number, number>

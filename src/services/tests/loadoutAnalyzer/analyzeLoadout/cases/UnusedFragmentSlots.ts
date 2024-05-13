@@ -14,7 +14,7 @@ const testCase: TestCase = [
   {
     ...getBaseOutput(),
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.UnusedFragmentSlots],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.UnusedFragmentSlots, ELoadoutOptimizationTypeId.UnusedModSlots],
   },
 ]
 

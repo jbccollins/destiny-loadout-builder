@@ -22,10 +22,14 @@ const testCase: TestCase = [
       maxPossibleReservedArmorSlotEnergy: {
         ...baseOutput.metadata.maxPossibleReservedArmorSlotEnergy,
         [EArmorSlotId.Leg]: 6,
-      }
+      },
+      unusedModSlots: {
+        ...baseOutput.metadata.unusedModSlots,
+        [EArmorSlotId.Leg]: 6,
+      },
     },
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods, ELoadoutOptimizationTypeId.UnusedModSlots],
   },
 ]
 

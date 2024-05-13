@@ -1,10 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultRaidModIdList } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
-import { AnalyzeLoadoutParams } from '@dlb/services/loadoutAnalyzer/analyzeLoadout2';
-import {
-	GetLoadoutsThatCanBeOptimizedProgress,
-	GetLoadoutsThatCanBeOptimizedProgressMetadata,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { AnalyzeLoadoutParams, EModVariantCheckType } from '@dlb/services/loadoutAnalyzer/analyzeLoadout';
+import { GetLoadoutsThatCanBeOptimizedProgress, GetLoadoutsThatCanBeOptimizedProgressMetadata } from '@dlb/services/loadoutAnalyzer/helpers/types';
 import { default as buggedAlternateSeasonModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonMods';
 import { default as fewerWastedStatsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/FewerWastedStats';
 import { default as higherStatTiersChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/HigherStatTiers';
@@ -13,11 +10,14 @@ import { default as lowerCostChecker } from '@dlb/services/loadoutAnalyzer/loado
 import { default as missingArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/MissingArmor';
 import { default as mutuallyExclusiveModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/MutuallyExclusiveMods';
 import { default as noExoticArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/NoExoticArmor';
+import { default as seasonalModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/SeasonalMods';
+import { default as seasonalModsCorrectableChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/SeasonalModsCorrectable';
 import { default as unmasterworkedArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmasterworkedArmor';
 import { default as unmetDIMStatConstraintsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmetDIMStatConstraints';
 import { default as unspecifiedAspectChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnspecifiedAspect';
 import { default as unusableModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusableMods';
 import { default as unusedFragmentSlotsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedFragmentSlots';
+import { default as unusedModSlotsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedModSlots';
 import { default as wastedStatTiersChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/WastedStatTiers';
 import { ArmorItem } from './Armor';
 import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
@@ -265,8 +265,7 @@ export enum ELoadoutOptimizationTypeId {
 	MutuallyExclusiveMods = 'MutuallyExclusiveMods',
 	UnusedModSlots = 'UnusedModSlots',
 	SeasonalMods = 'SeasonalMods',
-	DiscountedSeasonalMods = 'DiscountedSeasonalMods',
-	DiscountedSeasonalModsCorrectable = 'DiscountedSeasonalModsCorrectable',
+	SeasonalModsCorrectable = 'SeasonalModsCorrectable',
 	UnstackableMods = 'UnstackableMods',
 	BuggedAlternateSeasonMods = 'BuggedAlternateSeasonMods',
 	None = 'None',
@@ -281,12 +280,17 @@ export type LoadoutOptimziationTypeCheckerOutput = {
 export type LoadoutOptimziationTypeCheckerParams = AnalyzeLoadoutParams & {
 	modIdList: EModId[];
 	metadata: GetLoadoutsThatCanBeOptimizedProgressMetadata;
+	variantHasResultsMapping: Record<EModVariantCheckType, boolean>;
 	hasResults: boolean;
+	hasUnusedModSlots: boolean;
 	maxStatTierDiff: number;
-	usesAlternateSeasonMods: boolean;
-	usesBuggedAlternateSeasonMods: boolean;
-	usesNonBuggedAlternateSeasonMods: boolean;
+	usesAlternateSeasonArtifactMods: boolean;
+	usesAlternateSeasonBuggedArtifactMods: boolean;
+	usesAlternateSeasonNonBuggedArtifactMods: boolean;
 	usesMutuallyExclusiveMods: boolean;
+	usesActiveSeasonArtifactModsWithNoFullCostVariant: boolean;
+	usesActiveSeasonReducedCostArtifactMods: boolean;
+	usesActiveSeasonArtifactMods: boolean;
 }
 
 export type LoadoutOptimizationTypeChecker = (params: LoadoutOptimziationTypeCheckerParams) => LoadoutOptimziationTypeCheckerOutput
@@ -428,7 +432,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			"This loadout has space to slot additional mods. It's free real estate!",
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
-		checker: NOOP_CHECKER
+		checker: unusedModSlotsChecker
 	},
 	[ELoadoutOptimizationTypeId.SeasonalMods]: {
 		id: ELoadoutOptimizationTypeId.SeasonalMods,
@@ -436,23 +440,15 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'This loadout uses mods unlocked via the current seasonal artifact that will become unavailable once the season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
-		checker: NOOP_CHECKER
+		checker: seasonalModsChecker
 	},
-	[ELoadoutOptimizationTypeId.DiscountedSeasonalMods]: {
-		id: ELoadoutOptimizationTypeId.DiscountedSeasonalMods,
-		name: 'Discounted Seasonal Mods',
-		description:
-			'This loadout uses discounted mods unlocked via the current seasonal artifact that will become unavailable once the season ends. If this is a DIM loadout, DIM will not be able to automatically swap such discounted mods for their full cost variants, as the total mod cost would exceed the available armor energy capacity.',
-		category: ELoadoutOptimizationCategoryId.TRANSIENT,
-		checker: NOOP_CHECKER
-	},
-	[ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable]: {
-		id: ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable,
-		name: 'Discounted Seasonal Mods (Correctable)',
+	[ELoadoutOptimizationTypeId.SeasonalModsCorrectable]: {
+		id: ELoadoutOptimizationTypeId.SeasonalModsCorrectable,
+		name: 'Seasonal Mods (Correctable)',
 		description:
 			'[D2 Loadout Specific] This loadout uses discounted mods unlocked via the current seasonal artifact that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
-		checker: NOOP_CHECKER
+		checker: seasonalModsCorrectableChecker
 	},
 	[ELoadoutOptimizationTypeId.UnstackableMods]: {
 		id: ELoadoutOptimizationTypeId.UnstackableMods,
@@ -504,8 +500,7 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 		ELoadoutOptimizationTypeId.UnmetDIMStatConstraints,
 		ELoadoutOptimizationTypeId.UnstackableMods,
 		ELoadoutOptimizationTypeId.SeasonalMods,
-		ELoadoutOptimizationTypeId.DiscountedSeasonalMods,
-		ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable,
+		ELoadoutOptimizationTypeId.SeasonalModsCorrectable,
 		ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
 		ELoadoutOptimizationTypeId.WastedStatTiers,
 		ELoadoutOptimizationTypeId.FewerWastedStats,

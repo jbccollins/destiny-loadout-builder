@@ -4,10 +4,12 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { EModCategoryId, ERaidAndNightMareModTypeId } from './IdEnums';
 import { EnumDictionary, IIdentifiableName } from './globals';
 
-export const ActiveSeasonArtifactModIdList: EModId[] = [
-	EModId.ArtifactThermodynamicSiphon,
-	EModId.ArtifactSolarStrandDualSiphon,
-];
+export const getActiveSeasonArtifactModIdList: () => EModId[] = () => {
+	return [
+		EModId.ArtifactThermodynamicSiphon,
+		EModId.ArtifactSolarStrandDualSiphon
+	]
+}
 
 export interface IModCategory extends IIdentifiableName {
 	description: string;
@@ -201,7 +203,7 @@ export const getModCategoryId = (
 			break;
 	}
 	const isInCurrentSeasonArtifact =
-		ActiveSeasonArtifactModIdList.includes(modId);
+		getActiveSeasonArtifactModIdList().includes(modId);
 
 	if (isArtifactMod && !isInCurrentSeasonArtifact) {
 		return EModCategoryId.AlternateSeasonalArtifact;

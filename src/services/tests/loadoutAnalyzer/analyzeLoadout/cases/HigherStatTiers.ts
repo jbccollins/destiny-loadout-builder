@@ -1,5 +1,5 @@
 import { EModId } from "@dlb/generated/mod/EModId";
-import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout2";
+import { AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout";
 import { TestCase } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/analyzeLoadout.test";
 import { getBaseOutput, getBaseParams } from "@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/fixtureHelpers";
 import { ELoadoutOptimizationTypeId } from "@dlb/types/AnalyzableLoadout";
@@ -64,7 +64,14 @@ const output: AnalyzeLoadoutResult = {
         ...getBaseOutput().metadata.modPlacement[EArmorSlotId.Arm],
         armorStatModId: EModId.MinorMobilityMod,
       },
-    }
+    },
+    unusedModSlots: {
+      [EArmorSlotId.Head]: 10,
+      [EArmorSlotId.Arm]: 10,
+      [EArmorSlotId.Chest]: 10,
+      [EArmorSlotId.Leg]: 10,
+      [EArmorSlotId.ClassItem]: 10,
+    },
   },
 }
 
@@ -76,7 +83,7 @@ const testCase: TestCase = [
   {
     ...output,
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.HigherStatTiers],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.UnusedModSlots, ELoadoutOptimizationTypeId.HigherStatTiers],
   },
 ]
 

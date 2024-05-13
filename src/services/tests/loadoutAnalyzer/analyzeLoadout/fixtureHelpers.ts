@@ -1,7 +1,7 @@
 import { EModId } from "@dlb/generated/mod/EModId";
 import { getDefaultArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
-import { AnalyzeLoadoutParams, AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout2";
-import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "@dlb/services/loadoutAnalyzer/loadoutAnalyzer";
+import { AnalyzeLoadoutParams, AnalyzeLoadoutResult } from "@dlb/services/loadoutAnalyzer/analyzeLoadout";
+import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "@dlb/services/loadoutAnalyzer/helpers/types";
 import { getDefaultModPlacements } from "@dlb/services/processArmor/getModCombos";
 import { AnalyzableLoadout, getDefaultAnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
 import { Armor, ArmorGroup, ArmorItem, ArmorRaritySplit, AvailableExoticArmor, DestinyClassToAllClassItemMetadataMapping, StatList, generateAvailableExoticArmorGroup, getDefaultAllClassItemMetadata, getDefaultAvailableExoticArmorItem } from "@dlb/types/Armor";
@@ -187,7 +187,6 @@ export const getBaseParams = (): AnalyzeLoadoutParams => {
   }
 }
 
-
 const getBaseGetLoadoutsThatCanBeOptimizedProgressMetadata = (): GetLoadoutsThatCanBeOptimizedProgressMetadata => {
   return ({
     maxPossibleDesiredStatTiers: {
@@ -233,7 +232,13 @@ const getBaseGetLoadoutsThatCanBeOptimizedProgressMetadata = (): GetLoadoutsThat
         armorStatModId: EModId.MobilityMod,
       },
     },
-    unusedModSlots: {},
+    unusedModSlots: {
+      [EArmorSlotId.Head]: 7,
+      [EArmorSlotId.Arm]: 7,
+      [EArmorSlotId.Chest]: 7,
+      [EArmorSlotId.Leg]: 7,
+      [EArmorSlotId.ClassItem]: 7,
+    },
   })
 }
 
@@ -254,6 +259,7 @@ export const getUnprocessableBaseOutput = (): AnalyzeLoadoutResult => {
       modPlacement: getDefaultModPlacements().placement,
       maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
       maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
+      unusedModSlots: {},
       currentCost: 15,
       currentWastedStats: 0,
       lowestCost: Infinity,

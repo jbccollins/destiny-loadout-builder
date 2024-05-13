@@ -37,7 +37,7 @@ const testCase: TestCase = [
       currentWastedStats: 1,
     },
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.FewerWastedStats],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.UnusedModSlots, ELoadoutOptimizationTypeId.FewerWastedStats],
   },
 ]
 

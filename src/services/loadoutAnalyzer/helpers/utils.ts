@@ -4,17 +4,14 @@
 
 import { EAspectId } from "@dlb/generated/aspect/EAspectId";
 import { EModId } from "@dlb/generated/mod/EModId";
-import { ArmorSlotEnergyMapping, getDefaultArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
-import { getDefaultModPlacements } from "@dlb/services/processArmor/getModCombos";
+import { ArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
 import { AnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
 import { Armor, ArmorItem, AvailableExoticArmor, AvailableExoticArmorItem, DestinyClassToAllClassItemMetadataMapping } from "@dlb/types/Armor";
 import { ArmorSlotIdList, ArmorSlotWithClassItemIdList } from "@dlb/types/ArmorSlot";
-import { getDefaultArmorStatMapping } from "@dlb/types/ArmorStat";
 import { getAspect } from "@dlb/types/Aspect";
 import { DestinyClassIdList } from "@dlb/types/DestinyClass";
 import { EArmorSlotId, EDestinyClassId, EGearTierId, EModSocketCategoryId } from "@dlb/types/IdEnums";
 import { ArmorChargeAcquisitionModIdList, ArmorChargeSpendModIdList, ArmorSlotIdToModIdListMapping, FontModIdList, NonArtifactArmorSlotModIdList, getMod, hasMutuallyExclusiveMods } from "@dlb/types/Mod";
-import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from "../loadoutAnalyzer";
 
 export const isEditableLoadout = (loadout: AnalyzableLoadout): boolean => {
 	const nonClassItemArmor = loadout.armor.filter(
@@ -154,15 +151,15 @@ export const findAvailableExoticArmorItem = (
 };
 
 type GetUnusedModSlotsParams = {
-	allModsIdList: EModId[];
+	modIdList: EModId[];
 	maxPossibleReservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 };
 export const getUnusedModSlots = ({
-	allModsIdList,
+	modIdList,
 	maxPossibleReservedArmorSlotEnergy,
 }: GetUnusedModSlotsParams): Partial<Record<EArmorSlotId, number>> => {
 	const unusedModSlots: Partial<Record<EArmorSlotId, number>> = {};
-	const allArmorSlotMods = allModsIdList
+	const allArmorSlotMods = modIdList
 		.map((x) => getMod(x))
 		.filter((x) => x?.modSocketCategoryId === EModSocketCategoryId.ArmorSlot);
 	const nonArtifactArmorSlotMods = NonArtifactArmorSlotModIdList.map((x) =>
@@ -252,18 +249,3 @@ export const getFragmentSlots = (aspectIdList: EAspectId[]): number => {
 	});
 	return fragmentSlots;
 };
-
-export const getInitialMetadata = (): GetLoadoutsThatCanBeOptimizedProgressMetadata => {
-	return ({
-		maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
-		maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
-		lowestCost: Infinity,
-		currentCost: Infinity,
-		lowestWastedStats: Infinity,
-		currentWastedStats: Infinity,
-		mutuallyExclusiveModGroups: [],
-		unstackableModIdList: [],
-		modPlacement: getDefaultModPlacements().placement,
-		unusedModSlots: {},
-	})
-}

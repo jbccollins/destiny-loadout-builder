@@ -14,7 +14,7 @@ const testCase: TestCase = [
   {
     ...getBaseOutput(),
     canBeOptimized: true,
-    optimizationTypeList: [ELoadoutOptimizationTypeId.UnmasterworkedArmor],
+    optimizationTypeList: [ELoadoutOptimizationTypeId.UnmasterworkedArmor, ELoadoutOptimizationTypeId.UnusedModSlots],
   },
 ]
 

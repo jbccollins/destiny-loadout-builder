@@ -36,7 +36,6 @@ import ReportIcon from '@mui/icons-material/Report';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RuleIcon from '@mui/icons-material/Rule';
-import ScheduleIcon from '@mui/icons-material/Schedule';
 
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
@@ -103,10 +102,7 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.None]: <CheckIcon key={0} sx={iconStyle} />,
 	[ELoadoutOptimizationTypeId.Error]: <ReportIcon key={0} sx={iconStyle} />,
-	[ELoadoutOptimizationTypeId.DiscountedSeasonalMods]: (
-		<ScheduleIcon key={0} sx={iconStyle} />
-	),
-	[ELoadoutOptimizationTypeId.DiscountedSeasonalModsCorrectable]: (
+	[ELoadoutOptimizationTypeId.SeasonalModsCorrectable]: (
 		<MoreTimeIcon key={0} sx={iconStyle} />
 	),
 	[ELoadoutOptimizationTypeId.SeasonalMods]: (

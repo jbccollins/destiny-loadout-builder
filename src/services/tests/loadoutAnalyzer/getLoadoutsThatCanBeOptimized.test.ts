@@ -37,6 +37,7 @@ const loadouts = buildAnalyzableLoadoutsBreakdown({
 	characters: characters as unknown as Characters,
 	inGameLoadoutsWithId:
 		inGameLoadoutsItems as unknown as InGameLoadoutsWithIdMapping,
+	buggedAlternateSeasonModIdList: [],
 });
 
 // TODO: This test takes way too long to run. Find a better way to test this.

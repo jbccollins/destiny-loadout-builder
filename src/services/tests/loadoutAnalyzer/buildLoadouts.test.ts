@@ -43,6 +43,7 @@ const testCases: TestCase[] = [
 				characters: characters as unknown as Characters,
 				inGameLoadoutsWithId:
 					inGameLoadoutsItems as unknown as InGameLoadoutsWithIdMapping,
+				buggedAlternateSeasonModIdList: [],
 			},
 		],
 		49,

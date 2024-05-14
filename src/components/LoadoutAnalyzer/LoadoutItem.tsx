@@ -24,11 +24,7 @@ import {
 	getLoadoutOptimizationCategory,
 } from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
-import {
-	ArmorSlotIdList,
-	IArmorSlot,
-	getArmorSlot,
-} from '@dlb/types/ArmorSlot';
+import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import {
 	EArmorSlotId,
@@ -36,7 +32,6 @@ import {
 	EDestinySubclassId,
 } from '@dlb/types/IdEnums';
 import { getMod } from '@dlb/types/Mod';
-import { IMod } from '@dlb/types/generation';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import EditIcon from '@mui/icons-material/Edit';
 import ShowIcon from '@mui/icons-material/Visibility';
@@ -47,7 +42,6 @@ import {
 	CircularProgress,
 	Collapse,
 	IconButton,
-	styled,
 	useTheme,
 } from '@mui/material';
 import d2Logo from '@public/d2-logo.png';
@@ -57,57 +51,12 @@ import { useState } from 'react';
 import Breakdown from './Breakdown';
 import IconPill from './IconPill';
 import { loadoutOptimizationIconMapping } from './LoadoutAnalyzer';
-
-type ArmorSlotModListProps = {
-	modList: IMod[];
-	armorSlot: IArmorSlot;
-};
-const ArmorSlotModList = ({ modList, armorSlot }: ArmorSlotModListProps) => {
-	return modList.length > 0 ? (
-		<Box
-			sx={{
-				display: 'flex',
-				alignItems: 'center',
-				gap: '4px',
-				background: 'rgba(30,30,30,0.5)',
-				'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
-				padding: '4px',
-			}}
-		>
-			<Box sx={{ width: '26px', height: '26px', display: 'flex' }}>
-				<BungieImage src={armorSlot.icon} width={26} height={26} />
-			</Box>
-
-			<Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-				{modList.map((mod, i) => (
-					<Box
-						key={i}
-						sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-					>
-						<Box sx={{ width: '26px', height: '26px' }}>
-							<BungieImage src={mod.icon} width={26} height={26} />
-						</Box>
-						<Box>
-							{mod.name}
-							{mod.isArtifactMod ? ' (Artifact)' : ''}
-						</Box>
-					</Box>
-				))}
-			</Box>
-		</Box>
-	) : null;
-};
-
-const InspectingOptimizationDetailsHelp = styled(Box)(({ theme }) => ({
-	marginBottom: theme.spacing(0.5),
-	fontSize: '14px',
-	fontStyle: 'italic',
-}));
-
-type InspectingOptimizationDetailsProps = {
-	loadout: RichAnalyzableLoadout;
-	optimizationType: ELoadoutOptimizationTypeId;
-};
+import OptimizationTypeResolutionInstructionsMapping from './OptimizationTypeResolutionInstructions';
+import {
+	ArmorSlotModList,
+	InspectingOptimizationDetailsHelp,
+} from './OptimizationTypeResolutionInstructions/Helpers';
+import { InspectingOptimizationDetailsProps } from './OptimizationTypeResolutionInstructions/types';
 
 const InspectingOptimizationDetails = (
 	props: InspectingOptimizationDetailsProps
@@ -154,56 +103,21 @@ const InspectingOptimizationDetails = (
 		);
 	};
 
+	const ResolutionInstructions =
+		OptimizationTypeResolutionInstructionsMapping[optimizationType];
+
 	return (
 		<Box>
 			<Box sx={{ fontSize: '18px', fontWeight: 'bold' }}>
 				Resolution Instructions:
 			</Box>
-			{optimizationType === ELoadoutOptimizationTypeId.HigherStatTiers && (
-				<Box>
-					<InspectingOptimizationDetailsHelp>
-						Use the &quot;Desired Stat Tiers&quot; selector to resolve this
-						optimization:
-					</InspectingOptimizationDetailsHelp>
-					{ArmorStatIdList.map((armorStatId) => {
-						const armorStat = getArmorStat(armorStatId);
-						const diff =
-							metadata?.maxPossibleDesiredStatTiers[armorStatId] -
-								loadout.desiredStatTiers[armorStatId] || 0;
-						return diff > 0 ? (
-							<Box
-								key={armorStatId}
-								sx={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: '4px',
-									background: 'rgba(30,30,30,0.5)',
-									'&:nth-of-type(odd)': { background: 'rgb(50, 50, 50)' },
-									padding: '4px',
-								}}
-							>
-								<CustomTooltip title={armorStat.name}>
-									<Box sx={{ width: '26px', height: '26px' }}>
-										<BungieImage src={armorStat.icon} width={26} height={26} />
-									</Box>
-								</CustomTooltip>
-								<Box sx={{ width: '80px' }}>{armorStat.name}: </Box>
-								<Box>
-									(+{diff / 10} tier{diff > 10 ? 's' : ''})
-								</Box>
-							</Box>
-						) : null;
-					})}
-				</Box>
-			)}
-			{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-				optimizationType ===
-					ELoadoutOptimizationTypeId.SeasonalModsCorrectable ||
+			{ResolutionInstructions && <ResolutionInstructions loadout={loadout} />}
+			{(optimizationType ===
+				ELoadoutOptimizationTypeId.SeasonalModsCorrectable ||
 				optimizationType === ELoadoutOptimizationTypeId.SeasonalMods) && (
 				<Box>
 					<InspectingOptimizationDetailsHelp>
-						{(optimizationType === ELoadoutOptimizationTypeId.UnusableMods ||
-							optimizationType === ELoadoutOptimizationTypeId.SeasonalMods) && (
+						{optimizationType === ELoadoutOptimizationTypeId.SeasonalMods && (
 							<Box>
 								Remove the following mods from the loadout to resolve this
 								optimization:
@@ -470,32 +384,6 @@ const InspectingOptimizationDetails = (
 					armor and selected mods. Play around with the &quot;Desired Stat
 					Tiers&quot; selector to try and resolve this optimization.
 				</InspectingOptimizationDetailsHelp>
-			)}
-			{optimizationType ==
-				ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods && (
-				<Box>
-					<InspectingOptimizationDetailsHelp>
-						There is nothing you can do to resolve this. This is a bug on
-						Bungie&apos;s end. Bungie may fix this at any time. Here are the
-						mods that are affected:
-					</InspectingOptimizationDetailsHelp>
-					{ArmorSlotIdList.map((armorSlotId) => {
-						const armorSlot = getArmorSlot(armorSlotId);
-						const artifactModList = loadout.armorSlotMods[armorSlotId]
-							.filter((x) => x !== null)
-							.map((modId) => getMod(modId))
-							.filter((mod) => buggedAlternateSeasonModIdList.includes(mod.id));
-
-						// TODO: This does not include artifact mods that are armor slot agnostic
-						return (
-							<ArmorSlotModList
-								key={armorSlotId}
-								modList={artifactModList}
-								armorSlot={armorSlot}
-							/>
-						);
-					})}
-				</Box>
 			)}
 			<Box
 				sx={{

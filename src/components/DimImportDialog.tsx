@@ -1,6 +1,7 @@
 import { getSharedLoadout } from '@dlb/dim/dim-api/dim-api';
 import useApplyAnalyzableLoadout from '@dlb/hooks/useApplyAnalyzableLoadout';
 import { selectAllClassItemMetadata } from '@dlb/redux/features/allClassItemMetadata/allClassItemMetadataSlice';
+import { selectAnalyzableLoadouts } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
@@ -30,6 +31,10 @@ export default function DimImportDialog() {
 	const [importing, setImporting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [url, setUrl] = useState('');
+
+	const { buggedAlternateSeasonModIdList } = useAppSelector(
+		selectAnalyzableLoadouts
+	);
 
 	const applyLoadout = useApplyAnalyzableLoadout();
 
@@ -72,6 +77,7 @@ export default function DimImportDialog() {
 				armorItems,
 				masterworkAssumption: EMasterworkAssumption.All,
 				availableExoticArmor,
+				buggedAlternateSeasonModIdList,
 			});
 			applyLoadout(loadout, false);
 			setImporting(false);

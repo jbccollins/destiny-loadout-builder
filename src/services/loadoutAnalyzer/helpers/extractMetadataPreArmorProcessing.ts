@@ -13,6 +13,7 @@ import {
 	hasAlternateSeasonReducedCostVariantMods,
 	hasMutuallyExclusiveMods,
 	hasNonBuggedAlternateSeasonMods,
+	hasUnstackableMods,
 } from '@dlb/types/Mod';
 import { GetLoadoutsThatCanBeOptimizedProgressMetadata } from './types';
 import { flattenMods } from './utils';
@@ -49,6 +50,7 @@ type ExtractProcessedArmorDataOutput = {
 	usesActiveSeasonArtifactModsWithNoFullCostVariant: boolean;
 	usesActiveSeasonReducedCostArtifactMods: boolean;
 	usesActiveSeasonArtifactMods: boolean;
+	usesUnstackableMods: boolean;
 };
 
 export default function extractMetadataPreArmorProcessing(
@@ -95,6 +97,11 @@ export default function extractMetadataPreArmorProcessing(
 	const usesActiveSeasonArtifactMods =
 		hasActiveSeasonArtifactMods(allLoadoutModsIdList);
 
+	const [usesUnstackableMods, unstackableModIdList] =
+		hasUnstackableMods(allModsIdList);
+
+	metadata.unstackableModIdList = [...unstackableModIdList]
+
 	return {
 		metadata,
 		usesAlternateSeasonReducedCostVariantArtifactMods,
@@ -106,5 +113,6 @@ export default function extractMetadataPreArmorProcessing(
 		usesActiveSeasonArtifactModsWithNoFullCostVariant,
 		usesActiveSeasonReducedCostArtifactMods,
 		usesActiveSeasonArtifactMods,
+		usesUnstackableMods
 	};
 }

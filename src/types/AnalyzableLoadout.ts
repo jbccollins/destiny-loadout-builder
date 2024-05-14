@@ -19,6 +19,7 @@ import { default as seasonalModsCorrectableChecker } from '@dlb/services/loadout
 import { default as unmasterworkedArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmasterworkedArmor';
 import { default as unmetDIMStatConstraintsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmetDIMStatConstraints';
 import { default as unspecifiedAspectChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnspecifiedAspect';
+import { default as unstackableModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnstackableMods';
 import { default as unusableModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusableMods';
 import { default as unusedFragmentSlotsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedFragmentSlots';
 import { default as unusedModSlotsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedModSlots';
@@ -295,6 +296,7 @@ export type LoadoutOptimziationTypeCheckerParams = AnalyzeLoadoutParams & {
 	usesActiveSeasonArtifactModsWithNoFullCostVariant: boolean;
 	usesActiveSeasonReducedCostArtifactMods: boolean;
 	usesActiveSeasonArtifactMods: boolean;
+	usesUnstackableMods: boolean;
 };
 
 export type LoadoutOptimizationTypeChecker = (
@@ -462,13 +464,13 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		description:
 			'This loadout uses multiple copies of mods with benefits that do not stack.',
 		category: ELoadoutOptimizationCategoryId.WARNING,
-		checker: NOOP_CHECKER,
+		checker: unstackableModsChecker,
 	},
 	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods]: {
 		id: ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
 		name: 'Bugged Alternate Season Mod',
 		description:
-			'This loadout contains a bugged mod. The Bungie API has a bug where some players have access to discounted mods that were available via artifact unlocks in a previous season. If you are affected by this bug there is nothing you can do to fix it, but this will only ever be a positive thing for your current builds since the discounted mods are cheaper. However, this may break your build in the future if Bungie ever fixes this bug.',
+			'This loadout contains a bugged mod. The Bungie API has a bug where some players have access to mods that were available via artifact unlocks in a previous season. If you are affected by this bug there is nothing you can do to fix it. If this is a DIM loadout, then there is not enough armor energy capacity available for DIM to automatically swap over to using the full cost variants of any bugged mods that are discounted variants.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 		checker: buggedAlternateSeasonModsChecker,
 	},
@@ -557,6 +559,11 @@ export const humanizeOptimizationTypes = (
 	let filteredOptimizationTypeList: ELoadoutOptimizationTypeId[] = [
 		...optimizationTypeList,
 	];
+
+	// Invalid trumps everything
+	if (filteredOptimizationTypeList.includes(ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration)) {
+		filteredOptimizationTypeList = [ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration]
+	}
 
 	// TODO: I think that missing armor should take precedence over no exotic armor
 

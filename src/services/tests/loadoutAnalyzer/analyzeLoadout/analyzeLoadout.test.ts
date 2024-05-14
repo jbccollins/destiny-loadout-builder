@@ -16,6 +16,7 @@ import { default as SeasonalModsCorrectable } from './cases/SeasonalModsCorrecta
 import { default as UnmasterworkedArmor } from './cases/UnmasterworkedArmor';
 import { default as UnmetDIMStatConstraints } from './cases/UnmetDIMStatConstraints';
 import { default as UnspecifiedAspect } from './cases/UnspecifiedAspect';
+import { default as UnstackableMods } from './cases/UnstackableMods';
 import { default as UnusableMods } from './cases/UnusableMods';
 import { default as UnusedFragmentSlots } from './cases/UnusedFragmentSlots';
 import { default as UnusedModSlots } from './cases/UnusedModSlots';
@@ -61,6 +62,7 @@ const testCases: TestCase[] = [
 	UnusedModSlots,
 	SeasonalMods,
 	SeasonalModsCorrectable,
+	UnstackableMods,
 ];
 
 describe('analyzeLoadout', () => {

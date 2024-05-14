@@ -1026,6 +1026,7 @@ function Loading() {
 						allClassItemMetadata,
 						masterworkAssumption: EMasterworkAssumption.All,
 						availableExoticArmor,
+						buggedAlternateSeasonModIdList,
 					});
 					log('analyzableLoadoutsBreakdown', analyzableLoadoutsBreakdown);
 					dispatch(setAnalyzableLoadoutsBreakdown(analyzableLoadoutsBreakdown));

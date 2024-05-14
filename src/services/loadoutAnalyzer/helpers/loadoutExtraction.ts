@@ -6,6 +6,7 @@ import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
 import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
+import { EModId } from '@dlb/generated/mod/EModId';
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
 import {
@@ -68,10 +69,11 @@ type ExtractDimLoadoutParams = {
 	armorItems: ArmorItem[];
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
+	buggedAlternateSeasonModIdList: EModId[],
 };
 
 export function extractDimLoadout(params: ExtractDimLoadoutParams) {
-	const { dimLoadout, armorItems, masterworkAssumption, availableExoticArmor } =
+	const { dimLoadout, armorItems, masterworkAssumption, availableExoticArmor, buggedAlternateSeasonModIdList } =
 		params;
 	console.log('>>>>>> dimLoadout', dimLoadout);
 	const destinyClassId =
@@ -307,8 +309,9 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 	// full cost variants, and swaps in-season full cost mods with their discounted variants.
 
 	const flattenedMods = flattenMods(loadout);
+
 	const { armorSlotMods, raidMods, armorStatMods, artificeModIdList } =
-		unflattenMods(replaceAllModsThatDimWillReplace(flattenedMods));
+		unflattenMods(replaceAllModsThatDimWillReplace(flattenedMods, buggedAlternateSeasonModIdList));
 
 	loadout.armorSlotMods = armorSlotMods;
 	loadout.raidMods = raidMods;
@@ -347,6 +350,7 @@ type ExtractDimLoadoutsParams = {
 	dimLoadouts: DimLoadoutWithId[];
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
+	buggedAlternateSeasonModIdList: EModId[],
 };
 
 export const extractDimLoadouts = (
@@ -358,6 +362,7 @@ export const extractDimLoadouts = (
 		armorItems,
 		masterworkAssumption,
 		availableExoticArmor,
+		buggedAlternateSeasonModIdList,
 	} = params;
 	const loadouts: AnalyzableLoadout[] = [];
 	if (!dimLoadouts || !dimLoadouts.length) {
@@ -370,6 +375,7 @@ export const extractDimLoadouts = (
 				armorItems,
 				masterworkAssumption,
 				availableExoticArmor,
+				buggedAlternateSeasonModIdList
 			})
 		);
 	});

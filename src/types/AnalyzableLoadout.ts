@@ -6,24 +6,25 @@ import {
 	GetLoadoutsThatCanBeOptimizedProgress,
 	GetLoadoutsThatCanBeOptimizedProgressMetadata,
 } from '@dlb/services/loadoutAnalyzer/helpers/types';
-import { default as buggedAlternateSeasonModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonMods';
-import { default as fewerWastedStatsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/FewerWastedStats';
-import { default as higherStatTiersChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/HigherStatTiers';
-import { default as invalidLoadoutConfigurationChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/InvalidLoadoutConfiguration';
-import { default as lowerCostChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/LowerCost';
-import { default as missingArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/MissingArmor';
-import { default as mutuallyExclusiveModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/MutuallyExclusiveMods';
-import { default as noExoticArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/NoExoticArmor';
-import { default as seasonalModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/SeasonalMods';
-import { default as seasonalModsCorrectableChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/SeasonalModsCorrectable';
-import { default as unmasterworkedArmorChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmasterworkedArmor';
-import { default as unmetDIMStatConstraintsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmetDIMStatConstraints';
-import { default as unspecifiedAspectChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnspecifiedAspect';
-import { default as unstackableModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnstackableMods';
-import { default as unusableModsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusableMods';
-import { default as unusedFragmentSlotsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedFragmentSlots';
-import { default as unusedModSlotsChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedModSlots';
-import { default as wastedStatTiersChecker } from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/WastedStatTiers';
+import buggedAlternateSeasonModsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonMods';
+import buggedAlternateSeasonModsCorrectableChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonModsCorrectable';
+import fewerWastedStatsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/FewerWastedStats';
+import higherStatTiersChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/HigherStatTiers';
+import invalidLoadoutConfigurationChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/InvalidLoadoutConfiguration';
+import lowerCostChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/LowerCost';
+import missingArmorChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/MissingArmor';
+import mutuallyExclusiveModsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/MutuallyExclusiveMods';
+import noExoticArmorChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/NoExoticArmor';
+import seasonalModsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/SeasonalMods';
+import seasonalModsCorrectableChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/SeasonalModsCorrectable';
+import unmasterworkedArmorChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmasterworkedArmor';
+import unmetDIMStatConstraintsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnmetDIMStatConstraints';
+import unspecifiedAspectChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnspecifiedAspect';
+import unstackableModsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnstackableMods';
+import unusableModsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusableMods';
+import unusedFragmentSlotsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedFragmentSlots';
+import unusedModSlotsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/UnusedModSlots';
+import wastedStatTiersChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/WastedStatTiers';
 import { ArmorItem } from './Armor';
 import { ArmorStatMapping, getDefaultArmorStatMapping } from './ArmorStat';
 import { DLBConfig } from './DLBConfig';
@@ -273,6 +274,7 @@ export enum ELoadoutOptimizationTypeId {
 	SeasonalModsCorrectable = 'SeasonalModsCorrectable',
 	UnstackableMods = 'UnstackableMods',
 	BuggedAlternateSeasonMods = 'BuggedAlternateSeasonMods',
+	BuggedAlternateSeasonModsCorrectable = 'BuggedAlternateSeasonModsCorrectable',
 	None = 'None',
 	Error = 'Error',
 }
@@ -468,11 +470,19 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 	},
 	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods]: {
 		id: ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
-		name: 'Bugged Alternate Season Mod',
+		name: 'Bugged Alternate Season Mods',
 		description:
 			'This loadout contains a bugged mod. The Bungie API has a bug where some players have access to mods that were available via artifact unlocks in a previous season. If you are affected by this bug there is nothing you can do to fix it. If this is a DIM loadout, then there is not enough armor energy capacity available for DIM to automatically swap over to using the full cost variants of any bugged mods that are discounted variants.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 		checker: buggedAlternateSeasonModsChecker,
+	},
+	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonModsCorrectable]: {
+		id: ELoadoutOptimizationTypeId.BuggedAlternateSeasonModsCorrectable,
+		name: 'Bugged Alternate Season Mods (Correctable)',
+		description:
+			'This loadout contains a bugged mod. The Bungie API has a bug where some players have access to mods that were available via artifact unlocks in a previous season. If you are affected by this bug there is nothing you can do to fix it. If this is a DIM loadout, then there is enough armor energy capacity available for DIM to automatically correct this loadout by swapping over to using the full cost variants of bugged mods. When DIM does this, it may correct other optimizations on this loadout as well. It is quite common to see the "Unused Mod Slots", "Higher Stat Tiers" and "Lower Cost" optimizations occur when this optimization occurs and those optimizations might be irrelevant once DIM is able to automatically correct this.',
+		category: ELoadoutOptimizationCategoryId.TRANSIENT,
+		checker: buggedAlternateSeasonModsCorrectableChecker,
 	},
 	[ELoadoutOptimizationTypeId.None]: {
 		id: ELoadoutOptimizationTypeId.None,
@@ -511,6 +521,7 @@ export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 		ELoadoutOptimizationTypeId.SeasonalMods,
 		ELoadoutOptimizationTypeId.SeasonalModsCorrectable,
 		ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
+		ELoadoutOptimizationTypeId.BuggedAlternateSeasonModsCorrectable,
 		ELoadoutOptimizationTypeId.FewerWastedStats,
 		ELoadoutOptimizationTypeId.Error,
 		ELoadoutOptimizationTypeId.None,

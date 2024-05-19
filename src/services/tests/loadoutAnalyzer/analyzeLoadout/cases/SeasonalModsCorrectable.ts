@@ -16,8 +16,8 @@ const output = cloneDeep(getBaseOutput());
 
 params.loadout.loadoutType = ELoadoutType.InGame;
 params.loadout.armorSlotMods.Head[0] = EModId.ArtifactArcLoader;
-output.metadata.maxPossibleReservedArmorSlotEnergy[EArmorSlotId.Arm] = 4;
-output.metadata.unusedModSlots[EArmorSlotId.Arm] = 4;
+output.metadata.maxPossibleReservedArmorSlotEnergy[EArmorSlotId.Arm] = 6;
+output.metadata.unusedModSlots[EArmorSlotId.Arm] = 6;
 
 const testCase: TestCase = [
 	'SeasonalModsCorrectable',

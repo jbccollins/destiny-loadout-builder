@@ -29,6 +29,7 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import LayersIcon from '@mui/icons-material/Layers';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
+import PestControlIcon from '@mui/icons-material/PestControl';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
@@ -113,6 +114,9 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods]: (
 		<BugIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonModsCorrectable]: (
+		<PestControlIcon key={0} sx={iconStyle} />
 	),
 };
 

@@ -66,6 +66,7 @@ export const ModVariantCheckOrder: Record<
     beforeProcessing: [],
     afterProcessing: [
       ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
+      ELoadoutOptimizationTypeId.BuggedAlternateSeasonModsCorrectable,
       ELoadoutOptimizationTypeId.SeasonalMods,
       ELoadoutOptimizationTypeId.SeasonalModsCorrectable,
     ],
@@ -288,8 +289,12 @@ export default function analyzeLoadout(
       modIdList,
     });
 
+    // TODO: Why is this cloned here? Like why is this var set at all?
     postArmorProcessingInfo = cloneDeep(postProcessingData.info);
-    metadata = cloneDeep(postProcessingData.metadata);
+    // TODO: Should the metadata really be cloned on the Seaonal check? I think not?
+    if (modVariantCheckType === EModVariantCheckType.Base) {
+      metadata = cloneDeep(postProcessingData.metadata);
+    }
     variantHasResultsMapping[modVariantCheckType] =
       postProcessingData.info.hasResults;
 

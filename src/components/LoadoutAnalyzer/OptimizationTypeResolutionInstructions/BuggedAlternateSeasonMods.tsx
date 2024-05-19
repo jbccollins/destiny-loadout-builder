@@ -18,8 +18,8 @@ export default function BuggedAlternateSeasonMods(
 		<Box>
 			<InspectingOptimizationDetailsHelp>
 				This is a bug on Bungie&apos;s end and there is nothing you can do to
-				resolve this. Bungie may fix this at any time. Here are the mods that
-				are affected:
+				resolve this without removing the affected mods from this loadout.
+				Bungie may fix this at any time. Here are the mods that are affected:
 			</InspectingOptimizationDetailsHelp>
 			{ArmorSlotIdList.map((armorSlotId) => {
 				const armorSlot = getArmorSlot(armorSlotId);

@@ -11,7 +11,20 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2024-04-11',
+		date: '2024-05-19',
+		version: '2.5.9',
+		title: 'Moar Analyzer Improvements',
+		sections: [
+			{
+				items: [
+					`Added a new optimization type "Bugged Alternate Season Mods (Correctable)" that is subtley different from the non-correctable variant.`,
+					`More under the hood analyzer refactor`
+				],
+			},
+		],
+	},
+	{
+		date: '2024-05-12',
 		version: '2.5.8',
 		title: 'Analyzer Improvements',
 		sections: [

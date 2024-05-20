@@ -448,7 +448,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		id: ELoadoutOptimizationTypeId.SeasonalMods,
 		name: 'Seasonal Mods',
 		description:
-			'This loadout uses mods unlocked via the current seasonal artifact that will become unavailable once the season ends.',
+			'This loadout uses mods unlocked via the current seasonal artifact that will become unusable once the season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 		checker: seasonalModsChecker,
 	},
@@ -456,7 +456,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		id: ELoadoutOptimizationTypeId.SeasonalModsCorrectable,
 		name: 'Seasonal Mods (Correctable)',
 		description:
-			'[D2 Loadout Specific] This loadout uses discounted mods unlocked via the current seasonal artifact that will become unavailable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
+			'[D2 Loadout Specific] This loadout uses discounted mods unlocked via the current seasonal artifact that will become unusable once the season ends. This loadout has enough armor energy capacity to slot the full cost variants of such mods. Consider manually swapping these mods for their full cost variants to ensure that this loadout is usable after the current season ends.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 		checker: seasonalModsCorrectableChecker,
 	},
@@ -480,7 +480,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		id: ELoadoutOptimizationTypeId.BuggedAlternateSeasonModsCorrectable,
 		name: 'Bugged Alternate Season Mods (Correctable)',
 		description:
-			'This loadout contains a bugged mod. The Bungie API has a bug where some players have access to mods that were available via artifact unlocks in a previous season. If you are affected by this bug there is nothing you can do to fix it. If this is a DIM loadout, then there is enough armor energy capacity available for DIM to automatically correct this loadout by swapping over to using the full cost variants of bugged mods. When DIM does this, it may correct other optimizations on this loadout as well. It is quite common to see the "Unused Mod Slots", "Higher Stat Tiers" and "Lower Cost" optimizations occur when this optimization occurs and those optimizations might be irrelevant once DIM is able to automatically correct this.',
+			'[DIM Loadout Specific] This loadout contains a bugged mod. The Bungie API has a bug where some players have access to mods that were available via artifact unlocks in a previous season. If you are affected by this bug there is nothing you can do to fix it. If this is a DIM loadout, then there is enough armor energy capacity available for DIM to automatically correct this loadout by swapping over to using the full cost variants of bugged mods. When DIM does this, it may correct other optimizations on this loadout as well. It is quite common to see the "Unused Mod Slots", "Higher Stat Tiers" and "Lower Cost" optimizations occur when this optimization occurs and those optimizations might be irrelevant once DIM is able to automatically correct this.',
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 		checker: buggedAlternateSeasonModsCorrectableChecker,
 	},

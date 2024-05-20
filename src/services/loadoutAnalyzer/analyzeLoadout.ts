@@ -84,6 +84,7 @@ export const ModVariantCheckTypeToModReplacerMapping: Record<
 export default function analyzeLoadout(
   params: AnalyzeLoadoutParams
 ): AnalyzeLoadoutResult {
+  // throw new Error('Fake error');
   const {
     loadout,
     armor,

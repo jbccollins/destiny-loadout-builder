@@ -1,11 +1,22 @@
-import { DimLoadoutWithId } from "@dlb/redux/features/dimLoadouts/dimLoadoutsSlice";
-import { InGameLoadoutsDefinitions, InGameLoadoutsWithIdMapping } from "@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice";
-import { AnalyzableLoadout, AnalyzableLoadoutBreakdown } from "@dlb/types/AnalyzableLoadout";
-import { Armor, AvailableExoticArmor, DestinyClassToAllClassItemMetadataMapping } from "@dlb/types/Armor";
-import { Characters } from "@dlb/types/Character";
-import { EMasterworkAssumption } from "@dlb/types/IdEnums";
-import { extractDimLoadouts, extractInGameLoadouts } from "./loadoutExtraction";
-import { flattenArmor, isEditableLoadout } from "./utils";
+import { EModId } from '@dlb/generated/mod/EModId';
+import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import {
+	InGameLoadoutsDefinitions,
+	InGameLoadoutsWithIdMapping,
+} from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import {
+	AnalyzableLoadout,
+	AnalyzableLoadoutBreakdown,
+} from '@dlb/types/AnalyzableLoadout';
+import {
+	Armor,
+	AvailableExoticArmor,
+	DestinyClassToAllClassItemMetadataMapping,
+} from '@dlb/types/Armor';
+import { Characters } from '@dlb/types/Character';
+import { EMasterworkAssumption } from '@dlb/types/IdEnums';
+import { extractDimLoadouts, extractInGameLoadouts } from './loadoutExtraction';
+import { flattenArmor, isEditableLoadout } from './utils';
 
 type BuildAnalyzableLoadoutsBreakdownParams = {
 	characters: Characters;
@@ -16,6 +27,7 @@ type BuildAnalyzableLoadoutsBreakdownParams = {
 	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
+	buggedAlternateSeasonModIdList: EModId[]
 };
 export const buildAnalyzableLoadoutsBreakdown = (
 	params: BuildAnalyzableLoadoutsBreakdownParams
@@ -29,6 +41,7 @@ export const buildAnalyzableLoadoutsBreakdown = (
 		availableExoticArmor,
 		characters,
 		inGameLoadoutsDefinitions,
+		buggedAlternateSeasonModIdList
 	} = params;
 	const hasDimLoadouts = dimLoadouts && dimLoadouts.length > 0;
 	const armorItems = flattenArmor(armor, allClassItemMetadata);
@@ -38,6 +51,7 @@ export const buildAnalyzableLoadoutsBreakdown = (
 			dimLoadouts,
 			masterworkAssumption,
 			availableExoticArmor,
+			buggedAlternateSeasonModIdList
 		})
 		: [];
 	const analyzableInGameLoadouts = extractInGameLoadouts({

@@ -1,43 +1,79 @@
-import { BucketHashes } from "@dlb/dim/data/d2/generated-enums";
-import { UNSET_PLUG_HASH } from "@dlb/dim/utils/constants";
-import { EAspectId } from "@dlb/generated/aspect/EAspectId";
-import { EClassAbilityId } from "@dlb/generated/classAbility/EClassAbilityId";
-import { EFragmentId } from "@dlb/generated/fragment/EFragmentId";
-import { EGrenadeId } from "@dlb/generated/grenade/EGrenadeId";
-import { EJumpId } from "@dlb/generated/jump/EJumpId";
-import { EMeleeId } from "@dlb/generated/melee/EMeleeId";
-import { ESuperAbilityId } from "@dlb/generated/superAbility/ESuperAbilityId";
-import { DimLoadoutWithId } from "@dlb/redux/features/dimLoadouts/dimLoadoutsSlice";
-import { InGameLoadoutsDefinitions, InGameLoadoutsWithIdMapping } from "@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice";
-import { roundDown10 } from "@dlb/services/processArmor/utils";
-import { AnalyzableLoadout, ELoadoutOptimizationTypeId, ELoadoutType, getDefaultAnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
-import { ArmorItem, AvailableExoticArmor, getExtraMasterworkedStats } from "@dlb/types/Armor";
-import { ArmorStatIdList, ArmorStatIndices, ArmorStatMapping, getArmorStatIdFromBungieHash, getArmorStatMappingFromFragments, getDefaultArmorStatMapping } from "@dlb/types/ArmorStat";
-import { getAspectByHash } from "@dlb/types/Aspect";
-import { Character, Characters } from "@dlb/types/Character";
-import { getClassAbilityByHash } from "@dlb/types/ClassAbility";
-import { getDestinyClassIdByDestinySubclassId } from "@dlb/types/DestinyClass";
-import { getDestinySubclassByHash, oldToNewSubclassHashes } from "@dlb/types/DestinySubclass";
-import { DestinyClassHashToDestinyClass } from "@dlb/types/External";
-import { getFragmentByHash } from "@dlb/types/Fragment";
-import { getGrenadeByHash } from "@dlb/types/Grenade";
-import { EArmorSlotId, EArmorStatId, EDestinySubclassId, EGearTierId, EIntrinsicArmorPerkOrAttributeId, EMasterworkAssumption, EModSocketCategoryId } from "@dlb/types/IdEnums";
-import { getJumpByHash } from "@dlb/types/Jump";
-import { getMeleeByHash } from "@dlb/types/Melee";
-import { getModByHash, replaceAllModsThatDimWillReplace } from "@dlb/types/Mod";
-import { getSuperAbilityByHash } from "@dlb/types/SuperAbility";
-import { getBonusResilienceOrnamentHashByDestinyClassId } from "@dlb/utils/bonus-resilience-ornaments";
-import { findAvailableExoticArmorItem, flattenMods, unflattenMods } from "./utils";
+import { BucketHashes } from '@dlb/dim/data/d2/generated-enums';
+import { UNSET_PLUG_HASH } from '@dlb/dim/utils/constants';
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
+import { EFragmentId } from '@dlb/generated/fragment/EFragmentId';
+import { EGrenadeId } from '@dlb/generated/grenade/EGrenadeId';
+import { EJumpId } from '@dlb/generated/jump/EJumpId';
+import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
+import { DimLoadoutWithId } from '@dlb/redux/features/dimLoadouts/dimLoadoutsSlice';
+import {
+	InGameLoadoutsDefinitions,
+	InGameLoadoutsWithIdMapping,
+} from '@dlb/redux/features/inGameLoadouts/inGameLoadoutsSlice';
+import { roundDown10 } from '@dlb/services/processArmor/utils';
+import {
+	AnalyzableLoadout,
+	ELoadoutOptimizationTypeId,
+	ELoadoutType,
+	getDefaultAnalyzableLoadout,
+} from '@dlb/types/AnalyzableLoadout';
+import {
+	ArmorItem,
+	AvailableExoticArmor,
+	getExtraMasterworkedStats,
+} from '@dlb/types/Armor';
+import {
+	ArmorStatIdList,
+	ArmorStatIndices,
+	ArmorStatMapping,
+	getArmorStatIdFromBungieHash,
+	getArmorStatMappingFromFragments,
+	getDefaultArmorStatMapping,
+} from '@dlb/types/ArmorStat';
+import { getAspectByHash } from '@dlb/types/Aspect';
+import { Character, Characters } from '@dlb/types/Character';
+import { getClassAbilityByHash } from '@dlb/types/ClassAbility';
+import { getDestinyClassIdByDestinySubclassId } from '@dlb/types/DestinyClass';
+import {
+	getDestinySubclassByHash,
+	oldToNewSubclassHashes,
+} from '@dlb/types/DestinySubclass';
+import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
+import { getFragmentByHash } from '@dlb/types/Fragment';
+import { getGrenadeByHash } from '@dlb/types/Grenade';
+import {
+	EArmorSlotId,
+	EArmorStatId,
+	EDestinySubclassId,
+	EGearTierId,
+	EIntrinsicArmorPerkOrAttributeId,
+	EMasterworkAssumption,
+	EModSocketCategoryId,
+} from '@dlb/types/IdEnums';
+import { getJumpByHash } from '@dlb/types/Jump';
+import { getMeleeByHash } from '@dlb/types/Melee';
+import { getModByHash, replaceAllModsThatDimWillReplace } from '@dlb/types/Mod';
+import { getSuperAbilityByHash } from '@dlb/types/SuperAbility';
+import { getBonusResilienceOrnamentHashByDestinyClassId } from '@dlb/utils/bonus-resilience-ornaments';
+import {
+	findAvailableExoticArmorItem,
+	flattenMods,
+	unflattenMods,
+} from './utils';
 
 type ExtractDimLoadoutParams = {
 	dimLoadout: DimLoadoutWithId;
 	armorItems: ArmorItem[];
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
+	buggedAlternateSeasonModIdList: EModId[],
 };
 
 export function extractDimLoadout(params: ExtractDimLoadoutParams) {
-	const { dimLoadout, armorItems, masterworkAssumption, availableExoticArmor } =
+	const { dimLoadout, armorItems, masterworkAssumption, availableExoticArmor, buggedAlternateSeasonModIdList } =
 		params;
 	console.log('>>>>>> dimLoadout', dimLoadout);
 	const destinyClassId =
@@ -273,14 +309,9 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 	// full cost variants, and swaps in-season full cost mods with their discounted variants.
 
 	const flattenedMods = flattenMods(loadout);
-	const {
-		armorSlotMods,
-		raidMods,
-		armorStatMods,
-		artificeModIdList,
-	} = unflattenMods(replaceAllModsThatDimWillReplace(
-		flattenedMods
-	));
+
+	const { armorSlotMods, raidMods, armorStatMods, artificeModIdList } =
+		unflattenMods(replaceAllModsThatDimWillReplace(flattenedMods, buggedAlternateSeasonModIdList));
 
 	loadout.armorSlotMods = armorSlotMods;
 	loadout.raidMods = raidMods;
@@ -319,8 +350,8 @@ type ExtractDimLoadoutsParams = {
 	dimLoadouts: DimLoadoutWithId[];
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
+	buggedAlternateSeasonModIdList: EModId[],
 };
-
 
 export const extractDimLoadouts = (
 	params: ExtractDimLoadoutsParams
@@ -331,6 +362,7 @@ export const extractDimLoadouts = (
 		armorItems,
 		masterworkAssumption,
 		availableExoticArmor,
+		buggedAlternateSeasonModIdList,
 	} = params;
 	const loadouts: AnalyzableLoadout[] = [];
 	if (!dimLoadouts || !dimLoadouts.length) {
@@ -343,6 +375,7 @@ export const extractDimLoadouts = (
 				armorItems,
 				masterworkAssumption,
 				availableExoticArmor,
+				buggedAlternateSeasonModIdList
 			})
 		);
 	});

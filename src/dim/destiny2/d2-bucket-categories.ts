@@ -8,19 +8,19 @@ export const D2Categories: {
 		BucketHashes.Engrams,
 		BucketHashes.LostItems,
 		BucketHashes.Messages,
-		BucketHashes.SpecialOrders
+		BucketHashes.SpecialOrders,
 	],
 	Weapons: [
 		BucketHashes.KineticWeapons,
 		BucketHashes.EnergyWeapons,
-		BucketHashes.PowerWeapons
+		BucketHashes.PowerWeapons,
 	],
 	Armor: [
 		BucketHashes.Helmet,
 		BucketHashes.Gauntlets,
 		BucketHashes.ChestArmor,
 		BucketHashes.LegArmor,
-		BucketHashes.ClassArmor
+		BucketHashes.ClassArmor,
 	],
 	General: [
 		BucketHashes.Subclass,
@@ -30,7 +30,7 @@ export const D2Categories: {
 		BucketHashes.Vehicle,
 		BucketHashes.Emotes_Invisible,
 		BucketHashes.Finishers,
-		BucketHashes.SeasonalArtifact
+		BucketHashes.SeasonalArtifact,
 	],
-	Inventory: [BucketHashes.Consumables, BucketHashes.Modifications]
+	Inventory: [BucketHashes.Consumables, BucketHashes.Modifications],
 };

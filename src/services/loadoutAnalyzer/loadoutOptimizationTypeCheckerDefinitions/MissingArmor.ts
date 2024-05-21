@@ -1,13 +1,12 @@
-import { LoadoutOptimizationTypeChecker } from "@dlb/types/AnalyzableLoadout";
+import { LoadoutOptimizationTypeChecker } from '@dlb/types/AnalyzableLoadout';
 
 const checker: LoadoutOptimizationTypeChecker = (params) => {
-  const { loadout } = params;
+	const { loadout } = params;
 
-  return {
-    meetsOptimizationCriteria: loadout.armor.length < 5,
-    shortCircuit: false,
-  }
-
-}
+	return {
+		meetsOptimizationCriteria: loadout.armor.length < 5,
+		shortCircuit: false,
+	};
+};
 
 export default checker;

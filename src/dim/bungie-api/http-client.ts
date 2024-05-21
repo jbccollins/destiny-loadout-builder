@@ -2,7 +2,7 @@
 import { delay } from '@dlb/dim/utils/util';
 import {
 	PlatformErrorCodes,
-	ServerResponse
+	ServerResponse,
 } from 'bungie-api-ts-no-const-enum/destiny2';
 import { HttpClient, HttpClientConfig } from 'bungie-api-ts-no-const-enum/http';
 
@@ -64,7 +64,7 @@ function throwBungieError<T>(
 			{
 				Message: eMessage,
 				ErrorCode: PlatformErrorCodes.DestinyUnexpectedError,
-				ErrorStatus: eMessage
+				ErrorStatus: eMessage,
 			},
 			request
 		);
@@ -170,9 +170,9 @@ export function createHttpClient(
 			body: config.body ? JSON.stringify(config.body) : undefined,
 			headers: {
 				'X-API-Key': apiKey,
-				...(config.body && { 'Content-Type': 'application/json' })
+				...(config.body && { 'Content-Type': 'application/json' }),
 			},
-			credentials: withCredentials ? 'include' : 'omit'
+			credentials: withCredentials ? 'include' : 'omit',
 		});
 		const response = await fetchFunction(fetchOptions);
 		let data: ServerResponse<unknown> | undefined;

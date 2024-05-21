@@ -1,6 +1,4 @@
-import {
-	getLoadoutsThatCanBeOptimized,
-} from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
+import { getLoadoutsThatCanBeOptimized } from '@dlb/services/loadoutAnalyzer/loadoutAnalyzer';
 import allClassItemMetadata from '@dlb/services/tests/fixtures/all-class-item-metadata.json';
 import armor from '@dlb/services/tests/fixtures/armor.json';
 import availableExoticArmor from '@dlb/services/tests/fixtures/available-exotic-armor.json';
@@ -39,6 +37,7 @@ const loadouts = buildAnalyzableLoadoutsBreakdown({
 	characters: characters as unknown as Characters,
 	inGameLoadoutsWithId:
 		inGameLoadoutsItems as unknown as InGameLoadoutsWithIdMapping,
+	buggedAlternateSeasonModIdList: [],
 });
 
 // TODO: This test takes way too long to run. Find a better way to test this.

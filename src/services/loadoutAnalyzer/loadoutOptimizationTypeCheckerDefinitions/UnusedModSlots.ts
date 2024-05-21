@@ -1,14 +1,14 @@
-import { LoadoutOptimizationTypeChecker } from "@dlb/types/AnalyzableLoadout";
+import { LoadoutOptimizationTypeChecker } from '@dlb/types/AnalyzableLoadout';
 
 const checker: LoadoutOptimizationTypeChecker = (params) => {
-  const { hasUnusedModSlots } = params;
+	const { hasUnusedModSlots } = params;
 
-  const meetsOptimizationCriteria = hasUnusedModSlots;
+	const meetsOptimizationCriteria = hasUnusedModSlots;
 
-  return {
-    meetsOptimizationCriteria,
-    shortCircuit: false,
-  }
-}
+	return {
+		meetsOptimizationCriteria,
+		shortCircuit: false,
+	};
+};
 
 export default checker;

@@ -1,17 +1,38 @@
-
 // A loadout that has some armor, mods or subclass options selected is considered valid
 // If a loadout just contains weapons, shaders, etc. then it is considered invalid
 
-import { EAspectId } from "@dlb/generated/aspect/EAspectId";
-import { EModId } from "@dlb/generated/mod/EModId";
-import { ArmorSlotEnergyMapping } from "@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice";
-import { AnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
-import { Armor, ArmorItem, AvailableExoticArmor, AvailableExoticArmorItem, DestinyClassToAllClassItemMetadataMapping } from "@dlb/types/Armor";
-import { ArmorSlotIdList, ArmorSlotWithClassItemIdList } from "@dlb/types/ArmorSlot";
-import { getAspect } from "@dlb/types/Aspect";
-import { DestinyClassIdList } from "@dlb/types/DestinyClass";
-import { EArmorSlotId, EDestinyClassId, EGearTierId, EModSocketCategoryId } from "@dlb/types/IdEnums";
-import { ArmorChargeAcquisitionModIdList, ArmorChargeSpendModIdList, ArmorSlotIdToModIdListMapping, FontModIdList, NonArtifactArmorSlotModIdList, getMod, hasMutuallyExclusiveMods } from "@dlb/types/Mod";
+import { EAspectId } from '@dlb/generated/aspect/EAspectId';
+import { EModId } from '@dlb/generated/mod/EModId';
+import { ArmorSlotEnergyMapping } from '@dlb/redux/features/reservedArmorSlotEnergy/reservedArmorSlotEnergySlice';
+import { AnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
+import {
+	Armor,
+	ArmorItem,
+	AvailableExoticArmor,
+	AvailableExoticArmorItem,
+	DestinyClassToAllClassItemMetadataMapping,
+} from '@dlb/types/Armor';
+import {
+	ArmorSlotIdList,
+	ArmorSlotWithClassItemIdList,
+} from '@dlb/types/ArmorSlot';
+import { getAspect } from '@dlb/types/Aspect';
+import { DestinyClassIdList } from '@dlb/types/DestinyClass';
+import {
+	EArmorSlotId,
+	EDestinyClassId,
+	EGearTierId,
+	EModSocketCategoryId,
+} from '@dlb/types/IdEnums';
+import {
+	ArmorChargeAcquisitionModIdList,
+	ArmorChargeSpendModIdList,
+	ArmorSlotIdToModIdListMapping,
+	FontModIdList,
+	NonArtifactArmorSlotModIdList,
+	getMod,
+	hasMutuallyExclusiveMods,
+} from '@dlb/types/Mod';
 
 export const isEditableLoadout = (loadout: AnalyzableLoadout): boolean => {
 	const nonClassItemArmor = loadout.armor.filter(
@@ -132,7 +153,7 @@ export const unflattenMods = (modIdList: EModId[]): UnflattenModsOutput => {
 		armorStatMods,
 		artificeModIdList,
 	};
-}
+};
 
 export const findAvailableExoticArmorItem = (
 	hash: number,
@@ -215,10 +236,10 @@ export const getUnusedModSlots = ({
 						const meetsArmorChargeSpendModConstraints =
 							ArmorChargeSpendModIdList.includes(mod.id)
 								? // We can only recommend using a spend mod if it's a duplicate spend mod (two copies of grenade kickstart for example)
-								// or if we don't have any other spend mods or font mods
-								!hasFontMod &&
-								(!hasArmorChargeSpendMod ||
-									currentArmorSlotMods.some((cMod) => cMod.id === mod.id))
+								  // or if we don't have any other spend mods or font mods
+								  !hasFontMod &&
+								  (!hasArmorChargeSpendMod ||
+										currentArmorSlotMods.some((cMod) => cMod.id === mod.id))
 								: true;
 						return (
 							!_hasMutuallyExclusiveMods &&

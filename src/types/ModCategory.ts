@@ -7,9 +7,9 @@ import { EnumDictionary, IIdentifiableName } from './globals';
 export const getActiveSeasonArtifactModIdList: () => EModId[] = () => {
 	return [
 		EModId.ArtifactThermodynamicSiphon,
-		EModId.ArtifactSolarStrandDualSiphon
-	]
-}
+		EModId.ArtifactSolarStrandDualSiphon,
+	];
+};
 
 export interface IModCategory extends IIdentifiableName {
 	description: string;

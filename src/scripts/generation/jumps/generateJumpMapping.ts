@@ -4,16 +4,12 @@ import {
 	getSerializableValue,
 } from '@dlb/scripts/generation/utils';
 import { IJump } from '@dlb/types/generation';
-import { EDestinySubclassId, EElementId } from '@dlb/types/IdEnums';
+import { EElementId } from '@dlb/types/IdEnums';
 
 export const generateJumpMapping = (jumps: IJump[]): string => {
 	const enumsToSerialize = {
 		id: { enumDefinition: EJumpId, enumName: 'EJumpId' },
 		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
-		destinySubclassId: {
-			enumDefinition: EDestinySubclassId,
-			enumName: 'EDestinySubclassId',
-		},
 	};
 
 	const serializeJumps: Record<string, unknown>[] = [];
@@ -40,7 +36,7 @@ export const generateJumpMapping = (jumps: IJump[]): string => {
 	import { EnumDictionary } from '@dlb/types/globals';
 	import { IJump } from '@dlb/types/generation';
   import { EJumpId } from '@dlb/generated/jump/EJumpId';
-	import { EElementId, EDestinySubclassId } from '@dlb/types/IdEnums';
+	import { EElementId } from '@dlb/types/IdEnums';
 
 	export const JumpIdToJumpMapping: EnumDictionary<EJumpId, IJump> = {
 		${jumpIdToJumpMappingString.join(' ')}

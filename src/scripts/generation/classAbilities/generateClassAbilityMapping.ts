@@ -4,7 +4,7 @@ import {
 	getSerializableValue,
 } from '@dlb/scripts/generation/utils';
 import { IClassAbility } from '@dlb/types/generation';
-import { EDestinySubclassId, EElementId } from '@dlb/types/IdEnums';
+import { EElementId } from '@dlb/types/IdEnums';
 
 export const generateClassAbilityMapping = (
 	classAbilities: IClassAbility[]
@@ -12,10 +12,6 @@ export const generateClassAbilityMapping = (
 	const enumsToSerialize = {
 		id: { enumDefinition: EClassAbilityId, enumName: 'EClassAbilityId' },
 		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
-		destinySubclassId: {
-			enumDefinition: EDestinySubclassId,
-			enumName: 'EDestinySubclassId',
-		},
 	};
 
 	const serializeClassAbilitys: Record<string, unknown>[] = [];
@@ -46,7 +42,7 @@ export const generateClassAbilityMapping = (
 	import { EnumDictionary } from '@dlb/types/globals';
 	import { IClassAbility } from '@dlb/types/generation';
   import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
-	import { EElementId, EDestinySubclassId } from '@dlb/types/IdEnums';
+	import { EElementId } from '@dlb/types/IdEnums';
 
 	export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<EClassAbilityId, IClassAbility> = {
 		${classAbilityIdToClassAbilityMappingString.join(' ')}

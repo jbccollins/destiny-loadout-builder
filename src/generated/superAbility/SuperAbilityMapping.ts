@@ -2,7 +2,7 @@
 // Do not manually make changes to this file.
 
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
-import { EDestinySubclassId, EElementId } from '@dlb/types/IdEnums';
+import { EElementId } from '@dlb/types/IdEnums';
 import { ISuperAbility } from '@dlb/types/generation';
 import { EnumDictionary } from '@dlb/types/globals';
 
@@ -18,7 +18,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/adb140aba83a6c14345852531d4ee2e0.png',
 		hash: 119041298,
 		elementId: EElementId.Arc,
-		destinySubclassId: EDestinySubclassId.Striker,
 	},
 	[ESuperAbilityId.FistsOfHavoc]: {
 		name: 'Fists of Havoc',
@@ -28,7 +27,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/5bc4f4029b38fd41d0232460b4295600.png',
 		hash: 119041299,
 		elementId: EElementId.Arc,
-		destinySubclassId: EDestinySubclassId.Striker,
 	},
 	[ESuperAbilityId.GoldenGunMarksman]: {
 		name: 'Golden Gun - Marksman',
@@ -38,7 +36,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/52f2eb1fefa20e9c7b064c190855d588.png',
 		hash: 375052468,
 		elementId: EElementId.Solar,
-		destinySubclassId: EDestinySubclassId.Gunslinger,
 	},
 	[ESuperAbilityId.GoldenGunDeadshot]: {
 		name: 'Golden Gun - Deadshot',
@@ -48,7 +45,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/e19ebe4d56d6f95d582703f6b481813f.png',
 		hash: 375052469,
 		elementId: EElementId.Solar,
-		destinySubclassId: EDestinySubclassId.Gunslinger,
 	},
 	[ESuperAbilityId.BladeBarrage]: {
 		name: 'Blade Barrage',
@@ -58,7 +54,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/0b01a6ddceb7b0e2e86ebcb7a6a83eaa.png',
 		hash: 375052471,
 		elementId: EElementId.Solar,
-		destinySubclassId: EDestinySubclassId.Gunslinger,
 	},
 	[ESuperAbilityId.Stormtrance]: {
 		name: 'Stormtrance',
@@ -68,7 +63,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/31a0445d352fd44b62c9a8dd2752ccdf.png',
 		hash: 1081893460,
 		elementId: EElementId.Arc,
-		destinySubclassId: EDestinySubclassId.Stormcaller,
 	},
 	[ESuperAbilityId.ChaosReach]: {
 		name: 'Chaos Reach',
@@ -78,7 +72,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/b54195b2d82a31ae970ca85fb7fb0be7.png',
 		hash: 1081893461,
 		elementId: EElementId.Arc,
-		destinySubclassId: EDestinySubclassId.Stormcaller,
 	},
 	[ESuperAbilityId.NovaWarp]: {
 		name: 'Nova Warp',
@@ -88,7 +81,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/feb001db8e9776bc822007c74564c1b6.png',
 		hash: 1656118680,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Voidwalker,
 	},
 	[ESuperAbilityId.NovaBombVortex]: {
 		name: 'Nova Bomb: Vortex',
@@ -98,7 +90,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/e9dc1cc0179cda4d2445845cf8992a7e.png',
 		hash: 1656118681,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Voidwalker,
 	},
 	[ESuperAbilityId.NovaBombCataclysm]: {
 		name: 'Nova Bomb: Cataclysm',
@@ -108,7 +99,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/b1efa0eaa710653d85e2fcf5321047fb.png',
 		hash: 1656118682,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Voidwalker,
 	},
 	[ESuperAbilityId.Needlestorm]: {
 		name: 'Needlestorm',
@@ -118,7 +108,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/2e486aef07bd3551c35807f416ba0b6c.png',
 		hash: 1885339915,
 		elementId: EElementId.Strand,
-		destinySubclassId: EDestinySubclassId.Broodweaver,
 	},
 	[ESuperAbilityId.GlacialQuake]: {
 		name: 'Glacial Quake',
@@ -128,7 +117,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/3c522f849a7d4d86d5224d7d5d5671a4.png',
 		hash: 2021620139,
 		elementId: EElementId.Stasis,
-		destinySubclassId: EDestinySubclassId.Behemoth,
 	},
 	[ESuperAbilityId.Daybreak]: {
 		name: 'Daybreak',
@@ -138,7 +126,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/89b89220e92c5b363d3e105c25a21640.png',
 		hash: 2274196886,
 		elementId: EElementId.Solar,
-		destinySubclassId: EDestinySubclassId.Dawnblade,
 	},
 	[ESuperAbilityId.WellOfRadiance]: {
 		name: 'Well of Radiance',
@@ -148,7 +135,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/2f3615ddcd86ab7c50653d2d1847c3bf.png',
 		hash: 2274196887,
 		elementId: EElementId.Solar,
-		destinySubclassId: EDestinySubclassId.Dawnblade,
 	},
 	[ESuperAbilityId.Silkstrike]: {
 		name: 'Silkstrike',
@@ -158,7 +144,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/3da7e8684b09600e90ea5c16f1edebe0.png',
 		hash: 2463983862,
 		elementId: EElementId.Strand,
-		destinySubclassId: EDestinySubclassId.Threadrunner,
 	},
 	[ESuperAbilityId.SilenceAndSquall]: {
 		name: 'Silence and Squall',
@@ -168,7 +153,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/a8bbee32ce8f259e7b9e112c0c8a401a.png',
 		hash: 2625980631,
 		elementId: EElementId.Stasis,
-		destinySubclassId: EDestinySubclassId.Revenant,
 	},
 	[ESuperAbilityId.ShadowshotMoebiusQuiver]: {
 		name: 'Shadowshot: Moebius Quiver',
@@ -178,7 +162,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/986e8f2dd0699371d605a331bb63742a.png',
 		hash: 2722573681,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Nightstalker,
 	},
 	[ESuperAbilityId.SpectralBlades]: {
 		name: 'Spectral Blades',
@@ -188,7 +171,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/1fbfacd5dfe847c5cd0262c5616653ff.png',
 		hash: 2722573682,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Nightstalker,
 	},
 	[ESuperAbilityId.ShadowshotDeadfall]: {
 		name: 'Shadowshot: Deadfall',
@@ -198,7 +180,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/61feac4f1271ba6cecc29cc50e20ab5a.png',
 		hash: 2722573683,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Nightstalker,
 	},
 	[ESuperAbilityId.BurningMaul]: {
 		name: 'Burning Maul',
@@ -208,7 +189,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/a0391bd2a8cf73c58cec261961db0136.png',
 		hash: 2747500760,
 		elementId: EElementId.Solar,
-		destinySubclassId: EDestinySubclassId.Sunbreaker,
 	},
 	[ESuperAbilityId.HammerOfSol]: {
 		name: 'Hammer of Sol',
@@ -218,7 +198,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/9d1fd669f61cce4abd35dbefd22ba90c.png',
 		hash: 2747500761,
 		elementId: EElementId.Solar,
-		destinySubclassId: EDestinySubclassId.Sunbreaker,
 	},
 	[ESuperAbilityId.Bladefury]: {
 		name: 'Bladefury',
@@ -228,7 +207,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/228496331415f6854ef589f33c2a2622.png',
 		hash: 3574662354,
 		elementId: EElementId.Strand,
-		destinySubclassId: EDestinySubclassId.Berserker,
 	},
 	[ESuperAbilityId.WintersWrath]: {
 		name: "Winter's Wrath",
@@ -238,7 +216,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/c9f25c8f6d5e647366ffc4f71a825961.png',
 		hash: 3683904166,
 		elementId: EElementId.Stasis,
-		destinySubclassId: EDestinySubclassId.Shadebinder,
 	},
 	[ESuperAbilityId.GatheringStorm]: {
 		name: 'Gathering Storm',
@@ -248,7 +225,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/edf23f2e6951efcab4c4b10630b6f7c4.png',
 		hash: 3769507632,
 		elementId: EElementId.Arc,
-		destinySubclassId: EDestinySubclassId.Arcstrider,
 	},
 	[ESuperAbilityId.ArcStaff]: {
 		name: 'Arc Staff',
@@ -258,7 +234,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/435489f514e2bf88d25c452a96f2dff9.png',
 		hash: 3769507633,
 		elementId: EElementId.Arc,
-		destinySubclassId: EDestinySubclassId.Arcstrider,
 	},
 	[ESuperAbilityId.SentinelShield]: {
 		name: 'Sentinel Shield',
@@ -268,7 +243,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/a929ea604d638e5e99125e48f76989e2.png',
 		hash: 4260353952,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Sentinel,
 	},
 	[ESuperAbilityId.WardOfDawn]: {
 		name: 'Ward of Dawn',
@@ -278,7 +252,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/1caf1eccf1072969ab93bd35fde62599.png',
 		hash: 4260353953,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Sentinel,
 	},
 	[ESuperAbilityId.StormsEdge]: {
 		name: "Storm's Edge",
@@ -288,7 +261,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/8c2b0c0b4b3e7c0b0f6b7a6b2b2b1e5b.png',
 		hash: 1234567890,
 		elementId: EElementId.Arc,
-		destinySubclassId: EDestinySubclassId.Arcstrider,
 	},
 	[ESuperAbilityId.TwilightArsenal]: {
 		name: 'Twilight Arsenal',
@@ -298,7 +270,6 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/8c2b0c0b4b3e7c0b0f6b7a6b2b2b1e5b.png',
 		hash: 1234567890,
 		elementId: EElementId.Void,
-		destinySubclassId: EDestinySubclassId.Sentinel,
 	},
 	[ESuperAbilityId.SongOfFlame]: {
 		name: 'Song of Flame',
@@ -308,6 +279,5 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/8c2b0c0b4b3e7c0b0f6b7a6b2b2b1e5b.png',
 		hash: 1234567890,
 		elementId: EElementId.Solar,
-		destinySubclassId: EDestinySubclassId.Dawnblade,
 	}
 };

@@ -4,7 +4,7 @@ import {
 	getSerializableValue,
 } from '@dlb/scripts/generation/utils';
 import { ISuperAbility } from '@dlb/types/generation';
-import { EDestinySubclassId, EElementId } from '@dlb/types/IdEnums';
+import { EElementId } from '@dlb/types/IdEnums';
 
 export const generateSuperAbilityMapping = (
 	superAbilities: ISuperAbility[]
@@ -12,10 +12,6 @@ export const generateSuperAbilityMapping = (
 	const enumsToSerialize = {
 		id: { enumDefinition: ESuperAbilityId, enumName: 'ESuperAbilityId' },
 		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
-		destinySubclassId: {
-			enumDefinition: EDestinySubclassId,
-			enumName: 'EDestinySubclassId',
-		},
 	};
 
 	const serializeSuperAbilitys: Record<string, unknown>[] = [];
@@ -46,7 +42,7 @@ export const generateSuperAbilityMapping = (
 	import { EnumDictionary } from '@dlb/types/globals';
 	import { ISuperAbility } from '@dlb/types/generation';
   import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
-	import { EElementId, EDestinySubclassId } from '@dlb/types/IdEnums';
+	import { EElementId } from '@dlb/types/IdEnums';
 
 	export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<ESuperAbilityId, ISuperAbility> = {
 		${superAbilityIdToSuperAbilityMappingString.join(' ')}

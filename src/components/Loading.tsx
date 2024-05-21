@@ -166,6 +166,7 @@ import {
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
 import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/helpers/buildAnalyzableLoadoutsBreakdown';
+import { getLoadoutItemIdsToItemHashesMapping } from '@dlb/services/loadoutAnalyzer/helpers/getItemsFromInGameLoadout';
 import {
 	EDestinyClassId,
 	EDestinySubclassId,
@@ -842,6 +843,7 @@ function Loading() {
 					setBuggedAlternateSeasonModIdList(buggedAlternateSeasonModIdList)
 				);
 				const inGameLoadoutsWithId: InGameLoadoutsWithIdMapping = {};
+				const allItems = stores.flatMap((store) => store.items);
 				Object.keys(inGameLoadouts).forEach((characterId) => {
 					inGameLoadoutsWithId[characterId] = {
 						loadouts: [],
@@ -850,6 +852,10 @@ function Loading() {
 						const l: LoadoutWithId = {
 							...cloneDeep(loadout),
 							dlbGeneratedId: `${characterId}/${i}/${hash(loadout)}`,
+							itemIdsToItemHashesMapping: getLoadoutItemIdsToItemHashesMapping(
+								loadout.items,
+								allItems
+							),
 						};
 						inGameLoadoutsWithId[characterId].loadouts.push(l);
 					});
@@ -1030,13 +1036,6 @@ function Loading() {
 					});
 					log('analyzableLoadoutsBreakdown', analyzableLoadoutsBreakdown);
 					dispatch(setAnalyzableLoadoutsBreakdown(analyzableLoadoutsBreakdown));
-
-					// // This can be used to get the subclass for each loadout, but this sucks.
-					// const item = await getSingleItem(
-					// 	'6917529810118739127',
-					// 	mostRecentPlatform
-					// );
-					// console.log('?????', item);
 				} catch (e) {
 					log('buildLoadoutsError', e);
 				}

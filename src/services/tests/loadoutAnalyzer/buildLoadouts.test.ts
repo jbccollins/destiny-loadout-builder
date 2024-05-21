@@ -46,7 +46,7 @@ const testCases: TestCase[] = [
 				buggedAlternateSeasonModIdList: [],
 			},
 		],
-		49,
+		50,
 	],
 ];
 

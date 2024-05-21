@@ -1,11 +1,10 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	EArmorSlotId,
-	EDestinySubclassId,
 	EElementId,
 	EModCategoryId,
 	EModSocketCategoryId,
-	ERaidAndNightMareModTypeId,
+	ERaidAndNightMareModTypeId
 } from './IdEnums';
 import { IBonuses, IHash, IIcon, IIdentifiableName } from './globals';
 
@@ -43,23 +42,19 @@ export interface IGrenade extends IIdentifiableName, IIcon, IHash {
 export interface IMelee extends IIdentifiableName, IIcon, IHash {
 	description: string;
 	elementId: EElementId;
-	destinySubclassId: EDestinySubclassId;
 }
 
 export interface IClassAbility extends IIdentifiableName, IIcon, IHash {
 	description: string;
 	elementId: EElementId;
-	destinySubclassId: EDestinySubclassId;
 }
 
 export interface IJump extends IIdentifiableName, IIcon, IHash {
 	description: string;
 	elementId: EElementId;
-	destinySubclassId: EDestinySubclassId;
 }
 
 export interface ISuperAbility extends IIdentifiableName, IIcon, IHash {
 	description: string;
 	elementId: EElementId;
-	destinySubclassId: EDestinySubclassId;
 }

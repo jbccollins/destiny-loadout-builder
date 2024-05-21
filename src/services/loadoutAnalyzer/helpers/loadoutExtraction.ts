@@ -470,6 +470,7 @@ export const extractInGameLoadouts = (
 			if (!inGameLoadout || inGameLoadout.nameHash === UNSET_PLUG_HASH) {
 				return;
 			}
+			const { itemIdsToItemHashesMapping } = inGameLoadout;
 			const loadout: AnalyzableLoadout = {
 				...getDefaultAnalyzableLoadout(),
 				name: inGameLoadoutsDefinitions.LoadoutName[inGameLoadout.nameHash]
@@ -495,6 +496,11 @@ export const extractInGameLoadouts = (
 
 			let hasHalloweenMask = false;
 			inGameLoadout.items.forEach((item, index) => {
+				const hash = itemIdsToItemHashesMapping[item.itemInstanceId];
+				const subclass = getDestinySubclassByHash(hash);
+				if (!!subclass) {
+					loadout.destinySubclassId = subclass.id as EDestinySubclassId;
+				}
 				switch (getInGameLoadoutItemTypeFromIndex(index)) {
 					case EInGameLoadoutItemType.ARMOR:
 						const armorItem = armorItems.find(
@@ -617,9 +623,9 @@ export const extractInGameLoadouts = (
 									break;
 								case 2:
 									const superAbility = getSuperAbilityByHash(hash);
-									loadout.superAbilityId = superAbility.id as ESuperAbilityId;
-									// This is a janky way to get the subclass id from the super ability id
-									loadout.destinySubclassId = superAbility.destinySubclassId;
+									if (!!superAbility) {
+										loadout.superAbilityId = superAbility.id as ESuperAbilityId;
+									}
 									break;
 								case 3:
 									const melee = getMeleeByHash(hash);

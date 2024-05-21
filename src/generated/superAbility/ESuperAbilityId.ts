@@ -29,4 +29,7 @@ export enum ESuperAbilityId {
 	ArcStaff = 'ArcStaff',
 	SentinelShield = 'SentinelShield',
 	WardOfDawn = 'WardOfDawn',
+	StormsEdge = 'StormsEdge',
+	TwilightArsenal = 'TwilightArsenal',
+	SongOfFlame = 'SongOfFlame',
 }

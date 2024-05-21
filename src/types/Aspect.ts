@@ -2,9 +2,9 @@ import { AspectIdToAspectMapping } from '@dlb/generated/aspect/AspectMapping';
 import { EAspectId } from '@dlb/generated/aspect/EAspectId';
 import combinations from '@dlb/utils/combinations';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
+import { EDestinySubclassId } from './IdEnums';
 import { IAspect } from './generation';
 import { EnumDictionary } from './globals';
-import { EDestinySubclassId } from './IdEnums';
 
 export const AspectIdList = Object.values(EAspectId);
 
@@ -54,6 +54,13 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.WidowsSilk,
 		EAspectId.WhirlingMaelstrom,
 	],
+	[EDestinySubclassId.PrismaticHunter]: [
+		EAspectId.Ascension,
+		EAspectId.GunpowderGamble,
+		EAspectId.WintersShroud,
+		EAspectId.ThreadedSpecter,
+		EAspectId.StylishExecutioner
+	],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [
@@ -83,6 +90,13 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.WeaversCall,
 		EAspectId.Weavewalk,
 	],
+	[EDestinySubclassId.PrismaticWarlock]: [
+		EAspectId.Hellion,
+		EAspectId.FeedTheVoid,
+		EAspectId.LightningSurge,
+		EAspectId.BleakWatcher,
+		EAspectId.WeaversCall,
+	],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [
@@ -111,6 +125,13 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.FlechetteStorm,
 		EAspectId.IntoTheFray,
 		EAspectId.BannerOfWar,
+	],
+	[EDestinySubclassId.PrismaticTitan]: [
+		EAspectId.Unbreakable,
+		EAspectId.Knockout,
+		EAspectId.DrengrsLash,
+		EAspectId.Consecration,
+		EAspectId.DiamondLance,
 	],
 };
 
@@ -204,6 +225,18 @@ const DestinySubclassIdToMaximumAspectCapacityMapping: EnumDictionary<
 	[EDestinySubclassId.Threadrunner]:
 		getMaximumAspectFragmentSlotsByDestinySubclassId(
 			EDestinySubclassId.Threadrunner
+		),
+	[EDestinySubclassId.PrismaticHunter]:
+		getMaximumAspectFragmentSlotsByDestinySubclassId(
+			EDestinySubclassId.PrismaticHunter
+		),
+	[EDestinySubclassId.PrismaticTitan]:
+		getMaximumAspectFragmentSlotsByDestinySubclassId(
+			EDestinySubclassId.PrismaticTitan
+		),
+	[EDestinySubclassId.PrismaticWarlock]:
+		getMaximumAspectFragmentSlotsByDestinySubclassId(
+			EDestinySubclassId.PrismaticWarlock
 		),
 };
 

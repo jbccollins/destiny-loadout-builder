@@ -35,4 +35,10 @@ export enum EClassAbilityId {
 	GamblersDodgeSolar = 'GamblersDodgeSolar',
 	MarksmansDodgeStasis = 'MarksmansDodgeStasis',
 	GamblersDodgeStasis = 'GamblersDodgeStasis',
+	MarksmansDodgePrismatic = 'MarksmansDodgePrismatic',
+	GamblersDodgePrismatic = 'GamblersDodgePrismatic',
+	HealingRiftPrismatic = 'HealingRiftPrismatic',
+	EmpoweringRiftPrismatic = 'EmpoweringRiftPrismatic',
+	ToweringBarricadePrismatic = 'ToweringBarricadePrismatic',
+	RallyBarricadePrismatic = 'RallyBarricadePrismatic',
 }

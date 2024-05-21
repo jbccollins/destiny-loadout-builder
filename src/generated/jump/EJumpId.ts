@@ -49,4 +49,13 @@ export enum EJumpId {
 	BurstGlideArc = 'BurstGlideArc',
 	StrafeGlideArc = 'StrafeGlideArc',
 	BalancedGlideArc = 'BalancedGlideArc',
+	TripleJumpPrismatic = 'TripleJumpPrismatic',
+	HighJumpPrismatic = 'HighJumpPrismatic',
+	StrafeJumpPrismatic = 'StrafeJumpPrismatic',
+	BurstGlidePrismatic = 'BurstGlidePrismatic',
+	StrafeGlidePrismatic = 'StrafeGlidePrismatic',
+	BalancedGlidePrismatic = 'BalancedGlidePrismatic',
+	HighLiftPrismatic = 'HighLiftPrismatic',
+	CatapultLiftPrismatic = 'CatapultLiftPrismatic',
+	StrafeLiftPrismatic = 'StrafeLiftPrismatic',
 }

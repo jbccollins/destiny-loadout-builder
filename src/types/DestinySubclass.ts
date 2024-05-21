@@ -1,5 +1,6 @@
 import { ESuperAbilityId } from '@dlb/generated/superAbility/ESuperAbilityId';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
+import { EDestinyClassId, EDestinySubclassId, EElementId } from './IdEnums';
 import {
 	EnumDictionary,
 	IHash,
@@ -7,7 +8,6 @@ import {
 	IIdentifiableName,
 	ValidateEnumList,
 } from './globals';
-import { EDestinyClassId, EDestinySubclassId, EElementId } from './IdEnums';
 
 // Sorted by [hunter, warlock, titan] and then alphabetically
 export const DestinySubclassIdList = ValidateEnumList(
@@ -28,6 +28,9 @@ export const DestinySubclassIdList = ValidateEnumList(
 		EDestinySubclassId.Broodweaver,
 		EDestinySubclassId.Threadrunner,
 		EDestinySubclassId.Berserker,
+		EDestinySubclassId.PrismaticHunter,
+		EDestinySubclassId.PrismaticTitan,
+		EDestinySubclassId.PrismaticWarlock,
 	]
 );
 
@@ -206,6 +209,51 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		destinyClassId: EDestinyClassId.Hunter,
 		elementId: EElementId.Strand,
 		hash: 3785442599,
+	},
+	[EDestinySubclassId.PrismaticHunter]: {
+		id: EDestinySubclassId.PrismaticHunter,
+		name: 'Prismatic Hunter',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/949af7a61d60a8e6071282daafa9e6e9.png',
+		superAbilityIdList: [
+			ESuperAbilityId.StormsEdge,
+			ESuperAbilityId.GoldenGunMarksman,
+			ESuperAbilityId.SilenceAndSquall,
+			ESuperAbilityId.Silkstrike,
+			ESuperAbilityId.ShadowshotDeadfall,
+		],
+		destinyClassId: EDestinyClassId.Hunter,
+		elementId: EElementId.Prismatic,
+		hash: 1234567890,
+	},
+	[EDestinySubclassId.PrismaticTitan]: {
+		id: EDestinySubclassId.PrismaticTitan,
+		name: 'Prismatic Titan',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/fedcb91b7ab0584c12f0e9fec730702b.png',
+		superAbilityIdList: [
+			ESuperAbilityId.TwilightArsenal,
+			ESuperAbilityId.Thundercrash,
+			ESuperAbilityId.Bladefury,
+			ESuperAbilityId.HammerOfSol,
+			ESuperAbilityId.GlacialQuake,
+		],
+		destinyClassId: EDestinyClassId.Titan,
+		elementId: EElementId.Prismatic,
+		hash: 1234567890,
+	},
+	[EDestinySubclassId.PrismaticWarlock]: {
+		id: EDestinySubclassId.PrismaticWarlock,
+		name: 'Prismatic Warlock',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/32b112a9460e6f0e2b9ee15dc53fe1c1.png',
+		superAbilityIdList: [
+			ESuperAbilityId.SongOfFlame,
+			ESuperAbilityId.NovaBombCataclysm,
+			ESuperAbilityId.Stormtrance,
+			ESuperAbilityId.WintersWrath,
+			ESuperAbilityId.Needlestorm,
+		],
+		destinyClassId: EDestinyClassId.Warlock,
+		elementId: EElementId.Prismatic,
+		hash: 1234567890,
 	},
 };
 

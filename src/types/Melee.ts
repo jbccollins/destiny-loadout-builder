@@ -1,9 +1,9 @@
 import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
 import { MeleeIdToMeleeMapping } from '@dlb/generated/melee/MeleeMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
+import { EDestinySubclassId } from './IdEnums';
 import { IMelee } from './generation';
 import { EnumDictionary } from './globals';
-import { EDestinySubclassId } from './IdEnums';
 
 export const MeleeIdList = Object.values(EMeleeId);
 
@@ -35,6 +35,13 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.DisorientingBlow,
 	],
 	[EDestinySubclassId.Threadrunner]: [EMeleeId.ThreadedSpike],
+	[EDestinySubclassId.PrismaticHunter]: [
+		EMeleeId.CombinationBlow,
+		EMeleeId.KnifeTrick,
+		EMeleeId.WitheringBlade,
+		EMeleeId.ThreadedSpike,
+		EMeleeId.SnareBomb
+	],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [EMeleeId.PenumbralBlast],
@@ -48,6 +55,13 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.ChainLightning,
 	],
 	[EDestinySubclassId.Broodweaver]: [EMeleeId.ArcaneNeedle],
+	[EDestinySubclassId.PrismaticWarlock]: [
+		EMeleeId.IncineratorSnap,
+		EMeleeId.PocketSingularity,
+		EMeleeId.ChainLightning,
+		EMeleeId.PenumbralBlast,
+		EMeleeId.ArcaneNeedle
+	],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [EMeleeId.ShiverStrike],
@@ -62,6 +76,13 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.BallisticSlam,
 	],
 	[EDestinySubclassId.Berserker]: [EMeleeId.FrenziedBlade],
+	[EDestinySubclassId.PrismaticTitan]: [
+		EMeleeId.ShieldThrow,
+		EMeleeId.Thunderclap,
+		EMeleeId.FrenziedBlade,
+		EMeleeId.HammerStrike,
+		EMeleeId.ShiverStrike
+	],
 };
 
 export const getMeleeIdsByDestinySubclassId = (

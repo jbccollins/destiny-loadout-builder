@@ -1030,6 +1030,13 @@ function Loading() {
 					});
 					log('analyzableLoadoutsBreakdown', analyzableLoadoutsBreakdown);
 					dispatch(setAnalyzableLoadoutsBreakdown(analyzableLoadoutsBreakdown));
+
+					// // This can be used to get the subclass for each loadout, but this sucks.
+					// const item = await getSingleItem(
+					// 	'6917529810118739127',
+					// 	mostRecentPlatform
+					// );
+					// console.log('?????', item);
 				} catch (e) {
 					log('buildLoadoutsError', e);
 				}

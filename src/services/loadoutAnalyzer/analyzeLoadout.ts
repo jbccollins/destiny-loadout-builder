@@ -182,9 +182,6 @@ export default function analyzeLoadout(
     ): boolean => {
       let shortCircuit = false;
       for (const optimizationType of optimizationTypes) {
-        if (optimizationType === ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods) {
-          console.log('lol')
-        }
         const checker =
           LoadoutOptimizationTypeToLoadoutOptimizationMapping[optimizationType]
             .checker;

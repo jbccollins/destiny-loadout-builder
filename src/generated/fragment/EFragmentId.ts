@@ -78,4 +78,5 @@ export enum EFragmentId {
 	ThreadOfTransmutation = 'ThreadOfTransmutation',
 	ThreadOfWarding = 'ThreadOfWarding',
 	ThreadOfWisdom = 'ThreadOfWisdom',
+	FakeBoi = 'FakeBoi',
 }

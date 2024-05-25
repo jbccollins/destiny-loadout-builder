@@ -108,7 +108,9 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 		EFragmentId.ThreadOfWarding,
 		EFragmentId.ThreadOfWisdom,
 	],
-	[EElementId.Prismatic]: [],
+	[EElementId.Prismatic]: [
+		EFragmentId.FakeBoi
+	],
 	// TODO: Refactor this type so that we don't need to include the "Any" id here. It makes
 	// no sense for fragments
 	[EElementId.Any]: [],

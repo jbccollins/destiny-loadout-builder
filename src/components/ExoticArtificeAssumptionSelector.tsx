@@ -4,6 +4,7 @@ import {
 } from '@dlb/redux/features/selectedExoticArtificeAssumption/selectedExoticArtificeAssumptionSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { EExoticArtificeAssumption } from '@dlb/types/IdEnums';
+import HelpIcon from '@mui/icons-material/Help';
 import {
 	FormControl,
 	InputLabel,
@@ -11,6 +12,7 @@ import {
 	Select,
 	styled,
 } from '@mui/material';
+import CustomTooltip from './CustomTooltip';
 
 const Container = styled('div')(({ theme }) => ({
 	padding: theme.spacing(1),
@@ -53,6 +55,13 @@ const ExoticArtificeAssumptionSelector = () => {
 					</MenuItem>
 				</Select>
 			</FormControl>
+			<CustomTooltip
+				title={
+					'Exotic Class Items are always considered to be "artifice" regardless of this setting.'
+				}
+			>
+				<HelpIcon />
+			</CustomTooltip>
 		</Container>
 	);
 };

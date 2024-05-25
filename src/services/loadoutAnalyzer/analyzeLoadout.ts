@@ -92,6 +92,7 @@ export default function analyzeLoadout(
     availableExoticArmor,
     masterworkAssumption,
     buggedAlternateSeasonModIdList,
+    exoticArtificeAssumption
   } = params;
 
   const {
@@ -220,6 +221,7 @@ export default function analyzeLoadout(
         loadout,
         allClassItemMetadata,
         availableExoticArmor,
+        exoticArtificeAssumption
       });
 
     // Collect any stats that are not directly provided by explicit stat mods

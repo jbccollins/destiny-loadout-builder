@@ -8,8 +8,9 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
-import { AvailableExoticArmorItem } from '@dlb/types/Armor';
+import { AvailableExoticArmorItem, EXOTIC_CLASS_ITEM } from '@dlb/types/Armor';
 import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
+import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { MISSING_ICON } from '@dlb/types/globals';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Popper, styled } from '@mui/material';
@@ -17,6 +18,13 @@ import { useMemo } from 'react';
 import IconAutocompleteDropdown from './IconAutocompleteDropdown';
 
 const getExtraContent = (option: AvailableExoticArmorItem) => {
+	if (option.name === EXOTIC_CLASS_ITEM) {
+		return (
+			<Box sx={{ fontSize: '14px', marginTop: '16px' }}>
+				Placeholder for exotic class items.
+			</Box>
+		);
+	}
 	return (
 		<Box sx={{ marginTop: '10px' }}>
 			{option.exoticPerk && (
@@ -95,7 +103,17 @@ function ExoticSelector() {
 		console.log(
 			'>>>>>>>>>>> [Memo] availableExoticArmorItems calculated <<<<<<<<<<<'
 		);
-		const res: AvailableExoticArmorItem[] = [];
+		const res: AvailableExoticArmorItem[] = [
+			{
+				hash: -1,
+				name: EXOTIC_CLASS_ITEM,
+				armorSlot: EArmorSlotId.ClassItem,
+				count: 1,
+				exoticPerk: null,
+				icon: getArmorSlot(EArmorSlotId.ClassItem).icon,
+				destinyClassName: selectedDestinyClass,
+			},
+		];
 		if (availableExoticArmor && selectedDestinyClass) {
 			ArmorSlotIdList.forEach((armorSlotId) => {
 				res.push(availableExoticArmor[selectedDestinyClass][armorSlotId]);

@@ -12,7 +12,7 @@ import {
 	DestinyClassToAllClassItemMetadataMapping,
 } from '@dlb/types/Armor';
 import { ArmorStatMapping } from '@dlb/types/ArmorStat';
-import { EArmorSlotId, EMasterworkAssumption } from '@dlb/types/IdEnums';
+import { EArmorSlotId, EExoticArtificeAssumption, EMasterworkAssumption } from '@dlb/types/IdEnums';
 
 export enum EGetLoadoutsThatCanBeOptimizedProgressType {
 	Progress = 'progress',
@@ -49,6 +49,7 @@ export type GetLoadoutsThatCanBeOptimizedParams = {
 	) => unknown;
 	availableExoticArmor: AvailableExoticArmor;
 	buggedAlternateSeasonModIdList: EModId[];
+	exoticArtificeAssumption: EExoticArtificeAssumption;
 };
 export type GetLoadoutsThatCanBeOptimizedOutputItem = {
 	optimizationTypeList: ELoadoutOptimizationTypeId[];
@@ -79,6 +80,7 @@ export type AnalyzeLoadoutParams = {
 	availableExoticArmor: AvailableExoticArmor;
 	buggedAlternateSeasonModIdList: EModId[];
 	loadout: AnalyzableLoadout;
+	exoticArtificeAssumption: EExoticArtificeAssumption;
 };
 
 export type AnalyzeLoadoutResult = {
@@ -97,9 +99,9 @@ export enum EMessageType {
 export type Message = {
 	type: EMessageType;
 	payload:
-		| GetLoadoutsThatCanBeOptimizedProgress
-		| GetLoadoutsThatCanBeOptimizedOutputItem[]
-		| Error;
+	| GetLoadoutsThatCanBeOptimizedProgress
+	| GetLoadoutsThatCanBeOptimizedOutputItem[]
+	| Error;
 };
 
 export type Progress = {

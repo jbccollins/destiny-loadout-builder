@@ -19,7 +19,7 @@ import {
 	DestinyClassToAllClassItemMetadataMapping,
 } from '@dlb/types/Armor';
 import { Characters } from '@dlb/types/Character';
-import { EMasterworkAssumption } from '@dlb/types/IdEnums';
+import { EExoticArtificeAssumption, EMasterworkAssumption } from '@dlb/types/IdEnums';
 const testFunction = getLoadoutsThatCanBeOptimized;
 
 type TestCaseInput = Parameters<typeof testFunction>;
@@ -55,6 +55,7 @@ const testCases: TestCase[] = [
 				availableExoticArmor:
 					availableExoticArmor as unknown as AvailableExoticArmor,
 				buggedAlternateSeasonModIdList: [],
+				exoticArtificeAssumption: EExoticArtificeAssumption.None,
 			},
 		],
 		83,

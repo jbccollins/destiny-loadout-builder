@@ -18,6 +18,8 @@ export const ArmorElementIdList = [
 	EElementId.Stasis,
 ];
 
+export const EXOTIC_CLASS_ITEM = 'Exotic Class Item';
+
 /********** Armor is all the armor that the user has *********/
 // [STORED]: Used to store all the armor that the user has
 export type Armor = {
@@ -484,10 +486,10 @@ export const getExtraMasterworkedStats = (
 	masterworkAssumption: EMasterworkAssumption
 ) =>
 	isMasterworked ||
-	(gearTierId === EGearTierId.Exotic &&
-		masterworkAssumption === EMasterworkAssumption.All) ||
-	(gearTierId === EGearTierId.Legendary &&
-		(masterworkAssumption === EMasterworkAssumption.All ||
-			masterworkAssumption === EMasterworkAssumption.Legendary))
+		(gearTierId === EGearTierId.Exotic &&
+			masterworkAssumption === EMasterworkAssumption.All) ||
+		(gearTierId === EGearTierId.Legendary &&
+			(masterworkAssumption === EMasterworkAssumption.All ||
+				masterworkAssumption === EMasterworkAssumption.Legendary))
 		? 2
 		: 0;

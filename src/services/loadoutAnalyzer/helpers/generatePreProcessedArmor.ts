@@ -20,6 +20,7 @@ type GeneratePreProcessedArmorParams = {
 	loadout: AnalyzableLoadout;
 	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
 	availableExoticArmor: AvailableExoticArmor;
+	exoticArtificeAssumption: EExoticArtificeAssumption;
 };
 type GeneratePreProcessedArmorOutput = {
 	preProcessedArmor: StrictArmorItems;
@@ -28,7 +29,7 @@ type GeneratePreProcessedArmorOutput = {
 export const generatePreProcessedArmor = (
 	params: GeneratePreProcessedArmorParams
 ): GeneratePreProcessedArmorOutput => {
-	const { armor, loadout, allClassItemMetadata, availableExoticArmor } = params;
+	const { armor, loadout, allClassItemMetadata, availableExoticArmor, exoticArtificeAssumption } = params;
 	const selectedExoticArmor = findAvailableExoticArmorItem(
 		loadout.exoticHash,
 		loadout.destinyClassId,
@@ -48,8 +49,7 @@ export const generatePreProcessedArmor = (
 		alwaysConsiderCollectionsRolls: false,
 		useOnlyMasterworkedArmor: false,
 		excludeLockedItems: false,
-		// TODO: Change this maybe?
-		exoticArtificeAssumption: EExoticArtificeAssumption.None,
+		exoticArtificeAssumption,
 	});
 	return {
 		preProcessedArmor,

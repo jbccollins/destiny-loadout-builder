@@ -1,7 +1,7 @@
 import {
-	selectSelectedExoticArtificeAssumption,
-	setSelectedExoticArtificeAssumption,
-} from '@dlb/redux/features/selectedExoticArtificeAssumption/selectedExoticArtificeAssumptionSlice';
+	selectAnalyzerExoticArtificeAssumption,
+	setAnalyzerExoticArtificeAssumption,
+} from '@dlb/redux/features/analyzerExoticArtificeAssumption/analyzerExoticArtificeAssumption';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { EExoticArtificeAssumption } from '@dlb/types/IdEnums';
 import HelpIcon from '@mui/icons-material/Help';
@@ -21,25 +21,25 @@ const Container = styled('div')(({ theme }) => ({
 	gap: theme.spacing(1),
 }));
 
-const ExoticArtificeAssumptionSelector = () => {
-	const selectedExoticArtificeAssumption = useAppSelector(
-		selectSelectedExoticArtificeAssumption
+const AnalyzerExoticArtificeAssumptionSelector = () => {
+	const analyzerExoticArtificeAssumption = useAppSelector(
+		selectAnalyzerExoticArtificeAssumption
 	);
 	const dispatch = useAppDispatch();
 	const handleChange = (value: EExoticArtificeAssumption) => {
-		dispatch(setSelectedExoticArtificeAssumption(value));
+		dispatch(setAnalyzerExoticArtificeAssumption(value));
 	};
 	return (
 		<Container>
 			<FormControl fullWidth>
 				<InputLabel id="exoticArtifice-assumption">
-					Exotic Artifice Assumption
+					Anaylzer Exotic Artifice Assumption
 				</InputLabel>
 				<Select
 					labelId="exoticArtifice-assumption"
 					id="exoticArtifice-assumption"
-					value={selectedExoticArtificeAssumption}
-					label="Exotic Artifice Assumption"
+					value={analyzerExoticArtificeAssumption}
+					label="Analyzer Exotic Artifice Assumption"
 					onChange={(e) => {
 						handleChange(e.target.value as EExoticArtificeAssumption);
 					}}
@@ -57,7 +57,7 @@ const ExoticArtificeAssumptionSelector = () => {
 			</FormControl>
 			<CustomTooltip
 				title={
-					'Exotic Class Items are always considered to be "artifice" regardless of this setting.'
+					'Changing this setting will require a full page reload to take effect.'
 				}
 			>
 				<HelpIcon />
@@ -66,4 +66,4 @@ const ExoticArtificeAssumptionSelector = () => {
 	);
 };
 
-export default ExoticArtificeAssumptionSelector;
+export default AnalyzerExoticArtificeAssumptionSelector;

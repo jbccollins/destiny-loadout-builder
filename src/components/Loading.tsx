@@ -46,6 +46,10 @@ import {
 	setHiddenLoadoutIdList,
 	setLoadoutSpecificIgnoredOptimizationTypes,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
+import {
+	selectAnalyzerExoticArtificeAssumption,
+	setAnalyzerExoticArtificeAssumption,
+} from '@dlb/redux/features/analyzerExoticArtificeAssumption/analyzerExoticArtificeAssumption';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
@@ -59,9 +63,15 @@ import {
 	selectDimLoadoutsFilter,
 	setDimLoadoutsFilter,
 } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
-import { setExcludeLockedItems } from '@dlb/redux/features/excludeLockedItems/excludeLockedItemsSlice';
+import {
+	selectExcludeLockedItems,
+	setExcludeLockedItems,
+} from '@dlb/redux/features/excludeLockedItems/excludeLockedItemsSlice';
 import { setHasValidLoadoutQueryParams } from '@dlb/redux/features/hasValidLoadoutQueryParams/hasValidLoadoutQueryParamsSlice';
-import { setIgnoredLoadoutOptimizationTypes } from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
+import {
+	selectIgnoredLoadoutOptimizationTypes,
+	setIgnoredLoadoutOptimizationTypes,
+} from '@dlb/redux/features/ignoredLoadoutOptimizationTypes/ignoredLoadoutOptimizationTypesSlice';
 import {
 	InGameLoadoutsWithIdMapping,
 	LoadoutWithId,
@@ -154,7 +164,10 @@ import {
 	setSharedLoadoutDesiredStats,
 } from '@dlb/redux/features/sharedLoadoutDesiredStats/sharedLoadoutDesiredStatsSlice';
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
-import { setUseBetaDimLinks } from '@dlb/redux/features/useBetaDimLinks/useBetaDimLinksSlice';
+import {
+	selectUseBetaDimLinks,
+	setUseBetaDimLinks,
+} from '@dlb/redux/features/useBetaDimLinks/useBetaDimLinksSlice';
 import {
 	selectUseBonusResilience,
 	setUseBonusResilience,
@@ -248,17 +261,24 @@ function Loading() {
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 	const selectedFragments = useAppSelector(selectSelectedFragments);
-	const dimLoadoutsFilter = useAppSelector(selectDimLoadoutsFilter);
+	const selectedDimLoadoutsFilterId = useAppSelector(selectDimLoadoutsFilter);
 	const inGameLoadoutsFilter = useAppSelector(selectInGameLoadoutsFilter);
-	const useZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
-	const useBonusResilience = useAppSelector(selectUseBonusResilience);
-	const alwaysConsiderCollectionsRolls = useAppSelector(
+	const selectedUseZeroWastedStats = useAppSelector(selectUseZeroWastedStats);
+	const selectedUseBonusResilience = useAppSelector(selectUseBonusResilience);
+	const selectedUseBetaDimLinks = useAppSelector(selectUseBetaDimLinks);
+	const selectedAlwaysConsiderCollectionsRolls = useAppSelector(
 		selectAlwaysConsiderCollectionsRolls
 	);
-	const useOnlyMasterworkedArmor = useAppSelector(
+	const selectedIgnoredLoadoutOptimizationTypes = useAppSelector(
+		selectIgnoredLoadoutOptimizationTypes
+	);
+	const selectedExcludeLockedItems = useAppSelector(selectExcludeLockedItems);
+	const selectedUseOnlyMasterworkedArmor = useAppSelector(
 		selectUseOnlyMasterworkedArmor
 	);
-	const selectedMinimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
+	const selectedMinimumGearTierId = useAppSelector(
+		selectSelectedMinimumGearTier
+	);
 	const selectedReservedArmorSlotEnergy = useAppSelector(
 		selectReservedArmorSlotEnergy
 	);
@@ -272,6 +292,9 @@ function Loading() {
 	);
 	const selectedExoticArtificeAssumption = useAppSelector(
 		selectSelectedExoticArtificeAssumption
+	);
+	const selectedAnalyzerExoticArtificeAssumption = useAppSelector(
+		selectAnalyzerExoticArtificeAssumption
 	);
 	// const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
@@ -319,6 +342,7 @@ function Loading() {
 		loadoutString,
 	}: LoadFromQueryParamsParams) {
 		const loadoutConfig = JSON.parse(loadoutString) as DlbLoadoutConfiguration;
+		console.log('loadoutConfig', loadoutConfig);
 
 		const destinyClassId = loadoutConfig.dc;
 		const destinyClass = destinyClassId
@@ -644,6 +668,7 @@ function Loading() {
 		const {
 			masterworkAssumption,
 			exoticArtificeAssumption,
+			analyzerExoticArtificeAssumption,
 			minimumGearTierId,
 			dimLoadoutsFilterId,
 			d2LoadoutsFilterId,
@@ -656,32 +681,104 @@ function Loading() {
 			excludeLockedItems,
 		} = settings;
 
-		dispatch(setSelectedMasterworkAssumption(masterworkAssumption));
-		dispatch(setSelectedExoticArtificeAssumption(exoticArtificeAssumption));
-		dispatch(setSelectedMinimumGearTier(minimumGearTierId));
-		dispatch(setDimLoadoutsFilter(dimLoadoutsFilterId));
-		dispatch(setInGameLoadoutsFilter(d2LoadoutsFilterId));
-		dispatch(setUseBetaDimLinks(useBetaDimLinks));
-		dispatch(setUseBonusResilience(useBonusResilience));
-		dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
-		dispatch(setExcludeLockedItems(excludeLockedItems));
-		dispatch(setUseZeroWastedStats(useZeroWastedStats));
-		dispatch(setAlwaysConsiderCollectionsRolls(alwaysConsiderCollectionsRolls));
-		if (ignoredLoadoutOptimizationTypes) {
+		if (masterworkAssumption !== undefined) {
+			dispatch(setSelectedMasterworkAssumption(masterworkAssumption));
+		} else {
+			dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
+		}
+
+		console.log('*** exoticArtificeAssumption', exoticArtificeAssumption);
+		if (exoticArtificeAssumption !== undefined) {
+			dispatch(setSelectedExoticArtificeAssumption(exoticArtificeAssumption));
+		} else {
+			dispatch(
+				setSelectedExoticArtificeAssumption(selectedExoticArtificeAssumption)
+			);
+		}
+
+		if (analyzerExoticArtificeAssumption !== undefined) {
+			dispatch(
+				setAnalyzerExoticArtificeAssumption(analyzerExoticArtificeAssumption)
+			);
+		} else {
+			dispatch(
+				setAnalyzerExoticArtificeAssumption(
+					selectedAnalyzerExoticArtificeAssumption
+				)
+			);
+		}
+
+		if (minimumGearTierId !== undefined) {
+			dispatch(setSelectedMinimumGearTier(minimumGearTierId));
+		} else {
+			dispatch(setSelectedMinimumGearTier(selectedMinimumGearTierId));
+		}
+
+		if (dimLoadoutsFilterId !== undefined) {
+			dispatch(setDimLoadoutsFilter(dimLoadoutsFilterId));
+		} else {
+			dispatch(setDimLoadoutsFilter(selectedDimLoadoutsFilterId));
+		}
+
+		if (d2LoadoutsFilterId !== undefined) {
+			dispatch(setInGameLoadoutsFilter(d2LoadoutsFilterId));
+		} else {
+			dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
+		}
+
+		if (useBetaDimLinks !== undefined) {
+			dispatch(setUseBetaDimLinks(useBetaDimLinks));
+		} else {
+			dispatch(setUseBetaDimLinks(selectedUseBetaDimLinks));
+		}
+
+		if (useBonusResilience !== undefined) {
+			dispatch(setUseBonusResilience(useBonusResilience));
+		} else {
+			dispatch(setUseBonusResilience(selectedUseBonusResilience));
+		}
+
+		if (useOnlyMasterworkedArmor !== undefined) {
+			dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
+		} else {
+			dispatch(setUseOnlyMasterworkedArmor(selectedUseOnlyMasterworkedArmor));
+		}
+
+		if (excludeLockedItems !== undefined) {
+			dispatch(setExcludeLockedItems(excludeLockedItems));
+		} else {
+			dispatch(setExcludeLockedItems(selectedExcludeLockedItems));
+		}
+
+		if (useZeroWastedStats !== undefined) {
+			dispatch(setUseZeroWastedStats(useZeroWastedStats));
+		} else {
+			dispatch(setUseZeroWastedStats(selectedUseZeroWastedStats));
+		}
+
+		if (alwaysConsiderCollectionsRolls !== undefined) {
+			dispatch(
+				setAlwaysConsiderCollectionsRolls(alwaysConsiderCollectionsRolls)
+			);
+		} else {
+			dispatch(
+				setAlwaysConsiderCollectionsRolls(
+					selectedAlwaysConsiderCollectionsRolls
+				)
+			);
+		}
+
+		if (ignoredLoadoutOptimizationTypes !== undefined) {
 			dispatch(
 				setIgnoredLoadoutOptimizationTypes(ignoredLoadoutOptimizationTypes)
 			);
 		} else {
-			dispatch(setIgnoredLoadoutOptimizationTypes([]));
+			dispatch(
+				setIgnoredLoadoutOptimizationTypes(
+					selectedIgnoredLoadoutOptimizationTypes
+				)
+			);
 		}
-
-		// Dirty these things
-		dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
-		dispatch(
-			setSharedLoadoutConfigStatPriorityOrder(
-				sharedLoadoutConfigStatPriorityOrder
-			)
-		);
 
 		return true;
 	}
@@ -922,6 +1019,20 @@ function Loading() {
 
 				let successfullyParsedSharedLoadoutUrl = false;
 				let successfullyParsedLocalStorageRecall = false;
+
+				if (!!localStorageRecall) {
+					try {
+						successfullyParsedLocalStorageRecall = loadFromLocalStorageRecall({
+							availableExoticArmor,
+							localStorageRecall,
+						});
+					} catch (e) {
+						// localStorage.removeItem(LOCAL_STORAGE_RECALL_KEY);
+					}
+				}
+
+				// Shared loadout is higher priority than reading from localStorageRecall
+				// so it will overwrite any values that were set by the localStorageRecall
 				if (hasSharedLoadoutString) {
 					try {
 						loadFromQueryParams({
@@ -937,17 +1048,8 @@ function Loading() {
 						localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 						hasSharedLoadoutString = false;
 					}
-					// Shared loadout is higher priority than reading from localStorageRecall
-				} else if (!!localStorageRecall) {
-					try {
-						successfullyParsedLocalStorageRecall = loadFromLocalStorageRecall({
-							availableExoticArmor,
-							localStorageRecall,
-						});
-					} catch (e) {
-						// localStorage.removeItem(LOCAL_STORAGE_RECALL_KEY);
-					}
 				}
+
 				if (hasTabString) {
 					try {
 						const tabIndex = Number(tabString);
@@ -989,6 +1091,12 @@ function Loading() {
 					log('dirtySelectedRaidMods', null, false);
 					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
 					log('dirtySharedLoadoutDesiredStats', null, false);
+					dispatch(
+						setSharedLoadoutConfigStatPriorityOrder(
+							sharedLoadoutConfigStatPriorityOrder
+						)
+					);
+					log('dirtySharedLoadoutConfigStatPriorityOrder', null, false);
 				}
 				// These are all handled by the recall
 				if (!successfullyParsedLocalStorageRecall) {
@@ -1008,30 +1116,43 @@ function Loading() {
 						)
 					);
 					log('dirtySelectedExoticArtificeAssumption', null, false);
-					dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
+					dispatch(
+						setAnalyzerExoticArtificeAssumption(
+							selectedAnalyzerExoticArtificeAssumption
+						)
+					);
+					log('dirtyAnalyzerExoticArtificeAssumption', null, false);
+					dispatch(setDimLoadoutsFilter(selectedDimLoadoutsFilterId));
 					log('dirtyDimLoadoutsFilter', null, false);
 					dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));
 					log('dirtyInGameLoadoutsFilter', null, false);
-					dispatch(setUseBonusResilience(useBonusResilience));
+					dispatch(setUseBonusResilience(selectedUseBonusResilience));
 					log('dirtyUseBonusResilience', null, false);
 					dispatch(
-						setAlwaysConsiderCollectionsRolls(alwaysConsiderCollectionsRolls)
+						setAlwaysConsiderCollectionsRolls(
+							selectedAlwaysConsiderCollectionsRolls
+						)
 					);
 					log('dirtyAlwaysConsiderCollectionsRolls', null, false);
-					dispatch(setUseOnlyMasterworkedArmor(useOnlyMasterworkedArmor));
+					dispatch(
+						setUseOnlyMasterworkedArmor(selectedUseOnlyMasterworkedArmor)
+					);
 					log('dirtyUseOnlyMasterworkedArmor', null, false);
-					dispatch(setUseZeroWastedStats(useZeroWastedStats));
+					dispatch(setUseZeroWastedStats(selectedUseZeroWastedStats));
 					log('dirtyUseZeroWastedStats', null, false);
-					dispatch(setSelectedMinimumGearTier(selectedMinimumGearTier));
+					dispatch(setSelectedMinimumGearTier(selectedMinimumGearTierId));
 					log('dirtySelectedMinimumGearTier', null, false);
 					dispatch(setReservedArmorSlotEnergy(selectedReservedArmorSlotEnergy));
 					log('dirtyReservedArmorSlotEnergy', null, false);
+				}
+				if (!successfullyParsedSharedLoadoutUrl) {
+					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
+					log('dirtySharedLoadoutDesiredStats', null, false);
 				}
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				log('dirtyDesiredArmorStats', null, false);
 				dispatch(setSelectedAssumedStatValues(selectedAssumedStatValues));
 				log('dirtySelectedAssumedStatValues', null, false);
-
 				if (hasDimLoadoutsError) {
 					dispatch(setDimLoadouts([]));
 					log('hasDimLoadoutsError', null, false);

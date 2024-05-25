@@ -10,11 +10,14 @@ import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/d
 import { selectDimLoadoutsFilter } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import { selectExcludeLockedItems } from '@dlb/redux/features/excludeLockedItems/excludeLockedItemsSlice';
 import { selectInGameLoadoutsFilter } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import { selectIsRunningProcessArmorWebWorker } from '@dlb/redux/features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
+import { selectSelectedExoticArtificeAssumption } from '@dlb/redux/features/selectedExoticArtificeAssumption/selectedExoticArtificeAssumptionSlice';
 import { selectSelectedFragments } from '@dlb/redux/features/selectedFragments/selectedFragmentsSlice';
 import { selectSelectedIntrinsicArmorPerkOrAttributeIds } from '@dlb/redux/features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
+import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
 import { selectSelectedRaidMods } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import { selectUseBonusResilience } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import { selectUseOnlyMasterworkedArmor } from '@dlb/redux/features/useOnlyMasterworkedArmor/useOnlyMasterworkedArmorSlice';
@@ -25,11 +28,15 @@ import { getFragment } from '@dlb/types/Fragment';
 import {
 	EArmorSlotId,
 	EDimLoadoutsFilterId,
+	EExoticArtificeAssumption,
 	EInGameLoadoutsFilterId,
 	EIntrinsicArmorPerkOrAttributeId,
+	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
 import ExcludeLockedItemsToggleSwitch from '../ExcludeLockedItemsToggleSwitch';
+import ExoticArtificeAssumptionSelector from '../ExoticArtificeAssumptionSelector';
+import MasterworkAssumptionSelector from '../MasterworkAssumptionSelector';
 
 const Container = styled(Box)(({ theme }) => ({
 	margin: 'auto',
@@ -79,6 +86,16 @@ function NoResults() {
 	const selectedIntrinsicArmorPerkOrAttributeIds = useAppSelector(
 		selectSelectedIntrinsicArmorPerkOrAttributeIds
 	);
+	const masterworkAssumption = useAppSelector(
+		selectSelectedMasterworkAssumption
+	);
+	const exoticArtificeAssumption = useAppSelector(
+		selectSelectedExoticArtificeAssumption
+	);
+	const isRunningProcessArmorWebWorker = useAppSelector(
+		selectIsRunningProcessArmorWebWorker
+	);
+
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
 	const hasRaidMods = selectedRaidMods.some((modId) => modId !== null);
@@ -122,9 +139,25 @@ function NoResults() {
 		useOnlyMasterworkedArmor ||
 		withUseBonusResilience ||
 		useZeroWastedStats ||
+		masterworkAssumption !== EMasterworkAssumption.All ||
+		exoticArtificeAssumption !== EExoticArtificeAssumption.All ||
 		dimLoadoutsFilterId === EDimLoadoutsFilterId.None ||
 		inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None ||
 		!alwaysConsiderCollectionsRolls;
+
+	if (isRunningProcessArmorWebWorker) {
+		return (
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					marginTop: '80px',
+				}}
+			>
+				<Box>Processing...</Box>
+			</div>
+		);
+	}
 
 	return (
 		<>
@@ -193,6 +226,20 @@ function NoResults() {
 								{inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None && (
 									<li>
 										<InGameLoadoutsFilterSelector />
+									</li>
+								)}
+								{masterworkAssumption !== EMasterworkAssumption.All && (
+									<li>
+										<MasterworkAssumptionSelector />
+									</li>
+								)}
+								{exoticArtificeAssumption !== EExoticArtificeAssumption.All && (
+									<li
+										style={{
+											paddingTop: '10px',
+										}}
+									>
+										<ExoticArtificeAssumptionSelector />
 									</li>
 								)}
 							</ul>

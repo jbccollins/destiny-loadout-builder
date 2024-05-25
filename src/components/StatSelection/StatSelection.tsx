@@ -3,6 +3,7 @@ import {
 	selectDesiredArmorStats,
 	setDesiredArmorStats,
 } from '@dlb/redux/features/desiredArmorStats/desiredArmorStatsSlice';
+import { selectIsRunningProcessArmorWebWorker } from '@dlb/redux/features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
 import { selectMaxPossibleStats } from '@dlb/redux/features/maxPossibleStats/maxPossibleStatsSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
@@ -89,10 +90,13 @@ const marks: Mark[] = [
 	},
 ];
 
-function StatSelection(props: StatSelectionProps) {
+function StatSelection() {
 	const dispatch = useAppDispatch();
 	const desiredArmorStats = useAppSelector(selectDesiredArmorStats);
 	const maxPossibleStats = useAppSelector(selectMaxPossibleStats);
+	const isRunningProcessArmorWebWorker = useAppSelector(
+		selectIsRunningProcessArmorWebWorker
+	);
 
 	function handleChange(statName: EArmorStatId, value: number) {
 		if (desiredArmorStats && desiredArmorStats[statName] === value) {
@@ -112,7 +116,11 @@ function StatSelection(props: StatSelectionProps) {
 							<BungieImage src={icon} width={26} height={26} />
 						</SliderTitle>
 						<StatSelectorRow
-							maxPossible={maxPossibleStats[armorStatId]}
+							maxPossible={
+								isRunningProcessArmorWebWorker
+									? desiredArmorStats[armorStatId]
+									: maxPossibleStats[armorStatId]
+							}
 							value={desiredArmorStats[armorStatId]}
 							marks={marks}
 							onChange={(value) => handleChange(armorStatId, value)}

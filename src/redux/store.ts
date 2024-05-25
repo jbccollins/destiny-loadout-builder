@@ -63,6 +63,7 @@ import {
 	preProcessArmor,
 	truncatedDoProcessArmor,
 } from '@dlb/services/processArmor/index';
+import { MessageOutput } from '@dlb/services/processArmor/processArmorWorker';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
@@ -89,6 +90,7 @@ import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import isEqual from 'lodash/isEqual';
 import { NIL } from 'uuid';
 import alwaysConsiderCollectionsRollsReducer from './features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
+import analyzerExoticArtificeAssumption from './features/analyzerExoticArtificeAssumption/analyzerExoticArtificeAssumption';
 import armorSlotModViolationsReducer, {
 	setArmorSlotModViolations,
 } from './features/armorSlotModViolations/armorSlotModViolationsSlice';
@@ -105,6 +107,7 @@ import ignoredLoadoutOptimizationTypesReducer from './features/ignoredLoadoutOpt
 import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
 import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import inGameLoadoutsFlatItemIdListReducer from './features/inGameLoadoutsFlatItemIdList/inGameLoadoutsFlatItemIdListSlice';
+import isRunningProcessArmorWebWorkerReducer, { setIsRunningProcessArmorWebWorker } from './features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
 import loadoutTypeFilterReducer from './features/loadoutTypeFilter/loadoutTypeFilterSlice';
 import optimizationTypeFilterReducer from './features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import performingBatchUpdateReducer from './features/performingBatchUpdate/performingBatchUpdateSlice';
@@ -141,6 +144,8 @@ function getChangedProperties(previousObj, currentObj, changes) {
 	return changes;
 }
 
+let processingEventId = 0;
+
 export function makeStore() {
 	return configureStore({
 		reducer: {
@@ -148,6 +153,7 @@ export function makeStore() {
 			allDataLoaded: allDataLoadedReducer,
 			alwaysConsiderCollectionsRolls: alwaysConsiderCollectionsRollsReducer,
 			analyzableLoadouts: analyzableLoadoutsReducer,
+			analyzerExoticArtificeAssumption: analyzerExoticArtificeAssumption,
 			analyzerSearch: analyzerSearchReducer,
 			analyzerTabIndex: analyzerTabIndexReducer,
 			armor: armorReducer,
@@ -165,12 +171,12 @@ export function makeStore() {
 			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
 			ignoredLoadoutOptimizationTypes: ignoredLoadoutOptimizationTypesReducer,
 			inGameLoadouts: inGameLoadoutsReducer,
-			inGameLoadoutsFlatItemIdList: inGameLoadoutsFlatItemIdListReducer,
 			inGameLoadoutsFilter: inGameLoadoutsFilterReducer,
+			inGameLoadoutsFlatItemIdList: inGameLoadoutsFlatItemIdListReducer,
+			isRunningProcessArmorWebWorker: isRunningProcessArmorWebWorkerReducer,
 			loadError: loadErrorReducer,
 			loadoutTypeFilter: loadoutTypeFilterReducer,
-			maxPossibleReservedArmorSlotEnergy:
-				maxPossibleReservedArmorSlotEnergyReducer,
+			maxPossibleReservedArmorSlotEnergy: maxPossibleReservedArmorSlotEnergyReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
 			optimizationTypeFilter: optimizationTypeFilterReducer,
 			performingBatchUpdate: performingBatchUpdateReducer,
@@ -184,19 +190,17 @@ export function makeStore() {
 			selectedDestinyClass: selectedDestinyClassReducer,
 			selectedDestinySubclass: selectedDestinySubclassReducer,
 			selectedExoticArmor: selectedExoticArmorReducer,
+			selectedExoticArtificeAssumption: selectedExoticArtificeAssumptionReducer,
 			selectedFragments: selectedFragmentsReducer,
 			selectedGrenade: selectedGrenadeReducer,
-			selectedIntrinsicArmorPerkOrAttributeIds:
-				selectedIntrinsicArmorPerkOrAttributeIdsSlice,
+			selectedIntrinsicArmorPerkOrAttributeIds: selectedIntrinsicArmorPerkOrAttributeIdsSlice,
 			selectedJump: selectedJumpReducer,
-			selectedExoticArtificeAssumption: selectedExoticArtificeAssumptionReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
 			selectedMelee: selectedMeleeReducer,
 			selectedMinimumGearTier: selectedMinimumGearTierReducer,
 			selectedRaidMods: selectedRaidModsReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
-			sharedLoadoutConfigStatPriorityOrder:
-				sharedLoadoutConfigStatPriorityOrderReducer,
+			sharedLoadoutConfigStatPriorityOrder: sharedLoadoutConfigStatPriorityOrderReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
 			tabIndex: tabIndexReducer,
 			useBetaDimLinks: useBetaDimLinksReducer,
@@ -212,37 +216,38 @@ const store = makeStore();
 
 /**** This is a janky way to check when a change that would trigger a re-process of armor is needed *****/
 let allClassItemMetadataUuid = NIL;
+let alwaysConsiderCollectionsRollsUuid = NIL;
+let analyzerExoticArtificeAssumptionUuid = NIL;
 let desiredArmorStatsUuid = NIL;
-let selectedDestinyClassUuid = NIL;
-let selectedExoticArmorUuid = NIL;
-let selectedDestinySubclassUuid = NIL;
-let selectedMasterworkAssumptionUuid = NIL;
-let selectedExoticArtificeAssumptionUuid = NIL;
-let selectedRaidModsUuid = NIL;
-let selectedArmorSlotModsUuid = NIL;
-let selectedMinimumGearTierUuid = NIL;
-let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
+let dimLoadoutsUuid = NIL;
+let excludeLockedItemsUuid = NIL;
+let ignoredLoadoutOptimizationTypesUuid = NIL;
+let inGameLoadoutsFilterUuid = NIL;
+let inGameLoadoutsFlatItemIdListUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
+let selectedArmorSlotModsUuid = NIL;
+let selectedAspectsUuid = NIL;
+let selectedAssumedStatValuesUuid = NIL;
+let selectedClassAbilityUuid = NIL;
+let selectedDestinyClassUuid = NIL;
+let selectedDestinySubclassUuid = NIL;
+let selectedExoticArmorUuid = NIL;
+let selectedExoticArtificeAssumptionUuid = NIL;
+let selectedFragmentsUuid = NIL;
+let selectedGrenadeUuid = NIL;
+let selectedIntrinsicArmorPerkOrAttributeIdsUuid = NIL;
+let selectedJumpUuid = NIL;
+let selectedMasterworkAssumptionUuid = NIL;
+let selectedMeleeUuid = NIL;
+let selectedMinimumGearTierUuid = NIL;
+let selectedRaidModsUuid = NIL;
+let selectedSuperAbilityUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
 let useBetaDimLinksUuid = NIL;
 let useBonusResilienceUuid = NIL;
-let useZeroWastedStatsUuid = NIL;
-let excludeLockedItemsUuid = NIL;
 let useOnlyMasterworkedArmorUuid = NIL;
-let alwaysConsiderCollectionsRollsUuid = NIL;
-let inGameLoadoutsFlatItemIdListUuid = NIL;
-let inGameLoadoutsFilterUuid = NIL;
-let selectedIntrinsicArmorPerkOrAttributeIdsUuid = NIL;
-let selectedAspectsUuid = NIL;
-let selectedFragmentsUuid = NIL;
-let selectedGrenadeUuid = NIL;
-let selectedJumpUuid = NIL;
-let selectedMeleeUuid = NIL;
-let selectedSuperAbilityUuid = NIL;
-let selectedClassAbilityUuid = NIL;
-let ignoredLoadoutOptimizationTypesUuid = NIL;
-let selectedAssumedStatValuesUuid = NIL;
+let useZeroWastedStatsUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: ReturnType<typeof store.getState> = null;
@@ -367,6 +372,10 @@ function handleChange() {
 			value: selectedAssumedStatValues,
 			uuid: nextSelectedAssumedStatValuesUuid,
 		},
+		analyzerExoticArtificeAssumption: {
+			value: analyzerExoticArtificeAssumption,
+			uuid: nextAnalyzerExoticArtificeAssumptionUuid,
+		},
 		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -400,6 +409,7 @@ function handleChange() {
 		useBetaDimLinksUuid !== nextUseBetaDimLinksUuid ||
 		useOnlyMasterworkedArmorUuid !== nextUseOnlyMasterworkedArmorUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
+		analyzerExoticArtificeAssumptionUuid !== nextAnalyzerExoticArtificeAssumptionUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
 		nextAlwaysConsiderCollectionsRollsUuid;
@@ -419,6 +429,7 @@ function handleChange() {
 		useBetaDimLinksUuid = nextUseBetaDimLinksUuid;
 		ignoredLoadoutOptimizationTypesUuid =
 			nextIgnoredLoadoutOptimizationTypesUuid;
+		analyzerExoticArtificeAssumptionUuid = nextAnalyzerExoticArtificeAssumptionUuid;
 
 		const localStorageRecall = getLocalStorageRecall();
 		localStorageRecall.settings.alwaysConsiderCollectionsRolls =
@@ -434,6 +445,7 @@ function handleChange() {
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
 		localStorageRecall.settings.dimLoadoutsFilterId = dimLoadoutsFilter;
 		localStorageRecall.settings.d2LoadoutsFilterId = inGameLoadoutsFilter;
+		localStorageRecall.settings.analyzerExoticArtificeAssumption = analyzerExoticArtificeAssumption;
 		localStorageRecall.settings.ignoredLoadoutOptimizationTypes =
 			ignoredLoadoutOptimizationTypes;
 		// Exotic
@@ -726,20 +738,43 @@ function handleChange() {
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {
-		const results = truncatedDoProcessArmor(doProcessArmorParams);
-		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
-		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
-		store.dispatch(
-			setMaxPossibleReservedArmorSlotEnergy(
-				results.maxPossibleReservedArmorSlotEnergy
+		processingEventId++;
+
+		const worker = new Worker(
+			new URL(
+				'@dlb/services/processArmor/processArmorWorker.ts',
+				import.meta.url
 			)
-		);
-		store.dispatch(
-			setProcessedArmor({
-				items: results.items,
-				totalItemCount: results.totalItemCount,
-			})
-		);
+		)
+
+		store.dispatch(setIsRunningProcessArmorWebWorker(true));
+		worker.postMessage({
+			eventId: processingEventId,
+			doProcessArmorParams
+		});
+
+		worker.onmessage = (e: MessageEvent<MessageOutput>) => {
+			// Ignore messages from previous events
+			if (e.data.eventId !== processingEventId) {
+				console.log('>>>>>>>>>>> [STORE] Ignoring old event <<<<<<<<<<<');
+				return;
+			}
+			const results = e.data.result;
+			console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
+			store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
+			store.dispatch(
+				setMaxPossibleReservedArmorSlotEnergy(
+					results.maxPossibleReservedArmorSlotEnergy
+				)
+			);
+			store.dispatch(
+				setProcessedArmor({
+					items: results.items,
+					totalItemCount: results.totalItemCount,
+				})
+			);
+			store.dispatch(setIsRunningProcessArmorWebWorker(false));
+		}
 	}
 
 	if (sharedLoadoutDesiredStats.needed && !sharedLoadoutDesiredStats.complete) {

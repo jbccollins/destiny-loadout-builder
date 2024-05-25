@@ -10,6 +10,7 @@ import { selectDesiredArmorStats } from '@dlb/redux/features/desiredArmorStats/d
 import { selectDimLoadoutsFilter } from '@dlb/redux/features/dimLoadoutsFilter/dimLoadoutsFilterSlice';
 import { selectExcludeLockedItems } from '@dlb/redux/features/excludeLockedItems/excludeLockedItemsSlice';
 import { selectInGameLoadoutsFilter } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import { selectIsRunningProcessArmorWebWorker } from '@dlb/redux/features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedDestinySubclass } from '@dlb/redux/features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
@@ -91,6 +92,9 @@ function NoResults() {
 	const exoticArtificeAssumption = useAppSelector(
 		selectSelectedExoticArtificeAssumption
 	);
+	const isRunningProcessArmorWebWorker = useAppSelector(
+		selectIsRunningProcessArmorWebWorker
+	);
 
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
@@ -140,6 +144,20 @@ function NoResults() {
 		dimLoadoutsFilterId === EDimLoadoutsFilterId.None ||
 		inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None ||
 		!alwaysConsiderCollectionsRolls;
+
+	if (isRunningProcessArmorWebWorker) {
+		return (
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'center',
+					marginTop: '80px',
+				}}
+			>
+				<Box>Processing...</Box>
+			</div>
+		);
+	}
 
 	return (
 		<>

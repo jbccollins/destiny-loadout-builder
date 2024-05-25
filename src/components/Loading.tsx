@@ -1139,6 +1139,10 @@ function Loading() {
 					dispatch(setReservedArmorSlotEnergy(selectedReservedArmorSlotEnergy));
 					log('dirtyReservedArmorSlotEnergy', null, false);
 				}
+				if (!successfullyParsedSharedLoadoutUrl) {
+					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
+					log('dirtySharedLoadoutDesiredStats', null, false);
+				}
 				dispatch(setDesiredArmorStats(desiredArmorStats));
 				log('dirtyDesiredArmorStats', null, false);
 				dispatch(setSelectedAssumedStatValues(selectedAssumedStatValues));

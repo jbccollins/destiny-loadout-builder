@@ -1,3 +1,4 @@
+import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
 import { selectIsRunningProcessArmorWebWorker } from '@dlb/redux/features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { Box } from '@mui/material';
@@ -7,7 +8,9 @@ export default function IsRunningWebWorkerMessage() {
 		selectIsRunningProcessArmorWebWorker
 	);
 
-	if (!isRunningProcessArmorWebWorker) {
+	const isSmallScreen = useIsSmallScreen();
+
+	if (!isRunningProcessArmorWebWorker || !isSmallScreen) {
 		return null;
 	}
 

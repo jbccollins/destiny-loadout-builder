@@ -16,6 +16,7 @@ import {
 	selectInGameLoadoutsFilter,
 	setInGameLoadoutsFilter,
 } from '@dlb/redux/features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
+import { selectIsRunningProcessArmorWebWorker } from '@dlb/redux/features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
 import { setPerformingBatchUpdate } from '@dlb/redux/features/performingBatchUpdate/performingBatchUpdateSlice';
 import { selectProcessedArmor } from '@dlb/redux/features/processedArmor/processedArmorSlice';
 import {
@@ -310,6 +311,12 @@ function Footer({
 	smallScreenData,
 }: FooterProps) {
 	const { isSmallScreen, toggleSmallScreenResultsView } = smallScreenData;
+	const isRunningProcessArmorWebWorker = useAppSelector(
+		selectIsRunningProcessArmorWebWorker
+	);
+	if (isRunningProcessArmorWebWorker) {
+		return null;
+	}
 	return (
 		<FooterContainer className="FooterContainer">
 			<Box>
@@ -369,6 +376,9 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		selectSelectedMasterworkAssumption
 	);
 	const minimumGearTier = useAppSelector(selectSelectedMinimumGearTier);
+	const isRunningProcessArmorWebWorker = useAppSelector(
+		selectIsRunningProcessArmorWebWorker
+	);
 
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState<Order>('asc');
@@ -397,18 +407,10 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		(id: string, armorSlot: EArmorSlotId) => {
 			const selectedExoticArmorSlot =
 				selectedExoticArmor[selectedDestinyClass].armorSlot;
-
-			// Due to the nature of the web worker, we fall back to the "wrong" armor if the web worker is not done yet
 			if (selectedExoticArmorSlot === armorSlot) {
-				return (
-					armor[selectedDestinyClass][armorSlot].exotic[id] ??
-					armor[selectedDestinyClass][armorSlot].nonExotic[id]
-				);
+				return armor[selectedDestinyClass][armorSlot].exotic[id];
 			}
-			return (
-				armor[selectedDestinyClass][armorSlot].nonExotic[id] ??
-				armor[selectedDestinyClass][armorSlot].exotic[id]
-			);
+			return armor[selectedDestinyClass][armorSlot].nonExotic[id];
 		},
 		[armor, selectedDestinyClass, selectedExoticArmor]
 	);
@@ -418,6 +420,10 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 			'>>>>>>>>>>> [Memo] resultsTableArmorItems calcuated <<<<<<<<<<<'
 		);
 		const res: ResultsTableLoadout[] = [];
+
+		if (isRunningProcessArmorWebWorker) {
+			return res;
+		}
 
 		processedArmor.items.forEach(
 			({
@@ -467,7 +473,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		);
 
 		return res;
-	}, [processedArmor, getArmorItem]);
+	}, [processedArmor, getArmorItem, isRunningProcessArmorWebWorker]);
 
 	const hasNonDefaultSettings = useMemo(
 		() =>

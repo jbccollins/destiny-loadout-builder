@@ -171,12 +171,12 @@ export function makeStore() {
 			hasValidLoadoutQueryParams: hasValidLoadoutQueryParams,
 			ignoredLoadoutOptimizationTypes: ignoredLoadoutOptimizationTypesReducer,
 			inGameLoadouts: inGameLoadoutsReducer,
-			inGameLoadoutsFlatItemIdList: inGameLoadoutsFlatItemIdListReducer,
 			inGameLoadoutsFilter: inGameLoadoutsFilterReducer,
+			inGameLoadoutsFlatItemIdList: inGameLoadoutsFlatItemIdListReducer,
+			isRunningProcessArmorWebWorker: isRunningProcessArmorWebWorkerReducer,
 			loadError: loadErrorReducer,
 			loadoutTypeFilter: loadoutTypeFilterReducer,
-			maxPossibleReservedArmorSlotEnergy:
-				maxPossibleReservedArmorSlotEnergyReducer,
+			maxPossibleReservedArmorSlotEnergy: maxPossibleReservedArmorSlotEnergyReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
 			optimizationTypeFilter: optimizationTypeFilterReducer,
 			performingBatchUpdate: performingBatchUpdateReducer,
@@ -190,19 +190,17 @@ export function makeStore() {
 			selectedDestinyClass: selectedDestinyClassReducer,
 			selectedDestinySubclass: selectedDestinySubclassReducer,
 			selectedExoticArmor: selectedExoticArmorReducer,
+			selectedExoticArtificeAssumption: selectedExoticArtificeAssumptionReducer,
 			selectedFragments: selectedFragmentsReducer,
 			selectedGrenade: selectedGrenadeReducer,
-			selectedIntrinsicArmorPerkOrAttributeIds:
-				selectedIntrinsicArmorPerkOrAttributeIdsSlice,
+			selectedIntrinsicArmorPerkOrAttributeIds: selectedIntrinsicArmorPerkOrAttributeIdsSlice,
 			selectedJump: selectedJumpReducer,
-			selectedExoticArtificeAssumption: selectedExoticArtificeAssumptionReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
 			selectedMelee: selectedMeleeReducer,
 			selectedMinimumGearTier: selectedMinimumGearTierReducer,
 			selectedRaidMods: selectedRaidModsReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
-			sharedLoadoutConfigStatPriorityOrder:
-				sharedLoadoutConfigStatPriorityOrderReducer,
+			sharedLoadoutConfigStatPriorityOrder: sharedLoadoutConfigStatPriorityOrderReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
 			tabIndex: tabIndexReducer,
 			useBetaDimLinks: useBetaDimLinksReducer,
@@ -210,7 +208,6 @@ export function makeStore() {
 			useOnlyMasterworkedArmor: useOnlyMasterworkedArmorReducer,
 			useZeroWastedStats: useZeroWastedStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
-			isRunningProcessArmorWebWorker: isRunningProcessArmorWebWorkerReducer,
 		},
 	});
 }
@@ -219,38 +216,38 @@ const store = makeStore();
 
 /**** This is a janky way to check when a change that would trigger a re-process of armor is needed *****/
 let allClassItemMetadataUuid = NIL;
+let alwaysConsiderCollectionsRollsUuid = NIL;
+let analyzerExoticArtificeAssumptionUuid = NIL;
 let desiredArmorStatsUuid = NIL;
-let selectedDestinyClassUuid = NIL;
-let selectedExoticArmorUuid = NIL;
-let selectedDestinySubclassUuid = NIL;
-let selectedMasterworkAssumptionUuid = NIL;
-let selectedExoticArtificeAssumptionUuid = NIL;
-let selectedRaidModsUuid = NIL;
-let selectedArmorSlotModsUuid = NIL;
-let selectedMinimumGearTierUuid = NIL;
-let dimLoadoutsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
+let dimLoadoutsUuid = NIL;
+let excludeLockedItemsUuid = NIL;
+let ignoredLoadoutOptimizationTypesUuid = NIL;
+let inGameLoadoutsFilterUuid = NIL;
+let inGameLoadoutsFlatItemIdListUuid = NIL;
 let reservedArmorSlotEnergyUuid = NIL;
+let selectedArmorSlotModsUuid = NIL;
+let selectedAspectsUuid = NIL;
+let selectedAssumedStatValuesUuid = NIL;
+let selectedClassAbilityUuid = NIL;
+let selectedDestinyClassUuid = NIL;
+let selectedDestinySubclassUuid = NIL;
+let selectedExoticArmorUuid = NIL;
+let selectedExoticArtificeAssumptionUuid = NIL;
+let selectedFragmentsUuid = NIL;
+let selectedGrenadeUuid = NIL;
+let selectedIntrinsicArmorPerkOrAttributeIdsUuid = NIL;
+let selectedJumpUuid = NIL;
+let selectedMasterworkAssumptionUuid = NIL;
+let selectedMeleeUuid = NIL;
+let selectedMinimumGearTierUuid = NIL;
+let selectedRaidModsUuid = NIL;
+let selectedSuperAbilityUuid = NIL;
 let sharedLoadoutDesiredStatsUuid = NIL;
 let useBetaDimLinksUuid = NIL;
 let useBonusResilienceUuid = NIL;
-let useZeroWastedStatsUuid = NIL;
-let excludeLockedItemsUuid = NIL;
 let useOnlyMasterworkedArmorUuid = NIL;
-let alwaysConsiderCollectionsRollsUuid = NIL;
-let inGameLoadoutsFlatItemIdListUuid = NIL;
-let inGameLoadoutsFilterUuid = NIL;
-let selectedIntrinsicArmorPerkOrAttributeIdsUuid = NIL;
-let selectedAspectsUuid = NIL;
-let selectedFragmentsUuid = NIL;
-let selectedGrenadeUuid = NIL;
-let selectedJumpUuid = NIL;
-let selectedMeleeUuid = NIL;
-let selectedSuperAbilityUuid = NIL;
-let selectedClassAbilityUuid = NIL;
-let ignoredLoadoutOptimizationTypesUuid = NIL;
-let selectedAssumedStatValuesUuid = NIL;
-let analyzerExoticArtificeAssumptionUuid = NIL;
+let useZeroWastedStatsUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: ReturnType<typeof store.getState> = null;

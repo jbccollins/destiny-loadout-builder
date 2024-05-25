@@ -49,17 +49,20 @@ function GrenadeSelector() {
 	};
 
 	// TODO: Memoize these options
-	const options: Option[] = getGrenadeIdListByDestinySubclassId(
-		destinySubclassId
-	).map((grenadeId) => {
-		const { name, id, icon, description } = getGrenade(grenadeId);
-		return {
-			label: name,
-			icon,
-			id,
-			description,
-		};
-	});
+	const options: Option[] =
+		destinySubclassId !== null
+			? getGrenadeIdListByDestinySubclassId(destinySubclassId).map(
+					(grenadeId) => {
+						const { name, id, icon, description } = getGrenade(grenadeId);
+						return {
+							label: name,
+							icon,
+							id,
+							description,
+						};
+					}
+			  )
+			: [];
 
 	return (
 		<>

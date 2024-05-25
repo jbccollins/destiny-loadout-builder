@@ -11,6 +11,20 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-05-25',
+		version: '2.5.11',
+		title: 'Moar The Final Shape Prep',
+		sections: [
+			{
+				items: [
+					`Added exotic artifice analyzer assumption setting`,
+					`Added support for exotic class items (placeholder for now)`,
+					`Moved armor processing to a web worker. This was needed to make the extra overhead of the exotic class item processing more palatable`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-05-24',
 		version: '2.5.10',
 		title: 'The Final Shape Prep',

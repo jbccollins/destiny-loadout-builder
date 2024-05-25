@@ -20,6 +20,7 @@ export const PatchNotes: PatchNote[] = [
 					`Added exotic artifice analyzer assumption setting`,
 					`Added support for exotic class items (placeholder for now)`,
 					`Moved armor processing to a web worker. This was needed to make the extra overhead of the exotic class item processing more palatable`,
+					`Fixed a bug where opening a shared DLB loadout url would change your settings back to default`
 				],
 			},
 		],

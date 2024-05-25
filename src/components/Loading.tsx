@@ -687,6 +687,7 @@ function Loading() {
 			dispatch(setSelectedMasterworkAssumption(selectedMasterworkAssumption));
 		}
 
+		console.log('*** exoticArtificeAssumption', exoticArtificeAssumption);
 		if (exoticArtificeAssumption !== undefined) {
 			dispatch(setSelectedExoticArtificeAssumption(exoticArtificeAssumption));
 		} else {
@@ -1018,6 +1019,20 @@ function Loading() {
 
 				let successfullyParsedSharedLoadoutUrl = false;
 				let successfullyParsedLocalStorageRecall = false;
+
+				if (!!localStorageRecall) {
+					try {
+						successfullyParsedLocalStorageRecall = loadFromLocalStorageRecall({
+							availableExoticArmor,
+							localStorageRecall,
+						});
+					} catch (e) {
+						// localStorage.removeItem(LOCAL_STORAGE_RECALL_KEY);
+					}
+				}
+
+				// Shared loadout is higher priority than reading from localStorageRecall
+				// so it will overwrite any values that were set by the localStorageRecall
 				if (hasSharedLoadoutString) {
 					try {
 						loadFromQueryParams({
@@ -1033,17 +1048,8 @@ function Loading() {
 						localStorage.removeItem(LOCAL_STORAGE_SHARED_LOADOUT_URL);
 						hasSharedLoadoutString = false;
 					}
-					// Shared loadout is higher priority than reading from localStorageRecall
-				} else if (!!localStorageRecall) {
-					try {
-						successfullyParsedLocalStorageRecall = loadFromLocalStorageRecall({
-							availableExoticArmor,
-							localStorageRecall,
-						});
-					} catch (e) {
-						// localStorage.removeItem(LOCAL_STORAGE_RECALL_KEY);
-					}
 				}
+
 				if (hasTabString) {
 					try {
 						const tabIndex = Number(tabString);

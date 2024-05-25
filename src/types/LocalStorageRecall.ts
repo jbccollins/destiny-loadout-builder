@@ -18,6 +18,7 @@ import {
 	EDestinyClassId,
 	EDestinySubclassId,
 	EDimLoadoutsFilterId,
+	EExoticArtificeAssumption,
 	EGearTierId,
 	EInGameLoadoutsFilterId,
 	EIntrinsicArmorPerkOrAttributeId,
@@ -66,6 +67,7 @@ export type LocalStorageRecall = {
 	};
 	settings: {
 		masterworkAssumption: EMasterworkAssumption;
+		exoticArtificeAssumption: EExoticArtificeAssumption;
 		minimumGearTierId: EGearTierId;
 		dimLoadoutsFilterId: EDimLoadoutsFilterId;
 		d2LoadoutsFilterId: EInGameLoadoutsFilterId;
@@ -134,6 +136,7 @@ export const getDefaultLocalStorageRecall = (): LocalStorageRecall => ({
 	},
 	settings: {
 		masterworkAssumption: EMasterworkAssumption.All,
+		exoticArtificeAssumption: EExoticArtificeAssumption.All,
 		minimumGearTierId: EGearTierId.Legendary,
 		dimLoadoutsFilterId: EDimLoadoutsFilterId.All,
 		d2LoadoutsFilterId: EInGameLoadoutsFilterId.All,

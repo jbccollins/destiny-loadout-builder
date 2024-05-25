@@ -8,6 +8,7 @@ import {
 } from '@dlb/types/Armor';
 import {
 	EDimLoadoutsFilterId,
+	EExoticArtificeAssumption,
 	EGearTierId,
 	EInGameLoadoutsFilterId,
 } from '@dlb/types/IdEnums';
@@ -47,6 +48,8 @@ export const generatePreProcessedArmor = (
 		alwaysConsiderCollectionsRolls: false,
 		useOnlyMasterworkedArmor: false,
 		excludeLockedItems: false,
+		// TODO: Change this maybe?
+		exoticArtificeAssumption: EExoticArtificeAssumption.None,
 	});
 	return {
 		preProcessedArmor,

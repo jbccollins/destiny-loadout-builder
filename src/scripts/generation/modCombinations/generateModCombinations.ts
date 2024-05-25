@@ -146,7 +146,7 @@ const getArtificeAdjustedRequiredMods = ({
 	const { numMajorMods, numMinorMods } = baseRequiredModCombo;
 	const numArmorStatMods = numMajorMods + numMinorMods;
 	const results: GenericRequiredModCombo[] = [];
-	// This is an upper bound. With 5 major and 4 minor and 4 artifice pieces
+	// This is an upper bound. With 5 major and 4 minor and 5 artifice pieces
 	// it's potentially possible to replace all four minor mods with artifice mods.
 	// TODO: Can we constrain this further?
 	if (numArmorStatMods > 9) {
@@ -269,12 +269,12 @@ const getExtrapolatedStatModTypeCombos = (
 			// are more than one unusedModSlots. If there two - three unusedModSlots it's all the same
 			// logic since no matter what, we can't convert three major mods into six minor mods.
 			/*
-      Logic: If there are x major mods => extrapolate to these combos
-      1 => two minor
-      2 => every unique major mod gets two minor mods; and if there are two+ unused mod slots add on the four minor mods 
-      3 => every unique major mod gets a two minor mods; and if there are two+ unused mod slots every unique combination of two major mods gets two minor mods each 
-      4 => every unique major mod gets a minor mod 
-      */
+			Logic: If there are x major mods => extrapolate to these combos
+			1 => two minor
+			2 => every unique major mod gets two minor mods; and if there are two+ unused mod slots add on the four minor mods 
+			3 => every unique major mod gets a two minor mods; and if there are two+ unused mod slots every unique combination of two major mods gets two minor mods each 
+			4 => every unique major mod gets a minor mod 
+			*/
 			const unusedModSlots = NUM_ARMOR_PIECES - numArmorStatMods;
 
 			// 1,4 => ...

@@ -100,6 +100,10 @@ import {
 	setSelectedClassAbilityForDestinySubclass,
 } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
 import {
+	selectSelectedExoticArtificeAssumption,
+	setSelectedExoticArtificeAssumption,
+} from '@dlb/redux/features/selectedExoticArtificeAssumption/selectedExoticArtificeAssumptionSlice';
+import {
 	selectSelectedFragments,
 	setSelectedFragments,
 	setSelectedFragmentsForDestinySubclass,
@@ -265,6 +269,9 @@ function Loading() {
 	);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
+	);
+	const selectedExoticArtificeAssumption = useAppSelector(
+		selectSelectedExoticArtificeAssumption
 	);
 	// const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
@@ -636,6 +643,7 @@ function Loading() {
 
 		const {
 			masterworkAssumption,
+			exoticArtificeAssumption,
 			minimumGearTierId,
 			dimLoadoutsFilterId,
 			d2LoadoutsFilterId,
@@ -649,6 +657,7 @@ function Loading() {
 		} = settings;
 
 		dispatch(setSelectedMasterworkAssumption(masterworkAssumption));
+		dispatch(setSelectedExoticArtificeAssumption(exoticArtificeAssumption));
 		dispatch(setSelectedMinimumGearTier(minimumGearTierId));
 		dispatch(setDimLoadoutsFilter(dimLoadoutsFilterId));
 		dispatch(setInGameLoadoutsFilter(d2LoadoutsFilterId));
@@ -993,6 +1002,12 @@ function Loading() {
 						setSelectedMasterworkAssumption(selectedMasterworkAssumption)
 					);
 					log('dirtySelectedMasterworkAssumption', null, false);
+					dispatch(
+						setSelectedExoticArtificeAssumption(
+							selectedExoticArtificeAssumption
+						)
+					);
+					log('dirtySelectedExoticArtificeAssumption', null, false);
 					dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
 					log('dirtyDimLoadoutsFilter', null, false);
 					dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));

@@ -29,6 +29,7 @@ import {
 	EArmorSlotId,
 	EDestinyClassId,
 	EDimLoadoutsFilterId,
+	EExoticArtificeAssumption,
 	EGearTierId,
 	EInGameLoadoutsFilterId,
 	EIntrinsicArmorPerkOrAttributeId,
@@ -613,6 +614,7 @@ type PreProcessArmorParams = {
 	alwaysConsiderCollectionsRolls: boolean;
 	useOnlyMasterworkedArmor: boolean;
 	excludeLockedItems: boolean;
+	exoticArtificeAssumption: EExoticArtificeAssumption
 };
 
 // Transform the shape of the application's armor to be processed.
@@ -629,6 +631,7 @@ export const preProcessArmor = ({
 	alwaysConsiderCollectionsRolls,
 	useOnlyMasterworkedArmor,
 	excludeLockedItems,
+	exoticArtificeAssumption
 }: PreProcessArmorParams): [StrictArmorItems, AllClassItemMetadata] => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
@@ -667,6 +670,18 @@ export const preProcessArmor = ({
 				strictArmorItems[i] = strictArmorItems[i].filter(
 					(item) => !item.isCollectible
 				);
+			}
+			if (exoticArtificeAssumption !== EExoticArtificeAssumption.None) {
+				strictArmorItems[i] = strictArmorItems[i].map((item) => {
+					const isArtifice =
+						item.isArtifice ||
+						exoticArtificeAssumption === EExoticArtificeAssumption.All ||
+						item.isMasterworked && exoticArtificeAssumption === EExoticArtificeAssumption.Masterworked;
+					return {
+						...item,
+						isArtifice
+					}
+				});
 			}
 			return;
 		}

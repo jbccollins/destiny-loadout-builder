@@ -64,6 +64,12 @@ export enum EMasterworkAssumption {
 	None = 'None',
 }
 
+export enum EExoticArtificeAssumption {
+	All = 'All',
+	Masterworked = 'Masterworked',
+	None = 'None',
+}
+
 export enum EModSocketCategoryId {
 	Stat = 'Stat', // e.g. major/minor resilience
 	ArtificeStat = 'ArtificeStat', // e.g. resilience-forged

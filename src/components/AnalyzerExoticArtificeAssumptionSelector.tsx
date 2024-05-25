@@ -21,7 +21,7 @@ const Container = styled('div')(({ theme }) => ({
 	gap: theme.spacing(1),
 }));
 
-const ExoticArtificeAssumptionSelector = () => {
+const AnalyzerExoticArtificeAssumptionSelector = () => {
 	const analyzerExoticArtificeAssumption = useAppSelector(
 		selectAnalyzerExoticArtificeAssumption
 	);
@@ -66,4 +66,4 @@ const ExoticArtificeAssumptionSelector = () => {
 	);
 };
 
-export default ExoticArtificeAssumptionSelector;
+export default AnalyzerExoticArtificeAssumptionSelector;

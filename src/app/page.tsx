@@ -19,6 +19,7 @@ import DimImportDialog from '@dlb/components/DimImportDialog';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
 import ExcludeLockedItemsToggleSwitch from '@dlb/components/ExcludeLockedItemsToggleSwitch';
 import ExoticAndDestinyClassSelectorWrapper from '@dlb/components/ExoticAndDestinyClassSelectorWrapper';
+import ExoticArtificeAssumptionSelector from '@dlb/components/ExoticArtificeAssumptionSelector';
 import IgnoredLoadoutOptimizationTypesSelector from '@dlb/components/IgnoredLoadoutOptimizationTypesSelector';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
@@ -400,6 +401,7 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 									Build Settings
 								</Box>
 								<MasterworkAssumptionSelector />
+								<ExoticArtificeAssumptionSelector />
 								{/* <MinimumGearTierSelector />  */}
 								<DimLoadoutsFilterSelector />
 								<InGameLoadoutsFilterSelector />

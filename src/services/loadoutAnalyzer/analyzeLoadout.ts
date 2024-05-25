@@ -144,15 +144,6 @@ export default function analyzeLoadout(
     });
   }
 
-  if (loadout?.name?.includes("z UnusableMods")) {
-    console.log("z UnusableMods")
-    console.log("usesAlternateSeasonArtifactMods", usesAlternateSeasonArtifactMods)
-    console.log("usesAlternateSeasonBuggedArtifactMods", usesAlternateSeasonBuggedArtifactMods)
-    console.log("usesAlternateSeasonBuggedArtifactMods", usesAlternateSeasonBuggedArtifactMods)
-    console.log("armorSlotModsVariants", armorSlotModsVariants)
-  }
-
-
   const optimizationTypeIdList: ELoadoutOptimizationTypeId[] = [
     ...loadout.optimizationTypeList,
   ];
@@ -182,9 +173,6 @@ export default function analyzeLoadout(
     ): boolean => {
       let shortCircuit = false;
       for (const optimizationType of optimizationTypes) {
-        if (optimizationType === ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods) {
-          console.log('lol')
-        }
         const checker =
           LoadoutOptimizationTypeToLoadoutOptimizationMapping[optimizationType]
             .checker;

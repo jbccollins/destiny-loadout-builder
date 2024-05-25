@@ -13,6 +13,7 @@ import { NIL, v4 as uuid } from 'uuid';
 
 export type LoadoutWithId = DestinyLoadoutComponent & {
 	dlbGeneratedId: string;
+	itemIdsToItemHashesMapping: Record<string, number>;
 };
 
 export type InGameLoadoutsWithIdMapping = {

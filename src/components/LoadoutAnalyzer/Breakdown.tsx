@@ -2,7 +2,10 @@ import ModPlacement from '@dlb/components/ModPlacement';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
-import { ELoadoutOptimizationTypeId, RichAnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
+import {
+	ELoadoutOptimizationTypeId,
+	RichAnalyzableLoadout,
+} from '@dlb/types/AnalyzableLoadout';
 import { AvailableExoticArmorItem } from '@dlb/types/Armor';
 import { ArmorSlotIdList } from '@dlb/types/ArmorSlot';
 import { EArmorSlotId, EGearTierId } from '@dlb/types/IdEnums';
@@ -23,10 +26,6 @@ const BreakdownContent = (props: BreakdownProps) => {
 	const exoticArmor = props.loadout.armor.find(
 		(x) => x.gearTierId === EGearTierId.Exotic
 	);
-
-	if (props.loadout.name === 'GP Void Contraverse (WIP LS)') {
-		console.log('props.loadout', props.loadout);
-	}
 
 	let exoticArmorItem: AvailableExoticArmorItem = null;
 	if (exoticArmor) {

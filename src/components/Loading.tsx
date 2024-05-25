@@ -100,6 +100,10 @@ import {
 	setSelectedClassAbilityForDestinySubclass,
 } from '@dlb/redux/features/selectedClassAbility/selectedClassAbilitySlice';
 import {
+	selectSelectedExoticArtificeAssumption,
+	setSelectedExoticArtificeAssumption,
+} from '@dlb/redux/features/selectedExoticArtificeAssumption/selectedExoticArtificeAssumptionSlice';
+import {
 	selectSelectedFragments,
 	setSelectedFragments,
 	setSelectedFragmentsForDestinySubclass,
@@ -166,6 +170,7 @@ import {
 import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassIds/validDestinyClassIdsSlice';
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
 import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/helpers/buildAnalyzableLoadoutsBreakdown';
+import { getLoadoutItemIdsToItemHashesMapping } from '@dlb/services/loadoutAnalyzer/helpers/getItemsFromInGameLoadout';
 import {
 	EDestinyClassId,
 	EDestinySubclassId,
@@ -264,6 +269,9 @@ function Loading() {
 	);
 	const selectedMasterworkAssumption = useAppSelector(
 		selectSelectedMasterworkAssumption
+	);
+	const selectedExoticArtificeAssumption = useAppSelector(
+		selectSelectedExoticArtificeAssumption
 	);
 	// const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
@@ -635,6 +643,7 @@ function Loading() {
 
 		const {
 			masterworkAssumption,
+			exoticArtificeAssumption,
 			minimumGearTierId,
 			dimLoadoutsFilterId,
 			d2LoadoutsFilterId,
@@ -648,6 +657,7 @@ function Loading() {
 		} = settings;
 
 		dispatch(setSelectedMasterworkAssumption(masterworkAssumption));
+		dispatch(setSelectedExoticArtificeAssumption(exoticArtificeAssumption));
 		dispatch(setSelectedMinimumGearTier(minimumGearTierId));
 		dispatch(setDimLoadoutsFilter(dimLoadoutsFilterId));
 		dispatch(setInGameLoadoutsFilter(d2LoadoutsFilterId));
@@ -842,6 +852,7 @@ function Loading() {
 					setBuggedAlternateSeasonModIdList(buggedAlternateSeasonModIdList)
 				);
 				const inGameLoadoutsWithId: InGameLoadoutsWithIdMapping = {};
+				const allItems = stores.flatMap((store) => store.items);
 				Object.keys(inGameLoadouts).forEach((characterId) => {
 					inGameLoadoutsWithId[characterId] = {
 						loadouts: [],
@@ -850,6 +861,10 @@ function Loading() {
 						const l: LoadoutWithId = {
 							...cloneDeep(loadout),
 							dlbGeneratedId: `${characterId}/${i}/${hash(loadout)}`,
+							itemIdsToItemHashesMapping: getLoadoutItemIdsToItemHashesMapping(
+								loadout.items,
+								allItems
+							),
 						};
 						inGameLoadoutsWithId[characterId].loadouts.push(l);
 					});
@@ -987,6 +1002,12 @@ function Loading() {
 						setSelectedMasterworkAssumption(selectedMasterworkAssumption)
 					);
 					log('dirtySelectedMasterworkAssumption', null, false);
+					dispatch(
+						setSelectedExoticArtificeAssumption(
+							selectedExoticArtificeAssumption
+						)
+					);
+					log('dirtySelectedExoticArtificeAssumption', null, false);
 					dispatch(setDimLoadoutsFilter(dimLoadoutsFilter));
 					log('dirtyDimLoadoutsFilter', null, false);
 					dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));

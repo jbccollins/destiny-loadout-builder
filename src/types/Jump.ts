@@ -1,9 +1,9 @@
 import { EJumpId } from '@dlb/generated/jump/EJumpId';
 import { JumpIdToJumpMapping } from '@dlb/generated/jump/JumpMapping';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
+import { EDestinySubclassId } from './IdEnums';
 import { IJump } from './generation';
 import { EnumDictionary } from './globals';
-import { EDestinySubclassId } from './IdEnums';
 
 export const JumpIdList = Object.values(EJumpId);
 
@@ -48,6 +48,12 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.TripleJumpStrand,
 		EJumpId.StrafeJumpStrand,
 	],
+	[EDestinySubclassId.PrismaticHunter]: [
+		EJumpId.HighJumpPrismatic,
+		EJumpId.TripleJumpPrismatic,
+		EJumpId.StrafeJumpPrismatic,
+		EJumpId.BlinkArc,
+	],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [
@@ -76,6 +82,12 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.StrafeGlideStrand,
 		EJumpId.BalancedGlideStrand,
 	],
+	[EDestinySubclassId.PrismaticWarlock]: [
+		EJumpId.BurstGlidePrismatic,
+		EJumpId.StrafeGlidePrismatic,
+		EJumpId.BalancedGlidePrismatic,
+		EJumpId.BlinkVoid,
+	],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [
@@ -102,6 +114,11 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.HighLiftStrand,
 		EJumpId.CatapultLiftStrand,
 		EJumpId.StrafeLiftStrand,
+	],
+	[EDestinySubclassId.PrismaticTitan]: [
+		EJumpId.HighLiftPrismatic,
+		EJumpId.CatapultLiftPrismatic,
+		EJumpId.StrafeLiftPrismatic,
 	],
 };
 

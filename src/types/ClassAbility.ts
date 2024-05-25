@@ -1,9 +1,9 @@
 import { ClassAbilityIdToClassAbilityMapping } from '@dlb/generated/classAbility/ClassAbilityMapping';
 import { EClassAbilityId } from '@dlb/generated/classAbility/EClassAbilityId';
 import generateHashToIdMapping from '@dlb/utils/generateHashToIdMapping';
+import { EDestinySubclassId } from './IdEnums';
 import { IClassAbility } from './generation';
 import { EnumDictionary } from './globals';
-import { EDestinySubclassId } from './IdEnums';
 
 export const ClassAbilityIdList = Object.values(EClassAbilityId);
 
@@ -48,6 +48,11 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 		EClassAbilityId.MarksmansDodgeStrand,
 		EClassAbilityId.GamblersDodgeStrand,
 	],
+	[EDestinySubclassId.PrismaticHunter]: [
+		EClassAbilityId.MarksmansDodgePrismatic,
+		EClassAbilityId.GamblersDodgePrismatic,
+		EClassAbilityId.AcrobatsDodgeSolar,
+	],
 
 	//Warlock
 	[EDestinySubclassId.Shadebinder]: [
@@ -71,6 +76,11 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 		EClassAbilityId.HealingRiftStrand,
 		EClassAbilityId.EmpoweringRiftStrand,
 	],
+	[EDestinySubclassId.PrismaticWarlock]: [
+		EClassAbilityId.HealingRiftPrismatic,
+		EClassAbilityId.EmpoweringRiftPrismatic,
+		EClassAbilityId.PhoenixDiveSolar,
+	],
 
 	// Titan
 	[EDestinySubclassId.Behemoth]: [
@@ -93,6 +103,11 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 	[EDestinySubclassId.Berserker]: [
 		EClassAbilityId.ToweringBarricadeStrand,
 		EClassAbilityId.RallyBarricadeStrand,
+	],
+	[EDestinySubclassId.PrismaticTitan]: [
+		EClassAbilityId.ToweringBarricadePrismatic,
+		EClassAbilityId.RallyBarricadePrismatic,
+		EClassAbilityId.ThrusterArc
 	],
 };
 

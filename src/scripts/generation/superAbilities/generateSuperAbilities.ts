@@ -1,39 +1,24 @@
 /*
 USAGE: From the root directory run "npm run generate"
 */
-import lodash from 'lodash';
-import path from 'path';
-import { EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
+import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
+import { EElementId } from '@dlb/types/IdEnums';
+import { ISuperAbility } from '@dlb/types/generation';
+import { bungieNetPath } from '@dlb/utils/item-utils';
 import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
-import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
-import { ISuperAbility } from '@dlb/types/generation';
+import lodash from 'lodash';
+import path from 'path';
 import { generateSuperAbilityIdEnumFileString } from './generateSuperAbilityIdEnum';
 import { generateSuperAbilityMapping } from './generateSuperAbilityMapping';
-import { bungieNetPath } from '@dlb/utils/item-utils';
-import {
-	DestinySubclassIdList,
-	getDestinySubclass,
-} from '@dlb/types/DestinySubclass';
 
 const buildSuperAbilityData = (
 	superAbility: DestinyInventoryItemDefinition
 ): ISuperAbility => {
 	// TODO: This is pretty janky and fragile. Relying on this random string to work well
-	const [unsafeDestinyClassId, unsafeElementString] =
+	const [_, unsafeElementString] =
 		superAbility.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
-	const destinyClassId = generateId(unsafeDestinyClassId) as EDestinyClassId;
-	const destinySubclassId = DestinySubclassIdList.find((destinySubclassId) => {
-		const {
-			elementId: subclassElementId,
-			destinyClassId: subclassDestinyClassId,
-		} = getDestinySubclass(destinySubclassId);
-		return (
-			elementId === subclassElementId &&
-			destinyClassId == subclassDestinyClassId
-		);
-	});
 	return {
 		name: superAbility.displayProperties.name,
 		id: generateId(superAbility.displayProperties.name),
@@ -41,7 +26,6 @@ const buildSuperAbilityData = (
 		icon: bungieNetPath(superAbility.displayProperties.icon),
 		hash: superAbility.hash,
 		elementId,
-		destinySubclassId,
 	};
 };
 

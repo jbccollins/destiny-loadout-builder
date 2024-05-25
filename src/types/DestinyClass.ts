@@ -50,6 +50,7 @@ const DestinyClassIdToDestinySubclassesMapping: EnumDictionary<
 		EDestinySubclassId.Nightstalker,
 		EDestinySubclassId.Revenant,
 		EDestinySubclassId.Threadrunner,
+		EDestinySubclassId.PrismaticHunter,
 	],
 	[EDestinyClassId.Warlock]: [
 		EDestinySubclassId.Dawnblade,
@@ -57,6 +58,7 @@ const DestinyClassIdToDestinySubclassesMapping: EnumDictionary<
 		EDestinySubclassId.Stormcaller,
 		EDestinySubclassId.Voidwalker,
 		EDestinySubclassId.Broodweaver,
+		EDestinySubclassId.PrismaticWarlock,
 	],
 	[EDestinyClassId.Titan]: [
 		EDestinySubclassId.Behemoth,
@@ -64,6 +66,7 @@ const DestinyClassIdToDestinySubclassesMapping: EnumDictionary<
 		EDestinySubclassId.Striker,
 		EDestinySubclassId.Sunbreaker,
 		EDestinySubclassId.Berserker,
+		EDestinySubclassId.PrismaticTitan
 	],
 };
 

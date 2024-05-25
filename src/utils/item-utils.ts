@@ -15,9 +15,9 @@ export const MAJOR_MOD_BONUS_VALUE = 10;
 export const MINOR_MOD_BONUS_VALUE = 5;
 export const ARTIFICE_MOD_BONUS_VALUE = 3;
 // Four out of five of our armor pieces can be artificer armor
-export const NUM_POTENTIAL_ARTIFICER_PIECES = 4;
+export const NUM_POTENTIAL_ARTIFICER_PIECES = 5;
 export const NUM_ARMOR_PIECES = 5;
 
-// 5 major mods + 4 artifice mods gived a max stat boost of 62
-export const MAX_POTENTIAL_STAT_BOOST = 62;
+// 5 major mods + 5 artifice mods gived a max stat boost of 65
+export const MAX_POTENTIAL_STAT_BOOST = 65;
 export const MIN_POTENTIAL_STAT_BOOST = 1;

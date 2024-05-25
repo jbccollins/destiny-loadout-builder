@@ -4,16 +4,12 @@ import {
 	getSerializableValue,
 } from '@dlb/scripts/generation/utils';
 import { IMelee } from '@dlb/types/generation';
-import { EDestinySubclassId, EElementId } from '@dlb/types/IdEnums';
+import { EElementId } from '@dlb/types/IdEnums';
 
 export const generateMeleeMapping = (melees: IMelee[]): string => {
 	const enumsToSerialize = {
 		id: { enumDefinition: EMeleeId, enumName: 'EMeleeId' },
 		elementId: { enumDefinition: EElementId, enumName: 'EElementId' },
-		destinySubclassId: {
-			enumDefinition: EDestinySubclassId,
-			enumName: 'EDestinySubclassId',
-		},
 	};
 
 	const serializeMelees: Record<string, unknown>[] = [];
@@ -40,7 +36,7 @@ export const generateMeleeMapping = (melees: IMelee[]): string => {
 	import { EnumDictionary } from '@dlb/types/globals';
 	import { IMelee } from '@dlb/types/generation';
   import { EMeleeId } from '@dlb/generated/melee/EMeleeId';
-	import { EElementId, EDestinySubclassId } from '@dlb/types/IdEnums';
+	import { EElementId } from '@dlb/types/IdEnums';
 
 	export const MeleeIdToMeleeMapping: EnumDictionary<EMeleeId, IMelee> = {
 		${meleeIdToMeleeMappingString.join(' ')}

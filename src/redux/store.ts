@@ -30,6 +30,7 @@ import selectedClassAbilityReducer from './features/selectedClassAbility/selecte
 import selectedDestinyClassReducer from './features/selectedDestinyClass/selectedDestinyClassSlice';
 import selectedDestinySubclassReducer from './features/selectedDestinySubclass/selectedDestinySubclassSlice';
 import selectedExoticArmorReducer from './features/selectedExoticArmor/selectedExoticArmorSlice';
+import selectedExoticArtificeAssumptionReducer from './features/selectedExoticArtificeAssumption/selectedExoticArtificeAssumptionSlice';
 import selectedFragmentsReducer from './features/selectedFragments/selectedFragmentsSlice';
 import selectedGrenadeReducer from './features/selectedGrenade/selectedGrenadeSlice';
 import selectedIntrinsicArmorPerkOrAttributeIdsSlice from './features/selectedIntrinsicArmorPerkOrAttributeIds/selectedIntrinsicArmorPerkOrAttributeIdsSlice';
@@ -188,6 +189,7 @@ export function makeStore() {
 			selectedIntrinsicArmorPerkOrAttributeIds:
 				selectedIntrinsicArmorPerkOrAttributeIdsSlice,
 			selectedJump: selectedJumpReducer,
+			selectedExoticArtificeAssumption: selectedExoticArtificeAssumptionReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
 			selectedMelee: selectedMeleeReducer,
 			selectedMinimumGearTier: selectedMinimumGearTierReducer,
@@ -215,6 +217,7 @@ let selectedDestinyClassUuid = NIL;
 let selectedExoticArmorUuid = NIL;
 let selectedDestinySubclassUuid = NIL;
 let selectedMasterworkAssumptionUuid = NIL;
+let selectedExoticArtificeAssumptionUuid = NIL;
 let selectedRaidModsUuid = NIL;
 let selectedArmorSlotModsUuid = NIL;
 let selectedMinimumGearTierUuid = NIL;
@@ -289,6 +292,10 @@ function handleChange() {
 		selectedMasterworkAssumption: {
 			value: masterworkAssumption,
 			uuid: nextSelectedMasterworkAssumptionUuid,
+		},
+		selectedExoticArtificeAssumption: {
+			value: exoticArtificeAssumption,
+			uuid: nextSelectedExoticArtificeAssumptionUuid,
 		},
 		selectedMinimumGearTier: {
 			value: selectedMinimumGearTier,
@@ -377,13 +384,15 @@ function handleChange() {
 		selectedSuperAbilityUuid !== nextSelectedSuperAbilityUuid ||
 		selectedClassAbilityUuid !== nextSelectedClassAbilityUuid ||
 		ignoredLoadoutOptimizationTypesUuid !==
-			nextIgnoredLoadoutOptimizationTypesUuid ||
+		nextIgnoredLoadoutOptimizationTypesUuid ||
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
-			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
+		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
+		selectedExoticArtificeAssumptionUuid !==
+		nextSelectedExoticArtificeAssumptionUuid ||
 		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
@@ -393,7 +402,7 @@ function handleChange() {
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
-			nextAlwaysConsiderCollectionsRollsUuid;
+		nextAlwaysConsiderCollectionsRollsUuid;
 
 	if (
 		hasMismatchedLocalStorageRecallIds &&
@@ -421,6 +430,7 @@ function handleChange() {
 		localStorageRecall.settings.useBetaDimLinks = useBetaDimLinks;
 		localStorageRecall.settings.useBonusResilience = useBonusResilience;
 		localStorageRecall.settings.masterworkAssumption = masterworkAssumption;
+		localStorageRecall.settings.exoticArtificeAssumption = exoticArtificeAssumption;
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
 		localStorageRecall.settings.dimLoadoutsFilterId = dimLoadoutsFilter;
 		localStorageRecall.settings.d2LoadoutsFilterId = inGameLoadoutsFilter;
@@ -481,6 +491,7 @@ function handleChange() {
 		// variants of the selected exotic armor piece are masterworked. If we ever process
 		// armor without requiring an exotic then we would need to revisit that condition
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
+		selectedExoticArtificeAssumptionUuid !== nextSelectedExoticArtificeAssumptionUuid ||
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
 		selectedDestinySubclassUuid !== nextSelectedDestinySubclassUuid ||
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
@@ -495,11 +506,11 @@ function handleChange() {
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
-			nextAlwaysConsiderCollectionsRollsUuid ||
+		nextAlwaysConsiderCollectionsRollsUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
 		inGameLoadoutsFlatItemIdListUuid !== nextInGameLoadoutsFlatItemIdListUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
-			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
+		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
 		selectedAssumedStatValuesUuid !== nextSelectedAssumedStatValuesUuid;
 	const hasNonDefaultUuids =
 		nextAllClassItemMetadataUuid !== NIL &&
@@ -508,6 +519,7 @@ function handleChange() {
 		nextSelectedExoticArmorUuid !== NIL &&
 		nextSelectedDestinySubclassUuid !== NIL &&
 		nextSelectedMasterworkAssumptionUuid !== NIL &&
+		nextSelectedExoticArtificeAssumptionUuid !== NIL &&
 		nextSelectedFragmentsUuid !== NIL &&
 		nextSelectedRaidModsUuid !== NIL &&
 		nextSelectedArmorSlotModsUuid !== NIL &&
@@ -579,6 +591,7 @@ function handleChange() {
 	selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
 	selectedDestinySubclassUuid = nextSelectedDestinySubclassUuid;
 	selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
+	selectedExoticArtificeAssumptionUuid = nextSelectedExoticArtificeAssumptionUuid;
 	selectedFragmentsUuid = nextSelectedFragmentsUuid;
 	selectedRaidModsUuid = nextSelectedRaidModsUuid;
 	selectedArmorSlotModsUuid = nextSelectedArmorSlotModsUuid;
@@ -617,9 +630,9 @@ function handleChange() {
 
 	const fragmentArmorStatMapping = destinySubclassId
 		? getArmorStatMappingFromFragments(
-				selectedFragments[destinySubclassId],
-				selectedDestinyClass
-		  )
+			selectedFragments[destinySubclassId],
+			selectedDestinyClass
+		)
 		: getDefaultArmorStatMapping();
 	let mods = [...selectedRaidMods];
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
@@ -684,6 +697,7 @@ function handleChange() {
 		alwaysConsiderCollectionsRolls,
 		useOnlyMasterworkedArmor,
 		excludeLockedItems,
+		exoticArtificeAssumption
 	});
 	console.log(
 		'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',

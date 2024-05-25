@@ -1,47 +1,31 @@
 /*
 USAGE: From the root directory run "npm run generate"
 */
-import lodash from 'lodash';
-import path from 'path';
-import { EDestinyClassId, EElementId } from '@dlb/types/IdEnums';
+import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
+import { EElementId } from '@dlb/types/IdEnums';
+import { IClassAbility } from '@dlb/types/generation';
+import { bungieNetPath } from '@dlb/utils/item-utils';
 import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
-import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
-import { IClassAbility } from '@dlb/types/generation';
+import lodash from 'lodash';
+import path from 'path';
 import { generateClassAbilityIdEnumFileString } from './generateClassAbilityIdEnum';
 import { generateClassAbilityMapping } from './generateClassAbilityMapping';
-import { bungieNetPath } from '@dlb/utils/item-utils';
-import {
-	DestinySubclassIdList,
-	getDestinySubclass,
-} from '@dlb/types/DestinySubclass';
 
 const buildClassAbilityData = (
 	classAbility: DestinyInventoryItemDefinition
 ): IClassAbility => {
 	// TODO: This is pretty janky and fragile. Relying on this random string to work well
-	const [unsafeDestinyClassId, unsafeElementString] =
+	const [_, unsafeElementString] =
 		classAbility.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
-	const destinyClassId = generateId(unsafeDestinyClassId) as EDestinyClassId;
-	const destinySubclassId = DestinySubclassIdList.find((destinySubclassId) => {
-		const {
-			elementId: subclassElementId,
-			destinyClassId: subclassDestinyClassId,
-		} = getDestinySubclass(destinySubclassId);
-		return (
-			elementId === subclassElementId &&
-			destinyClassId == subclassDestinyClassId
-		);
-	});
 	return {
 		name: classAbility.displayProperties.name,
 		id: generateId(classAbility.displayProperties.name + elementId),
 		description: classAbility.displayProperties.description,
 		icon: bungieNetPath(classAbility.displayProperties.icon),
 		hash: classAbility.hash,
-		elementId,
-		destinySubclassId,
+		elementId
 	};
 };
 

@@ -79,7 +79,7 @@ const debug = false;
 			);
 			const key = paddedCombination.join('');
 			results[key] = [];
-			for (let j = 0; j <= 4; j++) {
+			for (let j = 0; j <= 5; j++) {
 				results[key].push([]); // results[key][j] => [statModCombo, statModCombo, ...]
 				const targetStats = getArmorStatMappingFromStatList(
 					combination as StatList

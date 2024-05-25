@@ -16,11 +16,6 @@ export default function UnusableMods(props: ResolutionInstructionProps) {
 
 	const activeSeasonArtifactModIdList = getActiveSeasonArtifactModIdList();
 
-	console.log(
-		'++++++ activeSeasonArtifactModIdList',
-		activeSeasonArtifactModIdList
-	);
-
 	return (
 		<Box>
 			<InspectingOptimizationDetailsHelp>

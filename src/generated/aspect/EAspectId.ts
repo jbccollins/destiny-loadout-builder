@@ -53,4 +53,7 @@ export enum EAspectId {
 	ThreadedSpecter = 'ThreadedSpecter',
 	EnsnaringSlam = 'EnsnaringSlam',
 	WidowsSilk = 'WidowsSilk',
+	Ascension = 'Ascension',
+	Unbreakable = 'Unbreakable',
+	Hellion = 'Hellion',
 }

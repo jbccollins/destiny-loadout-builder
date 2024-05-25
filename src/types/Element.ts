@@ -1,11 +1,11 @@
 import {
 	EnumDictionary,
+	IHash,
 	IIcon,
 	IIdentifiableName,
-	ValidateEnumList,
 	Mapping,
 	MISSING_ICON,
-	IHash,
+	ValidateEnumList,
 } from './globals';
 import { EElementId } from './IdEnums';
 
@@ -18,7 +18,7 @@ export const ElementIdList = ValidateEnumList(Object.values(EElementId), [
 	EElementId.Strand,
 ]);
 
-export interface IElement extends IIdentifiableName, IIcon, IHash {}
+export interface IElement extends IIdentifiableName, IIcon, IHash { }
 
 const ElementIdToElementMapping: EnumDictionary<EElementId, IElement> = {
 	[EElementId.Any]: {
@@ -57,6 +57,12 @@ const ElementIdToElementMapping: EnumDictionary<EElementId, IElement> = {
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyEnergyTypeDefinition_530c4c3e7981dc2aefd24fd3293482bf.png',
 		hash: 1819698290,
 	},
+	[EElementId.Prismatic]: {
+		id: EElementId.Prismatic,
+		name: 'Prismatic',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyEnergyTypeDefinition_530c4c3e7981dc2aefd24fd3293482bf.png',
+		hash: 1234567890,
+	},
 };
 
 export const ElementIdToElement: Mapping<EElementId, IElement> = {
@@ -75,13 +81,13 @@ export const getElement = (id: EElementId): IElement =>
 	ElementIdToElementMapping[id];
 
 const ElementHashToElementIdMapping: EnumDictionary<EElementHash, EElementId> =
-	{
-		[EElementHash.Any]: EElementId.Any,
-		[EElementHash.Arc]: EElementId.Arc,
-		[EElementHash.Solar]: EElementId.Solar,
-		[EElementHash.Void]: EElementId.Void,
-		[EElementHash.Stasis]: EElementId.Stasis,
-	};
+{
+	[EElementHash.Any]: EElementId.Any,
+	[EElementHash.Arc]: EElementId.Arc,
+	[EElementHash.Solar]: EElementId.Solar,
+	[EElementHash.Void]: EElementId.Void,
+	[EElementHash.Stasis]: EElementId.Stasis,
+};
 
 export const getElementIdByHash = (hash: EElementHash): EElementId =>
 	ElementHashToElementIdMapping[hash];

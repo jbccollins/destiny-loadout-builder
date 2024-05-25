@@ -10,7 +10,7 @@ export interface SelectedExoticArtificeAssumptionState {
 }
 
 const initialState: SelectedExoticArtificeAssumptionState = {
-  value: EExoticArtificeAssumption.All,
+  value: EExoticArtificeAssumption.None,
   uuid: NIL,
 };
 

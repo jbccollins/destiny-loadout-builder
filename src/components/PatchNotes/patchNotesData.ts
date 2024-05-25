@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-05-24',
+		version: '2.5.10',
+		title: 'The Final Shape Prep',
+		sections: [
+			{
+				items: [
+					`Added fake prismatic subclass options to the subclass selector`,
+					`Added an exotic artifice assumption selector`
+				],
+			},
+		],
+	},
+	{
 		date: '2024-05-19',
 		version: '2.5.9',
 		title: 'Moar Analyzer Improvements',

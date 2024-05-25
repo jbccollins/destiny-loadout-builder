@@ -450,14 +450,6 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 				};
 				ArmorSlotIdList.forEach((armorSlot, i) => {
 					const armorItem = getArmorItem(armorIdList[i], armorSlot);
-					if (!armorItem) {
-						console.log(
-							'*** armorItem not found',
-							i,
-							armorIdList[i],
-							armorSlot
-						);
-					}
 					resultLoadout.id += `[${armorItem.id}]`;
 					resultLoadout.armorItems.push(armorItem);
 				});

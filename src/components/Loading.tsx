@@ -342,6 +342,7 @@ function Loading() {
 		loadoutString,
 	}: LoadFromQueryParamsParams) {
 		const loadoutConfig = JSON.parse(loadoutString) as DlbLoadoutConfiguration;
+		console.log('loadoutConfig', loadoutConfig);
 
 		const destinyClassId = loadoutConfig.dc;
 		const destinyClass = destinyClassId
@@ -1084,6 +1085,12 @@ function Loading() {
 					log('dirtySelectedRaidMods', null, false);
 					dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
 					log('dirtySharedLoadoutDesiredStats', null, false);
+					dispatch(
+						setSharedLoadoutConfigStatPriorityOrder(
+							sharedLoadoutConfigStatPriorityOrder
+						)
+					);
+					log('dirtySharedLoadoutConfigStatPriorityOrder', null, false);
 				}
 				// These are all handled by the recall
 				if (!successfullyParsedLocalStorageRecall) {
@@ -1136,15 +1143,6 @@ function Loading() {
 				log('dirtyDesiredArmorStats', null, false);
 				dispatch(setSelectedAssumedStatValues(selectedAssumedStatValues));
 				log('dirtySelectedAssumedStatValues', null, false);
-				dispatch(setSharedLoadoutDesiredStats(sharedLoadoutDesiredStats));
-				log('dirtySharedLoadoutDesiredStats', null, false);
-				dispatch(
-					setSharedLoadoutConfigStatPriorityOrder(
-						sharedLoadoutConfigStatPriorityOrder
-					)
-				);
-				log('dirtySharedLoadoutConfigStatPriorityOrder', null, false);
-
 				if (hasDimLoadoutsError) {
 					dispatch(setDimLoadouts([]));
 					log('hasDimLoadoutsError', null, false);

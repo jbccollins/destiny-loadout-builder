@@ -29,6 +29,7 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
+	EExoticArtificeAssumption,
 	EGearTierId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
@@ -205,6 +206,7 @@ export const getBaseParams = (): AnalyzeLoadoutParams => {
 		availableExoticArmor: getBaseAvailableExoticArmor(),
 		buggedAlternateSeasonModIdList: [],
 		loadout: getBaseAnalyzeableLoadout(),
+		exoticArtificeAssumption: EExoticArtificeAssumption.None,
 	};
 };
 

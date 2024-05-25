@@ -14,6 +14,7 @@ import { Box, Button, Collapse, Divider, Link, styled } from '@mui/material';
 import Image from 'next/image';
 
 import AlwaysConsiderCollectionsRollsToggleSwitch from '@dlb/components/AlwaysConsiderCollectionsRollsToggleSwitch';
+import AnalyzerExoticArtificeAssumptionSelector from '@dlb/components/AnalyzerExoticArtificeAssumptionSelector';
 import ArmorResultsView from '@dlb/components/ArmorResults/ArmorResultsView';
 import DimImportDialog from '@dlb/components/DimImportDialog';
 import DimLoadoutsFilterSelector from '@dlb/components/DimLoadoutsFilterSelector';
@@ -418,10 +419,12 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 										fontSize: '1.4rem',
 										marginLeft: '8px',
 										marginTop: '16px',
+										marginBottom: '12px',
 									}}
 								>
 									Analyzer Settings
 								</Box>
+								<AnalyzerExoticArtificeAssumptionSelector />
 								<IgnoredLoadoutOptimizationTypesSelector />
 								<Divider sx={{ marginTop: '32px' }} />
 								<Box sx={{ marginTop: '32px', marginLeft: '8px' }}>

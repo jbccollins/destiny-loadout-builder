@@ -29,6 +29,7 @@ export const getLoadoutsThatCanBeOptimized = (
 		progressCallback,
 		availableExoticArmor,
 		buggedAlternateSeasonModIdList,
+		exoticArtificeAssumption
 	} = params;
 	Object.values(loadouts).forEach((loadout) => {
 		try {
@@ -40,6 +41,7 @@ export const getLoadoutsThatCanBeOptimized = (
 				availableExoticArmor,
 				buggedAlternateSeasonModIdList,
 				loadout,
+				exoticArtificeAssumption
 			});
 
 			const humanizedOptimizationTypes =

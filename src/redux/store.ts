@@ -89,6 +89,7 @@ import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import isEqual from 'lodash/isEqual';
 import { NIL } from 'uuid';
 import alwaysConsiderCollectionsRollsReducer from './features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
+import analyzerExoticArtificeAssumption from './features/analyzerExoticArtificeAssumption/analyzerExoticArtificeAssumption';
 import armorSlotModViolationsReducer, {
 	setArmorSlotModViolations,
 } from './features/armorSlotModViolations/armorSlotModViolationsSlice';
@@ -148,6 +149,7 @@ export function makeStore() {
 			allDataLoaded: allDataLoadedReducer,
 			alwaysConsiderCollectionsRolls: alwaysConsiderCollectionsRollsReducer,
 			analyzableLoadouts: analyzableLoadoutsReducer,
+			analyzerExoticArtificeAssumption: analyzerExoticArtificeAssumption,
 			analyzerSearch: analyzerSearchReducer,
 			analyzerTabIndex: analyzerTabIndexReducer,
 			armor: armorReducer,
@@ -243,6 +245,7 @@ let selectedSuperAbilityUuid = NIL;
 let selectedClassAbilityUuid = NIL;
 let ignoredLoadoutOptimizationTypesUuid = NIL;
 let selectedAssumedStatValuesUuid = NIL;
+let analyzerExoticArtificeAssumptionUuid = NIL;
 const debugStoreLoop = false;
 
 let previousState: ReturnType<typeof store.getState> = null;
@@ -367,6 +370,10 @@ function handleChange() {
 			value: selectedAssumedStatValues,
 			uuid: nextSelectedAssumedStatValuesUuid,
 		},
+		analyzerExoticArtificeAssumption: {
+			value: analyzerExoticArtificeAssumption,
+			uuid: nextAnalyzerExoticArtificeAssumptionUuid,
+		},
 		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -400,6 +407,7 @@ function handleChange() {
 		useBetaDimLinksUuid !== nextUseBetaDimLinksUuid ||
 		useOnlyMasterworkedArmorUuid !== nextUseOnlyMasterworkedArmorUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
+		analyzerExoticArtificeAssumptionUuid !== nextAnalyzerExoticArtificeAssumptionUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
 		nextAlwaysConsiderCollectionsRollsUuid;
@@ -419,6 +427,7 @@ function handleChange() {
 		useBetaDimLinksUuid = nextUseBetaDimLinksUuid;
 		ignoredLoadoutOptimizationTypesUuid =
 			nextIgnoredLoadoutOptimizationTypesUuid;
+		analyzerExoticArtificeAssumptionUuid = nextAnalyzerExoticArtificeAssumptionUuid;
 
 		const localStorageRecall = getLocalStorageRecall();
 		localStorageRecall.settings.alwaysConsiderCollectionsRolls =
@@ -434,6 +443,7 @@ function handleChange() {
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
 		localStorageRecall.settings.dimLoadoutsFilterId = dimLoadoutsFilter;
 		localStorageRecall.settings.d2LoadoutsFilterId = inGameLoadoutsFilter;
+		localStorageRecall.settings.analyzerExoticArtificeAssumption = analyzerExoticArtificeAssumption;
 		localStorageRecall.settings.ignoredLoadoutOptimizationTypes =
 			ignoredLoadoutOptimizationTypes;
 		// Exotic

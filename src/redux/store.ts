@@ -63,6 +63,7 @@ import {
 	preProcessArmor,
 	truncatedDoProcessArmor,
 } from '@dlb/services/processArmor/index';
+import { MessageOutput } from '@dlb/services/processArmor/processArmorWorker';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
 	ArmorStatIdList,
@@ -106,6 +107,7 @@ import ignoredLoadoutOptimizationTypesReducer from './features/ignoredLoadoutOpt
 import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
 import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import inGameLoadoutsFlatItemIdListReducer from './features/inGameLoadoutsFlatItemIdList/inGameLoadoutsFlatItemIdListSlice';
+import isRunningProcessArmorWebWorkerReducer, { setIsRunningProcessArmorWebWorker } from './features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
 import loadoutTypeFilterReducer from './features/loadoutTypeFilter/loadoutTypeFilterSlice';
 import optimizationTypeFilterReducer from './features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import performingBatchUpdateReducer from './features/performingBatchUpdate/performingBatchUpdateSlice';
@@ -141,6 +143,8 @@ function getChangedProperties(previousObj, currentObj, changes) {
 
 	return changes;
 }
+
+let processingEventId = 0;
 
 export function makeStore() {
 	return configureStore({
@@ -206,6 +210,7 @@ export function makeStore() {
 			useOnlyMasterworkedArmor: useOnlyMasterworkedArmorReducer,
 			useZeroWastedStats: useZeroWastedStatsReducer,
 			validDestinyClassIds: validDestinyClassIdsReducer,
+			isRunningProcessArmorWebWorker: isRunningProcessArmorWebWorkerReducer,
 		},
 	});
 }
@@ -736,20 +741,43 @@ function handleChange() {
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {
-		const results = truncatedDoProcessArmor(doProcessArmorParams);
-		console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
-		store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
-		store.dispatch(
-			setMaxPossibleReservedArmorSlotEnergy(
-				results.maxPossibleReservedArmorSlotEnergy
+		processingEventId++;
+
+		const worker = new Worker(
+			new URL(
+				'@dlb/services/processArmor/processArmorWorker.ts',
+				import.meta.url
 			)
-		);
-		store.dispatch(
-			setProcessedArmor({
-				items: results.items,
-				totalItemCount: results.totalItemCount,
-			})
-		);
+		)
+
+		store.dispatch(setIsRunningProcessArmorWebWorker(true));
+		worker.postMessage({
+			eventId: processingEventId,
+			doProcessArmorParams
+		});
+
+		worker.onmessage = (e: MessageEvent<MessageOutput>) => {
+			// Ignore messages from previous events
+			if (e.data.eventId !== processingEventId) {
+				console.log('>>>>>>>>>>> [STORE] Ignoring old event <<<<<<<<<<<');
+				return;
+			}
+			const results = e.data.result;
+			console.log('>>>>>>>>>>> [STORE] results <<<<<<<<<<<', results);
+			store.dispatch(setMaxPossibleStats(results.maxPossibleDesiredStatTiers));
+			store.dispatch(
+				setMaxPossibleReservedArmorSlotEnergy(
+					results.maxPossibleReservedArmorSlotEnergy
+				)
+			);
+			store.dispatch(
+				setProcessedArmor({
+					items: results.items,
+					totalItemCount: results.totalItemCount,
+				})
+			);
+			store.dispatch(setIsRunningProcessArmorWebWorker(false));
+		}
 	}
 
 	if (sharedLoadoutDesiredStats.needed && !sharedLoadoutDesiredStats.complete) {

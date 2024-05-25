@@ -63,8 +63,8 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
-	styled,
 	TablePagination,
+	styled,
 } from '@mui/material';
 import React, { useCallback, useMemo, useState } from 'react';
 import ArmorResultsList from './ArmorResultsList';
@@ -397,10 +397,18 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		(id: string, armorSlot: EArmorSlotId) => {
 			const selectedExoticArmorSlot =
 				selectedExoticArmor[selectedDestinyClass].armorSlot;
+
+			// Due to the nature of the web worker, we fall back to the "wrong" armor if the web worker is not done yet
 			if (selectedExoticArmorSlot === armorSlot) {
-				return armor[selectedDestinyClass][armorSlot].exotic[id];
+				return (
+					armor[selectedDestinyClass][armorSlot].exotic[id] ??
+					armor[selectedDestinyClass][armorSlot].nonExotic[id]
+				);
 			}
-			return armor[selectedDestinyClass][armorSlot].nonExotic[id];
+			return (
+				armor[selectedDestinyClass][armorSlot].nonExotic[id] ??
+				armor[selectedDestinyClass][armorSlot].exotic[id]
+			);
 		},
 		[armor, selectedDestinyClass, selectedExoticArmor]
 	);
@@ -442,6 +450,14 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 				};
 				ArmorSlotIdList.forEach((armorSlot, i) => {
 					const armorItem = getArmorItem(armorIdList[i], armorSlot);
+					if (!armorItem) {
+						console.log(
+							'*** armorItem not found',
+							i,
+							armorIdList[i],
+							armorSlot
+						);
+					}
 					resultLoadout.id += `[${armorItem.id}]`;
 					resultLoadout.armorItems.push(armorItem);
 				});

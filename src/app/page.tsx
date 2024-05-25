@@ -24,6 +24,7 @@ import ExoticArtificeAssumptionSelector from '@dlb/components/ExoticArtificeAssu
 import IgnoredLoadoutOptimizationTypesSelector from '@dlb/components/IgnoredLoadoutOptimizationTypesSelector';
 import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSelector';
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
+import IsRunningWebWorkerMessage from '@dlb/components/IsRunningWebWorkerMessage';
 import AnalyzerResultsView from '@dlb/components/LoadoutAnalyzer/AnalyzerResultsView';
 import LoadoutAnalysisWebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/LoadoutAnalysisWebWorkerWrapper';
 import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer/LoadoutAnalyzer';
@@ -566,6 +567,7 @@ export default function HomePage() {
 				{!allDataLoaded && <Loading />}
 				{allDataLoaded && (
 					<>
+						<IsRunningWebWorkerMessage />
 						<LoadoutAnalysisWebWorkerWrapper />
 						{isSmallScreen && (
 							<>

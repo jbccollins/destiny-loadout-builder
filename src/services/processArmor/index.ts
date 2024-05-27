@@ -673,13 +673,14 @@ export const preProcessArmor = ({
 					(item) => !item.isCollectible
 				);
 			}
+
 			if (exoticArtificeAssumption !== EExoticArtificeAssumption.None) {
 				strictArmorItems[i] = strictArmorItems[i].map((item) => {
+					const isMasterworked = item.isMasterworked || masterworkAssumption === EMasterworkAssumption.All;
 					const isArtifice =
 						item.isArtifice ||
 						exoticArtificeAssumption === EExoticArtificeAssumption.All ||
-						(item.isMasterworked || masterworkAssumption === EMasterworkAssumption.All) &&
-						exoticArtificeAssumption === EExoticArtificeAssumption.Masterworked;
+						(isMasterworked && exoticArtificeAssumption === EExoticArtificeAssumption.Masterworked);
 					return {
 						...item,
 						isArtifice

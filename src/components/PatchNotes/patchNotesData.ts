@@ -11,6 +11,21 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-05-26',
+		version: '2.5.12',
+		title: 'Exotic Artifice Fixes',
+		sections: [
+			{
+				items: [
+					`Added two new analyzer optimization types "Lower Cost (Exotic Artifice)" and "Higher Stat Tiers (Exotic Artifice)"`,
+					`Removed the confusing setting "Exotic Artifice Analyzer Assumption", this has been replaced by the above two optimization types`,
+					`Fixed a bug where some optimal mod combinations involving 5 artifice mods were not being considered`,
+					`The analyzer will take significantly longer to run now due to the new optimization types`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-05-25',
 		version: '2.5.11',
 		title: 'Moar The Final Shape Prep',

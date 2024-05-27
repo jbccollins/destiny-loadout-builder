@@ -7,12 +7,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 5,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 1,
-      numMinorMods: 0,
-      exactStatPoints: 10,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 0,
       numMinorMods: 0,
@@ -25,12 +19,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 0,
       numMinorMods: 1,
       exactStatPoints: 5,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 1,
-      numMinorMods: 0,
-      exactStatPoints: 10,
     },
     {
       numArtificeMods: 1,
@@ -47,12 +35,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 5,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 1,
-      numMinorMods: 0,
-      exactStatPoints: 10,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 0,
       numMinorMods: 0,
@@ -67,12 +49,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 5,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 1,
-      numMinorMods: 0,
-      exactStatPoints: 10,
-    },
-    {
       numArtificeMods: 2,
       numMajorMods: 0,
       numMinorMods: 0,
@@ -85,12 +61,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 0,
       numMinorMods: 1,
       exactStatPoints: 5,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 1,
-      numMinorMods: 0,
-      exactStatPoints: 10,
     },
     {
       numArtificeMods: 2,
@@ -243,12 +213,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 15,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 2,
-      numMinorMods: 0,
-      exactStatPoints: 20,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 0,
       numMinorMods: 2,
@@ -285,12 +249,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 1,
       numMinorMods: 1,
       exactStatPoints: 15,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 2,
-      numMinorMods: 0,
-      exactStatPoints: 20,
     },
     {
       numArtificeMods: 1,
@@ -331,12 +289,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 15,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 2,
-      numMinorMods: 0,
-      exactStatPoints: 20,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 0,
       numMinorMods: 2,
@@ -375,12 +327,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 15,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 2,
-      numMinorMods: 0,
-      exactStatPoints: 20,
-    },
-    {
       numArtificeMods: 2,
       numMajorMods: 0,
       numMinorMods: 2,
@@ -417,12 +363,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 1,
       numMinorMods: 1,
       exactStatPoints: 15,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 2,
-      numMinorMods: 0,
-      exactStatPoints: 20,
     },
     {
       numArtificeMods: 2,
@@ -719,12 +659,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 25,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 3,
-      numMinorMods: 0,
-      exactStatPoints: 30,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 0,
       numMinorMods: 4,
@@ -785,12 +719,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 2,
       numMinorMods: 1,
       exactStatPoints: 25,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 3,
-      numMinorMods: 0,
-      exactStatPoints: 30,
     },
     {
       numArtificeMods: 1,
@@ -855,12 +783,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 25,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 3,
-      numMinorMods: 0,
-      exactStatPoints: 30,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 0,
       numMinorMods: 4,
@@ -923,12 +845,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 25,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 3,
-      numMinorMods: 0,
-      exactStatPoints: 30,
-    },
-    {
       numArtificeMods: 2,
       numMajorMods: 0,
       numMinorMods: 4,
@@ -989,12 +905,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 2,
       numMinorMods: 1,
       exactStatPoints: 25,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 3,
-      numMinorMods: 0,
-      exactStatPoints: 30,
     },
     {
       numArtificeMods: 2,
@@ -1393,12 +1303,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 35,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 4,
-      numMinorMods: 0,
-      exactStatPoints: 40,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 1,
       numMinorMods: 4,
@@ -1465,12 +1369,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 3,
       numMinorMods: 1,
       exactStatPoints: 35,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 4,
-      numMinorMods: 0,
-      exactStatPoints: 40,
     },
     {
       numArtificeMods: 1,
@@ -1541,12 +1439,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 35,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 4,
-      numMinorMods: 0,
-      exactStatPoints: 40,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 1,
       numMinorMods: 4,
@@ -1615,12 +1507,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 35,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 4,
-      numMinorMods: 0,
-      exactStatPoints: 40,
-    },
-    {
       numArtificeMods: 2,
       numMajorMods: 1,
       numMinorMods: 4,
@@ -1687,12 +1573,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 3,
       numMinorMods: 1,
       exactStatPoints: 35,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 4,
-      numMinorMods: 0,
-      exactStatPoints: 40,
     },
     {
       numArtificeMods: 2,
@@ -2067,12 +1947,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 45,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 5,
-      numMinorMods: 0,
-      exactStatPoints: 50,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 3,
       numMinorMods: 2,
@@ -2121,12 +1995,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 4,
       numMinorMods: 1,
       exactStatPoints: 45,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 5,
-      numMinorMods: 0,
-      exactStatPoints: 50,
     },
     {
       numArtificeMods: 1,
@@ -2179,12 +2047,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 45,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 5,
-      numMinorMods: 0,
-      exactStatPoints: 50,
-    },
-    {
       numArtificeMods: 1,
       numMajorMods: 3,
       numMinorMods: 2,
@@ -2235,12 +2097,6 @@ export const paretoOptimalModCombinations = {
       exactStatPoints: 45,
     },
     {
-      numArtificeMods: 0,
-      numMajorMods: 5,
-      numMinorMods: 0,
-      exactStatPoints: 50,
-    },
-    {
       numArtificeMods: 2,
       numMajorMods: 3,
       numMinorMods: 2,
@@ -2289,12 +2145,6 @@ export const paretoOptimalModCombinations = {
       numMajorMods: 4,
       numMinorMods: 1,
       exactStatPoints: 45,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 5,
-      numMinorMods: 0,
-      exactStatPoints: 50,
     },
     {
       numArtificeMods: 2,

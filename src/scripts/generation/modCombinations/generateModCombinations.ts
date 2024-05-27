@@ -39,12 +39,32 @@ function generateModCombinations(): GenericRequiredModCombo[] {
 
 const allModCombinations = generateModCombinations();
 
+// If we have a combination that has more optimal sub-combinations, we can discard it
+function hasMoreOptimalSubCombo(combo: GenericRequiredModCombo, targetValue: number): boolean {
+  if (combo.numMajorMods === 0) {
+    return false;
+  }
+  // swap out a single major mod for a single minor mod
+  const numMajorMods = combo.numMajorMods - 1;
+  const numMinorMods = combo.numMinorMods + 1;
+  const numArtificeMods = combo.numArtificeMods;
+
+  const exactStatPoints =
+    numArtificeMods * ARTIFICE_MOD_BONUS_VALUE +
+    numMajorMods * MAJOR_MOD_BONUS_VALUE +
+    numMinorMods * MINOR_MOD_BONUS_VALUE;
+
+  return exactStatPoints >= targetValue;
+}
+
 function isMoreOptimal(a: GenericRequiredModCombo, b: GenericRequiredModCombo): boolean {
-  return (
+  const isStrictlyMoreOptimal = (
     a.numArtificeMods <= b.numArtificeMods &&
     a.numMajorMods <= b.numMajorMods &&
     a.numMinorMods <= b.numMinorMods
-  );
+  )
+
+  return isStrictlyMoreOptimal;
 }
 
 // TODO Change this to accept a combinations param and return the optimal combinations
@@ -69,7 +89,7 @@ function findOptimalCombinations(combinations: GenericRequiredModCombo[], target
     }
 
     // If the current combination is not dominated by any other combination, add it to the optimal combinations
-    if (!isDominated) {
+    if (!isDominated && !hasMoreOptimalSubCombo(validCombinations[i], targetValue)) {
       optimalCombinations.push(validCombinations[i]);
 
       // Remove any combination in optimalCombinations that is dominated by the new combination

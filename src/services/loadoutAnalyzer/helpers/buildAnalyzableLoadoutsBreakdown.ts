@@ -27,7 +27,7 @@ type BuildAnalyzableLoadoutsBreakdownParams = {
 	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
-	buggedAlternateSeasonModIdList: EModId[]
+	buggedAlternateSeasonModIdList: EModId[];
 };
 export const buildAnalyzableLoadoutsBreakdown = (
 	params: BuildAnalyzableLoadoutsBreakdownParams
@@ -41,18 +41,18 @@ export const buildAnalyzableLoadoutsBreakdown = (
 		availableExoticArmor,
 		characters,
 		inGameLoadoutsDefinitions,
-		buggedAlternateSeasonModIdList
+		buggedAlternateSeasonModIdList,
 	} = params;
 	const hasDimLoadouts = dimLoadouts && dimLoadouts.length > 0;
 	const armorItems = flattenArmor(armor, allClassItemMetadata);
 	const analyzableDimLoadouts = hasDimLoadouts
 		? extractDimLoadouts({
-			armorItems,
-			dimLoadouts,
-			masterworkAssumption,
-			availableExoticArmor,
-			buggedAlternateSeasonModIdList
-		})
+				armorItems,
+				dimLoadouts,
+				masterworkAssumption,
+				availableExoticArmor,
+				buggedAlternateSeasonModIdList,
+		  })
 		: [];
 	const analyzableInGameLoadouts = extractInGameLoadouts({
 		armorItems,

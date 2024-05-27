@@ -111,5 +111,6 @@ const SubclassIdToGrenadeIdListMapping: EnumDictionary<
 	],
 };
 
-export const getGrenadeIdListByDestinySubclassId = (destinySubclassId: EDestinySubclassId): EGrenadeId[] =>
-	SubclassIdToGrenadeIdListMapping[destinySubclassId];
+export const getGrenadeIdListByDestinySubclassId = (
+	destinySubclassId: EDestinySubclassId
+): EGrenadeId[] => SubclassIdToGrenadeIdListMapping[destinySubclassId];

@@ -58,8 +58,10 @@ baseOutput.metadata.maxPossibleReservedArmorSlotEnergy = {
 	[EArmorSlotId.Leg]: 10,
 	[EArmorSlotId.ClassItem]: 10,
 };
-baseOutput.metadata.modPlacement[EArmorSlotId.Head].armorStatModId = EModId.MinorMobilityMod;
-baseOutput.metadata.modPlacement[EArmorSlotId.Leg].armorStatModId = EModId.MinorMobilityMod;
+baseOutput.metadata.modPlacement[EArmorSlotId.Head].armorStatModId =
+	EModId.MinorMobilityMod;
+baseOutput.metadata.modPlacement[EArmorSlotId.Leg].armorStatModId =
+	EModId.MinorMobilityMod;
 baseOutput.metadata.unusedModSlots = {
 	[EArmorSlotId.Head]: 10,
 	[EArmorSlotId.Arm]: 10,
@@ -76,10 +78,6 @@ baseOutput.metadata.maxPossibleExoticArtificeDesiredStatTiers = {
 	[EArmorStatId.Strength]: 60,
 };
 
-const testCase: TestCase = [
-	'HigherStatTiers',
-	[params],
-	baseOutput,
-];
+const testCase: TestCase = ['HigherStatTiers', [params], baseOutput];
 
 export default testCase;

@@ -1,6 +1,4 @@
-import {
-	ELoadoutOptimizationTypeId
-} from '@dlb/types/AnalyzableLoadout';
+import { ELoadoutOptimizationTypeId } from '@dlb/types/AnalyzableLoadout';
 import analyzeLoadout from './analyzeLoadout';
 import {
 	EGetLoadoutsThatCanBeOptimizedProgressType,
@@ -40,7 +38,6 @@ export const getLoadoutsThatCanBeOptimized = (
 				buggedAlternateSeasonModIdList,
 				loadout,
 			});
-
 
 			if (optimizationTypeList.length > 0) {
 				result.push({

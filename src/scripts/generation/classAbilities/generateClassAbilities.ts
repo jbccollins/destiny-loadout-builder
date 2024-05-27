@@ -25,7 +25,7 @@ const buildClassAbilityData = (
 		description: classAbility.displayProperties.description,
 		icon: bungieNetPath(classAbility.displayProperties.icon),
 		hash: classAbility.hash,
-		elementId
+		elementId,
 	};
 };
 

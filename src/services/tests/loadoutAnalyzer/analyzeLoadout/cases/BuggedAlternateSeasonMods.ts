@@ -4,7 +4,10 @@ import {
 	getBaseOutput,
 	getBaseParams,
 } from '@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/fixtureHelpers';
-import { ELoadoutOptimizationTypeId, ELoadoutType } from '@dlb/types/AnalyzableLoadout';
+import {
+	ELoadoutOptimizationTypeId,
+	ELoadoutType,
+} from '@dlb/types/AnalyzableLoadout';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
 import { cloneDeep } from 'lodash';
 
@@ -15,7 +18,7 @@ params.loadout.armorSlotMods[EArmorSlotId.Leg] = [
 	EModId.ArtifactHarmonicScavenger,
 	EModId.SolarWeaponSurge,
 	EModId.SolarWeaponSurge,
-]
+];
 
 const baseOutput = cloneDeep(getBaseOutput());
 baseOutput.metadata.maxPossibleReservedArmorSlotEnergy[EArmorSlotId.Leg] = 0;

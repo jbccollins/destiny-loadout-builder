@@ -107,7 +107,7 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 	[EDestinySubclassId.PrismaticTitan]: [
 		EClassAbilityId.ToweringBarricadePrismatic,
 		EClassAbilityId.RallyBarricadePrismatic,
-		EClassAbilityId.ThrusterArc
+		EClassAbilityId.ThrusterArc,
 	],
 };
 

@@ -30,7 +30,7 @@ import {
 	EArmorStatId,
 	EDestinyClassId,
 	EGearTierId,
-	EMasterworkAssumption
+	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { v4 } from 'uuid';
 

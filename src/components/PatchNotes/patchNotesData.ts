@@ -35,7 +35,7 @@ export const PatchNotes: PatchNote[] = [
 					`Added exotic artifice analyzer assumption setting`,
 					`Added support for exotic class items (placeholder for now)`,
 					`Moved armor processing to a web worker. This was needed to make the extra overhead of the exotic class item processing more palatable`,
-					`Fixed a bug where opening a shared DLB loadout url would change your settings back to default`
+					`Fixed a bug where opening a shared DLB loadout url would change your settings back to default`,
 				],
 			},
 		],
@@ -48,7 +48,7 @@ export const PatchNotes: PatchNote[] = [
 			{
 				items: [
 					`Added fake prismatic subclass options to the subclass selector`,
-					`Added an exotic artifice assumption selector`
+					`Added an exotic artifice assumption selector`,
 				],
 			},
 		],
@@ -61,7 +61,7 @@ export const PatchNotes: PatchNote[] = [
 			{
 				items: [
 					`Added a new optimization type "Bugged Alternate Season Mods (Correctable)" that is subtley different from the non-correctable variant.`,
-					`More under the hood analyzer refactor`
+					`More under the hood analyzer refactor`,
 				],
 			},
 		],

@@ -99,9 +99,9 @@ export enum EMessageType {
 export type Message = {
 	type: EMessageType;
 	payload:
-	| GetLoadoutsThatCanBeOptimizedProgress
-	| GetLoadoutsThatCanBeOptimizedOutputItem[]
-	| Error;
+		| GetLoadoutsThatCanBeOptimizedProgress
+		| GetLoadoutsThatCanBeOptimizedOutputItem[]
+		| Error;
 };
 
 export type Progress = {

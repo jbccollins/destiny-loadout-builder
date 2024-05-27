@@ -721,31 +721,33 @@ export const replaceAllReducedCostVariantMods = (modIdList: EModId[]) => {
 // Replace active full cost variants with active reduced cost variants
 // Replace out-of-season reduced cost variants with active full cost variants
 // In-season reduced cost variants are left alone
-export const replaceAllModsThatDimWillReplace = (modIdList: EModId[], buggedAlternateSeasonModIdList: EModId[]) => {
-
+export const replaceAllModsThatDimWillReplace = (
+	modIdList: EModId[],
+	buggedAlternateSeasonModIdList: EModId[]
+) => {
 	const dimNormalizedModIdList = replaceAlternateSeasonReducedCostVariantMods(
 		replaceActiveSeasonFullCostVariantMods(modIdList)
 	);
 
 	// If the DIM loadout contains a full cost version of a mod that has a bugged
 	// dicounted version, then we want to keep the bugged discounted version
-	buggedAlternateSeasonModIdList.forEach(buggedAlternateSeasonModId => {
-		const buggedMod = getMod(buggedAlternateSeasonModId)
+	buggedAlternateSeasonModIdList.forEach((buggedAlternateSeasonModId) => {
+		const buggedMod = getMod(buggedAlternateSeasonModId);
 		if (!buggedMod) {
 			return;
 		}
-		const fullCostModVariantHash = reducedToNormalMod[buggedMod.hash]
+		const fullCostModVariantHash = reducedToNormalMod[buggedMod.hash];
 		if (!fullCostModVariantHash) {
 			return;
 		}
-		const fullCostVariantMod = getModByHash(fullCostModVariantHash)
-		const index = dimNormalizedModIdList.indexOf(fullCostVariantMod.id)
+		const fullCostVariantMod = getModByHash(fullCostModVariantHash);
+		const index = dimNormalizedModIdList.indexOf(fullCostVariantMod.id);
 
 		// Replace the mod at this index with the bugged version
 		if (index > -1) {
-			dimNormalizedModIdList[index] = buggedAlternateSeasonModId
+			dimNormalizedModIdList[index] = buggedAlternateSeasonModId;
 		}
-	})
+	});
 
-	return dimNormalizedModIdList
+	return dimNormalizedModIdList;
 };

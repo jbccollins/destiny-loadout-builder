@@ -614,7 +614,7 @@ type PreProcessArmorParams = {
 	alwaysConsiderCollectionsRolls: boolean;
 	useOnlyMasterworkedArmor: boolean;
 	excludeLockedItems: boolean;
-	exoticArtificeAssumption: EExoticArtificeAssumption
+	exoticArtificeAssumption: EExoticArtificeAssumption;
 	masterworkAssumption: EMasterworkAssumption;
 };
 
@@ -633,7 +633,7 @@ export const preProcessArmor = ({
 	useOnlyMasterworkedArmor,
 	excludeLockedItems,
 	exoticArtificeAssumption,
-	masterworkAssumption
+	masterworkAssumption,
 }: PreProcessArmorParams): [StrictArmorItems, AllClassItemMetadata] => {
 	const excludedItemIds: Record<string, boolean> = {};
 	if (dimLoadoutsFilterId === EDimLoadoutsFilterId.None) {
@@ -676,15 +676,19 @@ export const preProcessArmor = ({
 
 			if (exoticArtificeAssumption !== EExoticArtificeAssumption.None) {
 				strictArmorItems[i] = strictArmorItems[i].map((item) => {
-					const isMasterworked = item.isMasterworked || masterworkAssumption === EMasterworkAssumption.All;
+					const isMasterworked =
+						item.isMasterworked ||
+						masterworkAssumption === EMasterworkAssumption.All;
 					const isArtifice =
 						item.isArtifice ||
 						exoticArtificeAssumption === EExoticArtificeAssumption.All ||
-						(isMasterworked && exoticArtificeAssumption === EExoticArtificeAssumption.Masterworked);
+						(isMasterworked &&
+							exoticArtificeAssumption ===
+								EExoticArtificeAssumption.Masterworked);
 					return {
 						...item,
-						isArtifice
-					}
+						isArtifice,
+					};
 				});
 			}
 			return;

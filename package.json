@@ -20,7 +20,8 @@
 		"find-circular-dependencies": "npx madge --circular --extensions ts ./",
 		"generate": "npx ts-node src/scripts/generation/generate.ts",
 		"dummy": "npx ts-node src/utils/dummy",
-		"generateModCombinations": "npx ts-node src/scripts/generation/modCombinations/generateModCombinations.ts"
+		"generateModCombinations": "npx ts-node src/scripts/generation/modCombinations/generateModCombinations.ts",
+		"format": "npx prettier --write \"**/*.{js,ts}\""
 	},
 	"dependencies": {
 		"@destinyitemmanager/dim-api-types": "1.23.0",

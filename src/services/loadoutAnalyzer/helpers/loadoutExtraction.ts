@@ -69,12 +69,17 @@ type ExtractDimLoadoutParams = {
 	armorItems: ArmorItem[];
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
-	buggedAlternateSeasonModIdList: EModId[],
+	buggedAlternateSeasonModIdList: EModId[];
 };
 
 export function extractDimLoadout(params: ExtractDimLoadoutParams) {
-	const { dimLoadout, armorItems, masterworkAssumption, availableExoticArmor, buggedAlternateSeasonModIdList } =
-		params;
+	const {
+		dimLoadout,
+		armorItems,
+		masterworkAssumption,
+		availableExoticArmor,
+		buggedAlternateSeasonModIdList,
+	} = params;
 	console.log('>>>>>> dimLoadout', dimLoadout);
 	const destinyClassId =
 		DestinyClassHashToDestinyClass[dimLoadout.classType] || null; // Loadouts with just weapons don't need to have a class type
@@ -311,7 +316,12 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 	const flattenedMods = flattenMods(loadout);
 
 	const { armorSlotMods, raidMods, armorStatMods, artificeModIdList } =
-		unflattenMods(replaceAllModsThatDimWillReplace(flattenedMods, buggedAlternateSeasonModIdList));
+		unflattenMods(
+			replaceAllModsThatDimWillReplace(
+				flattenedMods,
+				buggedAlternateSeasonModIdList
+			)
+		);
 
 	loadout.armorSlotMods = armorSlotMods;
 	loadout.raidMods = raidMods;
@@ -350,7 +360,7 @@ type ExtractDimLoadoutsParams = {
 	dimLoadouts: DimLoadoutWithId[];
 	masterworkAssumption: EMasterworkAssumption;
 	availableExoticArmor: AvailableExoticArmor;
-	buggedAlternateSeasonModIdList: EModId[],
+	buggedAlternateSeasonModIdList: EModId[];
 };
 
 export const extractDimLoadouts = (
@@ -375,7 +385,7 @@ export const extractDimLoadouts = (
 				armorItems,
 				masterworkAssumption,
 				availableExoticArmor,
-				buggedAlternateSeasonModIdList
+				buggedAlternateSeasonModIdList,
 			})
 		);
 	});

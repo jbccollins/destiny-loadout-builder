@@ -1,8 +1,8 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import { TestCase } from '@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/analyzeLoadout.test';
 import {
-  getBaseOutput,
-  getBaseParams,
+	getBaseOutput,
+	getBaseParams,
 } from '@dlb/services/tests/loadoutAnalyzer/analyzeLoadout/fixtureHelpers';
 import { ELoadoutOptimizationTypeId } from '@dlb/types/AnalyzableLoadout';
 import { EArmorSlotId } from '@dlb/types/IdEnums';
@@ -18,16 +18,16 @@ output.metadata.unusedModSlots[EArmorSlotId.Leg] = 1;
 output.metadata.unstackableModIdList = [EModId.SolarScavenger];
 
 const testCase: TestCase = [
-  'UnstackableMods',
-  [params],
-  {
-    ...output,
-    canBeOptimized: true,
-    optimizationTypeList: [
-      ELoadoutOptimizationTypeId.UnstackableMods,
-      ELoadoutOptimizationTypeId.UnusedModSlots,
-    ],
-  },
+	'UnstackableMods',
+	[params],
+	{
+		...output,
+		canBeOptimized: true,
+		optimizationTypeList: [
+			ELoadoutOptimizationTypeId.UnstackableMods,
+			ELoadoutOptimizationTypeId.UnusedModSlots,
+		],
+	},
 ];
 
 export default testCase;

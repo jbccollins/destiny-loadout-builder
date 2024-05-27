@@ -27,26 +27,21 @@ baseOutput.optimizationTypeList = [
 ];
 baseOutput.metadata.lowestExoticArtificeCost = 13;
 baseOutput.metadata.lowestCost = 13;
-baseOutput.metadata.maxPossibleReservedArmorSlotEnergy = {
+(baseOutput.metadata.maxPossibleReservedArmorSlotEnergy = {
 	[EArmorSlotId.Head]: 9,
 	[EArmorSlotId.Arm]: 9,
 	[EArmorSlotId.Chest]: 9,
 	[EArmorSlotId.Leg]: 9,
 	[EArmorSlotId.ClassItem]: 9,
-},
-	baseOutput.metadata.unusedModSlots = {
+}),
+	(baseOutput.metadata.unusedModSlots = {
 		[EArmorSlotId.Head]: 9,
 		[EArmorSlotId.Arm]: 9,
 		[EArmorSlotId.Chest]: 9,
 		[EArmorSlotId.Leg]: 9,
 		[EArmorSlotId.ClassItem]: 9,
-	};
+	});
 
-
-const testCase: TestCase = [
-	'LowerCost',
-	[params],
-	baseOutput,
-];
+const testCase: TestCase = ['LowerCost', [params], baseOutput];
 
 export default testCase;

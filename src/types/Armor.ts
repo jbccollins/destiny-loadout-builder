@@ -486,10 +486,10 @@ export const getExtraMasterworkedStats = (
 	masterworkAssumption: EMasterworkAssumption
 ) =>
 	isMasterworked ||
-		(gearTierId === EGearTierId.Exotic &&
-			masterworkAssumption === EMasterworkAssumption.All) ||
-		(gearTierId === EGearTierId.Legendary &&
-			(masterworkAssumption === EMasterworkAssumption.All ||
-				masterworkAssumption === EMasterworkAssumption.Legendary))
+	(gearTierId === EGearTierId.Exotic &&
+		masterworkAssumption === EMasterworkAssumption.All) ||
+	(gearTierId === EGearTierId.Legendary &&
+		(masterworkAssumption === EMasterworkAssumption.All ||
+			masterworkAssumption === EMasterworkAssumption.Legendary))
 		? 2
 		: 0;

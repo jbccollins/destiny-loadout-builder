@@ -14,8 +14,7 @@ import { generateMeleeMapping } from './generateMeleeMapping';
 
 const buildMeleeData = (melee: DestinyInventoryItemDefinition): IMelee => {
 	// TODO: This is pretty janky and fragile. Relying on this random string to work well
-	const [_, unsafeElementString] =
-		melee.plug.plugCategoryIdentifier.split('.');
+	const [_, unsafeElementString] = melee.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
 	return {
 		name: melee.displayProperties.name,

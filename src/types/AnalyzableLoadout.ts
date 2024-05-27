@@ -595,8 +595,14 @@ export const humanizeOptimizationTypes = (
 	];
 
 	// Invalid trumps everything
-	if (filteredOptimizationTypeList.includes(ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration)) {
-		filteredOptimizationTypeList = [ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration]
+	if (
+		filteredOptimizationTypeList.includes(
+			ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration
+		)
+	) {
+		filteredOptimizationTypeList = [
+			ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
+		];
 	}
 
 	// TODO: I think that missing armor should take precedence over no exotic armor
@@ -624,15 +630,17 @@ export const humanizeOptimizationTypes = (
 		)
 	) {
 		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(
-			(x) => !(x === ELoadoutOptimizationTypeId.FewerWastedStats || x === ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers)
+			(x) =>
+				!(
+					x === ELoadoutOptimizationTypeId.FewerWastedStats ||
+					x === ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers
+				)
 		);
 	}
 
 	// LowerCost takes precedence over ExoticArtificeLowerCost
 	if (
-		filteredOptimizationTypeList.includes(
-			ELoadoutOptimizationTypeId.LowerCost
-		)
+		filteredOptimizationTypeList.includes(ELoadoutOptimizationTypeId.LowerCost)
 	) {
 		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(
 			(x) => x !== ELoadoutOptimizationTypeId.ExoticArtificeLowerCost

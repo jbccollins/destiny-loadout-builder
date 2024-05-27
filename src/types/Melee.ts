@@ -40,7 +40,7 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.KnifeTrick,
 		EMeleeId.WitheringBlade,
 		EMeleeId.ThreadedSpike,
-		EMeleeId.SnareBomb
+		EMeleeId.SnareBomb,
 	],
 
 	//Warlock
@@ -60,7 +60,7 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.PocketSingularity,
 		EMeleeId.ChainLightning,
 		EMeleeId.PenumbralBlast,
-		EMeleeId.ArcaneNeedle
+		EMeleeId.ArcaneNeedle,
 	],
 
 	// Titan
@@ -81,7 +81,7 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.Thunderclap,
 		EMeleeId.FrenziedBlade,
 		EMeleeId.HammerStrike,
-		EMeleeId.ShiverStrike
+		EMeleeId.ShiverStrike,
 	],
 };
 

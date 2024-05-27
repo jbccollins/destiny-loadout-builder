@@ -37,7 +37,7 @@ export const generatePreProcessedArmor = (
 		allClassItemMetadata,
 		availableExoticArmor,
 		exoticArtificeAssumption,
-		masterworkAssumption
+		masterworkAssumption,
 	} = params;
 	const selectedExoticArmor = findAvailableExoticArmorItem(
 		loadout.exoticHash,
@@ -59,7 +59,7 @@ export const generatePreProcessedArmor = (
 		useOnlyMasterworkedArmor: false,
 		excludeLockedItems: false,
 		exoticArtificeAssumption,
-		masterworkAssumption
+		masterworkAssumption,
 	});
 	return {
 		preProcessedArmor,

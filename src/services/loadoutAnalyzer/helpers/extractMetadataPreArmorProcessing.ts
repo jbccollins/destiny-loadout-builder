@@ -102,7 +102,7 @@ export default function extractMetadataPreArmorProcessing(
 	const [usesUnstackableMods, unstackableModIdList] =
 		hasUnstackableMods(allModsIdList);
 
-	metadata.unstackableModIdList = [...unstackableModIdList]
+	metadata.unstackableModIdList = [...unstackableModIdList];
 
 	return {
 		metadata,
@@ -115,6 +115,6 @@ export default function extractMetadataPreArmorProcessing(
 		usesActiveSeasonArtifactModsWithNoFullCostVariant,
 		usesActiveSeasonReducedCostArtifactMods,
 		usesActiveSeasonArtifactMods,
-		usesUnstackableMods
+		usesUnstackableMods,
 	};
 }

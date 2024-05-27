@@ -90,7 +90,6 @@ import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import isEqual from 'lodash/isEqual';
 import { NIL } from 'uuid';
 import alwaysConsiderCollectionsRollsReducer from './features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
-import analyzerExoticArtificeAssumption from './features/analyzerExoticArtificeAssumption/analyzerExoticArtificeAssumption';
 import armorSlotModViolationsReducer, {
 	setArmorSlotModViolations,
 } from './features/armorSlotModViolations/armorSlotModViolationsSlice';
@@ -107,7 +106,9 @@ import ignoredLoadoutOptimizationTypesReducer from './features/ignoredLoadoutOpt
 import inGameLoadoutsReducer from './features/inGameLoadouts/inGameLoadoutsSlice';
 import inGameLoadoutsFilterReducer from './features/inGameLoadoutsFilter/inGameLoadoutsFilterSlice';
 import inGameLoadoutsFlatItemIdListReducer from './features/inGameLoadoutsFlatItemIdList/inGameLoadoutsFlatItemIdListSlice';
-import isRunningProcessArmorWebWorkerReducer, { setIsRunningProcessArmorWebWorker } from './features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
+import isRunningProcessArmorWebWorkerReducer, {
+	setIsRunningProcessArmorWebWorker,
+} from './features/isRunningProcessArmorWebWorker/isRunningProcessArmorWebWorkerSlice';
 import loadoutTypeFilterReducer from './features/loadoutTypeFilter/loadoutTypeFilterSlice';
 import optimizationTypeFilterReducer from './features/optimizationTypeFilter/optimizationTypeFilterSlice';
 import performingBatchUpdateReducer from './features/performingBatchUpdate/performingBatchUpdateSlice';
@@ -153,7 +154,6 @@ export function makeStore() {
 			allDataLoaded: allDataLoadedReducer,
 			alwaysConsiderCollectionsRolls: alwaysConsiderCollectionsRollsReducer,
 			analyzableLoadouts: analyzableLoadoutsReducer,
-			analyzerExoticArtificeAssumption: analyzerExoticArtificeAssumption,
 			analyzerSearch: analyzerSearchReducer,
 			analyzerTabIndex: analyzerTabIndexReducer,
 			armor: armorReducer,
@@ -176,7 +176,8 @@ export function makeStore() {
 			isRunningProcessArmorWebWorker: isRunningProcessArmorWebWorkerReducer,
 			loadError: loadErrorReducer,
 			loadoutTypeFilter: loadoutTypeFilterReducer,
-			maxPossibleReservedArmorSlotEnergy: maxPossibleReservedArmorSlotEnergyReducer,
+			maxPossibleReservedArmorSlotEnergy:
+				maxPossibleReservedArmorSlotEnergyReducer,
 			maxPossibleStats: maxPossibleStatsReducer,
 			optimizationTypeFilter: optimizationTypeFilterReducer,
 			performingBatchUpdate: performingBatchUpdateReducer,
@@ -193,14 +194,16 @@ export function makeStore() {
 			selectedExoticArtificeAssumption: selectedExoticArtificeAssumptionReducer,
 			selectedFragments: selectedFragmentsReducer,
 			selectedGrenade: selectedGrenadeReducer,
-			selectedIntrinsicArmorPerkOrAttributeIds: selectedIntrinsicArmorPerkOrAttributeIdsSlice,
+			selectedIntrinsicArmorPerkOrAttributeIds:
+				selectedIntrinsicArmorPerkOrAttributeIdsSlice,
 			selectedJump: selectedJumpReducer,
 			selectedMasterworkAssumption: selectedMasterworkAssumptionReducer,
 			selectedMelee: selectedMeleeReducer,
 			selectedMinimumGearTier: selectedMinimumGearTierReducer,
 			selectedRaidMods: selectedRaidModsReducer,
 			selectedSuperAbility: selectedSuperAbilityReducer,
-			sharedLoadoutConfigStatPriorityOrder: sharedLoadoutConfigStatPriorityOrderReducer,
+			sharedLoadoutConfigStatPriorityOrder:
+				sharedLoadoutConfigStatPriorityOrderReducer,
 			sharedLoadoutDesiredStats: sharedLoadoutDesiredStatsReducer,
 			tabIndex: tabIndexReducer,
 			useBetaDimLinks: useBetaDimLinksReducer,
@@ -217,7 +220,6 @@ const store = makeStore();
 /**** This is a janky way to check when a change that would trigger a re-process of armor is needed *****/
 let allClassItemMetadataUuid = NIL;
 let alwaysConsiderCollectionsRollsUuid = NIL;
-let analyzerExoticArtificeAssumptionUuid = NIL;
 let desiredArmorStatsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
 let dimLoadoutsUuid = NIL;
@@ -372,10 +374,6 @@ function handleChange() {
 			value: selectedAssumedStatValues,
 			uuid: nextSelectedAssumedStatValuesUuid,
 		},
-		analyzerExoticArtificeAssumption: {
-			value: analyzerExoticArtificeAssumption,
-			uuid: nextAnalyzerExoticArtificeAssumptionUuid,
-		},
 		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -393,15 +391,15 @@ function handleChange() {
 		selectedSuperAbilityUuid !== nextSelectedSuperAbilityUuid ||
 		selectedClassAbilityUuid !== nextSelectedClassAbilityUuid ||
 		ignoredLoadoutOptimizationTypesUuid !==
-		nextIgnoredLoadoutOptimizationTypesUuid ||
+			nextIgnoredLoadoutOptimizationTypesUuid ||
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
-		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
+			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
 		selectedExoticArtificeAssumptionUuid !==
-		nextSelectedExoticArtificeAssumptionUuid ||
+			nextSelectedExoticArtificeAssumptionUuid ||
 		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
@@ -409,10 +407,9 @@ function handleChange() {
 		useBetaDimLinksUuid !== nextUseBetaDimLinksUuid ||
 		useOnlyMasterworkedArmorUuid !== nextUseOnlyMasterworkedArmorUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
-		analyzerExoticArtificeAssumptionUuid !== nextAnalyzerExoticArtificeAssumptionUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
-		nextAlwaysConsiderCollectionsRollsUuid;
+			nextAlwaysConsiderCollectionsRollsUuid;
 
 	if (
 		hasMismatchedLocalStorageRecallIds &&
@@ -429,7 +426,6 @@ function handleChange() {
 		useBetaDimLinksUuid = nextUseBetaDimLinksUuid;
 		ignoredLoadoutOptimizationTypesUuid =
 			nextIgnoredLoadoutOptimizationTypesUuid;
-		analyzerExoticArtificeAssumptionUuid = nextAnalyzerExoticArtificeAssumptionUuid;
 
 		const localStorageRecall = getLocalStorageRecall();
 		localStorageRecall.settings.alwaysConsiderCollectionsRolls =
@@ -441,11 +437,11 @@ function handleChange() {
 		localStorageRecall.settings.useBetaDimLinks = useBetaDimLinks;
 		localStorageRecall.settings.useBonusResilience = useBonusResilience;
 		localStorageRecall.settings.masterworkAssumption = masterworkAssumption;
-		localStorageRecall.settings.exoticArtificeAssumption = exoticArtificeAssumption;
+		localStorageRecall.settings.exoticArtificeAssumption =
+			exoticArtificeAssumption;
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
 		localStorageRecall.settings.dimLoadoutsFilterId = dimLoadoutsFilter;
 		localStorageRecall.settings.d2LoadoutsFilterId = inGameLoadoutsFilter;
-		localStorageRecall.settings.analyzerExoticArtificeAssumption = analyzerExoticArtificeAssumption;
 		localStorageRecall.settings.ignoredLoadoutOptimizationTypes =
 			ignoredLoadoutOptimizationTypes;
 		// Exotic
@@ -503,7 +499,8 @@ function handleChange() {
 		// variants of the selected exotic armor piece are masterworked. If we ever process
 		// armor without requiring an exotic then we would need to revisit that condition
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
-		selectedExoticArtificeAssumptionUuid !== nextSelectedExoticArtificeAssumptionUuid ||
+		selectedExoticArtificeAssumptionUuid !==
+			nextSelectedExoticArtificeAssumptionUuid ||
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
 		selectedDestinySubclassUuid !== nextSelectedDestinySubclassUuid ||
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
@@ -518,11 +515,11 @@ function handleChange() {
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
-		nextAlwaysConsiderCollectionsRollsUuid ||
+			nextAlwaysConsiderCollectionsRollsUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
 		inGameLoadoutsFlatItemIdListUuid !== nextInGameLoadoutsFlatItemIdListUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
-		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
+			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
 		selectedAssumedStatValuesUuid !== nextSelectedAssumedStatValuesUuid;
 	const hasNonDefaultUuids =
 		nextAllClassItemMetadataUuid !== NIL &&
@@ -603,7 +600,8 @@ function handleChange() {
 	selectedExoticArmorUuid = nextSelectedExoticArmorUuid;
 	selectedDestinySubclassUuid = nextSelectedDestinySubclassUuid;
 	selectedMasterworkAssumptionUuid = nextSelectedMasterworkAssumptionUuid;
-	selectedExoticArtificeAssumptionUuid = nextSelectedExoticArtificeAssumptionUuid;
+	selectedExoticArtificeAssumptionUuid =
+		nextSelectedExoticArtificeAssumptionUuid;
 	selectedFragmentsUuid = nextSelectedFragmentsUuid;
 	selectedRaidModsUuid = nextSelectedRaidModsUuid;
 	selectedArmorSlotModsUuid = nextSelectedArmorSlotModsUuid;
@@ -642,9 +640,9 @@ function handleChange() {
 
 	const fragmentArmorStatMapping = destinySubclassId
 		? getArmorStatMappingFromFragments(
-			selectedFragments[destinySubclassId],
-			selectedDestinyClass
-		)
+				selectedFragments[destinySubclassId],
+				selectedDestinyClass
+		  )
 		: getDefaultArmorStatMapping();
 	let mods = [...selectedRaidMods];
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
@@ -709,7 +707,8 @@ function handleChange() {
 		alwaysConsiderCollectionsRolls,
 		useOnlyMasterworkedArmor,
 		excludeLockedItems,
-		exoticArtificeAssumption
+		exoticArtificeAssumption,
+		masterworkAssumption,
 	});
 	console.log(
 		'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',
@@ -745,12 +744,12 @@ function handleChange() {
 				'@dlb/services/processArmor/processArmorWorker.ts',
 				import.meta.url
 			)
-		)
+		);
 
 		store.dispatch(setIsRunningProcessArmorWebWorker(true));
 		worker.postMessage({
 			eventId: processingEventId,
-			doProcessArmorParams
+			doProcessArmorParams,
 		});
 
 		worker.onmessage = (e: MessageEvent<MessageOutput>) => {
@@ -774,7 +773,7 @@ function handleChange() {
 				})
 			);
 			store.dispatch(setIsRunningProcessArmorWebWorker(false));
-		}
+		};
 	}
 
 	if (sharedLoadoutDesiredStats.needed && !sharedLoadoutDesiredStats.complete) {

@@ -66,7 +66,7 @@ const DestinyClassIdToDestinySubclassesMapping: EnumDictionary<
 		EDestinySubclassId.Striker,
 		EDestinySubclassId.Sunbreaker,
 		EDestinySubclassId.Berserker,
-		EDestinySubclassId.PrismaticTitan
+		EDestinySubclassId.PrismaticTitan,
 	],
 };
 

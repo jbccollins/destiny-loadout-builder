@@ -4,7 +4,7 @@ import {
 	EElementId,
 	EModCategoryId,
 	EModSocketCategoryId,
-	ERaidAndNightMareModTypeId
+	ERaidAndNightMareModTypeId,
 } from './IdEnums';
 import { IBonuses, IHash, IIcon, IIdentifiableName } from './globals';
 

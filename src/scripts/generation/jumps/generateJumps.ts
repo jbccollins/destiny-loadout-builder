@@ -14,8 +14,7 @@ import { generateJumpMapping } from './generateJumpMapping';
 
 const buildJumpData = (jump: DestinyInventoryItemDefinition): IJump => {
 	// TODO: This is pretty janky and fragile. Relying on this random string to work well
-	const [_, unsafeElementString] =
-		jump.plug.plugCategoryIdentifier.split('.');
+	const [_, unsafeElementString] = jump.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
 
 	return {

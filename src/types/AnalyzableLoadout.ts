@@ -2,12 +2,14 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultRaidModIdList } from '@dlb/redux/features/selectedRaidMods/selectedRaidModsSlice';
 import {
 	AnalyzeLoadoutParams,
-	EModVariantCheckType,
+	ELoadoutVariantCheckType,
 	GetLoadoutsThatCanBeOptimizedProgress,
 	GetLoadoutsThatCanBeOptimizedProgressMetadata,
 } from '@dlb/services/loadoutAnalyzer/helpers/types';
 import buggedAlternateSeasonModsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonMods';
 import buggedAlternateSeasonModsCorrectableChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/BuggedAlternateSeasonModsCorrectable';
+import exoticArtificeHigherStatTiersChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/ExoticArtificeHigherStatTiers';
+import exoticArtificeLowerCostChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/ExoticArtificeLowerCost';
 import fewerWastedStatsChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/FewerWastedStats';
 import higherStatTiersChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/HigherStatTiers';
 import invalidLoadoutConfigurationChecker from '@dlb/services/loadoutAnalyzer/loadoutOptimizationTypeCheckerDefinitions/InvalidLoadoutConfiguration';
@@ -275,6 +277,8 @@ export enum ELoadoutOptimizationTypeId {
 	UnstackableMods = 'UnstackableMods',
 	BuggedAlternateSeasonMods = 'BuggedAlternateSeasonMods',
 	BuggedAlternateSeasonModsCorrectable = 'BuggedAlternateSeasonModsCorrectable',
+	ExoticArtificeHigherStatTiers = 'ExoticArtificeHigherStatTiers',
+	ExoticArtificeLowerCost = 'ExoticArtificeLowerCost',
 	None = 'None',
 	Error = 'Error',
 }
@@ -282,12 +286,13 @@ export enum ELoadoutOptimizationTypeId {
 export type LoadoutOptimziationTypeCheckerOutput = {
 	meetsOptimizationCriteria: boolean;
 	shortCircuit: boolean; // Stop processing other optimization types if true
+	metadataOverrides?: Partial<GetLoadoutsThatCanBeOptimizedProgressMetadata>;
 };
 
 export type LoadoutOptimziationTypeCheckerParams = AnalyzeLoadoutParams & {
 	modIdList: EModId[];
 	metadata: GetLoadoutsThatCanBeOptimizedProgressMetadata;
-	variantHasResultsMapping: Record<EModVariantCheckType, boolean>;
+	variantHasResultsMapping: Record<ELoadoutVariantCheckType, boolean>;
 	hasResults: boolean;
 	hasUnusedModSlots: boolean;
 	maxStatTierDiff: number;
@@ -326,7 +331,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 > = {
 	[ELoadoutOptimizationTypeId.HigherStatTiers]: {
 		id: ELoadoutOptimizationTypeId.HigherStatTiers,
-		name: 'Higher Stat Tier',
+		name: 'Higher Stat Tiers',
 		description:
 			'Recreating this loadout with a different combination of armor and/or stat boosting mods can achieve higher stat tiers.',
 		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
@@ -484,6 +489,22 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		category: ELoadoutOptimizationCategoryId.TRANSIENT,
 		checker: buggedAlternateSeasonModsCorrectableChecker,
 	},
+	[ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers]: {
+		id: ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers,
+		name: 'Higher Stat Tiers (Exotic Artifice)',
+		description:
+			'Upgrading the exotic armor piece in this loadout with an artifice mod slot will allow this loadout to achieve higher stat tiers.',
+		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
+		checker: exoticArtificeHigherStatTiersChecker,
+	},
+	[ELoadoutOptimizationTypeId.ExoticArtificeLowerCost]: {
+		id: ELoadoutOptimizationTypeId.ExoticArtificeLowerCost,
+		name: 'Lower Cost (Exotic Artifice)',
+		description:
+			'Upgrading the exotic armor piece in this loadout with an artifice mod slot will allow this loadout to achieve the same stat tiers for a lower total stat mod cost. This may allow you to socket more mods or more expensive mods.',
+		category: ELoadoutOptimizationCategoryId.IMPROVEMENT,
+		checker: exoticArtificeLowerCostChecker,
+	},
 	[ELoadoutOptimizationTypeId.None]: {
 		id: ELoadoutOptimizationTypeId.None,
 		name: 'No Optimizations Found',
@@ -504,7 +525,9 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 export const OrderedLoadoutOptimizationTypeList: ELoadoutOptimizationTypeId[] =
 	ValidateEnumList(Object.values(ELoadoutOptimizationTypeId), [
 		ELoadoutOptimizationTypeId.HigherStatTiers,
+		ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers,
 		ELoadoutOptimizationTypeId.LowerCost,
+		ELoadoutOptimizationTypeId.ExoticArtificeLowerCost,
 		ELoadoutOptimizationTypeId.UnusedModSlots,
 		ELoadoutOptimizationTypeId.MissingArmor,
 		ELoadoutOptimizationTypeId.UnusableMods,
@@ -572,8 +595,14 @@ export const humanizeOptimizationTypes = (
 	];
 
 	// Invalid trumps everything
-	if (filteredOptimizationTypeList.includes(ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration)) {
-		filteredOptimizationTypeList = [ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration]
+	if (
+		filteredOptimizationTypeList.includes(
+			ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration
+		)
+	) {
+		filteredOptimizationTypeList = [
+			ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
+		];
 	}
 
 	// TODO: I think that missing armor should take precedence over no exotic armor
@@ -594,16 +623,30 @@ export const humanizeOptimizationTypes = (
 				].includes(x)
 		);
 	}
-	// Higher stat tier takes precedence over fewer wasted stats
+	// HigherStatTiers takes precedence over FewerWastedStats and ExoticArtificeHigherStatTiers
 	if (
 		filteredOptimizationTypeList.includes(
 			ELoadoutOptimizationTypeId.HigherStatTiers
 		)
 	) {
 		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(
-			(x) => !(x === ELoadoutOptimizationTypeId.FewerWastedStats)
+			(x) =>
+				!(
+					x === ELoadoutOptimizationTypeId.FewerWastedStats ||
+					x === ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers
+				)
 		);
 	}
+
+	// LowerCost takes precedence over ExoticArtificeLowerCost
+	if (
+		filteredOptimizationTypeList.includes(ELoadoutOptimizationTypeId.LowerCost)
+	) {
+		filteredOptimizationTypeList = filteredOptimizationTypeList.filter(
+			(x) => x !== ELoadoutOptimizationTypeId.ExoticArtificeLowerCost
+		);
+	}
+
 	// Dedupe and sort the list
 	filteredOptimizationTypeList = Array.from(
 		new Set(filteredOptimizationTypeList)

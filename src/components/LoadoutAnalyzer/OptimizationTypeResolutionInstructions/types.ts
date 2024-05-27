@@ -1,10 +1,13 @@
-import { ELoadoutOptimizationTypeId, RichAnalyzableLoadout } from "@dlb/types/AnalyzableLoadout";
+import {
+	ELoadoutOptimizationTypeId,
+	RichAnalyzableLoadout,
+} from '@dlb/types/AnalyzableLoadout';
 
 export type ResolutionInstructionProps = {
-  loadout: RichAnalyzableLoadout;
+	loadout: RichAnalyzableLoadout;
 };
 
 export type InspectingOptimizationDetailsProps = {
-  loadout: RichAnalyzableLoadout;
-  optimizationType: ELoadoutOptimizationTypeId;
+	loadout: RichAnalyzableLoadout;
+	optimizationType: ELoadoutOptimizationTypeId;
 };

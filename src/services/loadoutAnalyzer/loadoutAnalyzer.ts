@@ -1,7 +1,4 @@
-import {
-	ELoadoutOptimizationTypeId,
-	humanizeOptimizationTypes,
-} from '@dlb/types/AnalyzableLoadout';
+import { ELoadoutOptimizationTypeId } from '@dlb/types/AnalyzableLoadout';
 import analyzeLoadout from './analyzeLoadout';
 import {
 	EGetLoadoutsThatCanBeOptimizedProgressType,
@@ -29,7 +26,6 @@ export const getLoadoutsThatCanBeOptimized = (
 		progressCallback,
 		availableExoticArmor,
 		buggedAlternateSeasonModIdList,
-		exoticArtificeAssumption
 	} = params;
 	Object.values(loadouts).forEach((loadout) => {
 		try {
@@ -41,25 +37,18 @@ export const getLoadoutsThatCanBeOptimized = (
 				availableExoticArmor,
 				buggedAlternateSeasonModIdList,
 				loadout,
-				exoticArtificeAssumption
 			});
 
-			const humanizedOptimizationTypes =
-				humanizeOptimizationTypes(optimizationTypeList);
-
-			// Do this to fake a high score
-			// const humanizedOptimizationTypes = [];
-
-			if (humanizedOptimizationTypes.length > 0) {
+			if (optimizationTypeList.length > 0) {
 				result.push({
-					optimizationTypeList: humanizedOptimizationTypes,
+					optimizationTypeList,
 					loadoutId: loadout.dlbGeneratedId,
 				});
 				progressCallback({
 					type: EGetLoadoutsThatCanBeOptimizedProgressType.Progress,
 					canBeOptimized: true,
 					loadoutId: loadout.dlbGeneratedId,
-					optimizationTypeList: humanizedOptimizationTypes,
+					optimizationTypeList,
 					metadata,
 				});
 				return;

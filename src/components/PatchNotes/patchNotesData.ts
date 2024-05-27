@@ -11,6 +11,21 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-05-26',
+		version: '2.5.12',
+		title: 'Exotic Artifice Fixes',
+		sections: [
+			{
+				items: [
+					`Added two new analyzer optimization types "Lower Cost (Exotic Artifice)" and "Higher Stat Tiers (Exotic Artifice)"`,
+					`Removed the confusing setting "Exotic Artifice Analyzer Assumption", this has been replaced by the above two optimization types`,
+					`Fixed a bug where some optimal mod combinations involving 5 artifice mods were not being considered`,
+					`The analyzer will take significantly longer to run now due to the new optimization types`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-05-25',
 		version: '2.5.11',
 		title: 'Moar The Final Shape Prep',
@@ -20,7 +35,7 @@ export const PatchNotes: PatchNote[] = [
 					`Added exotic artifice analyzer assumption setting`,
 					`Added support for exotic class items (placeholder for now)`,
 					`Moved armor processing to a web worker. This was needed to make the extra overhead of the exotic class item processing more palatable`,
-					`Fixed a bug where opening a shared DLB loadout url would change your settings back to default`
+					`Fixed a bug where opening a shared DLB loadout url would change your settings back to default`,
 				],
 			},
 		],
@@ -33,7 +48,7 @@ export const PatchNotes: PatchNote[] = [
 			{
 				items: [
 					`Added fake prismatic subclass options to the subclass selector`,
-					`Added an exotic artifice assumption selector`
+					`Added an exotic artifice assumption selector`,
 				],
 			},
 		],
@@ -46,7 +61,7 @@ export const PatchNotes: PatchNote[] = [
 			{
 				items: [
 					`Added a new optimization type "Bugged Alternate Season Mods (Correctable)" that is subtley different from the non-correctable variant.`,
-					`More under the hood analyzer refactor`
+					`More under the hood analyzer refactor`,
 				],
 			},
 		],

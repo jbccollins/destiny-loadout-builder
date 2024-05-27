@@ -59,7 +59,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.GunpowderGamble,
 		EAspectId.WintersShroud,
 		EAspectId.ThreadedSpecter,
-		EAspectId.StylishExecutioner
+		EAspectId.StylishExecutioner,
 	],
 
 	//Warlock

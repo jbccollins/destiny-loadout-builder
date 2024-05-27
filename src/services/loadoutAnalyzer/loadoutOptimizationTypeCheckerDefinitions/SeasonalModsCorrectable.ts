@@ -2,7 +2,7 @@ import {
 	ELoadoutType,
 	LoadoutOptimizationTypeChecker,
 } from '@dlb/types/AnalyzableLoadout';
-import { EModVariantCheckType } from '../helpers/types';
+import { ELoadoutVariantCheckType } from '../helpers/types';
 
 const checker: LoadoutOptimizationTypeChecker = (params) => {
 	const {
@@ -32,7 +32,7 @@ const checker: LoadoutOptimizationTypeChecker = (params) => {
 
 	const meetsOptimizationCriteria =
 		usesActiveSeasonReducedCostArtifactMods &&
-		variantHasResultsMapping[EModVariantCheckType.Seasonal];
+		variantHasResultsMapping[ELoadoutVariantCheckType.SeasonalMods];
 
 	return {
 		meetsOptimizationCriteria,

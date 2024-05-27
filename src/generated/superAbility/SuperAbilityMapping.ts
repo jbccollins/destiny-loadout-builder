@@ -279,5 +279,5 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/8c2b0c0b4b3e7c0b0f6b7a6b2b2b1e5b.png',
 		hash: 1234567890,
 		elementId: EElementId.Solar,
-	}
+	},
 };

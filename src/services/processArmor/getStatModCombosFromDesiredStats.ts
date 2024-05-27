@@ -15,7 +15,6 @@ import {
 	ARTIFICE_MOD_BONUS_VALUE,
 	MAX_POTENTIAL_STAT_BOOST,
 	NUM_ARMOR_PIECES,
-	NUM_POTENTIAL_ARTIFICER_PIECES,
 } from '@dlb/utils/item-utils';
 import { roundUp10 } from './utils';
 
@@ -226,8 +225,7 @@ const getGenericModCombinations = (
 const getMaxPotentialStatBoost = (numArtificeItems: number) =>
 	MAX_POTENTIAL_STAT_BOOST -
 	// Subtract the "missing" artifice pieces
-	(NUM_POTENTIAL_ARTIFICER_PIECES - numArtificeItems) *
-		ARTIFICE_MOD_BONUS_VALUE;
+	(NUM_ARMOR_PIECES - numArtificeItems) * ARTIFICE_MOD_BONUS_VALUE;
 
 const canPotentiallyHitTargetStats = (
 	totalTargetStatShortfall: number,

@@ -26,6 +26,10 @@ import {
 import { selectSelectedDestinyClass } from '@dlb/redux/features/selectedDestinyClass/selectedDestinyClassSlice';
 import { selectSelectedExoticArmor } from '@dlb/redux/features/selectedExoticArmor/selectedExoticArmorSlice';
 import {
+	selectSelectedExoticArtificeAssumption,
+	setSelectedExoticArtificeAssumption,
+} from '@dlb/redux/features/selectedExoticArtificeAssumption/selectedExoticArtificeAssumptionSlice';
+import {
 	selectSelectedMasterworkAssumption,
 	setSelectedMasterworkAssumption,
 } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
@@ -52,6 +56,7 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDimLoadoutsFilterId,
+	EExoticArtificeAssumption,
 	EGearTierId,
 	EInGameLoadoutsFilterId,
 	EMasterworkAssumption,
@@ -379,6 +384,9 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 	const isRunningProcessArmorWebWorker = useAppSelector(
 		selectIsRunningProcessArmorWebWorker
 	);
+	const exoticArtificeAssumption = useAppSelector(
+		selectSelectedExoticArtificeAssumption
+	);
 
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState<Order>('asc');
@@ -481,6 +489,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 			useOnlyMasterworkedArmor ||
 			useBonusResilience ||
 			useZeroWastedStats ||
+			exoticArtificeAssumption !== EExoticArtificeAssumption.All ||
 			dimLoadoutsFilterId !== EDimLoadoutsFilterId.All ||
 			inGameLoadoutsFilterId !== EInGameLoadoutsFilterId.All ||
 			alwaysConsiderCollectionsRolls ||
@@ -491,6 +500,7 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 			useOnlyMasterworkedArmor,
 			useBonusResilience,
 			useZeroWastedStats,
+			exoticArtificeAssumption,
 			dimLoadoutsFilterId,
 			inGameLoadoutsFilterId,
 			alwaysConsiderCollectionsRolls,
@@ -504,6 +514,9 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 		dispatch(setUseBonusResilience(false));
 		dispatch(setUseZeroWastedStats(false));
 		dispatch(setUseOnlyMasterworkedArmor(false));
+		dispatch(
+			setSelectedExoticArtificeAssumption(EExoticArtificeAssumption.All)
+		);
 		dispatch(setDimLoadoutsFilter(EDimLoadoutsFilterId.All));
 		dispatch(setInGameLoadoutsFilter(EInGameLoadoutsFilterId.All));
 		dispatch(setAlwaysConsiderCollectionsRolls(false));

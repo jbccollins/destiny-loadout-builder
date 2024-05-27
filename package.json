@@ -20,7 +20,8 @@
 		"find-circular-dependencies": "npx madge --circular --extensions ts ./",
 		"generate": "npx ts-node src/scripts/generation/generate.ts",
 		"dummy": "npx ts-node src/utils/dummy",
-		"generateModCombinations": "npx ts-node src/scripts/generation/modCombinations/generateModCombinations.ts"
+		"generateModCombinations": "npx ts-node src/scripts/generation/modCombinations/generateModCombinations.ts",
+		"format": "npx prettier --write \"**/*.{js,ts}\""
 	},
 	"dependencies": {
 		"@destinyitemmanager/dim-api-types": "1.23.0",
@@ -30,7 +31,7 @@
 		"@emotion/react": "11.10.5",
 		"@emotion/styled": "11.10.5",
 		"@fontsource/roboto": "4.5.8",
-		"@mui/icons-material": "5.10.9",
+		"@mui/icons-material": "5.15.18",
 		"@mui/lab": "^5.0.0-alpha.162",
 		"@mui/material": "5.15.6",
 		"@reduxjs/toolkit": "1.8.6",

@@ -22,9 +22,11 @@ export const getInitialMetadata =
 	(): GetLoadoutsThatCanBeOptimizedProgressMetadata => {
 		return {
 			maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
+			maxPossibleExoticArtificeDesiredStatTiers: getDefaultArmorStatMapping(),
 			maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 			lowestCost: Infinity,
 			currentCost: Infinity,
+			lowestExoticArtificeCost: Infinity,
 			lowestWastedStats: Infinity,
 			currentWastedStats: Infinity,
 			mutuallyExclusiveModGroups: [],
@@ -100,7 +102,7 @@ export default function extractMetadataPreArmorProcessing(
 	const [usesUnstackableMods, unstackableModIdList] =
 		hasUnstackableMods(allModsIdList);
 
-	metadata.unstackableModIdList = [...unstackableModIdList]
+	metadata.unstackableModIdList = [...unstackableModIdList];
 
 	return {
 		metadata,
@@ -113,6 +115,6 @@ export default function extractMetadataPreArmorProcessing(
 		usesActiveSeasonArtifactModsWithNoFullCostVariant,
 		usesActiveSeasonReducedCostArtifactMods,
 		usesActiveSeasonArtifactMods,
-		usesUnstackableMods
+		usesUnstackableMods,
 	};
 }

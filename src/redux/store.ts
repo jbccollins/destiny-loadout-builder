@@ -90,7 +90,6 @@ import { getArmorSlotModViolations } from '@dlb/types/ModViolation';
 import isEqual from 'lodash/isEqual';
 import { NIL } from 'uuid';
 import alwaysConsiderCollectionsRollsReducer from './features/alwaysConsiderCollectionsRolls/alwaysConsiderCollectionsRollsSlice';
-import analyzerExoticArtificeAssumption from './features/analyzerExoticArtificeAssumption/analyzerExoticArtificeAssumption';
 import armorSlotModViolationsReducer, {
 	setArmorSlotModViolations,
 } from './features/armorSlotModViolations/armorSlotModViolationsSlice';
@@ -153,7 +152,6 @@ export function makeStore() {
 			allDataLoaded: allDataLoadedReducer,
 			alwaysConsiderCollectionsRolls: alwaysConsiderCollectionsRollsReducer,
 			analyzableLoadouts: analyzableLoadoutsReducer,
-			analyzerExoticArtificeAssumption: analyzerExoticArtificeAssumption,
 			analyzerSearch: analyzerSearchReducer,
 			analyzerTabIndex: analyzerTabIndexReducer,
 			armor: armorReducer,
@@ -217,7 +215,6 @@ const store = makeStore();
 /**** This is a janky way to check when a change that would trigger a re-process of armor is needed *****/
 let allClassItemMetadataUuid = NIL;
 let alwaysConsiderCollectionsRollsUuid = NIL;
-let analyzerExoticArtificeAssumptionUuid = NIL;
 let desiredArmorStatsUuid = NIL;
 let dimLoadoutsFilterUuid = NIL;
 let dimLoadoutsUuid = NIL;
@@ -372,10 +369,6 @@ function handleChange() {
 			value: selectedAssumedStatValues,
 			uuid: nextSelectedAssumedStatValuesUuid,
 		},
-		analyzerExoticArtificeAssumption: {
-			value: analyzerExoticArtificeAssumption,
-			uuid: nextAnalyzerExoticArtificeAssumptionUuid,
-		},
 		performingBatchUpdate: { value: performingBatchUpdate },
 	} = store.getState();
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
@@ -409,7 +402,6 @@ function handleChange() {
 		useBetaDimLinksUuid !== nextUseBetaDimLinksUuid ||
 		useOnlyMasterworkedArmorUuid !== nextUseOnlyMasterworkedArmorUuid ||
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
-		analyzerExoticArtificeAssumptionUuid !== nextAnalyzerExoticArtificeAssumptionUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
 		nextAlwaysConsiderCollectionsRollsUuid;
@@ -429,7 +421,6 @@ function handleChange() {
 		useBetaDimLinksUuid = nextUseBetaDimLinksUuid;
 		ignoredLoadoutOptimizationTypesUuid =
 			nextIgnoredLoadoutOptimizationTypesUuid;
-		analyzerExoticArtificeAssumptionUuid = nextAnalyzerExoticArtificeAssumptionUuid;
 
 		const localStorageRecall = getLocalStorageRecall();
 		localStorageRecall.settings.alwaysConsiderCollectionsRolls =
@@ -445,7 +436,6 @@ function handleChange() {
 		localStorageRecall.settings.minimumGearTierId = selectedMinimumGearTier;
 		localStorageRecall.settings.dimLoadoutsFilterId = dimLoadoutsFilter;
 		localStorageRecall.settings.d2LoadoutsFilterId = inGameLoadoutsFilter;
-		localStorageRecall.settings.analyzerExoticArtificeAssumption = analyzerExoticArtificeAssumption;
 		localStorageRecall.settings.ignoredLoadoutOptimizationTypes =
 			ignoredLoadoutOptimizationTypes;
 		// Exotic
@@ -709,7 +699,8 @@ function handleChange() {
 		alwaysConsiderCollectionsRolls,
 		useOnlyMasterworkedArmor,
 		excludeLockedItems,
-		exoticArtificeAssumption
+		exoticArtificeAssumption,
+		masterworkAssumption
 	});
 	console.log(
 		'>>>>>>>>>>> [STORE] preProcessedArmor <<<<<<<<<<<',

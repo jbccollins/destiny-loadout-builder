@@ -1,4 +1,4 @@
-import { EModVariantCheckType } from '@dlb/services/loadoutAnalyzer/helpers/types';
+import { ELoadoutVariantCheckType } from '@dlb/services/loadoutAnalyzer/helpers/types';
 import { ELoadoutType, LoadoutOptimizationTypeChecker } from '@dlb/types/AnalyzableLoadout';
 import { noMatchResult, usesBuggedAlternateSeasonMods } from './helpers';
 
@@ -10,7 +10,7 @@ const checker: LoadoutOptimizationTypeChecker = (params) => {
 
 
 	// If DIM can correct this bugged mod then we don't want to surface this to the user
-	if (loadout.loadoutType === ELoadoutType.DIM && variantHasResultsMapping[EModVariantCheckType.Seasonal]) {
+	if (loadout.loadoutType === ELoadoutType.DIM && variantHasResultsMapping[ELoadoutVariantCheckType.SeasonalMods]) {
 		return noMatchResult;
 	}
 

@@ -7,6 +7,7 @@ import {
   AnalyzableLoadout,
   ELoadoutOptimizationTypeId,
   LoadoutOptimizationTypeToLoadoutOptimizationMapping,
+  humanizeOptimizationTypes,
 } from '@dlb/types/AnalyzableLoadout';
 import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import {
@@ -14,7 +15,7 @@ import {
   getArmorStatMappingFromMods,
   getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
-import { EIntrinsicArmorPerkOrAttributeId } from '@dlb/types/IdEnums';
+import { EExoticArtificeAssumption, EGearTierId, EIntrinsicArmorPerkOrAttributeId, EMasterworkAssumption } from '@dlb/types/IdEnums';
 import {
   getValidRaidModArmorSlotPlacements,
   replaceAllReducedCostVariantMods,
@@ -22,25 +23,26 @@ import {
 import { cloneDeep, isEmpty } from 'lodash';
 import extractMetadataPostArmorProcessing, {
   getDefaultPostArmorProcessingInfo,
-} from './helpers/extractMetadataPostArmorProecessing';
+} from './helpers/extractMetadataPostArmorProcessing';
 import extractMetadataPreArmorProcessing from './helpers/extractMetadataPreArmorProcessing';
 import { generatePreProcessedArmor } from './helpers/generatePreProcessedArmor';
 import {
   AnalyzeLoadoutParams,
   AnalyzeLoadoutResult,
-  EModVariantCheckType,
+  ELoadoutVariantCheckType,
+  GetLoadoutsThatCanBeOptimizedProgressMetadata,
+  LoadoutVariantCheckSplit,
+  LoadoutVariants,
   ModReplacer,
-  ModVariantCheckSplit,
-  ModVariants,
 } from './helpers/types';
 import { findAvailableExoticArmorItem, unflattenMods } from './helpers/utils';
 
 // Order matters here for short-circuiting
-export const ModVariantCheckOrder: Record<
-  EModVariantCheckType,
-  ModVariantCheckSplit
+export const LoadoutVariantCheckOrder: Record<
+  ELoadoutVariantCheckType,
+  LoadoutVariantCheckSplit
 > = {
-  [EModVariantCheckType.Base]: {
+  [ELoadoutVariantCheckType.Base]: {
     beforeProcessing: [
       ELoadoutOptimizationTypeId.NoExoticArmor,
       ELoadoutOptimizationTypeId.MissingArmor,
@@ -62,7 +64,7 @@ export const ModVariantCheckOrder: Record<
       ELoadoutOptimizationTypeId.InvalidLoadoutConfiguration,
     ],
   },
-  [EModVariantCheckType.Seasonal]: {
+  [ELoadoutVariantCheckType.SeasonalMods]: {
     beforeProcessing: [],
     afterProcessing: [
       ELoadoutOptimizationTypeId.BuggedAlternateSeasonMods,
@@ -71,14 +73,22 @@ export const ModVariantCheckOrder: Record<
       ELoadoutOptimizationTypeId.SeasonalModsCorrectable,
     ],
   },
+  [ELoadoutVariantCheckType.ExoticArtifice]: {
+    beforeProcessing: [],
+    afterProcessing: [
+      ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers,
+      ELoadoutOptimizationTypeId.ExoticArtificeLowerCost,
+    ]
+  }
 };
 
-export const ModVariantCheckTypeToModReplacerMapping: Record<
-  EModVariantCheckType,
+export const LoadoutVariantCheckTypeToModReplacerMapping: Record<
+  ELoadoutVariantCheckType,
   ModReplacer
 > = {
-  [EModVariantCheckType.Base]: (armorSlotMods) => armorSlotMods,
-  [EModVariantCheckType.Seasonal]: replaceAllReducedCostVariantMods,
+  [ELoadoutVariantCheckType.Base]: (armorSlotMods) => armorSlotMods,
+  [ELoadoutVariantCheckType.SeasonalMods]: replaceAllReducedCostVariantMods,
+  [ELoadoutVariantCheckType.ExoticArtifice]: (armorSlotMods) => armorSlotMods,
 };
 
 export default function analyzeLoadout(
@@ -92,7 +102,6 @@ export default function analyzeLoadout(
     availableExoticArmor,
     masterworkAssumption,
     buggedAlternateSeasonModIdList,
-    exoticArtificeAssumption
   } = params;
 
   const {
@@ -121,13 +130,13 @@ export default function analyzeLoadout(
   // By the time we get here we will already have this loadout's mods
   // in the "DIM Corrected State" Where DIM will have swapped out any previous
   // season discounted mods with their full cost variants
-  const armorSlotModsVariants: ModVariants = [
+  const loadoutVariants: LoadoutVariants = [
     {
       modIdList:
-        ModVariantCheckTypeToModReplacerMapping[EModVariantCheckType.Base](
+        LoadoutVariantCheckTypeToModReplacerMapping[ELoadoutVariantCheckType.Base](
           allLoadoutModsIdList
         ),
-      modVariantCheckType: EModVariantCheckType.Base,
+      loadoutVariantCheckType: ELoadoutVariantCheckType.Base,
     },
   ];
 
@@ -136,12 +145,23 @@ export default function analyzeLoadout(
   // So don't even bother checking for seasonal loadouts if
   // the base variant mods contain alternate season reduced cost mods
   if ((usesActiveSeasonArtifactMods && !usesAlternateSeasonArtifactMods) || usesAlternateSeasonBuggedArtifactMods) {
-    armorSlotModsVariants.push({
+    loadoutVariants.push({
       modIdList:
-        ModVariantCheckTypeToModReplacerMapping[EModVariantCheckType.Seasonal](
+        LoadoutVariantCheckTypeToModReplacerMapping[ELoadoutVariantCheckType.SeasonalMods](
           allLoadoutModsIdList
         ),
-      modVariantCheckType: EModVariantCheckType.Seasonal,
+      loadoutVariantCheckType: ELoadoutVariantCheckType.SeasonalMods,
+    });
+  }
+
+  const exoticArmor = loadout.armor.find((x) => x.gearTierId === EGearTierId.Exotic);
+  if (exoticArmor && !exoticArmor.isArtifice) {
+    loadoutVariants.push({
+      modIdList:
+        LoadoutVariantCheckTypeToModReplacerMapping[ELoadoutVariantCheckType.ExoticArtifice](
+          allLoadoutModsIdList
+        ),
+      loadoutVariantCheckType: ELoadoutVariantCheckType.ExoticArtifice,
     });
   }
 
@@ -149,12 +169,13 @@ export default function analyzeLoadout(
     ...loadout.optimizationTypeList,
   ];
 
-  const variantHasResultsMapping: Record<EModVariantCheckType, boolean> = {
-    [EModVariantCheckType.Base]: false,
-    [EModVariantCheckType.Seasonal]: false,
+  const variantHasResultsMapping: Record<ELoadoutVariantCheckType, boolean> = {
+    [ELoadoutVariantCheckType.Base]: false,
+    [ELoadoutVariantCheckType.SeasonalMods]: false,
+    [ELoadoutVariantCheckType.ExoticArtifice]: false,
   };
 
-  armorSlotModsVariants.forEach(({ modIdList, modVariantCheckType }) => {
+  loadoutVariants.forEach(({ modIdList, loadoutVariantCheckType: loadoutVariantCheckType }) => {
     const { armorSlotMods, armorStatMods, artificeModIdList, raidMods } =
       unflattenMods(modIdList);
 
@@ -170,7 +191,8 @@ export default function analyzeLoadout(
     };
 
     const doChecks = (
-      optimizationTypes: ELoadoutOptimizationTypeId[]
+      optimizationTypes: ELoadoutOptimizationTypeId[],
+      _metadata: GetLoadoutsThatCanBeOptimizedProgressMetadata
     ): boolean => {
       let shortCircuit = false;
       for (const optimizationType of optimizationTypes) {
@@ -182,7 +204,7 @@ export default function analyzeLoadout(
           ...postArmorProcessingInfo,
           loadout: _loadout,
           modIdList,
-          metadata,
+          metadata: _metadata,
           variantHasResultsMapping,
           usesAlternateSeasonArtifactMods,
           usesAlternateSeasonNonBuggedArtifactMods,
@@ -195,6 +217,12 @@ export default function analyzeLoadout(
         });
         if (result.meetsOptimizationCriteria) {
           optimizationTypeIdList.push(optimizationType);
+          if (result.metadataOverrides) {
+            metadata = {
+              ...metadata,
+              ...result.metadataOverrides,
+            };
+          }
           if (result.shortCircuit) {
             shortCircuit = true;
             break;
@@ -205,7 +233,8 @@ export default function analyzeLoadout(
     };
 
     const shortCircuit = doChecks(
-      ModVariantCheckOrder[modVariantCheckType].beforeProcessing
+      LoadoutVariantCheckOrder[loadoutVariantCheckType].beforeProcessing,
+      metadata
     );
     if (shortCircuit) {
       return {
@@ -221,7 +250,9 @@ export default function analyzeLoadout(
         loadout,
         allClassItemMetadata,
         availableExoticArmor,
-        exoticArtificeAssumption
+        exoticArtificeAssumption: loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice ?
+          EExoticArtificeAssumption.All : EExoticArtificeAssumption.None,
+        masterworkAssumption: EMasterworkAssumption.All,
       });
 
     // Collect any stats that are not directly provided by explicit stat mods
@@ -283,17 +314,23 @@ export default function analyzeLoadout(
     // TODO: Why is this cloned here? Like why is this var set at all?
     postArmorProcessingInfo = cloneDeep(postProcessingData.info);
     // TODO: Should the metadata really be cloned on the Seaonal check? I think not?
-    if (modVariantCheckType === EModVariantCheckType.Base) {
+    if (loadoutVariantCheckType === ELoadoutVariantCheckType.Base) {
       metadata = cloneDeep(postProcessingData.metadata);
     }
-    variantHasResultsMapping[modVariantCheckType] =
+    variantHasResultsMapping[loadoutVariantCheckType] =
       postProcessingData.info.hasResults;
 
-    doChecks(ModVariantCheckOrder[modVariantCheckType].afterProcessing);
+    doChecks(LoadoutVariantCheckOrder[loadoutVariantCheckType].afterProcessing, postProcessingData.metadata);
   });
 
+  // Do this to fake a high score
+  // const humanizedOptimizationTypes = [];
+
+  const humanizedOptimizationTypes =
+    humanizeOptimizationTypes(optimizationTypeIdList);
+
   return {
-    optimizationTypeList: optimizationTypeIdList,
+    optimizationTypeList: humanizedOptimizationTypes,
     metadata,
     canBeOptimized: !isEmpty(optimizationTypeIdList),
   };

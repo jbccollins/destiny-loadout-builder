@@ -1,6 +1,20 @@
 export const zeroWastedStatModCombinations = {
-  "1": null,
-  "2": null,
+  "1": [
+    {
+      numArtificeMods: 2,
+      numMajorMods: 0,
+      numMinorMods: 1,
+      exactStatPoints: 11,
+    },
+  ],
+  "2": [
+    {
+      numArtificeMods: 4,
+      numMajorMods: 0,
+      numMinorMods: 0,
+      exactStatPoints: 12,
+    },
+  ],
   "3": [
     {
       numArtificeMods: 1,
@@ -9,13 +23,26 @@ export const zeroWastedStatModCombinations = {
       exactStatPoints: 3,
     },
   ],
-  "4": null,
+  "4": [
+    {
+      numArtificeMods: 3,
+      numMajorMods: 0,
+      numMinorMods: 1,
+      exactStatPoints: 14,
+    },
+  ],
   "5": [
     {
       numArtificeMods: 0,
       numMajorMods: 0,
       numMinorMods: 1,
       exactStatPoints: 5,
+    },
+    {
+      numArtificeMods: 5,
+      numMajorMods: 0,
+      numMinorMods: 0,
+      exactStatPoints: 15,
     },
   ],
   "6": [
@@ -26,7 +53,14 @@ export const zeroWastedStatModCombinations = {
       exactStatPoints: 6,
     },
   ],
-  "7": null,
+  "7": [
+    {
+      numArtificeMods: 4,
+      numMajorMods: 0,
+      numMinorMods: 1,
+      exactStatPoints: 17,
+    },
+  ],
   "8": [
     {
       numArtificeMods: 1,
@@ -55,6 +89,12 @@ export const zeroWastedStatModCombinations = {
       numMajorMods: 1,
       numMinorMods: 0,
       exactStatPoints: 10,
+    },
+    {
+      numArtificeMods: 5,
+      numMajorMods: 0,
+      numMinorMods: 1,
+      exactStatPoints: 20,
     },
   ],
   "11": [
@@ -97,12 +137,6 @@ export const zeroWastedStatModCombinations = {
   ],
   "15": [
     {
-      numArtificeMods: 5,
-      numMajorMods: 0,
-      numMinorMods: 0,
-      exactStatPoints: 15,
-    },
-    {
       numArtificeMods: 0,
       numMajorMods: 0,
       numMinorMods: 3,
@@ -112,6 +146,12 @@ export const zeroWastedStatModCombinations = {
       numArtificeMods: 0,
       numMajorMods: 1,
       numMinorMods: 1,
+      exactStatPoints: 15,
+    },
+    {
+      numArtificeMods: 5,
+      numMajorMods: 0,
+      numMinorMods: 0,
       exactStatPoints: 15,
     },
   ],
@@ -167,12 +207,6 @@ export const zeroWastedStatModCombinations = {
   ],
   "20": [
     {
-      numArtificeMods: 5,
-      numMajorMods: 0,
-      numMinorMods: 1,
-      exactStatPoints: 20,
-    },
-    {
       numArtificeMods: 0,
       numMajorMods: 0,
       numMinorMods: 4,
@@ -188,6 +222,12 @@ export const zeroWastedStatModCombinations = {
       numArtificeMods: 0,
       numMajorMods: 2,
       numMinorMods: 0,
+      exactStatPoints: 20,
+    },
+    {
+      numArtificeMods: 5,
+      numMajorMods: 0,
+      numMinorMods: 1,
       exactStatPoints: 20,
     },
   ],
@@ -255,18 +295,6 @@ export const zeroWastedStatModCombinations = {
   ],
   "25": [
     {
-      numArtificeMods: 5,
-      numMajorMods: 0,
-      numMinorMods: 2,
-      exactStatPoints: 25,
-    },
-    {
-      numArtificeMods: 5,
-      numMajorMods: 1,
-      numMinorMods: 0,
-      exactStatPoints: 25,
-    },
-    {
       numArtificeMods: 0,
       numMajorMods: 0,
       numMinorMods: 5,
@@ -282,6 +310,18 @@ export const zeroWastedStatModCombinations = {
       numArtificeMods: 0,
       numMajorMods: 2,
       numMinorMods: 1,
+      exactStatPoints: 25,
+    },
+    {
+      numArtificeMods: 5,
+      numMajorMods: 0,
+      numMinorMods: 2,
+      exactStatPoints: 25,
+    },
+    {
+      numArtificeMods: 5,
+      numMajorMods: 1,
+      numMinorMods: 0,
       exactStatPoints: 25,
     },
   ],
@@ -361,18 +401,6 @@ export const zeroWastedStatModCombinations = {
   ],
   "30": [
     {
-      numArtificeMods: 5,
-      numMajorMods: 0,
-      numMinorMods: 3,
-      exactStatPoints: 30,
-    },
-    {
-      numArtificeMods: 5,
-      numMajorMods: 1,
-      numMinorMods: 1,
-      exactStatPoints: 30,
-    },
-    {
       numArtificeMods: 0,
       numMajorMods: 1,
       numMinorMods: 4,
@@ -388,6 +416,18 @@ export const zeroWastedStatModCombinations = {
       numArtificeMods: 0,
       numMajorMods: 3,
       numMinorMods: 0,
+      exactStatPoints: 30,
+    },
+    {
+      numArtificeMods: 5,
+      numMajorMods: 0,
+      numMinorMods: 3,
+      exactStatPoints: 30,
+    },
+    {
+      numArtificeMods: 5,
+      numMajorMods: 1,
+      numMinorMods: 1,
       exactStatPoints: 30,
     },
   ],
@@ -473,6 +513,18 @@ export const zeroWastedStatModCombinations = {
   ],
   "35": [
     {
+      numArtificeMods: 0,
+      numMajorMods: 2,
+      numMinorMods: 3,
+      exactStatPoints: 35,
+    },
+    {
+      numArtificeMods: 0,
+      numMajorMods: 3,
+      numMinorMods: 1,
+      exactStatPoints: 35,
+    },
+    {
       numArtificeMods: 5,
       numMajorMods: 0,
       numMinorMods: 4,
@@ -488,18 +540,6 @@ export const zeroWastedStatModCombinations = {
       numArtificeMods: 5,
       numMajorMods: 2,
       numMinorMods: 0,
-      exactStatPoints: 35,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 2,
-      numMinorMods: 3,
-      exactStatPoints: 35,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 3,
-      numMinorMods: 1,
       exactStatPoints: 35,
     },
   ],
@@ -579,6 +619,18 @@ export const zeroWastedStatModCombinations = {
   ],
   "40": [
     {
+      numArtificeMods: 0,
+      numMajorMods: 3,
+      numMinorMods: 2,
+      exactStatPoints: 40,
+    },
+    {
+      numArtificeMods: 0,
+      numMajorMods: 4,
+      numMinorMods: 0,
+      exactStatPoints: 40,
+    },
+    {
       numArtificeMods: 5,
       numMajorMods: 0,
       numMinorMods: 5,
@@ -594,18 +646,6 @@ export const zeroWastedStatModCombinations = {
       numArtificeMods: 5,
       numMajorMods: 2,
       numMinorMods: 1,
-      exactStatPoints: 40,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 3,
-      numMinorMods: 2,
-      exactStatPoints: 40,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 4,
-      numMinorMods: 0,
       exactStatPoints: 40,
     },
   ],
@@ -673,6 +713,12 @@ export const zeroWastedStatModCombinations = {
   ],
   "45": [
     {
+      numArtificeMods: 0,
+      numMajorMods: 4,
+      numMinorMods: 1,
+      exactStatPoints: 45,
+    },
+    {
       numArtificeMods: 5,
       numMajorMods: 1,
       numMinorMods: 4,
@@ -688,12 +734,6 @@ export const zeroWastedStatModCombinations = {
       numArtificeMods: 5,
       numMajorMods: 3,
       numMinorMods: 0,
-      exactStatPoints: 45,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 4,
-      numMinorMods: 1,
       exactStatPoints: 45,
     },
   ],
@@ -749,6 +789,12 @@ export const zeroWastedStatModCombinations = {
   ],
   "50": [
     {
+      numArtificeMods: 0,
+      numMajorMods: 5,
+      numMinorMods: 0,
+      exactStatPoints: 50,
+    },
+    {
       numArtificeMods: 5,
       numMajorMods: 2,
       numMinorMods: 3,
@@ -758,12 +804,6 @@ export const zeroWastedStatModCombinations = {
       numArtificeMods: 5,
       numMajorMods: 3,
       numMinorMods: 1,
-      exactStatPoints: 50,
-    },
-    {
-      numArtificeMods: 0,
-      numMajorMods: 5,
-      numMinorMods: 0,
       exactStatPoints: 50,
     },
   ],
@@ -835,7 +875,7 @@ export const zeroWastedStatModCombinations = {
       exactStatPoints: 57,
     },
   ],
-  "58": null,
+  "58": [],
   "59": [
     {
       numArtificeMods: 3,
@@ -852,7 +892,7 @@ export const zeroWastedStatModCombinations = {
       exactStatPoints: 60,
     },
   ],
-  "61": null,
+  "61": [],
   "62": [
     {
       numArtificeMods: 4,
@@ -861,8 +901,8 @@ export const zeroWastedStatModCombinations = {
       exactStatPoints: 62,
     },
   ],
-  "63": null,
-  "64": null,
+  "63": [],
+  "64": [],
   "65": [
     {
       numArtificeMods: 5,

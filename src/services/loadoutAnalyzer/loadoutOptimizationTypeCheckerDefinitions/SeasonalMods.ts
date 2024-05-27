@@ -1,4 +1,4 @@
-import { EModVariantCheckType } from '@dlb/services/loadoutAnalyzer/helpers/types';
+import { ELoadoutVariantCheckType } from '@dlb/services/loadoutAnalyzer/helpers/types';
 import {
 	ELoadoutType,
 	LoadoutOptimizationTypeChecker,
@@ -34,7 +34,7 @@ const checker: LoadoutOptimizationTypeChecker = (params) => {
 		// we don't want to trigger a false positive on this one.
 		if (
 			loadout.loadoutType === ELoadoutType.DIM &&
-			variantHasResultsMapping[EModVariantCheckType.Seasonal]
+			variantHasResultsMapping[ELoadoutVariantCheckType.SeasonalMods]
 		) {
 			return noMatchResult;
 		}

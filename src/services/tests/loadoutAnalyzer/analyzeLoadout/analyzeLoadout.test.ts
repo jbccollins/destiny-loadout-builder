@@ -5,6 +5,8 @@ import BaseCase from './cases/Base';
 import BuggedAlternateSeasonMods from './cases/BuggedAlternateSeasonMods';
 import BuggedAlternateSeasonModsCorrectable from './cases/BuggedAlternateSeasonModsCorrectable';
 import DeprecatedMods from './cases/DeprecatedMods';
+import ExoticArtificeHigherStatTiers from './cases/ExoticArtificeHigherStatTiers';
+import ExoticArtificeLowerCost from './cases/ExoticArtificeLowerCost';
 import FewerWastedStats from './cases/FewerWastedStats';
 import HigherStatTiers from './cases/HigherStatTiers';
 import InvalidLoadoutConfiguration from './cases/InvalidLoadoutConfiguration';
@@ -48,6 +50,8 @@ const testCases: TestCase[] = [
 	BuggedAlternateSeasonMods,
 	BuggedAlternateSeasonModsCorrectable,
 	DeprecatedMods,
+	ExoticArtificeHigherStatTiers,
+	ExoticArtificeLowerCost,
 	FewerWastedStats,
 	HigherStatTiers,
 	InvalidLoadoutConfiguration,

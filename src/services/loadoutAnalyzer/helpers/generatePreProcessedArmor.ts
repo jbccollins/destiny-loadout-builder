@@ -11,6 +11,7 @@ import {
 	EExoticArtificeAssumption,
 	EGearTierId,
 	EInGameLoadoutsFilterId,
+	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { preProcessArmor } from '../../processArmor';
 import { findAvailableExoticArmorItem } from './utils';
@@ -21,6 +22,7 @@ type GeneratePreProcessedArmorParams = {
 	allClassItemMetadata: DestinyClassToAllClassItemMetadataMapping;
 	availableExoticArmor: AvailableExoticArmor;
 	exoticArtificeAssumption: EExoticArtificeAssumption;
+	masterworkAssumption: EMasterworkAssumption;
 };
 type GeneratePreProcessedArmorOutput = {
 	preProcessedArmor: StrictArmorItems;
@@ -29,7 +31,14 @@ type GeneratePreProcessedArmorOutput = {
 export const generatePreProcessedArmor = (
 	params: GeneratePreProcessedArmorParams
 ): GeneratePreProcessedArmorOutput => {
-	const { armor, loadout, allClassItemMetadata, availableExoticArmor, exoticArtificeAssumption } = params;
+	const {
+		armor,
+		loadout,
+		allClassItemMetadata,
+		availableExoticArmor,
+		exoticArtificeAssumption,
+		masterworkAssumption
+	} = params;
 	const selectedExoticArmor = findAvailableExoticArmorItem(
 		loadout.exoticHash,
 		loadout.destinyClassId,
@@ -50,6 +59,7 @@ export const generatePreProcessedArmor = (
 		useOnlyMasterworkedArmor: false,
 		excludeLockedItems: false,
 		exoticArtificeAssumption,
+		masterworkAssumption
 	});
 	return {
 		preProcessedArmor,

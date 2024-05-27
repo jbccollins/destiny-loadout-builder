@@ -12,7 +12,7 @@ import {
 	DestinyClassToAllClassItemMetadataMapping,
 } from '@dlb/types/Armor';
 import { ArmorStatMapping } from '@dlb/types/ArmorStat';
-import { EArmorSlotId, EExoticArtificeAssumption, EMasterworkAssumption } from '@dlb/types/IdEnums';
+import { EArmorSlotId, EMasterworkAssumption } from '@dlb/types/IdEnums';
 
 export enum EGetLoadoutsThatCanBeOptimizedProgressType {
 	Progress = 'progress',
@@ -20,10 +20,11 @@ export enum EGetLoadoutsThatCanBeOptimizedProgressType {
 }
 export type GetLoadoutsThatCanBeOptimizedProgressMetadata = {
 	maxPossibleDesiredStatTiers: ArmorStatMapping;
+	maxPossibleExoticArtificeDesiredStatTiers: ArmorStatMapping;
 	maxPossibleReservedArmorSlotEnergy: ArmorSlotEnergyMapping;
-	// maxStatTierDiff: number;
 	lowestCost: number;
 	currentCost: number;
+	lowestExoticArtificeCost: number;
 	lowestWastedStats: number;
 	currentWastedStats: number;
 	mutuallyExclusiveModGroups: string[]; // TODO: Rework this to contain the actual mod ids
@@ -49,26 +50,26 @@ export type GetLoadoutsThatCanBeOptimizedParams = {
 	) => unknown;
 	availableExoticArmor: AvailableExoticArmor;
 	buggedAlternateSeasonModIdList: EModId[];
-	exoticArtificeAssumption: EExoticArtificeAssumption;
 };
 export type GetLoadoutsThatCanBeOptimizedOutputItem = {
 	optimizationTypeList: ELoadoutOptimizationTypeId[];
 	loadoutId: string;
 };
 
-export enum EModVariantCheckType {
+export enum ELoadoutVariantCheckType {
 	Base = 'Base',
-	Seasonal = 'Seasonal',
+	SeasonalMods = 'SeasonalMods',
+	ExoticArtifice = 'ExoticArtifice',
 }
 
-export type ModVariantCheckSplit = {
+export type LoadoutVariantCheckSplit = {
 	beforeProcessing: ELoadoutOptimizationTypeId[];
 	afterProcessing: ELoadoutOptimizationTypeId[];
 };
 
-export type ModVariants = {
+export type LoadoutVariants = {
 	modIdList: EModId[];
-	modVariantCheckType: EModVariantCheckType;
+	loadoutVariantCheckType: ELoadoutVariantCheckType;
 }[];
 
 export type ModReplacer = (modIdList: EModId[]) => EModId[];
@@ -80,7 +81,6 @@ export type AnalyzeLoadoutParams = {
 	availableExoticArmor: AvailableExoticArmor;
 	buggedAlternateSeasonModIdList: EModId[];
 	loadout: AnalyzableLoadout;
-	exoticArtificeAssumption: EExoticArtificeAssumption;
 };
 
 export type AnalyzeLoadoutResult = {

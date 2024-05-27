@@ -29,9 +29,8 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
-	EExoticArtificeAssumption,
 	EGearTierId,
-	EMasterworkAssumption,
+	EMasterworkAssumption
 } from '@dlb/types/IdEnums';
 import { v4 } from 'uuid';
 
@@ -206,7 +205,6 @@ export const getBaseParams = (): AnalyzeLoadoutParams => {
 		availableExoticArmor: getBaseAvailableExoticArmor(),
 		buggedAlternateSeasonModIdList: [],
 		loadout: getBaseAnalyzeableLoadout(),
-		exoticArtificeAssumption: EExoticArtificeAssumption.None,
 	};
 };
 
@@ -221,6 +219,7 @@ const getBaseGetLoadoutsThatCanBeOptimizedProgressMetadata =
 				[EArmorStatId.Intellect]: 50,
 				[EArmorStatId.Strength]: 50,
 			},
+			maxPossibleExoticArtificeDesiredStatTiers: getDefaultArmorStatMapping(),
 			maxPossibleReservedArmorSlotEnergy: {
 				[EArmorSlotId.Head]: 7,
 				[EArmorSlotId.Arm]: 7,
@@ -229,6 +228,7 @@ const getBaseGetLoadoutsThatCanBeOptimizedProgressMetadata =
 				[EArmorSlotId.ClassItem]: 7,
 			},
 			lowestCost: 15,
+			lowestExoticArtificeCost: Infinity,
 			currentCost: 15,
 			lowestWastedStats: 0,
 			currentWastedStats: 0,
@@ -282,12 +282,14 @@ export const getUnprocessableBaseOutput = (): AnalyzeLoadoutResult => {
 			...baseOutput.metadata,
 			modPlacement: getDefaultModPlacements().placement,
 			maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
+			maxPossibleExoticArtificeDesiredStatTiers: getDefaultArmorStatMapping(),
 			maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 			unusedModSlots: {},
 			currentCost: 15,
 			currentWastedStats: 0,
 			lowestCost: Infinity,
 			lowestWastedStats: Infinity,
+			lowestExoticArtificeCost: Infinity,
 		},
 	};
 };

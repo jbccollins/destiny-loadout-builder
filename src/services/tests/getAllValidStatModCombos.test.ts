@@ -45,8 +45,8 @@ const testCases: TestCase[] = [
 			{
 				...getDefaultStatModCombo(),
 				[EArmorStatId.Mobility]: {
-					numMajorMods: 2,
-					numMinorMods: 0,
+					numMajorMods: 0,
+					numMinorMods: 4,
 					numArtificeMods: 0,
 					exactStatPoints: 20,
 				},
@@ -63,8 +63,8 @@ const testCases: TestCase[] = [
 			{
 				...getDefaultStatModCombo(),
 				[EArmorStatId.Mobility]: {
-					numMajorMods: 0,
-					numMinorMods: 4,
+					numMajorMods: 2,
+					numMinorMods: 0,
 					numArtificeMods: 0,
 					exactStatPoints: 20,
 				},
@@ -89,24 +89,6 @@ const testCases: TestCase[] = [
 			{
 				...getDefaultStatModCombo(),
 				[EArmorStatId.Mobility]: {
-					numMajorMods: 2,
-					numMinorMods: 0,
-					numArtificeMods: 0,
-					exactStatPoints: 20,
-				},
-			},
-			{
-				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
-					numMajorMods: 1,
-					numMinorMods: 2,
-					numArtificeMods: 0,
-					exactStatPoints: 20,
-				},
-			},
-			{
-				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
 					numMajorMods: 0,
 					numMinorMods: 4,
 					numArtificeMods: 0,
@@ -117,18 +99,27 @@ const testCases: TestCase[] = [
 				...getDefaultStatModCombo(),
 				[EArmorStatId.Mobility]: {
 					numMajorMods: 1,
+					numMinorMods: 2,
+					numArtificeMods: 0,
+					exactStatPoints: 20,
+				},
+			},
+			{
+				...getDefaultStatModCombo(),
+				[EArmorStatId.Mobility]: {
+					numMajorMods: 2,
 					numMinorMods: 0,
-					numArtificeMods: 4,
-					exactStatPoints: 22,
+					numArtificeMods: 0,
+					exactStatPoints: 20,
 				},
 			},
 			{
 				...getDefaultStatModCombo(),
 				[EArmorStatId.Mobility]: {
 					numMajorMods: 0,
-					numMinorMods: 2,
-					numArtificeMods: 4,
-					exactStatPoints: 22,
+					numMinorMods: 3,
+					numArtificeMods: 2,
+					exactStatPoints: 21,
 				},
 			},
 			{
@@ -144,9 +135,18 @@ const testCases: TestCase[] = [
 				...getDefaultStatModCombo(),
 				[EArmorStatId.Mobility]: {
 					numMajorMods: 0,
-					numMinorMods: 3,
-					numArtificeMods: 2,
-					exactStatPoints: 21,
+					numMinorMods: 2,
+					numArtificeMods: 4,
+					exactStatPoints: 22,
+				},
+			},
+			{
+				...getDefaultStatModCombo(),
+				[EArmorStatId.Mobility]: {
+					numMajorMods: 1,
+					numMinorMods: 0,
+					numArtificeMods: 4,
+					exactStatPoints: 22,
 				},
 			},
 		],

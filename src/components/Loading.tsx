@@ -46,10 +46,6 @@ import {
 	setHiddenLoadoutIdList,
 	setLoadoutSpecificIgnoredOptimizationTypes,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
-import {
-	selectAnalyzerExoticArtificeAssumption,
-	setAnalyzerExoticArtificeAssumption,
-} from '@dlb/redux/features/analyzerExoticArtificeAssumption/analyzerExoticArtificeAssumption';
 import { setArmorMetadata } from '@dlb/redux/features/armorMetadata/armorMetadataSlice';
 import {
 	selectDesiredArmorStats,
@@ -292,9 +288,6 @@ function Loading() {
 	);
 	const selectedExoticArtificeAssumption = useAppSelector(
 		selectSelectedExoticArtificeAssumption
-	);
-	const selectedAnalyzerExoticArtificeAssumption = useAppSelector(
-		selectAnalyzerExoticArtificeAssumption
 	);
 	// const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const selectedSuperAbility = useAppSelector(selectSelectedSuperAbility);
@@ -668,7 +661,6 @@ function Loading() {
 		const {
 			masterworkAssumption,
 			exoticArtificeAssumption,
-			analyzerExoticArtificeAssumption,
 			minimumGearTierId,
 			dimLoadoutsFilterId,
 			d2LoadoutsFilterId,
@@ -693,18 +685,6 @@ function Loading() {
 		} else {
 			dispatch(
 				setSelectedExoticArtificeAssumption(selectedExoticArtificeAssumption)
-			);
-		}
-
-		if (analyzerExoticArtificeAssumption !== undefined) {
-			dispatch(
-				setAnalyzerExoticArtificeAssumption(analyzerExoticArtificeAssumption)
-			);
-		} else {
-			dispatch(
-				setAnalyzerExoticArtificeAssumption(
-					selectedAnalyzerExoticArtificeAssumption
-				)
 			);
 		}
 
@@ -1116,12 +1096,6 @@ function Loading() {
 						)
 					);
 					log('dirtySelectedExoticArtificeAssumption', null, false);
-					dispatch(
-						setAnalyzerExoticArtificeAssumption(
-							selectedAnalyzerExoticArtificeAssumption
-						)
-					);
-					log('dirtyAnalyzerExoticArtificeAssumption', null, false);
 					dispatch(setDimLoadoutsFilter(selectedDimLoadoutsFilterId));
 					log('dirtyDimLoadoutsFilter', null, false);
 					dispatch(setInGameLoadoutsFilter(inGameLoadoutsFilter));

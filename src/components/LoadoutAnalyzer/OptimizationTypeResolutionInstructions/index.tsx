@@ -3,6 +3,8 @@ import BuggedAlternateSeasonMods from './BuggedAlternateSeasonMods';
 import BuggedAlternateSeasonModsCorrectable from './BuggedAlternateSeasonModsCorrectable';
 import DeprecatedMods from './DeprecatedMods';
 import Error from './Error';
+import ExoticArtificeHigherStatTiers from './ExoticArtificeHigherStatTiers';
+import ExoticArtificeLowerCost from './ExoticArtificeLowerCost';
 import FewerWastedStats from './FewerWastedStats';
 import HigherStatTiers from './HigherStatTiers';
 import InvalidLoadoutConfiguration from './InvalidLoadoutConfiguration';
@@ -49,6 +51,9 @@ const OptimizationTypeResolutionInstructionsMapping: Record<
 	[ELoadoutOptimizationTypeId.UnusedFragmentSlots]: UnusedFragmentSlots,
 	[ELoadoutOptimizationTypeId.UnusedModSlots]: UnusedModSlots,
 	[ELoadoutOptimizationTypeId.WastedStatTiers]: WastedStatTiers,
+	[ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers]:
+		ExoticArtificeHigherStatTiers,
+	[ELoadoutOptimizationTypeId.ExoticArtificeLowerCost]: ExoticArtificeLowerCost,
 
 	[ELoadoutOptimizationTypeId.Error]: Error,
 	[ELoadoutOptimizationTypeId.None]: () => null,

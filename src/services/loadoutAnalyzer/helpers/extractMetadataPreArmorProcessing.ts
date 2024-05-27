@@ -22,9 +22,11 @@ export const getInitialMetadata =
 	(): GetLoadoutsThatCanBeOptimizedProgressMetadata => {
 		return {
 			maxPossibleDesiredStatTiers: getDefaultArmorStatMapping(),
+			maxPossibleExoticArtificeDesiredStatTiers: getDefaultArmorStatMapping(),
 			maxPossibleReservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 			lowestCost: Infinity,
 			currentCost: Infinity,
+			lowestExoticArtificeCost: Infinity,
 			lowestWastedStats: Infinity,
 			currentWastedStats: Infinity,
 			mutuallyExclusiveModGroups: [],

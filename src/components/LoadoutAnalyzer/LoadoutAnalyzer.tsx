@@ -20,6 +20,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import BugIcon from '@mui/icons-material/BugReport';
 import CheckIcon from '@mui/icons-material/Check';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import FilterIcon from '@mui/icons-material/FilterAlt';
 import GppBadIcon from '@mui/icons-material/GppBad';
@@ -37,6 +38,7 @@ import ReportIcon from '@mui/icons-material/Report';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import RuleIcon from '@mui/icons-material/Rule';
+import SwitchAccessShortcutAddIcon from '@mui/icons-material/SwitchAccessShortcutAdd';
 
 import CustomTooltip from '@dlb/components/CustomTooltip';
 import useIsSmallScreen from '@dlb/hooks/useIsSmallScreen';
@@ -117,6 +119,12 @@ export const loadoutOptimizationIconMapping: EnumDictionary<
 	),
 	[ELoadoutOptimizationTypeId.BuggedAlternateSeasonModsCorrectable]: (
 		<PestControlIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.ExoticArtificeHigherStatTiers]: (
+		<SwitchAccessShortcutAddIcon key={0} sx={iconStyle} />
+	),
+	[ELoadoutOptimizationTypeId.ExoticArtificeLowerCost]: (
+		<CurrencyExchangeIcon key={0} sx={iconStyle} />
 	),
 };
 

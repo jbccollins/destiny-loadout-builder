@@ -34,6 +34,19 @@
               "uriFormat": "%s",
               "action": "debugWithChrome"
             }
+          },
+          {
+            "name": "generateModCombinations",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/ts-node",
+            "runtimeArgs": [
+              "--transpile-only",
+            ],
+            "program": "${workspaceRoot}/src/scripts/generation/modCombinations/generateModCombinations.ts",
+            "cwd": "${workspaceRoot}",
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": ["<node_internals>/**", "node_modules/**"]
           }
     ]
 }

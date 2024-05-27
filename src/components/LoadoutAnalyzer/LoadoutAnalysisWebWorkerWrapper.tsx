@@ -11,7 +11,6 @@ import {
 	setIsAnalyzed,
 	setIsAnalyzing,
 } from '@dlb/redux/features/analyzableLoadouts/analyzableLoadoutsSlice';
-import { selectAnalyzerExoticArtificeAssumption } from '@dlb/redux/features/analyzerExoticArtificeAssumption/analyzerExoticArtificeAssumption';
 import { selectArmor } from '@dlb/redux/features/armor/armorSlice';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { selectSelectedMasterworkAssumption } from '@dlb/redux/features/selectedMasterworkAssumption/selectedMasterworkAssumptionSlice';
@@ -35,9 +34,6 @@ export default function LoadoutAnalysisWebWorkerWrapper() {
 	);
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
 	const analyzeableLoadouts = useAppSelector(selectAnalyzableLoadouts);
-	const analyzerExoticArtificeAssumption = useAppSelector(
-		selectAnalyzerExoticArtificeAssumption
-	);
 	const {
 		isAnalyzed,
 		isAnalyzing,
@@ -84,7 +80,6 @@ export default function LoadoutAnalysisWebWorkerWrapper() {
 			allClassItemMetadata,
 			availableExoticArmor,
 			buggedAlternateSeasonModIdList,
-			exoticArtificeAssumption: analyzerExoticArtificeAssumption,
 		});
 	};
 

@@ -10,6 +10,7 @@ import {
 import {
 	EArmorSlotId,
 	EDestinyClassId,
+	EExoticArtificeAssumption,
 	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
@@ -17,23 +18,23 @@ import { intrinsicArmorPerkOrAttributeIdList } from '@dlb/types/IntrinsicArmorPe
 import {
 	ArmorSlotCapacity,
 	ArmorSlotIdToModIdListMapping,
+	PotentialRaidModArmorSlotPlacement,
 	getArmorSlotEnergyCapacity,
 	getDefaultPotentialRaidModArmorSlotPlacement,
 	getMod,
-	PotentialRaidModArmorSlotPlacement,
 } from '@dlb/types/Mod';
 import { cloneDeep } from 'lodash';
 import { ARTIFICE } from './constants';
 import { filterPotentialRaidModArmorSlotPlacements } from './filterPotentialRaidModArmorSlotPlacements';
 import {
+	StatModCombo,
 	getDefaultStatModCombo,
 	getStatModCombosFromDesiredStats,
-	StatModCombo,
 } from './getStatModCombosFromDesiredStats';
 import { SeenArmorSlotItems } from './seenArmorSlotItems';
 import {
-	getItemCountsFromSeenArmorSlotItems,
 	RequiredClassItemMetadataKey,
+	getItemCountsFromSeenArmorSlotItems,
 	sumModCosts,
 } from './utils';
 
@@ -149,6 +150,8 @@ type ProcessModPlacmentParams = {
 	useZeroWastedStats: boolean;
 	seenItemCounts: ItemCounts;
 	masterworkAssumption: EMasterworkAssumption;
+	exoticArtificeAssumption: EExoticArtificeAssumption,
+	useExoticClassItem: boolean;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
 	requiredAttributeClassItemMetadataKey: RequiredClassItemMetadataKey;
@@ -163,11 +166,14 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		useZeroWastedStats,
 		seenItemCounts,
 		masterworkAssumption,
+		exoticArtificeAssumption,
+		useExoticClassItem,
 		armorSlotMods,
 		reservedArmorSlotEnergy,
 		requiredAttributeClassItemMetadataKey,
 	} = params;
-	let canUseArtificeClassItem = false;
+	const useExoticArtificeClassItem = useExoticClassItem && exoticArtificeAssumption == EExoticArtificeAssumption.All;
+	let canUseArtificeClassItem = useExoticArtificeClassItem;
 	let hasDefaultMasterworkedClassItem = false;
 	const _sumOfSeenStats: StatList = [...sumOfSeenStats];
 
@@ -176,7 +182,12 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 			? getMod(placement.ClassItem).raidAndNightmareModTypeId
 			: null;
 
+	// Exotic class item conflicts with required class item
+	if (useExoticClassItem && (requiredClassItemMetadataKey !== null || requiredAttributeClassItemMetadataKey !== null)) {
+		return null;
+	}
 	// Conflicting required class items
+	// TODO: Is this actually working? "foo" && "bar" is always "bar
 	if (requiredClassItemMetadataKey && requiredAttributeClassItemMetadataKey) {
 		return null;
 	} else if (requiredAttributeClassItemMetadataKey) {
@@ -189,10 +200,12 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 	// to use a standard masterworked legendary class item over an unmasterworked artifice class item.
 	// The current logic here is bad. We probably need to check both cases and return each
 	// as a different result if both have valid mod combos.
-	if (requiredClassItemMetadataKey === null) {
+	if (useExoticArtificeClassItem) {
+		canUseArtificeClassItem = true;
+	} else if (!useExoticClassItem && requiredClassItemMetadataKey === null) {
 		canUseArtificeClassItem = allClassItemMetadata.Artifice.items.length > 0;
 	} else if (
-		allClassItemMetadata[requiredClassItemMetadataKey].hasMasterworkedVariant
+		!useExoticClassItem && allClassItemMetadata[requiredClassItemMetadataKey].hasMasterworkedVariant
 	) {
 		hasDefaultMasterworkedClassItem = true;
 		// _sumOfSeenStats = sumStatLists([
@@ -200,6 +213,9 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		// 	EXTRA_MASTERWORK_STAT_LIST,
 		// ]);
 	}
+
+
+	// console.log('shouldReturnNull', requiredClassItemMetadataKey && (requiredAttributeClassItemMetadataKey || useExoticClassItem));
 
 	// This is a special edge case where all of these conditions are true
 	// 1. We have a masterworked legendary class item
@@ -367,6 +383,8 @@ export type GetModCombosParams = {
 	useZeroWastedStats: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
 	masterworkAssumption: EMasterworkAssumption;
+	exoticArtificeAssumption: EExoticArtificeAssumption,
+	useExoticClassItem: boolean;
 	intrinsicArmorPerkOrAttributeIds: EIntrinsicArmorPerkOrAttributeId[];
 };
 
@@ -391,6 +409,8 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 		useZeroWastedStats,
 		allClassItemMetadata,
 		masterworkAssumption,
+		exoticArtificeAssumption,
+		useExoticClassItem,
 		intrinsicArmorPerkOrAttributeIds,
 	} = params;
 
@@ -401,7 +421,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 	for (const armorSlotId of ArmorSlotWithClassItemIdList) {
 		if (
 			sumModCosts(armorSlotMods[armorSlotId]) +
-				reservedArmorSlotEnergy[armorSlotId] >
+			reservedArmorSlotEnergy[armorSlotId] >
 			10
 		) {
 			return null;
@@ -483,6 +503,8 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 			useZeroWastedStats,
 			seenItemCounts,
 			masterworkAssumption,
+			exoticArtificeAssumption,
+			useExoticClassItem,
 			armorSlotMods,
 			reservedArmorSlotEnergy,
 			requiredAttributeClassItemMetadataKey,

@@ -424,7 +424,7 @@ export const hasValidSeenItemCounts = ({
 					// Adding the special class item will allow us to potentially
 					// fit all the raid mods
 					raidModExtraSocketModCategoryIdCounts[extraSocketModCategoryId] ===
-						seenItemCounts[extraSocketModCategoryId] + 1
+					seenItemCounts[extraSocketModCategoryId] + 1
 				) {
 					requiredClassItemMetadataKey = extraSocketModCategoryId;
 					continue;

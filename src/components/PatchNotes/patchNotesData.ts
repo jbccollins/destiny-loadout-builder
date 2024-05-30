@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-05-29',
+		version: '2.5.13',
+		title: 'Exotic Artifice Fixes',
+		sections: [
+			{
+				items: [
+					`Improved logic and UI around exotic class items`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-05-26',
 		version: '2.5.12',
 		title: 'Exotic Artifice Fixes',

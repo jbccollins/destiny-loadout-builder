@@ -447,6 +447,10 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 					requiredStatModIdList: armorStatModIdList,
 					requiredArtificeModIdList: artificeModIdList,
 					classItem: metadata.classItem,
+					useExoticClassItem:
+						selectedExoticArmor[selectedDestinyClass].armorSlot ===
+						EArmorSlotId.ClassItem,
+					exoticArtificeAssumption,
 					sortableFields: {
 						[EArmorStatId.Mobility]: metadata.totalArmorStatMapping.Mobility,
 						[EArmorStatId.Resilience]:

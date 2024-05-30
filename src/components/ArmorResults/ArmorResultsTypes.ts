@@ -8,6 +8,7 @@ import {
 } from '@dlb/services/processArmor/utils';
 import { ArmorItem } from '@dlb/types/Armor';
 import {
+	EExoticArtificeAssumption,
 	EIntrinsicArmorPerkOrAttributeId,
 	ERaidAndNightMareModTypeId,
 } from '@dlb/types/IdEnums';
@@ -34,39 +35,40 @@ export type ResultsTableLoadout = {
 	requiredArtificeModIdList: EModId[];
 	classItem: ProcessedArmorItemMetadataClassItem;
 	modPlacement: ArmorStatAndRaidModComboPlacement;
+	useExoticClassItem: boolean;
+	exoticArtificeAssumption: EExoticArtificeAssumption,
 };
 
 export const getClassItemText = (item: ResultsTableLoadout): string => {
+	if (item.useExoticClassItem) {
+		return item.exoticArtificeAssumption === EExoticArtificeAssumption.All ? 'Any Masterworked Exotic Artifice Class Item' : 'Any Masterworked Exotic Class Item';
+	}
 	let result = 'Class Item';
-	// const artificeArmorItems = item.armorItems.filter((x) => x.isArtifice);
 	if (
 		item.classItem.requiredClassItemMetadataKey !== null &&
 		isRaidOrNightmareRequiredClassItem(
 			item.classItem.requiredClassItemMetadataKey
 		)
 	) {
-		result = `${
-			getRaidAndNightmareModType(
-				item.classItem
-					.requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
-			).abbreviation
-		} Class Item`;
+		result = `${getRaidAndNightmareModType(
+			item.classItem
+				.requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
+		).abbreviation
+			} Class Item`;
 	} else if (
 		item.classItem.requiredClassItemMetadataKey !== null &&
 		isIntrinsicArmorPerkOrAttributeRequiredClassItem(
 			item.classItem.requiredClassItemMetadataKey
 		)
 	) {
-		result = `${
-			getIntrinsicArmorPerkOrAttribute(
-				item.classItem
-					.requiredClassItemMetadataKey as EIntrinsicArmorPerkOrAttributeId
-			).abbreviation
-		} Class Item`;
+		result = `${getIntrinsicArmorPerkOrAttribute(
+			item.classItem
+				.requiredClassItemMetadataKey as EIntrinsicArmorPerkOrAttributeId
+		).abbreviation
+			} Class Item`;
 	} else if (item.classItem.requiredClassItemMetadataKey === ARTIFICE) {
 		result = 'Artifice Class Item';
 	}
-	return `${
-		item.classItem.hasMasterworkedVariant ? 'Any Masterworked' : 'Any'
-	} ${result}`;
+	return `${item.classItem.hasMasterworkedVariant ? 'Any Masterworked' : 'Any'
+		} ${result}`;
 };

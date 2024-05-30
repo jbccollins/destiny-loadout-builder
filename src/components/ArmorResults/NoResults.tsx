@@ -145,6 +145,13 @@ function NoResults() {
 		inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None ||
 		!alwaysConsiderCollectionsRolls;
 
+	const hasGuardianGamesClassItemAndExoticClassItem =
+		selectedIntrinsicArmorPerkOrAttributeIds.includes(
+			EIntrinsicArmorPerkOrAttributeId.GuardianGames
+		) &&
+		selectedExoticArmor[selectedDestinyClass].armorSlot ===
+			EArmorSlotId.ClassItem;
+
 	if (isRunningProcessArmorWebWorker) {
 		return (
 			<div
@@ -159,92 +166,109 @@ function NoResults() {
 		);
 	}
 
+	const NoResultsContent = () => {
+		if (hasFotlMaskAndExoticHelmet) {
+			return (
+				<Box sx={{ color: '#ff4f2b' }}>
+					{`You have selected the "Festival of the Lost Mask" armor
+					attribute and an exotic helmet. This is not supported. Either
+					select a different exotic armor slot or clear the
+					"Festival of the Lost Mask" armor attribute selection.`}
+				</Box>
+			);
+		}
+
+		if (hasGuardianGamesClassItemAndExoticClassItem) {
+			return (
+				<Box sx={{ color: '#ff4f2b' }}>
+					{`You have selected the "Guardian Games Class Item" armor attribute and an exotic class item. This is not supported. Either select a different exotic armor slot or clear the "Guardian Games Class Item" armor attribute selection.`}
+				</Box>
+			);
+		}
+
+		return (
+			<>
+				{hasOptionsToModify && (
+					<>
+						<Subtitle>Try these troubleshooting steps:</Subtitle>
+						<ul>
+							{hasDesiredArmorStats && <li>Reduce your desired stat tiers</li>}
+							{hasFragmentsWithStatPenalties && (
+								<li>Remove fragments with stat penalties</li>
+							)}
+							{hasRaidMods && <li>Remove Raid Mods</li>}
+							{hasIntrinsicArmorPerkOrAttributes && (
+								<li>Remove Armor Attributes</li>
+							)}
+						</ul>
+					</>
+				)}
+				{hasSettingsToModify && (
+					<>
+						<Subtitle>Try changing these settings:</Subtitle>
+						<ul>
+							{useZeroWastedStats && (
+								<li>
+									<UseZeroWastedStatsToggleSwitch />
+								</li>
+							)}
+							{!alwaysConsiderCollectionsRolls && (
+								<li>
+									<AlwaysConsiderCollectionsRollsToggleSwitch />
+								</li>
+							)}
+							{useOnlyMasterworkedArmor && (
+								<li>
+									<UseOnlyMasterworkedArmorToggleSwitch />
+								</li>
+							)}
+							{withUseBonusResilience && (
+								<li>
+									<UseBonusResilienceToggleSwitch />
+								</li>
+							)}
+							{excludeLockedItems && (
+								<li>
+									<ExcludeLockedItemsToggleSwitch />
+								</li>
+							)}
+							{dimLoadoutsFilterId === EDimLoadoutsFilterId.None && (
+								<li>
+									<DimLoadoutsFilterSelector />
+								</li>
+							)}
+							{inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None && (
+								<li>
+									<InGameLoadoutsFilterSelector />
+								</li>
+							)}
+							{masterworkAssumption !== EMasterworkAssumption.All && (
+								<li>
+									<MasterworkAssumptionSelector />
+								</li>
+							)}
+							{exoticArtificeAssumption !== EExoticArtificeAssumption.All && (
+								<li
+									style={{
+										paddingTop: '10px',
+									}}
+								>
+									<ExoticArtificeAssumptionSelector />
+								</li>
+							)}
+						</ul>
+					</>
+				)}
+			</>
+		);
+	};
+
 	return (
 		<>
 			<Container>
 				<Content>
 					<Title>No Results</Title>
-					{hasOptionsToModify && (
-						<>
-							<Subtitle>Try these troubleshooting steps:</Subtitle>
-							<ul>
-								{hasDesiredArmorStats && (
-									<li>Reduce your desired stat tiers</li>
-								)}
-								{hasFragmentsWithStatPenalties && (
-									<li>Remove fragments with stat penalties</li>
-								)}
-								{hasRaidMods && <li>Remove Raid Mods</li>}
-								{hasIntrinsicArmorPerkOrAttributes && (
-									<li>Remove Armor Attributes</li>
-								)}
-							</ul>
-							{hasFotlMaskAndExoticHelmet && (
-								<Box sx={{ color: '#ff4f2b' }}>
-									{`You have selected the "Festival of the Lost Mask" armor
-										attribute and an exotic helmet. This is not supported. Either
-										select a different exotic armor slot or clear the
-										"Festival of the Lost Mask" armor attribute selection.`}
-								</Box>
-							)}
-						</>
-					)}
-					{hasSettingsToModify && (
-						<>
-							<Subtitle>Try changing these settings:</Subtitle>
-							<ul>
-								{useZeroWastedStats && (
-									<li>
-										<UseZeroWastedStatsToggleSwitch />
-									</li>
-								)}
-								{!alwaysConsiderCollectionsRolls && (
-									<li>
-										<AlwaysConsiderCollectionsRollsToggleSwitch />
-									</li>
-								)}
-								{useOnlyMasterworkedArmor && (
-									<li>
-										<UseOnlyMasterworkedArmorToggleSwitch />
-									</li>
-								)}
-								{withUseBonusResilience && (
-									<li>
-										<UseBonusResilienceToggleSwitch />
-									</li>
-								)}
-								{excludeLockedItems && (
-									<li>
-										<ExcludeLockedItemsToggleSwitch />
-									</li>
-								)}
-								{dimLoadoutsFilterId === EDimLoadoutsFilterId.None && (
-									<li>
-										<DimLoadoutsFilterSelector />
-									</li>
-								)}
-								{inGameLoadoutsFilterId === EInGameLoadoutsFilterId.None && (
-									<li>
-										<InGameLoadoutsFilterSelector />
-									</li>
-								)}
-								{masterworkAssumption !== EMasterworkAssumption.All && (
-									<li>
-										<MasterworkAssumptionSelector />
-									</li>
-								)}
-								{exoticArtificeAssumption !== EExoticArtificeAssumption.All && (
-									<li
-										style={{
-											paddingTop: '10px',
-										}}
-									>
-										<ExoticArtificeAssumptionSelector />
-									</li>
-								)}
-							</ul>
-						</>
-					)}
+					<NoResultsContent />
 				</Content>
 			</Container>
 		</>

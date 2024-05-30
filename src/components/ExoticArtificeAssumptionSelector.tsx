@@ -57,7 +57,7 @@ const ExoticArtificeAssumptionSelector = () => {
 			</FormControl>
 			<CustomTooltip
 				title={
-					'Exotic Class Items are always considered to be "artifice" regardless of this setting.'
+					'Exotic Class Items will only be treated as having an artifice modslot if this setting is set to "All". Put another way: Exotic Class Items that already have an artifice modslot WILL NOT be treated as having an artifice modslot UNLESS this setting is set to "All".'
 				}
 			>
 				<HelpIcon />

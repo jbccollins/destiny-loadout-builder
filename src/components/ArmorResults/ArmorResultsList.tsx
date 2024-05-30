@@ -36,6 +36,7 @@ import {
 } from '@dlb/types/Armor';
 import {
 	ArmorSlotWithClassItemIdList,
+	EXOTIC_CLASS_ITEM_ICON,
 	getArmorSlot,
 } from '@dlb/types/ArmorSlot';
 import {
@@ -90,6 +91,7 @@ type ResultsItemProps = {
 	useBonusResilience: boolean;
 	exoticArmorItem: AvailableExoticArmorItem;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
+	useExoticClassItem: boolean;
 };
 
 const ResultsContainer = styled(Box)(({ theme }) => ({
@@ -230,6 +232,7 @@ function ResultsItem({
 	useBonusResilience,
 	exoticArmorItem,
 	armorSlotMods,
+	useExoticClassItem,
 }: ResultsItemProps) {
 	const [showDetailedStatBreakdown, setShowDetailedStatBreakdown] =
 		React.useState(false);
@@ -366,7 +369,11 @@ function ResultsItem({
 						isMasterworked={item.classItem.hasMasterworkedVariant}
 						width={40}
 						height={40}
-						src={getArmorSlot(EArmorSlotId.ClassItem).icon}
+						src={
+							useExoticClassItem
+								? EXOTIC_CLASS_ITEM_ICON
+								: getArmorSlot(EArmorSlotId.ClassItem).icon
+						}
 					/>
 					<IconText>{getClassItemText(item)}</IconText>
 				</IconTextContainer>
@@ -791,6 +798,10 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 	const selectedAspects = useAppSelector(selectSelectedAspects);
 	const destinySubclassId = selectedDestinySubclass[selectedDestinyClass];
 
+	const useExoticClassItem =
+		selectedExoticArmor[selectedDestinyClass].armorSlot ===
+		EArmorSlotId.ClassItem;
+
 	const allClassItemMetadata = useAppSelector(selectAllClassItemMetadata);
 	const classItemMetadata = allClassItemMetadata[selectedDestinyClass];
 	const exoticArmorItem = selectedExoticArmor[selectedDestinyClass];
@@ -866,7 +877,9 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							exoticArmorItem={exoticArmorItem}
 							armorSlotMods={selectedArmorSlotMods}
 							useBetaDimLinks={useBetaDimLinks}
+							useExoticClassItem={useExoticClassItem}
 							dimLink={`${generateDimLink({
+								useExoticClassItem: useExoticClassItem,
 								useBetaDimLinks,
 								raidModIdList: selectedRaidMods,
 								armorStatModIdList: item.requiredStatModIdList,
@@ -902,7 +915,8 @@ function ArmorResultsList({ items }: ArmorResultsListProps) {
 							dimQuery={`${generateDimQuery(
 								item.armorItems,
 								item.classItem,
-								classItemMetadata
+								classItemMetadata,
+								useExoticClassItem
 							)}`}
 						/>
 					);

@@ -196,6 +196,7 @@ import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/navigation';
 import hash from 'object-hash';
 import { useEffect, useState } from 'react';
+import { ExoticClassItemMapping } from './ExoticSelector';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -510,6 +511,16 @@ function Loading() {
 			const { exoticHash, destinySubclassId } =
 				localStorageRecall.classSpecificConfig[destinyClassId];
 
+			// TODO: Hack for exotic class items
+			if (exoticHash === -1) {
+				dispatch(
+					setSelectedExoticArmorForDestinyClass({
+						destinyClassId,
+						availableExoticArmorItem: ExoticClassItemMapping[destinyClassId],
+					})
+				);
+			}
+
 			// Exotics
 			for (const armorSlotId of ArmorSlotIdList) {
 				const availableExoticArmorForSlot = availableExoticArmor[
@@ -521,7 +532,7 @@ function Loading() {
 				if (item) {
 					dispatch(
 						setSelectedExoticArmorForDestinyClass({
-							destinyClassId: destinyClassId as EDestinyClassId,
+							destinyClassId,
 							availableExoticArmorItem: item,
 						})
 					);

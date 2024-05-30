@@ -9,8 +9,12 @@ import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticA
 
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
 import { AvailableExoticArmorItem, EXOTIC_CLASS_ITEM } from '@dlb/types/Armor';
-import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
-import { EArmorSlotId } from '@dlb/types/IdEnums';
+import {
+	ArmorSlotIdList,
+	EXOTIC_CLASS_ITEM_ICON,
+	getArmorSlot,
+} from '@dlb/types/ArmorSlot';
+import { EArmorSlotId, EDestinyClassId } from '@dlb/types/IdEnums';
 import { MISSING_ICON } from '@dlb/types/globals';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Popper, styled } from '@mui/material';
@@ -93,6 +97,34 @@ const StyledPopper = styled(Popper)({
 	},
 });
 
+const exoticClassItem: AvailableExoticArmorItem = {
+	hash: -1,
+	name: EXOTIC_CLASS_ITEM,
+	armorSlot: EArmorSlotId.ClassItem,
+	count: 1,
+	exoticPerk: null,
+	icon: EXOTIC_CLASS_ITEM_ICON,
+	destinyClassName: EDestinyClassId.Hunter,
+};
+
+export const ExoticClassItemMapping: Record<
+	EDestinyClassId,
+	AvailableExoticArmorItem
+> = {
+	[EDestinyClassId.Hunter]: {
+		...exoticClassItem,
+		destinyClassName: EDestinyClassId.Hunter,
+	},
+	[EDestinyClassId.Titan]: {
+		...exoticClassItem,
+		destinyClassName: EDestinyClassId.Titan,
+	},
+	[EDestinyClassId.Warlock]: {
+		...exoticClassItem,
+		destinyClassName: EDestinyClassId.Warlock,
+	},
+};
+
 function ExoticSelector() {
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);
 	const availableExoticArmor = useAppSelector(selectAvailableExoticArmor);
@@ -103,17 +135,11 @@ function ExoticSelector() {
 		console.log(
 			'>>>>>>>>>>> [Memo] availableExoticArmorItems calculated <<<<<<<<<<<'
 		);
+
 		const res: AvailableExoticArmorItem[] = [
-			{
-				hash: -1,
-				name: EXOTIC_CLASS_ITEM,
-				armorSlot: EArmorSlotId.ClassItem,
-				count: 1,
-				exoticPerk: null,
-				icon: getArmorSlot(EArmorSlotId.ClassItem).icon,
-				destinyClassName: selectedDestinyClass,
-			},
+			ExoticClassItemMapping[selectedDestinyClass],
 		];
+
 		if (availableExoticArmor && selectedDestinyClass) {
 			ArmorSlotIdList.forEach((armorSlotId) => {
 				res.push(availableExoticArmor[selectedDestinyClass][armorSlotId]);
@@ -155,7 +181,7 @@ function ExoticSelector() {
 				}
 				getExtraContent={getExtraContent}
 				getLabel={(option: AvailableExoticArmorItem) => option.name}
-				textFieldClassName={'exotic-selector-text-field'}
+				textFieldClassName={'exotic-selector-text-field EXOTIC-SELECTOR'}
 			/>
 		)
 	);

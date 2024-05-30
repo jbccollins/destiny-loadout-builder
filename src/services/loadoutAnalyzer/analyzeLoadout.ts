@@ -16,6 +16,7 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import {
+	EArmorSlotId,
 	EExoticArtificeAssumption,
 	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,
@@ -255,16 +256,17 @@ export default function analyzeLoadout(
 				};
 			}
 
+			const exoticArtificeAssumption = loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice
+				? EExoticArtificeAssumption.All
+				: EExoticArtificeAssumption.None
+
 			const { preProcessedArmor, allClassItemMetadata: _allClassItemMetadata } =
 				generatePreProcessedArmor({
 					armor,
 					loadout,
 					allClassItemMetadata,
 					availableExoticArmor,
-					exoticArtificeAssumption:
-						loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice
-							? EExoticArtificeAssumption.All
-							: EExoticArtificeAssumption.None,
+					exoticArtificeAssumption,
 					masterworkAssumption: EMasterworkAssumption.All,
 				});
 
@@ -281,10 +283,18 @@ export default function analyzeLoadout(
 				loadout.destinyClassId
 			);
 
+			const useExoticClassItem = loadout.armor.some(
+				(x) =>
+					x.armorSlot === EArmorSlotId.ClassItem &&
+					x.gearTierId === EGearTierId.Exotic
+			);
+
 			// TODO: Flesh out the non-default stuff like
 			// raid mods, placements, armor slot mods,
 			const doProcessArmorParams: DoProcessArmorParams = {
 				masterworkAssumption,
+				exoticArtificeAssumption,
+				useExoticClassItem,
 				desiredArmorStats: loadout.desiredStatTiers,
 				armorItems: preProcessedArmor,
 				fragmentArmorStatMapping: getArmorStatMappingFromFragments(

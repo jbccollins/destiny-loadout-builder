@@ -18,6 +18,7 @@ import {
 	EArmorSlotId,
 	EArmorStatId,
 	EDestinyClassId,
+	EExoticArtificeAssumption,
 	EGearTierId,
 	EMasterworkAssumption,
 	ERaidAndNightMareModTypeId,
@@ -84,33 +85,33 @@ const defaultClassItemMetadataWithMasterworkedArtifice: AllClassItemMetadata = {
 };
 
 const defaultClassItemMetadataWithUnMasterworkedRaidClassItem: AllClassItemMetadata =
-	{
-		...getDefaultAllClassItemMetadata(),
-		Legendary: {
-			hasMasterworkedVariant: false,
-			items: [
-				{
-					...getDefaultArmorItem(),
-					socketableRaidAndNightmareModTypeId:
-						ERaidAndNightMareModTypeId.RootOfNightmares,
-					isMasterworked: false,
-					id: '4',
-				},
-			],
-		},
-		RootOfNightmares: {
-			hasMasterworkedVariant: false,
-			items: [
-				{
-					...getDefaultArmorItem(),
-					socketableRaidAndNightmareModTypeId:
-						ERaidAndNightMareModTypeId.RootOfNightmares,
-					isMasterworked: false,
-					id: '4',
-				},
-			],
-		},
-	};
+{
+	...getDefaultAllClassItemMetadata(),
+	Legendary: {
+		hasMasterworkedVariant: false,
+		items: [
+			{
+				...getDefaultArmorItem(),
+				socketableRaidAndNightmareModTypeId:
+					ERaidAndNightMareModTypeId.RootOfNightmares,
+				isMasterworked: false,
+				id: '4',
+			},
+		],
+	},
+	RootOfNightmares: {
+		hasMasterworkedVariant: false,
+		items: [
+			{
+				...getDefaultArmorItem(),
+				socketableRaidAndNightmareModTypeId:
+					ERaidAndNightMareModTypeId.RootOfNightmares,
+				isMasterworked: false,
+				id: '4',
+			},
+		],
+	},
+};
 
 // const defaultArmorMetadataWithLastWishAndArtificeClassItem: ArmorMetadata =
 // 	cloneDeep(defaultArmorMetadataWithArtificeClassItem);
@@ -129,6 +130,8 @@ const testCases: TestCase[] = [
 		[
 			{
 				masterworkAssumption: EMasterworkAssumption.None,
+				exoticArtificeAssumption: EExoticArtificeAssumption.None,
+				useExoticClassItem: false,
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				desiredArmorStats: {
@@ -266,6 +269,8 @@ const testCases: TestCase[] = [
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				allClassItemMetadata: defaultClassItemMetadataWithMasterworkedArtifice,
 				masterworkAssumption: EMasterworkAssumption.All,
+				exoticArtificeAssumption: EExoticArtificeAssumption.None,
+				useExoticClassItem: false,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 0,
 					[EArmorStatId.Resilience]: 100,
@@ -446,6 +451,8 @@ const testCases: TestCase[] = [
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.None,
+				exoticArtificeAssumption: EExoticArtificeAssumption.None,
+				useExoticClassItem: false,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 100,
 					[EArmorStatId.Resilience]: 0,
@@ -605,6 +612,8 @@ const testCases: TestCase[] = [
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.All,
+				exoticArtificeAssumption: EExoticArtificeAssumption.None,
+				useExoticClassItem: false,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 0,
 					[EArmorStatId.Resilience]: 100,
@@ -777,6 +786,8 @@ const testCases: TestCase[] = [
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.All,
+				exoticArtificeAssumption: EExoticArtificeAssumption.None,
+				useExoticClassItem: false,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 0,
 					[EArmorStatId.Resilience]: 100,
@@ -961,6 +972,8 @@ const testCases: TestCase[] = [
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.None,
+				exoticArtificeAssumption: EExoticArtificeAssumption.None,
+				useExoticClassItem: false,
 				desiredArmorStats: {
 					[EArmorStatId.Mobility]: 0,
 					[EArmorStatId.Resilience]: 0,

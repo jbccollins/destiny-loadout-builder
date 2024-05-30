@@ -70,6 +70,8 @@ const _processArmorRecursiveCase = ({
 	sumOfSeenStats,
 	seenArmorIds,
 	masterworkAssumption,
+	exoticArtificeAssumption,
+	useExoticClassItem,
 	potentialRaidModArmorSlotPlacements,
 	armorSlotMods,
 	raidMods,
@@ -102,6 +104,8 @@ const _processArmorRecursiveCase = ({
 				sumOfSeenStats: nextSumOfSeenStats,
 				seenArmorIds: [...seenArmorIds, armorSlotItem.id],
 				masterworkAssumption,
+				exoticArtificeAssumption,
+				useExoticClassItem,
 				potentialRaidModArmorSlotPlacements,
 				armorSlotMods,
 				raidMods,
@@ -125,6 +129,8 @@ const _processArmorBaseCase = ({
 	sumOfSeenStats,
 	seenArmorIds,
 	masterworkAssumption,
+	exoticArtificeAssumption,
+	useExoticClassItem,
 	potentialRaidModArmorSlotPlacements,
 	armorSlotMods,
 	raidMods,
@@ -175,6 +181,8 @@ const _processArmorBaseCase = ({
 			useZeroWastedStats,
 			allClassItemMetadata,
 			masterworkAssumption,
+			exoticArtificeAssumption,
+			useExoticClassItem,
 			intrinsicArmorPerkOrAttributeIds,
 		});
 		// TODO: We should only have to check one or the other. This is messy
@@ -270,6 +278,8 @@ type ProcessArmorParams = {
 	sumOfSeenStats: StatList;
 	seenArmorIds: string[];
 	masterworkAssumption: EMasterworkAssumption;
+	exoticArtificeAssumption: EExoticArtificeAssumption;
+	useExoticClassItem: boolean;
 	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	raidMods: EModId[];
@@ -282,44 +292,12 @@ type ProcessArmorParams = {
 	allClassItemMetadata: AllClassItemMetadata;
 };
 
-const processArmor = ({
-	desiredArmorStats,
-	armorItems,
-	sumOfSeenStats,
-	seenArmorIds,
-	masterworkAssumption,
-	potentialRaidModArmorSlotPlacements,
-	armorSlotMods,
-	raidMods,
-	intrinsicArmorPerkOrAttributeIds,
-	destinyClassId,
-	specialSeenArmorSlotItems,
-	reservedArmorSlotEnergy,
-	useZeroWastedStats,
-	alwaysConsiderCollectionsRolls,
-	allClassItemMetadata,
-}: ProcessArmorParams): ProcessArmorOutput => {
+const processArmor = (params: ProcessArmorParams): ProcessArmorOutput => {
 	const func =
-		armorItems.length === 1
+		params.armorItems.length === 1
 			? _processArmorBaseCase
 			: _processArmorRecursiveCase;
-	return func({
-		desiredArmorStats,
-		armorItems,
-		sumOfSeenStats,
-		seenArmorIds,
-		masterworkAssumption,
-		potentialRaidModArmorSlotPlacements,
-		armorSlotMods,
-		raidMods,
-		intrinsicArmorPerkOrAttributeIds,
-		destinyClassId,
-		specialSeenArmorSlotItems,
-		reservedArmorSlotEnergy,
-		useZeroWastedStats,
-		alwaysConsiderCollectionsRolls,
-		allClassItemMetadata,
-	});
+	return func(params);
 };
 
 export type ProcessedArmorItemMetadataClassItem = {
@@ -361,6 +339,8 @@ export type DoProcessArmorParams = {
 	desiredArmorStats: ArmorStatMapping;
 	armorItems: StrictArmorItems;
 	masterworkAssumption: EMasterworkAssumption;
+	exoticArtificeAssumption: EExoticArtificeAssumption;
+	useExoticClassItem: boolean;
 	fragmentArmorStatMapping: ArmorStatMapping;
 	modArmorStatMapping: ArmorStatMapping;
 	potentialRaidModArmorSlotPlacements: PotentialRaidModArmorSlotPlacement[];
@@ -386,6 +366,8 @@ export const doProcessArmor = ({
 	desiredArmorStats,
 	armorItems,
 	masterworkAssumption,
+	exoticArtificeAssumption,
+	useExoticClassItem,
 	fragmentArmorStatMapping,
 	modArmorStatMapping,
 	potentialRaidModArmorSlotPlacements,
@@ -421,6 +403,8 @@ export const doProcessArmor = ({
 	const seenArmorSlotItems = getDefaultSeenArmorSlotItems();
 	const processArmorParams: ProcessArmorParams = {
 		masterworkAssumption,
+		exoticArtificeAssumption,
+		useExoticClassItem,
 		desiredArmorStats,
 		armorItems,
 		sumOfSeenStats: sumOfSeenStats as StatList,
@@ -536,6 +520,8 @@ export const getMaxPossibleMetadata = ({
 					useZeroWastedStats: processArmorParams.useZeroWastedStats,
 					allClassItemMetadata: processArmorParams.allClassItemMetadata,
 					masterworkAssumption: processArmorParams.masterworkAssumption,
+					exoticArtificeAssumption: processArmorParams.exoticArtificeAssumption,
+					useExoticClassItem: processArmorParams.useExoticClassItem,
 					intrinsicArmorPerkOrAttributeIds:
 						processArmorParams.intrinsicArmorPerkOrAttributeIds,
 				});
@@ -573,6 +559,8 @@ export const getMaxPossibleMetadata = ({
 					useZeroWastedStats: processArmorParams.useZeroWastedStats,
 					allClassItemMetadata: processArmorParams.allClassItemMetadata,
 					masterworkAssumption: processArmorParams.masterworkAssumption,
+					exoticArtificeAssumption: processArmorParams.exoticArtificeAssumption,
+					useExoticClassItem: processArmorParams.useExoticClassItem,
 					intrinsicArmorPerkOrAttributeIds:
 						processArmorParams.intrinsicArmorPerkOrAttributeIds,
 				});
@@ -684,7 +672,7 @@ export const preProcessArmor = ({
 						exoticArtificeAssumption === EExoticArtificeAssumption.All ||
 						(isMasterworked &&
 							exoticArtificeAssumption ===
-								EExoticArtificeAssumption.Masterworked);
+							EExoticArtificeAssumption.Masterworked);
 					return {
 						...item,
 						isArtifice,

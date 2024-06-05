@@ -48,10 +48,10 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 		EClassAbilityId.MarksmansDodgeStrand,
 		EClassAbilityId.GamblersDodgeStrand,
 	],
-	[EDestinySubclassId.PrismaticHunter]: [
-		EClassAbilityId.MarksmansDodgePrismatic,
-		EClassAbilityId.GamblersDodgePrismatic,
-		EClassAbilityId.AcrobatsDodgeSolar,
+	[EDestinySubclassId.PrismHunter]: [
+		EClassAbilityId.MarksmansDodgePrism,
+		EClassAbilityId.GamblersDodgePrism,
+		EClassAbilityId.AcrobatsDodgePrism,
 	],
 
 	//Warlock
@@ -76,10 +76,10 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 		EClassAbilityId.HealingRiftStrand,
 		EClassAbilityId.EmpoweringRiftStrand,
 	],
-	[EDestinySubclassId.PrismaticWarlock]: [
-		EClassAbilityId.HealingRiftPrismatic,
-		EClassAbilityId.EmpoweringRiftPrismatic,
-		EClassAbilityId.PhoenixDiveSolar,
+	[EDestinySubclassId.PrismWarlock]: [
+		EClassAbilityId.HealingRiftPrism,
+		EClassAbilityId.EmpoweringRiftPrism,
+		EClassAbilityId.PhoenixDivePrism,
 	],
 
 	// Titan
@@ -104,10 +104,10 @@ const DestinySubclassIdToClassAbilityIdListMapping: EnumDictionary<
 		EClassAbilityId.ToweringBarricadeStrand,
 		EClassAbilityId.RallyBarricadeStrand,
 	],
-	[EDestinySubclassId.PrismaticTitan]: [
-		EClassAbilityId.ToweringBarricadePrismatic,
-		EClassAbilityId.RallyBarricadePrismatic,
-		EClassAbilityId.ThrusterArc,
+	[EDestinySubclassId.PrismTitan]: [
+		EClassAbilityId.ToweringBarricadePrism,
+		EClassAbilityId.RallyBarricadePrism,
+		EClassAbilityId.ThrusterPrism,
 	],
 };
 

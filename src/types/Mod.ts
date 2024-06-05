@@ -175,6 +175,9 @@ const getReducedCostModIdListFromModIdList = (
 	const result: EModId[] = [];
 	modIdList.forEach((modId) => {
 		const mod = getMod(modId);
+		if (!mod) {
+			return;
+		}
 		const reducedCostModHash = normalToReducedMod[mod.hash];
 		if (reducedCostModHash) {
 			result.push(ModHashToModIdMapping[reducedCostModHash]);

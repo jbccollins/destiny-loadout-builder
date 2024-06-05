@@ -16,9 +16,13 @@ const buildMeleeData = (melee: DestinyInventoryItemDefinition): IMelee => {
 	// TODO: This is pretty janky and fragile. Relying on this random string to work well
 	const [_, unsafeElementString] = melee.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
+	let _id = melee.displayProperties.name;
+	if (elementId === EElementId.Prism) {
+		_id = _id + generateId(EElementId.Prism);
+	}
 	return {
 		name: melee.displayProperties.name,
-		id: generateId(melee.displayProperties.name),
+		id: generateId(_id),
 		description: melee.displayProperties.description,
 		icon: bungieNetPath(melee.displayProperties.icon),
 		hash: melee.hash,

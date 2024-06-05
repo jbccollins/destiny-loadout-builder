@@ -86,7 +86,7 @@ const SubclassIdToGrenadeIdListMapping: EnumDictionary<
 	[EDestinySubclassId.Broodweaver]: StrandGrenadeIdList,
 	[EDestinySubclassId.Berserker]: StrandGrenadeIdList,
 
-	[EDestinySubclassId.PrismaticHunter]: [
+	[EDestinySubclassId.PrismHunter]: [
 		EGrenadeId.ArcboltGrenade,
 		EGrenadeId.SwarmGrenade,
 		EGrenadeId.DuskfieldGrenade,
@@ -94,7 +94,7 @@ const SubclassIdToGrenadeIdListMapping: EnumDictionary<
 		EGrenadeId.MagneticGrenade,
 	],
 
-	[EDestinySubclassId.PrismaticTitan]: [
+	[EDestinySubclassId.PrismTitan]: [
 		EGrenadeId.PulseGrenade,
 		EGrenadeId.ThermiteGrenade,
 		EGrenadeId.GlacierGrenade,
@@ -102,7 +102,7 @@ const SubclassIdToGrenadeIdListMapping: EnumDictionary<
 		EGrenadeId.SuppressorGrenade,
 	],
 
-	[EDestinySubclassId.PrismaticWarlock]: [
+	[EDestinySubclassId.PrismWarlock]: [
 		EGrenadeId.StormGrenade,
 		EGrenadeId.HealingGrenade,
 		EGrenadeId.ColdsnapGrenade,

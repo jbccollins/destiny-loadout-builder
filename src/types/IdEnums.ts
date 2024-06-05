@@ -4,7 +4,7 @@ export enum EElementId {
 	Void = 'Void',
 	Stasis = 'Stasis',
 	Strand = 'Strand',
-	Prismatic = 'Prismatic',
+	Prism = 'Prism',
 	Any = 'Any',
 }
 
@@ -21,21 +21,21 @@ export enum EDestinySubclassId {
 	Voidwalker = 'Voidwalker',
 	Shadebinder = 'Shadebinder',
 	Broodweaver = 'Broodweaver',
-	PrismaticWarlock = 'PrismaticWarlock',
+	PrismWarlock = 'PrismWarlock',
 	// Titan
 	Striker = 'Striker',
 	Sentinel = 'Sentinel',
 	Sunbreaker = 'Sunbreaker',
 	Behemoth = 'Behemoth',
 	Berserker = 'Berserker',
-	PrismaticTitan = 'PrismaticTitan',
+	PrismTitan = 'PrismTitan',
 	// Hunter
 	Gunslinger = 'Gunslinger',
 	Nightstalker = 'Nightstalker',
 	Arcstrider = 'Arcstrider',
 	Revenant = 'Revenant',
 	Threadrunner = 'Threadrunner',
-	PrismaticHunter = 'PrismaticHunter',
+	PrismHunter = 'PrismHunter',
 }
 
 export enum EArmorSlotId {

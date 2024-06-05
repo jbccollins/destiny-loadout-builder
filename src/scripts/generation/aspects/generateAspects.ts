@@ -22,9 +22,13 @@ const buildAspectData = (
 	aspect: DestinyInventoryItemDefinition,
 	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>
 ): IAspect => {
+	let _id = aspect.displayProperties.name;
+	if (aspect.itemTypeDisplayName.includes("| Light Ability") || aspect.itemTypeDisplayName.includes("| Darkness Ability")) {
+		_id = _id + " Prism"
+	}
 	return {
 		name: aspect.displayProperties.name,
-		id: generateId(aspect.displayProperties.name),
+		id: generateId(_id),
 		description: getDescription(aspect, sandboxPerkDefinitions),
 		icon: bungieNetPath(aspect.displayProperties.icon),
 		hash: aspect.hash,

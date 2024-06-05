@@ -47,6 +47,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.FlowState,
 		EAspectId.LethalCurrent,
 		EAspectId.TempestStrike,
+		EAspectId.Ascension,
 	],
 	[EDestinySubclassId.Threadrunner]: [
 		EAspectId.EnsnaringSlam,
@@ -54,12 +55,12 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.WidowsSilk,
 		EAspectId.WhirlingMaelstrom,
 	],
-	[EDestinySubclassId.PrismaticHunter]: [
-		EAspectId.Ascension,
-		EAspectId.GunpowderGamble,
-		EAspectId.WintersShroud,
-		EAspectId.ThreadedSpecter,
-		EAspectId.StylishExecutioner,
+	[EDestinySubclassId.PrismHunter]: [
+		EAspectId.AscensionPrism,
+		EAspectId.GunpowderGamblePrism,
+		EAspectId.WintersShroudPrism,
+		EAspectId.ThreadedSpecterPrism,
+		EAspectId.StylishExecutionerPrism,
 	],
 
 	//Warlock
@@ -78,6 +79,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.HeatRises,
 		EAspectId.IcarusDash,
 		EAspectId.TouchOfFlame,
+		EAspectId.Hellion,
 	],
 	[EDestinySubclassId.Stormcaller]: [
 		EAspectId.ArcSoul,
@@ -90,12 +92,12 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.WeaversCall,
 		EAspectId.Weavewalk,
 	],
-	[EDestinySubclassId.PrismaticWarlock]: [
-		EAspectId.Hellion,
-		EAspectId.FeedTheVoid,
-		EAspectId.LightningSurge,
-		EAspectId.BleakWatcher,
-		EAspectId.WeaversCall,
+	[EDestinySubclassId.PrismWarlock]: [
+		EAspectId.HellionPrism,
+		EAspectId.FeedTheVoidPrism,
+		EAspectId.LightningSurgePrism,
+		EAspectId.BleakWatcherPrism,
+		EAspectId.WeaversCallPrism,
 	],
 
 	// Titan
@@ -109,6 +111,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.Bastion,
 		EAspectId.ControlledDemolition,
 		EAspectId.OffensiveBulwark,
+		EAspectId.Unbreakable,
 	],
 	[EDestinySubclassId.Sunbreaker]: [
 		EAspectId.Consecration,
@@ -126,12 +129,12 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.IntoTheFray,
 		EAspectId.BannerOfWar,
 	],
-	[EDestinySubclassId.PrismaticTitan]: [
-		EAspectId.Unbreakable,
-		EAspectId.Knockout,
-		EAspectId.DrengrsLash,
-		EAspectId.Consecration,
-		EAspectId.DiamondLance,
+	[EDestinySubclassId.PrismTitan]: [
+		EAspectId.UnbreakablePrism,
+		EAspectId.KnockoutPrism,
+		EAspectId.DrengrsLashPrism,
+		EAspectId.ConsecrationPrism,
+		EAspectId.DiamondLancePrism,
 	],
 };
 
@@ -226,17 +229,17 @@ const DestinySubclassIdToMaximumAspectCapacityMapping: EnumDictionary<
 		getMaximumAspectFragmentSlotsByDestinySubclassId(
 			EDestinySubclassId.Threadrunner
 		),
-	[EDestinySubclassId.PrismaticHunter]:
+	[EDestinySubclassId.PrismHunter]:
 		getMaximumAspectFragmentSlotsByDestinySubclassId(
-			EDestinySubclassId.PrismaticHunter
+			EDestinySubclassId.PrismHunter
 		),
-	[EDestinySubclassId.PrismaticTitan]:
+	[EDestinySubclassId.PrismTitan]:
 		getMaximumAspectFragmentSlotsByDestinySubclassId(
-			EDestinySubclassId.PrismaticTitan
+			EDestinySubclassId.PrismTitan
 		),
-	[EDestinySubclassId.PrismaticWarlock]:
+	[EDestinySubclassId.PrismWarlock]:
 		getMaximumAspectFragmentSlotsByDestinySubclassId(
-			EDestinySubclassId.PrismaticWarlock
+			EDestinySubclassId.PrismWarlock
 		),
 };
 

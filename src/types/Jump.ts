@@ -48,11 +48,11 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.TripleJumpStrand,
 		EJumpId.StrafeJumpStrand,
 	],
-	[EDestinySubclassId.PrismaticHunter]: [
-		EJumpId.HighJumpPrismatic,
-		EJumpId.TripleJumpPrismatic,
-		EJumpId.StrafeJumpPrismatic,
-		EJumpId.BlinkArc,
+	[EDestinySubclassId.PrismHunter]: [
+		EJumpId.HighJumpPrismHunter,
+		EJumpId.TripleJumpPrismHunter,
+		EJumpId.StrafeJumpPrismHunter,
+		EJumpId.BlinkPrismHunter
 	],
 
 	//Warlock
@@ -82,11 +82,11 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.StrafeGlideStrand,
 		EJumpId.BalancedGlideStrand,
 	],
-	[EDestinySubclassId.PrismaticWarlock]: [
-		EJumpId.BurstGlidePrismatic,
-		EJumpId.StrafeGlidePrismatic,
-		EJumpId.BalancedGlidePrismatic,
-		EJumpId.BlinkVoid,
+	[EDestinySubclassId.PrismWarlock]: [
+		EJumpId.BurstGlidePrismWarlock,
+		EJumpId.StrafeGlidePrismWarlock,
+		EJumpId.BalancedGlidePrismWarlock,
+		EJumpId.BlinkPrismWarlock,
 	],
 
 	// Titan
@@ -115,10 +115,10 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.CatapultLiftStrand,
 		EJumpId.StrafeLiftStrand,
 	],
-	[EDestinySubclassId.PrismaticTitan]: [
-		EJumpId.HighLiftPrismatic,
-		EJumpId.CatapultLiftPrismatic,
-		EJumpId.StrafeLiftPrismatic,
+	[EDestinySubclassId.PrismTitan]: [
+		EJumpId.HighLiftPrismTitan,
+		EJumpId.CatapultLiftPrismTitan,
+		EJumpId.StrafeLiftPrismTitan,
 	],
 };
 

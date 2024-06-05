@@ -35,12 +35,12 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.DisorientingBlow,
 	],
 	[EDestinySubclassId.Threadrunner]: [EMeleeId.ThreadedSpike],
-	[EDestinySubclassId.PrismaticHunter]: [
-		EMeleeId.CombinationBlow,
-		EMeleeId.KnifeTrick,
-		EMeleeId.WitheringBlade,
-		EMeleeId.ThreadedSpike,
-		EMeleeId.SnareBomb,
+	[EDestinySubclassId.PrismHunter]: [
+		EMeleeId.CombinationBlowPrism,
+		EMeleeId.KnifeTrickPrism,
+		EMeleeId.WitheringBladePrism,
+		EMeleeId.ThreadedSpikePrism,
+		EMeleeId.SnareBombPrism,
 	],
 
 	//Warlock
@@ -55,12 +55,12 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.ChainLightning,
 	],
 	[EDestinySubclassId.Broodweaver]: [EMeleeId.ArcaneNeedle],
-	[EDestinySubclassId.PrismaticWarlock]: [
-		EMeleeId.IncineratorSnap,
-		EMeleeId.PocketSingularity,
-		EMeleeId.ChainLightning,
-		EMeleeId.PenumbralBlast,
-		EMeleeId.ArcaneNeedle,
+	[EDestinySubclassId.PrismWarlock]: [
+		EMeleeId.IncineratorSnapPrism,
+		EMeleeId.PocketSingularityPrism,
+		EMeleeId.ChainLightningPrism,
+		EMeleeId.PenumbralBlastPrism,
+		EMeleeId.ArcaneNeedlePrism,
 	],
 
 	// Titan
@@ -76,12 +76,12 @@ const DestinySubclassIdToMeleeIdListMapping: EnumDictionary<
 		EMeleeId.BallisticSlam,
 	],
 	[EDestinySubclassId.Berserker]: [EMeleeId.FrenziedBlade],
-	[EDestinySubclassId.PrismaticTitan]: [
-		EMeleeId.ShieldThrow,
-		EMeleeId.Thunderclap,
-		EMeleeId.FrenziedBlade,
-		EMeleeId.HammerStrike,
-		EMeleeId.ShiverStrike,
+	[EDestinySubclassId.PrismTitan]: [
+		EMeleeId.ShieldThrowPrism,
+		EMeleeId.ThunderclapPrism,
+		EMeleeId.FrenziedBladePrism,
+		EMeleeId.HammerStrikePrism,
+		EMeleeId.ShiverStrikePrism,
 	],
 };
 

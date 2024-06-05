@@ -19,9 +19,13 @@ const buildSuperAbilityData = (
 	const [_, unsafeElementString] =
 		superAbility.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
+	let _id = superAbility.displayProperties.name;
+	if (superAbility.itemTypeDisplayName.includes("| Light Ability") || superAbility.itemTypeDisplayName.includes("| Darkness Ability")) {
+		_id = _id + " Prism"
+	}
 	return {
 		name: superAbility.displayProperties.name,
-		id: generateId(superAbility.displayProperties.name),
+		id: generateId(_id),
 		description: superAbility.displayProperties.description,
 		icon: bungieNetPath(superAbility.displayProperties.icon),
 		hash: superAbility.hash,

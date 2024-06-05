@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-06-04',
+		version: '2.6.0',
+		title: 'The Final Shape Initial Update',
+		sections: [
+			{
+				items: [
+					`Update all aspects, fragments, mods, etc... for the final shape`,
+					`Disabled all raid mods for now. These will be re-enabled in a future release.`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-05-29',
 		version: '2.5.13',
 		title: 'Exotic Artifice Fixes',

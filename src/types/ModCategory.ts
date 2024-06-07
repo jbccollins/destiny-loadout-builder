@@ -6,8 +6,7 @@ import { EnumDictionary, IIdentifiableName } from './globals';
 
 export const getActiveSeasonArtifactModIdList: () => EModId[] = () => {
 	return [
-		EModId.ArtifactThermodynamicSiphon,
-		EModId.ArtifactSolarStrandDualSiphon,
+		EModId.ArtifactElementalCharge,
 	];
 };
 
@@ -135,30 +134,30 @@ export const getModCategoryId = (
 	if (displayNameId === EModDisplayNameId.GeneralArmorMod) {
 		return EModCategoryId.ArmorStat;
 	}
-	// if (displayNameId === EModDisplayNameId.LastWishRaidMod) {
-	// 	return EModCategoryId.RaidAndNightmare;
-	// }
-	// if (displayNameId === EModDisplayNameId.GardenOfSalvationRaidMod) {
-	// 	return EModCategoryId.RaidAndNightmare;
-	// }
-	// if (displayNameId === EModDisplayNameId.DeepStoneCryptRaidMod) {
-	// 	return EModCategoryId.RaidAndNightmare;
-	// }
-	// if (displayNameId === EModDisplayNameId.VaultOfGlassArmorMod) {
-	// 	return EModCategoryId.RaidAndNightmare;
-	// }
-	// if (displayNameId === EModDisplayNameId.VowOfTheDiscipleRaidMod) {
-	// 	return EModCategoryId.RaidAndNightmare;
-	// }
-	// if (displayNameId === EModDisplayNameId.KingsFallMod) {
-	// 	return EModCategoryId.RaidAndNightmare;
-	// }
-	// if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
-	// 	return EModCategoryId.RaidAndNightmare;
-	// }
-	// if (displayNameId === EModDisplayNameId.CrotasEndMod) {
-	// 	return EModCategoryId.RaidAndNightmare;
-	// }
+	if (displayNameId === EModDisplayNameId.LastWishRaidMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
+	if (displayNameId === EModDisplayNameId.GardenOfSalvationRaidMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
+	if (displayNameId === EModDisplayNameId.DeepStoneCryptRaidMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
+	if (displayNameId === EModDisplayNameId.VaultOfGlassArmorMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
+	if (displayNameId === EModDisplayNameId.VowOfTheDiscipleRaidMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
+	if (displayNameId === EModDisplayNameId.KingsFallMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
+	if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
+	if (displayNameId === EModDisplayNameId.CrotasEndMod) {
+		return EModCategoryId.RaidAndNightmare;
+	}
 	if (displayNameId === EModDisplayNameId.NightmareMod) {
 		return EModCategoryId.RaidAndNightmare;
 	}
@@ -225,30 +224,30 @@ export const getModCategoryId = (
 export const getRaidAndNightmareModTypeId = (
 	displayNameId: EModDisplayNameId
 ): ERaidAndNightMareModTypeId => {
-	// if (displayNameId === EModDisplayNameId.LastWishRaidMod) {
-	// 	return ERaidAndNightMareModTypeId.LastWish;
-	// }
-	// if (displayNameId === EModDisplayNameId.GardenOfSalvationRaidMod) {
-	// 	return ERaidAndNightMareModTypeId.GardenOfSalvation;
-	// }
-	// if (displayNameId === EModDisplayNameId.DeepStoneCryptRaidMod) {
-	// 	return ERaidAndNightMareModTypeId.DeepStoneCrypt;
-	// }
-	// if (displayNameId === EModDisplayNameId.VaultOfGlassArmorMod) {
-	// 	return ERaidAndNightMareModTypeId.VaultOfGlass;
-	// }
-	// if (displayNameId === EModDisplayNameId.VowOfTheDiscipleRaidMod) {
-	// 	return ERaidAndNightMareModTypeId.VowOfTheDisciple;
-	// }
-	// if (displayNameId === EModDisplayNameId.KingsFallMod) {
-	// 	return ERaidAndNightMareModTypeId.KingsFall;
-	// }
-	// if (displayNameId === EModDisplayNameId.CrotasEndMod) {
-	// 	return ERaidAndNightMareModTypeId.CrotasEnd;
-	// }
-	// if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
-	// 	return ERaidAndNightMareModTypeId.RootOfNightmares;
-	// }
+	if (displayNameId === EModDisplayNameId.LastWishRaidMod) {
+		return ERaidAndNightMareModTypeId.LastWish;
+	}
+	if (displayNameId === EModDisplayNameId.GardenOfSalvationRaidMod) {
+		return ERaidAndNightMareModTypeId.GardenOfSalvation;
+	}
+	if (displayNameId === EModDisplayNameId.DeepStoneCryptRaidMod) {
+		return ERaidAndNightMareModTypeId.DeepStoneCrypt;
+	}
+	if (displayNameId === EModDisplayNameId.VaultOfGlassArmorMod) {
+		return ERaidAndNightMareModTypeId.VaultOfGlass;
+	}
+	if (displayNameId === EModDisplayNameId.VowOfTheDiscipleRaidMod) {
+		return ERaidAndNightMareModTypeId.VowOfTheDisciple;
+	}
+	if (displayNameId === EModDisplayNameId.KingsFallMod) {
+		return ERaidAndNightMareModTypeId.KingsFall;
+	}
+	if (displayNameId === EModDisplayNameId.CrotasEndMod) {
+		return ERaidAndNightMareModTypeId.CrotasEnd;
+	}
+	if (displayNameId === EModDisplayNameId.RootOfNightmaresArmorMod) {
+		return ERaidAndNightMareModTypeId.RootOfNightmares;
+	}
 	if (displayNameId === EModDisplayNameId.NightmareMod) {
 		return ERaidAndNightMareModTypeId.NightmareHunt;
 	}

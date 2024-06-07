@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-06-06',
+		version: '2.6.0',
+		title: 'More Final Shape Updates',
+		sections: [
+			{
+				items: [
+					`Update the current season reduced cost mods (Bungie please stop adding these mods I fucking hate them)`,
+					`Add "Empowered Finish" as an unstackable mod`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-06-04',
 		version: '2.6.0',
 		title: 'The Final Shape Initial Update',

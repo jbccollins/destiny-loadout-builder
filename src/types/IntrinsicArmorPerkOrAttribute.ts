@@ -51,7 +51,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		name: 'Exhumed Excess',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/e083d8a85c2c60825204d14b9e9263b7.png',
 		armorSlotId: null,
-		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Perk,
+		groupName: EIntrinsicArmorPerkOrAttributeGroupName.LegacyPerk,
 		season: 22,
 		description:
 			'Increases your chances of creating an additional offering during activities. Each piece of armor you are wearing with this perk increases this bonus, to a maximum of 4 items.',
@@ -62,7 +62,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		name: 'Ascendant Protector',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/e083d8a85c2c60825204d14b9e9263b7.png',
 		armorSlotId: null,
-		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Perk,
+		groupName: EIntrinsicArmorPerkOrAttributeGroupName.LegacyPerk,
 		season: 23,
 		description:
 			'Grants 3% additional Spirit of Riven vendor reputation from all sources. For each piece of armor equipped with this perk, this bonus increases to a maximum of 12% (4 pieces).',
@@ -73,7 +73,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		name: 'Sonar Amplifier',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/e083d8a85c2c60825204d14b9e9263b7.png',
 		armorSlotId: null,
-		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Perk,
+		groupName: EIntrinsicArmorPerkOrAttributeGroupName.LegacyPerk,
 		season: 21,
 		description:
 			'Grants 3% additional Sonar Station vendor reputation from all sources. For each piece of armor you are wearing with this perk on it, this bonus increases to a maximum of 12% (4 items).',
@@ -84,7 +84,7 @@ const IntrisicArmorPerkOrAttributeIdToIntrinsicArmorPerkOrAttributeMapping: Enum
 		name: "Queen's Favor",
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/8d844c97fa13f4cb649358404d011be7.png',
 		armorSlotId: null,
-		groupName: EIntrinsicArmorPerkOrAttributeGroupName.Perk,
+		groupName: EIntrinsicArmorPerkOrAttributeGroupName.LegacyPerk,
 		season: 20,
 		description:
 			'Generate Awoken Favors with fewer final blows. Each piece of armor you are wearing with this perk on it increases this bonus, to a maximum of 4 items.',

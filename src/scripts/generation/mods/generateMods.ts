@@ -97,13 +97,18 @@ const buildModData = (
 		statDefinitions
 	);
 
-	const modId = generateId(
-		`${
-			isArtifactMod
-				? `Artifact ${mod.displayProperties.name}`
-				: mod.displayProperties.name
+	let modId = generateId(
+		`${isArtifactMod
+			? `Artifact ${mod.displayProperties.name}`
+			: mod.displayProperties.name
 		}`
 	) as EModId;
+
+	// Fucking Bungie fucked up the name for this one. In the API this is
+	// named stasis resistance. FUUUUCK
+	if (mod.hash === 1176372075) {
+		modId = "ArtifactStrandResistance" as EModId;
+	}
 
 	if ((modId as string) == 'Unknown') {
 		console.warn('Skipping unknown mod hash: ', mod.hash);
@@ -120,7 +125,8 @@ const buildModData = (
 		displayNameId = EModDisplayNameId.GeneralArmorMod;
 	}
 
-	const modName = mod.displayProperties.name;
+	// FUUUUUUCK
+	const modName = mod.hash === 1176372075 ? "Strand Resistance" : mod.displayProperties.name;
 	const modDescription = getDescription(mod, sandboxPerkDefinitions);
 	return {
 		name: modName,
@@ -185,6 +191,13 @@ export async function run() {
 
 	const allMods = lodash(destinyInventoryItemDefinitions)
 		.values()
+		.filter((v) => {
+			if (v.displayProperties?.name === "Release Recover") {
+				console.log("Found Release Recover", v.hash);
+			}
+			return true
+		})
+		.filter((v) => v.displayProperties?.name !== 'Empty Mod Socket')
 		.filter((v) => v.itemCategoryHashes)
 		.filter((v) => v.displayProperties)
 		.filter((v) => !v.displayProperties.description.includes('deprecated'))
@@ -194,7 +207,9 @@ export async function run() {
 			(v) =>
 				v.plug &&
 				(v.plug.energyCost ||
-					v.plug.plugCategoryIdentifier === 'enhancements.artifice')
+					v.plug.plugCategoryIdentifier === 'enhancements.artifice' || // Artifice mods
+					v.plug.plugCategoryIdentifier === 'enhancements.season_outlaw') || // Last Wish Raid Mods
+				v.plug.plugCategoryIdentifier?.includes("enhancements.raid") // All other raid mods
 		)
 		.value() as DestinyInventoryItemDefinition[];
 

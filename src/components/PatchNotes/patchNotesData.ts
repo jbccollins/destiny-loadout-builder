@@ -12,17 +12,24 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2024-06-06',
+<<<<<<< HEAD
 		version: '2.6.1',
+=======
+		version: '2.6.0',
+>>>>>>> 2210785 (WIP)
 		title: 'More Final Shape Updates',
 		sections: [
 			{
 				items: [
 					`Update the current season reduced cost mods (Bungie please stop adding these mods I fucking hate them)`,
 					`Add "Empowered Finish" as an unstackable mod`,
+<<<<<<< HEAD
 					`Fixed a bug where the Bungie Api was mixing up Strand and Stasis resistance mods. (This was a fucky-wucky on Bungie's part)`,
 					`Re-enabled all raid mods`,
 					`Move all of Lightfall's special armor perks to the "Legacy Perk" section`,
 					`Note that I have yet to add the new Final Shape special armor perks`
+=======
+>>>>>>> 2210785 (WIP)
 				],
 			},
 		],

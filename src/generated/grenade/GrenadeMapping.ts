@@ -43,6 +43,23 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     hash: 146194908,
     elementId: EElementId.Arc,
   },
+  [EGrenadeId.MagneticGrenadePrism]: {
+    name: "Magnetic Grenade",
+    id: EGrenadeId.MagneticGrenadePrism,
+    description: "A grenade that attaches to targets and explodes twice.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/72966b5c97e45d8668483f2263138613.jpg",
+    hash: 886607940,
+    elementId: EElementId.Prism,
+  },
+  [EGrenadeId.GlacierGrenadePrism]: {
+    name: "Glacier Grenade",
+    id: EGrenadeId.GlacierGrenadePrism,
+    description:
+      "A grenade that creates walls out of [Stasis] Stasis crystals to block damage and freeze targets; these walls can be shattered for damage.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/08b4d8632636f78c57425b844d7b42e4.png",
+    hash: 934199459,
+    elementId: EElementId.Prism,
+  },
   [EGrenadeId.FusionGrenade]: {
     name: "Fusion Grenade",
     id: EGrenadeId.FusionGrenade,
@@ -61,6 +78,24 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     hash: 1016030582,
     elementId: EElementId.Void,
   },
+  [EGrenadeId.VortexGrenadePrism]: {
+    name: "Vortex Grenade",
+    id: EGrenadeId.VortexGrenadePrism,
+    description:
+      "A grenade that creates a Vortex that pulls targets inward and continually damages those trapped inside.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/12997544665705bbbd94742268ce7091.jpg",
+    hash: 1048847436,
+    elementId: EElementId.Prism,
+  },
+  [EGrenadeId.GrapplePrism]: {
+    name: "Grapple",
+    id: EGrenadeId.GrapplePrism,
+    description:
+      "Weave a grappling hook, and quickly pull yourself forward. Grappling to a Tangle immediately recharges your grenade energy.\n\nDuring and shortly after grappling, your melee attack deals area damage and unravels targets.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5d65ba9eb04c2f3760eba0b5eec9be8a.jpg",
+    hash: 1225978592,
+    elementId: EElementId.Prism,
+  },
   [EGrenadeId.VoidSpike]: {
     name: "Void Spike",
     id: EGrenadeId.VoidSpike,
@@ -70,6 +105,15 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     hash: 1255073825,
     elementId: EElementId.Void,
   },
+  [EGrenadeId.PulseGrenadePrism]: {
+    name: "Pulse Grenade",
+    id: EGrenadeId.PulseGrenadePrism,
+    description:
+      "A grenade that periodically damages targets within its explosion radius.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/11837de6306d28df467178af097d748b.jpg",
+    hash: 1323461861,
+    elementId: EElementId.Prism,
+  },
   [EGrenadeId.ScatterGrenade]: {
     name: "Scatter Grenade",
     id: EGrenadeId.ScatterGrenade,
@@ -78,6 +122,15 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     icon: "https://www.bungie.net/common/destiny2_content/icons/562f1b6ca7ecda82248f4b02e833d211.jpg",
     hash: 1514173218,
     elementId: EElementId.Void,
+  },
+  [EGrenadeId.ShackleGrenadePrism]: {
+    name: "Shackle Grenade",
+    id: EGrenadeId.ShackleGrenadePrism,
+    description:
+      "A thrown weapon of weighted Strand matter that detonates on impact, suspending targets and creating additional suspending subprojectiles.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/a2c73298753fdd565a22d3d6712820ab.jpg",
+    hash: 1517917190,
+    elementId: EElementId.Prism,
   },
   [EGrenadeId.MagneticGrenade]: {
     name: "Magnetic Grenade",
@@ -140,6 +193,15 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     hash: 2265076177,
     elementId: EElementId.Void,
   },
+  [EGrenadeId.ThermiteGrenadePrism]: {
+    name: "Thermite Grenade",
+    id: EGrenadeId.ThermiteGrenadePrism,
+    description:
+      "A grenade that sends forth a burning line of fire, dealing damage and scorching targets in its path.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/e4aa73bf21f3da3e22f9e07475e2e614.jpg",
+    hash: 2400634603,
+    elementId: EElementId.Prism,
+  },
   [EGrenadeId.Grapple]: {
     name: "Grapple",
     id: EGrenadeId.Grapple,
@@ -184,6 +246,15 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     hash: 2809342386,
     elementId: EElementId.Strand,
   },
+  [EGrenadeId.SwarmGrenadePrism]: {
+    name: "Swarm Grenade",
+    id: EGrenadeId.SwarmGrenadePrism,
+    description:
+      "A grenade that detonates on impact, releasing multiple drones that seek nearby targets. Each drone slightly scorches affected targets.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/0c322768dd41ac416e04dac131cf5fb5.jpg",
+    hash: 2842514288,
+    elementId: EElementId.Prism,
+  },
   [EGrenadeId.FlashbangGrenade]: {
     name: "Flashbang Grenade",
     id: EGrenadeId.FlashbangGrenade,
@@ -210,6 +281,15 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     hash: 2994412667,
     elementId: EElementId.Arc,
   },
+  [EGrenadeId.HealingGrenadePrism]: {
+    name: "Healing Grenade",
+    id: EGrenadeId.HealingGrenadePrism,
+    description:
+      "A grenade that cures allies on impact and creates an Orb of benevolent Solar Light, granting restoration to allies when picked up.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/d7fa54aea967c101aeafcbc1163508d6.jpg",
+    hash: 3040080535,
+    elementId: EElementId.Prism,
+  },
   [EGrenadeId.SwarmGrenade]: {
     name: "Swarm Grenade",
     id: EGrenadeId.SwarmGrenade,
@@ -228,6 +308,23 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     hash: 3232422679,
     elementId: EElementId.Void,
   },
+  [EGrenadeId.ArcboltGrenadePrism]: {
+    name: "Arcbolt Grenade",
+    id: EGrenadeId.ArcboltGrenadePrism,
+    description: "A grenade that chains bolts of lightning to nearby targets.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/04c36b4cfebda156a8eca2b257e3ce4f.jpg",
+    hash: 3897682694,
+    elementId: EElementId.Prism,
+  },
+  [EGrenadeId.SuppressorGrenadePrism]: {
+    name: "Suppressor Grenade",
+    id: EGrenadeId.SuppressorGrenadePrism,
+    description:
+      "An explosive grenade that suppresses, preventing targets from using abilities for a short time.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/17372092d1add4cf52bb4862037b418c.jpg",
+    hash: 3923577992,
+    elementId: EElementId.Prism,
+  },
   [EGrenadeId.ThermiteGrenade]: {
     name: "Thermite Grenade",
     id: EGrenadeId.ThermiteGrenade,
@@ -236,6 +333,24 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     icon: "https://www.bungie.net/common/destiny2_content/icons/e4aa73bf21f3da3e22f9e07475e2e614.jpg",
     hash: 3969294337,
     elementId: EElementId.Solar,
+  },
+  [EGrenadeId.ThreadlingGrenadePrism]: {
+    name: "Threadling Grenade",
+    id: EGrenadeId.ThreadlingGrenadePrism,
+    description:
+      "A woven projectile that reweaves itself into Threadlings while in flight.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/18a14aeac121b2a5c8699556b63e38fd.jpg",
+    hash: 3994381207,
+    elementId: EElementId.Prism,
+  },
+  [EGrenadeId.DuskfieldGrenadePrism]: {
+    name: "Duskfield Grenade",
+    id: EGrenadeId.DuskfieldGrenadePrism,
+    description:
+      "A grenade that shatters on impact, leaving behind a field that slows targets and freezes those who do not leave the volume.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/5ed90305d6131582eb76abd99c487826.png",
+    hash: 4051767608,
+    elementId: EElementId.Prism,
   },
   [EGrenadeId.FluxGrenade]: {
     name: "Flux Grenade",
@@ -253,5 +368,22 @@ export const GrenadeIdToGrenadeMapping: EnumDictionary<EGrenadeId, IGrenade> = {
     icon: "https://www.bungie.net/common/destiny2_content/icons/18a14aeac121b2a5c8699556b63e38fd.jpg",
     hash: 4228170798,
     elementId: EElementId.Strand,
+  },
+  [EGrenadeId.StormGrenadePrism]: {
+    name: "Storm Grenade",
+    id: EGrenadeId.StormGrenadePrism,
+    description: "A grenade that calls down a focused lightning storm.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/9f4ace2bd6ab050148f54ff6f4ce9a0f.jpg",
+    hash: 4241856103,
+    elementId: EElementId.Prism,
+  },
+  [EGrenadeId.ColdsnapGrenadePrism]: {
+    name: "Coldsnap Grenade",
+    id: EGrenadeId.ColdsnapGrenadePrism,
+    description:
+      "A grenade that freezes on impact and sends another seeker to find and freeze targets.",
+    icon: "https://www.bungie.net/common/destiny2_content/icons/ff53139f18628530891598936e7a8c13.png",
+    hash: 4265391440,
+    elementId: EElementId.Prism,
   },
 };

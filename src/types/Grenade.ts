@@ -87,27 +87,27 @@ const SubclassIdToGrenadeIdListMapping: EnumDictionary<
 	[EDestinySubclassId.Berserker]: StrandGrenadeIdList,
 
 	[EDestinySubclassId.PrismHunter]: [
-		EGrenadeId.ArcboltGrenade,
-		EGrenadeId.SwarmGrenade,
-		EGrenadeId.DuskfieldGrenade,
-		EGrenadeId.Grapple,
-		EGrenadeId.MagneticGrenade,
+		EGrenadeId.ArcboltGrenadePrism,
+		EGrenadeId.SwarmGrenadePrism,
+		EGrenadeId.DuskfieldGrenadePrism,
+		EGrenadeId.GrapplePrism,
+		EGrenadeId.MagneticGrenadePrism,
 	],
 
 	[EDestinySubclassId.PrismTitan]: [
-		EGrenadeId.PulseGrenade,
-		EGrenadeId.ThermiteGrenade,
-		EGrenadeId.GlacierGrenade,
-		EGrenadeId.ShackleGrenade,
-		EGrenadeId.SuppressorGrenade,
+		EGrenadeId.PulseGrenadePrism,
+		EGrenadeId.ThermiteGrenadePrism,
+		EGrenadeId.GlacierGrenadePrism,
+		EGrenadeId.ShackleGrenadePrism,
+		EGrenadeId.SuppressorGrenadePrism,
 	],
 
 	[EDestinySubclassId.PrismWarlock]: [
-		EGrenadeId.StormGrenade,
-		EGrenadeId.HealingGrenade,
-		EGrenadeId.ColdsnapGrenade,
-		EGrenadeId.ThreadlingGrenade,
-		EGrenadeId.VortexGrenade,
+		EGrenadeId.StormGrenadePrism,
+		EGrenadeId.HealingGrenadePrism,
+		EGrenadeId.ColdsnapGrenadePrism,
+		EGrenadeId.ThreadlingGrenadePrism,
+		EGrenadeId.VortexGrenadePrism,
 	],
 };
 

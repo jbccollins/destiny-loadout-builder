@@ -51,7 +51,7 @@ import {
 	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
-	EModSocketCategoryId,
+	EModSocketCategoryId
 } from '@dlb/types/IdEnums';
 import { getJumpByHash } from '@dlb/types/Jump';
 import { getMeleeByHash } from '@dlb/types/Melee';
@@ -614,67 +614,52 @@ export const extractInGameLoadouts = (
 						}
 						break;
 					case EInGameLoadoutItemType.SUBCLASS:
-						item.plugItemHashes.forEach((hash, index) => {
+						item.plugItemHashes.forEach((hash) => {
 							if (hash === UNSET_PLUG_HASH) {
 								return;
 							}
-							switch (index) {
-								case 0:
-									const classAbility = getClassAbilityByHash(hash);
-									if (!!classAbility) {
-										loadout.classAbilityId = classAbility.id as EClassAbilityId;
-									}
-									break;
-								case 1:
-									const jump = getJumpByHash(hash);
-									if (!!jump) {
-										loadout.jumpId = jump.id as EJumpId;
-									}
-									break;
-								case 2:
-									const superAbility = getSuperAbilityByHash(hash);
-									if (!!superAbility) {
-										loadout.superAbilityId = superAbility.id as ESuperAbilityId;
-									}
-									break;
-								case 3:
-									const melee = getMeleeByHash(hash);
-									if (!!melee) {
-										loadout.meleeId = melee.id as EMeleeId;
-									}
-									break;
-								case 4:
-									const grenade = getGrenadeByHash(hash);
-									if (!!grenade) {
-										loadout.grenadeId = grenade.id as EGrenadeId;
-									}
-									break;
-								case 5:
-								case 6:
-									const aspect = getAspectByHash(hash);
-									if (!!aspect) {
-										loadout.aspectIdList.push(aspect.id as EAspectId);
-									}
-									break;
-								case 7:
-								case 8:
-								case 9:
-								case 10:
-								case 11:
-								case 13:
-								case 14:
-								case 15:
-								case 16:
-								case 17:
-								case 18:
-									const fragment = getFragmentByHash(hash);
-									if (!!fragment) {
-										loadout.fragmentIdList.push(fragment.id as EFragmentId);
-									}
-									break;
-								default:
-									break;
+
+							const classAbility = getClassAbilityByHash(hash);
+							if (!!classAbility) {
+								loadout.classAbilityId = classAbility.id as EClassAbilityId;
 							}
+
+							const jump = getJumpByHash(hash);
+							if (!!jump) {
+								loadout.jumpId = jump.id as EJumpId;
+								return;
+							}
+
+							const superAbility = getSuperAbilityByHash(hash);
+							if (!!superAbility) {
+								loadout.superAbilityId = superAbility.id as ESuperAbilityId;
+								return;
+							}
+
+							const melee = getMeleeByHash(hash);
+							if (!!melee) {
+								loadout.meleeId = melee.id as EMeleeId;
+								return;
+							}
+
+							const grenade = getGrenadeByHash(hash);
+							if (!!grenade) {
+								loadout.grenadeId = grenade.id as EGrenadeId;
+								return;
+							}
+
+							const aspect = getAspectByHash(hash);
+							if (!!aspect) {
+								loadout.aspectIdList.push(aspect.id as EAspectId);
+								return;
+							}
+
+							const fragment = getFragmentByHash(hash);
+							if (!!fragment) {
+								loadout.fragmentIdList.push(fragment.id as EFragmentId);
+								return;
+							}
+
 						});
 						break;
 					default:

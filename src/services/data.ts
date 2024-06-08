@@ -93,11 +93,11 @@ export const extractArmor = (
 	exoticArmorCollectibles: DimItem[],
 	manifest: D2ManifestDefinitions
 ): [
-	Armor,
-	AvailableExoticArmor,
-	ArmorMetadata,
-	DestinyClassToAllClassItemMetadataMapping
-] => {
+		Armor,
+		AvailableExoticArmor,
+		ArmorMetadata,
+		DestinyClassToAllClassItemMetadataMapping
+	] => {
 	const armor: Armor = {
 		[EDestinyClassId.Titan]: generateArmorGroup(),
 		[EDestinyClassId.Hunter]: generateArmorGroup(),
@@ -363,8 +363,41 @@ export const extractArmor = (
 	];
 };
 
+// https://data.destinysets.com/i/PlugSet:4285066582
+// const ARTIFICE_REUSABLE_PLUG_SET_HASH = 4285066582;
+const LOCKED_ARTIFICE_PLUGDEF_HASH = 1656746282;
+
 const isArtificeArmor = (item: DimItem): boolean => {
-	return (item.perks || []).filter((p) => p.perkHash == 229248542).length > 0;
+	// if (item.hash === 1909305643) {
+	// 	console.log('Found exotic artifice armor', item)
+	// }
+
+	// This is so messy, idk wtf is going on with these sockets
+	const isLockedExoticArtificeCheck1 = item.isExotic && item.sockets.allSockets.some(socket => {
+		return socket?.plugged?.plugDef?.hash === LOCKED_ARTIFICE_PLUGDEF_HASH
+	})
+
+	// For some reason some exotics have a null "plugged" field and we need to do this secondary check.
+	const isLockedExoticArtificeCheck2 = item.isExotic && item.sockets.allSockets.some(socket => {
+		return socket?.plugged === null && socket?.plugOptions?.some(plugOption => {
+			return plugOption?.plugDef?.hash === LOCKED_ARTIFICE_PLUGDEF_HASH
+		})
+	})
+
+	const isLockedExoticArtifice = isLockedExoticArtificeCheck1 || isLockedExoticArtificeCheck2
+
+	if (item.isExotic) {
+		if (isLockedExoticArtifice) {
+			return false;
+		}
+		return true;
+	}
+
+	const isArtifice = (item.perks || []).filter((p) => p.perkHash == 229248542).length > 0
+	// This is an alternate way to check for artifice armor that works for exotics since exotics don't have that perk hash
+	// || item.sockets.allSockets.some(socket => socket.socketDefinition.reusablePlugSetHash == ARTIFICE_REUSABLE_PLUG_SET_HASH);
+
+	return isArtifice;
 };
 
 // TODO: It may make more sense to just extract character classes. Like if you have

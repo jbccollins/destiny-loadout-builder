@@ -2,8 +2,8 @@
 USAGE: From the root directory run "npm run generate"
 */
 import { generateId, getDefinitions } from '@dlb/scripts/generation/utils';
-import { IGrenade } from '@dlb/types/generation';
 import { EElementId } from '@dlb/types/IdEnums';
+import { IGrenade } from '@dlb/types/generation';
 import { bungieNetPath } from '@dlb/utils/item-utils';
 import { DestinyInventoryItemDefinition } from 'bungie-api-ts-no-const-enum/destiny2';
 import { promises as fs } from 'fs';
@@ -19,9 +19,13 @@ const buildGrenadeData = (
 	const [, unsafeElementString] =
 		grenade.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
+	let _id = grenade.displayProperties.name;
+	if (grenade.itemTypeDisplayName.includes("| Light Ability") || grenade.itemTypeDisplayName.includes("| Darkness Ability")) {
+		_id = _id + " Prism"
+	}
 	return {
 		name: grenade.displayProperties.name,
-		id: generateId(grenade.displayProperties.name),
+		id: generateId(_id),
 		description: grenade.displayProperties.description,
 		icon: bungieNetPath(grenade.displayProperties.icon),
 		hash: grenade.hash,
@@ -42,8 +46,9 @@ export async function run() {
 		.filter((v) => v.plug?.plugCategoryIdentifier)
 		.filter(
 			(v) =>
-				v.plug.plugCategoryIdentifier.includes('shared.') &&
-				v.plug.plugCategoryIdentifier.includes('.grenades')
+				(v.plug.plugCategoryIdentifier.includes('shared.') &&
+					v.plug.plugCategoryIdentifier.includes('.grenades')) ||
+				v.plug.plugCategoryIdentifier.includes('.prism.grenades')
 		)
 		.value() as DestinyInventoryItemDefinition[];
 

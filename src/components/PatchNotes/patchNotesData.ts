@@ -11,6 +11,21 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-06-07',
+		version: '2.6.2',
+		title: 'Even More Final Shape Updates',
+		sections: [
+			{
+				items: [
+					`Fixed a bug where prismatic aspects and grenades were not recognized in the analylzer`,
+					`Fixed a bug where the build tool was using the wrong grenade hashes for prismatic grenades`,
+					`Fixed a bug where an incorrect number of fragments were being recognized in the analyzer for prismatic loadouts`,
+					`Maybe fixed a bug where the analyzer was reporting "Invalid Loadout Configuration" for some loadouts that made use of the new exotic artifice armor modslot`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-06-06',
 		version: '2.6.1',
 		title: 'More Final Shape Updates',

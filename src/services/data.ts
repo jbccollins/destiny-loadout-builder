@@ -335,6 +335,9 @@ export const extractArmor = (
 		// Alphabetical order
 		.sort((a, b) => (a.name > b.name ? 1 : -1))
 		.forEach((exotic) => {
+			if (exotic.armorSlot === EArmorSlotId.ClassItem) {
+				return;
+			}
 			availableExoticArmor[exotic.destinyClassName][exotic.armorSlot].push(
 				exotic
 			);

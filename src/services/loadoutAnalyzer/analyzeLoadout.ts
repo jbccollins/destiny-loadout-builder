@@ -16,7 +16,6 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import {
-	EArmorSlotId,
 	EExoticArtificeAssumption,
 	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,

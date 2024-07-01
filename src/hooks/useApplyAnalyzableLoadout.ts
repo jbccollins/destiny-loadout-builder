@@ -64,6 +64,7 @@ import {
 import { setTabIndex } from '@dlb/redux/features/tabIndex/tabIndexSlice';
 import { setUseBonusResilience } from '@dlb/redux/features/useBonusResilience/useBonusResilienceSlice';
 import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
+import { ExoticClassItemMapping } from '@dlb/services/loadoutAnalyzer/helpers/utils';
 import { AnalyzableLoadout } from '@dlb/types/AnalyzableLoadout';
 import { EIntrinsicArmorPerkOrAttributeId } from '@dlb/types/IdEnums';
 import useFlatAvailableExoticArmor from './useFlatAvailableExoticArmor';
@@ -124,9 +125,14 @@ export default function useApplyAnalyzableLoadout() {
 		const newSelectedExoticArmor = { ...selectedExoticArmor };
 
 		if (exoticHash) {
-			newSelectedExoticArmor[destinyClassId] = flatAvailableExoticArmor.find(
-				(x) => x.hash === exoticHash
-			);
+			// TODO: Hack to handle exotic class items
+			if (exoticHash === -1) {
+				newSelectedExoticArmor[destinyClassId] = ExoticClassItemMapping[destinyClassId];
+			} else {
+				newSelectedExoticArmor[destinyClassId] = flatAvailableExoticArmor.find(
+					(x) => x.hash === exoticHash
+				);
+			}
 			dispatch(setSelectedExoticArmor(newSelectedExoticArmor));
 		}
 		dispatch(setSelectedDestinyClass(destinyClassId));

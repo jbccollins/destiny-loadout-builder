@@ -180,6 +180,7 @@ import { setValidDestinyClassIds } from '@dlb/redux/features/validDestinyClassId
 import { DlbLoadoutConfiguration } from '@dlb/services/links/generateDlbLoadoutLink';
 import { buildAnalyzableLoadoutsBreakdown } from '@dlb/services/loadoutAnalyzer/helpers/buildAnalyzableLoadoutsBreakdown';
 import { getLoadoutItemIdsToItemHashesMapping } from '@dlb/services/loadoutAnalyzer/helpers/getItemsFromInGameLoadout';
+import { ExoticClassItemMapping } from '@dlb/services/loadoutAnalyzer/helpers/utils';
 import {
 	EDestinyClassId,
 	EDestinySubclassId,
@@ -196,7 +197,6 @@ import { cloneDeep } from 'lodash';
 import { useRouter } from 'next/navigation';
 import hash from 'object-hash';
 import { useEffect, useState } from 'react';
-import { ExoticClassItemMapping } from './ExoticSelector';
 
 const Container = styled(Card)(({ theme }) => ({
 	color: theme.palette.secondary.main,

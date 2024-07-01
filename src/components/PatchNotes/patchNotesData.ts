@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-06-30',
+		version: '2.6.3',
+		title: 'Fix Exotic Class Item Analyzer Bug',
+		sections: [
+			{
+				items: [
+					`Fixed a bug where loadouts that contained an exotic class item were ignored in the Analyzer`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-06-07',
 		version: '2.6.2',
 		title: 'Even More Final Shape Updates',

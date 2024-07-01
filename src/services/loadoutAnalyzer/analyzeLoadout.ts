@@ -16,11 +16,10 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import {
-	EArmorSlotId,
 	EExoticArtificeAssumption,
 	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,
-	EMasterworkAssumption,
+	EMasterworkAssumption
 } from '@dlb/types/IdEnums';
 import {
 	getValidRaidModArmorSlotPlacements,
@@ -41,7 +40,7 @@ import {
 	LoadoutVariants,
 	ModReplacer,
 } from './helpers/types';
-import { findAvailableExoticArmorItem, unflattenMods } from './helpers/utils';
+import { findAvailableExoticArmorItem, unflattenMods, usesExoticClassItem } from './helpers/utils';
 
 // Order matters here for short-circuiting
 export const LoadoutVariantCheckOrder: Record<
@@ -248,6 +247,7 @@ export default function analyzeLoadout(
 				LoadoutVariantCheckOrder[loadoutVariantCheckType].beforeProcessing,
 				metadata
 			);
+
 			if (shortCircuit) {
 				return {
 					optimizationTypeList: optimizationTypeIdList,
@@ -283,11 +283,7 @@ export default function analyzeLoadout(
 				loadout.destinyClassId
 			);
 
-			const useExoticClassItem = loadout.armor.some(
-				(x) =>
-					x.armorSlot === EArmorSlotId.ClassItem &&
-					x.gearTierId === EGearTierId.Exotic
-			);
+			const useExoticClassItem = usesExoticClassItem(loadout)
 
 			// TODO: Flesh out the non-default stuff like
 			// raid mods, placements, armor slot mods,

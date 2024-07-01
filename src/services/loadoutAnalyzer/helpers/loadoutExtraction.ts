@@ -137,7 +137,8 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 		);
 		if (armorItem) {
 			if (armorItem.gearTierId === EGearTierId.Exotic) {
-				loadout.exoticHash = armorItem.hash;
+				// Hack to handle exotic class items
+				loadout.exoticHash = armorItem.armorSlot === EArmorSlotId.ClassItem ? -1 : armorItem.hash;
 			}
 			if (
 				armorItem.intrinsicArmorPerkOrAttributeId ===
@@ -525,7 +526,8 @@ export const extractInGameLoadouts = (
 							}
 							loadout.armor.push(armorItem);
 							if (armorItem.gearTierId === EGearTierId.Exotic) {
-								loadout.exoticHash = armorItem.hash;
+								// Hack to handle exotic class items
+								loadout.exoticHash = armorItem.armorSlot === EArmorSlotId.ClassItem ? -1 : armorItem.hash;
 							} else if (
 								armorItem.gearTierId === EGearTierId.Legendary ||
 								armorItem.armorSlot === EArmorSlotId.Chest

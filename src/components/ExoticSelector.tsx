@@ -8,13 +8,9 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 
 import BungieImage from '@dlb/dim/dim-ui/BungieImage';
+import { ExoticClassItemMapping } from '@dlb/services/loadoutAnalyzer/helpers/utils';
 import { AvailableExoticArmorItem, EXOTIC_CLASS_ITEM } from '@dlb/types/Armor';
-import {
-	ArmorSlotIdList,
-	EXOTIC_CLASS_ITEM_ICON,
-	getArmorSlot,
-} from '@dlb/types/ArmorSlot';
-import { EArmorSlotId, EDestinyClassId } from '@dlb/types/IdEnums';
+import { ArmorSlotIdList, getArmorSlot } from '@dlb/types/ArmorSlot';
 import { MISSING_ICON } from '@dlb/types/globals';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, Popper, styled } from '@mui/material';
@@ -96,34 +92,6 @@ const StyledPopper = styled(Popper)({
 		maxHeight: '60vh',
 	},
 });
-
-const exoticClassItem: AvailableExoticArmorItem = {
-	hash: -1,
-	name: EXOTIC_CLASS_ITEM,
-	armorSlot: EArmorSlotId.ClassItem,
-	count: 1,
-	exoticPerk: null,
-	icon: EXOTIC_CLASS_ITEM_ICON,
-	destinyClassName: EDestinyClassId.Hunter,
-};
-
-export const ExoticClassItemMapping: Record<
-	EDestinyClassId,
-	AvailableExoticArmorItem
-> = {
-	[EDestinyClassId.Hunter]: {
-		...exoticClassItem,
-		destinyClassName: EDestinyClassId.Hunter,
-	},
-	[EDestinyClassId.Titan]: {
-		...exoticClassItem,
-		destinyClassName: EDestinyClassId.Titan,
-	},
-	[EDestinyClassId.Warlock]: {
-		...exoticClassItem,
-		destinyClassName: EDestinyClassId.Warlock,
-	},
-};
 
 function ExoticSelector() {
 	const selectedDestinyClass = useAppSelector(selectSelectedDestinyClass);

@@ -16,6 +16,7 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import {
+	EArmorSlotId,
 	EExoticArtificeAssumption,
 	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,
@@ -256,7 +257,7 @@ export default function analyzeLoadout(
 				};
 			}
 
-			const exoticArtificeAssumption = loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice
+			let exoticArtificeAssumption = loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice
 				? EExoticArtificeAssumption.All
 				: EExoticArtificeAssumption.None
 
@@ -285,6 +286,24 @@ export default function analyzeLoadout(
 
 			const useExoticClassItem = usesExoticClassItem(loadout)
 
+			const selectedExoticArmorItem = findAvailableExoticArmorItem(
+				loadout.exoticHash,
+				loadout.destinyClassId,
+				availableExoticArmor
+			);
+
+			if (useExoticClassItem) {
+				const loadoutClassItem = loadout.armor.find(
+					(x) => x.armorSlot === EArmorSlotId.ClassItem
+				);
+				// TODO: TEST THAT THIS HACK ACTUALLY WORKS! I DON'T HAVE ANY
+				// EXOTIC CLASS ITEMS TO TEST WITH
+				// Hack to handle exotic class items
+				if (loadoutClassItem.isArtifice) {
+					exoticArtificeAssumption = EExoticArtificeAssumption.All;
+				}
+			}
+
 			// TODO: Flesh out the non-default stuff like
 			// raid mods, placements, armor slot mods,
 			const doProcessArmorParams: DoProcessArmorParams = {
@@ -311,11 +330,7 @@ export default function analyzeLoadout(
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
 				useBonusResilience: loadout.hasBonusResilienceOrnament,
-				selectedExoticArmorItem: findAvailableExoticArmorItem(
-					loadout.exoticHash,
-					loadout.destinyClassId,
-					availableExoticArmor
-				),
+				selectedExoticArmorItem,
 				alwaysConsiderCollectionsRolls: false,
 				allClassItemMetadata: _allClassItemMetadata,
 				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),

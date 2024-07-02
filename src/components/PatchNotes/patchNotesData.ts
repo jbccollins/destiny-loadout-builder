@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-07-01',
+		version: '2.6.4',
+		title: 'Fix Exotic Class Item Analyzer Bug V2 Electric Boogaloo',
+		sections: [
+			{
+				items: [
+					`Attempt to fix what wasn't quite fixed by 2.6.3`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-06-30',
 		version: '2.6.3',
 		title: 'Fix Exotic Class Item Analyzer Bug',

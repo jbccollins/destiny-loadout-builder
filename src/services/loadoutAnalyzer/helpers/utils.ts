@@ -11,10 +11,12 @@ import {
 	AvailableExoticArmor,
 	AvailableExoticArmorItem,
 	DestinyClassToAllClassItemMetadataMapping,
+	EXOTIC_CLASS_ITEM,
 } from '@dlb/types/Armor';
 import {
 	ArmorSlotIdList,
 	ArmorSlotWithClassItemIdList,
+	EXOTIC_CLASS_ITEM_ICON,
 } from '@dlb/types/ArmorSlot';
 import { getAspect } from '@dlb/types/Aspect';
 import { DestinyClassIdList } from '@dlb/types/DestinyClass';
@@ -34,14 +36,18 @@ import {
 	hasMutuallyExclusiveMods,
 } from '@dlb/types/Mod';
 
-export const isEditableLoadout = (loadout: AnalyzableLoadout): boolean => {
-	const nonClassItemArmor = loadout.armor.filter(
-		(x) => x.armorSlot !== EArmorSlotId.ClassItem
+export const usesExoticClassItem = (loadout: AnalyzableLoadout): boolean => {
+	return loadout.armor.some(
+		(x) =>
+			x.armorSlot === EArmorSlotId.ClassItem &&
+			x.gearTierId === EGearTierId.Exotic
 	);
+}
 
+export const isEditableLoadout = (loadout: AnalyzableLoadout): boolean => {
 	const hasFullSetOfLegendaryArmor =
-		nonClassItemArmor.length === 4 &&
-		nonClassItemArmor.every((x) => x.gearTierId === EGearTierId.Legendary);
+		loadout.armor.length === 5 &&
+		loadout.armor.every((x) => x.gearTierId === EGearTierId.Legendary)
 
 	return (
 		!hasFullSetOfLegendaryArmor &&
@@ -61,7 +67,7 @@ export const flattenArmor = (
 ): ArmorItem[] => {
 	let armorItems: ArmorItem[] = [];
 	DestinyClassIdList.forEach((destinyClassId) => {
-		ArmorSlotIdList.forEach((armorSlotId) => {
+		ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
 			['exotic', 'nonExotic'].forEach((exoticOrNonExotic) => {
 				armorItems = armorItems.concat(
 					Object.values(armor[destinyClassId][armorSlotId][exoticOrNonExotic])
@@ -155,11 +161,45 @@ export const unflattenMods = (modIdList: EModId[]): UnflattenModsOutput => {
 	};
 };
 
+export const exoticClassItem: AvailableExoticArmorItem = {
+	hash: -1,
+	name: EXOTIC_CLASS_ITEM,
+	armorSlot: EArmorSlotId.ClassItem,
+	count: 1,
+	exoticPerk: null,
+	icon: EXOTIC_CLASS_ITEM_ICON,
+	destinyClassName: EDestinyClassId.Hunter,
+};
+
+export const ExoticClassItemMapping: Record<
+	EDestinyClassId,
+	AvailableExoticArmorItem
+> = {
+	[EDestinyClassId.Hunter]: {
+		...exoticClassItem,
+		destinyClassName: EDestinyClassId.Hunter,
+	},
+	[EDestinyClassId.Titan]: {
+		...exoticClassItem,
+		destinyClassName: EDestinyClassId.Titan,
+	},
+	[EDestinyClassId.Warlock]: {
+		...exoticClassItem,
+		destinyClassName: EDestinyClassId.Warlock,
+	},
+};
+
 export const findAvailableExoticArmorItem = (
 	hash: number,
 	destinyClassId: EDestinyClassId,
 	availableExoticArmor: AvailableExoticArmor
 ): AvailableExoticArmorItem => {
+
+	// TODO: This is a hack to handle the exotic class item
+	if (hash === -1) {
+		return ExoticClassItemMapping[destinyClassId]
+	}
+
 	for (const armorSlotId of ArmorSlotIdList) {
 		const potentialExoticArmor = availableExoticArmor[destinyClassId][
 			armorSlotId
@@ -236,10 +276,10 @@ export const getUnusedModSlots = ({
 						const meetsArmorChargeSpendModConstraints =
 							ArmorChargeSpendModIdList.includes(mod.id)
 								? // We can only recommend using a spend mod if it's a duplicate spend mod (two copies of grenade kickstart for example)
-								  // or if we don't have any other spend mods or font mods
-								  !hasFontMod &&
-								  (!hasArmorChargeSpendMod ||
-										currentArmorSlotMods.some((cMod) => cMod.id === mod.id))
+								// or if we don't have any other spend mods or font mods
+								!hasFontMod &&
+								(!hasArmorChargeSpendMod ||
+									currentArmorSlotMods.some((cMod) => cMod.id === mod.id))
 								: true;
 						return (
 							!_hasMutuallyExclusiveMods &&

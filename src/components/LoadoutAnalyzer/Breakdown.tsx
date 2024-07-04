@@ -1,6 +1,7 @@
 import ModPlacement from '@dlb/components/ModPlacement';
 import { selectAvailableExoticArmor } from '@dlb/redux/features/availableExoticArmor/availableExoticArmorSlice';
 import { useAppSelector } from '@dlb/redux/hooks';
+import { findAvailableExoticArmorItem } from '@dlb/services/loadoutAnalyzer/helpers/utils';
 import { ProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import {
 	ELoadoutOptimizationTypeId,
@@ -29,10 +30,10 @@ const BreakdownContent = (props: BreakdownProps) => {
 
 	let exoticArmorItem: AvailableExoticArmorItem = null;
 	if (exoticArmor) {
-		exoticArmorItem = availableExoticArmor[props.loadout.destinyClassId][
-			exoticArmor.armorSlot
-		].find(
-			(x: AvailableExoticArmorItem) => x.hash === props.loadout.exoticHash
+		exoticArmorItem = findAvailableExoticArmorItem(
+			exoticArmor.hash,
+			props.loadout.destinyClassId,
+			availableExoticArmor
 		);
 	} else if (props.loadout.exoticHash) {
 		for (const armorSlotId of ArmorSlotIdList) {

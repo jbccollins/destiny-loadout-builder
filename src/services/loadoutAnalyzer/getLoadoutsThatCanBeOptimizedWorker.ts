@@ -26,6 +26,7 @@ self.onmessage = (e: MessageEvent<PostMessageParams>) => {
 			payload: result,
 		} as Message);
 	} catch (e) {
+		console.error('[getLoadoutsThatCanBeOptimizedWorker] error', e);
 		self.postMessage({
 			type: EMessageType.Error,
 			payload: e,
@@ -34,4 +35,5 @@ self.onmessage = (e: MessageEvent<PostMessageParams>) => {
 	console.log('[getLoadoutsThatCanBeOptimizedWorker] done');
 };
 
-export {};
+export { };
+

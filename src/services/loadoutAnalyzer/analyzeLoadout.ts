@@ -20,7 +20,7 @@ import {
 	EExoticArtificeAssumption,
 	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,
-	EMasterworkAssumption,
+	EMasterworkAssumption
 } from '@dlb/types/IdEnums';
 import {
 	getValidRaidModArmorSlotPlacements,
@@ -41,7 +41,7 @@ import {
 	LoadoutVariants,
 	ModReplacer,
 } from './helpers/types';
-import { findAvailableExoticArmorItem, unflattenMods } from './helpers/utils';
+import { findAvailableExoticArmorItem, unflattenMods, usesExoticClassItem } from './helpers/utils';
 
 // Order matters here for short-circuiting
 export const LoadoutVariantCheckOrder: Record<
@@ -248,6 +248,7 @@ export default function analyzeLoadout(
 				LoadoutVariantCheckOrder[loadoutVariantCheckType].beforeProcessing,
 				metadata
 			);
+
 			if (shortCircuit) {
 				return {
 					optimizationTypeList: optimizationTypeIdList,
@@ -256,7 +257,7 @@ export default function analyzeLoadout(
 				};
 			}
 
-			const exoticArtificeAssumption = loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice
+			let exoticArtificeAssumption = loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice
 				? EExoticArtificeAssumption.All
 				: EExoticArtificeAssumption.None
 
@@ -283,11 +284,25 @@ export default function analyzeLoadout(
 				loadout.destinyClassId
 			);
 
-			const useExoticClassItem = loadout.armor.some(
-				(x) =>
-					x.armorSlot === EArmorSlotId.ClassItem &&
-					x.gearTierId === EGearTierId.Exotic
+			const useExoticClassItem = usesExoticClassItem(loadout)
+
+			const selectedExoticArmorItem = findAvailableExoticArmorItem(
+				loadout.exoticHash,
+				loadout.destinyClassId,
+				availableExoticArmor
 			);
+
+			if (useExoticClassItem) {
+				const loadoutClassItem = loadout.armor.find(
+					(x) => x.armorSlot === EArmorSlotId.ClassItem
+				);
+				// TODO: TEST THAT THIS HACK ACTUALLY WORKS! I DON'T HAVE ANY
+				// EXOTIC CLASS ITEMS TO TEST WITH
+				// Hack to handle exotic class items
+				if (loadoutClassItem.isArtifice) {
+					exoticArtificeAssumption = EExoticArtificeAssumption.All;
+				}
+			}
 
 			// TODO: Flesh out the non-default stuff like
 			// raid mods, placements, armor slot mods,
@@ -315,11 +330,7 @@ export default function analyzeLoadout(
 				reservedArmorSlotEnergy: getDefaultArmorSlotEnergyMapping(),
 				useZeroWastedStats: false,
 				useBonusResilience: loadout.hasBonusResilienceOrnament,
-				selectedExoticArmorItem: findAvailableExoticArmorItem(
-					loadout.exoticHash,
-					loadout.destinyClassId,
-					availableExoticArmor
-				),
+				selectedExoticArmorItem,
 				alwaysConsiderCollectionsRolls: false,
 				allClassItemMetadata: _allClassItemMetadata,
 				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),

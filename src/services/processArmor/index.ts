@@ -56,12 +56,13 @@ import {
 	getArmorStatMappingFromStatList,
 	getExtraSumOfSeenStats,
 	getNextValues,
+	getNumUniqueArmorStatMods,
 	getStatListFromArmorStatMapping,
 	getTotalModCost,
 	getTotalStatTiers,
 	getWastedStats,
 	sumModCosts,
-	sumStatLists,
+	sumStatLists
 } from './utils';
 
 const _processArmorRecursiveCase = ({
@@ -259,6 +260,8 @@ const _processArmorBaseCase = ({
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
 				wastedStats: getWastedStats(totalArmorStatMapping),
+				numUniqueArmorStatMods: getNumUniqueArmorStatMods(requiredArmorStatModIdList),
+				// numUniqueArmorStatMods: 0,
 				totalArmorStatMapping,
 				baseArmorStatMapping,
 				seenArmorSlotItems: finalSpecialSeenArmorSlotItems,
@@ -314,6 +317,7 @@ export type ProcessedArmorItemMetadata = {
 	totalModCost: number;
 	totalStatTiers: number;
 	wastedStats: number;
+	numUniqueArmorStatMods: number;
 	totalArmorStatMapping: ArmorStatMapping;
 	baseArmorStatMapping: ArmorStatMapping;
 	seenArmorSlotItems: SeenArmorSlotItems;
@@ -427,6 +431,8 @@ export const doProcessArmor = ({
 		(a, b) =>
 			// Lowest cost
 			a.metadata.totalModCost - b.metadata.totalModCost ||
+			// Highest number of unique armor stat mods
+			b.metadata.numUniqueArmorStatMods - a.metadata.numUniqueArmorStatMods ||
 			// Highest stat tiers
 			b.metadata.totalStatTiers - a.metadata.totalStatTiers ||
 			// Lowest wasted stats

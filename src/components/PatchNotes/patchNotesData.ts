@@ -11,6 +11,18 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-07-07',
+		version: '2.6.5',
+		title: 'Add a tiebreaker sort for the results list that prioritizes loadouts with more stat mod variety',
+		sections: [
+			{
+				items: [
+					`Given the same total cost, the loadout with the most unique stat mods will be shown first`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-07-01',
 		version: '2.6.4',
 		title: 'Fix Exotic Class Item Analyzer Bug V2 Electric Boogaloo',

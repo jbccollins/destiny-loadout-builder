@@ -62,6 +62,11 @@ export function deleteFromArray<T>(arr: T[], item: T): void {
 	}
 }
 
+export const getNumUniqueArmorStatMods = (armorStatModIds: EModId[]): number => {
+	const uniqueArmorStatModIds = new Set(armorStatModIds);
+	return uniqueArmorStatModIds.size;
+}
+
 export const getTotalStatTiers = (
 	armorStatMapping: ArmorStatMapping
 ): number => {

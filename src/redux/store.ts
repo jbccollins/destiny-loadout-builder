@@ -730,6 +730,20 @@ function handleChange() {
 		preProcessedArmor
 	);
 
+	const _allLoadoutArmorItemsIdList: string[] = [];
+
+	// TODO: Maybe move this to the reducer if it's needed anywhere else...
+	// Or perhaps calculate this once and just store it in redux... 
+	const { analyzableLoadoutBreakdown: { invalidLoadouts, validLoadouts } } = store.getState().analyzableLoadouts.value;
+	[...Object.values(validLoadouts), ...Object.values(invalidLoadouts)].forEach((loadout) => {
+		loadout.armor.forEach((armorItem) => {
+			_allLoadoutArmorItemsIdList.push(armorItem.id);
+		});
+	})
+
+	// Convert to a set and back to an array to remove duplicates
+	const allLoadoutArmorItemsIdList = [...new Set(_allLoadoutArmorItemsIdList)];
+
 	const doProcessArmorParams: DoProcessArmorParams = {
 		masterworkAssumption,
 		exoticArtificeAssumption,
@@ -751,6 +765,7 @@ function handleChange() {
 		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata: _allClassItemMetadata,
 		assumedStatValuesStatMapping: selectedAssumedStatValues,
+		allLoadoutArmorItemsIdList
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {

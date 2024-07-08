@@ -334,6 +334,7 @@ export default function analyzeLoadout(
 				alwaysConsiderCollectionsRolls: false,
 				allClassItemMetadata: _allClassItemMetadata,
 				assumedStatValuesStatMapping: getDefaultArmorStatMapping(),
+				allLoadoutArmorItemsIdList: [], // The analyzer does not care about this... for now
 			};
 
 			const processedArmor = doProcessArmor(doProcessArmorParams);

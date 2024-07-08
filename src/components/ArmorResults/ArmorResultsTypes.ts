@@ -25,6 +25,7 @@ export type SortableFields = {
 	totalModCost: number;
 	totalStatTiers: number;
 	wastedStats: number;
+	numSharedArmorItemsAcrossLoadouts: number;
 };
 
 export type ResultsTableLoadout = {

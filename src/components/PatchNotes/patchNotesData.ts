@@ -51,6 +51,20 @@ export const PatchNotes: PatchNote[] = [
 	},
 	{
 		date: '2024-07-07',
+		version: '2.6.6',
+		title: 'Add a new results sort option: "Shared Armor Across Loadouts"',
+		sections: [
+			{
+				items: [
+					`Add a new sort option to the results list to sort results by those that share the most/least armor pieces.`,
+					`Note that this sort option will only apply to the "top 1000" results.`,
+					`Also note that the class item is never considered, so the maximum that this number can be is 4.`
+				],
+			},
+		],
+	},
+	{
+		date: '2024-07-07',
 		version: '2.6.5',
 		title: 'Add a tiebreaker sort for the results list that prioritizes loadouts with more stat mod variety',
 		sections: [

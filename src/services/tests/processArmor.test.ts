@@ -129,6 +129,7 @@ const testCases: TestCase[] = [
 		'It returns results with one item in each slot',
 		[
 			{
+				allLoadoutArmorItemsIdList: [],
 				masterworkAssumption: EMasterworkAssumption.None,
 				exoticArtificeAssumption: EExoticArtificeAssumption.None,
 				useExoticClassItem: false,
@@ -235,6 +236,7 @@ const testCases: TestCase[] = [
 						totalStatTiers: 26,
 						wastedStats: 24,
 						numUniqueArmorStatMods: 0,
+						numSharedArmorItemsAcrossLoadouts: 0,
 					},
 				},
 			],
@@ -263,6 +265,7 @@ const testCases: TestCase[] = [
 		'It returns results with artifice boosts required',
 		[
 			{
+				allLoadoutArmorItemsIdList: [],
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				useZeroWastedStats: false,
@@ -387,6 +390,7 @@ const testCases: TestCase[] = [
 						totalStatTiers: 35,
 						wastedStats: 24,
 						numUniqueArmorStatMods: 2,
+						numSharedArmorItemsAcrossLoadouts: 0,
 						seenArmorSlotItems: {
 							...getDefaultSeenArmorSlotItems(),
 							[EArmorSlotId.Head]: {
@@ -450,6 +454,7 @@ const testCases: TestCase[] = [
 		'It returns results when five major mods are required',
 		[
 			{
+				allLoadoutArmorItemsIdList: [],
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.None,
@@ -584,6 +589,7 @@ const testCases: TestCase[] = [
 						totalStatTiers: 31,
 						wastedStats: 24,
 						numUniqueArmorStatMods: 1,
+						numSharedArmorItemsAcrossLoadouts: 0,
 					},
 				},
 			],
@@ -612,6 +618,7 @@ const testCases: TestCase[] = [
 		'It returns results when five major mods and two artifice mods are required',
 		[
 			{
+				allLoadoutArmorItemsIdList: [],
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.All,
@@ -759,6 +766,7 @@ const testCases: TestCase[] = [
 						totalStatTiers: 36,
 						wastedStats: 17,
 						numUniqueArmorStatMods: 2,
+						numSharedArmorItemsAcrossLoadouts: 0,
 					},
 				},
 			],
@@ -787,6 +795,7 @@ const testCases: TestCase[] = [
 		'It returns results when five major mods and four artifice mods are required',
 		[
 			{
+				allLoadoutArmorItemsIdList: [],
 				useBonusResilience: false,
 				selectedExoticArmorItem: null,
 				masterworkAssumption: EMasterworkAssumption.All,
@@ -947,6 +956,7 @@ const testCases: TestCase[] = [
 						totalStatTiers: 37,
 						wastedStats: 13,
 						numUniqueArmorStatMods: 2,
+						numSharedArmorItemsAcrossLoadouts: 0,
 					},
 				},
 			],

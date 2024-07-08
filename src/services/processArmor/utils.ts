@@ -1,6 +1,7 @@
 import { EModId } from '@dlb/generated/mod/EModId';
 import {
 	AllClassItemMetadata,
+	ArmorIdList,
 	ArmorItem,
 	ArmorMetadataItem,
 	AvailableExoticArmorItem,
@@ -91,6 +92,16 @@ export const getWastedStats = (armorStatMapping: ArmorStatMapping): number => {
 		res += armorStatMapping[armorStatId] % 10;
 	});
 	return res;
+};
+
+export const getNumSharedArmorItemsAcrossLoadouts = (armorIdList: ArmorIdList, allLoadoutArmorItemsIdList: string[]) => {
+	let numSharedArmorItems = 0;
+	armorIdList.forEach((armorId) => {
+		if (allLoadoutArmorItemsIdList.includes(armorId)) {
+			numSharedArmorItems++;
+		}
+	});
+	return numSharedArmorItems;
 };
 
 // We never need to check legs as written since we always process top down.

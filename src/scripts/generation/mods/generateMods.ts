@@ -115,7 +115,7 @@ const buildModData = (
 		return null;
 	}
 
-	let displayNameId = generateId(mod.itemTypeDisplayName) as EModDisplayNameId;
+	let displayNameId = generateId(getDisplayName(mod)) as EModDisplayNameId;
 
 	//TODO: Get rid of this when the manifest returns proper 'itemTypeDisplayNames' for these mods
 	if (
@@ -157,6 +157,14 @@ const buildModData = (
 		raidAndNightmareModTypeId: getRaidAndNightmareModTypeId(displayNameId),
 	};
 };
+
+const getDisplayName = (mod: DestinyInventoryItemDefinition): string => {
+	// Dumbass hack because bungo fucked up the itemTypeDisplayName for SE Raid Mods
+	if (mod.plug?.plugCategoryIdentifier === "enhancements.raid_v800") {
+		return "Salvation's Edge Mod";
+	}
+	return mod.itemTypeDisplayName;
+}
 
 export async function run() {
 	const {
@@ -228,7 +236,10 @@ export async function run() {
 	allMods
 		.filter((mod) => !excludedModHashes.includes(mod.hash))
 		.forEach((mod) => {
-			modDisplayNames.add(generateId(mod.itemTypeDisplayName));
+			// Stupid hack for SE raid mods since Bungie broke the established pattern
+			// for how they named these mods. I fucking hate my life.
+			const displayName = getDisplayName(mod);
+			modDisplayNames.add(generateId(displayName));
 			const m = buildModData(
 				mod,
 				sandboxPerkDefinitions,

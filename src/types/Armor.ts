@@ -372,6 +372,7 @@ const allClassItemMetadata: AllClassItemMetadata = {
 	[ERaidAndNightMareModTypeId.KingsFall]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.RootOfNightmares]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.CrotasEnd]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.SalvationsEdge]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.NightmareHunt]: getDefaultClassItemMetadata(),
 	Legendary: getDefaultClassItemMetadata(),
 	Artifice: getDefaultClassItemMetadata(),

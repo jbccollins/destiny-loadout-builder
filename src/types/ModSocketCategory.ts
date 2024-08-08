@@ -21,6 +21,7 @@ const EModDisplayNameIdToModSocketCategoryIdMapping: EnumDictionary<
 	[EModDisplayNameId.KingsFallMod]: EModSocketCategoryId.Raid,
 	[EModDisplayNameId.CrotasEndMod]: EModSocketCategoryId.Raid,
 	[EModDisplayNameId.RootOfNightmaresArmorMod]: EModSocketCategoryId.Raid,
+	[EModDisplayNameId.SalvationsEdgeMod]: EModSocketCategoryId.Raid,
 
 	[EModDisplayNameId.ArtificeArmorMod]: EModSocketCategoryId.ArtificeStat,
 	[EModDisplayNameId.GeneralArmorMod]: EModSocketCategoryId.Stat,

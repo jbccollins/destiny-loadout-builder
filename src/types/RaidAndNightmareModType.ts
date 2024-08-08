@@ -68,6 +68,12 @@ const RaidAndNightMareModTypeIdToRaidAndNightMareModTypeMapping: EnumDictionary<
 		abbreviation: 'CE',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_2c5b645accc12584f882c472deb30017.png',
 	},
+	[ERaidAndNightMareModTypeId.SalvationsEdge]: {
+		id: ERaidAndNightMareModTypeId.SalvationsEdge,
+		name: "Salvation's Edge",
+		abbreviation: 'SE',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_329a6f8ba06cf48f5831b92c7777b16b.png',
+	}
 };
 
 export const getRaidAndNightmareModType = (
@@ -87,6 +93,7 @@ export const RaidAndNightmareModTypeIdList = ValidateEnumList(
 		ERaidAndNightMareModTypeId.VowOfTheDisciple,
 		ERaidAndNightMareModTypeId.RootOfNightmares,
 		ERaidAndNightMareModTypeId.CrotasEnd,
+		ERaidAndNightMareModTypeId.SalvationsEdge,
 	]
 );
 

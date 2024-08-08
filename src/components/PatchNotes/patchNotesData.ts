@@ -11,6 +11,19 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-08-07',
+		version: '2.6.7',
+		title: 'Add Salvations Edge Raid Mods',
+		sections: [
+			{
+				items: [
+					`Add Salvation's Edge Raid Mods.`,
+					`Update the costs of all reserves mods.`
+				],
+			},
+		],
+	},
+	{
 		date: '2024-07-07',
 		version: '2.6.6',
 		title: 'Add a new results sort option: "Shared Armor Across Loadouts"',

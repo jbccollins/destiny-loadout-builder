@@ -11,6 +11,7 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+<<<<<<< HEAD
 		date: '2024-09-05',
 		version: '2.6.8',
 		title: `Fix "Open Loadout In DIM" Bug`,
@@ -26,6 +27,11 @@ export const PatchNotes: PatchNote[] = [
 		date: '2024-08-07',
 		version: '2.6.7',
 		title: `Add Salvation's Edge Raid Mods`,
+=======
+		date: '2024-08-07',
+		version: '2.6.7',
+		title: 'Add Salvations Edge Raid Mods',
+>>>>>>> f9f62fb (Add SE Raid Mods and Reduced Cost Reserve Mods)
 		sections: [
 			{
 				items: [
@@ -36,6 +42,7 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
+<<<<<<< HEAD
 		date: '2024-07-07',
 		version: '2.6.6',
 		title: 'Add a new results sort option: "Shared Armor Across Loadouts"',
@@ -50,6 +57,8 @@ export const PatchNotes: PatchNote[] = [
 		],
 	},
 	{
+=======
+>>>>>>> f9f62fb (Add SE Raid Mods and Reduced Cost Reserve Mods)
 		date: '2024-07-07',
 		version: '2.6.6',
 		title: 'Add a new results sort option: "Shared Armor Across Loadouts"',

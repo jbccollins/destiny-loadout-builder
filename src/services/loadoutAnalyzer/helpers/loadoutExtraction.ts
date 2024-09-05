@@ -182,22 +182,52 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 		// can other things have socketOverrides?
 		if (equippedItem.socketOverrides) {
 			let subclassHash = equippedItem.hash;
-			const classAbilityHash = equippedItem.socketOverrides[0] || null;
-			const jumpHash = equippedItem.socketOverrides[1] || null;
-			const superAbilityHash = equippedItem.socketOverrides[2] || null;
-			const meleeHash = equippedItem.socketOverrides[3] || null;
-			const grenadeHash = equippedItem.socketOverrides[4] || null;
-			const aspectHashes = [
-				equippedItem.socketOverrides[5],
-				equippedItem.socketOverrides[6],
-			].filter((x) => !!x);
-			const fragmentHashes = [
-				equippedItem.socketOverrides[7],
-				equippedItem.socketOverrides[8],
-				equippedItem.socketOverrides[9],
-				equippedItem.socketOverrides[10],
-				equippedItem.socketOverrides[11],
-			].filter((x) => !!x);
+			Object.values(equippedItem.socketOverrides).forEach((hash) => {
+				if (hash === UNSET_PLUG_HASH) {
+					return;
+				}
+
+				const classAbility = getClassAbilityByHash(hash);
+				if (!!classAbility) {
+					loadout.classAbilityId = classAbility.id as EClassAbilityId;
+				}
+
+				const jump = getJumpByHash(hash);
+				if (!!jump) {
+					loadout.jumpId = jump.id as EJumpId;
+					return;
+				}
+
+				const superAbility = getSuperAbilityByHash(hash);
+				if (!!superAbility) {
+					loadout.superAbilityId = superAbility.id as ESuperAbilityId;
+					return;
+				}
+
+				const melee = getMeleeByHash(hash);
+				if (!!melee) {
+					loadout.meleeId = melee.id as EMeleeId;
+					return;
+				}
+
+				const grenade = getGrenadeByHash(hash);
+				if (!!grenade) {
+					loadout.grenadeId = grenade.id as EGrenadeId;
+					return;
+				}
+
+				const aspect = getAspectByHash(hash);
+				if (!!aspect) {
+					loadout.aspectIdList.push(aspect.id as EAspectId);
+					return;
+				}
+
+				const fragment = getFragmentByHash(hash);
+				if (!!fragment) {
+					loadout.fragmentIdList.push(fragment.id as EFragmentId);
+					return;
+				}
+			})
 
 			// Ensure that loadouts that were created with old 2.0 subclasses
 			// are still processed correctly with 3.0 versions
@@ -217,39 +247,6 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 				);
 				loadout.destinyClassId = destinyClassId || null;
 			}
-
-			const classAbility = getClassAbilityByHash(classAbilityHash);
-			loadout.classAbilityId = classAbility
-				? (classAbility.id as EClassAbilityId)
-				: null;
-
-			const jump = getJumpByHash(jumpHash);
-			loadout.jumpId = jump ? (jump.id as EJumpId) : null;
-
-			const superAbility = getSuperAbilityByHash(superAbilityHash);
-			loadout.superAbilityId = superAbility
-				? (superAbility.id as ESuperAbilityId)
-				: null;
-
-			const melee = getMeleeByHash(meleeHash);
-			loadout.meleeId = melee ? (melee.id as EMeleeId) : null;
-
-			const grenade = getGrenadeByHash(grenadeHash);
-			loadout.grenadeId = grenade ? (grenade.id as EGrenadeId) : null;
-
-			aspectHashes.forEach((hash) => {
-				const aspect = getAspectByHash(hash);
-				if (!!aspect) {
-					loadout.aspectIdList.push(aspect.id as EAspectId);
-				}
-			});
-
-			fragmentHashes.forEach((hash) => {
-				const fragment = getFragmentByHash(hash);
-				if (!!fragment) {
-					loadout.fragmentIdList.push(fragment.id as EFragmentId);
-				}
-			});
 		}
 	});
 	loadout.hasHalloweenMask = hasHalloweenMask;

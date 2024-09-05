@@ -372,6 +372,7 @@ const allClassItemMetadata: AllClassItemMetadata = {
 	[ERaidAndNightMareModTypeId.KingsFall]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.RootOfNightmares]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.CrotasEnd]: getDefaultClassItemMetadata(),
+	[ERaidAndNightMareModTypeId.SalvationsEdge]: getDefaultClassItemMetadata(),
 	[ERaidAndNightMareModTypeId.NightmareHunt]: getDefaultClassItemMetadata(),
 	Legendary: getDefaultClassItemMetadata(),
 	Artifice: getDefaultClassItemMetadata(),
@@ -486,10 +487,10 @@ export const getExtraMasterworkedStats = (
 	masterworkAssumption: EMasterworkAssumption
 ) =>
 	isMasterworked ||
-	(gearTierId === EGearTierId.Exotic &&
-		masterworkAssumption === EMasterworkAssumption.All) ||
-	(gearTierId === EGearTierId.Legendary &&
-		(masterworkAssumption === EMasterworkAssumption.All ||
-			masterworkAssumption === EMasterworkAssumption.Legendary))
+		(gearTierId === EGearTierId.Exotic &&
+			masterworkAssumption === EMasterworkAssumption.All) ||
+		(gearTierId === EGearTierId.Legendary &&
+			(masterworkAssumption === EMasterworkAssumption.All ||
+				masterworkAssumption === EMasterworkAssumption.Legendary))
 		? 2
 		: 0;

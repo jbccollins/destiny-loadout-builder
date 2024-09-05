@@ -182,6 +182,9 @@ export const getSortableFieldDisplayName = (key: SortableFieldsKey) => {
 	if (key === 'wastedStats') {
 		return 'Wasted Stats';
 	}
+	if (key === 'numSharedArmorItemsAcrossLoadouts') {
+		return 'Shared Armor Across Loadouts';
+	}
 	return '';
 };
 
@@ -195,6 +198,7 @@ export const SortableFieldsDisplayOrder: SortableFieldsKey[] = [
 	'totalModCost',
 	'totalStatTiers',
 	'wastedStats',
+	'numSharedArmorItemsAcrossLoadouts',
 ];
 
 const SortableFieldsDefaultSortOrder: Record<SortableFieldsKey, Order> = {
@@ -207,6 +211,7 @@ const SortableFieldsDefaultSortOrder: Record<SortableFieldsKey, Order> = {
 	totalModCost: 'asc',
 	totalStatTiers: 'desc',
 	wastedStats: 'asc',
+	numSharedArmorItemsAcrossLoadouts: 'desc',
 };
 
 export type Order = 'asc' | 'desc';
@@ -463,6 +468,8 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 						totalModCost: metadata.totalModCost,
 						totalStatTiers: metadata.totalStatTiers,
 						wastedStats: metadata.wastedStats,
+						numSharedArmorItemsAcrossLoadouts:
+							metadata.numSharedArmorItemsAcrossLoadouts,
 					},
 					modPlacement,
 				};

@@ -18,7 +18,7 @@ import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
 import { getAspect } from '@dlb/types/Aspect';
 import { getClassAbility } from '@dlb/types/ClassAbility';
-import { getDestinySubclass } from '@dlb/types/DestinySubclass';
+import { getDestinySubclass, IDestinySubclass } from '@dlb/types/DestinySubclass';
 import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
 import { getFragment } from '@dlb/types/Fragment';
 import { getGrenade } from '@dlb/types/Grenade';
@@ -26,6 +26,7 @@ import {
 	EArmorStatId,
 	EDestinyClassId,
 	EDestinySubclassId,
+	EElementId,
 	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import { getJump } from '@dlb/types/Jump';
@@ -219,6 +220,16 @@ export const generateDimLink = (
 		});
 	}
 
+	let destinySubclass: IDestinySubclass | null = null;
+	let aspectAndFragmentIndexOffset = 0;
+	if (destinySubclassId) {
+		destinySubclass = getDestinySubclass(destinySubclassId);
+		if (destinySubclass.elementId === EElementId.Prism) {
+			// Account for the two prismatic transcendence socket slots
+			aspectAndFragmentIndexOffset = 2;
+		}
+	}
+
 	// Configure subclass
 	const socketOverrides: Record<number, number> = {};
 
@@ -238,17 +249,17 @@ export const generateDimLink = (
 		socketOverrides[4] = getGrenade(grenadeId).hash;
 	}
 	aspectHashes.forEach((hash, i) => {
-		socketOverrides[i + 5] = hash;
+		socketOverrides[i + 5 + aspectAndFragmentIndexOffset] = hash;
 	});
 	fragmentHashes.forEach((hash, i) => {
 		// Pull these socket indexes out
-		socketOverrides[i + 7] = hash;
+		socketOverrides[i + 7 + aspectAndFragmentIndexOffset] = hash;
 	});
 
-	if (destinySubclassId) {
+	if (destinySubclass) {
 		loadout.equipped.push({
 			id: '12345', // This doesn't matter and will be overriden but apparently it's required and must be numeric. Idfk.
-			hash: getDestinySubclass(destinySubclassId).hash,
+			hash: destinySubclass.hash,
 			socketOverrides,
 		});
 	}

@@ -11,6 +11,57 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-09-05',
+		version: '2.6.8',
+		title: `Fix "Open Loadout In DIM" Bug`,
+		sections: [
+			{
+				items: [
+					`Fix a bug where prismatic loadouts opened in DIM would not properly apply aspects and some fragments.`
+				],
+			},
+		],
+	},
+	{
+		date: '2024-08-07',
+		version: '2.6.7',
+		title: `Add Salvation's Edge Raid Mods`,
+		sections: [
+			{
+				items: [
+					`Add Salvation's Edge Raid Mods.`,
+					`Update the costs of all reserves mods.`
+				],
+			},
+		],
+	},
+	{
+		date: '2024-07-07',
+		version: '2.6.6',
+		title: 'Add a new results sort option: "Shared Armor Across Loadouts"',
+		sections: [
+			{
+				items: [
+					`Add a new sort option to the results list to sort results by those that share the most/least armor pieces.`,
+					`Note that this sort option will only apply to the "top 1000" results.`,
+					`Also note that the class item is never considered, so the maximum that this number can be is 4.`
+				],
+			},
+		],
+	},
+	{
+		date: '2024-07-07',
+		version: '2.6.5',
+		title: 'Add a tiebreaker sort for the results list that prioritizes loadouts with more stat mod variety',
+		sections: [
+			{
+				items: [
+					`Given the same total cost, the loadout with the most unique stat mods will be shown first`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-07-01',
 		version: '2.6.4',
 		title: 'Fix Exotic Class Item Analyzer Bug V2 Electric Boogaloo',

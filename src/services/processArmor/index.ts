@@ -56,12 +56,14 @@ import {
 	getArmorStatMappingFromStatList,
 	getExtraSumOfSeenStats,
 	getNextValues,
+	getNumSharedArmorItemsAcrossLoadouts,
+	getNumUniqueArmorStatMods,
 	getStatListFromArmorStatMapping,
 	getTotalModCost,
 	getTotalStatTiers,
 	getWastedStats,
 	sumModCosts,
-	sumStatLists,
+	sumStatLists
 } from './utils';
 
 const _processArmorRecursiveCase = ({
@@ -82,6 +84,7 @@ const _processArmorRecursiveCase = ({
 	useZeroWastedStats,
 	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
+	allLoadoutArmorItemsIdList
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
 	const output: ProcessArmorOutput[] = [];
@@ -116,6 +119,7 @@ const _processArmorRecursiveCase = ({
 				useZeroWastedStats,
 				alwaysConsiderCollectionsRolls,
 				allClassItemMetadata,
+				allLoadoutArmorItemsIdList
 			})
 		);
 	});
@@ -140,6 +144,7 @@ const _processArmorBaseCase = ({
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
 	allClassItemMetadata,
+	allLoadoutArmorItemsIdList
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
@@ -259,6 +264,8 @@ const _processArmorBaseCase = ({
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
 				wastedStats: getWastedStats(totalArmorStatMapping),
+				numUniqueArmorStatMods: getNumUniqueArmorStatMods(requiredArmorStatModIdList),
+				numSharedArmorItemsAcrossLoadouts: getNumSharedArmorItemsAcrossLoadouts(armorIdList, allLoadoutArmorItemsIdList),
 				totalArmorStatMapping,
 				baseArmorStatMapping,
 				seenArmorSlotItems: finalSpecialSeenArmorSlotItems,
@@ -290,6 +297,7 @@ type ProcessArmorParams = {
 	useZeroWastedStats: boolean;
 	alwaysConsiderCollectionsRolls: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
+	allLoadoutArmorItemsIdList: string[];
 };
 
 const processArmor = (params: ProcessArmorParams): ProcessArmorOutput => {
@@ -314,6 +322,8 @@ export type ProcessedArmorItemMetadata = {
 	totalModCost: number;
 	totalStatTiers: number;
 	wastedStats: number;
+	numUniqueArmorStatMods: number;
+	numSharedArmorItemsAcrossLoadouts: number;
 	totalArmorStatMapping: ArmorStatMapping;
 	baseArmorStatMapping: ArmorStatMapping;
 	seenArmorSlotItems: SeenArmorSlotItems;
@@ -355,6 +365,7 @@ export type DoProcessArmorParams = {
 	alwaysConsiderCollectionsRolls: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
 	assumedStatValuesStatMapping: ArmorStatMapping;
+	allLoadoutArmorItemsIdList: string[];
 };
 /**
  * @param {StrictArmorItems} armorItems - [heads, arms, chests, legs]
@@ -382,6 +393,7 @@ export const doProcessArmor = ({
 	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
 	assumedStatValuesStatMapping,
+	allLoadoutArmorItemsIdList
 }: DoProcessArmorParams): DoProcessArmorOutput => {
 	// Bonus resil does not apply to exotic chest armor loadouts
 	const _useBonusResilience =
@@ -419,6 +431,7 @@ export const doProcessArmor = ({
 		useZeroWastedStats,
 		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata,
+		allLoadoutArmorItemsIdList
 	};
 
 	const processedArmor: ProcessArmorOutput = processArmor(
@@ -427,6 +440,8 @@ export const doProcessArmor = ({
 		(a, b) =>
 			// Lowest cost
 			a.metadata.totalModCost - b.metadata.totalModCost ||
+			// Highest number of unique armor stat mods
+			b.metadata.numUniqueArmorStatMods - a.metadata.numUniqueArmorStatMods ||
 			// Highest stat tiers
 			b.metadata.totalStatTiers - a.metadata.totalStatTiers ||
 			// Lowest wasted stats

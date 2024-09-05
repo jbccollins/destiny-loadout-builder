@@ -11,9 +11,21 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-09-05',
+		version: '2.6.8',
+		title: `Fix "Open Loadout In DIM" Bug`,
+		sections: [
+			{
+				items: [
+					`Fix a bug where prismatic loadouts opened in DIM would not properly apply aspects and some fragments.`
+				],
+			},
+		],
+	},
+	{
 		date: '2024-08-07',
 		version: '2.6.7',
-		title: 'Add Salvations Edge Raid Mods',
+		title: `Add Salvation's Edge Raid Mods`,
 		sections: [
 			{
 				items: [

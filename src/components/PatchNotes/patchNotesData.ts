@@ -12,6 +12,18 @@ export type PatchNote = {
 export const PatchNotes: PatchNote[] = [
 	{
 		date: '2024-09-05',
+		version: '2.6.9',
+		title: `Fix Analyzer Subclass Bug`,
+		sections: [
+			{
+				items: [
+					`Fix a bug introduced in 2.6.8 where the analyzer was not properly identifying all aspects and fragments for prismatic subclasses in saved loadouts`
+				],
+			},
+		],
+	},
+	{
+		date: '2024-09-05',
 		version: '2.6.8',
 		title: `Fix "Open Loadout In DIM" Bug`,
 		sections: [

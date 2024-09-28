@@ -6,6 +6,7 @@ const nextConfig = {
 	swcMinify: true,
 
 	images: {
+		unoptimized: true, // TODO: remove this if we ever switch back off of the free tier
 		remotePatterns: [
 			{
 				protocol: 'https',

@@ -25,6 +25,7 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 	[EElementId.Stasis]: [
 		EFragmentId.WhisperOfBonds,
 		EFragmentId.WhisperOfChains,
+		EFragmentId.WhisperOfChill,
 		EFragmentId.WhisperOfConduction,
 		EFragmentId.WhisperOfDurance,
 		EFragmentId.WhisperOfFissures,
@@ -34,6 +35,7 @@ const ElementIdToFragmentIdMapping: EnumDictionary<EElementId, EFragmentId[]> =
 		EFragmentId.WhisperOfImpetus,
 		EFragmentId.WhisperOfRefraction,
 		EFragmentId.WhisperOfRending,
+		EFragmentId.WhisperOfReversal,
 		EFragmentId.WhisperOfRime,
 		EFragmentId.WhisperOfShards,
 		EFragmentId.WhisperOfTorment,

@@ -13,6 +13,18 @@ export const PatchNotes: PatchNote[] = [
 	{
 		date: '2024-09-05',
 		version: '2.6.9',
+		title: `Add Stasis Fragments`,
+		sections: [
+			{
+				items: [
+					`Add Whisper of Chill and Reversal`,
+				],
+			},
+		],
+	},
+	{
+		date: '2024-09-05',
+		version: '2.6.9',
 		title: `Fix Analyzer Subclass Bug`,
 		sections: [
 			{

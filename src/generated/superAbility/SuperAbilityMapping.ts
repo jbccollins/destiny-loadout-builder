@@ -392,7 +392,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
     name: "Sentinel Shield",
     id: ESuperAbilityId.SentinelShield,
     description:
-      "[Super]  : Summon a shield of Void Light. \nWhile Sentinel Shield is active:\n[Light Attack]  : Attack.\n[Block]  : Block.\n[Grenade]  : Perform a Shield Throw.\n\nGuard with Sentinel Shield to create a defensive wall. Allies who shoot through the wall have increased weapon damage, and guarding allies makes the shield last longer.",
+      "[Super]  : Summon a shield of Void Light. \nWhile Sentinel Shield is active:\n[Light Attack]  : Attack.\n[Block]  : Block.\n[Grenade]  : Perform a Shield Throw.\n\nGuard with Sentinel Shield to create a defensive wall that draws hostile fire. Allies who shoot through the wall have increased weapon damage, and guarding allies makes the shield last longer.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/a929ea604d638e5e99125e48f76989e2.png",
     hash: 4260353952,
     elementId: EElementId.Void,

@@ -1,5 +1,3 @@
-// This file is directly copy pasted from
-// https://github.com/DestinyItemManager/d2-additional-info/blob/master/output/reduced-cost-mod-mappings.ts
 export const normalToReducedMod: { [normalModHash: number]: number } = {
 	'14520248': 2318667184,
 	'40751621': 4149682173,
@@ -55,6 +53,7 @@ export const normalToReducedMod: { [normalModHash: number]: number } = {
 	'2059068466': 2794359402,
 	'2076329105': 1561736585,
 	'2257238439': 1305848463,
+	'2311625537': 1533272847,
 	'2319885414': 2283894334,
 	'2407398462': 2305736470,
 	'2414626352': 1604394872,
@@ -64,6 +63,7 @@ export const normalToReducedMod: { [normalModHash: number]: number } = {
 	'2485657760': 965934024,
 	'2526773280': 411014648,
 	'2532323436': 2113881316,
+	'2577472338': 3181984586,
 	'2586562813': 2237975061,
 	'2595839237': 3775800797,
 	'2657604783': 1702273159,
@@ -80,6 +80,7 @@ export const normalToReducedMod: { [normalModHash: number]: number } = {
 	'3067648983': 531665167,
 	'3094620656': 293178904,
 	'3112965625': 1501094193,
+	'3117519997': 2311625536,
 	'3149307605': 2982306509,
 	'3160387771': 1044888195,
 	'3194530172': 3846931924,

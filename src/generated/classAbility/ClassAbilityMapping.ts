@@ -68,7 +68,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Towering Barricade",
     id: EClassAbilityId.ToweringBarricadeArc,
     description:
-      "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
+      "Creates a large barrier that can be used to reinforce a position with cover, and draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/44389de78b61efe84346a87ed55a5f80.jpg",
     hash: 489583096,
     elementId: EElementId.Arc,
@@ -77,7 +77,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Rally Barricade",
     id: EClassAbilityId.RallyBarricadeArc,
     description:
-      "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
+      "Creates a small barrier that you can peek over while aiming down sights; increases weapon reload speed, stability, and range. Draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/095be27fd5f742a241fe77176e80cfdf.jpg",
     hash: 489583097,
     elementId: EElementId.Arc,
@@ -139,7 +139,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Rally Barricade",
     id: EClassAbilityId.RallyBarricadeStrand,
     description:
-      "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
+      "Creates a small barrier that you can peek over while aiming down sights; increases weapon reload speed, stability, and range. Draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/d29754d40cae05f736b8318b1654dc9a.png",
     hash: 2087010644,
     elementId: EElementId.Strand,
@@ -148,7 +148,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Towering Barricade",
     id: EClassAbilityId.ToweringBarricadeStrand,
     description:
-      "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
+      "Creates a large barrier that can be used to reinforce a position with cover, and draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/04e9c35e9f14147ce3898cea505dc7cf.png",
     hash: 2087010645,
     elementId: EElementId.Strand,
@@ -175,7 +175,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Towering Barricade",
     id: EClassAbilityId.ToweringBarricadeSolar,
     description:
-      "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
+      "Creates a large barrier that can be used to reinforce a position with cover, and draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/b727baee6fe4228fbe35743a3bb199a9.jpg",
     hash: 2495523340,
     elementId: EElementId.Solar,
@@ -184,7 +184,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Rally Barricade",
     id: EClassAbilityId.RallyBarricadeSolar,
     description:
-      "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
+      "Creates a small barrier that you can peek over while aiming down sights; increases weapon reload speed, stability, and range. Draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/278392023803641890167602fef8bb4f.jpg",
     hash: 2495523341,
     elementId: EElementId.Solar,
@@ -220,7 +220,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Towering Barricade",
     id: EClassAbilityId.ToweringBarricadeVoid,
     description:
-      "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
+      "Creates a large barrier that can be used to reinforce a position with cover, and draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/8042b480c9dea2fc3301e15e7695feaf.jpg",
     hash: 2722641740,
     elementId: EElementId.Void,
@@ -229,7 +229,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Rally Barricade",
     id: EClassAbilityId.RallyBarricadeVoid,
     description:
-      "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
+      "Creates a small barrier that you can peek over while aiming down sights; increases weapon reload speed, stability, and range. Draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/dbf616cee47329f90049fa84655790b8.jpg",
     hash: 2722641741,
     elementId: EElementId.Void,
@@ -256,7 +256,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Rally Barricade",
     id: EClassAbilityId.RallyBarricadePrism,
     description:
-      "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
+      "Creates a small barrier that you can peek over while aiming down sights; increases weapon reload speed, stability, and range. Draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/dfe44718169a017a86b8d8cab0d4e18a.png",
     hash: 2868073560,
     elementId: EElementId.Prism,
@@ -265,7 +265,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Towering Barricade",
     id: EClassAbilityId.ToweringBarricadePrism,
     description:
-      "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
+      "Creates a large barrier that can be used to reinforce a position with cover, and draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/1486c22fb9b3b73e6318812f10349c1a.png",
     hash: 2868073561,
     elementId: EElementId.Prism,
@@ -309,7 +309,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Towering Barricade",
     id: EClassAbilityId.ToweringBarricadeStasis,
     description:
-      "Create a large barrier that can be used to reinforce a position with cover from enemy fire.",
+      "Creates a large barrier that can be used to reinforce a position with cover, and draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/04e9c35e9f14147ce3898cea505dc7cf.png",
     hash: 3260056808,
     elementId: EElementId.Stasis,
@@ -318,7 +318,7 @@ export const ClassAbilityIdToClassAbilityMapping: EnumDictionary<
     name: "Rally Barricade",
     id: EClassAbilityId.RallyBarricadeStasis,
     description:
-      "Create a small barrier that you can peek over while aiming down sights and that increases weapon reload speed, stability, and range when you stand behind it.",
+      "Creates a small barrier that you can peek over while aiming down sights; increases weapon reload speed, stability, and range. Draws hostile fire when you stand behind it.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/d29754d40cae05f736b8318b1654dc9a.png",
     hash: 3260056809,
     elementId: EElementId.Stasis,

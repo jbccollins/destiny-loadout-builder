@@ -101,7 +101,7 @@ export const MeleeIdToMeleeMapping: EnumDictionary<EMeleeId, IMelee> = {
     name: "Shiver Strike",
     id: EMeleeId.ShiverStrikePrism,
     description:
-      "Hold input to leap through the air. Releasing unleashes a powerful dash attack that knocks targets back and damages them.",
+      "Hold input to leap through the air. Releasing unleashes a powerful dash attack that knocks targets back and attaches a delayed Stasis explosive to them.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/1f34b1d2eb5377ac68346cb42db6f008.png",
     hash: 1980796561,
     elementId: EElementId.Prism,
@@ -137,7 +137,7 @@ export const MeleeIdToMeleeMapping: EnumDictionary<EMeleeId, IMelee> = {
     name: "Shiver Strike",
     id: EMeleeId.ShiverStrike,
     description:
-      "Hold input to leap through the air. Releasing unleashes a powerful dash attack that knocks targets back and damages them.",
+      "Hold input to leap through the air. Releasing unleashes a powerful dash attack that knocks targets back and attaches a delayed Stasis explosive to them.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/1f34b1d2eb5377ac68346cb42db6f008.png",
     hash: 2028772231,
     elementId: EElementId.Stasis,

@@ -11,13 +11,15 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
-		date: '2024-09-05',
-		version: '2.6.9',
-		title: `Add Stasis Fragments`,
+		date: '2024-10-15',
+		version: '2.7.0',
+		title: `Revenant Episode Update`,
 		sections: [
 			{
 				items: [
-					`Add Whisper of Chill and Reversal`,
+					`Add Whisper of Chill and Reversal (forgot to add these with The Final Shape)`,
+					`Updates for the season, including the currently discounted artifact mods`,
+					`Fix broken mod icons. All mod icons have been broken since the season started but I guess no one uses this tool for that feature lol.`,
 				],
 			},
 		],

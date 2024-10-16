@@ -6,7 +6,7 @@ import { EnumDictionary, IIdentifiableName } from './globals';
 
 export const getActiveSeasonArtifactModIdList: () => EModId[] = () => {
 	return [
-		EModId.ArtifactElementalCharge,
+		// EModId.ArtifactElementalCharge,
 	];
 };
 

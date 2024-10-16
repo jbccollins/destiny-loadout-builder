@@ -216,7 +216,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Unbreakable",
     id: EAspectId.UnbreakablePrism,
     description:
-      "[Grenade]  : Hold to summon a [Void] Void shield and block a portion of incoming damage, gradually draining your grenade energy and granting an overshield over time.\n\nReleasing the grenade input or running out of energy releases a frontal blast from your shield that deals increased damage based on how much damage was blocked.\n\nCombatants that come in contact with your shield are temporarily disoriented.",
+      "[Grenade]  : Hold to summon a [Void] Void shield that draws hostile fire and blocks a portion of incoming damage, gradually draining your grenade energy and granting an overshield over time.\n\nReleasing the grenade input or running out of energy releases a frontal blast from your shield that deals increased damage based on how much damage was blocked.\n\nCombatants that come in contact with your shield are temporarily disoriented.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/717e2702d16fb2175f81b54c2d62b7be.jpg",
     hash: 1262901521,
     fragmentSlots: 3,
@@ -315,7 +315,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
     name: "Unbreakable",
     id: EAspectId.Unbreakable,
     description:
-      "[Grenade]  : Hold to summon a [Void] Void shield and block a portion of incoming damage, gradually draining your grenade energy and granting an overshield over time.\n\nReleasing the grenade input or running out of energy releases a frontal blast from your shield that deals increased damage based on how much damage was blocked.\n\nCombatants that come in contact with your shield are temporarily disoriented.",
+      "[Grenade]  : Hold to summon a [Void] Void shield that draws hostile fire and blocks a portion of incoming damage, gradually draining your grenade energy and granting an overshield over time.\n\nReleasing the grenade input or running out of energy releases a frontal blast from your shield that deals increased damage based on how much damage was blocked.\n\nCombatants that come in contact with your shield are temporarily disoriented.",
     icon: "https://www.bungie.net/common/destiny2_content/icons/717e2702d16fb2175f81b54c2d62b7be.jpg",
     hash: 1602994571,
     fragmentSlots: 2,

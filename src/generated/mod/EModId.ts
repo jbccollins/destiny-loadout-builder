@@ -249,6 +249,7 @@ export enum EModId {
   UtilityKickstart = "UtilityKickstart",
   IntellectForged = "IntellectForged",
   ArtifactStasisScavenger = "ArtifactStasisScavenger",
+  ArtifactChargedUp = "ArtifactChargedUp",
   ArtifactAbsolution = "ArtifactAbsolution",
   ArtifactStasisSiphon = "ArtifactStasisSiphon",
   SolarResistance = "SolarResistance",

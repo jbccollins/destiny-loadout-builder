@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
@@ -76,7 +76,10 @@ import {
 	getDefaultArmorStatMapping,
 } from '@dlb/types/ArmorStat';
 import { DestinyClassHashToDestinyClass } from '@dlb/types/External';
-import { EArmorSlotId, EIntrinsicArmorPerkOrAttributeId } from '@dlb/types/IdEnums';
+import {
+	EArmorSlotId,
+	EIntrinsicArmorPerkOrAttributeId,
+} from '@dlb/types/IdEnums';
 import {
 	getLocalStorageRecall,
 	setLocalStorageRecallAsync,
@@ -271,7 +274,7 @@ function handleChange() {
 				import.meta.url
 			)
 		);
-	}
+	};
 	if (debugStoreLoop) {
 		const currentState = store.getState();
 
@@ -406,15 +409,15 @@ function handleChange() {
 		selectedSuperAbilityUuid !== nextSelectedSuperAbilityUuid ||
 		selectedClassAbilityUuid !== nextSelectedClassAbilityUuid ||
 		ignoredLoadoutOptimizationTypesUuid !==
-		nextIgnoredLoadoutOptimizationTypesUuid ||
+			nextIgnoredLoadoutOptimizationTypesUuid ||
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
 		selectedArmorSlotModsUuid !== nextSelectedArmorSlotModsUuid ||
 		reservedArmorSlotEnergyUuid !== nextReservedArmorSlotEnergyUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
-		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
+			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
 		selectedExoticArtificeAssumptionUuid !==
-		nextSelectedExoticArtificeAssumptionUuid ||
+			nextSelectedExoticArtificeAssumptionUuid ||
 		selectedMinimumGearTierUuid !== nextSelectedMinimumGearTierUuid ||
 		dimLoadoutsFilterUuid !== nextDimLoadoutsFilterUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
@@ -424,7 +427,7 @@ function handleChange() {
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
-		nextAlwaysConsiderCollectionsRollsUuid;
+			nextAlwaysConsiderCollectionsRollsUuid;
 
 	if (
 		hasMismatchedLocalStorageRecallIds &&
@@ -515,7 +518,7 @@ function handleChange() {
 		// armor without requiring an exotic then we would need to revisit that condition
 		selectedMasterworkAssumptionUuid !== nextSelectedMasterworkAssumptionUuid ||
 		selectedExoticArtificeAssumptionUuid !==
-		nextSelectedExoticArtificeAssumptionUuid ||
+			nextSelectedExoticArtificeAssumptionUuid ||
 		selectedFragmentsUuid !== nextSelectedFragmentsUuid ||
 		selectedDestinySubclassUuid !== nextSelectedDestinySubclassUuid ||
 		selectedRaidModsUuid !== nextSelectedRaidModsUuid ||
@@ -530,11 +533,11 @@ function handleChange() {
 		useZeroWastedStatsUuid !== nextUseZeroWastedStatsUuid ||
 		excludeLockedItemsUuid !== nextExcludeLockedItemsUuid ||
 		alwaysConsiderCollectionsRollsUuid !==
-		nextAlwaysConsiderCollectionsRollsUuid ||
+			nextAlwaysConsiderCollectionsRollsUuid ||
 		inGameLoadoutsFilterUuid !== nextInGameLoadoutsFilterUuid ||
 		inGameLoadoutsFlatItemIdListUuid !== nextInGameLoadoutsFlatItemIdListUuid ||
 		selectedIntrinsicArmorPerkOrAttributeIdsUuid !==
-		nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
+			nextSelectedIntrinsicArmorPerkOrAttributeIdsUuid ||
 		selectedAssumedStatValuesUuid !== nextSelectedAssumedStatValuesUuid;
 	const hasNonDefaultUuids =
 		nextAllClassItemMetadataUuid !== NIL &&
@@ -655,9 +658,9 @@ function handleChange() {
 
 	const fragmentArmorStatMapping = destinySubclassId
 		? getArmorStatMappingFromFragments(
-			selectedFragments[destinySubclassId],
-			selectedDestinyClass
-		)
+				selectedFragments[destinySubclassId],
+				selectedDestinyClass
+		  )
 		: getDefaultArmorStatMapping();
 	let mods = [...selectedRaidMods];
 	ArmorSlotWithClassItemIdList.forEach((armorSlotId) => {
@@ -733,13 +736,17 @@ function handleChange() {
 	const _allLoadoutArmorItemsIdList: string[] = [];
 
 	// TODO: Maybe move this to the reducer if it's needed anywhere else...
-	// Or perhaps calculate this once and just store it in redux... 
-	const { analyzableLoadoutBreakdown: { invalidLoadouts, validLoadouts } } = store.getState().analyzableLoadouts.value;
-	[...Object.values(validLoadouts), ...Object.values(invalidLoadouts)].forEach((loadout) => {
-		loadout.armor.forEach((armorItem) => {
-			_allLoadoutArmorItemsIdList.push(armorItem.id);
-		});
-	})
+	// Or perhaps calculate this once and just store it in redux...
+	const {
+		analyzableLoadoutBreakdown: { invalidLoadouts, validLoadouts },
+	} = store.getState().analyzableLoadouts.value;
+	[...Object.values(validLoadouts), ...Object.values(invalidLoadouts)].forEach(
+		(loadout) => {
+			loadout.armor.forEach((armorItem) => {
+				_allLoadoutArmorItemsIdList.push(armorItem.id);
+			});
+		}
+	);
 
 	// Convert to a set and back to an array to remove duplicates
 	const allLoadoutArmorItemsIdList = [...new Set(_allLoadoutArmorItemsIdList)];
@@ -747,7 +754,8 @@ function handleChange() {
 	const doProcessArmorParams: DoProcessArmorParams = {
 		masterworkAssumption,
 		exoticArtificeAssumption,
-		useExoticClassItem: selectedExoticArmorItem.armorSlot === EArmorSlotId.ClassItem,
+		useExoticClassItem:
+			selectedExoticArmorItem.armorSlot === EArmorSlotId.ClassItem,
 		desiredArmorStats,
 		armorItems: preProcessedArmor,
 		fragmentArmorStatMapping,
@@ -765,7 +773,7 @@ function handleChange() {
 		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata: _allClassItemMetadata,
 		assumedStatValuesStatMapping: selectedAssumedStatValues,
-		allLoadoutArmorItemsIdList
+		allLoadoutArmorItemsIdList,
 	};
 
 	if (!sharedLoadoutDesiredStats.needed || sharedLoadoutDesiredStats.complete) {

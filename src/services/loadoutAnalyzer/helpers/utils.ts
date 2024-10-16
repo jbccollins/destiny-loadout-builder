@@ -42,12 +42,12 @@ export const usesExoticClassItem = (loadout: AnalyzableLoadout): boolean => {
 			x.armorSlot === EArmorSlotId.ClassItem &&
 			x.gearTierId === EGearTierId.Exotic
 	);
-}
+};
 
 export const isEditableLoadout = (loadout: AnalyzableLoadout): boolean => {
 	const hasFullSetOfLegendaryArmor =
 		loadout.armor.length === 5 &&
-		loadout.armor.every((x) => x.gearTierId === EGearTierId.Legendary)
+		loadout.armor.every((x) => x.gearTierId === EGearTierId.Legendary);
 
 	return (
 		!hasFullSetOfLegendaryArmor &&
@@ -194,10 +194,9 @@ export const findAvailableExoticArmorItem = (
 	destinyClassId: EDestinyClassId,
 	availableExoticArmor: AvailableExoticArmor
 ): AvailableExoticArmorItem => {
-
 	// TODO: This is a hack to handle the exotic class item
 	if (hash === -1) {
-		return ExoticClassItemMapping[destinyClassId]
+		return ExoticClassItemMapping[destinyClassId];
 	}
 
 	for (const armorSlotId of ArmorSlotIdList) {
@@ -276,10 +275,10 @@ export const getUnusedModSlots = ({
 						const meetsArmorChargeSpendModConstraints =
 							ArmorChargeSpendModIdList.includes(mod.id)
 								? // We can only recommend using a spend mod if it's a duplicate spend mod (two copies of grenade kickstart for example)
-								// or if we don't have any other spend mods or font mods
-								!hasFontMod &&
-								(!hasArmorChargeSpendMod ||
-									currentArmorSlotMods.some((cMod) => cMod.id === mod.id))
+								  // or if we don't have any other spend mods or font mods
+								  !hasFontMod &&
+								  (!hasArmorChargeSpendMod ||
+										currentArmorSlotMods.some((cMod) => cMod.id === mod.id))
 								: true;
 						return (
 							!_hasMutuallyExclusiveMods &&

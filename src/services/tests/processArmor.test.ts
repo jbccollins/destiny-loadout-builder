@@ -85,33 +85,33 @@ const defaultClassItemMetadataWithMasterworkedArtifice: AllClassItemMetadata = {
 };
 
 const defaultClassItemMetadataWithUnMasterworkedRaidClassItem: AllClassItemMetadata =
-{
-	...getDefaultAllClassItemMetadata(),
-	Legendary: {
-		hasMasterworkedVariant: false,
-		items: [
-			{
-				...getDefaultArmorItem(),
-				socketableRaidAndNightmareModTypeId:
-					ERaidAndNightMareModTypeId.RootOfNightmares,
-				isMasterworked: false,
-				id: '4',
-			},
-		],
-	},
-	RootOfNightmares: {
-		hasMasterworkedVariant: false,
-		items: [
-			{
-				...getDefaultArmorItem(),
-				socketableRaidAndNightmareModTypeId:
-					ERaidAndNightMareModTypeId.RootOfNightmares,
-				isMasterworked: false,
-				id: '4',
-			},
-		],
-	},
-};
+	{
+		...getDefaultAllClassItemMetadata(),
+		Legendary: {
+			hasMasterworkedVariant: false,
+			items: [
+				{
+					...getDefaultArmorItem(),
+					socketableRaidAndNightmareModTypeId:
+						ERaidAndNightMareModTypeId.RootOfNightmares,
+					isMasterworked: false,
+					id: '4',
+				},
+			],
+		},
+		RootOfNightmares: {
+			hasMasterworkedVariant: false,
+			items: [
+				{
+					...getDefaultArmorItem(),
+					socketableRaidAndNightmareModTypeId:
+						ERaidAndNightMareModTypeId.RootOfNightmares,
+					isMasterworked: false,
+					id: '4',
+				},
+			],
+		},
+	};
 
 // const defaultArmorMetadataWithLastWishAndArtificeClassItem: ArmorMetadata =
 // 	cloneDeep(defaultArmorMetadataWithArtificeClassItem);

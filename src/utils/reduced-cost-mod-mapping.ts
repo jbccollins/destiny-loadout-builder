@@ -116,6 +116,10 @@ export const normalToReducedMod: { [normalModHash: number]: number } = {
 	'4294909663': 3798468567,
 };
 
-export const reducedToNormalMod: { [reducedModHash: number]: number } = Object.fromEntries(
-	Object.entries(normalToReducedMod).map(([normal, reduced]) => [reduced, parseInt(normal, 10)]),
-);
+export const reducedToNormalMod: { [reducedModHash: number]: number } =
+	Object.fromEntries(
+		Object.entries(normalToReducedMod).map(([normal, reduced]) => [
+			reduced,
+			parseInt(normal, 10),
+		])
+	);

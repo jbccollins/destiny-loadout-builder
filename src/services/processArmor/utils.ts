@@ -63,10 +63,12 @@ export function deleteFromArray<T>(arr: T[], item: T): void {
 	}
 }
 
-export const getNumUniqueArmorStatMods = (armorStatModIds: EModId[]): number => {
+export const getNumUniqueArmorStatMods = (
+	armorStatModIds: EModId[]
+): number => {
 	const uniqueArmorStatModIds = new Set(armorStatModIds);
 	return uniqueArmorStatModIds.size;
-}
+};
 
 export const getTotalStatTiers = (
 	armorStatMapping: ArmorStatMapping
@@ -94,7 +96,10 @@ export const getWastedStats = (armorStatMapping: ArmorStatMapping): number => {
 	return res;
 };
 
-export const getNumSharedArmorItemsAcrossLoadouts = (armorIdList: ArmorIdList, allLoadoutArmorItemsIdList: string[]) => {
+export const getNumSharedArmorItemsAcrossLoadouts = (
+	armorIdList: ArmorIdList,
+	allLoadoutArmorItemsIdList: string[]
+) => {
 	let numSharedArmorItems = 0;
 	armorIdList.forEach((armorId) => {
 		if (allLoadoutArmorItemsIdList.includes(armorId)) {
@@ -440,7 +445,7 @@ export const hasValidSeenItemCounts = ({
 					// Adding the special class item will allow us to potentially
 					// fit all the raid mods
 					raidModExtraSocketModCategoryIdCounts[extraSocketModCategoryId] ===
-					seenItemCounts[extraSocketModCategoryId] + 1
+						seenItemCounts[extraSocketModCategoryId] + 1
 				) {
 					requiredClassItemMetadataKey = extraSocketModCategoryId;
 					continue;

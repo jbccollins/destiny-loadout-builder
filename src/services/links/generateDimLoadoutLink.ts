@@ -18,7 +18,10 @@ import { ArmorSlotWithClassItemIdList } from '@dlb/types/ArmorSlot';
 import { ArmorStatMapping, getArmorStat } from '@dlb/types/ArmorStat';
 import { getAspect } from '@dlb/types/Aspect';
 import { getClassAbility } from '@dlb/types/ClassAbility';
-import { getDestinySubclass, IDestinySubclass } from '@dlb/types/DestinySubclass';
+import {
+	getDestinySubclass,
+	IDestinySubclass,
+} from '@dlb/types/DestinySubclass';
 import { DestinyClassIdToDestinyClassHash } from '@dlb/types/External';
 import { getFragment } from '@dlb/types/Fragment';
 import { getGrenade } from '@dlb/types/Grenade';
@@ -64,7 +67,7 @@ export const generateDimQuery = (
 	armorList: ArmorItem[],
 	classItem: ProcessedArmorItemMetadataClassItem,
 	classItemMetadata: AllClassItemMetadata,
-	useExoticClassItem: boolean,
+	useExoticClassItem: boolean
 ): string => {
 	let query = armorList
 		.map((armorItem) => {
@@ -72,10 +75,14 @@ export const generateDimQuery = (
 		})
 		.join(' or ');
 	if (useExoticClassItem) {
-		return query + ` or (is:exotic and is:classitem and is:${armorList[0].destinyClassName.toLowerCase()})`;
+		return (
+			query +
+			` or (is:exotic and is:classitem and is:${armorList[0].destinyClassName.toLowerCase()})`
+		);
 	} else if (classItem.requiredClassItemMetadataKey !== null) {
-		query += ` or id:'${classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id
-			}'`;
+		query += ` or id:'${
+			classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id
+		}'`;
 	} else {
 		query += ` or id:'${classItemMetadata.Legendary.items[0].id}'`;
 	}
@@ -168,8 +175,8 @@ export const generateDimLink = (
 			masterworkAssumption === EMasterworkAssumption.All
 				? 3
 				: masterworkAssumption === EMasterworkAssumption.Legendary
-					? 2
-					: 1,
+				? 2
+				: 1,
 		exoticArmorHash: exoticArmor.hash,
 	};
 
@@ -196,7 +203,7 @@ export const generateDimLink = (
 
 	let potentialClassItems: ArmorItem[] = [];
 	if (useExoticClassItem) {
-		potentialClassItems = []
+		potentialClassItems = [];
 	} else if (classItem.requiredClassItemMetadataKey !== null) {
 		potentialClassItems =
 			classItemMetadata[classItem.requiredClassItemMetadataKey].items;
@@ -210,7 +217,6 @@ export const generateDimLink = (
 		(a, b) =>
 			b.power - a.power || Number(b.isMasterworked) - Number(a.isMasterworked)
 	)[0];
-
 
 	// TODO: This is a hacky way to ensure that exotic class items aren't included in the loadout
 	if (ci) {
@@ -264,9 +270,10 @@ export const generateDimLink = (
 		});
 	}
 
-	const url = `https://${useBetaDimLinks ? 'beta' : 'app'
-		}.destinyitemmanager.com/loadouts?loadout=${encodeURIComponent(
-			JSON.stringify(loadout)
-		)}`;
+	const url = `https://${
+		useBetaDimLinks ? 'beta' : 'app'
+	}.destinyitemmanager.com/loadouts?loadout=${encodeURIComponent(
+		JSON.stringify(loadout)
+	)}`;
 	return url;
 };

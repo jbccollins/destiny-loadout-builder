@@ -64,7 +64,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		superAbilityIdList: [
 			ESuperAbilityId.Daybreak,
 			ESuperAbilityId.WellOfRadiance,
-			ESuperAbilityId.SongOfFlame
+			ESuperAbilityId.SongOfFlame,
 		],
 		destinyClassId: EDestinyClassId.Warlock,
 		elementId: EElementId.Solar,
@@ -120,7 +120,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		superAbilityIdList: [
 			ESuperAbilityId.SentinelShield,
 			ESuperAbilityId.WardOfDawn,
-			ESuperAbilityId.TwilightArsenal
+			ESuperAbilityId.TwilightArsenal,
 		],
 		destinyClassId: EDestinyClassId.Titan,
 		elementId: EElementId.Void,
@@ -189,7 +189,7 @@ const DestinySubclassIdToDestinySubclassMapping: EnumDictionary<
 		superAbilityIdList: [
 			ESuperAbilityId.ArcStaff,
 			ESuperAbilityId.GatheringStorm,
-			ESuperAbilityId.StormsEdge
+			ESuperAbilityId.StormsEdge,
 		],
 		destinyClassId: EDestinyClassId.Hunter,
 		elementId: EElementId.Arc,

@@ -20,7 +20,7 @@ import {
 	EExoticArtificeAssumption,
 	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,
-	EMasterworkAssumption
+	EMasterworkAssumption,
 } from '@dlb/types/IdEnums';
 import {
 	getValidRaidModArmorSlotPlacements,
@@ -41,7 +41,11 @@ import {
 	LoadoutVariants,
 	ModReplacer,
 } from './helpers/types';
-import { findAvailableExoticArmorItem, unflattenMods, usesExoticClassItem } from './helpers/utils';
+import {
+	findAvailableExoticArmorItem,
+	unflattenMods,
+	usesExoticClassItem,
+} from './helpers/utils';
 
 // Order matters here for short-circuiting
 export const LoadoutVariantCheckOrder: Record<
@@ -257,9 +261,10 @@ export default function analyzeLoadout(
 				};
 			}
 
-			let exoticArtificeAssumption = loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice
-				? EExoticArtificeAssumption.All
-				: EExoticArtificeAssumption.None
+			let exoticArtificeAssumption =
+				loadoutVariantCheckType === ELoadoutVariantCheckType.ExoticArtifice
+					? EExoticArtificeAssumption.All
+					: EExoticArtificeAssumption.None;
 
 			const { preProcessedArmor, allClassItemMetadata: _allClassItemMetadata } =
 				generatePreProcessedArmor({
@@ -284,7 +289,7 @@ export default function analyzeLoadout(
 				loadout.destinyClassId
 			);
 
-			const useExoticClassItem = usesExoticClassItem(loadout)
+			const useExoticClassItem = usesExoticClassItem(loadout);
 
 			const selectedExoticArmorItem = findAvailableExoticArmorItem(
 				loadout.exoticHash,

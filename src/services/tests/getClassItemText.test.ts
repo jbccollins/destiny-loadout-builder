@@ -6,7 +6,10 @@ import { EModId } from '@dlb/generated/mod/EModId';
 import { getDefaultProcessedArmorItemMetadataClassItem } from '@dlb/services/processArmor';
 import { ARTIFICE } from '@dlb/services/processArmor/constants';
 import { getDefaultModPlacements } from '@dlb/services/processArmor/getModCombos';
-import { EExoticArtificeAssumption, ERaidAndNightMareModTypeId } from '@dlb/types/IdEnums';
+import {
+	EExoticArtificeAssumption,
+	ERaidAndNightMareModTypeId,
+} from '@dlb/types/IdEnums';
 
 const testFunction = getClassItemText;
 

@@ -20,8 +20,11 @@ const buildGrenadeData = (
 		grenade.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
 	let _id = grenade.displayProperties.name;
-	if (grenade.itemTypeDisplayName.includes("| Light Ability") || grenade.itemTypeDisplayName.includes("| Darkness Ability")) {
-		_id = _id + " Prism"
+	if (
+		grenade.itemTypeDisplayName.includes('| Light Ability') ||
+		grenade.itemTypeDisplayName.includes('| Darkness Ability')
+	) {
+		_id = _id + ' Prism';
 	}
 	return {
 		name: grenade.displayProperties.name,

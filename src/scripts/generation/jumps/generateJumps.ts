@@ -14,7 +14,8 @@ import { generateJumpMapping } from './generateJumpMapping';
 
 const buildJumpData = (jump: DestinyInventoryItemDefinition): IJump => {
 	// TODO: This is pretty janky and fragile. Relying on this random string to work well
-	const [destinyClassIdString, unsafeElementString] = jump.plug.plugCategoryIdentifier.split('.');
+	const [destinyClassIdString, unsafeElementString] =
+		jump.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
 
 	// Protect against the case where both prismatic warlock and prismatic hunter have blink

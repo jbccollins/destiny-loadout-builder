@@ -85,31 +85,31 @@ const testCases: TestCase[] = [
 
 						[EArmorSlotId.Head]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-							EArmorSlotId.Head
+								EArmorSlotId.Head
 							],
 							armorStatModId: EModId.MinorResilienceMod,
 						},
 						[EArmorSlotId.Arm]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-							EArmorSlotId.Arm
+								EArmorSlotId.Arm
 							],
 							armorStatModId: EModId.ResilienceMod,
 						},
 						[EArmorSlotId.Chest]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-							EArmorSlotId.Chest
+								EArmorSlotId.Chest
 							],
 							armorStatModId: EModId.ResilienceMod,
 						},
 						[EArmorSlotId.Leg]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-							EArmorSlotId.Chest
+								EArmorSlotId.Chest
 							],
 							armorStatModId: EModId.MinorResilienceMod,
 						},
 						[EArmorSlotId.ClassItem]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-							EArmorSlotId.ClassItem
+								EArmorSlotId.ClassItem
 							],
 							armorStatModId: EModId.IntellectMod,
 						},

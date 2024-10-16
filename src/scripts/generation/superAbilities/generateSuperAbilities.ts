@@ -20,8 +20,11 @@ const buildSuperAbilityData = (
 		superAbility.plug.plugCategoryIdentifier.split('.');
 	const elementId = generateId(unsafeElementString) as EElementId;
 	let _id = superAbility.displayProperties.name;
-	if (superAbility.itemTypeDisplayName.includes("| Light Ability") || superAbility.itemTypeDisplayName.includes("| Darkness Ability")) {
-		_id = _id + " Prism"
+	if (
+		superAbility.itemTypeDisplayName.includes('| Light Ability') ||
+		superAbility.itemTypeDisplayName.includes('| Darkness Ability')
+	) {
+		_id = _id + ' Prism';
 	}
 	return {
 		name: superAbility.displayProperties.name,

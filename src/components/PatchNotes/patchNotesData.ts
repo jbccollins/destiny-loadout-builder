@@ -11,13 +11,27 @@ export type PatchNote = {
 
 export const PatchNotes: PatchNote[] = [
 	{
+		date: '2024-10-15',
+		version: '2.7.0',
+		title: `Revenant Episode Update`,
+		sections: [
+			{
+				items: [
+					`Add Whisper of Chill and Reversal (forgot to add these with The Final Shape)`,
+					`Updates for the season, including the currently discounted artifact mods`,
+					`Fix broken mod icons. All mod icons have been broken since the season started but I guess no one uses this tool for that feature lol.`,
+				],
+			},
+		],
+	},
+	{
 		date: '2024-09-05',
 		version: '2.6.9',
 		title: `Fix Analyzer Subclass Bug`,
 		sections: [
 			{
 				items: [
-					`Fix a bug introduced in 2.6.8 where the analyzer was not properly identifying all aspects and fragments for prismatic subclasses in saved loadouts`
+					`Fix a bug introduced in 2.6.8 where the analyzer was not properly identifying all aspects and fragments for prismatic subclasses in saved loadouts`,
 				],
 			},
 		],
@@ -29,7 +43,7 @@ export const PatchNotes: PatchNote[] = [
 		sections: [
 			{
 				items: [
-					`Fix a bug where prismatic loadouts opened in DIM would not properly apply aspects and some fragments.`
+					`Fix a bug where prismatic loadouts opened in DIM would not properly apply aspects and some fragments.`,
 				],
 			},
 		],
@@ -42,7 +56,7 @@ export const PatchNotes: PatchNote[] = [
 			{
 				items: [
 					`Add Salvation's Edge Raid Mods.`,
-					`Update the costs of all reserves mods.`
+					`Update the costs of all reserves mods.`,
 				],
 			},
 		],
@@ -56,7 +70,7 @@ export const PatchNotes: PatchNote[] = [
 				items: [
 					`Add a new sort option to the results list to sort results by those that share the most/least armor pieces.`,
 					`Note that this sort option will only apply to the "top 1000" results.`,
-					`Also note that the class item is never considered, so the maximum that this number can be is 4.`
+					`Also note that the class item is never considered, so the maximum that this number can be is 4.`,
 				],
 			},
 		],
@@ -64,7 +78,8 @@ export const PatchNotes: PatchNote[] = [
 	{
 		date: '2024-07-07',
 		version: '2.6.5',
-		title: 'Add a tiebreaker sort for the results list that prioritizes loadouts with more stat mod variety',
+		title:
+			'Add a tiebreaker sort for the results list that prioritizes loadouts with more stat mod variety',
 		sections: [
 			{
 				items: [
@@ -79,9 +94,7 @@ export const PatchNotes: PatchNote[] = [
 		title: 'Fix Exotic Class Item Analyzer Bug V2 Electric Boogaloo',
 		sections: [
 			{
-				items: [
-					`Attempt to fix what wasn't quite fixed by 2.6.3`,
-				],
+				items: [`Attempt to fix what wasn't quite fixed by 2.6.3`],
 			},
 		],
 	},
@@ -124,7 +137,7 @@ export const PatchNotes: PatchNote[] = [
 					`Fixed a bug where the Bungie Api was mixing up Strand and Stasis resistance mods. (This was a fucky-wucky on Bungie's part)`,
 					`Re-enabled all raid mods`,
 					`Move all of Lightfall's special armor perks to the "Legacy Perk" section`,
-					`Note that I have yet to add the new Final Shape special armor perks`
+					`Note that I have yet to add the new Final Shape special armor perks`,
 				],
 			},
 		],
@@ -148,9 +161,7 @@ export const PatchNotes: PatchNote[] = [
 		title: 'Exotic Artifice Fixes',
 		sections: [
 			{
-				items: [
-					`Improved logic and UI around exotic class items`,
-				],
+				items: [`Improved logic and UI around exotic class items`],
 			},
 		],
 	},

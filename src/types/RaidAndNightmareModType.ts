@@ -73,7 +73,7 @@ const RaidAndNightMareModTypeIdToRaidAndNightMareModTypeMapping: EnumDictionary<
 		name: "Salvation's Edge",
 		abbreviation: 'SE',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/DestinyMilestoneDefinition_329a6f8ba06cf48f5831b92c7777b16b.png',
-	}
+	},
 };
 
 export const getRaidAndNightmareModType = (

@@ -127,7 +127,8 @@ export default function useApplyAnalyzableLoadout() {
 		if (exoticHash) {
 			// TODO: Hack to handle exotic class items
 			if (exoticHash === -1) {
-				newSelectedExoticArmor[destinyClassId] = ExoticClassItemMapping[destinyClassId];
+				newSelectedExoticArmor[destinyClassId] =
+					ExoticClassItemMapping[destinyClassId];
 			} else {
 				newSelectedExoticArmor[destinyClassId] = flatAvailableExoticArmor.find(
 					(x) => x.hash === exoticHash

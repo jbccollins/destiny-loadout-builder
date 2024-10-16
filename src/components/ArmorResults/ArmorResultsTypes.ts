@@ -37,12 +37,14 @@ export type ResultsTableLoadout = {
 	classItem: ProcessedArmorItemMetadataClassItem;
 	modPlacement: ArmorStatAndRaidModComboPlacement;
 	useExoticClassItem: boolean;
-	exoticArtificeAssumption: EExoticArtificeAssumption,
+	exoticArtificeAssumption: EExoticArtificeAssumption;
 };
 
 export const getClassItemText = (item: ResultsTableLoadout): string => {
 	if (item.useExoticClassItem) {
-		return item.exoticArtificeAssumption === EExoticArtificeAssumption.All ? 'Any Masterworked Exotic Artifice Class Item' : 'Any Masterworked Exotic Class Item';
+		return item.exoticArtificeAssumption === EExoticArtificeAssumption.All
+			? 'Any Masterworked Exotic Artifice Class Item'
+			: 'Any Masterworked Exotic Class Item';
 	}
 	let result = 'Class Item';
 	if (
@@ -51,25 +53,28 @@ export const getClassItemText = (item: ResultsTableLoadout): string => {
 			item.classItem.requiredClassItemMetadataKey
 		)
 	) {
-		result = `${getRaidAndNightmareModType(
-			item.classItem
-				.requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
-		).abbreviation
-			} Class Item`;
+		result = `${
+			getRaidAndNightmareModType(
+				item.classItem
+					.requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
+			).abbreviation
+		} Class Item`;
 	} else if (
 		item.classItem.requiredClassItemMetadataKey !== null &&
 		isIntrinsicArmorPerkOrAttributeRequiredClassItem(
 			item.classItem.requiredClassItemMetadataKey
 		)
 	) {
-		result = `${getIntrinsicArmorPerkOrAttribute(
-			item.classItem
-				.requiredClassItemMetadataKey as EIntrinsicArmorPerkOrAttributeId
-		).abbreviation
-			} Class Item`;
+		result = `${
+			getIntrinsicArmorPerkOrAttribute(
+				item.classItem
+					.requiredClassItemMetadataKey as EIntrinsicArmorPerkOrAttributeId
+			).abbreviation
+		} Class Item`;
 	} else if (item.classItem.requiredClassItemMetadataKey === ARTIFICE) {
 		result = 'Artifice Class Item';
 	}
-	return `${item.classItem.hasMasterworkedVariant ? 'Any Masterworked' : 'Any'
-		} ${result}`;
+	return `${
+		item.classItem.hasMasterworkedVariant ? 'Any Masterworked' : 'Any'
+	} ${result}`;
 };

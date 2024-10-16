@@ -23,8 +23,11 @@ const buildAspectData = (
 	sandboxPerkDefinitions: Record<number, DestinySandboxPerkDefinition>
 ): IAspect => {
 	let _id = aspect.displayProperties.name;
-	if (aspect.itemTypeDisplayName.includes("| Light Ability") || aspect.itemTypeDisplayName.includes("| Darkness Ability")) {
-		_id = _id + " Prism"
+	if (
+		aspect.itemTypeDisplayName.includes('| Light Ability') ||
+		aspect.itemTypeDisplayName.includes('| Darkness Ability')
+	) {
+		_id = _id + ' Prism';
 	}
 	return {
 		name: aspect.displayProperties.name,

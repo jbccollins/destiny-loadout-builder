@@ -150,7 +150,7 @@ type ProcessModPlacmentParams = {
 	useZeroWastedStats: boolean;
 	seenItemCounts: ItemCounts;
 	masterworkAssumption: EMasterworkAssumption;
-	exoticArtificeAssumption: EExoticArtificeAssumption,
+	exoticArtificeAssumption: EExoticArtificeAssumption;
 	useExoticClassItem: boolean;
 	armorSlotMods: ArmorSlotIdToModIdListMapping;
 	reservedArmorSlotEnergy: ArmorSlotEnergyMapping;
@@ -172,7 +172,9 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		reservedArmorSlotEnergy,
 		requiredAttributeClassItemMetadataKey,
 	} = params;
-	const useExoticArtificeClassItem = useExoticClassItem && exoticArtificeAssumption == EExoticArtificeAssumption.All;
+	const useExoticArtificeClassItem =
+		useExoticClassItem &&
+		exoticArtificeAssumption == EExoticArtificeAssumption.All;
 	let canUseArtificeClassItem = useExoticArtificeClassItem;
 	let hasDefaultMasterworkedClassItem = false;
 	const _sumOfSeenStats: StatList = [...sumOfSeenStats];
@@ -183,7 +185,11 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 			: null;
 
 	// Exotic class item conflicts with required class item
-	if (useExoticClassItem && (requiredClassItemMetadataKey !== null || requiredAttributeClassItemMetadataKey !== null)) {
+	if (
+		useExoticClassItem &&
+		(requiredClassItemMetadataKey !== null ||
+			requiredAttributeClassItemMetadataKey !== null)
+	) {
 		return null;
 	}
 	// Conflicting required class items
@@ -205,7 +211,8 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 	} else if (!useExoticClassItem && requiredClassItemMetadataKey === null) {
 		canUseArtificeClassItem = allClassItemMetadata.Artifice.items.length > 0;
 	} else if (
-		!useExoticClassItem && allClassItemMetadata[requiredClassItemMetadataKey].hasMasterworkedVariant
+		!useExoticClassItem &&
+		allClassItemMetadata[requiredClassItemMetadataKey].hasMasterworkedVariant
 	) {
 		hasDefaultMasterworkedClassItem = true;
 		// _sumOfSeenStats = sumStatLists([
@@ -213,7 +220,6 @@ const processModPlacement = (params: ProcessModPlacmentParams) => {
 		// 	EXTRA_MASTERWORK_STAT_LIST,
 		// ]);
 	}
-
 
 	// console.log('shouldReturnNull', requiredClassItemMetadataKey && (requiredAttributeClassItemMetadataKey || useExoticClassItem));
 
@@ -383,7 +389,7 @@ export type GetModCombosParams = {
 	useZeroWastedStats: boolean;
 	allClassItemMetadata: AllClassItemMetadata;
 	masterworkAssumption: EMasterworkAssumption;
-	exoticArtificeAssumption: EExoticArtificeAssumption,
+	exoticArtificeAssumption: EExoticArtificeAssumption;
 	useExoticClassItem: boolean;
 	intrinsicArmorPerkOrAttributeIds: EIntrinsicArmorPerkOrAttributeId[];
 };
@@ -421,7 +427,7 @@ export const getModCombos = (params: GetModCombosParams): ModCombos[] => {
 	for (const armorSlotId of ArmorSlotWithClassItemIdList) {
 		if (
 			sumModCosts(armorSlotMods[armorSlotId]) +
-			reservedArmorSlotEnergy[armorSlotId] >
+				reservedArmorSlotEnergy[armorSlotId] >
 			10
 		) {
 			return null;

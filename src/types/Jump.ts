@@ -52,7 +52,7 @@ const DestinySubclassIdToJumpIdListMapping: EnumDictionary<
 		EJumpId.HighJumpPrismHunter,
 		EJumpId.TripleJumpPrismHunter,
 		EJumpId.StrafeJumpPrismHunter,
-		EJumpId.BlinkPrismHunter
+		EJumpId.BlinkPrismHunter,
 	],
 
 	//Warlock

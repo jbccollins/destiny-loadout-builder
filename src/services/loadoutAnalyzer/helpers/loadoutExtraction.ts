@@ -51,7 +51,7 @@ import {
 	EGearTierId,
 	EIntrinsicArmorPerkOrAttributeId,
 	EMasterworkAssumption,
-	EModSocketCategoryId
+	EModSocketCategoryId,
 } from '@dlb/types/IdEnums';
 import { getJumpByHash } from '@dlb/types/Jump';
 import { getMeleeByHash } from '@dlb/types/Melee';
@@ -138,7 +138,8 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 		if (armorItem) {
 			if (armorItem.gearTierId === EGearTierId.Exotic) {
 				// Hack to handle exotic class items
-				loadout.exoticHash = armorItem.armorSlot === EArmorSlotId.ClassItem ? -1 : armorItem.hash;
+				loadout.exoticHash =
+					armorItem.armorSlot === EArmorSlotId.ClassItem ? -1 : armorItem.hash;
 			}
 			if (
 				armorItem.intrinsicArmorPerkOrAttributeId ===
@@ -227,7 +228,7 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 					loadout.fragmentIdList.push(fragment.id as EFragmentId);
 					return;
 				}
-			})
+			});
 
 			// Ensure that loadouts that were created with old 2.0 subclasses
 			// are still processed correctly with 3.0 versions
@@ -524,7 +525,10 @@ export const extractInGameLoadouts = (
 							loadout.armor.push(armorItem);
 							if (armorItem.gearTierId === EGearTierId.Exotic) {
 								// Hack to handle exotic class items
-								loadout.exoticHash = armorItem.armorSlot === EArmorSlotId.ClassItem ? -1 : armorItem.hash;
+								loadout.exoticHash =
+									armorItem.armorSlot === EArmorSlotId.ClassItem
+										? -1
+										: armorItem.hash;
 							} else if (
 								armorItem.gearTierId === EGearTierId.Legendary ||
 								armorItem.armorSlot === EArmorSlotId.Chest
@@ -658,7 +662,6 @@ export const extractInGameLoadouts = (
 								loadout.fragmentIdList.push(fragment.id as EFragmentId);
 								return;
 							}
-
 						});
 						break;
 					default:

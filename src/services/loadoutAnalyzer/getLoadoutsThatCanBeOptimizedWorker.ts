@@ -35,5 +35,4 @@ self.onmessage = (e: MessageEvent<PostMessageParams>) => {
 	console.log('[getLoadoutsThatCanBeOptimizedWorker] done');
 };
 
-export { };
-
+export {};

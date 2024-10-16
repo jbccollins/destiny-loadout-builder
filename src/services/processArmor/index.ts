@@ -63,7 +63,7 @@ import {
 	getTotalStatTiers,
 	getWastedStats,
 	sumModCosts,
-	sumStatLists
+	sumStatLists,
 } from './utils';
 
 const _processArmorRecursiveCase = ({
@@ -84,7 +84,7 @@ const _processArmorRecursiveCase = ({
 	useZeroWastedStats,
 	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
-	allLoadoutArmorItemsIdList
+	allLoadoutArmorItemsIdList,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems, ...rest] = armorItems;
 	const output: ProcessArmorOutput[] = [];
@@ -119,7 +119,7 @@ const _processArmorRecursiveCase = ({
 				useZeroWastedStats,
 				alwaysConsiderCollectionsRolls,
 				allClassItemMetadata,
-				allLoadoutArmorItemsIdList
+				allLoadoutArmorItemsIdList,
 			})
 		);
 	});
@@ -144,7 +144,7 @@ const _processArmorBaseCase = ({
 	reservedArmorSlotEnergy,
 	useZeroWastedStats,
 	allClassItemMetadata,
-	allLoadoutArmorItemsIdList
+	allLoadoutArmorItemsIdList,
 }: ProcessArmorParams): ProcessArmorOutput => {
 	const [armorSlotItems] = armorItems;
 	const output: ProcessArmorOutput = [];
@@ -264,8 +264,13 @@ const _processArmorBaseCase = ({
 				totalModCost: getTotalModCost(requiredArmorStatModIdList),
 				totalStatTiers: getTotalStatTiers(totalArmorStatMapping),
 				wastedStats: getWastedStats(totalArmorStatMapping),
-				numUniqueArmorStatMods: getNumUniqueArmorStatMods(requiredArmorStatModIdList),
-				numSharedArmorItemsAcrossLoadouts: getNumSharedArmorItemsAcrossLoadouts(armorIdList, allLoadoutArmorItemsIdList),
+				numUniqueArmorStatMods: getNumUniqueArmorStatMods(
+					requiredArmorStatModIdList
+				),
+				numSharedArmorItemsAcrossLoadouts: getNumSharedArmorItemsAcrossLoadouts(
+					armorIdList,
+					allLoadoutArmorItemsIdList
+				),
 				totalArmorStatMapping,
 				baseArmorStatMapping,
 				seenArmorSlotItems: finalSpecialSeenArmorSlotItems,
@@ -393,7 +398,7 @@ export const doProcessArmor = ({
 	alwaysConsiderCollectionsRolls,
 	allClassItemMetadata,
 	assumedStatValuesStatMapping,
-	allLoadoutArmorItemsIdList
+	allLoadoutArmorItemsIdList,
 }: DoProcessArmorParams): DoProcessArmorOutput => {
 	// Bonus resil does not apply to exotic chest armor loadouts
 	const _useBonusResilience =
@@ -431,7 +436,7 @@ export const doProcessArmor = ({
 		useZeroWastedStats,
 		alwaysConsiderCollectionsRolls,
 		allClassItemMetadata,
-		allLoadoutArmorItemsIdList
+		allLoadoutArmorItemsIdList,
 	};
 
 	const processedArmor: ProcessArmorOutput = processArmor(
@@ -687,7 +692,7 @@ export const preProcessArmor = ({
 						exoticArtificeAssumption === EExoticArtificeAssumption.All ||
 						(isMasterworked &&
 							exoticArtificeAssumption ===
-							EExoticArtificeAssumption.Masterworked);
+								EExoticArtificeAssumption.Masterworked);
 					return {
 						...item,
 						isArtifice,

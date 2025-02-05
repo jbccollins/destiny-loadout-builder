@@ -132,6 +132,16 @@ export const extractArmor = (
 			const destinyClassName = DestinyClassHashToDestinyClass[
 				item.classType
 			] as EDestinyClassId;
+
+			if (destinyClassName === undefined) {
+				console.warn(
+					'[heresy] Unable to find destiny class for DIM item',
+					item,
+					item.classType
+				);
+				return;
+			}
+
 			const armorSlot = BucketHashToArmorSlot[item.bucket.hash] as EArmorSlotId;
 
 			const manifestItem = manifest.InventoryItem.get(item.hash);

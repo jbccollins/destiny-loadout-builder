@@ -217,7 +217,7 @@ export const MeleeIdToMeleeMapping: EnumDictionary<EMeleeId, IMelee> = {
 		name: 'Ballistic Slam',
 		id: EMeleeId.BallisticSlam,
 		description:
-			'After sprinting and while airborne, activate your charged melee ability to slam to the ground, dealing damage to nearby targets.',
+			'After sprinting and while airborne, activate your charged melee ability to slam to the ground, dealing damage to nearby targets.\n\nGain stacks of Bolt Charge based on number of targets hit by Ballistic Slam.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/c9e36caa03cdb0d8dfcacc57f0e01938.jpg',
 		hash: 2708585276,
 		elementId: EElementId.Arc,
@@ -244,7 +244,7 @@ export const MeleeIdToMeleeMapping: EnumDictionary<EMeleeId, IMelee> = {
 		name: 'Disorienting Blow',
 		id: EMeleeId.DisorientingBlow,
 		description:
-			'Striking a target with this melee ability blinds them and amplifies you.',
+			'Striking a target with this melee ability blinds them, amplifies you, and grants you a moderate amount of Bolt Charge.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/0ac85c928868a34d47dba95dcff2da2a.jpg',
 		hash: 2716335210,
 		elementId: EElementId.Arc,

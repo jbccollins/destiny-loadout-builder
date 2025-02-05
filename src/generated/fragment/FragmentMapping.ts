@@ -49,7 +49,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
 		name: 'Facet of Purpose',
 		id: EFragmentId.FacetOfPurpose,
 		description:
-			'Picking up an Orb of Power grants either Amplified, Restoration, Frost Armor, Woven Mail, or Overshield based on the damage type of your equipped Super.',
+			'Picking up an Orb of Power grants either Bolt Charge, Restoration, Frost Armor, Woven Mail, or Overshield based on the damage type of your equipped Super.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/7a6b1d98544eb4a8512c6be0b6486456.png',
 		hash: 124726498,
 		bonuses: [
@@ -415,7 +415,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
 		name: 'Spark of Frequency',
 		id: EFragmentId.SparkOfFrequency,
 		description:
-			"Melee hits increase your equipped weapon's reload speed and stability for a short duration.",
+			"Melee hits increase your equipped weapon's reload speed and stability for a short duration.\n\nWhile amplified, the effects are increased and you gain increased stacks of Bolt Charge from all sources.",
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/4979f2f84c3da353c19815106267beb9.jpg',
 		hash: 1727069361,
 		bonuses: [],
@@ -425,7 +425,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
 		name: 'Spark of Discharge',
 		id: EFragmentId.SparkOfDischarge,
 		description:
-			'Arc weapon final blows have a chance to create an Ionic Trace.',
+			'Arc weapon final blows have a chance to create an Ionic Trace.\n\nCollecting an Ionic Trace grants you a stack of Bolt Charge.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/c883bf91f42e9c4b9c9ddce1ba2d2de5.jpg',
 		hash: 1727069362,
 		bonuses: [
@@ -439,7 +439,8 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
 	[EFragmentId.SparkOfIons]: {
 		name: 'Spark of Ions',
 		id: EFragmentId.SparkOfIons,
-		description: 'Defeating a jolted target creates an Ionic Trace.',
+		description:
+			'Defeating a jolted target or defeating a target with Bolt Charge creates an Ionic Trace.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/2a7f5d325fc745877be70c443427d15b.jpg',
 		hash: 1727069363,
 		bonuses: [],
@@ -463,7 +464,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
 		name: 'Spark of Momentum',
 		id: EFragmentId.SparkOfMomentum,
 		description:
-			'Sliding over ammo bricks reloads your equipped weapon and grants a small amount of melee energy.',
+			'Sliding over ammo bricks reloads your equipped weapon and grants you a small amount of Bolt Charge.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/b8cfaccdc40ccdd6a3fb4f544dcb7700.jpg',
 		hash: 1727069365,
 		bonuses: [],
@@ -959,7 +960,8 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
 	[EFragmentId.SparkOfVolts]: {
 		name: 'Spark of Volts',
 		id: EFragmentId.SparkOfVolts,
-		description: 'Finishers make you amplified.',
+		description:
+			'Finishers make you amplified and grant you a stack of Bolt Charge.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/bb6175746eecf3160a591efe343a3fdf.jpg',
 		hash: 3277705904,
 		bonuses: [
@@ -1093,7 +1095,7 @@ export const FragmentIdToFragmentMapping: EnumDictionary<
 		name: 'Spark of Haste',
 		id: EFragmentId.SparkOfHaste,
 		description:
-			'You have greatly increased resilience, recovery, and mobility while sprinting.',
+			'While sprinting, you have greatly increased resilience, recovery, and mobility.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/e840532ca79e23311804760b3833e6bb.jpg',
 		hash: 3478354817,
 		bonuses: [],

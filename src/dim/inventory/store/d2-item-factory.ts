@@ -276,6 +276,9 @@ export function makeItem(
 	profileRecords?: DestinyProfileRecordsComponent
 ): DimItem | null {
 	const itemDef = defs.InventoryItem.get(item.itemHash);
+	// if (item.itemHash === 2428181146) {
+	// 	console.log("[heresy] item", item, itemDef)
+	// }
 
 	const itemInstanceData: Partial<DestinyItemInstanceComponent> =
 		itemComponents?.instances.data?.[item.itemInstanceId ?? ''] ?? {};
@@ -493,6 +496,62 @@ export function makeItem(
 			  DestinyClass.Unknown
 		: itemDef.classType;
 
+	let clasz = classType;
+	if (clasz === DestinyClass.Unknown) {
+		if (name === 'Blastwave Striders') {
+			clasz = DestinyClass.Titan;
+		}
+		if (name === 'Helm of Saint-14') {
+			clasz = DestinyClass.Titan;
+		}
+		if (name === 'Arbor Warden') {
+			clasz = DestinyClass.Titan;
+		}
+		if (name === 'Rime-coat Raiment') {
+			clasz = DestinyClass.Warlock;
+		}
+		if (name === 'Mask of Fealty') {
+			clasz = DestinyClass.Hunter;
+		}
+		if (name === 'Triton Vice') {
+			clasz = DestinyClass.Hunter;
+		}
+		if (name === 'War Mantis') {
+			clasz = DestinyClass.Hunter;
+		}
+
+		itemDef.sockets?.socketEntries.forEach((a, index) => {
+			const b = defs.SocketType.get(a.socketTypeHash);
+			if (b !== undefined) {
+				console.log('[heresy] b', b);
+				if (
+					b.plugWhitelist.findIndex((x) =>
+						x.categoryIdentifier.includes('warlock')
+					) != -1
+				) {
+					clasz = DestinyClass.Warlock;
+					return;
+				}
+				if (
+					b.plugWhitelist.findIndex((x) =>
+						x.categoryIdentifier.includes('titan')
+					) != -1
+				) {
+					clasz = DestinyClass.Titan;
+					return;
+				}
+				if (
+					b.plugWhitelist.findIndex((x) =>
+						x.categoryIdentifier.includes('hunter')
+					) != -1
+				) {
+					clasz = DestinyClass.Hunter;
+					return;
+				}
+			}
+		});
+	}
+
 	const createdItem: DimItem = {
 		owner: owner?.id || 'unknown',
 		// figure out what year this item is probably from
@@ -541,8 +600,8 @@ export function makeItem(
 		equipRequiredLevel: itemInstanceData.equipRequiredLevel ?? 0,
 		maxStackSize: Math.max(itemDef.inventory!.maxStackSize, 1),
 		uniqueStack: Boolean(itemDef.inventory!.stackUniqueLabel?.length),
-		classType,
-		classTypeNameLocalized: getClassTypeNameLocalized(itemDef.classType, defs),
+		classType: clasz,
+		classTypeNameLocalized: getClassTypeNameLocalized(clasz, defs),
 		element,
 		energy: itemInstanceData.energy ?? null,
 		powerCap,

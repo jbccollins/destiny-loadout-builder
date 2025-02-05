@@ -37,6 +37,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.StylishExecutioner,
 		EAspectId.TrappersAmbush,
 		EAspectId.VanishingStep,
+		EAspectId.OnTheProwl,
 	],
 	[EDestinySubclassId.Gunslinger]: [
 		EAspectId.GunpowderGamble,
@@ -85,6 +86,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.ArcSoul,
 		EAspectId.ElectrostaticMind,
 		EAspectId.LightningSurge,
+		EAspectId.IonicSentry,
 	],
 	[EDestinySubclassId.Broodweaver]: [
 		EAspectId.MindspunInvocation,
@@ -122,6 +124,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.TouchOfThunder,
 		EAspectId.Knockout,
 		EAspectId.Juggernaut,
+		EAspectId.StormsKeep,
 	],
 	[EDestinySubclassId.Berserker]: [
 		EAspectId.DrengrsLash,

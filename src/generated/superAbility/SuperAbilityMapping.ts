@@ -374,7 +374,7 @@ export const SuperAbilityIdToSuperAbilityMapping: EnumDictionary<
 		name: 'Arc Staff',
 		id: ESuperAbilityId.ArcStaff,
 		description:
-			'Form a staff of pure Arc energy and acrobatically take out your foes.\n\n[Block] : Hold to deflect incoming projectiles with your Arc staff.',
+			'Form a staff of pure Arc energy and acrobatically take out your foes.\n\n[Block] : Hold to deflect incoming projectiles with your Arc staff.\n\nDeflecting a projectile grants you a stack of Bolt Charge.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/435489f514e2bf88d25c452a96f2dff9.png',
 		hash: 3769507633,
 		elementId: EElementId.Arc,

@@ -68,6 +68,15 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 		hash: 187655374,
 		fragmentSlots: 2,
 	},
+	[EAspectId.OnTheProwl]: {
+		name: 'On the Prowl',
+		id: EAspectId.OnTheProwl,
+		description:
+			'Entering invisibility marks a nearby combatant as a priority target for you and your team. \n\nDefeating priority targets creates a weakening cloud of smoke that makes you and allies invisible when passing through it. \n\nWhen priority targets are defeated, you and nearby allies gain increased weapon reload speed and stability for a short duration and are granted grenade, melee, and class ability energy.',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/9afb3b5fb819f4427122736712c5dab6.jpg',
+		hash: 187655375,
+		fragmentSlots: 3,
+	},
 	[EAspectId.Weavewalk]: {
 		name: 'Weavewalk',
 		id: EAspectId.Weavewalk,
@@ -135,7 +144,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 		name: 'Lightning Surge',
 		id: EAspectId.LightningSurgePrism,
 		description:
-			'While sliding, activate your charged melee ability to blink forward, calling down lightning strikes that jolt targets as you rematerialize.',
+			'While sliding, activate your charged melee ability to blink forward, calling down lightning strikes that jolt targets as you rematerialize.\n\nTargets that are hit by your lightning strikes grant you stacks of Bolt Charge.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/5730fd352ae02a03290387ea81d39468.jpg',
 		hash: 790664812,
 		fragmentSlots: 3,
@@ -248,6 +257,15 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 		hash: 1262901525,
 		fragmentSlots: 3,
 	},
+	[EAspectId.IonicSentry]: {
+		name: 'Ionic Sentry',
+		id: EAspectId.IonicSentry,
+		description:
+			'Defeat targets with Kinetic or Arc weapons or Arc abilities to charge up an Arc turret that periodically chains lightning between nearby targets, granting a stack of Bolt Charge with each hit.\n\n[Grenade]  : Deploy the Ionic Sentry, blinding nearby targets on initial impact.',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/fbf0964f25f9f126e6a47bd6ee53a550.jpg',
+		hash: 1293395728,
+		fragmentSlots: 2,
+	},
 	[EAspectId.ElectrostaticMind]: {
 		name: 'Electrostatic Mind',
 		id: EAspectId.ElectrostaticMind,
@@ -261,7 +279,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 		name: 'Lightning Surge',
 		id: EAspectId.LightningSurge,
 		description:
-			'While sliding, activate your charged melee ability to blink forward, calling down lightning strikes that jolt targets as you rematerialize.',
+			'While sliding, activate your charged melee ability to blink forward, calling down lightning strikes that jolt targets as you rematerialize.\n\nTargets that are hit by your lightning strikes grant you stacks of Bolt Charge.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/5730fd352ae02a03290387ea81d39468.jpg',
 		hash: 1293395730,
 		fragmentSlots: 2,
@@ -333,7 +351,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 		name: 'Juggernaut',
 		id: EAspectId.Juggernaut,
 		description:
-			'With full class ability energy and after sprinting for a short time, you gain a frontal shield that blocks incoming damage. When the frontal shield breaks, your class ability energy is depleted.\n\nWhile amplified, the shield blocks significantly more damage before breaking.',
+			'With full class ability energy and after sprinting for a short time, you gain a frontal shield that blocks incoming damage. When the frontal shield breaks, your class ability energy is depleted. When the frontal shield takes damage, you gain a stack of Bolt Charge.\n\nWhile amplified, the shield blocks significantly more damage before breaking.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/046dc9f5d7a897b38d12a05ab837f5c7.jpg',
 		hash: 1656549673,
 		fragmentSlots: 2,
@@ -345,6 +363,15 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 			'Critically wounding a target or breaking their shield infuses your melee attacks with Arc energy and increases your melee range and damage for a short time.\n\nDefeating targets with melee attacks makes you amplified and restores a portion of your health. Defeating more powerful combatants increases the amount of health restored.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/e0fdf5c4c4dc10d6ee63365bf7d70821.jpg',
 		hash: 1656549674,
+		fragmentSlots: 2,
+	},
+	[EAspectId.StormsKeep]: {
+		name: "Storm's Keep",
+		id: EAspectId.StormsKeep,
+		description:
+			'Cast your class ability to grant a moderate amount of Bolt Charge stacks to you and nearby allies.\n\nWhile behind your Barricade, you and allies gain stacks of Bolt Charge over time and your weapons can discharge max stacks of Bolt Charge.',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/58cee87c4df6399921797be06a7aa608.jpg',
+		hash: 1656549675,
 		fragmentSlots: 2,
 	},
 	[EAspectId.GrimHarvest]: {
@@ -567,7 +594,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 		name: 'Tempest Strike',
 		id: EAspectId.TempestStrike,
 		description:
-			'While sliding, activate your charged melee ability to unleash a devastating uppercut attack that travels along the ground in front of you, damaging and jolting targets it hits.',
+			'While sliding, activate your charged melee ability to unleash a devastating uppercut attack that travels along the ground in front of you, damaging and jolting targets it hits.\n\nDefeating jolted targets grants a stack of Bolt Charge.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/e216e32eaf026208ef4638f2f274e2dc.jpg',
 		hash: 4194622037,
 		fragmentSlots: 2,
@@ -588,7 +615,7 @@ export const AspectIdToAspectMapping: EnumDictionary<EAspectId, IAspect> = {
 			'[Air Move]  While airborne, consume your class ability energy to summon your Arc Staff, propelling yourself upward and creating a burst of energy around you that amplifies allies and jolts targets.',
 		icon: 'https://www.bungie.net/common/destiny2_content/icons/3bfe666002e12ec6ea3d0c3661f81f31.jpg',
 		hash: 4194622039,
-		fragmentSlots: 2,
+		fragmentSlots: 3,
 	},
 	[EAspectId.WhirlingMaelstrom]: {
 		name: 'Whirling Maelstrom',

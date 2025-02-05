@@ -86,7 +86,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.ArcSoul,
 		EAspectId.ElectrostaticMind,
 		EAspectId.LightningSurge,
-		EAspectId.IonicSentry
+		EAspectId.IonicSentry,
 	],
 	[EDestinySubclassId.Broodweaver]: [
 		EAspectId.MindspunInvocation,
@@ -124,7 +124,7 @@ const DestinySubclassIdToAspectIdListMapping: EnumDictionary<
 		EAspectId.TouchOfThunder,
 		EAspectId.Knockout,
 		EAspectId.Juggernaut,
-		EAspectId.StormsKeep
+		EAspectId.StormsKeep,
 	],
 	[EDestinySubclassId.Berserker]: [
 		EAspectId.DrengrsLash,

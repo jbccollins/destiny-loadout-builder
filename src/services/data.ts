@@ -93,11 +93,11 @@ export const extractArmor = (
 	exoticArmorCollectibles: DimItem[],
 	manifest: D2ManifestDefinitions
 ): [
-		Armor,
-		AvailableExoticArmor,
-		ArmorMetadata,
-		DestinyClassToAllClassItemMetadataMapping
-	] => {
+	Armor,
+	AvailableExoticArmor,
+	ArmorMetadata,
+	DestinyClassToAllClassItemMetadataMapping
+] => {
 	const armor: Armor = {
 		[EDestinyClassId.Titan]: generateArmorGroup(),
 		[EDestinyClassId.Hunter]: generateArmorGroup(),
@@ -134,7 +134,11 @@ export const extractArmor = (
 			] as EDestinyClassId;
 
 			if (destinyClassName === undefined) {
-				console.warn("[heresy] Unable to find destiny class for DIM item", item, item.classType);
+				console.warn(
+					'[heresy] Unable to find destiny class for DIM item',
+					item,
+					item.classType
+				);
 				return;
 			}
 

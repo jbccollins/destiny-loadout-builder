@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@dlb/redux/hooks';
 import { ArmorStatIdList, getArmorStat } from '@dlb/types/ArmorStat';
 import { EArmorStatId } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
-import StatSelectorRow from './StatSelectorRow';
+import StatSelectorSlider from './StatSelectorSlider';
 
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
@@ -35,52 +35,7 @@ export type Mark = {
 	label: string;
 };
 
-const marks: Mark[] = [
-	{
-		value: 0,
-		label: '0',
-	},
-	{
-		value: 10,
-		label: '1',
-	},
-	{
-		value: 20,
-		label: '2',
-	},
-	{
-		value: 30,
-		label: '3',
-	},
-	{
-		value: 40,
-		label: '4',
-	},
-	{
-		value: 50,
-		label: '5',
-	},
-	{
-		value: 60,
-		label: '6',
-	},
-	{
-		value: 70,
-		label: '7',
-	},
-	{
-		value: 80,
-		label: '8',
-	},
-	{
-		value: 90,
-		label: '9',
-	},
-	{
-		value: 100,
-		label: '10',
-	},
-];
+// ...marks removed, not needed for StatSelectorSlider
 
 function StatSelection() {
 	const dispatch = useAppDispatch();
@@ -107,14 +62,13 @@ function StatSelection() {
 						<SliderTitle>
 							<BungieImage src={icon} width={26} height={26} />
 						</SliderTitle>
-						<StatSelectorRow
+						<StatSelectorSlider
 							maxPossible={
 								isRunningProcessArmorWebWorker
 									? desiredArmorStats[armorStatId]
 									: maxPossibleStats[armorStatId]
 							}
 							value={desiredArmorStats[armorStatId]}
-							marks={marks}
 							onChange={(value) => handleChange(armorStatId, value)}
 						/>
 					</SliderWrapper>

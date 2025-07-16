@@ -11,10 +11,6 @@ import { EArmorStatId } from '@dlb/types/IdEnums';
 import { Box, styled } from '@mui/material';
 import StatSelectorRow from './StatSelectorRow';
 
-type StatSelectionProps = {
-	//
-};
-
 const Container = styled(Box)(({ theme }) => ({
 	color: theme.palette.secondary.main,
 	padding: theme.spacing(1),
@@ -33,10 +29,6 @@ const SliderTitle = styled(Box)(({ theme }) => ({
 	marginRight: '4px',
 	paddingTop: '6px',
 }));
-
-function valuetext(value: number) {
-	return `Tier ${value}`;
-}
 
 export type Mark = {
 	value: number;

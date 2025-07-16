@@ -33,7 +33,7 @@ const testCases: TestCase[] = [
 			{
 				targetStatShortfalls: {
 					...getDefaultArmorStatMapping(),
-					[EArmorStatId.Mobility]: 20,
+					[EArmorStatId.Weapons]: 20,
 				},
 				numAvailableArtificePieces: 0,
 				totalTargetStatShortfall: 20,
@@ -44,7 +44,7 @@ const testCases: TestCase[] = [
 		[
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 0,
 					numMinorMods: 4,
 					numArtificeMods: 0,
@@ -53,7 +53,7 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 1,
 					numMinorMods: 2,
 					numArtificeMods: 0,
@@ -62,7 +62,7 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 2,
 					numMinorMods: 0,
 					numArtificeMods: 0,
@@ -77,7 +77,7 @@ const testCases: TestCase[] = [
 			{
 				targetStatShortfalls: {
 					...getDefaultArmorStatMapping(),
-					[EArmorStatId.Mobility]: 20,
+					[EArmorStatId.Weapons]: 20,
 				},
 				numAvailableArtificePieces: 4,
 				totalTargetStatShortfall: 20,
@@ -88,7 +88,7 @@ const testCases: TestCase[] = [
 		[
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 0,
 					numMinorMods: 4,
 					numArtificeMods: 0,
@@ -97,7 +97,7 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 1,
 					numMinorMods: 2,
 					numArtificeMods: 0,
@@ -106,7 +106,7 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 2,
 					numMinorMods: 0,
 					numArtificeMods: 0,
@@ -115,7 +115,7 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 0,
 					numMinorMods: 3,
 					numArtificeMods: 2,
@@ -124,7 +124,7 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 1,
 					numMinorMods: 1,
 					numArtificeMods: 2,
@@ -133,7 +133,7 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 0,
 					numMinorMods: 2,
 					numArtificeMods: 4,
@@ -142,7 +142,7 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 1,
 					numMinorMods: 0,
 					numArtificeMods: 4,
@@ -157,7 +157,7 @@ const testCases: TestCase[] = [
 			{
 				targetStatShortfalls: {
 					...getDefaultArmorStatMapping(),
-					[EArmorStatId.Mobility]: 3,
+					[EArmorStatId.Weapons]: 3,
 				},
 				numAvailableArtificePieces: 1,
 				useZeroWastedStats: true,
@@ -168,7 +168,7 @@ const testCases: TestCase[] = [
 		[
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 0,
 					numMinorMods: 0,
 					numArtificeMods: 1,
@@ -183,7 +183,7 @@ const testCases: TestCase[] = [
 			{
 				targetStatShortfalls: {
 					...getDefaultArmorStatMapping(),
-					[EArmorStatId.Mobility]: 4,
+					[EArmorStatId.Weapons]: 4,
 				},
 				numAvailableArtificePieces: 4,
 				useZeroWastedStats: true,
@@ -194,7 +194,7 @@ const testCases: TestCase[] = [
 		[
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 0,
 					numMinorMods: 1,
 					numArtificeMods: 3,
@@ -209,7 +209,7 @@ const testCases: TestCase[] = [
 			{
 				targetStatShortfalls: {
 					...getDefaultArmorStatMapping(),
-					[EArmorStatId.Mobility]: 100,
+					[EArmorStatId.Weapons]: 100,
 				},
 				numAvailableArtificePieces: 0,
 				totalTargetStatShortfall: 100,
@@ -225,8 +225,8 @@ const testCases: TestCase[] = [
 			{
 				targetStatShortfalls: {
 					...getDefaultArmorStatMapping(),
-					[EArmorStatId.Resilience]: 50,
-					[EArmorStatId.Strength]: 20,
+					[EArmorStatId.Health]: 50,
+					[EArmorStatId.Melee]: 20,
 				},
 				numAvailableArtificePieces: 0,
 				totalTargetStatShortfall: 70,

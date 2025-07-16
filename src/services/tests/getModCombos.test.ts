@@ -58,8 +58,8 @@ const testCases: TestCase[] = [
 				sumOfSeenStats: getDefaultStatList(),
 				desiredArmorStats: {
 					...getDefaultArmorStatMapping(),
-					[EArmorStatId.Intellect]: 10,
-					[EArmorStatId.Resilience]: 30,
+					[EArmorStatId.Super]: 10,
+					[EArmorStatId.Health]: 30,
 				},
 				potentialRaidModArmorSlotPlacements: [],
 				armorSlotMods: getDefaultArmorSlotIdToModIdListMapping(),
@@ -85,33 +85,33 @@ const testCases: TestCase[] = [
 
 						[EArmorSlotId.Head]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-								EArmorSlotId.Head
+							EArmorSlotId.Head
 							],
-							armorStatModId: EModId.MinorResilienceMod,
+							armorStatModId: EModId.MinorHealthMod,
 						},
 						[EArmorSlotId.Arm]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-								EArmorSlotId.Arm
+							EArmorSlotId.Arm
 							],
-							armorStatModId: EModId.ResilienceMod,
+							armorStatModId: EModId.HealthMod,
 						},
 						[EArmorSlotId.Chest]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-								EArmorSlotId.Chest
+							EArmorSlotId.Chest
 							],
-							armorStatModId: EModId.ResilienceMod,
+							armorStatModId: EModId.HealthMod,
 						},
 						[EArmorSlotId.Leg]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-								EArmorSlotId.Chest
+							EArmorSlotId.Chest
 							],
-							armorStatModId: EModId.MinorResilienceMod,
+							armorStatModId: EModId.MinorHealthMod,
 						},
 						[EArmorSlotId.ClassItem]: {
 							...getDefaultModCombos().lowestCostPlacement.placement[
-								EArmorSlotId.ClassItem
+							EArmorSlotId.ClassItem
 							],
-							armorStatModId: EModId.IntellectMod,
+							armorStatModId: EModId.SuperMod,
 						},
 					},
 				},
@@ -185,9 +185,9 @@ const testCases: TestCase[] = [
 	// 			lowestCostPlacement: {
 	// 				...getDefaultModCombos().lowestCostPlacement,
 	// 				artificeModIdList: [
-	// 					EModId.MobilityForged,
-	// 					EModId.MobilityForged,
-	// 					EModId.DisciplineForged,
+	// 					EModId.WeaponsForged,
+	// 					EModId.WeaponsForged,
+	// 					EModId.GrenadeForged,
 	// 					EModId.StrengthForged,
 	// 				],
 	// 				placement: {
@@ -202,7 +202,7 @@ const testCases: TestCase[] = [
 	// 						...getDefaultModCombos().lowestCostPlacement.placement[
 	// 							EArmorSlotId.Arm
 	// 						],
-	// 						armorStatModId: EModId.MobilityMod,
+	// 						armorStatModId: EModId.WeaponsMod,
 	// 					},
 	// 					[EArmorSlotId.Chest]: {
 	// 						...getDefaultModCombos().lowestCostPlacement.placement[
@@ -310,7 +310,7 @@ const testCases: TestCase[] = [
 	// 			requiredClassItemMetadataKey: ARTIFICE,
 	// 			lowestCostPlacement: {
 	// 				...getDefaultModCombos().lowestCostPlacement,
-	// 				artificeModIdList: [EModId.MobilityForged],
+	// 				artificeModIdList: [EModId.WeaponsForged],
 	// 			},
 	// 		},
 	// 	],
@@ -355,7 +355,7 @@ const testCases: TestCase[] = [
 	// 			requiredClassItemMetadataKey: ARTIFICE,
 	// 			lowestCostPlacement: {
 	// 				...getDefaultModCombos().lowestCostPlacement,
-	// 				artificeModIdList: [EModId.MobilityForged],
+	// 				artificeModIdList: [EModId.WeaponsForged],
 	// 			},
 	// 		},
 	// 	],
@@ -635,7 +635,7 @@ const testCases: TestCase[] = [
 	// 			requiredClassItemMetadataKey: ARTIFICE,
 	// 			lowestCostPlacement: {
 	// 				...getDefaultModCombos().lowestCostPlacement,
-	// 				artificeModIdList: [EModId.MobilityForged],
+	// 				artificeModIdList: [EModId.WeaponsForged],
 	// 			},
 	// 		},
 	// 	],

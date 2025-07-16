@@ -14,7 +14,7 @@ params.loadout.armor[1].stats = [20, 10, 10, 10, 10, 10];
 
 params.loadout.achievedStatTiers = {
 	...params.loadout.achievedStats,
-	[EArmorStatId.Mobility]: 110,
+	[EArmorStatId.Weapons]: 110,
 };
 
 const baseOutput = cloneDeep(getBaseOutput());
@@ -28,12 +28,12 @@ baseOutput.optimizationTypeList = [
 baseOutput.metadata.lowestCost = 11;
 baseOutput.metadata.lowestExoticArtificeCost = 11;
 baseOutput.metadata.maxPossibleDesiredStatTiers = {
-	[EArmorStatId.Mobility]: 100,
-	[EArmorStatId.Resilience]: 60,
-	[EArmorStatId.Recovery]: 60,
-	[EArmorStatId.Discipline]: 60,
-	[EArmorStatId.Intellect]: 60,
-	[EArmorStatId.Strength]: 60,
+	[EArmorStatId.Weapons]: 100,
+	[EArmorStatId.Health]: 60,
+	[EArmorStatId.Class]: 60,
+	[EArmorStatId.Grenade]: 60,
+	[EArmorStatId.Super]: 60,
+	[EArmorStatId.Melee]: 60,
 };
 baseOutput.metadata.maxPossibleReservedArmorSlotEnergy = {
 	[EArmorSlotId.Head]: 10,
@@ -43,9 +43,9 @@ baseOutput.metadata.maxPossibleReservedArmorSlotEnergy = {
 	[EArmorSlotId.ClassItem]: 10,
 };
 baseOutput.metadata.modPlacement[EArmorSlotId.Head].armorStatModId =
-	EModId.MinorMobilityMod;
+	EModId.MinorWeaponsMod;
 baseOutput.metadata.modPlacement[EArmorSlotId.Leg].armorStatModId =
-	EModId.MinorMobilityMod;
+	EModId.MinorWeaponsMod;
 baseOutput.metadata.unusedModSlots = {
 	[EArmorSlotId.Head]: 10,
 	[EArmorSlotId.Arm]: 10,
@@ -54,12 +54,12 @@ baseOutput.metadata.unusedModSlots = {
 	[EArmorSlotId.ClassItem]: 10,
 };
 baseOutput.metadata.maxPossibleExoticArtificeDesiredStatTiers = {
-	[EArmorStatId.Mobility]: 100,
-	[EArmorStatId.Resilience]: 60,
-	[EArmorStatId.Recovery]: 60,
-	[EArmorStatId.Discipline]: 60,
-	[EArmorStatId.Intellect]: 60,
-	[EArmorStatId.Strength]: 60,
+	[EArmorStatId.Weapons]: 100,
+	[EArmorStatId.Health]: 60,
+	[EArmorStatId.Class]: 60,
+	[EArmorStatId.Grenade]: 60,
+	[EArmorStatId.Super]: 60,
+	[EArmorStatId.Melee]: 60,
 };
 
 const testCase: TestCase = ['WastedStatTiers', [params], baseOutput];

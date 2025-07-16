@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import AnalyzerResultsList from './AnalyzerResultsList';
 export default function AnalyzerResultsView() {
 	return (
 		<Box sx={{ height: '100vh', overflowY: 'auto', paddingTop: '16px' }}>
@@ -13,7 +12,8 @@ export default function AnalyzerResultsView() {
 			>
 				Your Loadouts
 			</Box>
-			<AnalyzerResultsList />
+			{/* TODO: Reinstate analyzer */}
+			{/* <AnalyzerResultsList /> */}
 		</Box>
 	);
 }

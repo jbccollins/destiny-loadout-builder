@@ -5,7 +5,7 @@ const checker: LoadoutOptimizationTypeChecker = (params) => {
 
 	const meetsOptimizationCriteria = Object.values(
 		loadout.achievedStatTiers
-	).some((x) => x >= 110);
+	).some((x) => x >= 210);
 	return {
 		meetsOptimizationCriteria,
 		shortCircuit: false,

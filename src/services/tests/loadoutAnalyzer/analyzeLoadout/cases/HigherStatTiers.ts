@@ -11,20 +11,20 @@ import { cloneDeep } from 'lodash';
 const params = cloneDeep(getBaseParams());
 
 params.loadout.armorStatMods = [
-	EModId.MinorMobilityMod,
-	EModId.MinorMobilityMod,
-	EModId.MobilityMod,
-	EModId.MobilityMod,
-	EModId.MobilityMod,
+	EModId.MinorWeaponsMod,
+	EModId.MinorWeaponsMod,
+	EModId.WeaponsMod,
+	EModId.WeaponsMod,
+	EModId.WeaponsMod,
 ];
 
 params.loadout.achievedStats = {
-	[EArmorStatId.Mobility]: 90,
-	[EArmorStatId.Resilience]: 50,
-	[EArmorStatId.Recovery]: 50,
-	[EArmorStatId.Discipline]: 50,
-	[EArmorStatId.Intellect]: 50,
-	[EArmorStatId.Strength]: 50,
+	[EArmorStatId.Weapons]: 90,
+	[EArmorStatId.Health]: 50,
+	[EArmorStatId.Class]: 50,
+	[EArmorStatId.Grenade]: 50,
+	[EArmorStatId.Super]: 50,
+	[EArmorStatId.Melee]: 50,
 };
 
 params.loadout.achievedStatTiers = {
@@ -44,12 +44,12 @@ baseOutput.optimizationTypeList = [
 baseOutput.metadata.currentCost = 11;
 baseOutput.metadata.lowestCost = 11;
 baseOutput.metadata.maxPossibleDesiredStatTiers = {
-	[EArmorStatId.Mobility]: 100,
-	[EArmorStatId.Resilience]: 60,
-	[EArmorStatId.Recovery]: 60,
-	[EArmorStatId.Discipline]: 60,
-	[EArmorStatId.Intellect]: 60,
-	[EArmorStatId.Strength]: 60,
+	[EArmorStatId.Weapons]: 100,
+	[EArmorStatId.Health]: 60,
+	[EArmorStatId.Class]: 60,
+	[EArmorStatId.Grenade]: 60,
+	[EArmorStatId.Super]: 60,
+	[EArmorStatId.Melee]: 60,
 };
 baseOutput.metadata.maxPossibleReservedArmorSlotEnergy = {
 	[EArmorSlotId.Head]: 10,
@@ -59,9 +59,9 @@ baseOutput.metadata.maxPossibleReservedArmorSlotEnergy = {
 	[EArmorSlotId.ClassItem]: 10,
 };
 baseOutput.metadata.modPlacement[EArmorSlotId.Head].armorStatModId =
-	EModId.MinorMobilityMod;
+	EModId.MinorWeaponsMod;
 baseOutput.metadata.modPlacement[EArmorSlotId.Leg].armorStatModId =
-	EModId.MinorMobilityMod;
+	EModId.MinorWeaponsMod;
 baseOutput.metadata.unusedModSlots = {
 	[EArmorSlotId.Head]: 10,
 	[EArmorSlotId.Arm]: 10,
@@ -70,12 +70,12 @@ baseOutput.metadata.unusedModSlots = {
 	[EArmorSlotId.ClassItem]: 10,
 };
 baseOutput.metadata.maxPossibleExoticArtificeDesiredStatTiers = {
-	[EArmorStatId.Mobility]: 100,
-	[EArmorStatId.Resilience]: 60,
-	[EArmorStatId.Recovery]: 60,
-	[EArmorStatId.Discipline]: 60,
-	[EArmorStatId.Intellect]: 60,
-	[EArmorStatId.Strength]: 60,
+	[EArmorStatId.Weapons]: 100,
+	[EArmorStatId.Health]: 60,
+	[EArmorStatId.Class]: 60,
+	[EArmorStatId.Grenade]: 60,
+	[EArmorStatId.Super]: 60,
+	[EArmorStatId.Melee]: 60,
 };
 
 const testCase: TestCase = ['HigherStatTiers', [params], baseOutput];

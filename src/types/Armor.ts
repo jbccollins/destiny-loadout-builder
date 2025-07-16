@@ -229,12 +229,12 @@ export type ArmorMetadataItem = {
 };
 
 const defaultArmorMaxStatsMetadata: ArmorMaxStatsMetadata = {
-	[EArmorStatId.Mobility]: { max: 0, withMasterwork: false },
-	[EArmorStatId.Resilience]: { max: 0, withMasterwork: false },
-	[EArmorStatId.Recovery]: { max: 0, withMasterwork: false },
-	[EArmorStatId.Discipline]: { max: 0, withMasterwork: false },
-	[EArmorStatId.Intellect]: { max: 0, withMasterwork: false },
-	[EArmorStatId.Strength]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Weapons]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Health]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Class]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Grenade]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Super]: { max: 0, withMasterwork: false },
+	[EArmorStatId.Melee]: { max: 0, withMasterwork: false },
 };
 
 export const getDefaultArmorMaxStatsMetadata = () =>
@@ -487,10 +487,10 @@ export const getExtraMasterworkedStats = (
 	masterworkAssumption: EMasterworkAssumption
 ) =>
 	isMasterworked ||
-	(gearTierId === EGearTierId.Exotic &&
-		masterworkAssumption === EMasterworkAssumption.All) ||
-	(gearTierId === EGearTierId.Legendary &&
-		(masterworkAssumption === EMasterworkAssumption.All ||
-			masterworkAssumption === EMasterworkAssumption.Legendary))
+		(gearTierId === EGearTierId.Exotic &&
+			masterworkAssumption === EMasterworkAssumption.All) ||
+		(gearTierId === EGearTierId.Legendary &&
+			(masterworkAssumption === EMasterworkAssumption.All ||
+				masterworkAssumption === EMasterworkAssumption.Legendary))
 		? 2
 		: 0;

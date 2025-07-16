@@ -189,12 +189,6 @@ export const getSortableFieldDisplayName = (key: SortableFieldsKey) => {
 };
 
 export const SortableFieldsDisplayOrder: SortableFieldsKey[] = [
-	// EArmorStatId.Mobility,
-	// EArmorStatId.Resilience,
-	// EArmorStatId.Recovery,
-	// EArmorStatId.Discipline,
-	// EArmorStatId.Intellect,
-	// EArmorStatId.Strength,
 	'totalModCost',
 	'totalStatTiers',
 	'wastedStats',
@@ -202,12 +196,12 @@ export const SortableFieldsDisplayOrder: SortableFieldsKey[] = [
 ];
 
 const SortableFieldsDefaultSortOrder: Record<SortableFieldsKey, Order> = {
-	Mobility: 'desc',
-	Resilience: 'desc',
-	Recovery: 'desc',
-	Discipline: 'desc',
-	Intellect: 'desc',
-	Strength: 'desc',
+	Weapons: 'desc',
+	Health: 'desc',
+	Class: 'desc',
+	Grenade: 'desc',
+	Super: 'desc',
+	Melee: 'desc',
 	totalModCost: 'asc',
 	totalStatTiers: 'desc',
 	wastedStats: 'asc',
@@ -457,14 +451,12 @@ function ArmorResultsView({ smallScreenData }: ArmorResultsViewProps) {
 						EArmorSlotId.ClassItem,
 					exoticArtificeAssumption,
 					sortableFields: {
-						[EArmorStatId.Mobility]: metadata.totalArmorStatMapping.Mobility,
-						[EArmorStatId.Resilience]:
-							metadata.totalArmorStatMapping.Resilience,
-						[EArmorStatId.Recovery]: metadata.totalArmorStatMapping.Recovery,
-						[EArmorStatId.Discipline]:
-							metadata.totalArmorStatMapping.Discipline,
-						[EArmorStatId.Intellect]: metadata.totalArmorStatMapping.Intellect,
-						[EArmorStatId.Strength]: metadata.totalArmorStatMapping.Strength,
+						[EArmorStatId.Weapons]: metadata.totalArmorStatMapping.Weapons,
+						[EArmorStatId.Health]: metadata.totalArmorStatMapping.Health,
+						[EArmorStatId.Class]: metadata.totalArmorStatMapping.Class,
+						[EArmorStatId.Grenade]: metadata.totalArmorStatMapping.Grenade,
+						[EArmorStatId.Super]: metadata.totalArmorStatMapping.Super,
+						[EArmorStatId.Melee]: metadata.totalArmorStatMapping.Melee,
 						totalModCost: metadata.totalModCost,
 						totalStatTiers: metadata.totalStatTiers,
 						wastedStats: metadata.wastedStats,

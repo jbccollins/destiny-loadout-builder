@@ -16,12 +16,12 @@ import { getIntrinsicArmorPerkOrAttribute } from '@dlb/types/IntrinsicArmorPerkO
 import { getRaidAndNightmareModType } from '@dlb/types/RaidAndNightmareModType';
 
 export type SortableFields = {
-	Mobility: number;
-	Resilience: number;
-	Recovery: number;
-	Discipline: number;
-	Intellect: number;
-	Strength: number;
+	Weapons: number;
+	Health: number;
+	Class: number;
+	Grenade: number;
+	Super: number;
+	Melee: number;
 	totalModCost: number;
 	totalStatTiers: number;
 	wastedStats: number;
@@ -53,28 +53,25 @@ export const getClassItemText = (item: ResultsTableLoadout): string => {
 			item.classItem.requiredClassItemMetadataKey
 		)
 	) {
-		result = `${
-			getRaidAndNightmareModType(
-				item.classItem
-					.requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
-			).abbreviation
-		} Class Item`;
+		result = `${getRaidAndNightmareModType(
+			item.classItem
+				.requiredClassItemMetadataKey as ERaidAndNightMareModTypeId
+		).abbreviation
+			} Class Item`;
 	} else if (
 		item.classItem.requiredClassItemMetadataKey !== null &&
 		isIntrinsicArmorPerkOrAttributeRequiredClassItem(
 			item.classItem.requiredClassItemMetadataKey
 		)
 	) {
-		result = `${
-			getIntrinsicArmorPerkOrAttribute(
-				item.classItem
-					.requiredClassItemMetadataKey as EIntrinsicArmorPerkOrAttributeId
-			).abbreviation
-		} Class Item`;
+		result = `${getIntrinsicArmorPerkOrAttribute(
+			item.classItem
+				.requiredClassItemMetadataKey as EIntrinsicArmorPerkOrAttributeId
+		).abbreviation
+			} Class Item`;
 	} else if (item.classItem.requiredClassItemMetadataKey === ARTIFICE) {
 		result = 'Artifice Class Item';
 	}
-	return `${
-		item.classItem.hasMasterworkedVariant ? 'Any Masterworked' : 'Any'
-	} ${result}`;
+	return `${item.classItem.hasMasterworkedVariant ? 'Any Masterworked' : 'Any'
+		} ${result}`;
 };

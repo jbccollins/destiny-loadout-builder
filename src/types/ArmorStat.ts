@@ -14,12 +14,12 @@ import { EArmorStatId, EDestinyClassId } from './IdEnums';
 import { getMod } from './Mod';
 
 export const ArmorStatIdList = ValidateEnumList(Object.values(EArmorStatId), [
-	EArmorStatId.Mobility,
-	EArmorStatId.Resilience,
-	EArmorStatId.Recovery,
-	EArmorStatId.Discipline,
-	EArmorStatId.Intellect,
-	EArmorStatId.Strength,
+	EArmorStatId.Health,
+	EArmorStatId.Grenade,
+	EArmorStatId.Class,
+	EArmorStatId.Super,
+	EArmorStatId.Weapons,
+	EArmorStatId.Melee,
 ]);
 
 export interface IArmorStat extends IIdentifiableName, IIcon, IHash {
@@ -28,60 +28,60 @@ export interface IArmorStat extends IIdentifiableName, IIcon, IHash {
 }
 
 export const ArmorStatIndices: Record<EArmorStatId, number> = {
-	[EArmorStatId.Mobility]: 0,
-	[EArmorStatId.Resilience]: 1,
-	[EArmorStatId.Recovery]: 2,
-	[EArmorStatId.Discipline]: 3,
-	[EArmorStatId.Intellect]: 4,
-	[EArmorStatId.Strength]: 5,
+	[EArmorStatId.Health]: 0,
+	[EArmorStatId.Grenade]: 1,
+	[EArmorStatId.Class]: 2,
+	[EArmorStatId.Super]: 3,
+	[EArmorStatId.Weapons]: 4,
+	[EArmorStatId.Melee]: 5,
 };
 
 // TODO: Remove the index from these items and just rely on the ArmorStatIndices
 const ArmorStatIdToArmorStatMapping: EnumDictionary<EArmorStatId, IArmorStat> =
-	{
-		[EArmorStatId.Mobility]: {
-			id: EArmorStatId.Mobility,
-			name: 'Mobility',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/e26e0e93a9daf4fdd21bf64eb9246340.png',
-			hash: 2996146975,
-			index: 0,
-		},
-		[EArmorStatId.Resilience]: {
-			id: EArmorStatId.Resilience,
-			name: 'Resilience',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/202ecc1c6febeb6b97dafc856e863140.png',
-			hash: 392767087,
-			index: 1,
-		},
-		[EArmorStatId.Recovery]: {
-			id: EArmorStatId.Recovery,
-			name: 'Recovery',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/128eee4ee7fc127851ab32eac6ca91cf.png',
-			hash: 1943323491,
-			index: 2,
-		},
-		[EArmorStatId.Discipline]: {
-			id: EArmorStatId.Discipline,
-			name: 'Discipline',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/79be2d4adef6a19203f7385e5c63b45b.png',
-			hash: 1735777505,
-			index: 3,
-		},
-		[EArmorStatId.Intellect]: {
-			id: EArmorStatId.Intellect,
-			name: 'Intellect',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/d1c154469670e9a592c9d4cbdcae5764.png',
-			hash: 144602215,
-			index: 4,
-		},
-		[EArmorStatId.Strength]: {
-			id: EArmorStatId.Strength,
-			name: 'Strength',
-			icon: 'https://www.bungie.net/common/destiny2_content/icons/ea5af04ccd6a3470a44fd7bb0f66e2f7.png',
-			hash: 4244567218,
-			index: 5,
-		},
-	};
+{
+	[EArmorStatId.Health]: {
+		id: EArmorStatId.Health,
+		name: 'Health',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/717b8b218cc14325a54869bef21d2964.png',
+		hash: 392767087,
+		index: 0,
+	},
+	[EArmorStatId.Grenade]: {
+		id: EArmorStatId.Grenade,
+		name: 'Grenade',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/065cdaabef560e5808e821cefaeaa22c.png',
+		hash: 1735777505,
+		index: 1,
+	},
+	[EArmorStatId.Class]: {
+		id: EArmorStatId.Class,
+		name: 'Class',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/7eb845acb5b3a4a9b7e0b2f05f5c43f1.png',
+		hash: 1943323491,
+		index: 2,
+	},
+	[EArmorStatId.Super]: {
+		id: EArmorStatId.Super,
+		name: 'Super',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/585ae4ede9c3da96b34086fccccdc8cd.png',
+		hash: 144602215,
+		index: 3,
+	},
+	[EArmorStatId.Weapons]: {
+		id: EArmorStatId.Weapons,
+		name: 'Weapons',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/bc69675acdae9e6b9a68a02fb4d62e07.png',
+		hash: 2996146975,
+		index: 4,
+	},
+	[EArmorStatId.Melee]: {
+		id: EArmorStatId.Melee,
+		name: 'Melee',
+		icon: 'https://www.bungie.net/common/destiny2_content/icons/fa534aca76d7f2d7e7b4ba4df4271b42.png',
+		hash: 4244567218,
+		index: 5,
+	},
+};
 
 // export const ArmorStatIdToArmorStat: Mapping<EArmorStatId, IArmorStat> = {
 // 	get: (key: EArmorStatId) => ArmorStatIdToArmorStatMapping[key],
@@ -101,35 +101,35 @@ const ArmorStatIdToArmorStatModSplitMapping: EnumDictionary<
 	EArmorStatId,
 	ArmorStatModSplit
 > = {
-	[EArmorStatId.Mobility]: {
-		minor: EModId.MinorMobilityMod,
-		major: EModId.MobilityMod,
-		artifice: EModId.MobilityForged,
+	[EArmorStatId.Weapons]: {
+		minor: EModId.MinorWeaponsMod,
+		major: EModId.WeaponsMod,
+		artifice: EModId.WeaponsForged,
 	},
-	[EArmorStatId.Resilience]: {
-		minor: EModId.MinorResilienceMod,
-		major: EModId.ResilienceMod,
-		artifice: EModId.ResilienceForged,
+	[EArmorStatId.Health]: {
+		minor: EModId.MinorHealthMod,
+		major: EModId.HealthMod,
+		artifice: EModId.HealthForged,
 	},
-	[EArmorStatId.Recovery]: {
-		minor: EModId.MinorRecoveryMod,
-		major: EModId.RecoveryMod,
-		artifice: EModId.RecoveryForged,
+	[EArmorStatId.Class]: {
+		minor: EModId.MinorClassMod,
+		major: EModId.ClassMod,
+		artifice: EModId.ClassForged,
 	},
-	[EArmorStatId.Discipline]: {
-		minor: EModId.MinorDisciplineMod,
-		major: EModId.DisciplineMod,
-		artifice: EModId.DisciplineForged,
+	[EArmorStatId.Grenade]: {
+		minor: EModId.MinorGrenadeMod,
+		major: EModId.GrenadeMod,
+		artifice: EModId.GrenadeForged,
 	},
-	[EArmorStatId.Intellect]: {
-		minor: EModId.MinorIntellectMod,
-		major: EModId.IntellectMod,
-		artifice: EModId.IntellectForged,
+	[EArmorStatId.Super]: {
+		minor: EModId.MinorSuperMod,
+		major: EModId.SuperMod,
+		artifice: EModId.SuperForged,
 	},
-	[EArmorStatId.Strength]: {
-		minor: EModId.MinorStrengthMod,
-		major: EModId.StrengthMod,
-		artifice: EModId.StrengthForged,
+	[EArmorStatId.Melee]: {
+		minor: EModId.MinorMeleeMod,
+		major: EModId.MeleeMod,
+		artifice: EModId.MeleeForged,
 	},
 };
 
@@ -138,30 +138,30 @@ export const getArmorStatModSpitFromArmorStatId = (armorStatId: EArmorStatId) =>
 
 /***** Extra *****/
 export type ArmorStatMapping = {
-	[EArmorStatId.Mobility]: number;
-	[EArmorStatId.Resilience]: number;
-	[EArmorStatId.Recovery]: number;
-	[EArmorStatId.Discipline]: number;
-	[EArmorStatId.Intellect]: number;
-	[EArmorStatId.Strength]: number;
+	[EArmorStatId.Weapons]: number;
+	[EArmorStatId.Health]: number;
+	[EArmorStatId.Class]: number;
+	[EArmorStatId.Grenade]: number;
+	[EArmorStatId.Super]: number;
+	[EArmorStatId.Melee]: number;
 };
 
 export const DefaultArmorStatMapping: ArmorStatMapping = {
-	[EArmorStatId.Mobility]: 0,
-	[EArmorStatId.Resilience]: 0,
-	[EArmorStatId.Recovery]: 0,
-	[EArmorStatId.Discipline]: 0,
-	[EArmorStatId.Intellect]: 0,
-	[EArmorStatId.Strength]: 0,
+	[EArmorStatId.Weapons]: 0,
+	[EArmorStatId.Health]: 0,
+	[EArmorStatId.Class]: 0,
+	[EArmorStatId.Grenade]: 0,
+	[EArmorStatId.Super]: 0,
+	[EArmorStatId.Melee]: 0,
 };
 
 export const getDefaultArmorStatMapping = (): ArmorStatMapping => ({
-	[EArmorStatId.Mobility]: 0,
-	[EArmorStatId.Resilience]: 0,
-	[EArmorStatId.Recovery]: 0,
-	[EArmorStatId.Discipline]: 0,
-	[EArmorStatId.Intellect]: 0,
-	[EArmorStatId.Strength]: 0,
+	[EArmorStatId.Weapons]: 0,
+	[EArmorStatId.Health]: 0,
+	[EArmorStatId.Class]: 0,
+	[EArmorStatId.Grenade]: 0,
+	[EArmorStatId.Super]: 0,
+	[EArmorStatId.Melee]: 0,
 });
 
 export const getStat = (
@@ -214,12 +214,12 @@ export const sumArmorStatMappings = (
 	armorStatMappings: ArmorStatMapping[]
 ): ArmorStatMapping => {
 	const res: ArmorStatMapping = {
-		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 0,
-		[EArmorStatId.Recovery]: 0,
-		[EArmorStatId.Discipline]: 0,
-		[EArmorStatId.Intellect]: 0,
-		[EArmorStatId.Strength]: 0,
+		[EArmorStatId.Weapons]: 0,
+		[EArmorStatId.Health]: 0,
+		[EArmorStatId.Class]: 0,
+		[EArmorStatId.Grenade]: 0,
+		[EArmorStatId.Super]: 0,
+		[EArmorStatId.Melee]: 0,
 	};
 	ArmorStatIdList.forEach((armorStatId) => {
 		armorStatMappings.forEach((armorStatMapping) => {

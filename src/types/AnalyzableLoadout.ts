@@ -389,7 +389,7 @@ export const LoadoutOptimizationTypeToLoadoutOptimizationMapping: EnumDictionary
 		id: ELoadoutOptimizationTypeId.WastedStatTiers,
 		name: 'Wasted Stat Tiers',
 		description:
-			"This loadout has one or more stats of 110 or higher. There is likely a way to shuffle mods around to avoid wasting an entire stat tier's worth of stat points.",
+			"This loadout has one or more stats of 210 or higher. There is likely a way to shuffle mods around to avoid wasting an entire stat tier's worth of stat points.",
 		category: ELoadoutOptimizationCategoryId.WARNING,
 		checker: wastedStatTiersChecker,
 	},

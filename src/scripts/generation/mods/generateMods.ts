@@ -35,18 +35,18 @@ import { generateModMapping } from './generateModMapping';
 // 'itemTypeDisplayName' field for these mods that come from the
 // artifact. When that is fixed we can delete this.
 const specialArtifactStatModNames = [
-	'Minor Mobility Mod',
-	'Minor Resilience Mod',
-	'Minor Recovery Mod',
-	'Minor Discipline Mod',
-	'Minor Intellect Mod',
-	'Minor Strength Mod',
-	'Mobility Mod',
-	'Resilience Mod',
-	'Recovery Mod',
-	'Discipline Mod',
-	'Intellect Mod',
-	'Strength Mod',
+	'Minor Weapons Mod',
+	'Minor Health Mod',
+	'Minor Class Mod',
+	'Minor Grenade Mod',
+	'Minor Super Mod',
+	'Minor Melee Mod',
+	'Weapons Mod',
+	'Health Mod',
+	'Class Mod',
+	'Grenade Mod',
+	'Super Mod',
+	'Melee Mod',
 ];
 
 // TODO: What about the Aeon Mods? Sect of Force, Insight and Vigor
@@ -98,10 +98,9 @@ const buildModData = (
 	);
 
 	let modId = generateId(
-		`${
-			isArtifactMod
-				? `Artifact ${mod.displayProperties.name}`
-				: mod.displayProperties.name
+		`${isArtifactMod
+			? `Artifact ${mod.displayProperties.name}`
+			: mod.displayProperties.name
 		}`
 	) as EModId;
 
@@ -202,6 +201,7 @@ export async function run() {
 	const allMods = lodash(destinyInventoryItemDefinitions)
 		.values()
 		.filter((v) => {
+			console.log('Checking mod', v.hash, v.displayProperties?.name);
 			if (v.displayProperties?.name === 'Release Recover') {
 				console.log('Found Release Recover', v.hash);
 			}
@@ -219,7 +219,7 @@ export async function run() {
 					(v.plug.energyCost ||
 						v.plug.plugCategoryIdentifier === 'enhancements.artifice' || // Artifice mods
 						v.plug.plugCategoryIdentifier === 'enhancements.season_outlaw')) || // Last Wish Raid Mods
-				v.plug.plugCategoryIdentifier?.includes('enhancements.raid') // All other raid mods
+				v.plug?.plugCategoryIdentifier?.includes('enhancements.raid') // All other raid mods
 		)
 		.value() as DestinyInventoryItemDefinition[];
 

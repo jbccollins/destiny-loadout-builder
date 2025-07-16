@@ -13,12 +13,12 @@ params.armor[EDestinyClassId.Hunter].Arm.nonExotic[2].stats = [
 ];
 
 params.loadout.achievedStats = {
-	[EArmorStatId.Mobility]: 100,
-	[EArmorStatId.Resilience]: 57,
-	[EArmorStatId.Recovery]: 50,
-	[EArmorStatId.Discipline]: 50,
-	[EArmorStatId.Intellect]: 50,
-	[EArmorStatId.Strength]: 50,
+	[EArmorStatId.Weapons]: 100,
+	[EArmorStatId.Health]: 57,
+	[EArmorStatId.Class]: 50,
+	[EArmorStatId.Grenade]: 50,
+	[EArmorStatId.Super]: 50,
+	[EArmorStatId.Melee]: 50,
 };
 
 const baseOutput = cloneDeep(getBaseOutput());
@@ -30,12 +30,12 @@ baseOutput.optimizationTypeList = [
 baseOutput.metadata.lowestWastedStats = 7;
 baseOutput.metadata.currentWastedStats = 7;
 baseOutput.metadata.maxPossibleExoticArtificeDesiredStatTiers = {
-	[EArmorStatId.Mobility]: 100,
-	[EArmorStatId.Resilience]: 60,
-	[EArmorStatId.Recovery]: 50,
-	[EArmorStatId.Discipline]: 50,
-	[EArmorStatId.Intellect]: 50,
-	[EArmorStatId.Strength]: 50,
+	[EArmorStatId.Weapons]: 100,
+	[EArmorStatId.Health]: 60,
+	[EArmorStatId.Class]: 50,
+	[EArmorStatId.Grenade]: 50,
+	[EArmorStatId.Super]: 50,
+	[EArmorStatId.Melee]: 50,
 };
 
 const testCase: TestCase = [

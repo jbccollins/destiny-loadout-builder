@@ -25,8 +25,6 @@ import InGameLoadoutsFilterSelector from '@dlb/components/InGameLoadoutsFilterSe
 import IntrinsicArmorPerkOrAttributeSelector from '@dlb/components/IntrinsicArmorPerkOrAttributeSelector';
 import IsRunningWebWorkerMessage from '@dlb/components/IsRunningWebWorkerMessage';
 import AnalyzerResultsView from '@dlb/components/LoadoutAnalyzer/AnalyzerResultsView';
-import LoadoutAnalysisWebWorkerWrapper from '@dlb/components/LoadoutAnalyzer/LoadoutAnalysisWebWorkerWrapper';
-import LoadoutAnalyzer from '@dlb/components/LoadoutAnalyzer/LoadoutAnalyzer';
 import Logout from '@dlb/components/LogOutButton';
 import MasterworkAssumptionSelector from '@dlb/components/MasterworkAssumptionSelector';
 import Head from '@dlb/components/Meta/Head';
@@ -381,7 +379,9 @@ const LeftSectionComponent = (props: LeftSectionComponentProps) => {
 					{
 						content: (
 							<>
-								<LoadoutAnalyzer />
+								{/* TODO: Reinstate analyzer */}
+								{/* <LoadoutAnalyzer /> */}
+								<div>Analyzer is temporarily disabled</div>
 							</>
 						),
 						index: ETabType.ANALYZE,
@@ -566,7 +566,8 @@ export default function HomePage() {
 				{allDataLoaded && (
 					<>
 						<IsRunningWebWorkerMessage />
-						<LoadoutAnalysisWebWorkerWrapper />
+						{/* TODO: Reinstate analyzer */}
+						{/* <LoadoutAnalysisWebWorkerWrapper /> */}
 						{isSmallScreen && (
 							<>
 								{smallScreenResultsOpen && (

@@ -47,12 +47,12 @@ export enum EArmorSlotId {
 }
 
 export enum EArmorStatId {
-	Mobility = 'Mobility',
-	Resilience = 'Resilience',
-	Recovery = 'Recovery',
-	Discipline = 'Discipline',
-	Intellect = 'Intellect',
-	Strength = 'Strength',
+	Weapons = 'Weapons',
+	Health = 'Health',
+	Class = 'Class',
+	Grenade = 'Grenade',
+	Super = 'Super',
+	Melee = 'Melee',
 }
 
 // TODO: Name this like

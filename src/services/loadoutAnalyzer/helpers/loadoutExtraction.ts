@@ -108,9 +108,9 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 
 	loadout.hasBonusResilienceOrnament = hasBonusResilienceOrnament;
 	if (hasBonusResilienceOrnament) {
-		achievedStatTiers[EArmorStatId.Resilience] += 1;
-		achievedStats[EArmorStatId.Resilience] += 1;
-		desiredStatTiers[EArmorStatId.Resilience] += 1;
+		achievedStatTiers[EArmorStatId.Health] += 1;
+		achievedStats[EArmorStatId.Health] += 1;
+		desiredStatTiers[EArmorStatId.Health] += 1;
 	}
 
 	// TODO: Stat constraints are DIM Loadout specific and may not respect
@@ -338,10 +338,10 @@ export function extractDimLoadout(params: ExtractDimLoadoutParams) {
 	});
 	ArmorStatIdList.forEach((armorStatId) => {
 		desiredStatTiers[armorStatId] = roundDown10(desiredStatTiers[armorStatId]);
-		// Clamp desired stat tiers to 100
+		// Clamp desired stat tiers to 200
 		desiredStatTiers[armorStatId] = Math.min(
 			desiredStatTiers[armorStatId],
-			100
+			200
 		);
 		// achievedStatTiers are not clamped
 		achievedStatTiers[armorStatId] = roundDown10(
@@ -539,9 +539,9 @@ export const extractInGameLoadouts = (
 								);
 								loadout.hasBonusResilienceOrnament = hasBonusResilienceOrnament;
 								if (hasBonusResilienceOrnament) {
-									achievedStatTiers[EArmorStatId.Resilience] += 1;
-									achievedStats[EArmorStatId.Resilience] += 1;
-									desiredStatTiers[EArmorStatId.Resilience] += 1;
+									achievedStatTiers[EArmorStatId.Health] += 1;
+									achievedStats[EArmorStatId.Health] += 1;
+									desiredStatTiers[EArmorStatId.Health] += 1;
 								}
 							}
 

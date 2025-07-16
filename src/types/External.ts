@@ -37,12 +37,12 @@ export const BucketHashToArmorSlot = {
 
 // Get the english name for an armor stat
 export const StatHashToArmorStat = {
-	[StatHashes.Mobility]: EArmorStatId.Mobility,
-	[StatHashes.Resilience]: EArmorStatId.Resilience,
-	[StatHashes.Recovery]: EArmorStatId.Recovery,
-	[StatHashes.Discipline]: EArmorStatId.Discipline,
-	[StatHashes.Intellect]: EArmorStatId.Intellect,
-	[StatHashes.Strength]: EArmorStatId.Strength,
+	[StatHashes.Mobility]: EArmorStatId.Weapons,
+	[StatHashes.Resilience]: EArmorStatId.Health,
+	[StatHashes.Recovery]: EArmorStatId.Class,
+	[StatHashes.Discipline]: EArmorStatId.Grenade,
+	[StatHashes.Intellect]: EArmorStatId.Super,
+	[StatHashes.Strength]: EArmorStatId.Melee,
 };
 
 export const DestinyEnergyTypeToArmorElementalAffinity = {

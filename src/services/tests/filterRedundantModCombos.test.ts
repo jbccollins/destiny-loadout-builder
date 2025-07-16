@@ -17,13 +17,13 @@ const testCases: TestCase[] = [
 			[
 				{
 					...getDefaultStatModCombo(),
-					[EArmorStatId.Mobility]: {
+					[EArmorStatId.Weapons]: {
 						numMajorMods: 1,
 						numMinorMods: 0,
 						numArtificeMods: 0,
 						exactStatPoints: 10,
 					},
-					[EArmorStatId.Discipline]: {
+					[EArmorStatId.Grenade]: {
 						numMajorMods: 1,
 						numMinorMods: 0,
 						numArtificeMods: 0,
@@ -32,13 +32,13 @@ const testCases: TestCase[] = [
 				},
 				{
 					...getDefaultStatModCombo(),
-					[EArmorStatId.Mobility]: {
+					[EArmorStatId.Weapons]: {
 						numMajorMods: 0,
 						numMinorMods: 2,
 						numArtificeMods: 0,
 						exactStatPoints: 10,
 					},
-					[EArmorStatId.Discipline]: {
+					[EArmorStatId.Grenade]: {
 						numMajorMods: 1,
 						numMinorMods: 0,
 						numArtificeMods: 0,
@@ -47,13 +47,13 @@ const testCases: TestCase[] = [
 				},
 				{
 					...getDefaultStatModCombo(),
-					[EArmorStatId.Mobility]: {
+					[EArmorStatId.Weapons]: {
 						numMajorMods: 1,
 						numMinorMods: 0,
 						numArtificeMods: 0,
 						exactStatPoints: 10,
 					},
-					[EArmorStatId.Discipline]: {
+					[EArmorStatId.Grenade]: {
 						numMajorMods: 0,
 						numMinorMods: 2,
 						numArtificeMods: 0,
@@ -65,13 +65,13 @@ const testCases: TestCase[] = [
 		[
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 1,
 					numMinorMods: 0,
 					numArtificeMods: 0,
 					exactStatPoints: 10,
 				},
-				[EArmorStatId.Discipline]: {
+				[EArmorStatId.Grenade]: {
 					numMajorMods: 1,
 					numMinorMods: 0,
 					numArtificeMods: 0,
@@ -80,13 +80,13 @@ const testCases: TestCase[] = [
 			},
 			{
 				...getDefaultStatModCombo(),
-				[EArmorStatId.Mobility]: {
+				[EArmorStatId.Weapons]: {
 					numMajorMods: 0,
 					numMinorMods: 2,
 					numArtificeMods: 0,
 					exactStatPoints: 10,
 				},
-				[EArmorStatId.Discipline]: {
+				[EArmorStatId.Grenade]: {
 					numMajorMods: 1,
 					numMinorMods: 0,
 					numArtificeMods: 0,

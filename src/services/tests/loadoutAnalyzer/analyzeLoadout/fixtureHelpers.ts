@@ -174,19 +174,19 @@ const getBaseAnalyzeableLoadout = (): AnalyzableLoadout => {
 	loadout.exoticHash = Head.hash;
 	loadout.destinyClassId = EDestinyClassId.Hunter;
 	loadout.armorStatMods = [
-		EModId.MobilityMod,
-		EModId.MobilityMod,
-		EModId.MobilityMod,
-		EModId.MobilityMod,
-		EModId.MobilityMod,
+		EModId.WeaponsMod,
+		EModId.WeaponsMod,
+		EModId.WeaponsMod,
+		EModId.WeaponsMod,
+		EModId.WeaponsMod,
 	];
 	loadout.achievedStats = {
-		[EArmorStatId.Mobility]: 100,
-		[EArmorStatId.Resilience]: 50,
-		[EArmorStatId.Recovery]: 50,
-		[EArmorStatId.Discipline]: 50,
-		[EArmorStatId.Intellect]: 50,
-		[EArmorStatId.Strength]: 50,
+		[EArmorStatId.Weapons]: 100,
+		[EArmorStatId.Health]: 50,
+		[EArmorStatId.Class]: 50,
+		[EArmorStatId.Grenade]: 50,
+		[EArmorStatId.Super]: 50,
+		[EArmorStatId.Melee]: 50,
 	};
 	loadout.achievedStatTiers = {
 		...loadout.achievedStats,
@@ -212,12 +212,12 @@ const getBaseGetLoadoutsThatCanBeOptimizedProgressMetadata =
 	(): GetLoadoutsThatCanBeOptimizedProgressMetadata => {
 		return {
 			maxPossibleDesiredStatTiers: {
-				[EArmorStatId.Mobility]: 100,
-				[EArmorStatId.Resilience]: 50,
-				[EArmorStatId.Recovery]: 50,
-				[EArmorStatId.Discipline]: 50,
-				[EArmorStatId.Intellect]: 50,
-				[EArmorStatId.Strength]: 50,
+				[EArmorStatId.Weapons]: 100,
+				[EArmorStatId.Health]: 50,
+				[EArmorStatId.Class]: 50,
+				[EArmorStatId.Grenade]: 50,
+				[EArmorStatId.Super]: 50,
+				[EArmorStatId.Melee]: 50,
 			},
 			maxPossibleExoticArtificeDesiredStatTiers: getDefaultArmorStatMapping(),
 			maxPossibleReservedArmorSlotEnergy: {
@@ -237,23 +237,23 @@ const getBaseGetLoadoutsThatCanBeOptimizedProgressMetadata =
 			modPlacement: {
 				[EArmorSlotId.Head]: {
 					...getDefaultModPlacements().placement.Head,
-					armorStatModId: EModId.MobilityMod,
+					armorStatModId: EModId.WeaponsMod,
 				},
 				[EArmorSlotId.Arm]: {
 					...getDefaultModPlacements().placement.Arm,
-					armorStatModId: EModId.MobilityMod,
+					armorStatModId: EModId.WeaponsMod,
 				},
 				[EArmorSlotId.Chest]: {
 					...getDefaultModPlacements().placement.Chest,
-					armorStatModId: EModId.MobilityMod,
+					armorStatModId: EModId.WeaponsMod,
 				},
 				[EArmorSlotId.Leg]: {
 					...getDefaultModPlacements().placement.Leg,
-					armorStatModId: EModId.MobilityMod,
+					armorStatModId: EModId.WeaponsMod,
 				},
 				[EArmorSlotId.ClassItem]: {
 					...getDefaultModPlacements().placement.ClassItem,
-					armorStatModId: EModId.MobilityMod,
+					armorStatModId: EModId.WeaponsMod,
 				},
 			},
 			unusedModSlots: {

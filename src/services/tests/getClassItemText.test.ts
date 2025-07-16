@@ -50,7 +50,7 @@ const testCases: TestCase[] = [
 		[
 			{
 				...getDefaultResultsTableLoadout(),
-				requiredArtificeModIdList: [EModId.MobilityForged],
+				requiredArtificeModIdList: [EModId.WeaponsForged],
 				classItem: {
 					...getDefaultProcessedArmorItemMetadataClassItem(),
 					requiredClassItemMetadataKey: ARTIFICE,
@@ -64,7 +64,7 @@ const testCases: TestCase[] = [
 		[
 			{
 				...getDefaultResultsTableLoadout(),
-				requiredArtificeModIdList: [EModId.MobilityForged],
+				requiredArtificeModIdList: [EModId.WeaponsForged],
 				classItem: {
 					...getDefaultProcessedArmorItemMetadataClassItem(),
 					requiredClassItemMetadataKey: ARTIFICE,

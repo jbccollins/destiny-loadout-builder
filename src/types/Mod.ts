@@ -204,16 +204,17 @@ export const AllStatModHashes = [
 	...StatModIdList,
 ].map((id) => getMod(id)?.hash);
 
+// TODO: Why is this dictionary necessary? ArmorStatIdToArmorStatModSplitMapping already does this.
 const ArmorStatIdToArtificeStatModIdMapping: EnumDictionary<
 	EArmorStatId,
 	EModId
 > = {
-	[EArmorStatId.Mobility]: EModId.MobilityForged,
-	[EArmorStatId.Resilience]: EModId.ResilienceForged,
-	[EArmorStatId.Recovery]: EModId.RecoveryForged,
-	[EArmorStatId.Discipline]: EModId.DisciplineForged,
-	[EArmorStatId.Intellect]: EModId.IntellectForged,
-	[EArmorStatId.Strength]: EModId.StrengthForged,
+	[EArmorStatId.Weapons]: EModId.WeaponsForged,
+	[EArmorStatId.Health]: EModId.HealthForged,
+	[EArmorStatId.Class]: EModId.ClassForged,
+	[EArmorStatId.Grenade]: EModId.GrenadeForged,
+	[EArmorStatId.Super]: EModId.SuperForged,
+	[EArmorStatId.Melee]: EModId.MeleeForged,
 };
 
 export const getArtificeStatModIdFromArmorStatId = (

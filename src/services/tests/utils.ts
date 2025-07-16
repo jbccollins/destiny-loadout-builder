@@ -3,12 +3,12 @@ import { EArmorStatId, EDestinyClassId } from '@dlb/types/IdEnums';
 
 export const getDefaultDesiredArmorStats = () => {
 	return {
-		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 0,
-		[EArmorStatId.Recovery]: 0,
-		[EArmorStatId.Discipline]: 0,
-		[EArmorStatId.Intellect]: 0,
-		[EArmorStatId.Strength]: 0,
+		[EArmorStatId.Weapons]: 0,
+		[EArmorStatId.Health]: 0,
+		[EArmorStatId.Class]: 0,
+		[EArmorStatId.Grenade]: 0,
+		[EArmorStatId.Super]: 0,
+		[EArmorStatId.Melee]: 0,
 	};
 };
 

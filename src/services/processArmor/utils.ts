@@ -175,12 +175,12 @@ export const getArmorStatMappingFromStatList = (
 	statList: StatList
 ): ArmorStatMapping => {
 	const res: ArmorStatMapping = {
-		[EArmorStatId.Mobility]: 0,
-		[EArmorStatId.Resilience]: 0,
-		[EArmorStatId.Recovery]: 0,
-		[EArmorStatId.Discipline]: 0,
-		[EArmorStatId.Intellect]: 0,
-		[EArmorStatId.Strength]: 0,
+		[EArmorStatId.Weapons]: 0,
+		[EArmorStatId.Health]: 0,
+		[EArmorStatId.Class]: 0,
+		[EArmorStatId.Grenade]: 0,
+		[EArmorStatId.Super]: 0,
+		[EArmorStatId.Melee]: 0,
 	};
 	ArmorStatIdList.forEach((armorStatId, i) => {
 		res[armorStatId] = statList[i];
@@ -445,7 +445,7 @@ export const hasValidSeenItemCounts = ({
 					// Adding the special class item will allow us to potentially
 					// fit all the raid mods
 					raidModExtraSocketModCategoryIdCounts[extraSocketModCategoryId] ===
-						seenItemCounts[extraSocketModCategoryId] + 1
+					seenItemCounts[extraSocketModCategoryId] + 1
 				) {
 					requiredClassItemMetadataKey = extraSocketModCategoryId;
 					continue;

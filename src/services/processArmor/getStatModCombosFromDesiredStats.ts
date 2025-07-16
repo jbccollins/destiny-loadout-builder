@@ -21,12 +21,12 @@ import { roundUp10 } from './utils';
 export type StatModCombo = Record<EArmorStatId, GenericRequiredModCombo>;
 
 export const getDefaultStatModCombo = (): StatModCombo => ({
-	[EArmorStatId.Mobility]: null,
-	[EArmorStatId.Resilience]: null,
-	[EArmorStatId.Recovery]: null,
-	[EArmorStatId.Discipline]: null,
-	[EArmorStatId.Intellect]: null,
-	[EArmorStatId.Strength]: null,
+	[EArmorStatId.Weapons]: null,
+	[EArmorStatId.Health]: null,
+	[EArmorStatId.Class]: null,
+	[EArmorStatId.Grenade]: null,
+	[EArmorStatId.Super]: null,
+	[EArmorStatId.Melee]: null,
 });
 
 const getUnfilteredStatModCombos = (
@@ -37,12 +37,12 @@ const getUnfilteredStatModCombos = (
 	currentStats: StatList
 ) => {
 	const allGenericCombos: Record<EArmorStatId, GenericRequiredModCombo[]> = {
-		[EArmorStatId.Mobility]: null,
-		[EArmorStatId.Resilience]: null,
-		[EArmorStatId.Recovery]: null,
-		[EArmorStatId.Discipline]: null,
-		[EArmorStatId.Intellect]: null,
-		[EArmorStatId.Strength]: null,
+		[EArmorStatId.Weapons]: null,
+		[EArmorStatId.Health]: null,
+		[EArmorStatId.Class]: null,
+		[EArmorStatId.Grenade]: null,
+		[EArmorStatId.Super]: null,
+		[EArmorStatId.Melee]: null,
 	};
 	// We will recreate the totalTargetStatShortfall as we go
 	// when we want zero wasted stats.

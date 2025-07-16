@@ -328,7 +328,7 @@ function ResultsItem({
 				</StatsBreakdownItem>
 				{ArmorStatIdList.map((armorStatId) => (
 					<StatsBreakdownItem key={armorStatId} className="stats-breakdown">
-						{armorStatId === EArmorStatId.Resilience ? 1 : 0}
+						{armorStatId === EArmorStatId.Health ? 1 : 0}
 					</StatsBreakdownItem>
 				))}
 				<StatsBreakdownItem>

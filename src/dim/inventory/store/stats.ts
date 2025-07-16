@@ -198,9 +198,9 @@ function shouldShowStat(
 	return Boolean(
 		// Must be on the AllowList
 		statAllowList.includes(statHash) &&
-			// Must be on the list of interpolated stats, or included in the hardcoded hidden stats list
-			(statDisplaysByStatHash[statHash] ||
-				hiddenStatsAllowList.includes(statHash))
+		// Must be on the list of interpolated stats, or included in the hardcoded hidden stats list
+		(statDisplaysByStatHash[statHash] ||
+			hiddenStatsAllowList.includes(statHash))
 	);
 }
 
@@ -262,7 +262,7 @@ function buildStat(
 		const firstInterp = statDisplay.displayInterpolation[0];
 		const lastInterp =
 			statDisplay.displayInterpolation[
-				statDisplay.displayInterpolation.length - 1
+			statDisplay.displayInterpolation.length - 1
 			];
 		smallerIsBetter = firstInterp.weight > lastInterp.weight;
 		maximumValue = Math.max(
@@ -588,7 +588,7 @@ function customStat(
 		sort: statAllowList.indexOf(CUSTOM_TOTAL_STAT_HASH),
 		value: total,
 		base: total,
-		maximumValue: 100,
+		maximumValue: 200,
 		bar: false,
 		smallerIsBetter: false,
 		additive: false,

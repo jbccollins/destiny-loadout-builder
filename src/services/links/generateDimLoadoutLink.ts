@@ -80,9 +80,8 @@ export const generateDimQuery = (
 			` or (is:exotic and is:classitem and is:${armorList[0].destinyClassName.toLowerCase()})`
 		);
 	} else if (classItem.requiredClassItemMetadataKey !== null) {
-		query += ` or id:'${
-			classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id
-		}'`;
+		query += ` or id:'${classItemMetadata[classItem.requiredClassItemMetadataKey].items[0].id
+			}'`;
 	} else {
 		query += ` or id:'${classItemMetadata.Legendary.items[0].id}'`;
 	}
@@ -145,28 +144,28 @@ export const generateDimLink = (
 	const data: LoadoutParameters = {
 		statConstraints: [
 			{
-				statHash: getArmorStat(EArmorStatId.Mobility).hash,
-				minTier: stats.Mobility / 10 || null,
+				statHash: getArmorStat(EArmorStatId.Weapons).hash,
+				minTier: stats.Weapons / 10 || null,
 			},
 			{
-				statHash: getArmorStat(EArmorStatId.Resilience).hash,
-				minTier: stats.Resilience / 10 || null,
+				statHash: getArmorStat(EArmorStatId.Health).hash,
+				minTier: stats.Health / 10 || null,
 			},
 			{
-				statHash: getArmorStat(EArmorStatId.Recovery).hash,
-				minTier: stats.Recovery / 10 || null,
+				statHash: getArmorStat(EArmorStatId.Class).hash,
+				minTier: stats.Class / 10 || null,
 			},
 			{
-				statHash: getArmorStat(EArmorStatId.Discipline).hash,
-				minTier: stats.Discipline / 10 || null,
+				statHash: getArmorStat(EArmorStatId.Grenade).hash,
+				minTier: stats.Grenade / 10 || null,
 			},
 			{
-				statHash: getArmorStat(EArmorStatId.Intellect).hash,
-				minTier: stats.Intellect / 10 || null,
+				statHash: getArmorStat(EArmorStatId.Super).hash,
+				minTier: stats.Super / 10 || null,
 			},
 			{
-				statHash: getArmorStat(EArmorStatId.Strength).hash,
-				minTier: stats.Strength / 10 || null,
+				statHash: getArmorStat(EArmorStatId.Melee).hash,
+				minTier: stats.Melee / 10 || null,
 			},
 		],
 		mods: modHashes,
@@ -175,8 +174,8 @@ export const generateDimLink = (
 			masterworkAssumption === EMasterworkAssumption.All
 				? 3
 				: masterworkAssumption === EMasterworkAssumption.Legendary
-				? 2
-				: 1,
+					? 2
+					: 1,
 		exoticArmorHash: exoticArmor.hash,
 	};
 
@@ -270,10 +269,9 @@ export const generateDimLink = (
 		});
 	}
 
-	const url = `https://${
-		useBetaDimLinks ? 'beta' : 'app'
-	}.destinyitemmanager.com/loadouts?loadout=${encodeURIComponent(
-		JSON.stringify(loadout)
-	)}`;
+	const url = `https://${useBetaDimLinks ? 'beta' : 'app'
+		}.destinyitemmanager.com/loadouts?loadout=${encodeURIComponent(
+			JSON.stringify(loadout)
+		)}`;
 	return url;
 };

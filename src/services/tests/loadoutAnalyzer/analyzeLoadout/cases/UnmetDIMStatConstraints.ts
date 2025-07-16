@@ -16,7 +16,7 @@ const params = cloneDeep(getBaseParams());
 params.loadout.loadoutType = ELoadoutType.DIM;
 params.loadout.dimStatTierConstraints = {
 	...getDefaultArmorStatMapping(),
-	[EArmorStatId.Resilience]: 60,
+	[EArmorStatId.Health]: 60,
 };
 
 const testCase: TestCase = [

@@ -81,9 +81,9 @@ const DestinyClassIdToClassAbilityStat: EnumDictionary<
 	EDestinyClassId,
 	EArmorStatId
 > = {
-	[EDestinyClassId.Hunter]: EArmorStatId.Mobility,
-	[EDestinyClassId.Warlock]: EArmorStatId.Recovery,
-	[EDestinyClassId.Titan]: EArmorStatId.Resilience,
+	[EDestinyClassId.Hunter]: EArmorStatId.Weapons,
+	[EDestinyClassId.Warlock]: EArmorStatId.Class,
+	[EDestinyClassId.Titan]: EArmorStatId.Health,
 };
 
 export const getDestinyClassAbilityStat = (id: EDestinyClassId): EArmorStatId =>

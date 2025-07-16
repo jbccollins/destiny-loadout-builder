@@ -17,7 +17,7 @@ params.armor.Hunter.Arm.nonExotic['2'] = {
 
 params.loadout.achievedStats = {
 	...params.loadout.achievedStats,
-	[EArmorStatId.Mobility]: 101,
+	[EArmorStatId.Weapons]: 101,
 };
 
 params.loadout.armor[1].stats = [11, 10, 10, 10, 10, 10];

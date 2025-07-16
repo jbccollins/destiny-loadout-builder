@@ -276,9 +276,6 @@ export function makeItem(
 	profileRecords?: DestinyProfileRecordsComponent
 ): DimItem | null {
 	const itemDef = defs.InventoryItem.get(item.itemHash);
-	// if (item.itemHash === 2428181146) {
-	// 	console.log("[heresy] item", item, itemDef)
-	// }
 
 	const itemInstanceData: Partial<DestinyItemInstanceComponent> =
 		itemComponents?.instances.data?.[item.itemInstanceId ?? ''] ?? {};
@@ -338,8 +335,8 @@ export function makeItem(
 	const normalBucketHash = needsShaderFix
 		? BucketHashes.Consumables
 		: needsModsFix
-		? BucketHashes.Modifications
-		: itemDef.inventory!.bucketTypeHash;
+			? BucketHashes.Modifications
+			: itemDef.inventory!.bucketTypeHash;
 	let normalBucket = buckets.byHash[normalBucketHash];
 
 	// this is where the item IS, right now.
@@ -489,68 +486,12 @@ export function makeItem(
 		? normalBucket.inArmor
 			? itemInstanceData?.isEquipped && owner
 				? // equipped armor gets marked as that character's class
-				  owner.classType
+				owner.classType
 				: // unequipped armor gets marked "no class"
-				  -1
+				-1
 			: // other items are marked "any class"
-			  DestinyClass.Unknown
+			DestinyClass.Unknown
 		: itemDef.classType;
-
-	let clasz = classType;
-	if (clasz === DestinyClass.Unknown) {
-		if (name === 'Blastwave Striders') {
-			clasz = DestinyClass.Titan;
-		}
-		if (name === 'Helm of Saint-14') {
-			clasz = DestinyClass.Titan;
-		}
-		if (name === 'Arbor Warden') {
-			clasz = DestinyClass.Titan;
-		}
-		if (name === 'Rime-coat Raiment') {
-			clasz = DestinyClass.Warlock;
-		}
-		if (name === 'Mask of Fealty') {
-			clasz = DestinyClass.Hunter;
-		}
-		if (name === 'Triton Vice') {
-			clasz = DestinyClass.Hunter;
-		}
-		if (name === 'War Mantis') {
-			clasz = DestinyClass.Hunter;
-		}
-
-		itemDef.sockets?.socketEntries.forEach((a, index) => {
-			const b = defs.SocketType.get(a.socketTypeHash);
-			if (b !== undefined) {
-				console.log('[heresy] b', b);
-				if (
-					b.plugWhitelist.findIndex((x) =>
-						x.categoryIdentifier.includes('warlock')
-					) != -1
-				) {
-					clasz = DestinyClass.Warlock;
-					return;
-				}
-				if (
-					b.plugWhitelist.findIndex((x) =>
-						x.categoryIdentifier.includes('titan')
-					) != -1
-				) {
-					clasz = DestinyClass.Titan;
-					return;
-				}
-				if (
-					b.plugWhitelist.findIndex((x) =>
-						x.categoryIdentifier.includes('hunter')
-					) != -1
-				) {
-					clasz = DestinyClass.Hunter;
-					return;
-				}
-			}
-		});
-	}
 
 	const createdItem: DimItem = {
 		owner: owner?.id || 'unknown',
@@ -580,7 +521,7 @@ export function makeItem(
 			itemDef.screenshot,
 		notransfer: Boolean(
 			itemDef.nonTransferrable ||
-				item.transferStatus === TransferStatuses.NotTransferrable
+			item.transferStatus === TransferStatuses.NotTransferrable
 		),
 		canPullFromPostmaster: !itemDef.doesPostmasterPullHaveSideEffects,
 		id: item.itemInstanceId || '0', // zero for non-instanced is legacy hack
@@ -600,8 +541,8 @@ export function makeItem(
 		equipRequiredLevel: itemInstanceData.equipRequiredLevel ?? 0,
 		maxStackSize: Math.max(itemDef.inventory!.maxStackSize, 1),
 		uniqueStack: Boolean(itemDef.inventory!.stackUniqueLabel?.length),
-		classType: clasz,
-		classTypeNameLocalized: getClassTypeNameLocalized(clasz, defs),
+		classType,
+		classTypeNameLocalized: getClassTypeNameLocalized(itemDef.classType, defs),
 		element,
 		energy: itemInstanceData.energy ?? null,
 		powerCap,
@@ -631,9 +572,9 @@ export function makeItem(
 			energyCost: itemDef.plug.energyCost?.energyCost || 0,
 			costElementIcon: itemDef.plug.energyCost
 				? defs.Stat.get(
-						defs.EnergyType.get(itemDef.plug.energyCost.energyTypeHash)
-							.costStatHash
-				  ).displayProperties.icon
+					defs.EnergyType.get(itemDef.plug.energyCost.energyTypeHash)
+						.costStatHash
+				).displayProperties.icon
 				: undefined,
 		},
 		metricHash: item.metricHash,
@@ -664,14 +605,14 @@ export function makeItem(
 	// *able
 	createdItem.taggable = Boolean(
 		createdItem.lockable ||
-			createdItem.classified ||
-			itemDef.itemSubType === DestinyItemSubType.Shader ||
-			createdItem.itemCategoryHashes.includes(ItemCategoryHashes.Mods_Mod)
+		createdItem.classified ||
+		itemDef.itemSubType === DestinyItemSubType.Shader ||
+		createdItem.itemCategoryHashes.includes(ItemCategoryHashes.Mods_Mod)
 	);
 	createdItem.comparable = Boolean(
 		createdItem.equipment &&
-			createdItem.lockable &&
-			createdItem.bucket.hash !== BucketHashes.Emblems
+		createdItem.lockable &&
+		createdItem.bucket.hash !== BucketHashes.Emblems
 	);
 
 	if (createdItem.primaryStat) {
